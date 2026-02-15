@@ -1,20 +1,35 @@
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { View } from "react-native";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withTiming,
+} from "react-native-reanimated";
 
 import { Schedule } from "~/resources/icons/Schedule";
+import { useInForeground } from "~/stores/ListenerState";
+import { usePlaybackStore } from "~/stores/Playback/store";
 
+import { clamp } from "~/utils/number";
 import { Marquee } from "~/components/Marquee";
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
+import { MediaImage } from "~/modules/media/components/MediaImage";
+import { Vinyl } from "~/modules/media/components/Vinyl";
+import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
+
+type SupportedMedia = "album" | "artist" | "playlist";
 
 //#region List Info
-type CurrentListInfoProps = {
+type ListInfoProps = {
   title: string;
   artists?: string[];
   metadata: string[];
   Actions: React.ReactNode;
 };
 
-function CurrentListInfo(props: CurrentListInfoProps) {
+function ListInfo(props: ListInfoProps) {
   return (
     <View className="flex-row items-center gap-4">
       <View className="shrink grow gap-1">
@@ -44,6 +59,104 @@ function CurrentListInfo(props: CurrentListInfoProps) {
       </View>
       {props.Actions}
     </View>
+  );
+}
+//#endregion
+
+//#region Artwork Preview
+type ListArtworkProps = {
+  listSource: { type: SupportedMedia; id: string };
+  imageSource: MediaImage.ImageSource | MediaImage.ImageSource[];
+};
+
+function ListArtwork(props: ListArtworkProps) {
+  const [width, setWidth] = useState(0);
+  const containerRef = useRef<View>(null);
+
+  // To prevent layout shifts.
+  useLayoutEffect(() => {
+    containerRef.current?.measure((_x, _y, width) => {
+      setWidth(width);
+    });
+  });
+
+  const renderedArtwork = useMemo(() => {
+    const imageSize = clamp(0, (width * 2) / 3, 384);
+
+    if (props.listSource.type === "artist") {
+      return (
+        <MediaImage
+          type="artist"
+          source={props.imageSource as string | null}
+          size={imageSize}
+        />
+      );
+    }
+    return <AnimatedVinyl {...props} size={imageSize} />;
+  }, [props, width]);
+
+  return (
+    <View
+      ref={containerRef}
+      onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
+      className="items-center"
+    >
+      {width !== 0 ? renderedArtwork : null}
+    </View>
+  );
+}
+
+function AnimatedVinyl(props: ListArtworkProps & { size: number }) {
+  const inForeground = useInForeground();
+  const isPlaying = usePlaybackStore((s) => s.isPlaying);
+  const playingSource = usePlaybackStore((s) => s.playingFrom);
+  const horizTranslation = useSharedValue(0);
+
+  const canAnimate =
+    isPlaying && arePlaybackSourceEqual(playingSource, props.listSource);
+
+  const onMount = useCallback(() => {
+    horizTranslation.value = withDelay(
+      100,
+      withTiming(props.size / 4, { duration: 500 }),
+    );
+  }, [horizTranslation, props.size]);
+
+  const coverStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: -horizTranslation.value }],
+  }));
+  const discStyle = useAnimatedStyle(() => ({
+    // Multiplied by 2 due to also needing to account the translation of the parent.
+    transform: [{ translateX: horizTranslation.value * 2 }],
+  }));
+
+  return (
+    <Animated.View onLayout={onMount} style={coverStyle} className="relative">
+      <Animated.View
+        style={[
+          discStyle,
+          {
+            animationName: {
+              from: { transform: [{ rotate: "0deg" }] },
+              to: { transform: [{ rotate: "360deg" }] },
+            },
+            animationDuration: 24000,
+            animationTimingFunction: "linear",
+            animationIterationCount: "infinite",
+            animationPlayState:
+              canAnimate && inForeground ? "running" : "paused",
+          },
+        ]}
+        className="absolute inset-0"
+      >
+        <Vinyl source={props.imageSource} size={props.size} />
+      </Animated.View>
+      <MediaImage
+        type={props.listSource.type}
+        source={props.imageSource as string | null}
+        size={props.size}
+      />
+    </Animated.View>
   );
 }
 //#endregion
