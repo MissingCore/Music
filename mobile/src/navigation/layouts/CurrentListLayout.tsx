@@ -1,4 +1,5 @@
-import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
+import type { LegendListProps } from "@legendapp/list";
+import { useCallback } from "react";
 import { View } from "react-native";
 import Animated, {
   useAnimatedStyle,
@@ -12,7 +13,7 @@ import { Schedule } from "~/resources/icons/Schedule";
 import { useInForeground } from "~/stores/ListenerState";
 import { usePlaybackStore } from "~/stores/Playback/store";
 
-import { clamp } from "~/utils/number";
+import { AnimatedLegendList } from "~/components/Defaults";
 import { Marquee } from "~/components/Marquee";
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
@@ -26,6 +27,35 @@ type MediaListSource = { type: SupportedMedia; id: string };
 
 const ESTIMATED_TOPAPPBAR_HEIGHT = 56;
 
+//#region Layout
+export function CurrentListLayout<TData>({
+  title,
+  artists,
+  metadata,
+  Actions,
+  listSource,
+  imageSource,
+  ...props
+}: Omit<LegendListProps<TData>, "ListHeaderComponent"> & ListHeaderProps) {
+  return (
+    <AnimatedLegendList
+      {...props}
+      ListHeaderComponent={
+        <CurrentListHeader
+          title={title}
+          artists={artists}
+          metadata={metadata}
+          Actions={Actions}
+          size={props.size}
+          listSource={listSource}
+          imageSource={imageSource}
+        />
+      }
+    />
+  );
+}
+//#endregion
+
 //#region List Header
 type ListHeaderProps = {
   title: string;
@@ -34,17 +64,29 @@ type ListHeaderProps = {
   Actions: React.ReactNode;
 } & ListArtworkProps;
 
-export function CurrentListHeader(props: ListHeaderProps) {
+function CurrentListHeader(props: ListHeaderProps) {
   const insets = useSafeAreaInsets();
   return (
     <View
       style={{ paddingTop: insets.top + ESTIMATED_TOPAPPBAR_HEIGHT + 16 }}
       className="gap-4 pb-4"
     >
-      <ListArtwork
-        listSource={props.listSource}
-        imageSource={props.imageSource}
-      />
+      <View className="items-center">
+        {props.listSource.type === "artist" ? (
+          <MediaImage
+            type="artist"
+            source={props.imageSource as string | null}
+            size={props.size}
+          />
+        ) : (
+          <AnimatedVinyl
+            size={props.size}
+            listSource={props.listSource}
+            imageSource={props.imageSource}
+          />
+        )}
+      </View>
+
       <View className="flex-row items-center gap-4">
         <View className="shrink grow gap-1">
           <Marquee>
@@ -73,6 +115,7 @@ export function CurrentListHeader(props: ListHeaderProps) {
         </View>
         {props.Actions}
       </View>
+
       <MediaListControls trackSource={props.listSource} className="ml-auto" />
     </View>
   );
@@ -80,50 +123,12 @@ export function CurrentListHeader(props: ListHeaderProps) {
 
 //#region Artwork Preview
 type ListArtworkProps = {
+  size: number;
   listSource: MediaListSource;
   imageSource: MediaImage.ImageSource | MediaImage.ImageSource[];
 };
 
-function ListArtwork(props: ListArtworkProps) {
-  // Trying to set a good default w/ `Dimensions.get("window")` or
-  // `useWindowDimensions` causes stuttering.
-  const [width, setWidth] = useState(0);
-  const containerRef = useRef<View>(null);
-
-  // To prevent layout shifts.
-  useLayoutEffect(() => {
-    containerRef.current?.measure((_x, _y, width) => {
-      setWidth(width);
-    });
-  });
-
-  const renderedArtwork = useMemo(() => {
-    const imageSize = clamp(0, (width * 2) / 3, 384);
-
-    if (props.listSource.type === "artist") {
-      return (
-        <MediaImage
-          type="artist"
-          source={props.imageSource as string | null}
-          size={imageSize}
-        />
-      );
-    }
-    return <AnimatedVinyl {...props} size={imageSize} />;
-  }, [props, width]);
-
-  return (
-    <View
-      ref={containerRef}
-      onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
-      className="items-center"
-    >
-      {width !== 0 ? renderedArtwork : null}
-    </View>
-  );
-}
-
-function AnimatedVinyl(props: ListArtworkProps & { size: number }) {
+function AnimatedVinyl(props: ListArtworkProps) {
   const inForeground = useInForeground();
   const isPlaying = usePlaybackStore((s) => s.isPlaying);
   const playingSource = usePlaybackStore((s) => s.playingFrom);
