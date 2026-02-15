@@ -16,6 +16,7 @@ import {
 import { preferenceStore } from "../../Preference/store";
 
 import { ToastOptions } from "~/lib/toast";
+import { clamp } from "~/utils/number";
 import { moveArray } from "~/utils/object";
 import { isString } from "~/utils/validation";
 
@@ -47,12 +48,17 @@ export function addToEnd({ id, name }: QueueInsertionProps) {
 export function moveTrack(fromIndex: number, toIndex: number) {
   const { queue, queuePosition, numQueuedNext } = playbackStore.getState();
 
+  //! We have a situation where `toIndex` might equal `queue.length`, which is
+  //! "out of bound" in our expected values.
+  //! - https://github.com/fivecar/react-native-draglist/issues/52
+  const clampedToIndex = clamp(0, toIndex, queue.length - 1);
+
   let newQueuePosition = queuePosition;
-  if (fromIndex === queuePosition) newQueuePosition = toIndex;
-  else if (fromIndex < queuePosition && toIndex >= queuePosition) {
+  if (fromIndex === queuePosition) newQueuePosition = clampedToIndex;
+  else if (fromIndex < queuePosition && clampedToIndex >= queuePosition) {
     // If we move a track before the active track to after it.
     newQueuePosition -= 1;
-  } else if (fromIndex > queuePosition && toIndex <= queuePosition) {
+  } else if (fromIndex > queuePosition && clampedToIndex <= queuePosition) {
     // If we move a track after the active track to before it.
     newQueuePosition += 1;
   }
@@ -62,14 +68,16 @@ export function moveTrack(fromIndex: number, toIndex: number) {
   const playNextEnd = queuePosition + numQueuedNext;
   if (isWithin(playNextStart, fromIndex, playNextEnd)) {
     //? Case if we move a track within the range to outside the range.
-    if (!isWithin(playNextStart, toIndex, playNextEnd)) newNumQueuedNext -= 1;
+    if (!isWithin(playNextStart, clampedToIndex, playNextEnd))
+      newNumQueuedNext -= 1;
   } else {
     //? Case if we move a track outside the range to inside the range.
-    if (isWithin(playNextStart, toIndex, playNextEnd)) newNumQueuedNext = 0;
+    if (isWithin(playNextStart, clampedToIndex, playNextEnd))
+      newNumQueuedNext = 0;
   }
 
   playbackStore.setState({
-    queue: moveArray(queue, { fromIndex, toIndex }),
+    queue: moveArray(queue, { fromIndex, toIndex: clampedToIndex }),
     queuePosition: newQueuePosition,
     //? Adjust `numQueuedNext` based on how we moved the track.
     numQueuedNext: Math.max(0, newNumQueuedNext),

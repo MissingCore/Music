@@ -14,6 +14,7 @@ export function moveArray<T>(
 ) {
   const copy = [...arr];
   const moved = copy.splice(movement.fromIndex, 1);
+  //? If `toIndex >= arr.length`, `toSpliced` will behave as an adding function.
   return copy.toSpliced(movement.toIndex, 0, moved[0]!);
 }
 
