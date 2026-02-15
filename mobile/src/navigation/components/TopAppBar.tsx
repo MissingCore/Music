@@ -10,7 +10,7 @@ import { ArrowBack } from "~/resources/icons/ArrowBack";
 import { OnRTL } from "~/lib/react";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { SafeContainer } from "~/components/SafeContainer";
-import { StyledText } from "~/components/Typography/StyledText";
+import { TEm } from "~/components/Typography/StyledText";
 
 /** Custom header bar for React Navigation. The "title" will get ellipsized. */
 export function TopAppBar({ options, route }: NativeStackHeaderProps) {
@@ -30,9 +30,7 @@ export function TopAppBar({ options, route }: NativeStackHeaderProps) {
           size="sm"
         />
 
-        <StyledText numberOfLines={1} bold className="shrink">
-          {t(title)}
-        </StyledText>
+        <TEm textKey={title} numberOfLines={1} className="shrink text-base" />
 
         {options.headerRight ? (
           options.headerRight({ canGoBack: true })

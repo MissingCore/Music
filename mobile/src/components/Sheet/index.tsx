@@ -15,7 +15,7 @@ import { useSafeAreaHeight } from "~/hooks/useSafeAreaHeight";
 import { cn } from "~/lib/style";
 import type { TrueSheetRef } from "./useSheetRef";
 import { Marquee } from "../Marquee";
-import { TStyledText } from "../Typography/StyledText";
+import { TEm } from "../Typography/StyledText";
 
 const WrappedGestureHandlerRootView = withUniwind(GestureHandlerRootView);
 
@@ -126,11 +126,7 @@ export function DetachedSheet(props: SheetProps) {
             <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-surfaceContainerHigh" />
             {props.titleKey ? (
               <Marquee color="surfaceBright">
-                <TStyledText
-                  textKey={props.titleKey}
-                  bold
-                  className="text-lg"
-                />
+                <TEm textKey={props.titleKey} className="text-lg" />
               </Marquee>
             ) : null}
           </View>

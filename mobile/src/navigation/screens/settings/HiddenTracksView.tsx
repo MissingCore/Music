@@ -97,7 +97,7 @@ function ScreenContents(props: { data: HiddenTrack[] }) {
       keyExtractor={({ monthYearStr }) => monthYearStr}
       renderItem={({ item, index }) => (
         <View className={cn("gap-2", { "mt-4": index > 0 })}>
-          <Em className="text-xs">{item.monthYearStr}</Em>
+          <Em>{item.monthYearStr}</Em>
           <SegmentedList>
             {item.dayEntries.map(({ day, tracks }) => (
               <SegmentedList.CustomItem

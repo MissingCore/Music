@@ -10,7 +10,7 @@ import { FlatList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
 import { RemovableItem } from "~/components/List/RemovableItem";
-import { TStyledText } from "~/components/Typography/StyledText";
+import { TEm } from "~/components/Typography/StyledText";
 
 //#region Label
 export function InputLabel(props: {
@@ -19,7 +19,7 @@ export function InputLabel(props: {
 }) {
   return (
     <View className="mb-1 min-h-8 flex-row items-center justify-between gap-4">
-      <TStyledText textKey={props.labelKey} bold className="text-xs" />
+      <TEm textKey={props.labelKey} />
       {props.RightElement}
     </View>
   );

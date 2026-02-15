@@ -15,7 +15,7 @@ import {
 import { OnRTL } from "~/lib/react";
 import { clamp, formatSeconds } from "~/utils/number";
 import { CachedSlider } from "~/components/Form/Slider";
-import { StyledText } from "~/components/Typography/StyledText";
+import { Em } from "~/components/Typography/StyledText";
 
 interface SeekBarProps {
   id: string;
@@ -74,12 +74,8 @@ export function SeekBar(props: SeekBarProps) {
         style={{ flexDirection: OnRTL.decide("row-reverse", "row") }}
         className="justify-between"
       >
-        <StyledText bold className="text-xs">
-          {formatSeconds(clampedPos)}
-        </StyledText>
-        <StyledText bold className="text-xs">
-          {formatSeconds(props.trackLength)}
-        </StyledText>
+        <Em>{formatSeconds(clampedPos)}</Em>
+        <Em>{formatSeconds(props.trackLength)}</Em>
       </View>
     </View>
   );

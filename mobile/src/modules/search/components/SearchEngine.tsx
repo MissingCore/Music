@@ -198,7 +198,7 @@ function SearchFilters(props: {
             >
               <TEm
                 textKey={`term.${tab}`}
-                className={cn("text-xs", { "text-onPrimary": selected })}
+                className={cn({ "text-onPrimary": selected })}
                 bold={false}
               />
             </Button>

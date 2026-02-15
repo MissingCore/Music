@@ -16,7 +16,7 @@ import { OnRTLWorklet } from "~/lib/react";
 import { toLowerCase } from "~/utils/string";
 import { Divider } from "~/components/Divider";
 import { Marquee } from "~/components/Marquee";
-import { StyledText, TEm } from "~/components/Typography/StyledText";
+import { Em, StyledText } from "~/components/Typography/StyledText";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
 import { MediaImage } from "~/modules/media/components/MediaImage";
@@ -51,11 +51,9 @@ export function CurrentListLayout(
           imageSource={props.imageSource}
         />
         <View className="shrink grow justify-end">
-          <TEm
-            dim
-            textKey={`term.${toLowerCase(props.mediaSource.type)}`}
-            style={{ fontSize: 8 }}
-          />
+          <Em dim style={{ fontSize: 8 }}>
+            {t(`term.${toLowerCase(props.mediaSource.type)}`).toUpperCase()}
+          </Em>
           <Marquee>
             <StyledText>
               {isFavorite ? t("term.favoriteTracks") : props.title}

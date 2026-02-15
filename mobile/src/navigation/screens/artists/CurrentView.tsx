@@ -90,7 +90,7 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
   if (!albums) return null;
   return (
     <>
-      <TEm dim textKey="term.albums" className="mb-2" />
+      <TEm textKey="term.albums" className="mb-2" />
       <FlashList
         horizontal
         data={albums}
@@ -115,7 +115,7 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
         // gets applied on a horizontal FlashList.
         contentContainerClassName="px-8"
       />
-      <TEm dim textKey="term.tracks" className="mt-4 mb-2" />
+      <TEm textKey="term.tracks" className="mt-4 mb-2" />
     </>
   );
 }

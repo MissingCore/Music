@@ -14,7 +14,7 @@ import { cn } from "~/lib/style";
 import { FlatList, useFlatListRef } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
 import { TopDownGradient } from "~/components/Gradient";
-import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import { Em, TEm } from "~/components/Typography/StyledText";
 
 const SCROLL_OFFSET = 64;
 const LINE_GAP = 16;
@@ -78,18 +78,14 @@ function LyricsContent(props: { trackId: string; offset: number }) {
         style={{ paddingTop: props.offset }}
         className="items-center gap-8 pb-4"
       >
-        <TStyledText
-          textKey="feat.lyrics.extra.notFound"
-          bold
-          className="text-lg"
-        />
+        <TEm textKey="feat.lyrics.extra.notFound" className="text-lg" />
         <Button
           onPress={() => navigation.navigate("Lyrics")}
           className="rounded-full bg-primary px-8 active:bg-primaryDim"
         >
-          <StyledText bold className="text-center text-sm text-onPrimary">
+          <Em className="text-center text-sm text-onPrimary">
             {t("template.entryManage", { name: t("feat.lyrics.title") })}
-          </StyledText>
+          </Em>
         </Button>
       </View>
     );
@@ -100,11 +96,7 @@ function LyricsContent(props: { trackId: string; offset: number }) {
     <FlatList
       data={lyricsLines}
       keyExtractor={(_, index) => `${index}`}
-      renderItem={({ item }) => (
-        <StyledText bold className="text-xl">
-          {item}
-        </StyledText>
-      )}
+      renderItem={({ item }) => <Em className="text-xl">{item}</Em>}
       contentContainerStyle={{
         paddingTop: props.offset,
         paddingBottom: SCROLL_OFFSET,
@@ -241,19 +233,15 @@ const MemoLyricList = memo(
         keyExtractor={(_, index) => `${index}`}
         renderItem={({ item }) => {
           if (typeof item === "string") {
-            return (
-              <StyledText bold className="text-xl text-onSurfaceVariant/50">
-                {item}
-              </StyledText>
-            );
+            return <Em className="text-xl text-onSurfaceVariant/50">{item}</Em>;
           } else {
             return (
-              <StyledText bold className="text-xl">
+              <Em className="text-xl">
                 {item[0]}
                 {item[1].length > 0 && (
                   <Text className="text-onSurfaceVariant/50">{item[1]}</Text>
                 )}
-              </StyledText>
+              </Em>
             );
           }
         }}

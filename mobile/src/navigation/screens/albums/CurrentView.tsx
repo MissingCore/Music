@@ -5,7 +5,6 @@ import { View } from "react-native";
 
 import { Favorite } from "~/resources/icons/Favorite";
 import { useAlbumForScreen, useFavoriteAlbum } from "~/queries/album";
-import { usePreferenceStore } from "~/stores/Preference/store";
 import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
 import { AlbumArtworkSheet } from "../../sheets/ArtworkSheet";
@@ -36,7 +35,6 @@ export default function Album({
   const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
-  const primaryFont = usePreferenceStore((s) => s.primaryFont);
   const artworkSheetRef = useSheetRef();
 
   const trackSource = { type: "album", id: albumId } as const;
@@ -58,13 +56,10 @@ export default function Album({
     return sectionListTracks;
   }, [listData]);
 
-  const guessItemSize = useCallback(
-    (index: number, item: any) => {
-      if (!isNumber(item)) return 56; // 48px Height + 8px Margin Bottom
-      return (primaryFont === "Inter" ? 15 : 14) + (index === 0 ? 8 : 16);
-    },
-    [primaryFont],
-  );
+  const guessItemSize = useCallback((index: number, item: any) => {
+    if (!isNumber(item)) return 56; // 48px Height + 8px Margin Bottom
+    return 16 + (index === 0 ? 8 : 16);
+  }, []);
 
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
@@ -106,7 +101,7 @@ export default function Album({
           getItemType={(item) => (isNumber(item) ? "label" : "row")}
           renderItem={({ item, index }) =>
             isNumber(item) ? (
-              <Em dim className={cn("mb-2", { "mt-2": index > 0 })}>
+              <Em className={cn("mb-2", { "mt-2": index > 0 })}>
                 {t("term.disc", { count: item })}
               </Em>
             ) : (

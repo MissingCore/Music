@@ -11,7 +11,7 @@ import { Button } from "~/components/Form/Button";
 import { CachedSlider } from "~/components/Form/Slider";
 import { DetachedSheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { StyledText } from "~/components/Typography/StyledText";
+import { Em } from "~/components/Typography/StyledText";
 
 export function PlaybackSpeedSheet(props: { ref: TrueSheetRef }) {
   const [stopDrag, setStopDrag] = useState(false);
@@ -49,9 +49,7 @@ function PlaybackSpeedPreset(props: {
       }}
       className="min-h-8 flex-1 rounded-full py-2 active:bg-surfaceContainer"
     >
-      <StyledText bold className="text-xs">
-        {formatValue(props.preset)}
-      </StyledText>
+      <Em>{formatValue(props.preset)}</Em>
     </Button>
   );
 }

@@ -24,7 +24,11 @@ import { Divider } from "~/components/Divider";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import {
+  Em,
+  StyledText,
+  TStyledText,
+} from "~/components/Typography/StyledText";
 import { LinkTracksSheet } from "./sheets/LinkTracksSheet";
 
 type Props = StaticScreenProps<{ id: string }>;
@@ -69,9 +73,7 @@ export default function Lyric({
 
       <ListLayout>
         <SegmentedList.CustomItem className="p-4">
-          <StyledText bold className="text-xl">
-            {data.name}
-          </StyledText>
+          <Em className="text-xl">{data.name}</Em>
         </SegmentedList.CustomItem>
 
         <SegmentedList>

@@ -15,7 +15,7 @@ import { SystemTheme } from "~/hooks/useTheme";
 import { useScanningProgressStore } from "../ScanningProgress";
 
 import { CachedSlider } from "~/components/Form/Slider";
-import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import { Em, TEm } from "~/components/Typography/StyledText";
 
 export function ScanningProgress() {
   const { container, logo } = BootSplash.useHideAnimation({
@@ -124,12 +124,10 @@ const SliderConfig = {
 
 function ProgressLabel({ textKey }: { textKey: ParseKeys }) {
   return (
-    <TStyledText
+    <TEm
       textKey={textKey}
       numberOfLines={1}
-      bold
       style={{ color: SystemTheme.onSurface }}
-      className="text-xs"
     />
   );
 }
@@ -138,13 +136,9 @@ function IconStatus(props: { Icon: typeof Save; value: string | number }) {
   return (
     <View className="flex-row items-center gap-1">
       <props.Icon size={14} color={SystemTheme.onSurface} />
-      <StyledText
-        bold
-        style={{ color: SystemTheme.onSurface }}
-        className="text-xxs"
-      >
+      <Em style={{ color: SystemTheme.onSurface }} className="text-xxs">
         {props.value}
-      </StyledText>
+      </Em>
     </View>
   );
 }

@@ -4,7 +4,7 @@ import type { PressableProps } from "react-native";
 import { Pressable } from "react-native";
 
 import { cn } from "~/lib/style";
-import { TStyledText } from "../../Typography/StyledText";
+import { TEm } from "../../Typography/StyledText";
 
 //#region Default
 export const Button = memo(function Button({
@@ -46,9 +46,8 @@ export const ExtendedTButton = memo(function ExtendedTButton(
       )}
     >
       {props.LeftElement}
-      <TStyledText
+      <TEm
         textKey={props.textKey}
-        bold
         className={cn(
           "shrink text-sm",
           { "text-center": !props.LeftElement },

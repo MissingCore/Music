@@ -20,7 +20,7 @@ import { useColor } from "~/hooks/useTheme";
 import { Colors } from "~/constants/Styles";
 import type { AppColor } from "~/lib/style";
 import { cn } from "~/lib/style";
-import { StyledText } from "../Typography/StyledText";
+import { Em } from "../Typography/StyledText";
 
 /**
  * Reanimated slider whose render value is handled internally and is
@@ -299,12 +299,9 @@ const SliderOverlay = memo(function SliderOverlay(
       )}
     >
       <props.Icon size={20} />
-      <StyledText
-        bold
-        className={cn("min-w-10 text-sm", { "text-right": props.inverted })}
-      >
+      <Em className={cn("min-w-10 text-sm", { "text-right": props.inverted })}>
         {formattedValue}
-      </StyledText>
+      </Em>
     </View>
   );
 });

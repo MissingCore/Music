@@ -6,7 +6,7 @@ import { Add } from "~/resources/icons/Add";
 import { Remove } from "~/resources/icons/Remove";
 
 import { FilledIconButton } from "./Button/Icon";
-import { StyledText } from "../Typography/StyledText";
+import { Em } from "../Typography/StyledText";
 
 export const NumberStepper = memo(function NumberStepper({
   value,
@@ -52,10 +52,10 @@ export const NumberStepper = memo(function NumberStepper({
         className="rounded-sm"
         size="xs"
       />
-      <StyledText bold className="min-w-8 text-center text-sm">
+      <Em className="min-w-8 text-center text-sm">
         {value}
         {props.suffix}
-      </StyledText>
+      </Em>
       <FilledIconButton
         Icon={Add}
         accessibilityLabel={incrementLabel}
