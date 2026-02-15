@@ -38,8 +38,8 @@ export function CurrentListHeader(props: ListHeaderProps) {
   const insets = useSafeAreaInsets();
   return (
     <View
-      style={{ paddingTop: insets.top + ESTIMATED_TOPAPPBAR_HEIGHT }}
-      className="gap-6"
+      style={{ paddingTop: insets.top + ESTIMATED_TOPAPPBAR_HEIGHT + 16 }}
+      className="gap-4 pb-4"
     >
       <ListArtwork
         listSource={props.listSource}
@@ -73,10 +73,7 @@ export function CurrentListHeader(props: ListHeaderProps) {
         </View>
         {props.Actions}
       </View>
-      <MediaListControls
-        trackSource={props.listSource}
-        className="-mt-2 ml-auto"
-      />
+      <MediaListControls trackSource={props.listSource} className="ml-auto" />
     </View>
   );
 }
@@ -88,6 +85,8 @@ type ListArtworkProps = {
 };
 
 function ListArtwork(props: ListArtworkProps) {
+  // Trying to set a good default w/ `Dimensions.get("window")` or
+  // `useWindowDimensions` causes stuttering.
   const [width, setWidth] = useState(0);
   const containerRef = useRef<View>(null);
 
