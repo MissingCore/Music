@@ -34,18 +34,14 @@ const ESTIMATED_TOPAPPBAR_HEIGHT = 56;
 
 //#region Layout
 export function CurrentListLayout<TData>({
-  title,
-  artists,
-  metadata,
-  Actions,
   listSource,
   imageSource,
+  listInfo,
+  SubHeader,
   ...props
 }: FlatListPropsWithLayout<TData> & {
-  title: string;
-  artists?: string[];
-  metadata: string[];
-  Actions: React.ReactNode;
+  listInfo: ListInfoProps;
+  SubHeader?: React.ReactNode;
 } & Omit<ListArtworkProps, "size">) {
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
@@ -97,51 +93,31 @@ export function CurrentListLayout<TData>({
         {...props}
         onScroll={scrollHandler}
         ListHeaderComponent={
-          <View
-            ref={headerRef}
-            onLayout={setHeaderHeight}
-            style={{ paddingTop: topOffset, paddingBottom: 72 }}
-            className="gap-4"
-          >
-            <View className="items-center">
-              {listSource.type === "artist" ? (
-                <MediaImage
-                  type="artist"
-                  source={imageSource as string | null}
-                  size={imageSize}
-                />
-              ) : (
-                <AnimatedVinyl
-                  size={imageSize}
-                  listSource={listSource}
-                  imageSource={imageSource}
-                />
-              )}
-            </View>
-            <View className="flex-row items-center gap-4">
-              <View className="shrink grow gap-1">
-                <Marquee>
-                  <Em className="text-lg">{title}</Em>
-                </Marquee>
-                {artists ? (
-                  <ArtistsLink artistNames={artists} popStrategy="popTo" />
-                ) : null}
-                <Marquee contentContainerClassName="gap-0">
-                  <StyledText dim className="text-xxs">
-                    {metadata.toSpliced(-1).join(" • ")}
-                  </StyledText>
-                  {/* Work around for RTL languages. */}
-                  <StyledText dim className="text-xxs">
-                    {" • "}
-                  </StyledText>
-                  <Schedule size={12} color="onSurfaceVariant" />
-                  <StyledText dim className="text-xxs">
-                    {` ${metadata.at(-1)!}`}
-                  </StyledText>
-                </Marquee>
+          <View>
+            <View
+              ref={headerRef}
+              onLayout={setHeaderHeight}
+              style={{ paddingTop: topOffset, paddingBottom: 72 }}
+              className="gap-4"
+            >
+              <View className="items-center">
+                {listSource.type === "artist" ? (
+                  <MediaImage
+                    type="artist"
+                    source={imageSource as string | null}
+                    size={imageSize}
+                  />
+                ) : (
+                  <AnimatedVinyl
+                    size={imageSize}
+                    listSource={listSource}
+                    imageSource={imageSource}
+                  />
+                )}
               </View>
-              {Actions}
+              <ListInfo {...listInfo} />
             </View>
+            {SubHeader}
           </View>
         }
         contentContainerClassName={cn("px-4", props.contentContainerClassName)}
@@ -160,6 +136,44 @@ export function CurrentListLayout<TData>({
         <MediaListControls trackSource={listSource} />
       </Animated.View>
     </>
+  );
+}
+//#endregion
+
+//#region List Info
+type ListInfoProps = {
+  title: string;
+  artists?: string[];
+  metadata: string[];
+  Actions: React.ReactNode;
+};
+
+function ListInfo(props: ListInfoProps) {
+  return (
+    <View className="flex-row items-center gap-4">
+      <View className="shrink grow gap-1">
+        <Marquee>
+          <Em className="text-lg">{props.title}</Em>
+        </Marquee>
+        {props.artists ? (
+          <ArtistsLink artistNames={props.artists} popStrategy="popTo" />
+        ) : null}
+        <Marquee contentContainerClassName="gap-0">
+          <StyledText dim className="text-xxs">
+            {props.metadata.toSpliced(-1).join(" • ")}
+          </StyledText>
+          {/* Work around for RTL languages. */}
+          <StyledText dim className="text-xxs">
+            {" • "}
+          </StyledText>
+          <Schedule size={12} color="onSurfaceVariant" />
+          <StyledText dim className="text-xxs">
+            {` ${props.metadata.at(-1)!}`}
+          </StyledText>
+        </Marquee>
+      </View>
+      {props.Actions}
+    </View>
   );
 }
 //#endregion

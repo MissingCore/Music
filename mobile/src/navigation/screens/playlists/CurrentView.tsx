@@ -81,29 +81,35 @@ export default function Playlist({
 
       <CurrentListLayout
         // List Header Props
-        title={listName}
-        metadata={data.metadata}
+        listInfo={{
+          title: listName,
+          metadata: data.metadata,
+          Actions: (
+            <View className="flex-row gap-1">
+              {id !== FavoritesPlaylistKey ? (
+                <IconButton
+                  Icon={Favorite}
+                  accessibilityLabel={t(
+                    `term.${isToggled ? "unF" : "f"}avorite`,
+                  )}
+                  onPress={() =>
+                    mutateGuard(favoritePlaylist, !data.isFavorite)
+                  }
+                  filled={isToggled}
+                  size="sm"
+                />
+              ) : null}
+              <CurrentListMenu
+                actions={menuActions}
+                name={listName}
+                trackIds={data.tracks.map(({ id }) => id)}
+                presentArtworkSheet={() => artworkSheetRef.current?.present()}
+              />
+            </View>
+          ),
+        }}
         listSource={trackSource}
         imageSource={data.imageSource}
-        Actions={
-          <View className="flex-row gap-1">
-            {id !== FavoritesPlaylistKey ? (
-              <IconButton
-                Icon={Favorite}
-                accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
-                onPress={() => mutateGuard(favoritePlaylist, !data.isFavorite)}
-                filled={isToggled}
-                size="sm"
-              />
-            ) : null}
-            <CurrentListMenu
-              actions={menuActions}
-              name={listName}
-              trackIds={data.tracks.map(({ id }) => id)}
-              presentArtworkSheet={() => artworkSheetRef.current?.present()}
-            />
-          </View>
-        }
         // LegendList Props
         {...presets}
         contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}

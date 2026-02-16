@@ -80,27 +80,29 @@ export default function Album({
 
       <CurrentListLayout
         // List Header Props
-        title={data.name}
-        artists={data.artistNames}
-        metadata={data.metadata}
+        listInfo={{
+          title: data.name,
+          artists: data.artistNames,
+          metadata: data.metadata,
+          Actions: (
+            <View className="flex-row gap-1">
+              <IconButton
+                Icon={Favorite}
+                accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
+                onPress={() => mutateGuard(favoriteAlbum, !data.isFavorite)}
+                filled={isToggled}
+                size="sm"
+              />
+              <CurrentListMenu
+                name={data.name}
+                trackIds={data.tracks.map(({ id }) => id)}
+                presentArtworkSheet={() => artworkSheetRef.current?.present()}
+              />
+            </View>
+          ),
+        }}
         listSource={trackSource}
         imageSource={data.imageSource}
-        Actions={
-          <View className="flex-row gap-1">
-            <IconButton
-              Icon={Favorite}
-              accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
-              onPress={() => mutateGuard(favoriteAlbum, !data.isFavorite)}
-              filled={isToggled}
-              size="sm"
-            />
-            <CurrentListMenu
-              name={data.name}
-              trackIds={data.tracks.map(({ id }) => id)}
-              presentArtworkSheet={() => artworkSheetRef.current?.present()}
-            />
-          </View>
-        }
         // LegendList Props
         getEstimatedItemSize={guessItemSize}
         data={formattedData}
