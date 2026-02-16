@@ -76,13 +76,12 @@ export function CurrentListLayout<TData>({
   //#endregion
 
   //#region Header Height Calculations
-  const headerHeight = useSharedValue(0);
+  const [headerHeight, _setHeaderHeight] = useState(0);
 
   const setHeaderHeight = useCallback(
-    (e: LayoutChangeEvent) => {
-      headerHeight.value = e.nativeEvent.layout.height - topOffset;
-    },
-    [headerHeight, topOffset],
+    (e: LayoutChangeEvent) =>
+      _setHeaderHeight(e.nativeEvent.layout.height - topOffset),
+    [topOffset],
   );
   //#endregion
 
@@ -97,9 +96,9 @@ export function CurrentListLayout<TData>({
 
   const stickyStyles = useAnimatedStyle(() => ({
     paddingTop: insets.top + 8,
-    opacity: headerHeight.value === 0 ? 0 : 1,
+    opacity: headerHeight === 0 ? 0 : 1,
     transform: [
-      { translateY: Math.max(0, headerHeight.value - scrollPosition.value) },
+      { translateY: Math.max(0, headerHeight - scrollPosition.value) },
     ],
   }));
   //#endregion
@@ -149,7 +148,7 @@ export function CurrentListLayout<TData>({
           <View>
             <View
               onLayout={setHeaderHeight}
-              style={{ paddingTop: topOffset, paddingBottom: 72 }}
+              style={{ paddingTop: topOffset, paddingBottom: 16 }}
               className="gap-4"
             >
               <View className="items-center">
@@ -168,6 +167,11 @@ export function CurrentListLayout<TData>({
                 )}
               </View>
               <ListInfo {...listInfo} />
+              {headerHeight === 0 ? (
+                <MediaListControls trackSource={listSource} />
+              ) : (
+                <View pointerEvents="none" className="size-10" />
+              )}
             </View>
             {SubHeader}
           </View>
