@@ -2,7 +2,7 @@ import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { useWindowDimensions, View } from "react-native";
 
 import { Edit } from "~/resources/icons/Edit";
 import { Favorite } from "~/resources/icons/Favorite";
@@ -10,15 +10,14 @@ import { FileSave } from "~/resources/icons/FileSave";
 import { useFavoritePlaylist, usePlaylistForScreen } from "~/queries/playlist";
 
 import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
+import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
 import { PlaylistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
-import { CurrentListLayout } from "~/navigation/layouts/CurrentList";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
-import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import { ExportM3USheet } from "./sheets/ExportM3USheet";
 
+import { clamp } from "~/utils/number";
 import { mutateGuard } from "~/lib/react-query";
-import { LegendList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button/Icon";
 import type { MenuAction } from "~/components/Menu";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
@@ -34,6 +33,7 @@ export default function Playlist({
 }: Props) {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const { width } = useWindowDimensions();
   const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = usePlaylistForScreen(id);
   const favoritePlaylist = useFavoritePlaylist(id);
@@ -66,10 +66,22 @@ export default function Playlist({
     ? !data.isFavorite
     : data.isFavorite;
 
+  const listName =
+    data.name === FavoritesPlaylistKey ? t("term.favoriteTracks") : data.name;
+
   return (
     <>
-      <ScreenOptions
-        headerRight={() => (
+      <PlaylistArtworkSheet ref={artworkSheetRef} id={id} />
+      <ExportM3USheet ref={exportSheetRef} id={id} />
+
+      <CurrentListLayout
+        // List Header Props
+        title={listName}
+        metadata={data.metadata}
+        size={clamp(0, ((width - 32) * 2) / 3, 384)}
+        listSource={trackSource}
+        imageSource={data.imageSource}
+        Actions={
           <View className="flex-row gap-1">
             {id !== FavoritesPlaylistKey ? (
               <IconButton
@@ -77,36 +89,22 @@ export default function Playlist({
                 accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
                 onPress={() => mutateGuard(favoritePlaylist, !data.isFavorite)}
                 filled={isToggled}
+                size="sm"
               />
             ) : null}
             <CurrentListMenu
               actions={menuActions}
-              name={
-                data.name === FavoritesPlaylistKey
-                  ? t("term.favoriteTracks")
-                  : data.name
-              }
+              name={listName}
               trackIds={data.tracks.map(({ id }) => id)}
               presentArtworkSheet={() => artworkSheetRef.current?.present()}
             />
           </View>
-        )}
+        }
+        // LegendList Props
+        {...presets}
+        contentContainerClassName="px-4"
+        contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
       />
-      <CurrentListLayout
-        title={data.name}
-        metadata={data.metadata}
-        imageSource={data.imageSource}
-        mediaSource={trackSource}
-      >
-        <LegendList
-          {...presets}
-          contentContainerClassName="px-4 pt-4"
-          contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
-        />
-      </CurrentListLayout>
-
-      <PlaylistArtworkSheet ref={artworkSheetRef} id={id} />
-      <ExportM3USheet ref={exportSheetRef} id={id} />
     </>
   );
 }

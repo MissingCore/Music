@@ -39,6 +39,7 @@ export function Menu(props: {
           Icon={MoreVert}
           accessibilityLabel={t(props.triggerLabel ?? "term.more")}
           onPress={() => setVisible(true)}
+          size="sm"
         />
       }
       anchorPosition="bottom"

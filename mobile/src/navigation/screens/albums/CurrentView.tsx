@@ -1,18 +1,21 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { useWindowDimensions, View } from "react-native";
 
 import { Favorite } from "~/resources/icons/Favorite";
 import { useAlbumForScreen, useFavoriteAlbum } from "~/queries/album";
-import { useBottomActionsInset } from "../../hooks/useBottomActions";
-import { CurrentListLayout } from "../../layouts/CurrentList";
-import { AlbumArtworkSheet } from "../../sheets/ArtworkSheet";
 
+import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
+import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
+import { AlbumArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
+import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
+import { PagePlaceholder } from "~/navigation/components/Placeholder";
+
+import { clamp } from "~/utils/number";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { isNumber } from "~/utils/validation";
-import { LegendList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { Em, StyledText } from "~/components/Typography/StyledText";
@@ -20,9 +23,6 @@ import {
   Track,
   useTrackListPlayingIndication,
 } from "~/modules/media/components/Track";
-import { CurrentListMenu } from "../../components/CurrentListMenu";
-import { PagePlaceholder } from "../../components/Placeholder";
-import { ScreenOptions } from "../../components/ScreenOptions";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -32,6 +32,7 @@ export default function Album({
   },
 }: Props) {
   const { t } = useTranslation();
+  const { width } = useWindowDimensions();
   const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
@@ -70,14 +71,24 @@ export default function Album({
 
   return (
     <>
-      <ScreenOptions
-        headerRight={() => (
+      <AlbumArtworkSheet ref={artworkSheetRef} id={albumId} />
+
+      <CurrentListLayout
+        // List Header Props
+        title={data.name}
+        artists={data.artistNames}
+        metadata={data.metadata}
+        size={clamp(0, ((width - 32) * 2) / 3, 384)}
+        listSource={trackSource}
+        imageSource={data.imageSource}
+        Actions={
           <View className="flex-row gap-1">
             <IconButton
               Icon={Favorite}
               accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
               onPress={() => mutateGuard(favoriteAlbum, !data.isFavorite)}
               filled={isToggled}
+              size="sm"
             />
             <CurrentListMenu
               name={data.name}
@@ -85,41 +96,30 @@ export default function Album({
               presentArtworkSheet={() => artworkSheetRef.current?.present()}
             />
           </View>
-        )}
+        }
+        // LegendList Props
+        getEstimatedItemSize={guessItemSize}
+        data={formattedData}
+        keyExtractor={(item) => (isNumber(item) ? `${item}` : item.id)}
+        getItemType={(item) => (isNumber(item) ? "label" : "row")}
+        renderItem={({ item, index }) =>
+          isNumber(item) ? (
+            <Em className={cn("mb-2", { "mt-2": index > 0 })}>
+              {t("term.disc", { count: item })}
+            </Em>
+          ) : (
+            <Track
+              {...item}
+              trackSource={trackSource}
+              LeftElement={<TrackNumber track={item.track} />}
+              className="mb-2"
+            />
+          )
+        }
+        className="-mb-2"
+        contentContainerClassName="px-4"
+        contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
       />
-      <CurrentListLayout
-        title={data.name}
-        artists={data.artistNames}
-        metadata={data.metadata}
-        imageSource={data.imageSource}
-        mediaSource={trackSource}
-      >
-        <LegendList
-          getEstimatedItemSize={guessItemSize}
-          data={formattedData}
-          keyExtractor={(item) => (isNumber(item) ? `${item}` : item.id)}
-          getItemType={(item) => (isNumber(item) ? "label" : "row")}
-          renderItem={({ item, index }) =>
-            isNumber(item) ? (
-              <Em className={cn("mb-2", { "mt-2": index > 0 })}>
-                {t("term.disc", { count: item })}
-              </Em>
-            ) : (
-              <Track
-                {...item}
-                trackSource={trackSource}
-                LeftElement={<TrackNumber track={item.track} />}
-                className="mb-2"
-              />
-            )
-          }
-          className="-mb-2"
-          contentContainerClassName="px-4 pt-4"
-          contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
-        />
-      </CurrentListLayout>
-
-      <AlbumArtworkSheet ref={artworkSheetRef} id={albumId} />
     </>
   );
 }

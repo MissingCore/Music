@@ -24,6 +24,7 @@ export function useArtistForScreen(artistName: string) {
       name,
       imageSource: artwork,
       metadata: [
+        t("term.artist"),
         t("plural.track", { count: tracks.length }),
         formatSeconds(tracks.reduce((total, curr) => total + curr.duration, 0)),
       ],

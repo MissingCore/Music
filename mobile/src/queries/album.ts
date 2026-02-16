@@ -30,6 +30,7 @@ export function useAlbumForScreen(albumId: string) {
         name,
         imageSource: artwork,
         metadata: [
+          t("term.album"),
           ...(range !== null ? [range] : []),
           t("plural.track", { count: tracks.length }),
           formatSeconds(
