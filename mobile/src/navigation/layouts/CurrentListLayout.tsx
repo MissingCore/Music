@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { View, useWindowDimensions } from "react-native";
 import type { FlatListPropsWithLayout } from "react-native-reanimated";
 import Animated, {
+  useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
@@ -13,8 +14,10 @@ import { Schedule } from "~/resources/icons/Schedule";
 import { useInForeground } from "~/stores/ListenerState";
 import { usePlaybackStore } from "~/stores/Playback/store";
 
+import { cn } from "~/lib/style";
 import { clamp } from "~/utils/number";
 import { ScrollablePresets } from "~/components/Defaults";
+import { TopDownGradient } from "~/components/Gradient";
 import { Marquee } from "~/components/Marquee";
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
@@ -37,97 +40,110 @@ export function CurrentListLayout<TData>({
   listSource,
   imageSource,
   ...props
-}: Omit<
-  FlatListPropsWithLayout<TData>,
-  "ListHeaderComponent" | "contentContainerClassName"
-> &
-  Omit<ListHeaderProps, "size">) {
-  const { width } = useWindowDimensions();
-
-  const imageSize = clamp(0, ((width - 32) * 2) / 3, 384);
-
-  return (
-    <Animated.FlatList
-      {...props}
-      {...ScrollablePresets}
-      ListHeaderComponent={
-        <CurrentListHeader
-          title={title}
-          artists={artists}
-          metadata={metadata}
-          Actions={Actions}
-          size={imageSize}
-          listSource={listSource}
-          imageSource={imageSource}
-        />
-      }
-      windowSize={3} // We don't need that many screens rendered on mount.
-      contentContainerClassName="px-4"
-    />
-  );
-}
-//#endregion
-
-//#region List Header
-type ListHeaderProps = {
+}: FlatListPropsWithLayout<TData> & {
   title: string;
   artists?: string[];
   metadata: string[];
   Actions: React.ReactNode;
-} & ListArtworkProps;
-
-function CurrentListHeader(props: ListHeaderProps) {
+} & Omit<ListArtworkProps, "size">) {
   const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
+
+  const scrollPosition = useSharedValue(0);
+  const headerHeight = useSharedValue(0);
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (e) => {
+      scrollPosition.value = e.contentOffset.y;
+    },
+  });
+
+  const stickyStyles = useAnimatedStyle(() => ({
+    paddingTop: insets.top + 8,
+    opacity: headerHeight.value === 0 ? 0 : 1,
+    transform: [
+      { translateY: Math.max(0, headerHeight.value - scrollPosition.value) },
+    ],
+  }));
+
+  const imageSize = clamp(0, ((width - 32) * 2) / 3, 384);
+  const topOffset = insets.top + ESTIMATED_TOPAPPBAR_HEIGHT + 16;
+
   return (
-    <View
-      style={{ paddingTop: insets.top + ESTIMATED_TOPAPPBAR_HEIGHT + 16 }}
-      className="gap-4 pb-4"
-    >
-      <View className="items-center">
-        {props.listSource.type === "artist" ? (
-          <MediaImage
-            type="artist"
-            source={props.imageSource as string | null}
-            size={props.size}
-          />
-        ) : (
-          <AnimatedVinyl
-            size={props.size}
-            listSource={props.listSource}
-            imageSource={props.imageSource}
-          />
-        )}
-      </View>
+    <>
+      <Animated.FlatList
+        {...ScrollablePresets}
+        windowSize={3} // We don't need that many screens rendered on mount.
+        {...props}
+        onScroll={scrollHandler}
+        ListHeaderComponent={
+          <View
+            onLayout={(e) => {
+              headerHeight.value = e.nativeEvent.layout.height - topOffset;
+            }}
+            style={{ paddingTop: topOffset, paddingBottom: 72 }}
+            className="gap-4"
+          >
+            <View className="items-center">
+              {listSource.type === "artist" ? (
+                <MediaImage
+                  type="artist"
+                  source={imageSource as string | null}
+                  size={imageSize}
+                />
+              ) : (
+                <AnimatedVinyl
+                  size={imageSize}
+                  listSource={listSource}
+                  imageSource={imageSource}
+                />
+              )}
+            </View>
+            <View className="flex-row items-center gap-4">
+              <View className="shrink grow gap-1">
+                <Marquee>
+                  <Em className="text-lg">{title}</Em>
+                </Marquee>
+                {artists ? (
+                  <ArtistsLink artistNames={artists} popStrategy="popTo" />
+                ) : null}
+                <Marquee contentContainerClassName="gap-0">
+                  <StyledText dim className="text-xxs">
+                    {metadata.toSpliced(-1).join(" • ")}
+                  </StyledText>
+                  {/* Work around for RTL languages. */}
+                  <StyledText dim className="text-xxs">
+                    {" • "}
+                  </StyledText>
+                  <Schedule size={12} color="onSurfaceVariant" />
+                  <StyledText dim className="text-xxs">
+                    {` ${metadata.at(-1)!}`}
+                  </StyledText>
+                </Marquee>
+              </View>
+              {Actions}
+            </View>
+          </View>
+        }
+        contentContainerClassName={cn("px-4", props.contentContainerClassName)}
+      />
 
-      <View className="flex-row items-center gap-4">
-        <View className="shrink grow gap-1">
-          <Marquee>
-            <Em className="text-lg">{props.title}</Em>
-          </Marquee>
-          {props.artists ? (
-            <ArtistsLink artistNames={props.artists} popStrategy="popTo" />
-          ) : null}
-          <Marquee contentContainerClassName="gap-0">
-            <StyledText dim className="text-xxs">
-              {props.metadata.toSpliced(-1).join(" • ")}
-            </StyledText>
-            {/* Work around for RTL languages. */}
-            <StyledText dim className="text-xxs">
-              {" • "}
-            </StyledText>
-            <Schedule size={12} color="onSurfaceVariant" />
-            <StyledText dim className="text-xxs">
-              {` ${props.metadata.at(-1)!}`}
-            </StyledText>
-          </Marquee>
-        </View>
-        {props.Actions}
-      </View>
-
-      <MediaListControls trackSource={props.listSource} className="ml-auto" />
-    </View>
+      <TopDownGradient
+        height={topOffset}
+        startFrom={insets.top}
+        className="absolute top-0 left-0"
+      />
+      <Animated.View
+        pointerEvents="box-none"
+        style={stickyStyles}
+        className="absolute top-0 left-0 z-10 w-full items-end px-4"
+      >
+        <MediaListControls trackSource={listSource} />
+      </Animated.View>
+    </>
   );
 }
+//#endregion
 
 //#region Artwork Preview
 type ListArtworkProps = {
@@ -187,5 +203,4 @@ function AnimatedVinyl(props: ListArtworkProps) {
     </Animated.View>
   );
 }
-//#endregion
 //#endregion

@@ -30,12 +30,14 @@ export function TopAppBar({ options, route }: NativeStackHeaderProps) {
           size="sm"
         />
 
-        <TEm textKey={title} numberOfLines={1} className="shrink text-base" />
+        {title ? (
+          <TEm textKey={title} numberOfLines={1} className="shrink text-base" />
+        ) : null}
 
         {options.headerRight ? (
           options.headerRight({ canGoBack: true })
         ) : (
-          <View className="size-10" />
+          <View pointerEvents="none" className="size-10" />
         )}
       </View>
     </SafeContainer>
