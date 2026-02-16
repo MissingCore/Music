@@ -59,6 +59,11 @@ export function CurrentListLayout<TData>({
 
   //? Defer rendering data as navigation to the screen is choppy otherwise.
   useEffect(() => {
+    if (data.length === 0) {
+      setDeferComplete(true);
+      return;
+    }
+
     const timeout = setTimeout(() => {
       //? Data should be an array / defined at this point.
       setDeferredData(data);
