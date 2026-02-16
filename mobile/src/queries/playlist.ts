@@ -31,19 +31,17 @@ export function usePlaylistForScreen(playlistName: string) {
   const { t } = useTranslation();
   return useQuery({
     ...q.playlists.detail(playlistName),
-    select: (data) => ({
-      name: data.name,
-      imageSource: getPlaylistArtwork(data),
+    select: ({ name, artwork, isFavorite, tracks }) => ({
+      name,
+      imageSource: getPlaylistArtwork({ artwork, tracks }),
       metadata: [
         t("term.playlist"),
-        t("plural.track", { count: data.tracks.length }),
-        formatSeconds(
-          data.tracks.reduce((total, curr) => total + curr.duration, 0),
-        ),
+        t("plural.track", { count: tracks.length }),
+        formatSeconds(tracks.reduce((total, curr) => total + curr.duration, 0)),
       ],
-      tracks: data.tracks.map((track) => formatForTrack(track)),
+      tracks: tracks.map((track) => formatForTrack(track)),
 
-      isFavorite: data.isFavorite,
+      isFavorite,
     }),
   });
 }
