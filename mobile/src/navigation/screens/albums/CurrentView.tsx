@@ -1,5 +1,5 @@
 import type { StaticScreenProps } from "@react-navigation/native";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -56,11 +56,6 @@ export default function Album({
     return sectionListTracks;
   }, [listData]);
 
-  const guessItemSize = useCallback((index: number, item: any) => {
-    if (!isNumber(item)) return 56; // 48px Height + 8px Margin Bottom
-    return 16 + (index === 0 ? 8 : 16);
-  }, []);
-
   if (isPending || error) {
     return (
       <SafeContainer additionalTopOffset={56}>
@@ -104,10 +99,8 @@ export default function Album({
         listSource={trackSource}
         imageSource={data.imageSource}
         // LegendList Props
-        getEstimatedItemSize={guessItemSize}
         data={formattedData}
         keyExtractor={(item) => (isNumber(item) ? `${item}` : item.id)}
-        getItemType={(item) => (isNumber(item) ? "label" : "row")}
         renderItem={({ item, index }) =>
           isNumber(item) ? (
             <Em className={cn("mb-2", { "mt-2": index > 0 })}>

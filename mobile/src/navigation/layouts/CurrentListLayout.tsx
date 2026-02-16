@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useRef } from "react";
+import { useCallback, useLayoutEffect, useMemo, useRef } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { View, useWindowDimensions } from "react-native";
 import type { FlatListPropsWithLayout } from "react-native-reanimated";
@@ -17,7 +17,7 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 
 import { cn } from "~/lib/style";
 import { clamp } from "~/utils/number";
-import { ScrollablePresets } from "~/components/Defaults";
+import { AnimatedList } from "~/components/Animated/List";
 import { TopDownGradient } from "~/components/Gradient";
 import { Marquee } from "~/components/Marquee";
 import { Em, StyledText } from "~/components/Typography/StyledText";
@@ -85,12 +85,45 @@ export function CurrentListLayout<TData>({
   }));
   //#endregion
 
+  //#region Layout Estimations
+  const itemLayouts = useMemo(() => {
+    const layouts: Record<number, { length: number; offset: number }> = {};
+    if (Array.isArray(props.data)) {
+      let labelCount = 0;
+      props.data.forEach((val, index) => {
+        let offset = 56 * (index - labelCount);
+        if (labelCount > 0) {
+          if (labelCount === 1) offset += 24;
+          else offset += 32 * labelCount - 8;
+        }
+
+        let itemHeight = 56; // 48px Height + 8px Margin Bottom
+        if (typeof val === "number") {
+          itemHeight = index === 0 ? 24 : 32;
+          labelCount += 1;
+        }
+
+        layouts[index] = { length: itemHeight, offset };
+      });
+    }
+    return layouts;
+  }, [props.data]);
+
+  const getItemLayout: FlatListPropsWithLayout<TData>["getItemLayout"] =
+    useCallback(
+      (_: unknown, index: number) => {
+        const layoutInfo = itemLayouts[index]!;
+        return { ...layoutInfo, index };
+      },
+      [itemLayouts],
+    );
+  //#endregion
+
   return (
     <>
-      <Animated.FlatList
-        {...ScrollablePresets}
-        windowSize={3} // We don't need that many screens rendered on mount.
+      <AnimatedList
         {...props}
+        getItemLayout={getItemLayout}
         onScroll={scrollHandler}
         ListHeaderComponent={
           <View>
