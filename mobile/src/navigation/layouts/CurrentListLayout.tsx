@@ -1,6 +1,6 @@
 import type { LegendListProps } from "@legendapp/list";
 import { useCallback } from "react";
-import { View } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -13,6 +13,7 @@ import { Schedule } from "~/resources/icons/Schedule";
 import { useInForeground } from "~/stores/ListenerState";
 import { usePlaybackStore } from "~/stores/Playback/store";
 
+import { clamp } from "~/utils/number";
 import { AnimatedLegendList } from "~/components/Defaults";
 import { Marquee } from "~/components/Marquee";
 import { Em, StyledText } from "~/components/Typography/StyledText";
@@ -36,7 +37,15 @@ export function CurrentListLayout<TData>({
   listSource,
   imageSource,
   ...props
-}: Omit<LegendListProps<TData>, "ListHeaderComponent"> & ListHeaderProps) {
+}: Omit<
+  LegendListProps<TData>,
+  "ListHeaderComponent" | "contentContainerClassName"
+> &
+  Omit<ListHeaderProps, "size">) {
+  const { width } = useWindowDimensions();
+
+  const imageSize = clamp(0, ((width - 32) * 2) / 3, 384);
+
   return (
     <AnimatedLegendList
       {...props}
@@ -46,11 +55,12 @@ export function CurrentListLayout<TData>({
           artists={artists}
           metadata={metadata}
           Actions={Actions}
-          size={props.size}
+          size={imageSize}
           listSource={listSource}
           imageSource={imageSource}
         />
       }
+      contentContainerClassName="px-4"
     />
   );
 }
@@ -93,11 +103,7 @@ function CurrentListHeader(props: ListHeaderProps) {
             <Em className="text-lg">{props.title}</Em>
           </Marquee>
           {props.artists ? (
-            <ArtistsLink
-              artistNames={props.artists}
-              popStrategy="popTo"
-              className="text-sm"
-            />
+            <ArtistsLink artistNames={props.artists} popStrategy="popTo" />
           ) : null}
           <Marquee contentContainerClassName="gap-0">
             <StyledText dim className="text-xxs">

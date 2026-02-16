@@ -2,7 +2,7 @@ import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useWindowDimensions, View } from "react-native";
+import { View } from "react-native";
 
 import { Edit } from "~/resources/icons/Edit";
 import { Favorite } from "~/resources/icons/Favorite";
@@ -16,7 +16,6 @@ import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ExportM3USheet } from "./sheets/ExportM3USheet";
 
-import { clamp } from "~/utils/number";
 import { mutateGuard } from "~/lib/react-query";
 import { IconButton } from "~/components/Form/Button/Icon";
 import type { MenuAction } from "~/components/Menu";
@@ -33,7 +32,6 @@ export default function Playlist({
 }: Props) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { width } = useWindowDimensions();
   const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = usePlaylistForScreen(id);
   const favoritePlaylist = useFavoritePlaylist(id);
@@ -78,7 +76,6 @@ export default function Playlist({
         // List Header Props
         title={listName}
         metadata={data.metadata}
-        size={clamp(0, ((width - 32) * 2) / 3, 384)}
         listSource={trackSource}
         imageSource={data.imageSource}
         Actions={
@@ -102,7 +99,6 @@ export default function Playlist({
         }
         // LegendList Props
         {...presets}
-        contentContainerClassName="px-4"
         contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
       />
     </>

@@ -1,7 +1,7 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useWindowDimensions, View } from "react-native";
+import { View } from "react-native";
 
 import { Favorite } from "~/resources/icons/Favorite";
 import { useAlbumForScreen, useFavoriteAlbum } from "~/queries/album";
@@ -12,7 +12,6 @@ import { AlbumArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
-import { clamp } from "~/utils/number";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { isNumber } from "~/utils/validation";
@@ -32,7 +31,6 @@ export default function Album({
   },
 }: Props) {
   const { t } = useTranslation();
-  const { width } = useWindowDimensions();
   const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
@@ -78,7 +76,6 @@ export default function Album({
         title={data.name}
         artists={data.artistNames}
         metadata={data.metadata}
-        size={clamp(0, ((width - 32) * 2) / 3, 384)}
         listSource={trackSource}
         imageSource={data.imageSource}
         Actions={
@@ -117,7 +114,6 @@ export default function Album({
           )
         }
         className="-mb-2"
-        contentContainerClassName="px-4"
         contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
       />
     </>
