@@ -31,17 +31,21 @@ export function Loading() {
       <View
         style={{
           backgroundColor:
-            idx === 0 ? outlineVariant : idx === 1 ? outline : onSurfaceVariant,
+            idx === 0 ? outlineVariant : idx === 1 ? onSurfaceVariant : outline,
         }}
         className="size-4 rounded-full"
       />
       <View
-        style={{ backgroundColor: idx === 1 ? outlineVariant : outline }}
+        style={{
+          backgroundColor:
+            idx === 0 ? outline : idx === 1 ? outlineVariant : onSurfaceVariant,
+        }}
         className="size-4 rounded-full"
       />
       <View
         style={{
-          backgroundColor: idx === 2 ? outlineVariant : onSurfaceVariant,
+          backgroundColor:
+            idx === 0 ? onSurfaceVariant : idx === 1 ? outline : outlineVariant,
         }}
         className="size-4 rounded-full"
       />
