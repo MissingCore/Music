@@ -1,6 +1,6 @@
-import type { LegendListProps } from "@legendapp/list";
 import { useCallback } from "react";
 import { View, useWindowDimensions } from "react-native";
+import type { FlatListPropsWithLayout } from "react-native-reanimated";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -14,7 +14,7 @@ import { useInForeground } from "~/stores/ListenerState";
 import { usePlaybackStore } from "~/stores/Playback/store";
 
 import { clamp } from "~/utils/number";
-import { AnimatedLegendList } from "~/components/Defaults";
+import { ScrollablePresets } from "~/components/Defaults";
 import { Marquee } from "~/components/Marquee";
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
@@ -38,7 +38,7 @@ export function CurrentListLayout<TData>({
   imageSource,
   ...props
 }: Omit<
-  LegendListProps<TData>,
+  FlatListPropsWithLayout<TData>,
   "ListHeaderComponent" | "contentContainerClassName"
 > &
   Omit<ListHeaderProps, "size">) {
@@ -47,8 +47,9 @@ export function CurrentListLayout<TData>({
   const imageSize = clamp(0, ((width - 32) * 2) / 3, 384);
 
   return (
-    <AnimatedLegendList
+    <Animated.FlatList
       {...props}
+      {...ScrollablePresets}
       ListHeaderComponent={
         <CurrentListHeader
           title={title}
@@ -60,6 +61,7 @@ export function CurrentListLayout<TData>({
           imageSource={imageSource}
         />
       }
+      windowSize={3} // We don't need that many screens rendered on mount.
       contentContainerClassName="px-4"
     />
   );
