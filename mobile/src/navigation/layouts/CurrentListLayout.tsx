@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { View, useWindowDimensions } from "react-native";
 import type { FlatListPropsWithLayout } from "react-native-reanimated";
@@ -14,6 +14,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Schedule } from "~/resources/icons/Schedule";
 import { useInForeground } from "~/stores/ListenerState";
 import { usePlaybackStore } from "~/stores/Playback/store";
+
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { cn } from "~/lib/style";
 import { clamp } from "~/utils/number";
@@ -34,12 +36,14 @@ const ESTIMATED_TOPAPPBAR_HEIGHT = 56;
 
 //#region Layout
 export function CurrentListLayout<TData>({
+  data,
   listSource,
   imageSource,
   listInfo,
   SubHeader,
   ...props
-}: FlatListPropsWithLayout<TData> & {
+}: Omit<FlatListPropsWithLayout<TData>, "data"> & {
+  data: TData[];
   listInfo: ListInfoProps;
   SubHeader?: React.ReactNode;
 } & Omit<ListArtworkProps, "size">) {
@@ -49,8 +53,24 @@ export function CurrentListLayout<TData>({
   const imageSize = clamp(0, ((width - 32) * 2) / 3, 384);
   const topOffset = insets.top + ESTIMATED_TOPAPPBAR_HEIGHT + 16;
 
+  //#region Deferred Data
+  const [deferredData, setDeferredData] = useState<TData[]>([]);
+  const [deferComplete, setDeferComplete] = useState(false);
+
+  //? Defer rendering data as navigation to the screen is choppy otherwise.
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      //? Data should be an array / defined at this point.
+      setDeferredData(data);
+      setDeferComplete(true);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  //#endregion
+
   //#region Header Height Calculations
-  const headerRef = useRef<View>(null);
   const headerHeight = useSharedValue(0);
 
   const setHeaderHeight = useCallback(
@@ -59,12 +79,6 @@ export function CurrentListLayout<TData>({
     },
     [headerHeight, topOffset],
   );
-
-  useLayoutEffect(() => {
-    headerRef.current?.measure((_x, _y, _width, height) => {
-      headerHeight.value = height - topOffset;
-    });
-  }, [headerHeight, topOffset]);
   //#endregion
 
   //#region Sticky Animation
@@ -88,9 +102,9 @@ export function CurrentListLayout<TData>({
   //#region Layout Estimations
   const itemLayouts = useMemo(() => {
     const layouts: Record<number, { length: number; offset: number }> = {};
-    if (Array.isArray(props.data)) {
+    if (Array.isArray(deferredData)) {
       let labelCount = 0;
-      props.data.forEach((val, index) => {
+      deferredData.forEach((val, index) => {
         let offset = 56 * (index - labelCount);
         if (labelCount > 0) {
           if (labelCount === 1) offset += 24;
@@ -107,7 +121,7 @@ export function CurrentListLayout<TData>({
       });
     }
     return layouts;
-  }, [props.data]);
+  }, [deferredData]);
 
   const getItemLayout: FlatListPropsWithLayout<TData>["getItemLayout"] =
     useCallback(
@@ -123,12 +137,12 @@ export function CurrentListLayout<TData>({
     <>
       <AnimatedList
         {...props}
+        data={deferredData}
         getItemLayout={getItemLayout}
         onScroll={scrollHandler}
         ListHeaderComponent={
           <View>
             <View
-              ref={headerRef}
               onLayout={setHeaderHeight}
               style={{ paddingTop: topOffset, paddingBottom: 72 }}
               className="gap-4"
@@ -152,6 +166,12 @@ export function CurrentListLayout<TData>({
             </View>
             {SubHeader}
           </View>
+        }
+        ListEmptyComponent={
+          <ContentPlaceholder
+            isPending={!deferComplete}
+            errMsgKey="err.msg.noTracks"
+          />
         }
         contentContainerClassName={cn("px-4", props.contentContainerClassName)}
       />
@@ -229,7 +249,7 @@ function AnimatedVinyl(props: ListArtworkProps) {
 
   const onMount = useCallback(() => {
     horizTranslation.value = withDelay(
-      100,
+      150,
       withTiming(props.size / 4, { duration: 500 }),
     );
   }, [horizTranslation, props.size]);
