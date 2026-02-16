@@ -1,4 +1,5 @@
-import { useCallback } from "react";
+import { useCallback, useLayoutEffect, useRef } from "react";
+import type { LayoutChangeEvent } from "react-native";
 import { View, useWindowDimensions } from "react-native";
 import type { FlatListPropsWithLayout } from "react-native-reanimated";
 import Animated, {
@@ -49,8 +50,29 @@ export function CurrentListLayout<TData>({
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
 
-  const scrollPosition = useSharedValue(0);
+  const imageSize = clamp(0, ((width - 32) * 2) / 3, 384);
+  const topOffset = insets.top + ESTIMATED_TOPAPPBAR_HEIGHT + 16;
+
+  //#region Header Height Calculations
+  const headerRef = useRef<View>(null);
   const headerHeight = useSharedValue(0);
+
+  const setHeaderHeight = useCallback(
+    (e: LayoutChangeEvent) => {
+      headerHeight.value = e.nativeEvent.layout.height - topOffset;
+    },
+    [headerHeight, topOffset],
+  );
+
+  useLayoutEffect(() => {
+    headerRef.current?.measure((_x, _y, _width, height) => {
+      headerHeight.value = height - topOffset;
+    });
+  }, [headerHeight, topOffset]);
+  //#endregion
+
+  //#region Sticky Animation
+  const scrollPosition = useSharedValue(0);
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (e) => {
@@ -65,9 +87,7 @@ export function CurrentListLayout<TData>({
       { translateY: Math.max(0, headerHeight.value - scrollPosition.value) },
     ],
   }));
-
-  const imageSize = clamp(0, ((width - 32) * 2) / 3, 384);
-  const topOffset = insets.top + ESTIMATED_TOPAPPBAR_HEIGHT + 16;
+  //#endregion
 
   return (
     <>
@@ -78,9 +98,8 @@ export function CurrentListLayout<TData>({
         onScroll={scrollHandler}
         ListHeaderComponent={
           <View
-            onLayout={(e) => {
-              headerHeight.value = e.nativeEvent.layout.height - topOffset;
-            }}
+            ref={headerRef}
+            onLayout={setHeaderHeight}
             style={{ paddingTop: topOffset, paddingBottom: 72 }}
             className="gap-4"
           >
