@@ -19,7 +19,7 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { cn } from "~/lib/style";
 import { clamp } from "~/utils/number";
-import { AnimatedList } from "~/components/Animated/List";
+import { AnimatedList } from "~/components/Base/List";
 import { TopDownGradient } from "~/components/Gradient";
 import { Marquee } from "~/components/Marquee";
 import { Em, StyledText } from "~/components/Typography/StyledText";
