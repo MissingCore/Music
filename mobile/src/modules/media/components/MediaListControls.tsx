@@ -13,17 +13,9 @@ import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
 import { RepeatButton, ShuffleButton } from "./MediaControls";
 
 /** Media controls used on media list pages. */
-export function MediaListControls(props: {
-  trackSource: PlayFromSource;
-  className?: string;
-}) {
+export function MediaListControls(props: { trackSource: PlayFromSource }) {
   return (
-    <View
-      className={cn(
-        "flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest",
-        props.className,
-      )}
-    >
+    <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
       <RepeatButton size="sm" />
       <ShuffleButton size="sm" />
       <PlayMediaListButton trackSource={props.trackSource} />
