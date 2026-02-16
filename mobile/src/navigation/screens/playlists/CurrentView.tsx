@@ -19,6 +19,7 @@ import { ExportM3USheet } from "./sheets/ExportM3USheet";
 import { mutateGuard } from "~/lib/react-query";
 import { IconButton } from "~/components/Form/Button/Icon";
 import type { MenuAction } from "~/components/Menu";
+import { SafeContainer } from "~/components/SafeContainer";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { useTrackListPreset } from "~/modules/media/components/Track";
@@ -57,7 +58,13 @@ export default function Playlist({
     [navigation, id, exportSheetRef],
   );
 
-  if (isPending || error) return <PagePlaceholder isPending={isPending} />;
+  if (isPending || error) {
+    return (
+      <SafeContainer additionalTopOffset={56}>
+        <PagePlaceholder isPending={isPending} />
+      </SafeContainer>
+    );
+  }
 
   // Add optimistic UI updates.
   const isToggled = favoritePlaylist.isPending

@@ -16,6 +16,7 @@ import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { isNumber } from "~/utils/validation";
 import { IconButton } from "~/components/Form/Button/Icon";
+import { SafeContainer } from "~/components/SafeContainer";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import {
@@ -60,7 +61,13 @@ export default function Album({
     return 16 + (index === 0 ? 8 : 16);
   }, []);
 
-  if (isPending || error) return <PagePlaceholder isPending={isPending} />;
+  if (isPending || error) {
+    return (
+      <SafeContainer additionalTopOffset={56}>
+        <PagePlaceholder isPending={isPending} />
+      </SafeContainer>
+    );
+  }
 
   // Add optimistic UI updates.
   const isToggled = favoriteAlbum.isPending
