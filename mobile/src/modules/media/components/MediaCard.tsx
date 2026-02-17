@@ -1,4 +1,3 @@
-import type { LegendListProps } from "@legendapp/list";
 import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
 import { Pressable } from "react-native";
@@ -7,6 +6,8 @@ import { useGetColumn } from "~/hooks/useGetColumn";
 import { getMediaLinkContext } from "~/navigation/utils/router";
 
 import { cn } from "~/lib/style";
+import type { FlatListProps } from "~/components/Base/List";
+import { getRowItemLayout } from "~/components/Base/List";
 import { StyledText } from "~/components/Typography/StyledText";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import type { MediaCardContent, MediaCardProps } from "./MediaCard.type";
@@ -63,8 +64,6 @@ export function useMediaCardListPreset(
   return useMemo(
     () => ({
       numColumns: count,
-      // ~40px for text content under `<MediaImage />` + 12px Margin Bottom
-      estimatedItemSize: width + 40 + 12,
       data: args.data,
       // Use this as the key instead of just `id` in case `data` is mixed.
       keyExtractor: ({ id, type }) => `${type}_${id}`,
@@ -80,6 +79,8 @@ export function useMediaCardListPreset(
           className="mx-1.5 mb-3"
         />
       ),
+      // ~40px for text content under `<MediaImage />` + 12px Margin Bottom
+      getItemLayout: getRowItemLayout(width + 40 + 12),
       ListEmptyComponent: (
         <ContentPlaceholder
           isPending={args.isPending}
@@ -90,7 +91,7 @@ export function useMediaCardListPreset(
       className: "-mx-1.5 -mb-3",
     }),
     [args, navigation, count, width],
-  ) satisfies Omit<LegendListProps<MediaCardContent>, "data"> & {
+  ) satisfies Omit<FlatListProps<MediaCardContent>, "data"> & {
     data?: readonly MediaCardContent[];
   };
 }

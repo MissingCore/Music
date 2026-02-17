@@ -6,7 +6,7 @@ import { useFavoriteListsForCards } from "~/queries/favorite";
 
 import { NScrollLayout } from "~/navigation/layouts/NScrollLayout";
 
-import { LegendList } from "~/components/Defaults";
+import { FlatList } from "~/components/Base/List";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { TEm } from "~/components/Typography/StyledText";
 import { useMediaCardListPreset } from "~/modules/media/components/MediaCard";
@@ -38,6 +38,6 @@ export default function Home() {
 function Favorites() {
   const { data } = useFavoriteListsForCards();
   const presets = useMediaCardListPreset({ data });
-  return <LegendList {...presets} />;
+  return <FlatList {...presets} />;
 }
 //#endregion

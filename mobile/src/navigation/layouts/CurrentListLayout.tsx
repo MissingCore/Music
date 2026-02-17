@@ -36,13 +36,14 @@ const ESTIMATED_TOPAPPBAR_YPAD = 8;
 
 //#region Layout
 export function CurrentListLayout<TData>({
+  data = [],
   listSource,
   imageSource,
   listInfo,
   SubHeader,
   ...props
 }: Omit<FlatListProps<TData>, "data"> & {
-  data: TData[];
+  data?: TData[];
   listInfo: ListInfoProps;
   SubHeader?: React.ReactNode;
 } & Omit<ListArtworkProps, "size">) {
@@ -95,12 +96,8 @@ export function CurrentListLayout<TData>({
   //#region Layout Estimations
   const itemLayouts = useMemo(
     () =>
-      calculateItemsLayouts(props.data, {
-        itemHeight: 48,
-        labelHeight: 16,
-        gap: 8,
-      }),
-    [props.data],
+      calculateItemsLayouts(data, { itemHeight: 48, labelHeight: 16, gap: 8 }),
+    [data],
   );
 
   const getItemLayout: FlatListProps<TData>["getItemLayout"] = useCallback(
@@ -118,6 +115,7 @@ export function CurrentListLayout<TData>({
     <>
       <FlatList
         {...props}
+        data={data}
         getItemLayout={getItemLayout}
         onScroll={scrollHandler}
         ListHeaderComponent={

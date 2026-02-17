@@ -1,4 +1,3 @@
-import type { LegendListProps } from "@legendapp/list";
 import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
 
@@ -10,6 +9,8 @@ import type { LayoutItem, MutableViewLayout } from "../types";
 import { getMediaLinkContext } from "~/navigation/utils/router";
 
 import { cn } from "~/lib/style";
+import type { FlatListProps } from "~/components/Base/List";
+import { getListItemLayout, getRowItemLayout } from "~/components/Base/List";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
@@ -44,7 +45,6 @@ export function useViewLayout<TData extends Record<string, any>>(
   const listLayoutArgs = useMemo(
     () =>
       ({
-        estimatedItemSize: 56, // 48px Height + 8px Margin Bottom
         renderItem: ({ item: { id, ...item } }) => (
           <SearchResult
             button
@@ -56,8 +56,9 @@ export function useViewLayout<TData extends Record<string, any>>(
             className={cn("mb-2 pr-4", { "rounded-full": screen === "artist" })}
           />
         ),
+        getItemLayout: getListItemLayout,
         className: "-mb-2",
-      }) satisfies Omit<LegendListProps<LayoutItem>, "data">,
+      }) satisfies Omit<FlatListProps<LayoutItem>, "data">,
     [navigation, screen],
   );
 
@@ -68,8 +69,6 @@ export function useViewLayout<TData extends Record<string, any>>(
     const usedGap = isGrid ? 12 : 8;
     return {
       numColumns: gridOpts.count,
-      // ~40px for text content under `<MediaImage />` + 8/12px Margin Bottom
-      estimatedItemSize: gridOpts.width + 40 + usedGap,
       renderItem: ({ item }) => (
         <MediaCard
           type={screen}
@@ -86,8 +85,10 @@ export function useViewLayout<TData extends Record<string, any>>(
           className={cn("mx-1.5 mb-3", { "mx-1 mb-2": !isGrid })}
         />
       ),
+      // ~40px for text content under `<MediaImage />` + 8/12px Margin Bottom
+      getItemLayout: getRowItemLayout(gridOpts.width + 40 + usedGap),
       className: isGrid ? "-mx-1.5 -mb-3" : "-mx-1 -mb-2",
-    } satisfies Omit<LegendListProps<LayoutItem>, "data">;
+    } satisfies Omit<FlatListProps<LayoutItem>, "data">;
   }, [navigation, layoutOption, screen, gridLayout, compactGridLayout]);
   //#endregion
 
@@ -97,7 +98,7 @@ export function useViewLayout<TData extends Record<string, any>>(
         data: formattedData,
         keyExtractor: ({ id }) => id,
         ...(layoutOption === "list" ? listLayoutArgs : gridLayoutArgs),
-      }) satisfies LegendListProps<LayoutItem>,
+      }) satisfies FlatListProps<LayoutItem>,
     [layoutOption, formattedData, listLayoutArgs, gridLayoutArgs],
   );
 }

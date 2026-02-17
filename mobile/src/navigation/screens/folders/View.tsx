@@ -26,7 +26,10 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { OnRTL, OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { addTrailingSlash } from "~/utils/string";
-import { useAnimatedFlatListRef } from "~/components/Base/List";
+import {
+  getListItemLayout,
+  useAnimatedFlatListRef,
+} from "~/components/Base/List";
 import { useAnimatedScrollViewRef } from "~/components/Base/ScrollView";
 import { StyledText } from "~/components/Typography/StyledText";
 import {
@@ -121,10 +124,10 @@ export default function Folders({
     <NScrollListLayout
       listRef={listRef}
       titleKey="term.folders"
-      estimatedItemSize={56} // 48px Height + 8px Margin Bottom
       data={renderedData}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
+      getItemLayout={getListItemLayout}
       ListEmptyComponent={<ContentPlaceholder isPending={isPending} />}
       scrollEnabled={!isPending}
       Subheader={

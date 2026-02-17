@@ -1,4 +1,3 @@
-import type { LegendListProps } from "@legendapp/list";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -7,6 +6,8 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { presentTrackSheet } from "~/stores/Session/actions";
 
+import type { FlatListProps } from "~/components/Base/List";
+import { getListItemLayout } from "~/components/Base/List";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
@@ -91,12 +92,12 @@ export function useTrackListPreset(args: {
   const data = useTrackListPlayingIndication(args.trackSource, args.data);
   return useMemo(
     () => ({
-      estimatedItemSize: 56, // 48px Height + 8px Margin Bottom
       data,
       keyExtractor: ({ id }) => id,
       renderItem: ({ item }) => (
         <Track {...item} trackSource={args.trackSource} className="mb-2" />
       ),
+      getItemLayout: getListItemLayout,
       ListEmptyComponent: (
         <ContentPlaceholder
           isPending={args.isPending}
@@ -106,7 +107,7 @@ export function useTrackListPreset(args: {
       className: "-mb-2",
     }),
     [args, data],
-  ) satisfies Omit<LegendListProps<TrackContent>, "data"> & {
+  ) satisfies Omit<FlatListProps<TrackContent>, "data"> & {
     data?: readonly TrackContent[];
   };
 }

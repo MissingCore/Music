@@ -83,4 +83,17 @@ export function calculateItemsLayouts<TData>(
 
   return layouts;
 }
+
+/** `getItemLayout` function for our standard list items with gap. */
+export function getListItemLayout(_: unknown, index: number) {
+  // 48px Height + 8px Margin Bottom
+  return { length: 56, offset: 56 * index, index };
+}
+
+/** `getItemLayout` function for lists with `numColumns`. */
+export function getRowItemLayout(rowHeight: number) {
+  return (_: unknown, row: number) => {
+    return { length: rowHeight, offset: rowHeight * row, index: row };
+  };
+}
 //#endregion
