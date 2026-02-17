@@ -7,14 +7,13 @@ This document aims to document any gesture behavior/interactions that this app i
 This involves swiping left on some content to reveal actions related to that content. It's currently present in the following features.
 
 - **`Home Navigation`:** You can swipe on the home screen to navigate through the 6 different screens instead of using the navigation bar.
-- **`Playlist Tracks`:** You can swipe left `175px` or halfway (whichever is smaller) on tracks in the playlist modification screen (create or edit) to remove it from that playlist.
 - **`Miniplayer`:** Given miniplayer gestures are enabled, swiping on the **text** portion left/right will play the next/prev track.
 
 ## Long-Press for Action
 
 This involves long-pressing an item to reveal some action. It's currently present in the following features.
 
-- **`Playlist Tracks`:** You can long-press on tracks in the playlist modification screen (create or edit) to change its order/position in the playlist.
+- **`Drag Lists`:** You can long-press on the drag handler to drag an item. Present in the "Tab Order" setting and "Modify Playlist" & "Upcoming" screens.
 
 ## Drag for Action
 
