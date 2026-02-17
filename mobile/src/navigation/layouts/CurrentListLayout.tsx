@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { View, useWindowDimensions } from "react-native";
+import type { SharedValue } from "react-native-reanimated";
 import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
-  withDelay,
   withTiming,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -13,8 +13,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Schedule } from "~/resources/icons/Schedule";
 import { useInForeground } from "~/stores/ListenerState";
 import { usePlaybackStore } from "~/stores/Playback/store";
-
-import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+import { useDelayedReady } from "~/hooks/useDelayedReady";
 
 import { cn } from "~/lib/style";
 import { clamp } from "~/utils/number";
@@ -33,10 +32,10 @@ type SupportedMedia = "album" | "artist" | "playlist";
 type MediaListSource = { type: SupportedMedia; id: string };
 
 const ESTIMATED_TOPAPPBAR_HEIGHT = 56;
+const ESTIMATED_TOPAPPBAR_YPAD = 8;
 
 //#region Layout
 export function CurrentListLayout<TData>({
-  data,
   listSource,
   imageSource,
   listInfo,
@@ -51,34 +50,28 @@ export function CurrentListLayout<TData>({
   const { width } = useWindowDimensions();
 
   const imageSize = clamp(0, ((width - 32) * 2) / 3, 384);
-  const topOffset = insets.top + ESTIMATED_TOPAPPBAR_HEIGHT + 16;
-
-  //#region Deferred Data
-  const [deferredData, setDeferredData] = useState<TData[] | null>(null);
-
-  //? Defer rendering data as navigation to the screen is choppy otherwise.
-  useEffect(() => {
-    if (data.length === 0) {
-      setDeferredData([]);
-      return;
-    }
-
-    const timeout = setTimeout(() => {
-      //? Data should be an array / defined at this point.
-      setDeferredData(data);
-    }, 1000);
-
-    return () => clearTimeout(timeout);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  //#endregion
+  // How far from the top edge of the screen the media controls will be sticked to.
+  const minStickyTopOffset = insets.top + ESTIMATED_TOPAPPBAR_YPAD;
+  // How far from the top edge of the screen the artwork will start from.
+  const contentStartOffset = insets.top + ESTIMATED_TOPAPPBAR_HEIGHT + 16;
 
   //#region Header Height Calculations
-  const [headerHeight, _setHeaderHeight] = useState(0);
+  const [headerHeight, _setHeaderHeight] = useState(
+    contentStartOffset -
+      minStickyTopOffset +
+      imageSize +
+      (listInfo.artists ? 70 : 50) +
+      32, // Required gaps
+  );
   const setHeaderHeight = useCallback(
-    (e: LayoutChangeEvent) =>
-      _setHeaderHeight(e.nativeEvent.layout.height - topOffset),
-    [topOffset],
+    (e: LayoutChangeEvent) => {
+      _setHeaderHeight(
+        e.nativeEvent.layout.height -
+          contentStartOffset +
+          ESTIMATED_TOPAPPBAR_YPAD,
+      );
+    },
+    [contentStartOffset],
   );
   //#endregion
 
@@ -92,8 +85,7 @@ export function CurrentListLayout<TData>({
   });
 
   const stickyStyles = useAnimatedStyle(() => ({
-    paddingTop: insets.top + 8,
-    opacity: headerHeight === 0 ? 0 : 1,
+    paddingTop: minStickyTopOffset,
     transform: [
       { translateY: Math.max(0, headerHeight - scrollPosition.value) },
     ],
@@ -103,9 +95,9 @@ export function CurrentListLayout<TData>({
   //#region Layout Estimations
   const itemLayouts = useMemo(() => {
     const layouts: Record<number, { length: number; offset: number }> = {};
-    if (Array.isArray(deferredData)) {
+    if (Array.isArray(props.data)) {
       let labelCount = 0;
-      deferredData.forEach((val, index) => {
+      props.data.forEach((val, index) => {
         let offset = 56 * (index - labelCount);
         if (labelCount > 0) {
           if (labelCount === 1) offset += 24;
@@ -122,7 +114,7 @@ export function CurrentListLayout<TData>({
       });
     }
     return layouts;
-  }, [deferredData]);
+  }, [props.data]);
 
   const getItemLayout: FlatListProps<TData>["getItemLayout"] = useCallback(
     (_: unknown, index: number) => {
@@ -137,52 +129,30 @@ export function CurrentListLayout<TData>({
     <>
       <FlatList
         {...props}
-        data={deferredData}
         getItemLayout={getItemLayout}
         onScroll={scrollHandler}
         ListHeaderComponent={
           <View>
             <View
               onLayout={setHeaderHeight}
-              style={{ paddingTop: topOffset, paddingBottom: 16 }}
-              className="gap-4"
+              style={{ paddingTop: contentStartOffset, paddingBottom: 72 }}
+              className="items-center gap-4"
             >
-              <View className="items-center">
-                {listSource.type === "artist" ? (
-                  <MediaImage
-                    type="artist"
-                    source={imageSource as string | null}
-                    size={imageSize}
-                  />
-                ) : (
-                  <AnimatedVinyl
-                    size={imageSize}
-                    listSource={listSource}
-                    imageSource={imageSource}
-                  />
-                )}
-              </View>
+              <DeferredArtwork
+                size={imageSize}
+                listSource={listSource}
+                imageSource={imageSource}
+              />
               <ListInfo {...listInfo} />
-              {headerHeight === 0 ? (
-                <MediaListControls trackSource={listSource} />
-              ) : (
-                <View pointerEvents="none" className="size-10" />
-              )}
             </View>
             {SubHeader}
           </View>
-        }
-        ListEmptyComponent={
-          <ContentPlaceholder
-            isPending={!deferredData}
-            errMsgKey="err.msg.noTracks"
-          />
         }
         contentContainerClassName={cn("px-4", props.contentContainerClassName)}
       />
 
       <TopDownGradient
-        height={topOffset}
+        height={contentStartOffset}
         startFrom={insets.top}
         className="absolute top-0 left-0"
       />
@@ -243,54 +213,71 @@ type ListArtworkProps = {
   imageSource: MediaImage.ImageSource | MediaImage.ImageSource[];
 };
 
-function AnimatedVinyl(props: ListArtworkProps) {
-  const inForeground = useInForeground();
-  const isPlaying = usePlaybackStore((s) => s.isPlaying);
-  const playingSource = usePlaybackStore((s) => s.playingFrom);
+function DeferredArtwork(props: ListArtworkProps) {
+  // Defer rendering vinyl as it's "heavy" and causes stutters when navigating to this screen.
+  const isReady = useDelayedReady(500);
+
+  // Additional container styling.
   const horizTranslation = useSharedValue(0);
-
-  const canAnimate =
-    isPlaying && arePlaybackSourceEqual(playingSource, props.listSource);
-
-  const onMount = useCallback(() => {
-    horizTranslation.value = withDelay(
-      150,
-      withTiming(props.size / 4, { duration: 500 }),
-    );
-  }, [horizTranslation, props.size]);
-
   const coverStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: -horizTranslation.value }],
   }));
-  const discStyle = useAnimatedStyle(() => ({
-    // Multiplied by 2 due to also needing to account the translation of the parent.
-    transform: [{ translateX: horizTranslation.value * 2 }],
-  }));
 
   return (
-    <Animated.View onLayout={onMount} style={coverStyle} className="relative">
-      <Animated.View style={discStyle} className="absolute inset-0">
-        <Animated.View
-          style={{
-            animationName: {
-              from: { transform: [{ rotate: "0deg" }] },
-              to: { transform: [{ rotate: "360deg" }] },
-            },
-            animationDuration: 24000,
-            animationTimingFunction: "linear",
-            animationIterationCount: "infinite",
-            animationPlayState:
-              canAnimate && inForeground ? "running" : "paused",
-          }}
-        >
-          <Vinyl source={props.imageSource} size={props.size} />
-        </Animated.View>
-      </Animated.View>
+    <Animated.View style={coverStyle} className="relative">
+      {isReady && props.listSource.type !== "artist" ? (
+        <AnimatedVinyl {...props} horizTranslation={horizTranslation} />
+      ) : null}
       <MediaImage
         type={props.listSource.type}
         source={props.imageSource as string | null}
         size={props.size}
       />
+    </Animated.View>
+  );
+}
+
+function AnimatedVinyl(
+  props: ListArtworkProps & { horizTranslation: SharedValue<number> },
+) {
+  const inForeground = useInForeground();
+  const isPlaying = usePlaybackStore((s) => s.isPlaying);
+  const playingSource = usePlaybackStore((s) => s.playingFrom);
+
+  const canAnimate =
+    isPlaying && arePlaybackSourceEqual(playingSource, props.listSource);
+
+  const onMount = useCallback(() => {
+    props.horizTranslation.value = withTiming(props.size / 4, {
+      duration: 500,
+    });
+  }, [props.horizTranslation, props.size]);
+
+  const discStyle = useAnimatedStyle(() => ({
+    // Multiplied by 2 due to also needing to account the translation of the parent.
+    transform: [{ translateX: props.horizTranslation.value * 2 }],
+  }));
+
+  return (
+    <Animated.View
+      onLayout={onMount}
+      style={discStyle}
+      className="absolute inset-0"
+    >
+      <Animated.View
+        style={{
+          animationName: {
+            from: { transform: [{ rotate: "0deg" }] },
+            to: { transform: [{ rotate: "360deg" }] },
+          },
+          animationDuration: 24000,
+          animationTimingFunction: "linear",
+          animationIterationCount: "infinite",
+          animationPlayState: canAnimate && inForeground ? "running" : "paused",
+        }}
+      >
+        <Vinyl source={props.imageSource} size={props.size} />
+      </Animated.View>
     </Animated.View>
   );
 }
