@@ -7,7 +7,7 @@ import { db } from "~/db";
 import { getArtistsString } from "~/api/artist.utils";
 
 import { iAsc } from "~/lib/drizzle";
-import { FlatList } from "~/components/Defaults";
+import { FlatList } from "~/components/Base/List";
 import { Divider } from "~/components/Divider";
 import { SegmentedList } from "~/components/List/Segmented";
 import { StyledText } from "~/components/Typography/StyledText";

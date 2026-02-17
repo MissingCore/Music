@@ -10,15 +10,8 @@ import type {
 } from "@shopify/flash-list";
 import { FlashList as RawFlashList } from "@shopify/flash-list";
 import { useMemo, useRef, useState } from "react";
-import type {
-  FlatListProps,
-  LayoutChangeEvent,
-  ScrollViewProps,
-} from "react-native";
-import {
-  FlatList as RNFlatList,
-  ScrollView as RNScrollView,
-} from "react-native";
+import type { LayoutChangeEvent, ScrollViewProps } from "react-native";
+import { ScrollView as RNScrollView } from "react-native";
 import type { FlashDragListProps } from "react-native-draglist/dist/FlashList";
 import RawFlashDragList from "react-native-draglist/dist/FlashList";
 import type { AnimatedRef } from "react-native-reanimated";
@@ -63,16 +56,6 @@ export function useIsScrollable() {
 }
 
 //#region Native Components
-export function useFlatListRef() {
-  return useRef<RNFlatList>(null);
-}
-
-export function FlatList<T>(
-  props: FlatListProps<T> & { ref?: React.Ref<RNFlatList> },
-) {
-  return <RNFlatList {...ScrollablePresets} {...props} />;
-}
-
 export function ScrollView(props: ScrollViewProps) {
   return <RNScrollView {...ScrollablePresets} {...props} />;
 }

@@ -9,7 +9,7 @@ import { Info } from "~/resources/icons/Info";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 
 import { ToastOptions } from "~/lib/toast";
-import { FlatList } from "~/components/Defaults";
+import { FlatList } from "~/components/Base/List";
 import { Divider } from "~/components/Divider";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";

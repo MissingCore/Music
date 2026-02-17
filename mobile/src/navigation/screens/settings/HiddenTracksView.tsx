@@ -12,7 +12,8 @@ import { VisibilityOff } from "~/resources/icons/VisibilityOff";
 
 import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
-import { FlashList, FlatList } from "~/components/Defaults";
+import { FlatList } from "~/components/Base/List";
+import { FlashList } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { SegmentedList } from "~/components/List/Segmented";

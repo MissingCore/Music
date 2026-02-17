@@ -1,7 +1,7 @@
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
 
-import { FlatList } from "~/components/Defaults";
+import { FlatList } from "~/components/Base/List";
 import { RadioField } from "~/components/Form/Radio";
 import { DetachedSheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";

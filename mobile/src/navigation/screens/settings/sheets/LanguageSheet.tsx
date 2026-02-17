@@ -11,7 +11,7 @@ import {
 
 import { TRANSLATIONS } from "~/constants/Links";
 import { OnRTL } from "~/lib/react";
-import { FlatList } from "~/components/Defaults";
+import { FlatList } from "~/components/Base/List";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { ClickwrapCheckbox } from "~/components/Form/Checkbox";
 import { RadioField } from "~/components/Form/Radio";

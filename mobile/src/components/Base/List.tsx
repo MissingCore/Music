@@ -1,14 +1,15 @@
-import { memo } from "react";
+import { memo, useRef } from "react";
 import type { FlatListPropsWithLayout } from "react-native-reanimated";
 import Animated from "react-native-reanimated";
 
-type AnimatedListSignature = <T>(
-  props: FlatListPropsWithLayout<T> & { ref?: AnimatedListRef },
+type FlatListSignature = <T>(
+  props: FlatListPropsWithLayout<T> & { ref?: FlatListRef },
 ) => React.JSX.Element;
 
-export type AnimatedListRef = React.RefObject<Animated.FlatList | null>;
+export type FlatListRef<T = any> = React.RefObject<Animated.FlatList<T> | null>;
+export type FlatListProps<T = any> = FlatListPropsWithLayout<T>;
 
-export const AnimatedList = memo(function AnimatedList(props) {
+export const FlatList = memo(function AnimatedList(props) {
   return (
     <Animated.FlatList
       removeClippedSubviews
@@ -19,4 +20,8 @@ export const AnimatedList = memo(function AnimatedList(props) {
       {...props}
     />
   );
-}) as AnimatedListSignature;
+}) as FlatListSignature;
+
+export function useFlatListRef() {
+  return useRef<Animated.FlatList>(null);
+}

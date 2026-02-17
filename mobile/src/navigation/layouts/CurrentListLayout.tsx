@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { View, useWindowDimensions } from "react-native";
-import type { FlatListPropsWithLayout } from "react-native-reanimated";
 import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
@@ -19,7 +18,8 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { cn } from "~/lib/style";
 import { clamp } from "~/utils/number";
-import { AnimatedList } from "~/components/Base/List";
+import type { FlatListProps } from "~/components/Base/List";
+import { FlatList } from "~/components/Base/List";
 import { TopDownGradient } from "~/components/Gradient";
 import { Marquee } from "~/components/Marquee";
 import { Em, StyledText } from "~/components/Typography/StyledText";
@@ -42,7 +42,7 @@ export function CurrentListLayout<TData>({
   listInfo,
   SubHeader,
   ...props
-}: Omit<FlatListPropsWithLayout<TData>, "data"> & {
+}: Omit<FlatListProps<TData>, "data"> & {
   data: TData[];
   listInfo: ListInfoProps;
   SubHeader?: React.ReactNode;
@@ -124,19 +124,18 @@ export function CurrentListLayout<TData>({
     return layouts;
   }, [deferredData]);
 
-  const getItemLayout: FlatListPropsWithLayout<TData>["getItemLayout"] =
-    useCallback(
-      (_: unknown, index: number) => {
-        const layoutInfo = itemLayouts[index]!;
-        return { ...layoutInfo, index };
-      },
-      [itemLayouts],
-    );
+  const getItemLayout: FlatListProps<TData>["getItemLayout"] = useCallback(
+    (_: unknown, index: number) => {
+      const layoutInfo = itemLayouts[index]!;
+      return { ...layoutInfo, index };
+    },
+    [itemLayouts],
+  );
   //#endregion
 
   return (
     <>
-      <AnimatedList
+      <FlatList
         {...props}
         data={deferredData}
         getItemLayout={getItemLayout}

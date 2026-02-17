@@ -6,7 +6,7 @@ import {
   ViewPreferenceTogglers,
 } from "~/stores/ViewPreference/actions";
 
-import { FlatList } from "~/components/Defaults";
+import { FlatList } from "~/components/Base/List";
 import { RadioField } from "~/components/Form/Radio";
 import { DetachedSheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";

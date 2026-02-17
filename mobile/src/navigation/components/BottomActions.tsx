@@ -17,7 +17,7 @@ import { useHasNewUpdate } from "../hooks/useHasNewUpdate";
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { capitalize } from "~/utils/string";
-import { FlatList, useFlatListRef } from "~/components/Defaults";
+import { FlatList, useFlatListRef } from "~/components/Base/List";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { StyledText } from "~/components/Typography/StyledText";
 import type { Tab } from "~/stores/Preference/types";

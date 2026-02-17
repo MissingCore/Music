@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useProgress } from "@weights-ai/react-native-track-player";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { FlatList as RNFlatList, FlatListProps } from "react-native";
 import { Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -11,7 +10,8 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
-import { FlatList, useFlatListRef } from "~/components/Defaults";
+import type { FlatListProps, FlatListRef } from "~/components/Base/List";
+import { FlatList, useFlatListRef } from "~/components/Base/List";
 import { Button } from "~/components/Form/Button";
 import { TopDownGradient } from "~/components/Gradient";
 import { Em, TEm } from "~/components/Typography/StyledText";
@@ -223,7 +223,7 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
 const MemoLyricList = memo(
   function MemoLyricList(
     props: Omit<FlatListProps<string | [string, string]>, "renderItem"> & {
-      ref: React.RefObject<RNFlatList<string | [string, string]> | null>;
+      ref: FlatListRef<string | [string, string]>;
       offset: number;
     },
   ) {

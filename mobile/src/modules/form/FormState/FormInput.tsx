@@ -6,7 +6,7 @@ import { Add } from "~/resources/icons/Add";
 import { useFormStateContext } from ".";
 
 import type { KeysOfValue } from "~/utils/types";
-import { FlatList } from "~/components/Defaults";
+import { FlatList } from "~/components/Base/List";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
 import { RemovableItem } from "~/components/List/RemovableItem";

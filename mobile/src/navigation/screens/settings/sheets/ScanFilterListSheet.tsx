@@ -13,7 +13,7 @@ import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { pickDirectory } from "~/lib/file-system";
 import { ToastOptions } from "~/lib/toast";
 import { addTrailingSlash, getSafeUri } from "~/utils/string";
-import { FlatList } from "~/components/Defaults";
+import { FlatList } from "~/components/Base/List";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
 import { Marquee } from "~/components/Marquee";

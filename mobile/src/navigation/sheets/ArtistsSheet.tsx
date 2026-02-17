@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useSessionStore } from "~/stores/Session/store";
 import { navigateToArtist } from "~/stores/Session/actions";
 
-import { FlatList } from "~/components/Defaults";
+import { FlatList } from "~/components/Base/List";
 import { DetachedSheet } from "~/components/Sheet";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 

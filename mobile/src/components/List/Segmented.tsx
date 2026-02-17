@@ -5,7 +5,7 @@ import { View } from "react-native";
 import { cn } from "~/lib/style";
 import type { ListItemProps } from "./index";
 import { ListItem } from "./index";
-import { FlatList } from "../Defaults";
+import { FlatList } from "../Base/List";
 
 // If list item isn't wrapped, default to regular border radius.
 const DEFAULT_STATE = { first: true, last: true };
