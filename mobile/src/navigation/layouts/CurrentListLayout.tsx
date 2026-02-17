@@ -54,20 +54,18 @@ export function CurrentListLayout<TData>({
   const topOffset = insets.top + ESTIMATED_TOPAPPBAR_HEIGHT + 16;
 
   //#region Deferred Data
-  const [deferredData, setDeferredData] = useState<TData[]>([]);
-  const [deferComplete, setDeferComplete] = useState(false);
+  const [deferredData, setDeferredData] = useState<TData[] | null>(null);
 
   //? Defer rendering data as navigation to the screen is choppy otherwise.
   useEffect(() => {
     if (data.length === 0) {
-      setDeferComplete(true);
+      setDeferredData([]);
       return;
     }
 
     const timeout = setTimeout(() => {
       //? Data should be an array / defined at this point.
       setDeferredData(data);
-      setDeferComplete(true);
     }, 500);
 
     return () => clearTimeout(timeout);
@@ -77,7 +75,6 @@ export function CurrentListLayout<TData>({
 
   //#region Header Height Calculations
   const [headerHeight, _setHeaderHeight] = useState(0);
-
   const setHeaderHeight = useCallback(
     (e: LayoutChangeEvent) =>
       _setHeaderHeight(e.nativeEvent.layout.height - topOffset),
@@ -178,7 +175,7 @@ export function CurrentListLayout<TData>({
         }
         ListEmptyComponent={
           <ContentPlaceholder
-            isPending={!deferComplete}
+            isPending={!deferredData}
             errMsgKey="err.msg.noTracks"
           />
         }
