@@ -98,7 +98,7 @@ export default function Album({
         }}
         listSource={trackSource}
         imageSource={data.imageSource}
-        // LegendList Props
+        // FlatList Props
         data={formattedData}
         keyExtractor={(item) => (isNumber(item) ? `${item}` : item.id)}
         renderItem={({ item, index }) =>

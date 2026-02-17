@@ -103,7 +103,7 @@ function SegmentedListCustomItem(props: {
 //#endregion
 
 //#region Generator Hook
-/** Get props to render a list of `<SegmentedListItem />` inside a Legend List. */
+/** Get props to render a list of `<SegmentedListItem />` inside a FlatList. */
 export function useGeneratedSegmentedList<TData extends Record<string, any>>({
   data,
   renderOptions: { getLabel, getSupportingText, onPress },

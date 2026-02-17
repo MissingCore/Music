@@ -110,7 +110,7 @@ export default function Playlist({
         }}
         listSource={trackSource}
         imageSource={data.imageSource}
-        // LegendList Props
+        // FlatList Props
         {...presets}
         contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
       />

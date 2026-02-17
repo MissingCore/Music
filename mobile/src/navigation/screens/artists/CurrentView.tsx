@@ -65,7 +65,7 @@ export default function Artist({
         listSource={trackSource}
         imageSource={data.imageSource}
         SubHeader={<ArtistAlbums albums={data.albums} />}
-        // LegendList Props
+        // FlatList Props
         {...presets}
         contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
       />
