@@ -18,7 +18,7 @@ import { useDelayedReady } from "~/hooks/useDelayedReady";
 import { cn } from "~/lib/style";
 import { clamp } from "~/utils/number";
 import type { FlatListProps } from "~/components/Base/List";
-import { FlatList } from "~/components/Base/List";
+import { FlatList, calculateItemsLayouts } from "~/components/Base/List";
 import { TopDownGradient } from "~/components/Gradient";
 import { Marquee } from "~/components/Marquee";
 import { Em, StyledText } from "~/components/Typography/StyledText";
@@ -93,33 +93,22 @@ export function CurrentListLayout<TData>({
   //#endregion
 
   //#region Layout Estimations
-  const itemLayouts = useMemo(() => {
-    const layouts: Record<number, { length: number; offset: number }> = {};
-    if (Array.isArray(props.data)) {
-      let labelCount = 0;
-      props.data.forEach((val, index) => {
-        let offset = 56 * (index - labelCount);
-        if (labelCount > 0) {
-          if (labelCount === 1) offset += 24;
-          else offset += 32 * labelCount - 8;
-        }
-
-        let itemHeight = 56; // 48px Height + 8px Margin Bottom
-        if (typeof val === "number") {
-          itemHeight = index === 0 ? 24 : 32;
-          labelCount += 1;
-        }
-
-        layouts[index] = { length: itemHeight, offset };
-      });
-    }
-    return layouts;
-  }, [props.data]);
+  const itemLayouts = useMemo(
+    () =>
+      calculateItemsLayouts(props.data, {
+        itemHeight: 48,
+        labelHeight: 16,
+        gap: 8,
+      }),
+    [props.data],
+  );
 
   const getItemLayout: FlatListProps<TData>["getItemLayout"] = useCallback(
     (_: unknown, index: number) => {
-      const layoutInfo = itemLayouts[index]!;
-      return { ...layoutInfo, index };
+      const layoutInfo = itemLayouts[index];
+      // Fallback to default layout object if index is out of bounds.
+      if (!layoutInfo) return { length: 0, offset: 0, index };
+      return layoutInfo;
     },
     [itemLayouts],
   );
