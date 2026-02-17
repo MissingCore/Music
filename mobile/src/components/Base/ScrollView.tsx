@@ -9,9 +9,7 @@ type ScrollViewSignature = (
   props: ScrollViewProps & { ref?: JoinedScrollViewRef },
 ) => React.JSX.Element;
 
-type JoinedScrollViewRef =
-  | AnimatedRef<Animated.ScrollView>
-  | React.RefObject<Animated.ScrollView | null>;
+type JoinedScrollViewRef = ScrollViewRef | AnimatedScrollViewRef;
 
 export type ScrollViewRef = React.RefObject<Animated.ScrollView | null>;
 export type AnimatedScrollViewRef = AnimatedRef<Animated.ScrollView>;

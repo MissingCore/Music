@@ -26,8 +26,8 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { OnRTL, OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { addTrailingSlash } from "~/utils/string";
+import { useAnimatedFlatListRef } from "~/components/Base/List";
 import { useAnimatedScrollViewRef } from "~/components/Base/ScrollView";
-import { useAnimatedLegendListRef } from "~/components/Defaults";
 import { StyledText } from "~/components/Typography/StyledText";
 import {
   Track,
@@ -46,7 +46,7 @@ export default function Folders({
   //#region Directory Management
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-  const listRef = useAnimatedLegendListRef();
+  const listRef = useAnimatedFlatListRef();
 
   const [dirSegments, _setDirSegments] = useState<string[]>([]);
   /** Modified state setter that scrolls to the top of the page. */

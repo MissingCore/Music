@@ -3,7 +3,6 @@ import type {
   LegendListRef,
 } from "@legendapp/list";
 import { LegendList as RawLegendList } from "@legendapp/list";
-import { AnimatedLegendList as RawAnimatedLegendList } from "@legendapp/list/reanimated";
 import type {
   FlashListProps as RawFlashListProps,
   FlashListRef,
@@ -13,8 +12,6 @@ import { useMemo, useRef, useState } from "react";
 import type { LayoutChangeEvent, ScrollViewProps } from "react-native";
 import type { FlashDragListProps } from "react-native-draglist/dist/FlashList";
 import RawFlashDragList from "react-native-draglist/dist/FlashList";
-import type { AnimatedRef } from "react-native-reanimated";
-import { useAnimatedRef } from "react-native-reanimated";
 import { withUniwind } from "uniwind";
 
 /** Presets for scrollview-like components. */
@@ -97,10 +94,6 @@ type LegendListProps<T> = Omit<RawLegendListProps<T>, "data"> & {
 
 const WrappedLegendList = withUniwind(RawLegendList) as typeof RawLegendList;
 
-const WrappedAnimatedLegendList = withUniwind(
-  RawAnimatedLegendList,
-) as typeof RawAnimatedLegendList;
-
 export function LegendList<T>(props: LegendListProps<T>) {
   return (
     // @ts-expect-error - List internally handles recieving `undefined`.
@@ -113,26 +106,7 @@ export function LegendList<T>(props: LegendListProps<T>) {
   );
 }
 
-export function AnimatedLegendList<T>(props: LegendListProps<T>) {
-  return (
-    // @ts-expect-error - List internally handles recieving `undefined`.
-    <WrappedAnimatedLegendList
-      key={`list-with-${props.numColumns}-cols`}
-      recycleItems
-      {...ScrollablePresets}
-      {...props}
-    />
-  );
-}
-
-// @ts-expect-error - Argument should be compatible.
-export type AnimatedLegendListRef = AnimatedRef<LegendListRef>;
-
 export function useLegendListRef() {
   return useRef<LegendListRef>(null);
-}
-
-export function useAnimatedLegendListRef() {
-  return useAnimatedRef() as unknown as AnimatedLegendListRef;
 }
 //#endregion

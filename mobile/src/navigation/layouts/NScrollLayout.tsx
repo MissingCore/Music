@@ -1,4 +1,3 @@
-import type { LegendListProps } from "@legendapp/list";
 import type { ParseKeys } from "i18next";
 import {
   useCallback,
@@ -28,15 +27,15 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
 
+import type {
+  AnimatedFlatListRef,
+  FlatListProps,
+} from "~/components/Base/List";
+import { FlatList, useAnimatedFlatListRef } from "~/components/Base/List";
 import {
   ScrollView,
   useAnimatedScrollViewRef,
 } from "~/components/Base/ScrollView";
-import type { AnimatedLegendListRef } from "~/components/Defaults";
-import {
-  AnimatedLegendList,
-  useAnimatedLegendListRef,
-} from "~/components/Defaults";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
 import { Marquee } from "~/components/Marquee";
@@ -121,7 +120,7 @@ export function NScrollLayout(props: {
 //#endregion
 
 //#region NScrollListLayout
-/** LegendList with "shy header" and `NScrollbar`. */
+/** FlatList with "shy header" and `NScrollbar`. */
 export function NScrollListLayout<TData>({
   titleKey,
   listRef,
@@ -130,9 +129,9 @@ export function NScrollListLayout<TData>({
   Subheader,
   estimatedSubheaderHeight = 0,
   ...props
-}: Omit<LegendListProps<TData>, "onContentSizeChange" | "onLayout"> & {
+}: Omit<FlatListProps<TData>, "onContentSizeChange" | "onLayout"> & {
   titleKey: ParseKeys;
-  listRef?: AnimatedLegendListRef;
+  listRef?: AnimatedFlatListRef;
   OptionsSheet?: (props: { ref: TrueSheetRef }) => React.JSX.Element;
   /** Additional "actions" which will appear before the "Screen Options" button. */
   Actions?: React.ReactNode;
@@ -144,7 +143,7 @@ export function NScrollListLayout<TData>({
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const bottomInset = useBottomActionsInset();
-  const internalListRef = useAnimatedLegendListRef();
+  const internalListRef = useAnimatedFlatListRef();
   // @ts-expect-error - Should be able to synchronize refs.
   useImperativeHandle(listRef, () => internalListRef.current);
   const sheetRef = useSheetRef();
@@ -197,11 +196,10 @@ export function NScrollListLayout<TData>({
         {Subheader}
       </ShyHeader>
 
-      <AnimatedLegendList
+      <FlatList
         ref={internalListRef}
         {...scrollBarContext.layoutHandlers}
         onScroll={shyHeaderContext.scrollHandler}
-        maintainVisibleContentPosition={false}
         {...props}
         contentContainerStyle={{
           paddingHorizontal: 16,
@@ -216,7 +214,7 @@ export function NScrollListLayout<TData>({
         className="absolute top-0 left-0"
       />
       <Scrollbar
-        key={props.numColumns}
+        key={Number(props.numColumns)}
         listRef={internalListRef}
         scrollbarOffset={{ top: topBarHeight, bottom: bottomOffset }}
         isVisible={quickScroll}

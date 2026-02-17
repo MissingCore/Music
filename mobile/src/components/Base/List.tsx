@@ -1,17 +1,24 @@
 import { memo, useRef } from "react";
-import type { FlatListPropsWithLayout } from "react-native-reanimated";
-import Animated from "react-native-reanimated";
+import type {
+  AnimatedRef,
+  FlatListPropsWithLayout,
+} from "react-native-reanimated";
+import Animated, { useAnimatedRef } from "react-native-reanimated";
 
 type FlatListSignature = <T>(
-  props: FlatListPropsWithLayout<T> & { ref?: FlatListRef },
+  props: FlatListPropsWithLayout<T> & { ref?: JoinedFlatListRef },
 ) => React.JSX.Element;
 
+type JoinedFlatListRef = FlatListRef | AnimatedFlatListRef;
+
 export type FlatListRef<T = any> = React.RefObject<Animated.FlatList<T> | null>;
+export type AnimatedFlatListRef<T = any> = AnimatedRef<Animated.FlatList<T>>;
 export type FlatListProps<T = any> = FlatListPropsWithLayout<T>;
 
 export const FlatList = memo(function FlatList(props) {
   return (
     <Animated.FlatList
+      key={`list-with-${props.numColumns}-cols`}
       removeClippedSubviews
       overScrollMode="never"
       showsHorizontalScrollIndicator={false}
@@ -24,6 +31,10 @@ export const FlatList = memo(function FlatList(props) {
 
 export function useFlatListRef() {
   return useRef<Animated.FlatList>(null);
+}
+
+export function useAnimatedFlatListRef() {
+  return useAnimatedRef<Animated.FlatList>();
 }
 
 //#region Item Layout Calculations
