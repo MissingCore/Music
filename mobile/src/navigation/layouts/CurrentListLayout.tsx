@@ -66,7 +66,7 @@ export function CurrentListLayout<TData>({
     const timeout = setTimeout(() => {
       //? Data should be an array / defined at this point.
       setDeferredData(data);
-    }, 500);
+    }, 1000);
 
     return () => clearTimeout(timeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
