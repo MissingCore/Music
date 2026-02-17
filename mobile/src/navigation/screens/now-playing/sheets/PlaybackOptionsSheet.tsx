@@ -18,7 +18,7 @@ import { getMediaLinkContext } from "~/navigation/utils/router";
 import { AppearanceSheet } from "./AppearanceSheet";
 import { PlaybackSpeedSheet } from "./PlaybackSpeedSheet";
 
-import { ScrollView } from "~/components/Defaults";
+import { ScrollView } from "~/components/Base/ScrollView";
 import { NumberStepper } from "~/components/Form/NumberStepper";
 import { CachedSlider } from "~/components/Form/Slider";
 import { SegmentedList } from "~/components/List/Segmented";

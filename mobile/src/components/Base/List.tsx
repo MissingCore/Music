@@ -9,7 +9,7 @@ type FlatListSignature = <T>(
 export type FlatListRef<T = any> = React.RefObject<Animated.FlatList<T> | null>;
 export type FlatListProps<T = any> = FlatListPropsWithLayout<T>;
 
-export const FlatList = memo(function AnimatedList(props) {
+export const FlatList = memo(function FlatList(props) {
   return (
     <Animated.FlatList
       removeClippedSubviews

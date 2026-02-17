@@ -8,7 +8,6 @@ import Animated, {
   FadeOutLeft,
   FadeOutRight,
   scrollTo,
-  useAnimatedRef,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
@@ -27,6 +26,7 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { OnRTL, OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { addTrailingSlash } from "~/utils/string";
+import { useAnimatedScrollViewRef } from "~/components/Base/ScrollView";
 import { useAnimatedLegendListRef } from "~/components/Defaults";
 import { StyledText } from "~/components/Typography/StyledText";
 import {
@@ -164,7 +164,7 @@ function Breadcrumbs({
   dirSegments: string[];
   setDirSegments: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
-  const breadcrumbsRef = useAnimatedRef<Animated.ScrollView>();
+  const breadcrumbsRef = useAnimatedScrollViewRef();
   const { width: screenWidth } = useWindowDimensions();
   const lastWidth = useSharedValue(0);
   const removedWidth = useSharedValue(0);

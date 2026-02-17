@@ -11,11 +11,10 @@ import type {
 import { FlashList as RawFlashList } from "@shopify/flash-list";
 import { useMemo, useRef, useState } from "react";
 import type { LayoutChangeEvent, ScrollViewProps } from "react-native";
-import { ScrollView as RNScrollView } from "react-native";
 import type { FlashDragListProps } from "react-native-draglist/dist/FlashList";
 import RawFlashDragList from "react-native-draglist/dist/FlashList";
 import type { AnimatedRef } from "react-native-reanimated";
-import Animated, { useAnimatedRef } from "react-native-reanimated";
+import { useAnimatedRef } from "react-native-reanimated";
 import { withUniwind } from "uniwind";
 
 /** Presets for scrollview-like components. */
@@ -54,16 +53,6 @@ export function useIsScrollable() {
 
   return useMemo(() => ({ handlers, isScrollable }), [handlers, isScrollable]);
 }
-
-//#region Native Components
-export function ScrollView(props: ScrollViewProps) {
-  return <RNScrollView {...ScrollablePresets} {...props} />;
-}
-
-export function AnimatedScrollView(props: ScrollViewProps) {
-  return <Animated.ScrollView {...ScrollablePresets} {...props} />;
-}
-//#endregion
 
 //#region Flash List
 type FlashListProps<T> = RawFlashListProps<T> & {

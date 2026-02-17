@@ -17,6 +17,7 @@ import { useColor } from "~/hooks/useTheme";
 import { OnRTLWorklet } from "~/lib/react";
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
+import { ScrollView } from "./Base/ScrollView";
 
 /** Used to progressively display long content. */
 export function Marquee({
@@ -105,11 +106,10 @@ export function Marquee({
     <View
       className={cn("relative shrink overflow-hidden", props.wrapperClassName)}
     >
-      <Animated.ScrollView
+      <ScrollView
         onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
         horizontal
         pointerEvents="none"
-        showsHorizontalScrollIndicator={false}
         contentContainerClassName={cn("grow items-center overflow-hidden", {
           "justify-center": props.center,
         })}
@@ -124,7 +124,7 @@ export function Marquee({
         >
           {props.children}
         </Animated.View>
-      </Animated.ScrollView>
+      </ScrollView>
       {/* Scroll Shadow */}
       <Animated.View
         pointerEvents="none"

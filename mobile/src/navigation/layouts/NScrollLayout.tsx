@@ -16,7 +16,6 @@ import Animated, {
   cancelAnimation,
   clamp,
   useAnimatedScrollHandler,
-  useAnimatedRef,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
@@ -29,10 +28,13 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
 
+import {
+  ScrollView,
+  useAnimatedScrollViewRef,
+} from "~/components/Base/ScrollView";
 import type { AnimatedLegendListRef } from "~/components/Defaults";
 import {
   AnimatedLegendList,
-  AnimatedScrollView,
   useAnimatedLegendListRef,
 } from "~/components/Defaults";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
@@ -58,7 +60,7 @@ export function NScrollLayout(props: {
 }) {
   const insets = useSafeAreaInsets();
   const bottomInset = useBottomActionsInset();
-  const scrollRef = useAnimatedRef();
+  const scrollRef = useAnimatedScrollViewRef();
 
   // NScrollbar
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
@@ -87,8 +89,7 @@ export function NScrollLayout(props: {
         Actions={props.Actions}
       />
 
-      <AnimatedScrollView
-        // @ts-expect-error - We can pass refs since React 19.
+      <ScrollView
         ref={scrollRef}
         {...scrollBarContext.layoutHandlers}
         onScroll={shyHeaderContext.scrollHandler}
@@ -100,7 +101,7 @@ export function NScrollLayout(props: {
         contentContainerClassName="grow gap-6"
       >
         {props.children}
-      </AnimatedScrollView>
+      </ScrollView>
 
       <TopDownGradient
         height={topBarHeight}

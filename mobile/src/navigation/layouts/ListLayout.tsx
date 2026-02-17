@@ -1,7 +1,6 @@
-import type { ScrollViewProps } from "react-native";
-
 import { cn } from "~/lib/style";
-import { ScrollView } from "~/components/Defaults";
+import type { ScrollViewProps } from "~/components/Base/ScrollView";
+import { ScrollView } from "~/components/Base/ScrollView";
 
 /** Render groups of content with standardized spacing. */
 export function ListLayout(props: ScrollViewProps) {
