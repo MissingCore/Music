@@ -14,7 +14,7 @@ import { ArtistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
-import { FlashList } from "~/components/Defaults";
+import { FlatList } from "~/components/Base/List";
 import { SafeContainer } from "~/components/SafeContainer";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { TEm } from "~/components/Typography/StyledText";
@@ -96,7 +96,7 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
   return (
     <>
       <TEm textKey="term.albums" className="mb-2" />
-      <FlashList
+      <FlatList
         horizontal
         data={albums}
         keyExtractor={({ id }) => id}
@@ -116,9 +116,7 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
         )}
         style={{ minHeight: estimatedListHeight }}
         className="-mx-4"
-        // FIXME: For some weird reason, only 50% of the horizontal padding
-        // gets applied on a horizontal FlashList.
-        contentContainerClassName="px-8"
+        contentContainerClassName="px-4"
       />
       <TEm textKey="term.tracks" className="mt-4 mb-2" />
     </>

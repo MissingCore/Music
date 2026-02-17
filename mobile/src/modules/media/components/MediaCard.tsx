@@ -30,9 +30,8 @@ export function MediaCard({
     <Pressable
       onPress={onPress}
       style={{ maxWidth: imgProps.size }}
-      // The `w-full` is to ensure the component takes up all the space
-      // specified by `maxWidth`.
-      className={cn("w-full active:opacity-75", className)}
+      // Using `grow` instead of `w-full` because only 1 item gets shown otherwise.
+      className={cn("grow active:opacity-75", className)}
     >
       <MediaImage {...imgProps} />
       <StyledText numberOfLines={1} className="mt-1 text-sm">

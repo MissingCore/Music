@@ -1,5 +1,4 @@
-import type { FlashListRef } from "@shopify/flash-list";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -20,8 +19,7 @@ import { presentTrackSheet } from "~/stores/Session/actions";
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
 import { isString } from "~/utils/validation";
-import { FlatList } from "~/components/Base/List";
-import { FlashList } from "~/components/Defaults";
+import { FlatList, useFlatListRef } from "~/components/Base/List";
 import { Button } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
@@ -74,7 +72,7 @@ function SearchResultsList<TScope extends SearchCategories>(
   const results = useSearch(props.searchScope, props.query);
   const [selectedTab, setSelectedTab] = useState<TScope[number] | "all">("all");
   const [filterHeight, setFilterHeight] = useState(53); // Height will be ~53px
-  const listRef = useRef<FlashListRef<ReturnType<typeof formatResults>>>(null);
+  const listRef = useFlatListRef();
 
   // Reset tab if we're on a tab with no results or clear the query.
   if (
@@ -110,15 +108,13 @@ function SearchResultsList<TScope extends SearchCategories>(
         onSelectTab={setSelectedTab}
         getHeight={setFilterHeight}
       />
-      <FlashList
-        // @ts-expect-error - Arguments should be compatible.
+      <FlatList
         ref={listRef}
         data={data}
         // Note: We use `index` instead of the `id` or `name` field on the
         // `entry` due to there being potentially shared values (ie: between
         // artist & playlist names).
         keyExtractor={(item, index) => (isString(item) ? item : `${index}`)}
-        getItemType={(item) => (isString(item) ? "label" : "row")}
         renderItem={({ item, index }) =>
           isString(item) ? (
             <TEm
@@ -157,8 +153,7 @@ function SearchResultsList<TScope extends SearchCategories>(
           ) : undefined
         }
         nestedScrollEnabled={props.forSheets}
-        // FIXME: For some weird reason, we get double the margin bottom (should be `-mb-2`).
-        className="-mb-1"
+        className="-mb-2"
         contentContainerClassName="pb-4"
         contentContainerStyle={{
           paddingTop: tabsWithData.length > 0 ? filterHeight : 24,

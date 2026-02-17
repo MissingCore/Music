@@ -1,4 +1,3 @@
-import type { FlashListProps, ListRenderItemInfo } from "@shopify/flash-list";
 import type { ParseKeys } from "i18next";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -9,18 +8,19 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
-import { FlashList } from "~/components/Defaults";
+import type { FlatListProps, ListRenderItemInfo } from "~/components/Base/List";
+import { FlatList } from "~/components/Base/List";
 import { TopDownGradient } from "~/components/Gradient";
 import { SearchBar } from "./SearchBar";
 
 const DEFAULT_GAP = 24;
 
 interface SearchListProps<TData> extends Omit<
-  FlashListProps<TData>,
+  FlatListProps<TData>,
   "data" | "keyExtractor" | "renderItem"
 > {
   data?: TData[];
-  keyExtractor: NonNullable<FlashListProps<TData>["keyExtractor"]>;
+  keyExtractor: (item: TData, index: number) => string;
   renderItem: (
     info: ListRenderItemInfo<TData> & { listSize: number },
   ) => React.ReactElement;
@@ -61,16 +61,16 @@ export function SearchList<TData>({
 
   const dataSize = useMemo(() => filteredData.length, [filteredData]);
 
-  const keyExtractor: SearchListProps<TData>["keyExtractor"] = useCallback(
-    (item, index) => `${_keyExtractor(item, index)}__${index}`,
+  const keyExtractor = useCallback(
+    (item: TData, index: number) => `${_keyExtractor(item, index)}__${index}`,
     [_keyExtractor],
   );
 
-  const renderItem: NonNullable<FlashListProps<TData>["renderItem"]> =
-    useCallback(
-      (args) => _renderItem({ ...args, listSize: dataSize }),
-      [_renderItem, dataSize],
-    );
+  const renderItem = useCallback(
+    (args: ListRenderItemInfo<TData>) =>
+      _renderItem({ ...args, listSize: dataSize }),
+    [_renderItem, dataSize],
+  );
 
   return (
     <View style={wrapperStyle} className={cn("shrink grow", wrapperClassName)}>
@@ -80,11 +80,10 @@ export function SearchList<TData>({
         isEmpty={query === ""}
       />
       <View className="relative shrink grow">
-        <FlashList
+        <FlatList
           data={filteredData}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
-          maintainVisibleContentPosition={{ disabled: true }}
           ListEmptyComponent={
             !stopRender ? <ContentPlaceholder errMsgKey={emptyMsgKey} /> : null
           }

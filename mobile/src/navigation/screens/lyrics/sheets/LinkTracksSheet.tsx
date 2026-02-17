@@ -45,8 +45,7 @@ export function LinkTracksSheet(props: { ref: TrueSheetRef; lyricId: string }) {
         nestedScrollEnabled
         shadowTransitionConfig={{ color: "surfaceBright" }}
         renderOnQuery
-        // FIXME: For some weird reason, we get double the margin bottom (should be `-mb-2`).
-        className="-mb-1"
+        className="-mb-2"
         contentContainerClassName="pb-4"
       />
     </DetachedSheet>

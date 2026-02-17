@@ -14,7 +14,6 @@ import { getMediaLinkContext } from "../utils/router";
 
 import { queryClient } from "~/lib/react-query";
 import { FlatList, getListItemLayout } from "~/components/Base/List";
-import { FlashList } from "~/components/Defaults";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
@@ -90,7 +89,7 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
 
   if (props.data?.length === 0) return null;
   return (
-    <FlashList
+    <FlatList
       horizontal
       data={props.data}
       keyExtractor={({ id, type }) => `${type}_${id}`}
@@ -108,9 +107,7 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
         />
       )}
       className="-mx-4"
-      // FIXME: For some weird reason, only 50% of the horizontal padding
-      // gets applied on a horizontal FlashList.
-      contentContainerClassName="px-8 pb-6"
+      contentContainerClassName="px-4 pb-6"
     />
   );
 }

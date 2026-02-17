@@ -15,6 +15,7 @@ type JoinedScrollViewRef = ScrollViewRef | AnimatedScrollViewRef;
 
 export type ScrollViewRef = React.RefObject<Animated.ScrollView | null>;
 export type AnimatedScrollViewRef = AnimatedRef<Animated.ScrollView>;
+
 export type ScrollViewProps = AnimatedScrollViewProps & {
   ref?: JoinedScrollViewRef;
 };

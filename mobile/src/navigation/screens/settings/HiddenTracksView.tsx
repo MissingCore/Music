@@ -13,7 +13,6 @@ import { VisibilityOff } from "~/resources/icons/VisibilityOff";
 import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
 import { FlatList } from "~/components/Base/List";
-import { FlashList } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { SegmentedList } from "~/components/List/Segmented";
@@ -92,7 +91,8 @@ function ScreenContents(props: { data: HiddenTrack[] }) {
   }, []);
 
   return (
-    <FlashList
+    <FlatList
+      // @ts-expect-error - Incompatible due to using a callback ref.
       ref={handleOnUnmount}
       data={groupedHiddenTracks}
       keyExtractor={({ monthYearStr }) => monthYearStr}

@@ -1,4 +1,5 @@
 import { memo, useRef } from "react";
+import type { ListRenderItemInfo as RawListRenderItemInfo } from "react-native";
 import type {
   AnimatedRef,
   FlatListPropsWithLayout,
@@ -13,7 +14,10 @@ type JoinedFlatListRef = FlatListRef | AnimatedFlatListRef;
 
 export type FlatListRef<T = any> = React.RefObject<Animated.FlatList<T> | null>;
 export type AnimatedFlatListRef<T = any> = AnimatedRef<Animated.FlatList<T>>;
+
 export type FlatListProps<T = any> = FlatListPropsWithLayout<T>;
+
+export type ListRenderItemInfo<T = any> = RawListRenderItemInfo<T>;
 
 export const FlatList = memo(function FlatList(props) {
   return (

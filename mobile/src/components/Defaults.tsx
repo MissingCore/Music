@@ -1,8 +1,3 @@
-import type {
-  FlashListProps as RawFlashListProps,
-  FlashListRef,
-} from "@shopify/flash-list";
-import { FlashList as RawFlashList } from "@shopify/flash-list";
 import { useMemo, useRef, useState } from "react";
 import type { LayoutChangeEvent, ScrollViewProps } from "react-native";
 import type { FlashDragListProps } from "react-native-draglist/dist/FlashList";
@@ -45,31 +40,6 @@ export function useIsScrollable() {
 
   return useMemo(() => ({ handlers, isScrollable }), [handlers, isScrollable]);
 }
-
-//#region Flash List
-type FlashListProps<T> = RawFlashListProps<T> & {
-  ref?: React.Ref<FlashListRef<T>>;
-};
-
-type FlashListSignature = <T>(props: FlashListProps<T>) => React.JSX.Element;
-const WrappedFlashList = withUniwind(RawFlashList) as FlashListSignature;
-
-export function FlashList<T>(props: FlashListProps<T>) {
-  return (
-    <WrappedFlashList
-      // To prevent `TypeError: Cannot read property 'y' of undefined`
-      // crash from a list with `numColumns` and `ListEmptyComponent`.
-      key={
-        props.data?.length === 0 && props.numColumns !== undefined
-          ? `empty-list-with-${props.numColumns}-cols`
-          : `non-empty-list-with-${props.numColumns}-cols`
-      }
-      {...ScrollablePresets}
-      {...props}
-    />
-  );
-}
-//#endregion
 
 //#region Flash Drag List
 const WrappedFlashDragList = withUniwind(
