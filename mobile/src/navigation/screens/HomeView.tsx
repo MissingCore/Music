@@ -38,6 +38,6 @@ export default function Home() {
 function Favorites() {
   const { data } = useFavoriteListsForCards();
   const presets = useMediaCardListPreset({ data });
-  return <FlatList {...presets} />;
+  return <FlatList scrollEnabled={false} {...presets} />;
 }
 //#endregion

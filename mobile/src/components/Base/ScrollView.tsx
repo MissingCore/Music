@@ -1,4 +1,6 @@
 import { memo, useRef } from "react";
+import type { KeyboardAwareScrollViewProps } from "react-native-keyboard-controller";
+import { KeyboardAwareScrollView as RawKeyboardAwareScrollView } from "react-native-keyboard-controller";
 import type {
   AnimatedRef,
   AnimatedScrollViewProps,
@@ -36,3 +38,20 @@ export function useScrollViewRef() {
 export function useAnimatedScrollViewRef() {
   return useAnimatedRef<Animated.ScrollView>();
 }
+
+//#region Keyboard Aware ScrollView
+export const KeyboardAwareScrollView = memo(function KeyboardAwareScrollView(
+  props: KeyboardAwareScrollViewProps,
+) {
+  return (
+    <RawKeyboardAwareScrollView
+      removeClippedSubviews
+      overScrollMode="never"
+      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={false}
+      bottomOffset={16}
+      {...props}
+    />
+  );
+});
+//#endregion

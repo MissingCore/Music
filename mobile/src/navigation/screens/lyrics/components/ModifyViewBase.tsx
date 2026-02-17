@@ -3,7 +3,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { eq } from "drizzle-orm";
 import { Fragment, useMemo, useState } from "react";
 import { View } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { z } from "zod/mini";
 
 import { db } from "~/db";
@@ -14,7 +13,7 @@ import { queries as q } from "~/queries/keyStore";
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 
 import { wait } from "~/utils/promise";
-import { ScrollablePresets } from "~/components/Defaults";
+import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { ModalTemplate } from "~/components/Modal";
 import { ZSchema } from "~/modules/form/utils";
@@ -62,8 +61,6 @@ const Textarea = TextareaImpl<LyricEntry>();
 function LyricForm({ bottomOffset }: { bottomOffset: number }) {
   return (
     <KeyboardAwareScrollView
-      bottomOffset={16}
-      {...ScrollablePresets}
       // Remove 24px as `KeyboardAwareScrollView` adds an element at the
       // end of the ScrollView, causing an additional application of `gap`.
       contentContainerStyle={{ paddingBottom: bottomOffset - 24 }}

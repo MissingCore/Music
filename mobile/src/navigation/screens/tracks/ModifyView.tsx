@@ -7,7 +7,6 @@ import type { StaticScreenProps } from "@react-navigation/native";
 import { eq } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { z } from "zod/mini";
 
 import { db } from "~/db";
@@ -32,7 +31,7 @@ import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
 import { splitOn } from "~/utils/string";
-import { ScrollablePresets } from "~/components/Defaults";
+import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
 import { ZSchema } from "~/modules/form/utils";
@@ -94,8 +93,6 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
   const { t } = useTranslation();
   return (
     <KeyboardAwareScrollView
-      bottomOffset={16}
-      {...ScrollablePresets}
       // Remove 16px as `KeyboardAwareScrollView` adds an element at the
       // end of the ScrollView, causing an additional application of `gap`.
       contentContainerStyle={{ paddingBottom: bottomOffset - 16 }}
