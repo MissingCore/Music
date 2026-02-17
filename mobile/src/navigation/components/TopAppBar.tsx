@@ -19,7 +19,7 @@ export function TopAppBar({ options, route }: NativeStackHeaderProps) {
   const title = getHeaderTitle(options, route.name) as ParseKeys;
 
   return (
-    <SafeContainer className="bg-surface">
+    <SafeContainer>
       <View className="h-14 flex-row items-center justify-between gap-4 px-2 py-1">
         <FilledIconButton
           Icon={ArrowBack}
@@ -30,12 +30,14 @@ export function TopAppBar({ options, route }: NativeStackHeaderProps) {
           size="sm"
         />
 
-        <TEm textKey={title} numberOfLines={1} className="shrink text-base" />
+        {title ? (
+          <TEm textKey={title} numberOfLines={1} className="shrink text-base" />
+        ) : null}
 
         {options.headerRight ? (
           options.headerRight({ canGoBack: true })
         ) : (
-          <View className="size-10" />
+          <View pointerEvents="none" className="size-10" />
         )}
       </View>
     </SafeContainer>

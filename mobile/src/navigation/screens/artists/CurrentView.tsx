@@ -7,18 +7,19 @@ import type { Album } from "~/db/schema";
 import { useArtistForScreen } from "~/queries/artist";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { useBottomActionsInset } from "../../hooks/useBottomActions";
-import { CurrentListLayout } from "../../layouts/CurrentList";
-import { ArtistArtworkSheet } from "../../sheets/ArtworkSheet";
 
-import { FlashList, LegendList } from "~/components/Defaults";
+import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
+import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
+import { ArtistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
+import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
+import { PagePlaceholder } from "~/navigation/components/Placeholder";
+
+import { FlashList } from "~/components/Defaults";
+import { SafeContainer } from "~/components/SafeContainer";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { TEm } from "~/components/Typography/StyledText";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import { useTrackListPreset } from "~/modules/media/components/Track";
-import { CurrentListMenu } from "../../components/CurrentListMenu";
-import { PagePlaceholder } from "../../components/Placeholder";
-import { ScreenOptions } from "../../components/ScreenOptions";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -36,34 +37,38 @@ export default function Artist({
   const trackSource = { type: "artist", id: artistName } as const;
   const presets = useTrackListPreset({ data: data?.tracks, trackSource });
 
-  if (isPending || error) return <PagePlaceholder isPending={isPending} />;
+  if (isPending || error) {
+    return (
+      <SafeContainer additionalTopOffset={56}>
+        <PagePlaceholder isPending={isPending} />
+      </SafeContainer>
+    );
+  }
 
   return (
     <>
-      <ScreenOptions
-        headerRight={() => (
-          <CurrentListMenu
-            name={data.name}
-            trackIds={data.tracks.map(({ id }) => id)}
-            presentArtworkSheet={() => artworkSheetRef.current?.present()}
-          />
-        )}
-      />
-      <CurrentListLayout
-        title={data.name}
-        metadata={data.metadata}
-        imageSource={data.imageSource}
-        mediaSource={trackSource}
-      >
-        <LegendList
-          {...presets}
-          ListHeaderComponent={<ArtistAlbums albums={data.albums} />}
-          contentContainerClassName="px-4 pt-4"
-          contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
-        />
-      </CurrentListLayout>
-
       <ArtistArtworkSheet ref={artworkSheetRef} id={artistName} />
+
+      <CurrentListLayout
+        // List Header Props
+        listInfo={{
+          title: data.name,
+          metadata: data.metadata,
+          Actions: (
+            <CurrentListMenu
+              name={data.name}
+              trackIds={data.tracks.map(({ id }) => id)}
+              presentArtworkSheet={() => artworkSheetRef.current?.present()}
+            />
+          ),
+        }}
+        listSource={trackSource}
+        imageSource={data.imageSource}
+        SubHeader={<ArtistAlbums albums={data.albums} />}
+        // LegendList Props
+        {...presets}
+        contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
+      />
     </>
   );
 }

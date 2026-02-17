@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Menu as PaperMenu } from "react-native-paper";
 
 import type { Icon } from "~/resources/icons/type";
-import { MoreVert } from "~/resources/icons/MoreVert";
+import { MoreHoriz } from "~/resources/icons/MoreHoriz";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
 
@@ -36,9 +36,10 @@ export function Menu(props: {
       onDismiss={() => setVisible(false)}
       anchor={
         <IconButton
-          Icon={MoreVert}
+          Icon={MoreHoriz}
           accessibilityLabel={t(props.triggerLabel ?? "term.more")}
           onPress={() => setVisible(true)}
+          size="sm"
         />
       }
       anchorPosition="bottom"

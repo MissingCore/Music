@@ -1,6 +1,6 @@
 import type { TFunction } from "i18next";
 
-import type { Album, PlaylistWithTracks, Track } from "./schema";
+import type { Album, Track } from "./schema";
 import type {
   SlimAlbum,
   SlimArtist,
@@ -12,7 +12,6 @@ import { getArtistsString } from "~/api/artist.utils";
 import { getPlaylistArtwork } from "~/api/playlist.utils";
 import { getTrackArtwork } from "~/api/track.utils";
 
-import { formatSeconds } from "~/utils/number";
 import type { AtLeast, Prettify } from "~/utils/types";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
 import type { TrackContent } from "~/modules/media/components/Track.type";
@@ -56,24 +55,5 @@ export function formatForTrack(
   const description = getArtistsString(tracksToArtists);
 
   return { id, imageSource, title: name, description } satisfies TrackContent;
-}
-//#endregion
-
-//#region Format for Screen
-type ScreenFormatter = { t: TFunction; data: PlaylistWithTracks };
-
-/** Format data to be used in the `(current)` routes. */
-export function formatForCurrentScreen({ data, t }: ScreenFormatter) {
-  return {
-    name: data.name,
-    imageSource: getPlaylistArtwork(data),
-    metadata: [
-      t("plural.track", { count: data.tracks.length }),
-      formatSeconds(
-        data.tracks.reduce((total, curr) => total + curr.duration, 0),
-      ),
-    ],
-    tracks: data.tracks.map((track) => formatForTrack(track)),
-  };
 }
 //#endregion

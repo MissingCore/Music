@@ -10,17 +10,16 @@ import { FileSave } from "~/resources/icons/FileSave";
 import { useFavoritePlaylist, usePlaylistForScreen } from "~/queries/playlist";
 
 import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
+import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
 import { PlaylistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
-import { CurrentListLayout } from "~/navigation/layouts/CurrentList";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
-import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import { ExportM3USheet } from "./sheets/ExportM3USheet";
 
 import { mutateGuard } from "~/lib/react-query";
-import { LegendList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button/Icon";
 import type { MenuAction } from "~/components/Menu";
+import { SafeContainer } from "~/components/SafeContainer";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { useTrackListPreset } from "~/modules/media/components/Track";
@@ -59,54 +58,62 @@ export default function Playlist({
     [navigation, id, exportSheetRef],
   );
 
-  if (isPending || error) return <PagePlaceholder isPending={isPending} />;
+  if (isPending || error) {
+    return (
+      <SafeContainer additionalTopOffset={56}>
+        <PagePlaceholder isPending={isPending} />
+      </SafeContainer>
+    );
+  }
 
   // Add optimistic UI updates.
   const isToggled = favoritePlaylist.isPending
     ? !data.isFavorite
     : data.isFavorite;
 
+  const listName =
+    data.name === FavoritesPlaylistKey ? t("term.favoriteTracks") : data.name;
+
   return (
     <>
-      <ScreenOptions
-        headerRight={() => (
-          <View className="flex-row gap-1">
-            {id !== FavoritesPlaylistKey ? (
-              <IconButton
-                Icon={Favorite}
-                accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
-                onPress={() => mutateGuard(favoritePlaylist, !data.isFavorite)}
-                filled={isToggled}
-              />
-            ) : null}
-            <CurrentListMenu
-              actions={menuActions}
-              name={
-                data.name === FavoritesPlaylistKey
-                  ? t("term.favoriteTracks")
-                  : data.name
-              }
-              trackIds={data.tracks.map(({ id }) => id)}
-              presentArtworkSheet={() => artworkSheetRef.current?.present()}
-            />
-          </View>
-        )}
-      />
-      <CurrentListLayout
-        title={data.name}
-        metadata={data.metadata}
-        imageSource={data.imageSource}
-        mediaSource={trackSource}
-      >
-        <LegendList
-          {...presets}
-          contentContainerClassName="px-4 pt-4"
-          contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
-        />
-      </CurrentListLayout>
-
       <PlaylistArtworkSheet ref={artworkSheetRef} id={id} />
       <ExportM3USheet ref={exportSheetRef} id={id} />
+
+      <CurrentListLayout
+        // List Header Props
+        listInfo={{
+          title: listName,
+          metadata: data.metadata,
+          Actions: (
+            <View className="flex-row gap-1">
+              {id !== FavoritesPlaylistKey ? (
+                <IconButton
+                  Icon={Favorite}
+                  accessibilityLabel={t(
+                    `term.${isToggled ? "unF" : "f"}avorite`,
+                  )}
+                  onPress={() =>
+                    mutateGuard(favoritePlaylist, !data.isFavorite)
+                  }
+                  filled={isToggled}
+                  size="sm"
+                />
+              ) : null}
+              <CurrentListMenu
+                actions={menuActions}
+                name={listName}
+                trackIds={data.tracks.map(({ id }) => id)}
+                presentArtworkSheet={() => artworkSheetRef.current?.present()}
+              />
+            </View>
+          ),
+        }}
+        listSource={trackSource}
+        imageSource={data.imageSource}
+        // LegendList Props
+        {...presets}
+        contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
+      />
     </>
   );
 }

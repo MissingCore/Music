@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
 import type { playlists } from "~/db/schema";
-import { formatForCurrentScreen } from "~/db/utils";
+import { formatForTrack } from "~/db/utils";
 
 import {
   createPlaylist,
@@ -14,6 +14,7 @@ import { getPlaylistArtwork, sanitizePlaylistName } from "~/api/playlist.utils";
 import { Resynchronize } from "~/stores/Playback/actions";
 import { queries as q } from "./keyStore";
 
+import { formatSeconds } from "~/utils/number";
 import { wait } from "~/utils/promise";
 
 //#region Queries
@@ -30,9 +31,17 @@ export function usePlaylistForScreen(playlistName: string) {
   const { t } = useTranslation();
   return useQuery({
     ...q.playlists.detail(playlistName),
-    select: (data) => ({
-      ...formatForCurrentScreen({ data, t }),
-      isFavorite: data.isFavorite,
+    select: ({ name, artwork, isFavorite, tracks }) => ({
+      name,
+      imageSource: getPlaylistArtwork({ artwork, tracks }),
+      metadata: [
+        t("term.playlist"),
+        t("plural.track", { count: tracks.length }),
+        formatSeconds(tracks.reduce((total, curr) => total + curr.duration, 0)),
+      ],
+      tracks: tracks.map((track) => formatForTrack(track)),
+
+      isFavorite,
     }),
   });
 }

@@ -223,6 +223,10 @@ export const RootStack = createNativeStackNavigator({
       layout: ({ children }) => children,
       options: { headerShown: false },
     },
+    RecentlyPlayed: {
+      screen: RecentlyPlayed,
+      options: { title: "feat.playedRecent.title" },
+    },
     NowPlaying: {
       screen: NowPlaying,
       linking: {
@@ -247,6 +251,16 @@ export const RootStack = createNativeStackNavigator({
   },
   groups: {
     Current: {
+      screenOptions: {
+        headerTransparent: true,
+      },
+      screens: {
+        Playlist,
+        Album,
+        Artist,
+      },
+    },
+    Form: {
       screens: {
         CreatePlaylist: {
           screen: CreatePlaylist,
@@ -256,13 +270,6 @@ export const RootStack = createNativeStackNavigator({
           screen: ModifyPlaylist,
           layout: ({ children }) => children,
           options: { title: "form.edit" },
-        },
-        Playlist,
-        Album,
-        Artist,
-        RecentlyPlayed: {
-          screen: RecentlyPlayed,
-          options: { title: "feat.playedRecent.title" },
         },
         ModifyTrack: {
           screen: ModifyTrack,

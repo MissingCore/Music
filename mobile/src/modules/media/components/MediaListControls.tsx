@@ -7,21 +7,17 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 
 import { cn } from "~/lib/style";
-import type { ButtonSize } from "~/components/Form/Button/Icon";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import type { PlayFromSource } from "~/stores/Playback/types";
 import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
 import { RepeatButton, ShuffleButton } from "./MediaControls";
 
 /** Media controls used on media list pages. */
-export function MediaListControls(props: {
-  trackSource: PlayFromSource;
-  className?: string;
-}) {
+export function MediaListControls(props: { trackSource: PlayFromSource }) {
   return (
-    <View className={cn("flex-row items-center gap-1", props.className)}>
-      <RepeatButton size="md" />
-      <ShuffleButton size="md" />
+    <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
+      <RepeatButton size="sm" />
+      <ShuffleButton size="sm" />
       <PlayMediaListButton trackSource={props.trackSource} />
     </View>
   );
@@ -34,7 +30,6 @@ export function MediaListControls(props: {
  */
 export function PlayMediaListButton(props: {
   trackSource: PlayFromSource;
-  size?: ButtonSize;
   className?: string;
 }) {
   const { t } = useTranslation();
@@ -54,14 +49,14 @@ export function PlayMediaListButton(props: {
           : PlaybackControls.playFromList({ source: props.trackSource })
       }
       className={cn(
-        "rounded-md bg-primary active:bg-primaryDim",
+        "rounded-full bg-primary active:bg-primaryDim",
         {
           "bg-surfaceContainerHigh active:bg-surfaceContainerHighest":
             displayPause,
         },
         props.className,
       )}
-      size={props.size}
+      size="sm"
       _iconColor="onPrimary"
     />
   );

@@ -58,11 +58,7 @@ export default function Tracks() {
 function TrackActions() {
   return (
     <>
-      <PlayMediaListButton
-        trackSource={trackSource}
-        size="sm"
-        className="rounded-full"
-      />
+      <PlayMediaListButton trackSource={trackSource} />
       <RepeatButton size="sm" />
       <ShuffleButton size="sm" />
     </>

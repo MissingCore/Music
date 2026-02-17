@@ -8,7 +8,7 @@ import Animated, {
 import type { Icon } from "~/resources/icons/type";
 
 import { cn } from "~/lib/style";
-import { StyledText } from "../Typography/StyledText";
+import { Em } from "../Typography/StyledText";
 
 export type PickerOption = {
   Icon: (props: Icon) => React.JSX.Element;
@@ -41,7 +41,7 @@ export function SegmentedPicker({
 
   return (
     <View className="gap-2">
-      <View className="rounded-full bg-surfaceContainerLowest p-1">
+      <View className="rounded-full bg-surfaceContainerLowest p-0.5">
         <View
           onLayout={(e) => {
             pickerWidth.value = e.nativeEvent.layout.width;
@@ -56,7 +56,7 @@ export function SegmentedPicker({
             <Pressable
               key={idx}
               onPress={() => onOptionSelected(idx)}
-              className="min-h-12 flex-1 items-center justify-center rounded-full active:opacity-50"
+              className="min-h-10 flex-1 items-center justify-center rounded-full active:opacity-50"
             >
               <Icon
                 size={20}
@@ -67,18 +67,20 @@ export function SegmentedPicker({
         </View>
       </View>
       <View className="flex-row items-start justify-center">
-        {options.map(({ label }, idx) => (
-          <StyledText
-            key={idx}
-            dim
-            bold={selectedIndex === idx}
-            className={cn("flex-1 px-2 text-center", {
-              "text-onSurface": selectedIndex === idx,
-            })}
-          >
-            {label.toLocaleUpperCase()}
-          </StyledText>
-        ))}
+        {options.map(({ label }, idx) => {
+          const active = selectedIndex === idx;
+          return (
+            <Em
+              key={idx}
+              bold={active}
+              className={cn("flex-1 px-2 text-center", {
+                "text-onSurfaceVariant": !active,
+              })}
+            >
+              {label.toLocaleUpperCase()}
+            </Em>
+          );
+        })}
       </View>
     </View>
   );
