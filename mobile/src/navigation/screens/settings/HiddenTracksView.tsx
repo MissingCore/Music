@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { inArray } from "drizzle-orm";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -77,7 +77,8 @@ function ScreenContents(props: { data: HiddenTrack[] }) {
     unHiddenTracks.current = [...unHiddenTracks.current, trackId];
   }, []);
 
-  const handleOnUnmount = useCallback(() => {
+  //? Callback refs don't work in `Animated.FlatList`.
+  useEffect(() => {
     return () => {
       if (unHiddenTracks.current.length === 0) return;
       // Slight delay to allow navigation transition to finish as this
@@ -92,18 +93,17 @@ function ScreenContents(props: { data: HiddenTrack[] }) {
 
   return (
     <FlatList
-      // @ts-expect-error - Incompatible due to using a callback ref.
-      ref={handleOnUnmount}
       data={groupedHiddenTracks}
       keyExtractor={({ monthYearStr }) => monthYearStr}
       renderItem={({ item, index }) => (
         <View className={cn("gap-2", { "mt-4": index > 0 })}>
           <Em>{item.monthYearStr}</Em>
           <SegmentedList>
-            {item.dayEntries.map(({ day, tracks }) => (
+            {item.dayEntries.map(({ day, tracks }, index) => (
               <SegmentedList.CustomItem
                 key={`${item.monthYearStr}_${day}`}
-                className="flex-row p-1"
+                //! For some reason, the gap in `SegmentedList` doesn't work.
+                className={cn("flex-row p-1", { "mt-0.75": index > 0 })}
               >
                 <DayIndicator day={day} />
                 <HiddenTrackList tracks={tracks} onShowTrack={onShowTrack} />
