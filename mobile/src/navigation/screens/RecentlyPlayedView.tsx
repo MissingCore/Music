@@ -13,7 +13,8 @@ import { useBottomActionsInset } from "../hooks/useBottomActions";
 import { getMediaLinkContext } from "../utils/router";
 
 import { queryClient } from "~/lib/react-query";
-import { FlashList, LegendList } from "~/components/Defaults";
+import { FlatList, getListItemLayout } from "~/components/Base/List";
+import { FlashList } from "~/components/Defaults";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
@@ -61,13 +62,13 @@ export default function RecentlyPlayed() {
   }
 
   return (
-    <LegendList
-      estimatedItemSize={56} // 48px Height + 8px Margin Bottom
+    <FlatList
       data={recentlyPlayedTracks.data}
       keyExtractor={({ id }) => id}
       renderItem={({ item }) => (
         <Track {...item} trackSource={trackSource} className="mb-2" />
       )}
+      getItemLayout={getListItemLayout}
       ListHeaderComponent={
         <RecentlyPlayedLists data={recentlyPlayedMediaLists.data} />
       }

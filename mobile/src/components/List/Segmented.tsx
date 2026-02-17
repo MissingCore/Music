@@ -117,19 +117,19 @@ export function useGeneratedSegmentedList<TData extends Record<string, any>>({
 }) {
   return useMemo(
     () => ({
-      getEstimatedItemSize: (index: number) => (index === 0 ? 70 : 73),
       data,
       renderItem: ({ item, index }: { item: TData; index: number }) => (
         <SegmentedListItem
           labelText={getLabel(item)}
           supportingText={getSupportingText(item)}
           onPress={onPress ? onPress(item) : undefined}
-          className={cn({
-            "mt-0.75 rounded-t-xs": index > 0,
+          className={cn("mb-0.75", {
+            "rounded-t-xs": index > 0,
             "rounded-b-xs": index < (data?.length ?? 0) - 1,
           })}
         />
       ),
+      className: "-mb-0.75",
     }),
     [data, getLabel, getSupportingText, onPress],
   );

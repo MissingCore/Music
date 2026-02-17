@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { db } from "~/db";
 
-import { LegendList } from "~/components/Defaults";
+import { FlatList } from "~/components/Base/List";
 import { useGeneratedSegmentedList } from "~/components/List/Segmented";
 import { ContentPlaceholder } from "../../components/Placeholder";
 
@@ -17,7 +17,7 @@ export default function SaveErrors() {
   });
 
   return (
-    <LegendList
+    <FlatList
       keyExtractor={({ id }) => id}
       ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noErrors" />}
       contentContainerClassName="p-4"

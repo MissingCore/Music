@@ -8,7 +8,7 @@ import {
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { mutateGuard } from "~/lib/react-query";
-import { LegendList } from "~/components/Defaults";
+import { FlatList } from "~/components/Base/List";
 import { CheckboxField } from "~/components/Form/Checkbox";
 import { Marquee } from "~/components/Marquee";
 import { DetachedSheet } from "~/components/Sheet";
@@ -30,8 +30,7 @@ export function TrackToPlaylistsSheet({ id }: { id: string }) {
       titleKey="feat.modalTrack.extra.addToPlaylist"
       snapTop
     >
-      <LegendList
-        estimatedItemSize={62} // 54px Height + 8px Margin Bottom
+      <FlatList
         data={playlistsNames}
         keyExtractor={(name) => name}
         extraData={inList}
@@ -55,6 +54,7 @@ export function TrackToPlaylistsSheet({ id }: { id: string }) {
             </CheckboxField>
           );
         }}
+        getItemLayout={getItemLayout}
         ListEmptyComponent={
           <ContentPlaceholder errMsgKey="err.msg.noPlaylists" />
         }
@@ -64,4 +64,9 @@ export function TrackToPlaylistsSheet({ id }: { id: string }) {
       />
     </DetachedSheet>
   );
+}
+
+function getItemLayout(_: unknown, index: number) {
+  // 54px Height + 8px Margin Bottom
+  return { length: 62, offset: 62 * index, index };
 }

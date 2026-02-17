@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import LicensesList from "~/resources/licenses.json";
 
-import { LegendList } from "~/components/Defaults";
+import { FlatList } from "~/components/Base/List";
 import { useGeneratedSegmentedList } from "~/components/List/Segmented";
 
 export default function ThirdParty() {
@@ -20,7 +20,7 @@ export default function ThirdParty() {
   });
 
   return (
-    <LegendList
+    <FlatList
       keyExtractor={([id]) => id}
       contentContainerClassName="p-4"
       {...listContext}
