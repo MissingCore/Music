@@ -15,8 +15,6 @@ import Animated, {
 } from "react-native-reanimated";
 import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
 
-import { ScrollablePresets } from "../Defaults";
-
 export type SheetDragListRenderItemInfo<TData> = {
   item: TData;
   index: number;
@@ -168,7 +166,8 @@ export function SheetDragList<TData>({
       <FlatList
         // Have a key based on the data to prevent flashing.
         key={JSON.stringify(dataRef.current)}
-        {...ScrollablePresets}
+        overScrollMode="never"
+        showsVerticalScrollIndicator={false}
         {...props}
         data={dataRef.current}
         renderItem={renderDragItem}

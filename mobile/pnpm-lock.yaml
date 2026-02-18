@@ -67,9 +67,6 @@ importers:
       '@sentry/react-native':
         specifier: 7.3.0
         version: 7.3.0(expo@54.0.33(@babel/core@7.29.0)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4))(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
-      '@shopify/flash-list':
-        specifier: 2.2.2
-        version: 2.2.2(@babel/runtime@7.28.6)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
       '@tanstack/react-query':
         specifier: 5.90.21
         version: 5.90.21(react@19.1.4)
@@ -1810,13 +1807,6 @@ packages:
   '@sentry/types@10.18.0':
     resolution: {integrity: sha512-AVUL63Lotvd7cujtch1A7Rax5syleB7jAP/I5sdCs6UvDc5VqmuTNsrg5DfjBNOOPPoGGfbSBaMBQAimvtNFaA==}
     engines: {node: '>=18'}
-
-  '@shopify/flash-list@2.2.2':
-    resolution: {integrity: sha512-YrvLBK5FCpvuX+d9QvJvjVqyi4eBUaEamkyfh9CjPdF6c+AukP0RSBh97qHyTwOEaVq21A5ukwgyWMDIbmxpmQ==}
-    peerDependencies:
-      '@babel/runtime': '*'
-      react: '*'
-      react-native: '*'
 
   '@sinclair/typebox@0.27.10':
     resolution: {integrity: sha512-MTBk/3jGLNB2tVxv6uLlFh1iu64iYOQ2PbdOSK3NW8JZsmlaOh2q6sdtKowBhfw8QFLmYNzTW4/oK4uATIi6ZA==}
@@ -7424,12 +7414,6 @@ snapshots:
   '@sentry/types@10.18.0':
     dependencies:
       '@sentry/core': 10.18.0
-
-  '@shopify/flash-list@2.2.2(@babel/runtime@7.28.6)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)':
-    dependencies:
-      '@babel/runtime': 7.28.6
-      react: 19.1.4
-      react-native: 0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4)
 
   '@sinclair/typebox@0.27.10': {}
 

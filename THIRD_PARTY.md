@@ -12,7 +12,6 @@
 | @react-navigation/native | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native |
 | @react-navigation/native-stack | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native-stack |
 | @sentry/react-native | MIT | https://github.com/getsentry/sentry-react-native |
-| @shopify/flash-list | MIT | https://github.com/Shopify/flash-list |
 | @tanstack/react-query | MIT | https://github.com/TanStack/query |
 | @weights-ai/react-native-track-player | Apache-2.0 | https://github.com/doublesymmetry/react-native-track-player |
 | clsx | MIT | https://github.com/lukeed/clsx |
