@@ -44,7 +44,6 @@
 | react-native-android-widget | MIT | https://github.com/sAleksovski/react-native-android-widget |
 | react-native-audio-analyzer | MIT | https://github.com/exzos28/react-native-audio-analyzer |
 | react-native-bootsplash | MIT | https://github.com/zoontek/react-native-bootsplash |
-| react-native-draglist | MIT | https://github.com/fivecar/react-native-draglist |
 | react-native-edge-to-edge | MIT | https://github.com/zoontek/react-native-edge-to-edge |
 | react-native-gesture-handler | MIT | https://github.com/software-mansion/react-native-gesture-handler |
 | react-native-keyboard-controller | MIT | https://github.com/kirillzyusko/react-native-keyboard-controller |
@@ -53,6 +52,7 @@
 | react-native-pager-view | MIT | https://github.com/callstack/react-native-pager-view |
 | react-native-paper | MIT | https://github.com/callstack/react-native-paper |
 | react-native-reanimated | MIT | https://github.com/software-mansion/react-native-reanimated |
+| react-native-reorderable-list | MIT | https://github.com/omahili/react-native-reorderable-list |
 | react-native-safe-area-context | MIT | https://github.com/AppAndFlow/react-native-safe-area-context |
 | react-native-screens | MIT | https://github.com/software-mansion/react-native-screens |
 | react-native-svg | MIT | https://github.com/software-mansion/react-native-svg |

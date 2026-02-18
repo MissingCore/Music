@@ -148,9 +148,6 @@ importers:
       react-native-bootsplash:
         specifier: 7.0.2
         version: 7.0.2(patch_hash=766dba26b25509f46c82fc47d9ac52524fc8d2b0abce9fe8e0795caeaab251df)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
-      react-native-draglist:
-        specifier: github:MissingCore/react-native-draglist#7471bc8c12544e6eef7b39be63fd268bc36430e1
-        version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/7471bc8c12544e6eef7b39be63fd268bc36430e1(@shopify/flash-list@2.2.2(@babel/runtime@7.28.6)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4))(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
       react-native-edge-to-edge:
         specifier: 1.7.0
         version: 1.7.0(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
@@ -175,6 +172,9 @@ importers:
       react-native-reanimated:
         specifier: 4.2.1
         version: 4.2.1(react-native-worklets@0.7.4(@babel/core@7.29.0)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4))(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
+      react-native-reorderable-list:
+        specifier: 0.18.0
+        version: 0.18.0(react-native-gesture-handler@2.30.0(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4))(react-native-reanimated@4.2.1(react-native-worklets@0.7.4(@babel/core@7.29.0)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4))(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4))(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
       react-native-safe-area-context:
         specifier: 5.6.2
         version: 5.6.2(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
@@ -4698,17 +4698,6 @@ packages:
       react: '*'
       react-native: '*'
 
-  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/7471bc8c12544e6eef7b39be63fd268bc36430e1:
-    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/7471bc8c12544e6eef7b39be63fd268bc36430e1}
-    version: 3.10.0
-    peerDependencies:
-      '@shopify/flash-list': '>=2.0.0'
-      react: '>=17.0.1'
-      react-native: '>=0.64.0'
-    peerDependenciesMeta:
-      '@shopify/flash-list':
-        optional: true
-
   react-native-edge-to-edge@1.7.0:
     resolution: {integrity: sha512-ERegbsq28yoMndn/Uq49i4h6aAhMvTEjOfkFh50yX9H/dMjjCr/Tix/es/9JcPRvC+q7VzCMWfxWDUb6Jrq1OQ==}
     peerDependencies:
@@ -4768,6 +4757,15 @@ packages:
       react: '*'
       react-native: '*'
       react-native-worklets: '>=0.7.0'
+
+  react-native-reorderable-list@0.18.0:
+    resolution: {integrity: sha512-zjN7UvKGxSOnIXrB+9W4WE7e2D/fP61U2EaAk5JUSIjj6pw8W9cYRQ6E6TQV6BaztJ4bDTPRV2LUiOS3WAj6jA==}
+    engines: {node: '>= 18.0.0'}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+      react-native-gesture-handler: '>=2.12.0'
+      react-native-reanimated: '>=3.12.0'
 
   react-native-safe-area-context@5.6.2:
     resolution: {integrity: sha512-4XGqMNj5qjUTYywJqpdWZ9IG8jgkS3h06sfVjfw5yZQZfWnRFXczi0GnYyFyCc2EBps/qFmoCH8fez//WumdVg==}
@@ -10527,13 +10525,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/7471bc8c12544e6eef7b39be63fd268bc36430e1(@shopify/flash-list@2.2.2(@babel/runtime@7.28.6)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4))(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4):
-    dependencies:
-      react: 19.1.4
-      react-native: 0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4)
-    optionalDependencies:
-      '@shopify/flash-list': 2.2.2(@babel/runtime@7.28.6)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
-
   react-native-edge-to-edge@1.7.0(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4):
     dependencies:
       react: 19.1.4
@@ -10598,6 +10589,13 @@ snapshots:
       react-native-is-edge-to-edge: 1.2.1(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
       react-native-worklets: 0.7.4(@babel/core@7.29.0)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
       semver: 7.7.3
+
+  react-native-reorderable-list@0.18.0(react-native-gesture-handler@2.30.0(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4))(react-native-reanimated@4.2.1(react-native-worklets@0.7.4(@babel/core@7.29.0)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4))(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4))(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4):
+    dependencies:
+      react: 19.1.4
+      react-native: 0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4)
+      react-native-gesture-handler: 2.30.0(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
+      react-native-reanimated: 4.2.1(react-native-worklets@0.7.4(@babel/core@7.29.0)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4))(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
 
   react-native-safe-area-context@5.6.2(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4):
     dependencies:

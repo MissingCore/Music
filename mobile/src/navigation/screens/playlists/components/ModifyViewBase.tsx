@@ -3,7 +3,6 @@ import { useNavigation } from "@react-navigation/native";
 import { memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 import { z } from "zod/mini";
 
 import type { SlimTrackWithAlbum } from "~/db/slimTypes";
@@ -27,7 +26,12 @@ import { cn } from "~/lib/style";
 import { ToastOptions } from "~/lib/toast";
 import { moveArray } from "~/utils/object";
 import { wait } from "~/utils/promise";
-import { FlashDragList } from "~/components/Defaults";
+import {
+  DragList,
+  useDragListState,
+  useInitDrag,
+} from "~/components/Base/DragList";
+import type { ListRenderItemInfo } from "~/components/Base/List";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { RemovableItem } from "~/components/List/RemovableItem";
@@ -113,38 +117,45 @@ function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
   );
 
   const reorderTrack = useCallback(
-    (fromIndex: number, toIndex: number) =>
+    ({ from: fromIndex, to: toIndex }: { from: number; to: number }) =>
       setFields((prev) =>
         getTracksFields(moveArray(prev.tracks, { fromIndex, toIndex })),
       ),
     [setFields],
   );
 
+  //#region Stable Callbacks
+  const keyExtractor = useCallback(({ id }: { id: string }) => id, []);
+
+  const renderItem = useCallback(
+    (args: ListRenderItemInfo<SlimTrackEntry>) => (
+      <RenderItem
+        {...args}
+        isSubmitting={isSubmitting}
+        onRemove={removeTrack}
+      />
+    ),
+    [removeTrack, isSubmitting],
+  );
+  //#endregion
+
   return (
     <>
       <AddTracksSheet ref={addTracksSheetRef} />
-      <FlashDragList
+      <DragList
         pointerEvents={isSubmitting ? "none" : "auto"}
         data={data.tracks}
-        keyExtractor={({ id }) => id}
-        renderItem={(args) => (
-          <RenderItem
-            {...args}
-            isSubmitting={isSubmitting}
-            onRemove={removeTrack}
-          />
-        )}
-        onReordered={reorderTrack}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+        onReorder={reorderTrack}
         ListHeaderComponent={
           <ListHeaderComponent
             showSheet={() => addTracksSheetRef.current?.present()}
           />
         }
         ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noTracks" />}
-        // FIXME: For some weird reason, we get double the margin bottom (should be `-mb-2`).
-        className="-mb-1"
         contentContainerStyle={{ paddingBottom: bottomOffset }}
-        contentContainerClassName="p-4"
+        contentContainerClassName="px-4"
       />
     </>
   );
@@ -265,27 +276,31 @@ function ListHeaderComponent(props: { showSheet: VoidFunction }) {
 //#endregion
 
 //#region Rendered Item
-type RenderItemProps = DragListRenderItemInfo<SlimTrackEntry>;
+type RenderItemProps = ListRenderItemInfo<SlimTrackEntry> & {
+  isSubmitting: boolean;
+  onRemove: (id: string) => void;
+};
 
 const RenderItem = memo(
   function RenderItem({
     item,
+    index,
+    isSubmitting,
     onRemove,
-    ...info
-  }: RenderItemProps & {
-    isSubmitting: boolean;
-    onRemove: (id: string) => void;
-  }) {
+  }: RenderItemProps) {
     const { t } = useTranslation();
+    const initDrag = useInitDrag();
+    const { isActive, isDragging } = useDragListState(index);
+
     return (
       <RemovableItem
         label={item.name}
         onRemove={() => onRemove(item.id)}
-        disableRemove={info.isDragging}
+        disableRemove={isDragging}
         //! `bg-surface` is there to prevent collapsing the View.
         className={cn("mb-2 rounded-xs bg-surface", {
-          "bg-surfaceContainerLowest": info.isActive,
-          "opacity-25": info.isSubmitting,
+          "bg-surfaceContainerLowest": isActive,
+          "opacity-25": isSubmitting,
         })}
       >
         <SearchResult
@@ -297,9 +312,8 @@ const RenderItem = memo(
             <IconButton
               Icon={DragHandle}
               accessibilityLabel={t("template.entryMove", { name: item.name })}
-              onPressIn={info.onDragStart}
-              onPressOut={info.onDragEnd}
-              disabled={info.isDragging && !info.isActive}
+              onPressIn={initDrag}
+              disabled={isDragging && !isActive}
               size="xs"
             />
           }
@@ -311,7 +325,7 @@ const RenderItem = memo(
   (oldProps, newProps) => {
     return (
       oldProps.item.id === newProps.item.id &&
-      (["isSubmitting", "index", "isActive", "isDragging"] as const).every(
+      (["isSubmitting", "index"] as const).every(
         (k) => oldProps[k] === newProps[k],
       )
     );

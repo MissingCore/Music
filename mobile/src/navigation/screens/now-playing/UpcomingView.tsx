@@ -2,7 +2,6 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { inArray } from "drizzle-orm";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
 import { tracks } from "~/db/schema";
 
@@ -19,7 +18,12 @@ import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
 import { wait } from "~/utils/promise";
-import { FlashDragList } from "~/components/Defaults";
+import {
+  DragList,
+  useDragListState,
+  useInitDrag,
+} from "~/components/Base/DragList";
+import type { ListRenderItemInfo } from "~/components/Base/List";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { RemovableItem } from "~/components/List/RemovableItem";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
@@ -49,10 +53,13 @@ export default function Upcoming() {
     return cachedData.toSpliced(listIndex, 1, { ...activeTrack, active: true });
   }, [cachedData, listIndex]);
 
-  const onMove = useCallback((fromIndex: number, toIndex: number) => {
-    Queue.moveTrack(fromIndex, toIndex);
-    setCachedData((prev) => moveArray(prev, { fromIndex, toIndex }));
-  }, []);
+  const onMove = useCallback(
+    ({ from: fromIndex, to: toIndex }: { from: number; to: number }) => {
+      Queue.moveTrack(fromIndex, toIndex);
+      setCachedData((prev) => moveArray(prev, { fromIndex, toIndex }));
+    },
+    [],
+  );
 
   const onRemoveTrack = useCallback((key: string) => {
     Queue.removeKey(key);
@@ -71,12 +78,27 @@ export default function Upcoming() {
     setIsSynchronizing(false);
   }, [queryClient]);
 
+  // Index where the tracks won't be played.
+  const disableIndex = repeat === RepeatModes.NO_REPEAT ? listIndex : 0;
+
+  //#region Stable Callbacks
+  const keyExtractor = useCallback(({ key }: { key: string }) => key, []);
+
+  const renderItem = useCallback(
+    (args: ListRenderItemInfo<TrackData>) => (
+      <RenderItem
+        {...args}
+        disableAfter={disableIndex}
+        onRemove={onRemoveTrack}
+      />
+    ),
+    [disableIndex, onRemoveTrack],
+  );
+  //#endregion
+
   if (isPending || error || data.length === 0) {
     return <PagePlaceholder isPending={isPending || data?.length === 0} />;
   }
-
-  // Index where the tracks won't be played.
-  const disableIndex = repeat === RepeatModes.NO_REPEAT ? listIndex : 0;
 
   return (
     <>
@@ -91,31 +113,22 @@ export default function Upcoming() {
           />
         )}
       />
-      <FlashDragList
-        initialScrollIndex={listIndex}
+      <DragList
+        //! FIXME: We get a blank screen when using `initialScrollIndex`.
+        // initialScrollIndex={listIndex}
         data={modifiedData}
-        keyExtractor={(item) => item.key}
-        estimatedItemSize={56}
-        renderItem={(args) => (
-          <RenderItem
-            disableAfter={disableIndex}
-            onRemoveTrack={onRemoveTrack}
-            {...args}
-          />
-        )}
-        onReordered={onMove}
-        // FIXME: For some weird reason, we get double the margin bottom (should be `-mb-2`).
-        className="-mb-1"
-        contentContainerClassName="py-4"
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+        onReorder={onMove}
       />
     </>
   );
 }
 
 //#region Rendered Track
-type RenderItemProps = DragListRenderItemInfo<TrackData> & {
+type RenderItemProps = ListRenderItemInfo<TrackData> & {
   disableAfter: number;
-  onRemoveTrack: (tKey: string) => void;
+  onRemove: (tKey: string) => void;
 };
 
 const RenderItem = memo(
@@ -123,27 +136,28 @@ const RenderItem = memo(
     item,
     index,
     disableAfter,
-    onRemoveTrack,
-    ...info
+    onRemove,
   }: RenderItemProps) {
     const { t } = useTranslation();
+    const initDrag = useInitDrag();
+    const { isActive, isDragging } = useDragListState(index);
+
     return (
       <RemovableItem
         label={item.name}
-        onRemove={() => onRemoveTrack(item.key)}
-        disableRemove={item.active || info.isDragging}
+        onRemove={() => onRemove(item.key)}
+        disableRemove={item.active || isDragging}
         onPress={() =>
           item.active
             ? PlaybackControls.playToggle()
             : PlaybackControls.playAtIndex(index)
         }
-        disabled={info.isDragging}
+        disabled={isDragging}
         className={cn(
           "mx-3 mb-2 flex-row items-center gap-1 rounded-xs active:bg-surfaceContainerLowest/50",
           {
-            "bg-surfaceContainerLowest!": info.isActive,
-            "opacity-25 active:opacity-100":
-              index < disableAfter && !info.isActive,
+            "bg-surfaceContainerLowest!": isActive,
+            "opacity-25 active:opacity-100": index < disableAfter && !isActive,
           },
         )}
       >
@@ -157,9 +171,8 @@ const RenderItem = memo(
             <IconButton
               Icon={DragHandle}
               accessibilityLabel={t("template.entryMove", { name: item.name })}
-              onPressIn={info.onDragStart}
-              onPressOut={info.onDragEnd}
-              disabled={info.isDragging && !info.isActive}
+              onPressIn={initDrag}
+              disabled={isDragging && !isActive}
               size="xs"
             />
           }
@@ -171,7 +184,7 @@ const RenderItem = memo(
   },
   (oldProps, newProps) => {
     return (
-      (["index", "isActive", "isDragging", "disableAfter"] as const).every(
+      (["index", "disableAfter"] as const).every(
         (key) => oldProps[key] === newProps[key],
       ) &&
       oldProps.item.key === newProps.item.key &&

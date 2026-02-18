@@ -1,8 +1,5 @@
 import { useMemo, useRef, useState } from "react";
 import type { LayoutChangeEvent, ScrollViewProps } from "react-native";
-import type { FlashDragListProps } from "react-native-draglist/dist/FlashList";
-import RawFlashDragList from "react-native-draglist/dist/FlashList";
-import { withUniwind } from "uniwind";
 
 /** Presets for scrollview-like components. */
 export const ScrollablePresets = {
@@ -40,13 +37,3 @@ export function useIsScrollable() {
 
   return useMemo(() => ({ handlers, isScrollable }), [handlers, isScrollable]);
 }
-
-//#region Flash Drag List
-const WrappedFlashDragList = withUniwind(
-  RawFlashDragList,
-) as typeof RawFlashDragList;
-
-export function FlashDragList<T>(props: FlashDragListProps<T>) {
-  return <WrappedFlashDragList {...ScrollablePresets} {...props} />;
-}
-//#endregion

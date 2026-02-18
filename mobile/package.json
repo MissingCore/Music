@@ -62,7 +62,6 @@
     "react-native-android-widget": "0.20.1",
     "react-native-audio-analyzer": "3.1.0",
     "react-native-bootsplash": "7.0.2",
-    "react-native-draglist": "github:MissingCore/react-native-draglist#7471bc8c12544e6eef7b39be63fd268bc36430e1",
     "react-native-edge-to-edge": "1.7.0",
     "react-native-gesture-handler": "2.30.0",
     "react-native-keyboard-controller": "1.20.7",
@@ -71,6 +70,7 @@
     "react-native-pager-view": "8.0.0",
     "react-native-paper": "5.15.0",
     "react-native-reanimated": "4.2.1",
+    "react-native-reorderable-list": "0.18.0",
     "react-native-safe-area-context": "5.6.2",
     "react-native-screens": "4.23.0",
     "react-native-svg": "15.15.3",
@@ -118,7 +118,6 @@
     "onlyBuiltDependencies": [
       "@sentry/cli",
       "@weights-ai/react-native-track-player",
-      "react-native-draglist",
       "sharp"
     ],
     "overrides": {
