@@ -68,10 +68,10 @@ export default function Upcoming() {
 
   const onSynchronizeQueue = useCallback(async () => {
     setIsSynchronizing(true);
+    await wait(1);
     // Clear the cache before we resynchronize the queue to prevent the potential
     // of removing the active track in the split frame where you could.
     setCachedData([]);
-    await wait(1);
     await Queue.synchronize();
     // `removeQueries` will reset the `isPending` state unlike `resetQueries`.
     queryClient.removeQueries({ queryKey });
@@ -114,8 +114,7 @@ export default function Upcoming() {
         )}
       />
       <DragList
-        //! FIXME: We get a blank screen when using `initialScrollIndex`.
-        // initialScrollIndex={listIndex}
+        initialScrollIndex={listIndex}
         data={modifiedData}
         keyExtractor={keyExtractor}
         renderItem={renderItem}

@@ -7,7 +7,7 @@ import type {
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 
 type FlatListSignature = <T>(
-  props: FlatListPropsWithLayout<T> & { ref?: JoinedFlatListRef },
+  props: FlatListProps<T> & { ref?: JoinedFlatListRef },
 ) => React.JSX.Element;
 
 type JoinedFlatListRef = FlatListRef | AnimatedFlatListRef;
@@ -15,7 +15,10 @@ type JoinedFlatListRef = FlatListRef | AnimatedFlatListRef;
 export type FlatListRef<T = any> = React.RefObject<Animated.FlatList<T> | null>;
 export type AnimatedFlatListRef<T = any> = AnimatedRef<Animated.FlatList<T>>;
 
-export type FlatListProps<T = any> = FlatListPropsWithLayout<T>;
+export type FlatListProps<T = any> = Omit<
+  FlatListPropsWithLayout<T>,
+  "initialScrollIndex"
+>;
 
 export type ListRenderItemInfo<T = any> = RawListRenderItemInfo<T>;
 

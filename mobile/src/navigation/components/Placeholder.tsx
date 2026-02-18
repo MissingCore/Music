@@ -74,9 +74,12 @@ export function ContentPlaceholder(
 }
 
 /** Placeholder to render while waiting for data from React Query. */
-export function PagePlaceholder(props: ErrorMsgProps & { isPending: boolean }) {
+export function PagePlaceholder({
+  wrapperClassName,
+  ...props
+}: ErrorMsgProps & { isPending: boolean; wrapperClassName?: string }) {
   return (
-    <View className="w-full flex-1 p-4">
+    <View className={cn("w-full flex-1 p-4", wrapperClassName)}>
       <ContentPlaceholder {...props} />
     </View>
   );
