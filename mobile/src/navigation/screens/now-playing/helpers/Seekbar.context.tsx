@@ -56,7 +56,7 @@ export function SeekbarContext(props: { children: React.ReactNode }) {
     animatedPosition.value = lastPosition;
     // Prevent slight rubberbanding when pausing as `animatedPosition` will be
     // ahead of whatever is reported by the `PlaybackProgressUpdated` event.
-    if (!isPlaying && priorPos !== 0) {
+    if (!isPlaying && priorPos !== 0 && lastPosition !== 0) {
       //! Prevents an infinite loop caused by `animatedPosition.value` for some
       //! reason not equaling `priorPos` after setting it in this block.
       if (lastPosition === pausedPositionRef.current) {
