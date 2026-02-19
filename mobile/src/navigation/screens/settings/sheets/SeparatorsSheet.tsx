@@ -55,7 +55,7 @@ export function SeparatorsSheet(props: { ref: TrueSheetRef }) {
         )}
         {...sheetListHandlers}
         className="-my-6"
-        contentContainerClassName="gap-2 pt-6 pb-4"
+        contentContainerClassName="gap-2 pt-6 pr-1 pb-4"
       />
 
       <Divider />

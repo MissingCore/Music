@@ -89,7 +89,6 @@ export default function Album({
                 accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
                 onPress={() => mutateGuard(favoriteAlbum, !data.isFavorite)}
                 filled={isToggled}
-                size="sm"
               />
               <CurrentListMenu
                 name={data.name}

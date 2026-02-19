@@ -85,7 +85,6 @@ export default function Lyric({
                 name: t("term.track"),
               })}
               onPress={() => linkTracksSheetRef.current?.present()}
-              size="sm"
             />
           </SegmentedList.CustomItem>
           {linkedTracks.length > 0 ? (
@@ -99,7 +98,7 @@ export default function Lyric({
                 return (
                   <Fragment key={id}>
                     {index > 0 ? <Divider className="mx-4" /> : null}
-                    <View className="flex-row gap-2 p-4 pr-1">
+                    <View className="flex-row gap-2 p-4 pr-2">
                       <View className="shrink grow">
                         <StyledText className="text-sm">{name}</StyledText>
                         {artistsString ? (

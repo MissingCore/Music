@@ -62,12 +62,14 @@ function Navbar({ stacked = false, hidden = false }) {
         Icon={Search}
         accessibilityLabel={t("feat.search.title")}
         onPress={() => navigation.navigate("Search")}
+        size="md"
       />
       <View className="relative">
         <IconButton
           Icon={Settings}
           accessibilityLabel={t("term.settings")}
           onPress={() => navigation.navigate("Settings")}
+          size="md"
         />
         {hasNewUpdate && (
           <View className="absolute top-3 right-3 size-2 rounded-full bg-primary" />

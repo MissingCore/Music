@@ -31,7 +31,7 @@ type IconButtonProps = PressProps & {
 //#region Default
 export const IconButton = memo(function IconButton({
   Icon,
-  size = "md",
+  size = "sm",
   filled,
   _iconColor,
   ...props

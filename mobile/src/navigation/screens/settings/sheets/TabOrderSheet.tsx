@@ -81,6 +81,7 @@ const RenderItem = memo(
           className={cn({
             "disabled:opacity-100": !info.isDragging && isHomeTab,
           })}
+          size="md"
         />
         <TStyledText
           textKey={tabNameKey}
@@ -91,6 +92,7 @@ const RenderItem = memo(
           Icon={DragHandle}
           accessibilityLabel={t("template.entryMove", { name: tabName })}
           onPressIn={info.onInitDrag}
+          size="md"
         />
       </View>
     );

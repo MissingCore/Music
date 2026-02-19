@@ -194,11 +194,13 @@ function IconActions(props: {
           )
         }
         filled={isFav}
+        size="md"
       />
       <IconButton
         Icon={PlaylistAdd}
         accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
         onPress={sheetAction(() => TrueSheet.present("TrackToPlaylistsSheet"))}
+        size="md"
       />
       <IconButton
         Icon={Edit}
@@ -206,11 +208,13 @@ function IconActions(props: {
         onPress={sheetAction(() =>
           navigation.navigate("ModifyTrack", { id: props.data.id }),
         )}
+        size="md"
       />
       <IconButton
         Icon={Image}
         accessibilityLabel={t("feat.artwork.extra.change")}
         onPress={sheetAction(props.editArtwork)}
+        size="md"
       />
       <IconButton
         Icon={Delete}
@@ -218,6 +222,7 @@ function IconActions(props: {
         onPress={sheetAction(() =>
           mutateGuard(hideTrack, { track: props.data }),
         )}
+        size="md"
       />
     </View>
   );

@@ -96,7 +96,6 @@ export default function Playlist({
                     mutateGuard(favoritePlaylist, !data.isFavorite)
                   }
                   filled={isToggled}
-                  size="sm"
                 />
               ) : null}
               <CurrentListMenu

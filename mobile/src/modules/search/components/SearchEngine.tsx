@@ -140,7 +140,7 @@ function SearchResultsList<TScope extends SearchCategories>(
                   />
                 ) : undefined
               }
-              className={cn("mb-2", {
+              className={cn("mb-2 pr-1", {
                 "pr-4": !props.withTrackActions || item.type !== "track",
                 "rounded-full": item.type === "artist",
               })}

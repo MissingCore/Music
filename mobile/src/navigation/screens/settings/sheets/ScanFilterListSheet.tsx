@@ -64,7 +64,7 @@ export function ScanFilterListSheet(props: {
         )}
         {...sheetListHandlers}
         className="-mt-6"
-        contentContainerClassName="gap-2 pt-6 pb-4"
+        contentContainerClassName="gap-2 pt-6 pr-1 pb-4"
       />
     </DetachedSheet>
   );
@@ -121,6 +121,7 @@ function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
           accessibilityLabel={t("feat.directory.extra.select")}
           onPress={selectDirectory}
           disabled={inputForm.isSubmitting}
+          size="md"
         />
       </View>
       <FilledIconButton
