@@ -40,6 +40,9 @@ importers:
       '@kaannn/react-native-waveform':
         specifier: 0.1.4
         version: 0.1.4(patch_hash=02bde95462ae30a21077feabc5ad68053c8c71b2d2b8f17eb4aa29a9ba090446)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
+      '@legendapp/list':
+        specifier: 2.0.19
+        version: 2.0.19(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
       '@lodev09/react-native-true-sheet':
         specifier: 3.4.2
         version: 3.4.2(patch_hash=a236b9bf74e9f29d81327ec6e984d46977a4805373593e38f4fb1bdad56ef9c9)(@react-navigation/native@7.1.28(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4))(react-native-reanimated@4.2.1(react-native-worklets@0.7.4(@babel/core@7.29.0)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4))(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4))(react-native-worklets@0.7.4(@babel/core@7.29.0)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4))(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
@@ -1500,6 +1503,12 @@ packages:
 
   '@kaannn/react-native-waveform@0.1.4':
     resolution: {integrity: sha512-kQnkmlQhSxOCH1FE+n5V7RfP5Owsy9gXpCQEuFd0DCFC6J+0sR+00aQHvy81hoDt+Lqg2HbTEcxk8r5aGfmpzg==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+
+  '@legendapp/list@2.0.19':
+    resolution: {integrity: sha512-zDWg8yg0smKxxk+M7gwAbZAnf5uczohPA+IjqLSkImz7+e9ytxeT0Mq35RBO9RTKODOXfV/aIgm1uqUHLBEdmg==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -7035,6 +7044,12 @@ snapshots:
     dependencies:
       react: 19.1.4
       react-native: 0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4)
+
+  '@legendapp/list@2.0.19(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)':
+    dependencies:
+      react: 19.1.4
+      react-native: 0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4)
+      use-sync-external-store: 1.6.0(react@19.1.4)
 
   '@lodev09/react-native-true-sheet@3.4.2(patch_hash=a236b9bf74e9f29d81327ec6e984d46977a4805373593e38f4fb1bdad56ef9c9)(@react-navigation/native@7.1.28(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4))(react-native-reanimated@4.2.1(react-native-worklets@0.7.4(@babel/core@7.29.0)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4))(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4))(react-native-worklets@0.7.4(@babel/core@7.29.0)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4))(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)':
     dependencies:
