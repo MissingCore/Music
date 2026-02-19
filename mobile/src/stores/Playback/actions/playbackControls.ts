@@ -226,7 +226,7 @@ export async function playFromList({
   // 5. Update the persistent storage.
   playbackStore.setState({
     isPlaying: true,
-    lastPosition: 0,
+    ...(isDiffTrack ? { lastPosition: 0 } : {}),
     ...newListInfo,
     playingFrom: source,
     playingFromName: await getSourceName(source),
