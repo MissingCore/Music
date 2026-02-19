@@ -42,8 +42,7 @@ export function CurrentListLayout<TData>({
   listInfo,
   SubHeader,
   ...props
-}: Omit<LegendListProps<TData>, "data"> & {
-  data?: TData[];
+}: LegendListProps<TData> & {
   listInfo: ListInfoProps;
   SubHeader?: React.ReactNode;
 } & Omit<ListArtworkProps, "size">) {
