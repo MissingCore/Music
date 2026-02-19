@@ -8,7 +8,7 @@ import type { MutableViewOrder } from "../types";
 export function useViewOrder<
   TScreen extends MutableViewOrder,
   TData extends Pick<SortOptionTypeMap, ScreenSortOptions<TScreen>>,
->(screen: TScreen, data: TData[] = []) {
+>(screen: TScreen, data: TData[] | undefined) {
   const isAsc = useViewPreferenceStore((s) => s[`${screen}IsAsc`]);
   const orderBy = useViewPreferenceStore((s) => s[`${screen}Order`]);
   const [cachedComputation, setCachedComputation] = useState<
@@ -17,6 +17,7 @@ export function useViewOrder<
   const dataCache = useRef(data);
 
   const sortedData = useMemo(() => {
+    if (!dataCache.current) return;
     const cacheKey = `${orderBy}__${isAsc}`;
     if (cachedComputation[cacheKey]) return cachedComputation[cacheKey];
 

@@ -30,12 +30,15 @@ const compactGridLayoutOptions: GCWProps = {
 /** Formats data to pass into `FlatList`. */
 export function useViewLayout<TData extends Record<string, any>>(
   screen: MutableViewLayout,
-  data: TData[] = [],
+  data: TData[] | undefined,
   formatData: (data: TData) => LayoutItem,
 ) {
   const navigation = useNavigation();
 
-  const formattedData = useMemo(() => data.map(formatData), [data, formatData]);
+  const formattedData = useMemo(
+    () => data?.map(formatData),
+    [data, formatData],
+  );
 
   //#region Layout Configs
   const gridLayout = useGetColumn(gridLayoutOptions);

@@ -35,7 +35,7 @@ export default function Artists() {
       OptionsSheet={ArtistsViewOptionsSheet}
       ListEmptyComponent={
         <ContentPlaceholder
-          isPending={isPending}
+          isPending={isPending || presets.data === undefined}
           errMsgKey="err.msg.noArtists"
         />
       }

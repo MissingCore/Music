@@ -29,7 +29,7 @@ export default function Albums() {
       OptionsSheet={AlbumsViewOptionsSheet}
       ListEmptyComponent={
         <ContentPlaceholder
-          isPending={isPending}
+          isPending={isPending || presets.data === undefined}
           errMsgKey="err.msg.noAlbums"
         />
       }

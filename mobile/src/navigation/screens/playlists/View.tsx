@@ -39,7 +39,7 @@ export default function Playlists() {
       Actions={<PlaylistActions />}
       ListEmptyComponent={
         <ContentPlaceholder
-          isPending={isPending}
+          isPending={isPending || presets.data === undefined}
           errMsgKey="err.msg.noPlaylists"
         />
       }

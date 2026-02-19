@@ -100,7 +100,7 @@ export function useTrackListPreset(args: {
       getItemLayout: getListItemLayout,
       ListEmptyComponent: (
         <ContentPlaceholder
-          isPending={args.isPending}
+          isPending={args.isPending || args.data === undefined}
           errMsgKey="err.msg.noTracks"
         />
       ),

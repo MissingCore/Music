@@ -82,7 +82,7 @@ export function useMediaCardListPreset(
       getItemLayout: getRowItemLayout(width + 40 + 12),
       ListEmptyComponent: (
         <ContentPlaceholder
-          isPending={args.isPending}
+          isPending={args.isPending || args.data === undefined}
           errMsgKey={args.errMsgKey}
         />
       ),
