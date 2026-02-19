@@ -9,7 +9,6 @@ import {
 import { useTranslation } from "react-i18next";
 import type { ViewStyle } from "react-native";
 import { View } from "react-native";
-
 import type { AnimatedStyle, ScrollHandler } from "react-native-reanimated";
 import Animated, {
   cancelAnimation,
@@ -28,10 +27,13 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
 
 import type {
-  AnimatedFlatListRef,
-  FlatListProps,
-} from "~/components/Base/List";
-import { FlatList, useAnimatedFlatListRef } from "~/components/Base/List";
+  AnimatedLegendListRef,
+  LegendListProps,
+} from "~/components/Base/LegendList";
+import {
+  LegendList,
+  useAnimatedLegendListRef,
+} from "~/components/Base/LegendList";
 import {
   ScrollView,
   useAnimatedScrollViewRef,
@@ -120,7 +122,7 @@ export function NScrollLayout(props: {
 //#endregion
 
 //#region NScrollListLayout
-/** FlatList with "shy header" and `NScrollbar`. */
+/** LegendList with "shy header" and `NScrollbar`. */
 export function NScrollListLayout<TData>({
   titleKey,
   listRef,
@@ -129,9 +131,9 @@ export function NScrollListLayout<TData>({
   Subheader,
   estimatedSubheaderHeight = 0,
   ...props
-}: Omit<FlatListProps<TData>, "onContentSizeChange" | "onLayout"> & {
+}: Omit<LegendListProps<TData>, "onContentSizeChange" | "onLayout"> & {
   titleKey: ParseKeys;
-  listRef?: AnimatedFlatListRef;
+  listRef?: AnimatedLegendListRef;
   OptionsSheet?: (props: { ref: TrueSheetRef }) => React.JSX.Element;
   /** Additional "actions" which will appear before the "Screen Options" button. */
   Actions?: React.ReactNode;
@@ -143,7 +145,7 @@ export function NScrollListLayout<TData>({
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const bottomInset = useBottomActionsInset();
-  const internalListRef = useAnimatedFlatListRef();
+  const internalListRef = useAnimatedLegendListRef();
   // @ts-expect-error - Should be able to synchronize refs.
   useImperativeHandle(listRef, () => internalListRef.current);
   const sheetRef = useSheetRef();
@@ -196,10 +198,11 @@ export function NScrollListLayout<TData>({
         {Subheader}
       </ShyHeader>
 
-      <FlatList
+      <LegendList
         ref={internalListRef}
         {...scrollBarContext.layoutHandlers}
         onScroll={shyHeaderContext.scrollHandler}
+        maintainVisibleContentPosition={false}
         {...props}
         contentContainerStyle={{
           paddingHorizontal: 16,

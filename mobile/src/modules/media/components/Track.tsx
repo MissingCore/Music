@@ -6,8 +6,7 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { presentTrackSheet } from "~/stores/Session/actions";
 
-import type { FlatListProps } from "~/components/Base/List";
-import { getListItemLayout } from "~/components/Base/List";
+import type { LegendListProps } from "~/components/Base/LegendList";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
@@ -92,12 +91,12 @@ export function useTrackListPreset(args: {
   const data = useTrackListPlayingIndication(args.trackSource, args.data);
   return useMemo(
     () => ({
+      estimatedItemSize: 56, // 48px Height + 8px Margin Bottom
       data,
       keyExtractor: ({ id }) => id,
       renderItem: ({ item }) => (
         <Track {...item} trackSource={args.trackSource} className="mb-2" />
       ),
-      getItemLayout: getListItemLayout,
       ListEmptyComponent: (
         <ContentPlaceholder
           isPending={args.isPending || args.data === undefined}
@@ -107,8 +106,6 @@ export function useTrackListPreset(args: {
       className: "-mb-2",
     }),
     [args, data],
-  ) satisfies Omit<FlatListProps<TrackContent>, "data"> & {
-    data?: readonly TrackContent[];
-  };
+  ) satisfies LegendListProps<TrackContent>;
 }
 //#endregion
