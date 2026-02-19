@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { View, useWindowDimensions } from "react-native";
 import type { SharedValue } from "react-native-reanimated";
@@ -17,8 +17,8 @@ import { useDelayedReady } from "~/hooks/useDelayedReady";
 
 import { cn } from "~/lib/style";
 import { clamp } from "~/utils/number";
-import type { FlatListProps } from "~/components/Base/List";
-import { FlatList, calculateItemsLayouts } from "~/components/Base/List";
+import type { LegendListProps } from "~/components/Base/LegendList";
+import { LegendList } from "~/components/Base/LegendList";
 import { TopDownGradient } from "~/components/Gradient";
 import { Marquee } from "~/components/Marquee";
 import { Em, StyledText } from "~/components/Typography/StyledText";
@@ -42,7 +42,7 @@ export function CurrentListLayout<TData>({
   listInfo,
   SubHeader,
   ...props
-}: Omit<FlatListProps<TData>, "data"> & {
+}: Omit<LegendListProps<TData>, "data"> & {
   data?: TData[];
   listInfo: ListInfoProps;
   SubHeader?: React.ReactNode;
@@ -94,29 +94,26 @@ export function CurrentListLayout<TData>({
   //#endregion
 
   //#region Layout Estimations
-  const itemLayouts = useMemo(
-    () =>
-      calculateItemsLayouts(data, { itemHeight: 48, labelHeight: 16, gap: 8 }),
-    [data],
-  );
+  const guessItemSize = useCallback((index: number, item: any) => {
+    if (typeof item === "number" || typeof item === "string") {
+      return 16 + (index === 0 ? 8 : 16);
+    }
+    return 56; // 48px Height + 8px Margin Bottom
+  }, []);
 
-  const getItemLayout: FlatListProps<TData>["getItemLayout"] = useCallback(
-    (_: unknown, index: number) => {
-      const layoutInfo = itemLayouts[index];
-      // Fallback to default layout object if index is out of bounds.
-      if (!layoutInfo) return { length: 0, offset: 0, index };
-      return layoutInfo;
-    },
-    [itemLayouts],
-  );
+  const getItemType = useCallback((item: any) => {
+    if (typeof item === "number" || typeof item === "string") return "label";
+    return "row";
+  }, []);
   //#endregion
 
   return (
     <>
-      <FlatList
+      <LegendList
         {...props}
+        getEstimatedItemSize={guessItemSize}
         data={data}
-        getItemLayout={getItemLayout}
+        getItemType={getItemType}
         onScroll={scrollHandler}
         ListHeaderComponent={
           <View>
