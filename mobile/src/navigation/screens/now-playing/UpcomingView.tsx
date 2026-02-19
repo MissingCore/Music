@@ -118,6 +118,7 @@ export default function Upcoming() {
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         onReorder={onMove}
+        contentContainerClassName="px-4"
       />
     </>
   );
@@ -151,13 +152,10 @@ const RenderItem = memo(
             : PlaybackControls.playAtIndex(index)
         }
         disabled={isDragging}
-        className={cn(
-          "mx-3 mb-2 flex-row items-center gap-1 rounded-xs active:bg-surfaceContainerLowest/50",
-          {
-            "bg-surfaceContainerLowest!": isActive,
-            "opacity-25 active:opacity-100": index < disableAfter && !isActive,
-          },
-        )}
+        className={cn("mb-2 rounded-xs active:bg-surfaceContainerLowest/50", {
+          "bg-surfaceContainerLowest!": isActive,
+          "opacity-25 active:opacity-100": index < disableAfter && !isActive,
+        })}
       >
         <SearchResult
           type="track"
