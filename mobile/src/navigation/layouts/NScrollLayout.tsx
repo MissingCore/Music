@@ -122,7 +122,7 @@ export function NScrollLayout(props: {
 //#endregion
 
 //#region NScrollListLayout
-/** FlatList with "shy header" and `NScrollbar`. */
+/** LegendList with "shy header" and `NScrollbar`. */
 export function NScrollListLayout<TData>({
   titleKey,
   listRef,
@@ -202,6 +202,7 @@ export function NScrollListLayout<TData>({
         ref={internalListRef}
         {...scrollBarContext.layoutHandlers}
         onScroll={shyHeaderContext.scrollHandler}
+        maintainVisibleContentPosition={false}
         {...props}
         contentContainerStyle={{
           paddingHorizontal: 16,
