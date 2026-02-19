@@ -26,7 +26,7 @@ const compactGridLayoutOptions: GCWProps = {
   minWidth: 72,
 };
 
-/** Formats data to pass into `FlatList`. */
+/** Formats data to pass into `LegendList`. */
 export function useViewLayout<TData extends Record<string, any>>(
   screen: MutableViewLayout,
   data: TData[] | undefined,
