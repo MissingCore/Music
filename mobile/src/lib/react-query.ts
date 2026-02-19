@@ -53,6 +53,6 @@ export function clearAllQueries(client: QueryClient = queryClient) {
 }
 
 /** Extracts the type of the `data` returned from `useQuery`. */
-export type ExtractQueryData<T extends () => UseQueryResult<any>> = NonNullable<
-  ReturnType<T>["data"]
->;
+export type ExtractQueryData<
+  T extends (...args: any[]) => UseQueryResult<any>,
+> = NonNullable<ReturnType<T>["data"]>;
