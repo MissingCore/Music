@@ -28,7 +28,6 @@ export default function Lyrics() {
             Icon={Add}
             accessibilityLabel={t("form.create")}
             onPress={() => navigation.navigate("CreateLyric")}
-            size="sm"
           />
         )}
       />

@@ -36,7 +36,6 @@ export default function PackageLicense({
               name: licenseInfo.name,
             })}
             onPress={() => openBrowserAsync(licenseInfo.source)}
-            size="sm"
           />
         )}
       />

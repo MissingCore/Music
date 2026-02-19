@@ -109,7 +109,6 @@ export default function Upcoming() {
             accessibilityLabel={t("form.reset")}
             onPress={onSynchronizeQueue}
             disabled={isSynchronizing}
-            size="sm"
           />
         )}
       />

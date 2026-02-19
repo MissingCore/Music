@@ -65,7 +65,6 @@ export default function Lyric({
             Icon={Edit}
             accessibilityLabel={t("form.edit")}
             onPress={() => navigation.navigate("ModifyLyric", { id: lyricId })}
-            size="sm"
           />
         )}
       />

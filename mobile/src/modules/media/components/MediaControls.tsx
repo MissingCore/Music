@@ -56,10 +56,10 @@ export function PlayToggleButton() {
       Icon={isPlaying ? Pause : PlayArrow}
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
       onPress={() => PlaybackControls.playToggle()}
-      size="lg"
       className={cn("bg-primary px-6 py-2 active:bg-primaryDim", {
         "bg-surfaceContainerHigh active:bg-surfaceContainerHighest": isPlaying,
       })}
+      size="lg"
       _iconColor="onPrimary"
     />
   );

@@ -183,7 +183,6 @@ function TopAppBar() {
           accessibilityLabel={t("form.apply")}
           onPress={onSubmit}
           disabled={!canSubmit || isSubmitting}
-          size="sm"
         />
       )}
     />

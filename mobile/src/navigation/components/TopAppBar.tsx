@@ -27,7 +27,6 @@ export function TopAppBar({ options, route }: NativeStackHeaderProps) {
           onPress={() => navigation.goBack()}
           disabled={!!options.headerLeft}
           className={OnRTL._use("rotate-180")}
-          size="sm"
         />
 
         {title ? (

@@ -56,7 +56,6 @@ export function PlayMediaListButton(props: {
         },
         props.className,
       )}
-      size="sm"
       _iconColor="onPrimary"
     />
   );

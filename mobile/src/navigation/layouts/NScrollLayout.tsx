@@ -180,7 +180,6 @@ export function NScrollListLayout<TData>({
           Icon={MoreHoriz}
           accessibilityLabel={t("feat.modalViewPreference.title")}
           onPress={() => sheetRef.current?.present()}
-          size="sm"
         />
       </>
     );

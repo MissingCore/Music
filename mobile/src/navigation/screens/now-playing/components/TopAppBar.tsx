@@ -51,7 +51,6 @@ function AppBarContent() {
         accessibilityLabel={t("form.back")}
         onPress={() => navigation.goBack()}
         className={OnRTL._use("rotate-180")}
-        size="sm"
       />
       <Pressable
         onPress={() =>

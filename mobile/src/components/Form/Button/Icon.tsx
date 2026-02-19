@@ -65,7 +65,7 @@ export const IconButton = memo(function IconButton({
 //#region Filled
 export const FilledIconButton = memo(function FilledIconButton({
   Icon,
-  size = "md",
+  size = "sm",
   filled,
   _iconColor,
   ...props

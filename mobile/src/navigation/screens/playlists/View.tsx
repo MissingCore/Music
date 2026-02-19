@@ -59,7 +59,6 @@ function PlaylistActions() {
       accessibilityLabel={t("form.create")}
       onPress={() => navigation.navigate("CreatePlaylist")}
       className="bg-primary active:bg-primaryDim"
-      size="sm"
       _iconColor="onPrimary"
     />
   );
