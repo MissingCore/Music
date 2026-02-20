@@ -8,7 +8,7 @@ import Animated, {
   withSequence,
   withTiming,
 } from "react-native-reanimated";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { View } from "react-native";
 
 import { useInForeground } from "~/stores/ListenerState";
@@ -39,8 +39,8 @@ export function Marquee({
   const inForeground = useInForeground();
   const shadowColor = useColor(color, "surface");
   // This will enable support of hexadecimal colors with opacity.
-  const startColor = useMemo(() => `${shadowColor}00`, [shadowColor]);
-  const endColor = useMemo(() => `${shadowColor}E6`, [shadowColor]);
+  const startColor = `${shadowColor}00`;
+  const endColor = `${shadowColor}E6`;
 
   const offset = useSharedValue(0);
   const [containerWidth, setContainerWidth] = useState(-1);

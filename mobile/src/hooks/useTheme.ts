@@ -86,10 +86,7 @@ export function useCurrentTheme() {
   const deviceTheme = useColorScheme();
   const savedTheme = usePreferenceStore((s) => s.theme);
 
-  return useMemo(
-    () => (savedTheme === "system" ? (deviceTheme ?? "light") : savedTheme),
-    [deviceTheme, savedTheme],
-  );
+  return savedTheme === "system" ? (deviceTheme ?? "light") : savedTheme;
 }
 
 /** Returns the dynamic colors determined by the current theme. */
@@ -104,11 +101,10 @@ export function useColor(
   fallback: AppColor,
 ) {
   const theme = useTheme();
-  return useMemo(() => {
-    let color = isHexColor(fallback) ? fallback : theme[fallback];
-    if (wantedColor)
-      color = isHexColor(wantedColor) ? wantedColor : theme[wantedColor];
-    return color;
-  }, [theme, wantedColor, fallback]);
+
+  let color = isHexColor(fallback) ? fallback : theme[fallback];
+  if (wantedColor)
+    color = isHexColor(wantedColor) ? wantedColor : theme[wantedColor];
+  return color;
 }
 //#endregion

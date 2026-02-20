@@ -1,6 +1,5 @@
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
-import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 
@@ -80,10 +79,7 @@ function TrackIntro({ data }: { data: TrackWithRelations }) {
   const navigation = useNavigation();
   const currNavRoutes = useNavigationState((s) => s.routes);
 
-  const onNowPlaying = useMemo(
-    () => currNavRoutes.at(-1)?.name === "NowPlaying",
-    [currNavRoutes],
-  );
+  const onNowPlaying = currNavRoutes.at(-1)?.name === "NowPlaying";
 
   return (
     <View className="flex-row items-end gap-2">

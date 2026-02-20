@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -22,23 +22,11 @@ export const NumberStepper = memo(function NumberStepper({
 }) {
   const { t } = useTranslation();
 
-  const step = useMemo(
-    () => (props.step !== undefined ? Math.abs(props.step) : 1),
-    [props.step],
-  );
+  const step = props.step !== undefined ? Math.abs(props.step) : 1;
 
-  const decrementLabel = useMemo(
-    () => t("template.entryRemove", { name: t("plural.second", { count: 1 }) }),
-    [t],
-  );
   const decrementOnChange = useCallback(
     () => onChange(-step),
     [onChange, step],
-  );
-
-  const incrementLabel = useMemo(
-    () => t("template.entryRemove", { name: t("plural.second", { count: 1 }) }),
-    [t],
   );
   const incrementOnChange = useCallback(() => onChange(step), [onChange, step]);
 
@@ -46,7 +34,9 @@ export const NumberStepper = memo(function NumberStepper({
     <View className="flex-row items-center gap-2">
       <FilledIconButton
         Icon={Remove}
-        accessibilityLabel={decrementLabel}
+        accessibilityLabel={t("template.entryRemove", {
+          name: t("plural.second", { count: 1 }),
+        })}
         onPress={decrementOnChange}
         disabled={props.min !== undefined ? value <= props.min : undefined}
         className="rounded-sm"
@@ -58,7 +48,9 @@ export const NumberStepper = memo(function NumberStepper({
       </Em>
       <FilledIconButton
         Icon={Add}
-        accessibilityLabel={incrementLabel}
+        accessibilityLabel={t("template.entryRemove", {
+          name: t("plural.second", { count: 1 }),
+        })}
         onPress={incrementOnChange}
         disabled={props.max !== undefined ? value >= props.max : undefined}
         className="rounded-sm"

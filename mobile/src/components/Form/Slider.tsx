@@ -62,10 +62,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
   _className?: string;
 }) {
   const currVal = useSharedValue(props.initValue);
-  const moveableDistance = useMemo(
-    () => props.max - props.min,
-    [props.min, props.max],
-  );
+  const moveableDistance = props.max - props.min;
   const step = useRef(props.step ?? 1);
   const debounceMultiplier = useRef(props._debounceMultiplier ?? 5);
 
@@ -199,10 +196,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
   const progressColor = useColor(props.progressColor, "primary");
   const trackColor = useColor(props.trackColor, "surfaceContainerLowest");
 
-  const shouldInvertStyle = useMemo(
-    () => I18nManager.isRTL && props.inverted,
-    [props.inverted],
-  );
+  const shouldInvertStyle = I18nManager.isRTL && props.inverted;
 
   const hitSlopViewStyle: ViewStyle = useMemo(
     () => ({ paddingVertical: props.vHitSlop ?? 0 }),
@@ -216,23 +210,11 @@ export const CachedSlider = memo(function CachedSlider(props: {
     }),
     [trackColor, props.height, props.transparent],
   );
-  const sliderWrappeClassName = useMemo(
-    () =>
-      cn("relative w-full overflow-hidden rounded-full", {
-        "flex-row-reverse": shouldInvertStyle,
-      }),
-    [shouldInvertStyle],
-  );
 
   const progressStyle = useAnimatedStyle(() => ({
     backgroundColor: props.transparent ? Colors.transparent : progressColor,
     width: ((currVal.value - props.min) / moveableDistance) * sliderWidth.value,
   }));
-
-  const progressClassName = useMemo(
-    () => cn("h-full", { "rounded-r-full": props.roundedEndStop }),
-    [props.roundedEndStop],
-  );
   //#endregion
 
   return (
@@ -241,7 +223,9 @@ export const CachedSlider = memo(function CachedSlider(props: {
         <View
           onLayout={onLayout}
           style={sliderWrapperStyle}
-          className={sliderWrappeClassName}
+          className={cn("relative w-full overflow-hidden rounded-full", {
+            "flex-row-reverse": shouldInvertStyle,
+          })}
         >
           {props.overlay ? (
             <SliderOverlay
@@ -250,7 +234,10 @@ export const CachedSlider = memo(function CachedSlider(props: {
               inverted={shouldInvertStyle}
             />
           ) : null}
-          <Animated.View style={progressStyle} className={progressClassName} />
+          <Animated.View
+            style={progressStyle}
+            className={cn("h-full", { "rounded-r-full": props.roundedEndStop })}
+          />
         </View>
       </View>
     </GestureDetector>

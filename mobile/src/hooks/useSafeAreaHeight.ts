@@ -1,5 +1,4 @@
 import { platformApiLevel } from "expo-device";
-import { useMemo } from "react";
 import { useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -11,8 +10,6 @@ export function useSafeAreaHeight() {
   // In Android API 35+, the "height" now includes the system decoration
   // areas and display cutout (status & navigation bar heights).
   //  - https://github.com/facebook/react-native/issues/47080#issuecomment-2421914957
-  return useMemo(() => {
-    if (!platformApiLevel || platformApiLevel < 35) return screenHeight;
-    return screenHeight - insets.top - insets.bottom;
-  }, [insets.bottom, insets.top, screenHeight]);
+  if (!platformApiLevel || platformApiLevel < 35) return screenHeight;
+  return screenHeight - insets.top - insets.bottom;
 }

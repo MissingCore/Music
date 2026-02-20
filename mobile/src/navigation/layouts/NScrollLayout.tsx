@@ -71,10 +71,7 @@ export function NScrollLayout(props: {
 
   // Shy Header
   const [topBarHeight, setTopBarHeight] = useState(ESTIMATE_HEADER_HEIGHT);
-  const headerHeight = useMemo(
-    () => topBarHeight - SHADOW_HEIGHT,
-    [topBarHeight],
-  );
+  const headerHeight = topBarHeight - SHADOW_HEIGHT;
 
   const shyHeaderContext = useShyHeaderContext({
     headerHeight,
@@ -160,10 +157,7 @@ export function NScrollListLayout<TData>({
   const [topBarHeight, setTopBarHeight] = useState(
     ESTIMATE_HEADER_HEIGHT + estimatedSubheaderHeight,
   );
-  const headerHeight = useMemo(
-    () => topBarHeight - SHADOW_HEIGHT,
-    [topBarHeight],
-  );
+  const headerHeight = topBarHeight - SHADOW_HEIGHT;
 
   const shyHeaderContext = useShyHeaderContext({
     headerHeight,

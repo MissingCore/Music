@@ -49,17 +49,14 @@ export function SearchList<TData>({
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
 
-  const stopRender = useMemo(
-    () => renderOnQuery && !query.trim(),
-    [renderOnQuery, query],
-  );
+  const stopRender = renderOnQuery && !query.trim();
 
   const filteredData = useMemo(() => {
     if (stopRender) return [];
     return onFilterData(query, data ?? []);
   }, [stopRender, data, onFilterData, query]);
 
-  const dataSize = useMemo(() => filteredData.length, [filteredData]);
+  const dataSize = filteredData.length;
 
   const keyExtractor = useCallback(
     (item: TData, index: number) => `${_keyExtractor(item, index)}__${index}`,

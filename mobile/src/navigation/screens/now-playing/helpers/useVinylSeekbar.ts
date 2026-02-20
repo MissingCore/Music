@@ -14,7 +14,7 @@ type Position = { absoluteX: number; absoluteY: number };
 
 export function useVinylSeekbar() {
   const activeTrack = usePlaybackStore((s) => s.activeTrack);
-  const duration = useMemo(() => activeTrack?.duration ?? 0, [activeTrack]);
+  const duration = activeTrack?.duration ?? 0;
 
   const timedPosition = useAtomValue(animatedPositionAtom);
   const setIsSeeking = useSetAtom(isSeekingAtom);

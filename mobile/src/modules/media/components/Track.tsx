@@ -65,10 +65,7 @@ export function useTrackListPlayingIndication<T extends TrackContent>(
   const currSource = usePlaybackStore((s) => s.playingFrom);
   const activeTrack = usePlaybackStore((s) => s.activeTrack);
 
-  const passPreCheck = useMemo(
-    () => arePlaybackSourceEqual(currSource, listSource),
-    [currSource, listSource],
-  );
+  const passPreCheck = arePlaybackSourceEqual(currSource, listSource);
 
   return useMemo(() => {
     if (!passPreCheck || !tracks || !activeTrack) return tracks;

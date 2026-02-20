@@ -50,9 +50,8 @@ export function useWaveformSamples(id: string, uri: string) {
   const activeWaveformContext = useSessionStore((s) => s.activeWaveformContext);
   const lastQueriedTrack = useRef("");
 
-  const estimatedBarCount = useMemo(
-    () => Math.round((Math.max(height, width) - 32) / (BAR_WIDTH + BAR_GAP)),
-    [height, width],
+  const estimatedBarCount = Math.round(
+    (Math.max(height, width) - 32) / (BAR_WIDTH + BAR_GAP),
   );
 
   // Results in a waveform at min height.

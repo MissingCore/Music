@@ -1,6 +1,5 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import { useMemo } from "react";
 
 import type { Album } from "~/db/schema";
 
@@ -87,10 +86,7 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
   });
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
 
-  const estimatedListHeight = useMemo(
-    () => width + (primaryFont === "Inter" ? 42 : 39),
-    [primaryFont, width],
-  );
+  const estimatedListHeight = width + (primaryFont === "Inter" ? 42 : 39);
 
   if (!albums) return null;
   return (

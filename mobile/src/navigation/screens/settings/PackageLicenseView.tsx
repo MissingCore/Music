@@ -1,6 +1,5 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { openBrowserAsync } from "expo-web-browser";
-import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { OpenInNew } from "~/resources/icons/OpenInNew";
@@ -21,10 +20,7 @@ export default function PackageLicense({
 }: Props) {
   const { t } = useTranslation();
 
-  const licenseInfo = useMemo(
-    () => LicensesList[id as keyof typeof LicensesList],
-    [id],
-  );
+  const licenseInfo = LicensesList[id as keyof typeof LicensesList];
 
   return (
     <>

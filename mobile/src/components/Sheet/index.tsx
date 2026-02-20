@@ -2,7 +2,7 @@ import { Toasts } from "@backpackapp-io/react-native-toast";
 import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import type { ParseKeys } from "i18next";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -54,14 +54,12 @@ export function useMaxDetachedSheetHeight() {
   const { bottom } = useSafeAreaInsets();
   const safeHeight = useSafeAreaHeight();
 
-  return useMemo(() => {
-    // `safeHeight` includes `EDGE_SPACER` in the calculation.
-    const workableHeight = safeHeight + bottom - ESTIMATED_TOPAPPBAR_HEIGHT;
-    // If sheet utilizes full height, part of the sheet will end up behind
-    // the navbar unless we include the bottom inset.
-    const maxDetachedHeight = MAX_SHEET_HEIGHT + EDGE_SPACER + bottom;
-    return Math.min(workableHeight, maxDetachedHeight);
-  }, [safeHeight, bottom]);
+  // `safeHeight` includes `EDGE_SPACER` in the calculation.
+  const workableHeight = safeHeight + bottom - ESTIMATED_TOPAPPBAR_HEIGHT;
+  // If sheet utilizes full height, part of the sheet will end up behind
+  // the navbar unless we include the bottom inset.
+  const maxDetachedHeight = MAX_SHEET_HEIGHT + EDGE_SPACER + bottom;
+  return Math.min(workableHeight, maxDetachedHeight);
 }
 
 export function DetachedSheet(props: SheetProps) {
@@ -71,7 +69,7 @@ export function DetachedSheet(props: SheetProps) {
   const [sheetHeight, setSheetHeight] = useState(0);
   const [disableToastAnim, setDisableToastAnim] = useState(true);
 
-  const gap = useMemo(() => props.gap ?? 24, [props.gap]);
+  const gap = props.gap ?? 24;
 
   return (
     <TrueSheet
