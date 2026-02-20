@@ -68,14 +68,12 @@ const DragListInternal = memo(function DragListInternal({
     scheduleOnRN(setActiveIndex, null);
   }, [setActiveIndex]);
 
-  const isListEmpty = props.data.length === 0;
-
   //! FIXME: Hack to get `initialScrollIndex` working. We have to use
   //! `scrollToOffset` instead of `scrollToIndex` as we get the following
   //! error:
   //!   - "scrollToIndex out of range: item length 0 but minimum is 1"
   useEffect(() => {
-    if (mountedState !== "unmounted" || isListEmpty) return;
+    if (mountedState !== "unmounted") return;
     const canMount = typeof initialScrollIndex !== "number";
     setMountedState(canMount ? "mounted" : "pending");
     if (canMount) return;
@@ -86,7 +84,7 @@ const DragListInternal = memo(function DragListInternal({
     setTimeout(() => {
       setMountedState("mounted");
     }, 250);
-  }, [listRef, initialScrollIndex, isListEmpty, mountedState]);
+  }, [listRef, initialScrollIndex, mountedState]);
 
   return (
     <View className="relative flex-1">

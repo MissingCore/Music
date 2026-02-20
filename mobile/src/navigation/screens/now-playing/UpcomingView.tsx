@@ -96,8 +96,8 @@ export default function Upcoming() {
   );
   //#endregion
 
-  if (isPending || error || data.length === 0) {
-    return <PagePlaceholder isPending={isPending || data?.length === 0} />;
+  if (isPending || error || cachedData.length === 0) {
+    return <PagePlaceholder isPending={isPending || cachedData.length === 0} />;
   }
 
   return (
