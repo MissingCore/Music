@@ -8,11 +8,8 @@ import { toLowerCase } from "~/utils/string";
 import { DetachedSheet } from "~/components/Sheet";
 import { HorizontalRadioList } from "~/components/Sheet/HorizontalRadioList";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import type { AccentFont } from "~/stores/Preference/constants";
-import {
-  AccentFontOptions,
-  PrimaryFontOptions,
-} from "~/stores/Preference/constants";
+import type { Font } from "~/stores/Preference/constants";
+import { FontOptions } from "~/stores/Preference/constants";
 
 export function AccentFontSheet(props: { ref: TrueSheetRef }) {
   const accentFont = usePreferenceStore((s) => s.accentFont);
@@ -21,7 +18,6 @@ export function AccentFontSheet(props: { ref: TrueSheetRef }) {
       ref={props.ref}
       kind="Accent"
       selectedFont={accentFont}
-      fontOptions={AccentFontOptions}
       updateFont={PreferenceSetters.setAccentFont}
     />
   );
@@ -34,18 +30,16 @@ export function PrimaryFontSheet(props: { ref: TrueSheetRef }) {
       ref={props.ref}
       kind="Primary"
       selectedFont={primaryFont}
-      fontOptions={PrimaryFontOptions}
       updateFont={PreferenceSetters.setPrimaryFont}
     />
   );
 }
 
-function FontSheet<T extends AccentFont>(props: {
+function FontSheet(props: {
   ref: TrueSheetRef;
   kind: "Accent" | "Primary";
-  selectedFont: T;
-  fontOptions: readonly T[];
-  updateFont: (newFont: T) => void;
+  selectedFont: Font;
+  updateFont: (newFont: Font) => void;
 }) {
   return (
     <DetachedSheet
@@ -53,7 +47,7 @@ function FontSheet<T extends AccentFont>(props: {
       titleKey={`feat.font.extra.${toLowerCase(props.kind)}`}
     >
       <HorizontalRadioList
-        data={props.fontOptions}
+        data={FontOptions}
         selected={props.selectedFont}
         onPress={(font) => props.updateFont(font)}
         renderPreview={(font) => (

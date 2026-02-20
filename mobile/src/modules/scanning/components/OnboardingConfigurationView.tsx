@@ -30,9 +30,7 @@ export function OnboardingConfiguration() {
           paddingBottom: insets.bottom + 16,
         }}
       >
-        <AccentText className="text-4xl">
-          {t("feat.onboarding.extra.configureSettings")}
-        </AccentText>
+        <AccentText>{t("feat.onboarding.extra.configureSettings")}</AccentText>
 
         <TEm textKey="feat.scanning.title" className="-mb-4" />
         <ScanningConfigurations.Settings {...sheetRefs} />

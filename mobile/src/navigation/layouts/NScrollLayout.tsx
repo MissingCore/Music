@@ -269,7 +269,7 @@ function ShyHeader(props: {
       >
         <View className="flex-row items-center justify-between gap-4">
           <Marquee>
-            <AccentText className="text-4xl">{t(props.titleKey)}</AccentText>
+            <AccentText>{t(props.titleKey)}</AccentText>
           </Marquee>
           {props.Actions ? (
             <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">

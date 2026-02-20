@@ -1,10 +1,5 @@
 import { preferenceStore } from "../store";
-import type {
-  AccentFont,
-  NowPlayingDesign,
-  PrimaryFont,
-  Theme,
-} from "../constants";
+import type { Font, NowPlayingDesign, Theme } from "../constants";
 import {
   clampMinAlbumLength,
   clampPlaybackDelay,
@@ -15,7 +10,7 @@ import { getSourceName } from "../../Playback/utils";
 
 import { clearAllQueries } from "~/lib/react-query";
 
-export function setAccentFont(accentFont: AccentFont) {
+export function setAccentFont(accentFont: Font) {
   preferenceStore.setState({ accentFont });
 }
 
@@ -45,7 +40,7 @@ export function setNowPlayingDesign(nowPlayingDesign: NowPlayingDesign) {
   preferenceStore.setState({ nowPlayingDesign });
 }
 
-export function setPrimaryFont(primaryFont: PrimaryFont) {
+export function setPrimaryFont(primaryFont: Font) {
   preferenceStore.setState({ primaryFont });
 }
 

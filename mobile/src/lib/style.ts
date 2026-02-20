@@ -4,12 +4,9 @@ import { extendTailwindMerge } from "tailwind-merge";
 
 import { BorderRadius, FontFamily, FontSize } from "~/constants/Styles";
 import { toLowerCase } from "~/utils/string";
-import type { AccentFont } from "~/stores/Preference/constants";
+import type { Font } from "~/stores/Preference/constants";
 
-function replaceDefault<T extends string>(arr: T[]) {
-  return arr.map((val) => (val === "DEFAULT" ? "" : val));
-}
-
+//#region Color
 // We have some non-standard color roles:
 //  - `errorDim`, `onErrorVariant`
 //  - If we treat these as "fixed" colors, they're "standard" names:
@@ -60,11 +57,18 @@ export function cn(...inputs: ClassValue[]) {
   return customTwMerge(clsx(inputs));
 }
 
+/** Determines if a string is a hex color. */
+export function isHexColor(color?: string): color is HexColor {
+  return color !== undefined && color.startsWith("#");
+}
+//#endregion
+
+//#region Font
 /**
  * Returns the correct font used from the codes used to determine the
  * accent & primary font used.
  */
-export function getFont(font: AccentFont, bold = false) {
+export function getFont(font: Font, bold = false) {
   const fontCode = font === "Geist Mono" ? "geistMono" : toLowerCase(font);
   if (
     bold &&
@@ -74,8 +78,10 @@ export function getFont(font: AccentFont, bold = false) {
   }
   return FontFamily[fontCode];
 }
+//#endregion
 
-/** Determines if a string is a hex color. */
-export function isHexColor(color?: string): color is HexColor {
-  return color !== undefined && color.startsWith("#");
+//#region Internal
+function replaceDefault<T extends string>(arr: T[]) {
+  return arr.map((val) => (val === "DEFAULT" ? "" : val));
 }
+//#endregion

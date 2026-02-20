@@ -68,7 +68,7 @@ function ErrorLayout({ error }: { error: Error }) {
       <View ref={onError} />
       <View className="relative flex-1">
         <ListLayout contentContainerStyle={{ paddingBottom: offset }}>
-          <AccentText style={{ paddingTop: top + 16 }} className="text-4xl">
+          <AccentText style={{ paddingTop: top + 16 }}>
             {t("err.flow.generic.title")}
           </AccentText>
           <TStyledText

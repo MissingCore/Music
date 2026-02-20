@@ -52,7 +52,7 @@ export default function Search() {
 
   return (
     <View className="shrink grow gap-6 px-4 pt-2">
-      <AccentText className="text-4xl">{t("feat.search.title")}</AccentText>
+      <AccentText>{t("feat.search.title")}</AccentText>
       <SearchEngine
         searchScope={searchScope}
         callbacks={searchCallbacks}

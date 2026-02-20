@@ -7,21 +7,16 @@ export type Theme = (typeof ThemeOptions)[number];
 //endregion
 
 //#region Font
-export const PrimaryFontOptions = [
+export const FontOptions = [
+  "NDot",
+  "NType",
   "Roboto",
   "Inter",
   "Geist Mono",
   "System",
 ] as const;
 
-export const AccentFontOptions = [
-  ...["NDot", "NType"],
-  ...PrimaryFontOptions,
-] as const;
-
-export type PrimaryFont = (typeof PrimaryFontOptions)[number];
-
-export type AccentFont = (typeof AccentFontOptions)[number];
+export type Font = (typeof FontOptions)[number];
 //#endregion
 
 //#region Now Playing Design
@@ -47,9 +42,9 @@ export interface PreferenceStore {
 
   theme: Theme;
   /** Font used for some accent text (ie: major headings). */
-  accentFont: AccentFont;
+  accentFont: Font;
   /** Font used for text. */
-  primaryFont: PrimaryFont;
+  primaryFont: Font;
 
   /** Tab that we open up to on app launch. */
   homeTab: Tab;
