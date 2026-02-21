@@ -283,18 +283,14 @@ export const lyricsRelations = relations(lyrics, ({ many }) => ({
   tracksToLyrics: many(tracksToLyrics),
 }));
 
-export const tracksToLyrics = sqliteTable(
-  "tracks_to_lyrics",
-  {
-    trackId: text()
-      .references(() => tracks.id)
-      .primaryKey(),
-    lyricId: text()
-      .notNull()
-      .references(() => lyrics.id),
-  },
-  (t) => [primaryKey({ columns: [t.trackId, t.lyricId] })],
-);
+export const tracksToLyrics = sqliteTable("tracks_to_lyrics", {
+  trackId: text()
+    .references(() => tracks.id)
+    .primaryKey(),
+  lyricId: text()
+    .notNull()
+    .references(() => lyrics.id),
+});
 
 export const tracksToLyricsRelations = relations(tracksToLyrics, ({ one }) => ({
   lyric: one(lyrics, {
@@ -322,8 +318,8 @@ export const tracksToGenres = sqliteTable(
   "tracks_to_genres",
   {
     trackId: text()
-      .references(() => tracks.id)
-      .primaryKey(),
+      .notNull()
+      .references(() => tracks.id),
     genreName: text()
       .notNull()
       .references(() => genres.name),

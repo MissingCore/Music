@@ -13,7 +13,7 @@ import m0008 from "./0008_little_toad.sql";
 import m0009 from "./0009_ambitious_puppet_master.sql";
 import m0010 from "./0010_spooky_blue_marvel.sql";
 import m0011 from "./0011_complete_timeslip.sql";
-import m0012 from "./0012_brief_random.sql";
+import m0012 from "./0012_mature_kylun.sql";
 
 export default {
   journal,

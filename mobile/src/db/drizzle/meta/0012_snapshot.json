@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "3768020a-ca5b-4f1d-8732-819c0b431948",
+  "id": "0d3b7b65-c2a5-4ca0-930d-ee50da0d9775",
   "prevId": "f1f83f76-4669-4104-9668-2207def4afc4",
   "tables": {
     "albums": {
@@ -691,7 +691,7 @@
         "track_id": {
           "name": "track_id",
           "type": "text",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
@@ -791,15 +791,7 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {
-        "tracks_to_lyrics_track_id_lyric_id_pk": {
-          "columns": [
-            "track_id",
-            "lyric_id"
-          ],
-          "name": "tracks_to_lyrics_track_id_lyric_id_pk"
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
