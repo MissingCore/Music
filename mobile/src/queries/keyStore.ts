@@ -19,7 +19,12 @@ import {
   getRecentlyPlayedMediaLists,
   getRecentlyPlayedTracks,
 } from "~/api/recent";
-import { getSortedTracks, getTrack, getTrackPlaylists } from "~/api/track";
+import {
+  getSortedTracks,
+  getTrack,
+  getTrackGenres,
+  getTrackPlaylists,
+} from "~/api/track";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
@@ -236,6 +241,11 @@ export const queries = createQueryKeyStore({
             });
             return isFavorited ? true : false;
           },
+        },
+        genres: {
+          // eslint-disable-next-line @tanstack/query/exhaustive-deps
+          queryKey: null,
+          queryFn: () => getTrackGenres(trackId),
         },
         playlists: {
           // eslint-disable-next-line @tanstack/query/exhaustive-deps

@@ -52,6 +52,15 @@ export async function getTrack<
   } as QueriedTrack<BooleanPriority<WithAlbum_User, true>, TCols, ACols>;
 }
 
+/** Get the genres that this track has. */
+export async function getTrackGenres(id: string) {
+  const allTrackGenres = await db.query.tracksToGenres.findMany({
+    where: (fields, { eq }) => eq(fields.trackId, id),
+    columns: { genreName: true },
+  });
+  return allTrackGenres.map(({ genreName }) => genreName);
+}
+
 /** Get the names of the playlists that this track is in. */
 export async function getTrackPlaylists(id: string) {
   const allTrackPlaylists = await db.query.tracksToPlaylists.findMany({

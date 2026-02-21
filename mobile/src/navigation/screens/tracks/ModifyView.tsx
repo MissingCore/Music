@@ -10,15 +10,16 @@ import { View } from "react-native";
 import { z } from "zod/mini";
 
 import { db } from "~/db";
-import { tracksToArtists } from "~/db/schema";
+import { tracksToArtists, tracksToGenres } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 import { Info } from "~/resources/icons/Info";
 import { upsertAlbums } from "~/api/album";
 import { AlbumArtistsKey } from "~/api/album.utils";
 import { createArtists } from "~/api/artist";
+import { createGenres } from "~/api/genre";
 import { updateTrack } from "~/api/track";
-import { useTrack } from "~/queries/track";
+import { useTrack, useTrackGenres } from "~/queries/track";
 import { Resynchronize } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { getArtworkUri } from "~/modules/scanning/helpers/artwork";
@@ -51,25 +52,39 @@ export default function ModifyTrack({
     params: { id },
   },
 }: Props) {
-  const { isPending, error, data } = useTrack(id);
-  const { offset, ...rest } = useFloatingContent();
+  const trackQuery = useTrack(id);
+  const trackGenresQuery = useTrackGenres(id);
+  const { offset, floatingContentProps } = useFloatingContent();
 
-  if (isPending || error) return <PagePlaceholder isPending={isPending} />;
+  if (
+    trackQuery.isPending ||
+    trackQuery.error ||
+    trackGenresQuery.isPending ||
+    trackGenresQuery.error
+  ) {
+    return (
+      <PagePlaceholder
+        isPending={trackQuery.isPending || trackGenresQuery.isPending}
+      />
+    );
+  }
+
   return (
     <FormStateProvider
       schema={TrackMetadataSchema}
       initData={{
-        id: data.id,
-        uri: data.uri,
-        name: data.name,
-        artists: data.tracksToArtists.map(({ artistName }) => artistName),
-        album: data.album?.name ?? null,
-        albumArtists: data.album
-          ? AlbumArtistsKey.deconstruct(data.album.artistsKey)
+        id: trackQuery.data.id,
+        uri: trackQuery.data.uri,
+        name: trackQuery.data.name,
+        artists: trackQuery.data.tracksToArtists.map((t) => t.artistName),
+        album: trackQuery.data.album?.name ?? null,
+        albumArtists: trackQuery.data.album
+          ? AlbumArtistsKey.deconstruct(trackQuery.data.album.artistsKey)
           : [],
-        year: data.year,
-        disc: data.disc,
-        track: data.track,
+        year: trackQuery.data.year,
+        disc: trackQuery.data.disc,
+        track: trackQuery.data.track,
+        genres: trackGenresQuery.data ?? [],
       }}
       onSubmit={onEditTrack}
       onConstraints={({ artists, albumArtists }) =>
@@ -80,7 +95,10 @@ export default function ModifyTrack({
       }
     >
       <MetadataForm bottomOffset={offset} />
-      <ResetWorkflow {...rest} uri={data.uri} />
+      <ResetWorkflow
+        floatingContentProps={floatingContentProps}
+        uri={trackQuery.data.uri}
+      />
     </FormStateProvider>
   );
 }
@@ -131,6 +149,7 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
         field="year"
         numeric
       />
+      <ArrayFormInput labelKey="term.genres" field="genres" />
     </KeyboardAwareScrollView>
   );
 }
@@ -152,6 +171,7 @@ function ResetWorkflow(
       const trackMetadata = await getMetadata(props.uri, [
         ...MetadataPresets.standard,
         "discNumber",
+        "genre",
       ]);
       setFields({
         name: trackMetadata.title ?? "",
@@ -165,13 +185,16 @@ function ResetWorkflow(
         year: trackMetadata.year,
         disc: trackMetadata.discNumber,
         track: trackMetadata.trackNumber,
+        genres: trackMetadata.genre
+          ? splitOn(trackMetadata.genre, delimiters)
+          : [],
       });
     } catch {}
     setIsSubmitting(false);
   };
 
   return (
-    <View ref={props.floatingRef} {...props.wrapperStyling}>
+    <View {...props.floatingContentProps}>
       <ExtendedTButton
         textKey="form.reset"
         onPress={onReset}
@@ -197,6 +220,7 @@ const TrackMetadataSchema = z.object({
   year: ZSchema.NullableRealNumber,
   disc: ZSchema.NullableRealNumber,
   track: ZSchema.NullableRealNumber,
+  genres: z.array(ZSchema.NonEmptyString),
 });
 
 type TrackMetadata = z.infer<typeof TrackMetadataSchema>;
@@ -209,7 +233,8 @@ function useFormState() {
 //#region Submit Handler
 async function onEditTrack(data: TrackMetadata) {
   try {
-    const { id, uri, album, albumArtists, artists, ...trackBase } = data;
+    const { id, uri, album, albumArtists, artists, genres, ...trackBase } =
+      data;
 
     const updatedTrack = {
       ...trackBase,
@@ -222,12 +247,12 @@ async function onEditTrack(data: TrackMetadata) {
       artistsKey: AlbumArtistsKey.from(albumArtists),
     };
 
-    // Add new artists to the database.
-    await Promise.allSettled(
-      [...artists, ...albumArtists]
-        .filter((name) => name !== null)
-        .map((name) => createArtists([{ name }])),
-    );
+    // Add new artists & genres to the database.
+    await Promise.allSettled([
+      ...artists.map((name) => createArtists([{ name }])),
+      ...albumArtists.map((name) => createArtists([{ name }])),
+      ...genres.map((name) => createGenres([{ name }])),
+    ]);
 
     const { uri: artworkUri } = await getArtworkUri(uri);
 
@@ -251,6 +276,14 @@ async function onEditTrack(data: TrackMetadata) {
       await db
         .insert(tracksToArtists)
         .values(artists.map((artistName) => ({ trackId: id, artistName })));
+    }
+
+    // Replace old genre relations.
+    await db.delete(tracksToGenres).where(eq(tracksToGenres.trackId, id));
+    if (genres.length > 0) {
+      await db
+        .insert(tracksToGenres)
+        .values(genres.map((genreName) => ({ trackId: id, genreName })));
     }
 
     await updateTrack(id, { ...updatedTrack, albumId });
