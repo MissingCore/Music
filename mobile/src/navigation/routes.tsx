@@ -113,11 +113,20 @@ function RootScreens(_: RootScreensProps) {
         // Reset home tab preferences if we have a mismatch.
         preferenceStore.setState({
           homeTab: "home",
-          tabsOrder: ["home", "folder", "playlist", "track", "album", "artist"],
+          tabsOrder: [
+            "home",
+            "folder",
+            "playlist",
+            "track",
+            "album",
+            "artist",
+            "genre",
+          ],
           tabsVisibility: {
             album: true,
             artist: true,
             folder: true,
+            genre: true,
             home: true,
             playlist: true,
             track: true,

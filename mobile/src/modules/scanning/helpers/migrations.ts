@@ -71,6 +71,7 @@ const MigrationFunctionMap: Record<
   MigrationOption,
   (lastMigrationCode: number) => Promise<void>
 > = {
+  //? v2.3.0
   "fileNodes-adjustment": async () => {
     const oldRootNodes = await db.query.fileNodes.findMany({
       where: (fields, { isNull }) => isNull(fields.parentPath),
@@ -88,13 +89,13 @@ const MigrationFunctionMap: Record<
     );
   },
 
+  //? v2.4.0
   "discover-time-field": async () => {
     await db
       .update(tracks)
       .set({ discoverTime: tracks.modificationTime })
       .where(eq(tracks.discoverTime, -1));
   },
-
   "recent-list-db-migration": async () => {
     const storeKey = "music::recent-list-store";
     try {
@@ -115,6 +116,7 @@ const MigrationFunctionMap: Record<
     } catch {}
   },
 
+  //? v2.6.0
   "hide-home-tab": async () => {
     preferenceStore.setState((prev) => {
       const updatedTabOrder = [...prev.tabsOrder];
@@ -132,6 +134,32 @@ const MigrationFunctionMap: Record<
     });
   },
 
+  //? v3.0.0-rc.0
+  "onboarding-flow": async (lastMigrationCode) => {
+    //? Ensure we skip the onboarding screen if `lastMigrationCode !== -1`.
+    if (lastMigrationCode !== -1) {
+      preferenceStore.setState((prev) => {
+        const updatedTabOrder = [...prev.tabsOrder];
+        // Don't add "genre" if it's already in there.
+        if (!prev.tabsOrder.includes("genre")) updatedTabOrder.push("genre");
+
+        const updatedTabsVisibility = Object.fromEntries(
+          Object.entries(prev.tabsVisibility).concat([["genre", true]]),
+        ) as Record<Tab, boolean>;
+
+        return {
+          completedOnboarding: true,
+          //? Enable `checkForUpdates` for existing users as it's off by default
+          //? for new users due to now having a proper onboarding screen.
+          checkForUpdates: true,
+
+          //? Add "Genre" tab.
+          tabsOrder: updatedTabOrder,
+          tabsVisibility: updatedTabsVisibility,
+        };
+      });
+    }
+  },
   "hidden-tracks": async () => {
     const prevHiddenTracks = await db.query.tracks.findMany({
       columns: { id: true, name: true, uri: true, hiddenAt: true },
@@ -155,7 +183,6 @@ const MigrationFunctionMap: Record<
       ]);
     }
   },
-
   "multi-artist": async () => {
     //? 1. Create track-artist relations.
     const trackArtistNames = await db.query.tracks.findMany({
@@ -196,7 +223,6 @@ const MigrationFunctionMap: Record<
         .onConflictDoNothing();
     }
   },
-
   favorites: async () => {
     //? 1. Fix `playingFrom` if we last played from the "Favorite Tracks" list.
     const { playingFrom } = playbackStore.getState();
@@ -218,18 +244,6 @@ const MigrationFunctionMap: Record<
       await updatePlaylist(FavoritesPlaylistKey, { tracks: favTracks });
     } catch (err) {
       console.log("[Failed to migrate favorite tracks]", err);
-    }
-  },
-
-  "onboarding-flow": async (lastMigrationCode) => {
-    //? Ensure we skip the onboarding screen if `lastMigrationCode !== -1`.
-    if (lastMigrationCode !== -1) {
-      preferenceStore.setState({
-        completedOnboarding: true,
-        //? Enable `checkForUpdates` for existing users as it's off by default
-        //? for new users due to now having a proper onboarding screen.
-        checkForUpdates: true,
-      });
     }
   },
 };
