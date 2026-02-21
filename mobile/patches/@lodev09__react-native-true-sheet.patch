@@ -1,16 +1,8 @@
 diff --git a/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt b/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt
-index 502d4704e3a08bd0b8bebd8b2ea2d26dd255d043..022df100f1f0b5318ce62e251f6d66b2a7b7a141 100644
+index 502d4704e3a08bd0b8bebd8b2ea2d26dd255d043..e53ba7e2de07614e4c6e65c785efa242cc2a9c97 100644
 --- a/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt
 +++ b/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt
-@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
- import android.graphics.Color
- import android.graphics.drawable.ShapeDrawable
- import android.graphics.drawable.shapes.RoundRectShape
-+import android.os.SystemClock
- import android.util.Log
- import android.util.TypedValue
- import android.view.MotionEvent
-@@ -74,7 +75,7 @@ class TrueSheetViewController(private val reactContext: ThemedReactContext) :
+@@ -74,7 +74,7 @@ class TrueSheetViewController(private val reactContext: ThemedReactContext) :
      private const val DEFAULT_CORNER_RADIUS = 16 // dp
  
      // Animation durations from res/anim/true_sheet_slide_in.xml and true_sheet_slide_out.xml
@@ -19,74 +11,7 @@ index 502d4704e3a08bd0b8bebd8b2ea2d26dd255d043..022df100f1f0b5318ce62e251f6d66b2
      private const val DISMISS_ANIMATION_DURATION = 150L
      private const val TRANSLATE_ANIMATION_DURATION = 100L
    }
-@@ -334,12 +335,25 @@ class TrueSheetViewController(private val reactContext: ThemedReactContext) :
-     }
-   }
- 
-+  // Reduced dismiss offset from typical 50%.
-+  private var overrideDismissOffset: Float = -0.25f
-+  private var prevSlideOffset: Float? = null
-+
-+  // Different early dismiss offset based on flick.
-+  private var flickDurationMS: Long = 30L
-+  private var flickDismissOffset: Float = -0.1f
-+  private var dragStartMS: Long? = null
-+
-   private fun setupBottomSheetBehavior(dialog: BottomSheetDialog) {
-     dialog.behavior.addBottomSheetCallback(
-       object : BottomSheetBehavior.BottomSheetCallback() {
-         override fun onSlide(sheetView: View, slideOffset: Float) {
-           val behavior = behavior ?: return
- 
-+          // Keep track of how much we dragged when we eventually "settle"
-+          // in the `onStateChanged` event.
-+          prevSlideOffset = slideOffset
-+
-           emitChangePositionDelegate(sheetView.top)
- 
-           when (behavior.state) {
-@@ -354,18 +368,39 @@ class TrueSheetViewController(private val reactContext: ThemedReactContext) :
-         }
- 
-         override fun onStateChanged(sheetView: View, newState: Int) {
-+          val dragEndMS = SystemClock.uptimeMillis()
-+
-           if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-+            // Reset offset tracking when the sheet dismisses.
-+            prevSlideOffset = null
-+            dragStartMS = null
-             if (isDismissing) return
-             isDismissing = true
-             emitWillDismissEvents()
-             dialog.dismiss()
-             return
-+          } else if (newState === BottomSheetBehavior.STATE_SETTLING) {
-+            if (prevSlideOffset!! < overrideDismissOffset) {
-+              behavior!!.setState(BottomSheetBehavior.STATE_HIDDEN)
-+              return
-+            } else if (
-+              prevSlideOffset!! < flickDismissOffset &&
-+              dragEndMS - (dragStartMS ?: 0) < flickDurationMS
-+            ) {
-+              behavior!!.setState(BottomSheetBehavior.STATE_HIDDEN)
-+              return
-+            }
-           }
- 
-           if (!isPresented) return
- 
-           when (newState) {
--            BottomSheetBehavior.STATE_DRAGGING -> handleDragBegin(sheetView)
-+            BottomSheetBehavior.STATE_DRAGGING -> {
-+              // Reset offset tracking when we start dragging the sheet.
-+              prevSlideOffset = null
-+              dragStartMS = SystemClock.uptimeMillis()
-+              handleDragBegin(sheetView)
-+            }
- 
-             BottomSheetBehavior.STATE_EXPANDED,
-             BottomSheetBehavior.STATE_COLLAPSED,
-@@ -688,6 +723,8 @@ class TrueSheetViewController(private val reactContext: ThemedReactContext) :
+@@ -688,6 +688,8 @@ class TrueSheetViewController(private val reactContext: ThemedReactContext) :
        paint.color = backgroundColor
      }
      bottomSheet.clipToOutline = true
