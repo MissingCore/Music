@@ -7,6 +7,7 @@ import {
   invalidTracks,
   tracks,
   tracksToArtists,
+  tracksToGenres,
   tracksToLyrics,
   tracksToPlaylists,
   waveformSamples,
@@ -225,9 +226,13 @@ export async function deleteTracks(
 
     // Remove relations.
     await Promise.all(
-      [tracksToArtists, tracksToLyrics, tracksToPlaylists, waveformSamples].map(
-        (sch) => tx.delete(sch).where(inArray(sch.trackId, removedIds)),
-      ),
+      [
+        tracksToArtists,
+        tracksToGenres,
+        tracksToLyrics,
+        tracksToPlaylists,
+        waveformSamples,
+      ].map((sch) => tx.delete(sch).where(inArray(sch.trackId, removedIds))),
     );
 
     const deletedTracks = await tx

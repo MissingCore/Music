@@ -6,12 +6,14 @@ import {
   albums,
   albumsToArtists,
   artists,
+  genres,
   hiddenTracks,
   invalidTracks,
   playedMediaLists,
   playlists,
   tracks,
   tracksToArtists,
+  tracksToGenres,
   tracksToLyrics,
   tracksToPlaylists,
   waveformSamples,
@@ -103,6 +105,16 @@ export const AppCleanUp = {
       )
       .map(({ name }) => name);
     await db.delete(artists).where(inArray(artists.name, unusedArtistNames));
+
+    // Remove unused genres.
+    const allGenres = await db.query.genres.findMany({
+      columns: { name: true },
+      with: { tracksToGenres: { columns: { trackId: true }, limit: 1 } },
+    });
+    const unusedGenres = allGenres
+      .filter(({ tracksToGenres }) => tracksToGenres.length === 0)
+      .map(({ name }) => name);
+    await db.delete(genres).where(inArray(genres.name, unusedGenres));
   },
 
   /**
@@ -129,6 +141,7 @@ export const AppCleanUp = {
         ),
         ...[
           tracksToArtists,
+          tracksToGenres,
           tracksToLyrics,
           tracksToPlaylists,
           waveformSamples,
