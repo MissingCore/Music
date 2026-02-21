@@ -129,6 +129,7 @@ export const tracks = sqliteTable("tracks", {
 export const tracksRelations = relations(tracks, ({ one, many }) => ({
   album: one(albums, { fields: [tracks.albumId], references: [albums.id] }),
   tracksToArtists: many(tracksToArtists),
+  tracksToGenres: many(tracksToGenres),
   tracksToLyrics: one(tracksToLyrics),
   tracksToPlaylists: many(tracksToPlaylists),
   waveformSample: one(waveformSamples),
