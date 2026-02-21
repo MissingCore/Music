@@ -8,6 +8,7 @@ import { db } from "~/db";
 import {
   albums,
   artists,
+  genres,
   hiddenTracks,
   invalidTracks,
   playlists,
@@ -154,6 +155,7 @@ function DBSummaryWidget() {
       <Legend>
         <Legend.Item labelTextKey="term.albums" value={getValue("albums")} />
         <Legend.Item labelTextKey="term.artists" value={getValue("artists")} />
+        <Legend.Item labelTextKey="term.genres" value={getValue("genres")} />
         <Legend.Item
           labelTextKey="feat.insights.extra.images"
           value={getValue("images")}
@@ -187,6 +189,7 @@ async function getDatabaseSummary() {
   return {
     albums: await db.$count(albums),
     artists: await db.$count(artists),
+    genres: await db.$count(genres),
     images: imgDir.exists ? (imgDir.info().files?.length ?? 0) : 0,
     playlists: await db.$count(playlists),
     tracks: await db.$count(tracks),
