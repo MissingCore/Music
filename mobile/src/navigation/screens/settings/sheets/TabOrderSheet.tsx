@@ -33,7 +33,7 @@ export function TabOrderSheet(props: { ref: TrueSheetRef }) {
         onDragBegin={() => setDraggable(false)}
         onDragEnd={() => setDraggable(true)}
         onReordered={Tabs.move}
-        style={{ height: 376 }}
+        style={{ height: 440 }}
         contentContainerClassName="gap-2"
       />
     </DetachedSheet>

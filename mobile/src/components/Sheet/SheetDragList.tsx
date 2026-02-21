@@ -168,6 +168,7 @@ export function SheetDragList<TData>({
         key={JSON.stringify(dataRef.current)}
         overScrollMode="never"
         showsVerticalScrollIndicator={false}
+        scrollEnabled={false}
         {...props}
         data={dataRef.current}
         renderItem={renderDragItem}
