@@ -283,14 +283,18 @@ export const lyricsRelations = relations(lyrics, ({ many }) => ({
   tracksToLyrics: many(tracksToLyrics),
 }));
 
-export const tracksToLyrics = sqliteTable("tracks_to_lyrics", {
-  trackId: text()
-    .references(() => tracks.id)
-    .primaryKey(),
-  lyricId: text()
-    .notNull()
-    .references(() => lyrics.id),
-});
+export const tracksToLyrics = sqliteTable(
+  "tracks_to_lyrics",
+  {
+    trackId: text()
+      .references(() => tracks.id)
+      .primaryKey(),
+    lyricId: text()
+      .notNull()
+      .references(() => lyrics.id),
+  },
+  (t) => [primaryKey({ columns: [t.trackId, t.lyricId] })],
+);
 
 export const tracksToLyricsRelations = relations(tracksToLyrics, ({ one }) => ({
   lyric: one(lyrics, {
@@ -299,6 +303,41 @@ export const tracksToLyricsRelations = relations(tracksToLyrics, ({ one }) => ({
   }),
   track: one(tracks, {
     fields: [tracksToLyrics.trackId],
+    references: [tracks.id],
+  }),
+}));
+//#endregion
+
+//#region Genre
+export const genres = sqliteTable("genres", {
+  name: text().primaryKey(),
+  artwork: text(),
+});
+
+export const genreRelations = relations(genres, ({ many }) => ({
+  tracksToGenres: many(tracksToGenres),
+}));
+
+export const tracksToGenres = sqliteTable(
+  "tracks_to_genres",
+  {
+    trackId: text()
+      .references(() => tracks.id)
+      .primaryKey(),
+    genreName: text()
+      .notNull()
+      .references(() => genres.name),
+  },
+  (t) => [primaryKey({ columns: [t.trackId, t.genreName] })],
+);
+
+export const tracksToGenresRelations = relations(tracksToGenres, ({ one }) => ({
+  genre: one(genres, {
+    fields: [tracksToGenres.genreName],
+    references: [genres.name],
+  }),
+  track: one(tracks, {
+    fields: [tracksToGenres.trackId],
     references: [tracks.id],
   }),
 }));
@@ -353,4 +392,6 @@ export type PlayedMediaList = Prettify<
 export type WaveformSample = InferSelectModel<typeof waveformSamples>;
 
 export type Lyric = InferSelectModel<typeof lyrics>;
+
+export type Genre = InferSelectModel<typeof genres>;
 //#endregion
