@@ -50,7 +50,7 @@ export class ErrorBoundary extends React.Component<
 function ErrorLayout({ error }: { error: Error }) {
   const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
-  const { floatingRef, offset, wrapperStyling } = useFloatingContent();
+  const { offset, floatingContentProps } = useFloatingContent();
 
   const onError = useCallback(() => {
     // Display error message to user if encountered.
@@ -83,7 +83,7 @@ function ErrorLayout({ error }: { error: Error }) {
             {error.stack}
           </StyledText>
         </ListLayout>
-        <View ref={floatingRef} {...wrapperStyling}>
+        <View {...floatingContentProps}>
           <Button
             onPress={() => openBrowserAsync(`${GITHUB}/issues`)}
             className="w-full bg-error active:bg-errorDim"

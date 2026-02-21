@@ -31,7 +31,7 @@ export function ModifyLyricBase(props: {
   mode?: "create" | "edit";
   initialData?: LyricEntry;
 }) {
-  const { offset, ...rest } = useFloatingContent();
+  const { offset, floatingContentProps } = useFloatingContent();
 
   const RenderedWorkflow = useMemo(
     () => (props.mode === "edit" ? DeleteWorkflow : Fragment),
@@ -49,7 +49,7 @@ export function ModifyLyricBase(props: {
       onSubmit={props.onSubmit}
     >
       <LyricForm bottomOffset={offset} />
-      <RenderedWorkflow {...rest} />
+      <RenderedWorkflow floatingContentProps={floatingContentProps} />
     </FormStateProvider>
   );
 }
@@ -75,8 +75,7 @@ function LyricForm({ bottomOffset }: { bottomOffset: number }) {
 
 //#region Delete Workflow
 function DeleteWorkflow({
-  floatingRef,
-  wrapperStyling,
+  floatingContentProps,
 }: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
   const navigation = useNavigation();
   const queryClient = useQueryClient();
@@ -101,7 +100,7 @@ function DeleteWorkflow({
 
   return (
     <>
-      <View ref={floatingRef} {...wrapperStyling}>
+      <View {...floatingContentProps}>
         <ExtendedTButton
           textKey="form.delete"
           onPress={() => setLastChance(true)}
