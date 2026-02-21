@@ -5,9 +5,11 @@ import { db } from "~/db";
 import {
   albums,
   artists,
+  genres,
   playlists,
   tracks,
   tracksToArtists,
+  tracksToGenres,
   tracksToPlaylists,
 } from "~/db/schema";
 
@@ -120,6 +122,25 @@ export const queries = createQueryKeyStore({
       queryKey: [folderPath],
       queryFn: () => getFolder(folderPath),
     }),
+  },
+  /** Query keys used in `useQuery` for genres. */
+  genres: {
+    all: {
+      queryKey: null,
+      queryFn: () => {
+        return db
+          .select({
+            ...getTableColumns(genres),
+            duration: sum(tracks.duration),
+            trackCount: count(tracks.id),
+          })
+          .from(genres)
+          .innerJoin(tracksToGenres, eq(genres.name, tracksToGenres.genreName))
+          .innerJoin(tracks, eq(tracksToGenres.trackId, tracks.id))
+          .groupBy(genres.name)
+          .orderBy(iAsc(genres.name));
+      },
+    },
   },
   /** Query keys used in `useQuery` for lyrics. */
   lyrics: {

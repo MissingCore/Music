@@ -65,6 +65,12 @@ export function ArtistsViewOptionsSheet(props: { ref: TrueSheetRef }) {
 }
 //#endregion
 
+//#region Genres
+export function GenresViewOptionsSheet(props: { ref: TrueSheetRef }) {
+  return <ViewOptionsSheetTemplate ref={props.ref} screen="genre" />;
+}
+//#endregion
+
 //#region Playlists
 export function PlaylistsViewOptionsSheet(props: { ref: TrueSheetRef }) {
   return <ViewOptionsSheetTemplate ref={props.ref} screen="playlist" />;
