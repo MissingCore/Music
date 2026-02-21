@@ -146,6 +146,16 @@ async function getRecentListEntry({ id, type }: PlayFromSource) {
         title: id.split("/").at(-2) ?? id,
         description: i18next.t("plural.track", { count: numTracks }),
       };
+    } else if (type === "genre") {
+      const { tracksToGenres, ...rest } = await throwIfNoResults(
+        db.query.genres.findFirst({
+          where: (fields, { eq }) => eq(fields.name, id),
+          //? Relation used to count number of tracks.
+          with: { tracksToGenres: { columns: { trackId: true } } },
+        }),
+      );
+      const data = { ...rest, tracks: tracksToGenres };
+      entry = formatForMediaCard({ type: "genre", data, t: i18next.t });
     } else {
       let data = null;
       if (id === ReservedPlaylists.tracks) {

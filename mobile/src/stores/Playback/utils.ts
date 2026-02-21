@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { TrackWithRelations } from "~/db/schema";
-import { tracks, tracksToArtists } from "~/db/schema";
+import { tracks, tracksToArtists, tracksToGenres } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 import { getAlbum } from "~/api/album";
@@ -55,7 +55,7 @@ export function formatTrackforPlayer(track: TrackWithRelations) {
 export async function getSourceName({ type, id }: PlayFromSource) {
   let name = "";
   try {
-    if (type === "artist") {
+    if (type === "artist" || type === "genre") {
       name = id;
     } else if (type === "playlist") {
       name = id;
@@ -96,6 +96,14 @@ export async function getTrackIdsList({ type, id }: PlayFromSource) {
     } else if (type === "folder") {
       const data = await getFolderTracks(id); // `id` contains pathname.
       trackIds = data.map(({ id }) => id);
+    } else if (type === "genre") {
+      const data = await db
+        .select({ id: tracks.id })
+        .from(tracksToGenres)
+        .where(eq(tracksToGenres.genreName, id))
+        .innerJoin(tracks, eq(tracksToGenres.trackId, tracks.id))
+        .orderBy(iAsc(tracks.name));
+      trackIds = data.map((t) => t.id);
     } else {
       if (ReservedNames.has(id)) {
         const sortedTracks = await getSortedTracks("sortedIds");
