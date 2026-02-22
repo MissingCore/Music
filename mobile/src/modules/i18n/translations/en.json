@@ -8,6 +8,8 @@
     "artists": "Artists",
     "folder": "Folder",
     "folders": "Folders",
+    "genre": "Genre",
+    "genres": "Genres",
     "playlist": "Playlist",
     "playlists": "Playlists",
     "track": "Track",
@@ -108,6 +110,7 @@
 
       "noAlbums": "No albums found.",
       "noArtists": "No artists found.",
+      "noGenres": "No genres found.",
       "noPlaylists": "No playlists found.",
       "noTracks": "No tracks found."
     }

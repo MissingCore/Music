@@ -23,6 +23,8 @@ import Albums from "./screens/albums/View";
 import Artist from "./screens/artists/CurrentView";
 import Artists from "./screens/artists/View";
 import Folders from "./screens/folders/View";
+import Genre from "./screens/genres/CurrentView";
+import Genres from "./screens/genres/View";
 import CreateLyric from "./screens/lyrics/CreateView";
 import Lyric from "./screens/lyrics/CurrentView";
 import ModifyLyric from "./screens/lyrics/ModifyView";
@@ -75,6 +77,7 @@ const RootScreenComponents = {
   album: Albums,
   artist: Artists,
   folder: Folders,
+  genre: Genres,
   home: Home,
   playlist: Playlists,
   track: Tracks,
@@ -88,6 +91,7 @@ type RootScreensProps = StaticScreenProps<
     Tracks: undefined;
     Albums: undefined;
     Artists: undefined;
+    Genres: undefined;
   }>
 >;
 
@@ -113,11 +117,20 @@ function RootScreens(_: RootScreensProps) {
         // Reset home tab preferences if we have a mismatch.
         preferenceStore.setState({
           homeTab: "home",
-          tabsOrder: ["home", "folder", "playlist", "track", "album", "artist"],
+          tabsOrder: [
+            "home",
+            "folder",
+            "playlist",
+            "track",
+            "album",
+            "artist",
+            "genre",
+          ],
           tabsVisibility: {
             album: true,
             artist: true,
             folder: true,
+            genre: true,
             home: true,
             playlist: true,
             track: true,
@@ -258,6 +271,7 @@ export const RootStack = createNativeStackNavigator({
         Playlist,
         Album,
         Artist,
+        Genre,
       },
     },
     Form: {

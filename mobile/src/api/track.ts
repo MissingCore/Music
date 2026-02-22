@@ -7,6 +7,7 @@ import {
   invalidTracks,
   tracks,
   tracksToArtists,
+  tracksToGenres,
   tracksToLyrics,
   tracksToPlaylists,
   waveformSamples,
@@ -49,6 +50,15 @@ export async function getTrack<
     ...track,
     ...(hasArtwork ? { artwork: getTrackArtwork(track) } : {}),
   } as QueriedTrack<BooleanPriority<WithAlbum_User, true>, TCols, ACols>;
+}
+
+/** Get the genres that this track has. */
+export async function getTrackGenres(id: string) {
+  const allTrackGenres = await db.query.tracksToGenres.findMany({
+    where: (fields, { eq }) => eq(fields.trackId, id),
+    columns: { genreName: true },
+  });
+  return allTrackGenres.map(({ genreName }) => genreName);
 }
 
 /** Get the names of the playlists that this track is in. */
@@ -225,9 +235,13 @@ export async function deleteTracks(
 
     // Remove relations.
     await Promise.all(
-      [tracksToArtists, tracksToLyrics, tracksToPlaylists, waveformSamples].map(
-        (sch) => tx.delete(sch).where(inArray(sch.trackId, removedIds)),
-      ),
+      [
+        tracksToArtists,
+        tracksToGenres,
+        tracksToLyrics,
+        tracksToPlaylists,
+        waveformSamples,
+      ].map((sch) => tx.delete(sch).where(inArray(sch.trackId, removedIds))),
     );
 
     const deletedTracks = await tx

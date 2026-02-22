@@ -4,6 +4,7 @@ import type { Album, Track } from "./schema";
 import type {
   SlimAlbum,
   SlimArtist,
+  SlimGenre,
   SlimPlaylistWithTracks,
 } from "./slimTypes";
 
@@ -21,6 +22,7 @@ import { FavoritesPlaylistKey } from "~/modules/media/constants";
 type MediaCardFormatter = Prettify<
   { t: TFunction } & (
     | { type: "artist"; data: SlimArtist & { tracks: any[] } }
+    | { type: "genre"; data: SlimGenre & { tracks: any[] } }
     | { type: "album"; data: SlimAlbum & { tracks: any[] } }
     | { type: "playlist"; data: SlimPlaylistWithTracks }
   )

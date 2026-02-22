@@ -34,6 +34,11 @@ export function useTrackPlaylists(trackId: string) {
   return useQuery({ ...q.tracks.detail(trackId)._ctx.playlists });
 }
 
+/** Return the names of the genres the track has. */
+export function useTrackGenres(trackId: string) {
+  return useQuery({ ...q.tracks.detail(trackId)._ctx.genres });
+}
+
 export function useSortedTracks(isReady = true) {
   const trackIsAsc = useViewPreferenceStore((s) => s.trackIsAsc);
   const trackOrder = useViewPreferenceStore((s) => s.trackOrder);

@@ -40,11 +40,20 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     primaryFont: "Roboto",
 
     homeTab: "home",
-    tabsOrder: ["home", "folder", "playlist", "track", "album", "artist"],
+    tabsOrder: [
+      "home",
+      "folder",
+      "playlist",
+      "track",
+      "album",
+      "artist",
+      "genre",
+    ],
     tabsVisibility: {
       album: true,
       artist: true,
       folder: true,
+      genre: true,
       home: true,
       playlist: true,
       track: true,

@@ -12,6 +12,7 @@ import { getFolderTracks } from "~/api/folder";
 import { getPlaylist } from "~/api/playlist";
 import { getSortedTracks } from "~/api/track";
 import { getTrackArtwork } from "~/api/track.utils";
+import { getGenreTracks } from "~/data/genre/api";
 import type { PlayFromSource } from "./types";
 
 import { iAsc } from "~/lib/drizzle";
@@ -55,7 +56,7 @@ export function formatTrackforPlayer(track: TrackWithRelations) {
 export async function getSourceName({ type, id }: PlayFromSource) {
   let name = "";
   try {
-    if (type === "artist") {
+    if (type === "artist" || type === "genre") {
       name = id;
     } else if (type === "playlist") {
       name = id;
@@ -96,6 +97,9 @@ export async function getTrackIdsList({ type, id }: PlayFromSource) {
     } else if (type === "folder") {
       const data = await getFolderTracks(id); // `id` contains pathname.
       trackIds = data.map(({ id }) => id);
+    } else if (type === "genre") {
+      const data = await getGenreTracks(id, true);
+      trackIds = data.map((t) => t.id);
     } else {
       if (ReservedNames.has(id)) {
         const sortedTracks = await getSortedTracks("sortedIds");

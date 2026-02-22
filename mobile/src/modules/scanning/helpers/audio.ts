@@ -9,12 +9,13 @@ import { getAssetsAsync } from "expo-media-library";
 
 import { db } from "~/db";
 import type { InvalidTrack } from "~/db/schema";
-import { invalidTracks, tracksToArtists } from "~/db/schema";
+import { invalidTracks, tracksToArtists, tracksToGenres } from "~/db/schema";
 
 import { upsertAlbums } from "~/api/album";
 import { AlbumArtistsKey } from "~/api/album.utils";
 import { createArtists } from "~/api/artist";
 import { deleteTracks, upsertTracks } from "~/api/track";
+import { createGenres } from "~/data/genre/api";
 import { preferenceStore } from "~/stores/Preference/store";
 import { scanningProgressStore } from "../ScanningProgress";
 
@@ -203,6 +204,17 @@ export async function findAndSaveAudio() {
     }
     //#endregion
 
+    //#region Genre Creation
+    const newGenres = new Set<string>();
+    const trackGenreRels = results.flatMap(({ id, genres: trackGenres }) => {
+      trackGenres.forEach((genre) => newGenres.add(genre));
+      return trackGenres.map((genre) => ({ trackId: id, genreName: genre }));
+    });
+
+    const genreEntries = [...newGenres].map((name) => ({ name }));
+    if (genreEntries.length > 0) await createGenres(genreEntries);
+    //#endregion
+
     //#region Upsert Tracks
     const trackEntries = results.map(({ artistNames: _, album, ...t }) => {
       let albumId: string | null = null;
@@ -211,6 +223,7 @@ export async function findAndSaveAudio() {
     });
     const trackIds = trackEntries.map(({ id }) => id);
     await upsertTracks(trackEntries);
+    await db.delete(invalidTracks).where(inArray(invalidTracks.id, trackIds));
     // Replace old artist relations.
     await db
       .delete(tracksToArtists)
@@ -221,7 +234,16 @@ export async function findAndSaveAudio() {
         .values(trackArtistRels)
         .onConflictDoNothing();
     }
-    await db.delete(invalidTracks).where(inArray(invalidTracks.id, trackIds));
+    // Replace old genre relations.
+    await db
+      .delete(tracksToGenres)
+      .where(inArray(tracksToGenres.trackId, trackIds));
+    if (trackGenreRels.length > 0) {
+      await db
+        .insert(tracksToGenres)
+        .values(trackGenreRels)
+        .onConflictDoNothing();
+    }
     //#endregion
   }
   //#endregion
@@ -242,7 +264,7 @@ export async function findAndSaveAudio() {
 //#region Internal Helpers
 const wantedMetadata = [
   ...MetadataPresets.standard,
-  ...["discNumber", "bitrate", "sampleMimeType", "sampleRate"],
+  ...["discNumber", "genre", "bitrate", "sampleMimeType", "sampleRate"],
 ] as const;
 
 /**
@@ -268,6 +290,7 @@ async function getTrackMetadata(
   }
 
   const trimmedArtistName = t.artist?.trim() || null;
+  const trimmedGenre = t.genre?.trim() || null;
 
   let newAlbum;
   if (!!t.albumTitle?.trim() && !!t.albumArtist?.trim()) {
@@ -291,6 +314,7 @@ async function getTrackMetadata(
     disc: t.discNumber,
     year: t.year,
     format: t.sampleMimeType,
+    genres: trimmedGenre ? splitOn(trimmedGenre, delimiters) : [],
     bitrate,
     sampleRate,
     duration,

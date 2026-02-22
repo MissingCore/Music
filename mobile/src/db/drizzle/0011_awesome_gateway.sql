@@ -6,6 +6,11 @@ CREATE TABLE `albums_to_artists` (
 	FOREIGN KEY (`artist_name`) REFERENCES `artists`(`name`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
+CREATE TABLE `genres` (
+	`name` text PRIMARY KEY NOT NULL,
+	`artwork` text
+);
+--> statement-breakpoint
 CREATE TABLE `hidden_tracks` (
 	`id` text PRIMARY KEY NOT NULL,
 	`uri` text NOT NULL,
@@ -25,6 +30,14 @@ CREATE TABLE `tracks_to_artists` (
 	PRIMARY KEY(`track_id`, `artist_name`),
 	FOREIGN KEY (`track_id`) REFERENCES `tracks`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`artist_name`) REFERENCES `artists`(`name`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
+CREATE TABLE `tracks_to_genres` (
+	`track_id` text NOT NULL,
+	`genre_name` text NOT NULL,
+	PRIMARY KEY(`track_id`, `genre_name`),
+	FOREIGN KEY (`track_id`) REFERENCES `tracks`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`genre_name`) REFERENCES `genres`(`name`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE TABLE `tracks_to_lyrics` (

@@ -129,6 +129,7 @@ export const tracks = sqliteTable("tracks", {
 export const tracksRelations = relations(tracks, ({ one, many }) => ({
   album: one(albums, { fields: [tracks.albumId], references: [albums.id] }),
   tracksToArtists: many(tracksToArtists),
+  tracksToGenres: many(tracksToGenres),
   tracksToLyrics: one(tracksToLyrics),
   tracksToPlaylists: many(tracksToPlaylists),
   waveformSample: one(waveformSamples),
@@ -304,6 +305,41 @@ export const tracksToLyricsRelations = relations(tracksToLyrics, ({ one }) => ({
 }));
 //#endregion
 
+//#region Genre
+export const genres = sqliteTable("genres", {
+  name: text().primaryKey(),
+  artwork: text(),
+});
+
+export const genreRelations = relations(genres, ({ many }) => ({
+  tracksToGenres: many(tracksToGenres),
+}));
+
+export const tracksToGenres = sqliteTable(
+  "tracks_to_genres",
+  {
+    trackId: text()
+      .notNull()
+      .references(() => tracks.id),
+    genreName: text()
+      .notNull()
+      .references(() => genres.name),
+  },
+  (t) => [primaryKey({ columns: [t.trackId, t.genreName] })],
+);
+
+export const tracksToGenresRelations = relations(tracksToGenres, ({ one }) => ({
+  genre: one(genres, {
+    fields: [tracksToGenres.genreName],
+    references: [genres.name],
+  }),
+  track: one(tracks, {
+    fields: [tracksToGenres.trackId],
+    references: [tracks.id],
+  }),
+}));
+//#endregion
+
 //#region Types
 export type Artist = InferSelectModel<typeof artists>;
 export type ArtistWithTracks = Prettify<
@@ -353,4 +389,6 @@ export type PlayedMediaList = Prettify<
 export type WaveformSample = InferSelectModel<typeof waveformSamples>;
 
 export type Lyric = InferSelectModel<typeof lyrics>;
+
+export type Genre = InferSelectModel<typeof genres>;
 //#endregion

@@ -2,6 +2,7 @@ import type { UseMutationResult } from "@tanstack/react-query";
 import { useState } from "react";
 import { useWindowDimensions } from "react-native";
 
+import { useGenre, useUpdateGenre } from "~/data/genre/queries";
 import { useAlbum, useUpdateAlbumArtwork } from "~/queries/album";
 import { useArtist, useUpdateArtist } from "~/queries/artist";
 import { usePlaylist, useUpdatePlaylist } from "~/queries/playlist";
@@ -46,6 +47,22 @@ export function ArtistArtworkSheet(props: ArtworkSheetProps) {
         type="artist"
         imageSource={data?.artwork ?? null}
         mutationResult={updateArtist}
+      />
+    </DetachedSheet>
+  );
+}
+
+/** Sheet allowing us to change the artwork of an genre. */
+export function GenreArtworkSheet(props: ArtworkSheetProps) {
+  const { data } = useGenre(props.id);
+  const updateGenre = useUpdateGenre(props.id);
+
+  return (
+    <DetachedSheet ref={props.ref} contentContainerClassName="items-center">
+      <BaseArtworkSheetContent
+        type="genre"
+        imageSource={data?.artwork ?? null}
+        mutationResult={updateGenre}
       />
     </DetachedSheet>
   );

@@ -19,7 +19,13 @@ import {
   getRecentlyPlayedMediaLists,
   getRecentlyPlayedTracks,
 } from "~/api/recent";
-import { getSortedTracks, getTrack, getTrackPlaylists } from "~/api/track";
+import {
+  getSortedTracks,
+  getTrack,
+  getTrackGenres,
+  getTrackPlaylists,
+} from "~/api/track";
+import { getGenre, getGenresSummary } from "~/data/genre/api";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
@@ -114,6 +120,17 @@ export const queries = createQueryKeyStore({
     detail: (folderPath?: string) => ({
       queryKey: [folderPath],
       queryFn: () => getFolder(folderPath),
+    }),
+  },
+  /** Query keys used in `useQuery` for genres. */
+  genres: {
+    all: {
+      queryKey: null,
+      queryFn: getGenresSummary,
+    },
+    detail: (genreName: string) => ({
+      queryKey: [genreName],
+      queryFn: () => getGenre(genreName),
     }),
   },
   /** Query keys used in `useQuery` for lyrics. */
@@ -236,6 +253,11 @@ export const queries = createQueryKeyStore({
             });
             return isFavorited ? true : false;
           },
+        },
+        genres: {
+          // eslint-disable-next-line @tanstack/query/exhaustive-deps
+          queryKey: null,
+          queryFn: () => getTrackGenres(trackId),
         },
         playlists: {
           // eslint-disable-next-line @tanstack/query/exhaustive-deps

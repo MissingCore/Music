@@ -9,7 +9,7 @@ import type {
 import type { MediaType } from "~/stores/Playback/types";
 
 /** Categories of media that can be returned by search. */
-export type SearchCategories = readonly MediaType[];
+export type SearchCategories = ReadonlyArray<Exclude<MediaType, "genre">>;
 
 /** Functions that can be triggered on the categories of media. */
 export type SearchCallbacks = {

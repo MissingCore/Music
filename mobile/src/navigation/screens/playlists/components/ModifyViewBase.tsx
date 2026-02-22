@@ -56,7 +56,7 @@ export function ModifyPlaylistBase(props: {
   initialData?: Omit<PlaylistEntry, "isFavoritesList" | "trackIds">;
   usedNames: string[];
 }) {
-  const { offset, ...rest } = useFloatingContent();
+  const { offset, floatingContentProps } = useFloatingContent();
 
   const isFavoritesList = props.initialData?.name === FavoritesPlaylistKey;
 
@@ -96,7 +96,9 @@ export function ModifyPlaylistBase(props: {
       }}
     >
       <PlaylistForm bottomOffset={offset} />
-      {!isFavoritesList ? <RenderedWorkflow {...rest} /> : null}
+      {!isFavoritesList ? (
+        <RenderedWorkflow floatingContentProps={floatingContentProps} />
+      ) : null}
     </FormStateProvider>
   );
 }
@@ -336,8 +338,7 @@ const RenderItem = memo(
 
 //#region Import M3U Workflow
 function ImportM3UWorkflow({
-  floatingRef,
-  wrapperStyling,
+  floatingContentProps,
 }: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
   const { t } = useTranslation();
   const { data, setFields, isSubmitting, setIsSubmitting } = useFormState();
@@ -360,7 +361,7 @@ function ImportM3UWorkflow({
   };
 
   return (
-    <View ref={floatingRef} {...wrapperStyling}>
+    <View {...floatingContentProps}>
       <ExtendedTButton
         textKey="feat.playlist.extra.m3uImport"
         onPress={onImport}
@@ -375,8 +376,7 @@ function ImportM3UWorkflow({
 
 //#region Delete Workflow
 function DeleteWorkflow({
-  floatingRef,
-  wrapperStyling,
+  floatingContentProps,
 }: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
   const navigation = useNavigation();
   const [lastChance, setLastChance] = useState(false);
@@ -398,7 +398,7 @@ function DeleteWorkflow({
 
   return (
     <>
-      <View ref={floatingRef} {...wrapperStyling}>
+      <View {...floatingContentProps}>
         <ExtendedTButton
           textKey="form.delete"
           onPress={() => setLastChance(true)}
