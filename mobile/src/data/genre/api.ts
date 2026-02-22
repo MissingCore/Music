@@ -1,4 +1,4 @@
-import { eq, getTableColumns, sql } from "drizzle-orm";
+import { count, eq, getTableColumns, sql, sum } from "drizzle-orm";
 
 import { db } from "~/db";
 import {
@@ -81,6 +81,26 @@ export async function getGenreTracks<TOnlyIds extends boolean = false>(
           artists: unencodeJSONArray(artists as string),
         }))
   ) as TOnlyIds extends true ? Array<{ id: string }> : GenreTrack[];
+}
+
+/** Get information summarizing each genre (sorted by names). */
+export async function getGenresSummary() {
+  const results = await db
+    .select({
+      ...getTableColumns(genres),
+      duration: sum(tracks.duration),
+      trackCount: count(tracks.id),
+    })
+    .from(genres)
+    .innerJoin(tracksToGenres, eq(genres.name, tracksToGenres.genreName))
+    .innerJoin(tracks, eq(tracksToGenres.trackId, tracks.id))
+    .groupBy(genres.name)
+    .orderBy(iAsc(genres.name));
+
+  return results
+    .filter(({ trackCount }) => trackCount > 0)
+    .map((genre) => ({ ...genre, duration: Number(genre.duration) || 0 }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 //#endregion
 
