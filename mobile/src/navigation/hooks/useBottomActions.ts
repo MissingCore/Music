@@ -4,15 +4,8 @@ import { useMemo } from "react";
 
 import { usePlaybackStore } from "~/stores/Playback/store";
 
-/** Routes where the miniplayer is visible. */
+/** Non-home screen routes where the miniplayer is visible. */
 const miniPlayerRoutes = [
-  "Home-",
-  "Folders-",
-  "Playlists-",
-  "Tracks-",
-  "Albums-",
-  "Artists-",
-  "Genres-",
   "RecentlyPlayed-",
   "Album-",
   "Artist-",
