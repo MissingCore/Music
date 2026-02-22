@@ -12,6 +12,7 @@ export function Modal(props: { visible: boolean; children: React.ReactNode }) {
       animationType="fade"
       visible={props.visible}
       statusBarTranslucent
+      navigationBarTranslucent
       transparent
     >
       <View className="flex-1 items-center justify-center bg-black/50 px-4">

@@ -1,9 +1,9 @@
 import { Toasts } from "@backpackapp-io/react-native-toast";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { NavigationBar } from "@zoontek/react-native-navigation-bar";
 import { platformApiLevel } from "expo-device";
 import { useMemo } from "react";
-import { View } from "react-native";
-import { SystemBars as DeviceSystemBars } from "react-native-edge-to-edge";
+import { StatusBar, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { Provider as PaperProvider } from "react-native-paper";
@@ -43,9 +43,10 @@ function SystemBars() {
   const currentTheme = useCurrentTheme();
   const iconColor = currentTheme === "light" ? "dark" : "light";
   return (
-    <DeviceSystemBars
-      style={{ statusBar: iconColor, navigationBar: iconColor }}
-    />
+    <>
+      <StatusBar barStyle={`${iconColor}-content`} />
+      <NavigationBar barStyle={`${iconColor}-content`} />
+    </>
   );
 }
 

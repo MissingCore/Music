@@ -15,6 +15,7 @@
 | @sentry/react-native | MIT | https://github.com/getsentry/sentry-react-native |
 | @tanstack/react-query | MIT | https://github.com/TanStack/query |
 | @weights-ai/react-native-track-player | Apache-2.0 | https://github.com/doublesymmetry/react-native-track-player |
+| @zoontek/react-native-navigation-bar | MIT | https://github.com/zoontek/react-native-navigation-bar |
 | clsx | MIT | https://github.com/lukeed/clsx |
 | drizzle-orm | Apache-2.0 | https://github.com/drizzle-team/drizzle-orm |
 | expo | MIT | https://github.com/expo/expo/tree/main/packages/expo |
@@ -44,7 +45,6 @@
 | react-native-android-widget | MIT | https://github.com/sAleksovski/react-native-android-widget |
 | react-native-audio-analyzer | MIT | https://github.com/exzos28/react-native-audio-analyzer |
 | react-native-bootsplash | MIT | https://github.com/zoontek/react-native-bootsplash |
-| react-native-edge-to-edge | MIT | https://github.com/zoontek/react-native-edge-to-edge |
 | react-native-gesture-handler | MIT | https://github.com/software-mansion/react-native-gesture-handler |
 | react-native-keyboard-controller | MIT | https://github.com/kirillzyusko/react-native-keyboard-controller |
 | react-native-markdown-display | MIT | https://github.com/iamacup/react-native-markdown-display |

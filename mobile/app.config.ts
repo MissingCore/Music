@@ -133,7 +133,7 @@ export default (): ExpoConfig => ({
       },
     ],
     [
-      "react-native-edge-to-edge",
+      "@zoontek/react-native-navigation-bar",
       { android: { enforceNavigationBarContrast: false } },
     ],
     ["react-native-android-widget", widgetConfig],

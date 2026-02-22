@@ -76,6 +76,9 @@ importers:
       '@weights-ai/react-native-track-player':
         specifier: github:MissingCore/react-native-track-player#74325fcbff1af92006d31791bcca493985f94550
         version: https://codeload.github.com/MissingCore/react-native-track-player/tar.gz/74325fcbff1af92006d31791bcca493985f94550(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
+      '@zoontek/react-native-navigation-bar':
+        specifier: 1.0.2
+        version: 1.0.2(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
       clsx:
         specifier: 2.1.1
         version: 2.1.1
@@ -148,9 +151,6 @@ importers:
       react-native-bootsplash:
         specifier: 7.0.2
         version: 7.0.2(patch_hash=766dba26b25509f46c82fc47d9ac52524fc8d2b0abce9fe8e0795caeaab251df)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
-      react-native-edge-to-edge:
-        specifier: 1.7.0
-        version: 1.7.0(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
       react-native-gesture-handler:
         specifier: 2.30.0
         version: 2.30.0(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
@@ -2160,6 +2160,12 @@ packages:
   '@xmldom/xmldom@0.8.11':
     resolution: {integrity: sha512-cQzWCtO6C8TQiYl1ruKNn2U6Ao4o4WBBcbL61yJl84x+j5sOWWFU9X7DpND8XZG3daDppSsigMdfAIl2upQBRw==}
     engines: {node: '>=10.0.0'}
+
+  '@zoontek/react-native-navigation-bar@1.0.2':
+    resolution: {integrity: sha512-Emvr0EME63HKInuF00/V//YwLHvdlsiG4rWiN2d02iRftGUvDCtrL1phHXg/+4+5FJiq1/EyAhLVFsQxbl0//A==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
 
   abbrev@2.0.0:
     resolution: {integrity: sha512-6/mh1E2u2YgEsCHdY0Yx5oW+61gZU+1vXaoiHHrpKeuRNNgFvS+/jrwHiQhB5apAf5oB7UB7E19ol2R2LKH8hQ==}
@@ -4686,12 +4692,6 @@ packages:
   react-native-bootsplash@7.0.2:
     resolution: {integrity: sha512-vVJDRjtEtVw99KfMi1ISRhKObOv9MJ8XGjqsYgOGu9MmmczOEMFI2GB9fiSfNEFejPKcRaS5IGKQRunHhCesHw==}
     hasBin: true
-    peerDependencies:
-      react: '*'
-      react-native: '*'
-
-  react-native-edge-to-edge@1.7.0:
-    resolution: {integrity: sha512-ERegbsq28yoMndn/Uq49i4h6aAhMvTEjOfkFh50yX9H/dMjjCr/Tix/es/9JcPRvC+q7VzCMWfxWDUb6Jrq1OQ==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -7743,6 +7743,11 @@ snapshots:
 
   '@xmldom/xmldom@0.8.11': {}
 
+  '@zoontek/react-native-navigation-bar@1.0.2(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)':
+    dependencies:
+      react: 19.1.4
+      react-native: 0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4)
+
   abbrev@2.0.0: {}
 
   abort-controller@3.0.0:
@@ -10508,11 +10513,6 @@ snapshots:
       xml-formatter: 3.6.7
     transitivePeerDependencies:
       - supports-color
-
-  react-native-edge-to-edge@1.7.0(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4):
-    dependencies:
-      react: 19.1.4
-      react-native: 0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4)
 
   react-native-fit-image@1.5.5:
     dependencies:
