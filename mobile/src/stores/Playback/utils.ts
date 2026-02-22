@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { TrackWithRelations } from "~/db/schema";
-import { tracks, tracksToArtists, tracksToGenres } from "~/db/schema";
+import { tracks, tracksToArtists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 import { getAlbum } from "~/api/album";
@@ -12,6 +12,7 @@ import { getFolderTracks } from "~/api/folder";
 import { getPlaylist } from "~/api/playlist";
 import { getSortedTracks } from "~/api/track";
 import { getTrackArtwork } from "~/api/track.utils";
+import { getGenreTracks } from "~/data/genre/api";
 import type { PlayFromSource } from "./types";
 
 import { iAsc } from "~/lib/drizzle";
@@ -97,12 +98,7 @@ export async function getTrackIdsList({ type, id }: PlayFromSource) {
       const data = await getFolderTracks(id); // `id` contains pathname.
       trackIds = data.map(({ id }) => id);
     } else if (type === "genre") {
-      const data = await db
-        .select({ id: tracks.id })
-        .from(tracksToGenres)
-        .where(eq(tracksToGenres.genreName, id))
-        .innerJoin(tracks, eq(tracksToGenres.trackId, tracks.id))
-        .orderBy(iAsc(tracks.name));
+      const data = await getGenreTracks(id, true);
       trackIds = data.map((t) => t.id);
     } else {
       if (ReservedNames.has(id)) {

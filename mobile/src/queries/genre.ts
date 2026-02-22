@@ -3,8 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import type { genres } from "~/db/schema";
 
-import { updateGenre } from "~/api/genre";
-import { getTrackArtwork } from "~/api/track.utils";
+import { updateGenre } from "~/data/genre/api";
 import { queries as q } from "./keyStore";
 
 import { formatSeconds } from "~/utils/number";
@@ -26,33 +25,18 @@ export function useGenreForScreen(genreName: string) {
         t("plural.track", { count: tracks.length }),
         formatSeconds(tracks.reduce((total, curr) => total + curr.duration, 0)),
       ],
-      tracks: tracks.map((track) => {
-        let artistNames: string[] = [];
-        try {
-          const asArr: Array<string | null> = JSON.parse(track.artists);
-          artistNames = asArr.filter((name) => name !== null);
-        } catch {}
-
-        return {
-          id: track.id,
-          title: track.name,
-          description: artistNames.join(", ") ?? "—",
-          imageSource: getTrackArtwork(track),
-        };
-      }),
+      tracks: tracks.map((track) => ({
+        id: track.id,
+        title: track.name,
+        description: track.artists.join(", ") || "—",
+        imageSource: track.artwork,
+      })),
     }),
   });
 }
 
 export function useGenres() {
-  return useQuery({
-    ...q.genres.all,
-    select: (data) =>
-      data
-        .filter(({ trackCount }) => trackCount > 0)
-        .map((a) => ({ ...a, duration: Number(a.duration) || 0 }))
-        .sort((a, b) => a.name.localeCompare(b.name)),
-  });
+  return useQuery({ ...q.genres.all });
 }
 //#endregion
 

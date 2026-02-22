@@ -6,6 +6,7 @@ import { playedMediaLists, tracks } from "~/db/schema";
 import { formatForMediaCard, formatForTrack } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
+import { getGenre } from "~/data/genre/api";
 import { getAlbum } from "./album";
 import { getFolderTracks } from "./folder";
 import { getPlaylist } from "./playlist";
@@ -147,14 +148,7 @@ async function getRecentListEntry({ id, type }: PlayFromSource) {
         description: i18next.t("plural.track", { count: numTracks }),
       };
     } else if (type === "genre") {
-      const { tracksToGenres, ...rest } = await throwIfNoResults(
-        db.query.genres.findFirst({
-          where: (fields, { eq }) => eq(fields.name, id),
-          //? Relation used to count number of tracks.
-          with: { tracksToGenres: { columns: { trackId: true } } },
-        }),
-      );
-      const data = { ...rest, tracks: tracksToGenres };
+      const data = await getGenre(id, true);
       entry = formatForMediaCard({ type: "genre", data, t: i18next.t });
     } else {
       let data = null;

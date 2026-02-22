@@ -14,8 +14,8 @@ import { invalidTracks, tracksToArtists, tracksToGenres } from "~/db/schema";
 import { upsertAlbums } from "~/api/album";
 import { AlbumArtistsKey } from "~/api/album.utils";
 import { createArtists } from "~/api/artist";
-import { createGenres } from "~/api/genre";
 import { deleteTracks, upsertTracks } from "~/api/track";
+import { createGenres } from "~/data/genre/api";
 import { preferenceStore } from "~/stores/Preference/store";
 import { scanningProgressStore } from "../ScanningProgress";
 
