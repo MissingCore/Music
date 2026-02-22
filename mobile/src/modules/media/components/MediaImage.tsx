@@ -71,9 +71,7 @@ export function MediaImage({
       {...additionalProps}
       placeholderContentFit="cover"
       style={{ width: size, height: size }}
-      className={cn(usedClasses, {
-        "rounded-full": type === "artist" || type === "genre",
-      })}
+      className={cn(usedClasses, { "rounded-full": type === "artist" })}
     />
   );
 }

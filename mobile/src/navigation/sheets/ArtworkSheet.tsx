@@ -4,6 +4,7 @@ import { useWindowDimensions } from "react-native";
 
 import { useAlbum, useUpdateAlbumArtwork } from "~/queries/album";
 import { useArtist, useUpdateArtist } from "~/queries/artist";
+import { useGenre, useUpdateGenre } from "~/queries/genre";
 import { usePlaylist, useUpdatePlaylist } from "~/queries/playlist";
 import { useTrack, useUpdateTrackArtwork } from "~/queries/track";
 
@@ -46,6 +47,22 @@ export function ArtistArtworkSheet(props: ArtworkSheetProps) {
         type="artist"
         imageSource={data?.artwork ?? null}
         mutationResult={updateArtist}
+      />
+    </DetachedSheet>
+  );
+}
+
+/** Sheet allowing us to change the artwork of an genre. */
+export function GenreArtworkSheet(props: ArtworkSheetProps) {
+  const { data } = useGenre(props.id);
+  const updateGenre = useUpdateGenre(props.id);
+
+  return (
+    <DetachedSheet ref={props.ref} contentContainerClassName="items-center">
+      <BaseArtworkSheetContent
+        type="genre"
+        imageSource={data?.artwork ?? null}
+        mutationResult={updateGenre}
       />
     </DetachedSheet>
   );

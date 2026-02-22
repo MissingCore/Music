@@ -23,6 +23,7 @@ import Albums from "./screens/albums/View";
 import Artist from "./screens/artists/CurrentView";
 import Artists from "./screens/artists/View";
 import Folders from "./screens/folders/View";
+import Genre from "./screens/genres/CurrentView";
 import Genres from "./screens/genres/View";
 import CreateLyric from "./screens/lyrics/CreateView";
 import Lyric from "./screens/lyrics/CurrentView";
@@ -270,6 +271,7 @@ export const RootStack = createNativeStackNavigator({
         Playlist,
         Album,
         Artist,
+        Genre,
       },
     },
     Form: {

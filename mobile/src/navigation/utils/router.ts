@@ -30,8 +30,7 @@ export function getMediaLinkContext({
       { screen: "Folders", params: { path: id } },
     ] as const;
   } else if (type === "genre") {
-    // FIXME: Need to implement.
-    return ["HomeScreens", { screen: "Home" }] as const;
+    return ["Genre", { id }] as const;
   } else if (type === "playlist") {
     if (id === ReservedPlaylists.tracks) {
       return ["HomeScreens", { screen: "Tracks" }] as const;

@@ -28,7 +28,7 @@ import { MediaListControls } from "~/modules/media/components/MediaListControls"
 import { Vinyl } from "~/modules/media/components/Vinyl";
 import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
 
-type SupportedMedia = "album" | "artist" | "playlist";
+type SupportedMedia = "album" | "artist" | "genre" | "playlist";
 type MediaListSource = { type: SupportedMedia; id: string };
 
 const ESTIMATED_TOPAPPBAR_HEIGHT = 56;

@@ -141,6 +141,48 @@ export const queries = createQueryKeyStore({
           .orderBy(iAsc(genres.name));
       },
     },
+    detail: (genreName: string) => ({
+      queryKey: [genreName],
+      queryFn: async () => {
+        //? Create a subquery which returns the artists associated with
+        //? tracks in order.
+        const orderedTrackArtists = db
+          .select(getTableColumns(tracksToArtists))
+          .from(tracksToArtists)
+          .orderBy(iAsc(tracksToArtists.artistName))
+          .as("ordered_track_artists");
+
+        const [genreData, genreTracks] = await Promise.all([
+          throwIfNoResults(
+            db.query.genres.findFirst({
+              where: (fields, { eq }) => eq(fields.name, genreName),
+            }),
+          ),
+          //? Get the tracks associated with the genre in alphabetical order.
+          db
+            .select({
+              id: tracks.id,
+              name: tracks.name,
+              artwork: tracks.artwork,
+              duration: tracks.duration,
+              album: { name: albums.name, artwork: albums.artwork },
+              /** We need to unencode this string. */
+              artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
+            })
+            .from(tracksToGenres)
+            .where(eq(tracksToGenres.genreName, genreName))
+            .innerJoin(tracks, eq(tracksToGenres.trackId, tracks.id))
+            .leftJoin(albums, eq(tracks.albumId, albums.id))
+            .leftJoin(
+              orderedTrackArtists,
+              eq(tracks.id, orderedTrackArtists.trackId),
+            )
+            .groupBy(tracksToGenres.trackId)
+            .orderBy(iAsc(tracks.name)),
+        ]);
+        return { ...genreData, tracks: genreTracks };
+      },
+    }),
   },
   /** Query keys used in `useQuery` for lyrics. */
   lyrics: {
