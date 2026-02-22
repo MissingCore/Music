@@ -1,6 +1,6 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 
-import { useGenreForScreen } from "~/queries/genre";
+import { useGenreForScreen } from "~/data/genre/queries";
 
 import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";

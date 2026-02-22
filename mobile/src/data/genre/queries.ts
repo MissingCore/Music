@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 
 import type { genres } from "~/db/schema";
 
-import { updateGenre } from "~/data/genre/api";
-import { queries as q } from "./keyStore";
+import { queries as q } from "~/queries/keyStore";
+import { updateGenre } from "./api";
 
 import { formatSeconds } from "~/utils/number";
 
