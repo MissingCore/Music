@@ -148,7 +148,7 @@ function SearchResultsList<TScope extends SearchCategories>(
           )
         }
         ListEmptyComponent={
-          props.query.length > 0 ? (
+          props.query.length > 0 && data !== undefined ? (
             <ContentPlaceholder errMsgKey="err.msg.noResults" />
           ) : undefined
         }

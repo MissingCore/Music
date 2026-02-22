@@ -28,10 +28,16 @@ export function useSearch<TScope extends SearchCategories>(
   const [cache, setCache] = useState<Record<string, Pick<SearchResults, any>>>(
     {},
   );
-  const prevDefinedValueRef = useRef<Pick<SearchResults, any>>({});
+  const prevDefinedValueRef = useRef<
+    Pick<SearchResults, TScope[number]> | undefined
+  >(undefined);
 
   useEffect(() => {
-    if (!data || !query) return;
+    if (!data || !query) {
+      // Don't display prior value if query gets cleared.
+      prevDefinedValueRef.current = undefined;
+      return;
+    }
 
     const q = query.toLocaleLowerCase();
     if (cache[q]) return;
@@ -81,7 +87,7 @@ export function useSearch<TScope extends SearchCategories>(
     if (result) prevDefinedValueRef.current = result;
     else if (result === undefined) {
       // Keep showing the prior results while computation is still ongoing to prevent flashing.
-      return prevDefinedValueRef.current as Pick<SearchResults, TScope[number]>;
+      return prevDefinedValueRef.current;
     }
     return result as Pick<SearchResults, TScope[number]>;
   }
