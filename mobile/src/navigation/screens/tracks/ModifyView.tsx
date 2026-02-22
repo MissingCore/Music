@@ -87,11 +87,12 @@ export default function ModifyTrack({
         genres: trackGenresQuery.data ?? [],
       }}
       onSubmit={onEditTrack}
-      onConstraints={({ artists, albumArtists }) =>
+      onConstraints={({ artists, albumArtists, genres }) =>
         artists.length ===
           new Set(artists.map((artist) => artist.trim())).size &&
         albumArtists.length ===
-          new Set(albumArtists.map((artist) => artist.trim())).size
+          new Set(albumArtists.map((artist) => artist.trim())).size &&
+        genres.length === new Set(genres.map((genre) => genre.trim())).size
       }
     >
       <MetadataForm bottomOffset={offset} />
