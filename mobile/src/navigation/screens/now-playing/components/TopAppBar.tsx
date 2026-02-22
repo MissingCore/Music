@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 
 import { ArrowBack } from "~/resources/icons/ArrowBack";
 import { usePlaybackStore } from "~/stores/Playback/store";
@@ -11,6 +11,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { getMediaLinkContext } from "~/navigation/utils/router";
 
 import { OnRTL } from "~/lib/react";
+import { Pressable } from "~/components/Base/Pressable";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { Marquee } from "~/components/Marquee";
 import { SafeContainer } from "~/components/SafeContainer";

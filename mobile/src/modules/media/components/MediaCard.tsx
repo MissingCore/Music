@@ -1,12 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
-import { Pressable } from "react-native";
 
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { getMediaLinkContext } from "~/navigation/utils/router";
 
 import { cn } from "~/lib/style";
 import type { LegendListProps } from "~/components/Base/LegendList";
+import { Pressable } from "~/components/Base/Pressable";
 import { StyledText } from "~/components/Typography/StyledText";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import type { MediaCardContent, MediaCardProps } from "./MediaCard.type";

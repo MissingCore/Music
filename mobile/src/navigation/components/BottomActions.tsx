@@ -3,7 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useState } from "react";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Search } from "~/resources/icons/Search";
@@ -18,6 +18,7 @@ import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { capitalize } from "~/utils/string";
 import { FlatList, useFlatListRef } from "~/components/Base/List";
+import { Pressable } from "~/components/Base/Pressable";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { StyledText } from "~/components/Typography/StyledText";
 import type { Tab } from "~/stores/Preference/types";

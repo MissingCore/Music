@@ -1,4 +1,4 @@
-import type { PressableProps } from "react-native";
+import type { PressableProps } from "../../Base/Pressable";
 
 /** The most "used" action props used on `<Pressable />`. */
 export type PressProps = Pick<

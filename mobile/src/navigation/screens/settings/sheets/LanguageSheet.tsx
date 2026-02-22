@@ -1,5 +1,5 @@
 import { openBrowserAsync } from "expo-web-browser";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 
 import { KeyboardArrowDown } from "~/resources/icons/KeyboardArrowDown";
 import { OpenInNew } from "~/resources/icons/OpenInNew";
@@ -12,6 +12,7 @@ import {
 import { TRANSLATIONS } from "~/constants/Links";
 import { OnRTL } from "~/lib/react";
 import { FlatList } from "~/components/Base/List";
+import { Pressable } from "~/components/Base/Pressable";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { ClickwrapCheckbox } from "~/components/Form/Checkbox";
 import { RadioField } from "~/components/Form/Radio";

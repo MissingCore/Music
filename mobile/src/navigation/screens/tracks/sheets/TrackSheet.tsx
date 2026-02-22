@@ -1,7 +1,7 @@
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 
 import type { TrackWithRelations } from "~/db/schema";
 
@@ -33,6 +33,7 @@ import {
   formatEpoch,
   formatSeconds,
 } from "~/utils/number";
+import { Pressable } from "~/components/Base/Pressable";
 import { Divider } from "~/components/Divider";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { Marquee } from "~/components/Marquee";

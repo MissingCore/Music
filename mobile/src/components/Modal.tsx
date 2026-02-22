@@ -1,8 +1,8 @@
 import type { ParseKeys } from "i18next";
-import type { PressableProps } from "react-native";
 import { Modal as RNModal, View } from "react-native";
 
 import { cn } from "~/lib/style";
+import type { PressableProps } from "./Base/Pressable";
 import { ExtendedTButton } from "./Form/Button";
 import { TStyledText } from "./Typography/StyledText";
 

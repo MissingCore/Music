@@ -1,10 +1,11 @@
 import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 
 import { DoNotDisturbOn } from "~/resources/icons/DoNotDisturbOn";
 
 import { cn } from "~/lib/style";
+import { Pressable } from "../Base/Pressable";
 import { IconButton } from "../Form/Button/Icon";
 
 type RemovableItemProps = {

@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 
 import type { Icon } from "~/resources/icons/type";
 import { useTheme } from "~/hooks/useTheme";
@@ -7,6 +7,7 @@ import { useTheme } from "~/hooks/useTheme";
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
 import type { PressProps } from "./types";
+import { Pressable } from "../../Base/Pressable";
 
 export type ButtonSize = "xs" | "sm" | "md" | "lg";
 

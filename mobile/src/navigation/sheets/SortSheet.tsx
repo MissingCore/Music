@@ -1,5 +1,3 @@
-import { Pressable } from "react-native";
-
 import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import {
   ViewPreferenceSetters,
@@ -7,6 +5,7 @@ import {
 } from "~/stores/ViewPreference/actions";
 
 import { FlatList } from "~/components/Base/List";
+import { Pressable } from "~/components/Base/Pressable";
 import { RadioField } from "~/components/Form/Radio";
 import { DetachedSheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";

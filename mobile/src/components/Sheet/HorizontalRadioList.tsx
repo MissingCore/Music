@@ -1,7 +1,8 @@
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 
 import { cn } from "~/lib/style";
 import { FlatList } from "../Base/List";
+import { Pressable } from "../Base/Pressable";
 
 export function HorizontalRadioList<T extends string>(props: {
   data: readonly T[];

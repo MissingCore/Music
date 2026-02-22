@@ -1,7 +1,7 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
-import { BackHandler, Pressable, useWindowDimensions } from "react-native";
+import { BackHandler, useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
   FadeInLeft,
@@ -27,6 +27,7 @@ import { OnRTL, OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { addTrailingSlash } from "~/utils/string";
 import { useAnimatedLegendListRef } from "~/components/Base/LegendList";
+import { Pressable } from "~/components/Base/Pressable";
 import { useAnimatedScrollViewRef } from "~/components/Base/ScrollView";
 import { StyledText } from "~/components/Typography/StyledText";
 import {

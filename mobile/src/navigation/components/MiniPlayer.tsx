@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 
 import { Pause } from "~/resources/icons/Pause";
 import { PlayArrow } from "~/resources/icons/PlayArrow";
@@ -12,6 +12,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
+import { Pressable } from "~/components/Base/Pressable";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { Marquee } from "~/components/Marquee";
 import { Swipeable } from "~/components/Swipeable";

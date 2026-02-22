@@ -1,10 +1,11 @@
 import type { ParseKeys } from "i18next";
 import { memo } from "react";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 
 import { Check } from "~/resources/icons/Check";
 
 import { cn } from "~/lib/style";
+import { Pressable } from "../Base/Pressable";
 import { TStyledText } from "../Typography/StyledText";
 
 //#region Base

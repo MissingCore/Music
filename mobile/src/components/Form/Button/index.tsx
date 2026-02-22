@@ -1,9 +1,9 @@
 import type { ParseKeys } from "i18next";
 import { memo } from "react";
-import type { PressableProps } from "react-native";
-import { Pressable } from "react-native";
 
 import { cn } from "~/lib/style";
+import type { PressableProps } from "../../Base/Pressable";
+import { Pressable } from "../../Base/Pressable";
 import { TEm } from "../../Typography/StyledText";
 
 //#region Default
