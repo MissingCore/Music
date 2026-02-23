@@ -1,15 +1,8 @@
 import { createQueryKeyStore } from "@lukemorales/query-key-factory";
-import { count, eq, getTableColumns, ne, sql, sum } from "drizzle-orm";
+import { count, eq, ne, sql, sum } from "drizzle-orm";
 
 import { db } from "~/db";
-import {
-  albums,
-  artists,
-  playlists,
-  tracks,
-  tracksToArtists,
-  tracksToPlaylists,
-} from "~/db/schema";
+import { albums, playlists, tracks, tracksToPlaylists } from "~/db/schema";
 
 import { getAlbum, getAlbums } from "~/api/album";
 import { getFolder } from "~/api/folder";
@@ -24,7 +17,7 @@ import {
   getTrackGenres,
   getTrackPlaylists,
 } from "~/api/track";
-import { getArtist } from "~/data/artist/api";
+import { getArtist, getArtistsSummary } from "~/data/artist/api";
 import { getGenre, getGenresSummary } from "~/data/genre/api";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
@@ -62,22 +55,7 @@ export const queries = createQueryKeyStore({
   artists: {
     all: {
       queryKey: null,
-      queryFn: () => {
-        return db
-          .select({
-            ...getTableColumns(artists),
-            duration: sum(tracks.duration),
-            trackCount: count(tracks.id),
-          })
-          .from(artists)
-          .innerJoin(
-            tracksToArtists,
-            eq(artists.name, tracksToArtists.artistName),
-          )
-          .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id))
-          .groupBy(artists.name)
-          .orderBy(iAsc(artists.name));
-      },
+      queryFn: getArtistsSummary,
     },
     detail: (artistName: string) => ({
       queryKey: [artistName],

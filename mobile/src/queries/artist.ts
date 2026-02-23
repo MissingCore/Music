@@ -10,17 +10,6 @@ import { queries as q } from "./keyStore";
 export function useArtist(artistName: string) {
   return useQuery({ ...q.artists.detail(artistName) });
 }
-
-export function useArtists() {
-  return useQuery({
-    ...q.artists.all,
-    select: (data) =>
-      data
-        .filter(({ trackCount }) => trackCount > 0)
-        .map((a) => ({ ...a, duration: Number(a.duration) || 0 }))
-        .sort((a, b) => a.name.localeCompare(b.name)),
-  });
-}
 //#endregion
 
 //#region Mutations

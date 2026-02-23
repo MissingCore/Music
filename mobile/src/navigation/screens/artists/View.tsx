@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useArtists } from "~/queries/artist";
+import { useArtists } from "~/data/artist/queries";
 import { useViewLayout } from "~/stores/ViewPreference/hooks/useViewLayout";
 import { useViewOrder } from "~/stores/ViewPreference/hooks/useViewOrder";
 

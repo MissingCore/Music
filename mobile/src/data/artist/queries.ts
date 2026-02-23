@@ -28,4 +28,8 @@ export function useArtistForScreen(artistName: string) {
     }),
   });
 }
+
+export function useArtists() {
+  return useQuery({ ...q.artists.all });
+}
 //#endregion
