@@ -6,12 +6,12 @@ import { playedMediaLists, tracks } from "~/db/schema";
 import { formatForMediaCard, formatForTrack } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
+import { getArtist } from "~/data/artist/api";
 import { getGenre } from "~/data/genre/api";
 import { getAlbum } from "./album";
 import { getFolderTracks } from "./folder";
 import { getPlaylist } from "./playlist";
 
-import { throwIfNoResults } from "~/lib/drizzle";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
 import type { PlayFromSource } from "~/stores/Playback/types";
@@ -128,14 +128,7 @@ async function getRecentListEntry({ id, type }: PlayFromSource) {
       data.tracks = [];
       entry = formatForMediaCard({ type: "album", data, t: i18next.t });
     } else if (type === "artist") {
-      const { tracksToArtists, ...rest } = await throwIfNoResults(
-        db.query.artists.findFirst({
-          where: (fields, { eq }) => eq(fields.name, id),
-          //? Relation used to count number of tracks.
-          with: { tracksToArtists: { columns: { trackId: true } } },
-        }),
-      );
-      const data = { ...rest, tracks: tracksToArtists };
+      const { albums: _, ...data } = await getArtist(id, true);
       entry = formatForMediaCard({ type: "artist", data, t: i18next.t });
     } else if (type === "folder") {
       const numTracks = (await getFolderTracks(id)).length;

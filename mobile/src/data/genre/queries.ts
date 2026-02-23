@@ -9,8 +9,8 @@ import { updateGenre } from "./api";
 import { formatSeconds } from "~/utils/number";
 
 //#region Queries
-export function useGenre(genrename: string) {
-  return useQuery({ ...q.genres.detail(genrename) });
+export function useGenre(genreName: string) {
+  return useQuery({ ...q.genres.detail(genreName) });
 }
 
 export function useGenreForScreen(genreName: string) {

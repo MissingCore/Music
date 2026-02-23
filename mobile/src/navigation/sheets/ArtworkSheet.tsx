@@ -2,9 +2,9 @@ import type { UseMutationResult } from "@tanstack/react-query";
 import { useState } from "react";
 import { useWindowDimensions } from "react-native";
 
+import { useArtist, useUpdateArtist } from "~/data/artist/queries";
 import { useGenre, useUpdateGenre } from "~/data/genre/queries";
 import { useAlbum, useUpdateAlbumArtwork } from "~/queries/album";
-import { useArtist, useUpdateArtist } from "~/queries/artist";
 import { usePlaylist, useUpdatePlaylist } from "~/queries/playlist";
 import { useTrack, useUpdateTrackArtwork } from "~/queries/track";
 

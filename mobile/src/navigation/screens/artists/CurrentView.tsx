@@ -1,9 +1,8 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 
-import type { Album } from "~/db/schema";
-
-import { useArtistForScreen } from "~/queries/artist";
+import { useArtistForScreen } from "~/data/artist/queries";
+import type { ArtistAlbum } from "~/data/artist/types";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
@@ -21,8 +20,6 @@ import { MediaCard } from "~/modules/media/components/MediaCard";
 import { useTrackListPreset } from "~/modules/media/components/Track";
 
 type Props = StaticScreenProps<{ id: string }>;
-
-type ArtistAlbum = Album & { releaseYear: string | null };
 
 export default function Artist({
   route: {
@@ -103,7 +100,7 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
             size={width}
             source={item.artwork}
             title={item.name}
-            description={item.releaseYear || "————"}
+            description={item.year}
             onPress={() =>
               navigation.navigate("Album", { id: item.id }, { pop: true })
             }

@@ -3,19 +3,16 @@ import { useTranslation } from "react-i18next";
 
 import type { artists } from "~/db/schema";
 
-import { updateArtist } from "~/api/artist";
-import { getTrackArtwork } from "~/api/track.utils";
-import { queries as q } from "./keyStore";
+import { queries as q } from "~/queries/keyStore";
+import { updateArtist } from "./api";
 
 import { formatSeconds } from "~/utils/number";
 
 //#region Queries
-/** Get specified artist. */
 export function useArtist(artistName: string) {
   return useQuery({ ...q.artists.detail(artistName) });
 }
 
-/** Format artist information for artist's `(current)` screen. */
 export function useArtistForScreen(artistName: string) {
   const { t } = useTranslation();
   return useQuery({
@@ -32,27 +29,19 @@ export function useArtistForScreen(artistName: string) {
       tracks: tracks.map((track) => ({
         id: track.id,
         title: track.name,
-        description: track.album?.name ?? "—",
-        imageSource: getTrackArtwork(track),
+        description: track.album ?? "—",
+        imageSource: track.artwork,
       })),
     }),
   });
 }
 
 export function useArtists() {
-  return useQuery({
-    ...q.artists.all,
-    select: (data) =>
-      data
-        .filter(({ trackCount }) => trackCount > 0)
-        .map((a) => ({ ...a, duration: Number(a.duration) || 0 }))
-        .sort((a, b) => a.name.localeCompare(b.name)),
-  });
+  return useQuery({ ...q.artists.all });
 }
 //#endregion
 
 //#region Mutations
-/** Update specified artist. */
 export function useUpdateArtist(artistName: string) {
   const queryClient = useQueryClient();
   return useMutation({

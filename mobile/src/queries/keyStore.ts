@@ -1,18 +1,10 @@
 import { createQueryKeyStore } from "@lukemorales/query-key-factory";
-import { count, eq, getTableColumns, ne, sql, sum } from "drizzle-orm";
+import { count, eq, ne, sql, sum } from "drizzle-orm";
 
 import { db } from "~/db";
-import {
-  albums,
-  artists,
-  playlists,
-  tracks,
-  tracksToArtists,
-  tracksToPlaylists,
-} from "~/db/schema";
+import { albums, playlists, tracks, tracksToPlaylists } from "~/db/schema";
 
 import { getAlbum, getAlbums } from "~/api/album";
-import { getArtistAlbums } from "~/api/artist";
 import { getFolder } from "~/api/folder";
 import { getPlaylist, getPlaylists } from "~/api/playlist";
 import {
@@ -25,6 +17,7 @@ import {
   getTrackGenres,
   getTrackPlaylists,
 } from "~/api/track";
+import { getArtist, getArtistsSummary } from "~/data/artist/api";
 import { getGenre, getGenresSummary } from "~/data/genre/api";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
@@ -62,50 +55,11 @@ export const queries = createQueryKeyStore({
   artists: {
     all: {
       queryKey: null,
-      queryFn: () => {
-        return db
-          .select({
-            ...getTableColumns(artists),
-            duration: sum(tracks.duration),
-            trackCount: count(tracks.id),
-          })
-          .from(artists)
-          .innerJoin(
-            tracksToArtists,
-            eq(artists.name, tracksToArtists.artistName),
-          )
-          .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id))
-          .groupBy(artists.name)
-          .orderBy(iAsc(artists.name));
-      },
+      queryFn: getArtistsSummary,
     },
     detail: (artistName: string) => ({
       queryKey: [artistName],
-      queryFn: async () => {
-        const [artistData, artistTracks, artistAlbums] = await Promise.all([
-          throwIfNoResults(
-            db.query.artists.findFirst({
-              where: (fields, { eq }) => eq(fields.name, artistName),
-            }),
-          ),
-          //? Get the tracks associated with the artist in alphabetical order.
-          db
-            .select({
-              id: tracks.id,
-              name: tracks.name,
-              artwork: tracks.artwork,
-              duration: tracks.duration,
-              album: { name: albums.name, artwork: albums.artwork },
-            })
-            .from(tracksToArtists)
-            .where(eq(tracksToArtists.artistName, artistName))
-            .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id))
-            .leftJoin(albums, eq(tracks.albumId, albums.id))
-            .orderBy(iAsc(tracks.name)),
-          getArtistAlbums(artistName),
-        ]);
-        return { ...artistData, tracks: artistTracks, albums: artistAlbums };
-      },
+      queryFn: () => getArtist(artistName),
     }),
   },
   /** Query keys used in `useQuery` for favorite media. */

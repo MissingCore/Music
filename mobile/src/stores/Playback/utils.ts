@@ -1,9 +1,6 @@
 import type { AddTrack } from "@weights-ai/react-native-track-player";
-import { eq } from "drizzle-orm";
 
-import { db } from "~/db";
 import type { TrackWithRelations } from "~/db/schema";
-import { tracks, tracksToArtists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 import { getAlbum } from "~/api/album";
@@ -12,10 +9,10 @@ import { getFolderTracks } from "~/api/folder";
 import { getPlaylist } from "~/api/playlist";
 import { getSortedTracks } from "~/api/track";
 import { getTrackArtwork } from "~/api/track.utils";
+import { getArtistTracks } from "~/data/artist/api";
 import { getGenreTracks } from "~/data/genre/api";
 import type { PlayFromSource } from "./types";
 
-import { iAsc } from "~/lib/drizzle";
 import { shuffleArray } from "~/utils/object";
 import { getSafeUri } from "~/utils/string";
 import {
@@ -87,12 +84,7 @@ export async function getTrackIdsList({ type, id }: PlayFromSource) {
       });
       trackIds = data.tracks.map(({ id }) => id);
     } else if (type === "artist") {
-      const data = await db
-        .select({ id: tracks.id })
-        .from(tracksToArtists)
-        .where(eq(tracksToArtists.artistName, id))
-        .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id))
-        .orderBy(iAsc(tracks.name));
+      const data = await getArtistTracks(id, true);
       trackIds = data.map((t) => t.id);
     } else if (type === "folder") {
       const data = await getFolderTracks(id); // `id` contains pathname.
