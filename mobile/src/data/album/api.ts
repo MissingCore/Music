@@ -29,7 +29,6 @@ export async function getAlbumsSummary() {
     .orderBy(iAsc(albums.name), iAsc(albums.artistsKey));
 
   return results
-    .filter(({ trackCount }) => trackCount > 0)
     .map(({ artistsKey, ...album }) => ({
       ...album,
       artistName: AlbumArtistsKey.toString(artistsKey),

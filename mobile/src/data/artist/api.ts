@@ -113,7 +113,6 @@ export async function getArtistsSummary() {
     .orderBy(iAsc(artists.name));
 
   return results
-    .filter(({ trackCount }) => trackCount > 0)
     .map((artist) => ({ ...artist, duration: Number(artist.duration) || 0 }))
     .sort((a, b) => a.name.localeCompare(b.name));
 }

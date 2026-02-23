@@ -98,7 +98,6 @@ export async function getGenresSummary() {
     .orderBy(iAsc(genres.name));
 
   return results
-    .filter(({ trackCount }) => trackCount > 0)
     .map((genre) => ({ ...genre, duration: Number(genre.duration) || 0 }))
     .sort((a, b) => a.name.localeCompare(b.name));
 }
