@@ -1,13 +1,15 @@
-import { count, eq, getTableColumns, sum } from "drizzle-orm";
+import { count, eq, getTableColumns, max, min, sql, sum } from "drizzle-orm";
 
 import { db } from "~/db";
-import { albums, tracks } from "~/db/schema";
+import { albums, tracks, tracksToArtists } from "~/db/schema";
 
 // FIXME: Want to eventually move to `~/data/albums/utils.ts`.
 import { AlbumArtistsKey } from "~/api/album.utils";
 
-import { iAsc } from "~/lib/drizzle";
+import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { omitKeys } from "~/utils/object";
+import type { AlbumTrack } from "./types";
+import { unencodeJSONArray } from "../utils";
 
 const albumFields = omitKeys(getTableColumns(albums), [
   "altArtwork",
@@ -15,6 +17,87 @@ const albumFields = omitKeys(getTableColumns(albums), [
 ]);
 
 //#region GET Methods
+/** Get all data associated with an album. */
+export async function getAlbum<TOnlyIds extends boolean = false>(
+  id: string,
+  onlyIds?: TOnlyIds,
+) {
+  const [albumDetails, albumTracks, albumYear] = await Promise.all([
+    throwIfNoResults(
+      db.query.albums.findFirst({ where: eq(albums.id, id) }),
+      "err.msg.noAlbums",
+    ),
+    getAlbumTracks(id, onlyIds),
+    getAlbumYear(id),
+  ]);
+
+  return { ...albumDetails, tracks: albumTracks, year: albumYear };
+}
+
+/**
+ * Return the tracks associated with an album. It's not guaranteed that
+ * the album exists.
+ */
+export async function getAlbumTracks<TOnlyIds extends boolean = false>(
+  id: string,
+  onlyIds?: TOnlyIds,
+) {
+  //? Subquery to order the artist names associated with a track.
+  const orderedTrackArtists = db
+    .select(getTableColumns(tracksToArtists))
+    .from(tracksToArtists)
+    .orderBy(iAsc(tracksToArtists.artistName))
+    .as("ordered_track_artists");
+
+  const results = await db
+    .select(
+      onlyIds
+        ? { id: tracks.id }
+        : {
+            id: tracks.id,
+            name: tracks.name,
+            duration: tracks.duration,
+            disc: tracks.disc,
+            track: tracks.track,
+            /** We need to unencode these fields. */
+            artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
+          },
+    )
+    .from(tracks)
+    .where(eq(tracks.albumId, id))
+    .leftJoin(orderedTrackArtists, eq(tracks.id, orderedTrackArtists.trackId))
+    .groupBy(tracks.id)
+    .orderBy(iAsc(tracks.disc), iAsc(tracks.track));
+
+  return (
+    onlyIds
+      ? results
+      : results.map(({ artists, ...rest }) => ({
+          ...rest,
+          artists: unencodeJSONArray(artists as string),
+        }))
+  ) as TOnlyIds extends true ? Array<{ id: string }> : AlbumTrack[];
+}
+
+/**
+ * Return the year associated with an album. It's not guaranteed that
+ * the album exists.
+ */
+export async function getAlbumYear(id: string) {
+  const [range] = await db
+    .select({ minYear: min(tracks.year), maxYear: max(tracks.year) })
+    .from(tracks)
+    .where(eq(tracks.albumId, id));
+
+  let yearStr: string | null = null;
+  if (range && range.minYear !== null && range.maxYear !== null) {
+    if (range.minYear === range.maxYear) yearStr = `${range.maxYear}`;
+    else yearStr = `${range.minYear} - ${range.maxYear}`;
+  }
+
+  return yearStr;
+}
+
 /** Get information summarizing each album (sorted by names). */
 export async function getAlbumsSummary() {
   const results = await db

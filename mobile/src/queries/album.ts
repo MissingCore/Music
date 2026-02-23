@@ -1,63 +1,11 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useTranslation } from "react-i18next";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { favoriteAlbum, updateAlbum } from "~/api/album";
-import { AlbumArtistsKey } from "~/api/album.utils";
-import { TrackList } from "~/api/track.utils";
 import { Resynchronize } from "~/stores/Playback/actions";
 import { queries as q } from "./keyStore";
 
 import { clearAllQueries } from "~/lib/react-query";
-import { formatSeconds } from "~/utils/number";
 import { wait } from "~/utils/promise";
-
-//#region Queries
-/** Get specified album. */
-export function useAlbum(albumId: string) {
-  return useQuery({ ...q.albums.detail(albumId) });
-}
-
-/** Format album information for album's `(current)` screen. */
-export function useAlbumForScreen(albumId: string) {
-  const { t } = useTranslation();
-  return useQuery({
-    ...q.albums.detail(albumId),
-    select: ({ name, artistsKey, artwork, isFavorite, tracks }) => {
-      const albumArtists = AlbumArtistsKey.deconstruct(artistsKey);
-      const { range } = TrackList.yearRange(tracks);
-
-      return {
-        name,
-        imageSource: artwork,
-        metadata: [
-          t("term.album"),
-          ...(range !== null ? [range] : []),
-          t("plural.track", { count: tracks.length }),
-          formatSeconds(
-            tracks.reduce((total, curr) => total + curr.duration, 0),
-          ),
-        ],
-        tracks: tracks.map(
-          ({ id, name: title, disc, track, duration, tracksToArtists }) => {
-            let description = formatSeconds(duration);
-            const artistNames = tracksToArtists
-              .map((rel) => rel.artistName)
-              .filter((name) => !albumArtists.includes(name));
-            if (artistNames.length > 0) {
-              description += ` • ${artistNames.join(", ")}`;
-            }
-
-            return { id, title, description, imageSource: null, disc, track };
-          },
-        ),
-
-        artistNames: albumArtists,
-        isFavorite,
-      };
-    },
-  });
-}
-//#endregion
 
 //#region Mutations
 /** Set the favorite status of an album. */
