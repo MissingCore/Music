@@ -27,7 +27,7 @@ type IconButtonProps = {
   filled?: boolean;
   className?: string;
   _iconColor?: ColorRole;
-} & ((PressProps & { rngh: true }) | (RNGHPressProps & { rngh?: boolean }));
+} & ((PressProps & { rngh?: boolean }) | (RNGHPressProps & { rngh: true }));
 
 //#region Default
 export const IconButton = memo(function IconButton({
