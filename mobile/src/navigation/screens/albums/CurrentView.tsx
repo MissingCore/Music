@@ -4,8 +4,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { Favorite } from "~/resources/icons/Favorite";
-import { useAlbumForScreen } from "~/data/album/queries";
-import { useFavoriteAlbum } from "~/queries/album";
+import { useAlbumForScreen, useFavoriteAlbum } from "~/data/album/queries";
 
 import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";

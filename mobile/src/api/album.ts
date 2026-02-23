@@ -1,4 +1,4 @@
-import { and, eq, inArray, sql } from "drizzle-orm";
+import { and, inArray, sql } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { Album } from "~/db/schema";
@@ -28,21 +28,6 @@ const _getAlbums: QueryManyWithTracksFn<Album, false> =
 
 /** Get multiple albums. */
 export const getAlbums = _getAlbums();
-//#endregion
-
-//#region PATCH Methods
-/** Update the `favorite` status of an album. */
-export async function favoriteAlbum(id: string, isFavorite: boolean) {
-  return updateAlbum(id, { isFavorite });
-}
-
-/** Update specified album. */
-export async function updateAlbum(
-  id: string,
-  values: Partial<typeof albums.$inferInsert>,
-) {
-  return db.update(albums).set(values).where(eq(albums.id, id));
-}
 //#endregion
 
 //#region PUT Methods

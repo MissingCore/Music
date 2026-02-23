@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
 import { AlbumArtistsKey } from "~/api/album.utils";
@@ -8,6 +8,7 @@ import { updateAlbum } from "./api";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { formatSeconds } from "~/utils/number";
+import { wait } from "~/utils/promise";
 
 //#region Queries
 export function useAlbum(albumId: string) {
@@ -57,6 +58,22 @@ export function useAlbums() {
 //#endregion
 
 //#region Mutations
+export function useFavoriteAlbum(albumId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (isFavorite: boolean) => {
+      await wait(1);
+      return updateAlbum(albumId, { isFavorite });
+    },
+    onSuccess: async () => {
+      queryClient.invalidateQueries({
+        queryKey: q.albums.detail(albumId).queryKey,
+      });
+      queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
+    },
+  });
+}
+
 export function useUpdateAlbum(albumId: string) {
   return useMutation({
     mutationFn: ({ artwork }: { artwork?: string | null }) =>
