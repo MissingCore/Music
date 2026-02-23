@@ -1,9 +1,10 @@
 import { memo } from "react";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 
 import { Check } from "~/resources/icons/Check";
 
 import { cn } from "~/lib/style";
+import { Pressable } from "../Base/Pressable";
 
 //#region Base
 function Radio({ selected }: { selected: boolean }) {

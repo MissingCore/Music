@@ -1,0 +1,189 @@
+diff --git a/dist/common/components/native/RNGHPressable.js b/dist/common/components/native/RNGHPressable.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..4dc66292edda1c43de8f68b448830a1d953ad4ed
+--- /dev/null
++++ b/dist/common/components/native/RNGHPressable.js
+@@ -0,0 +1,29 @@
++"use strict";
++
++Object.defineProperty(exports, "__esModule", {
++  value: true
++});
++module.exports = exports.RNGHPressable = void 0;
++var _jsxRuntime = require("react/jsx-runtime");
++var _reactNativeGestureHandler = require("react-native-gesture-handler");
++var _native = require("../../core/native");
++var _utils = require("../utils");
++var _useStyle = require("./useStyle");
++const RNGHPressable = exports.RNGHPressable = (0, _utils.copyComponentProperties)(_reactNativeGestureHandler.Pressable, props => {
++  const style = (0, _useStyle.useStyle)(props.className, props, {
++    isDisabled: Boolean(props.disabled)
++  });
++  return /* @__PURE__ */(0, _jsxRuntime.jsx)(_reactNativeGestureHandler.Pressable, {
++    ...props,
++    style: state => {
++      if (state.pressed) {
++        return [_native.UniwindStore.getStyles(props.className, props, {
++          isDisabled: Boolean(props.disabled),
++          isPressed: true
++        }).styles, typeof props.style === "function" ? props.style(state) : props.style];
++      }
++      return [style, typeof props.style === "function" ? props.style(state) : props.style];
++    }
++  });
++});
++module.exports = RNGHPressable;
+\ No newline at end of file
+diff --git a/dist/common/index.js b/dist/common/index.js
+index 38ae81962f8102146539572c54a087f9957e793c..59da3607eac21fe8d3ad684db3ffbe5ffc771ae0 100644
+--- a/dist/common/index.js
++++ b/dist/common/index.js
+@@ -3,6 +3,12 @@
+ Object.defineProperty(exports, "__esModule", {
+   value: true
+ });
++Object.defineProperty(exports, "RNGHPressable", {
++  enumerable: true,
++  get: function () {
++    return _RNGHPressable.default;
++  }
++});
+ Object.defineProperty(exports, "Uniwind", {
+   enumerable: true,
+   get: function () {
+@@ -33,6 +39,8 @@ Object.defineProperty(exports, "withUniwind", {
+     return _hoc.withUniwind;
+   }
+ });
++var _RNGHPressable = _interopRequireDefault(require("./components/native/RNGHPressable"));
+ var _core = require("./core");
+ var _hoc = require("./hoc");
+ var _hooks = require("./hooks");
++function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+\ No newline at end of file
+diff --git a/dist/module/components/native/RNGHPressable.d.ts b/dist/module/components/native/RNGHPressable.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..5db19b2d860a8a5672959ea9536d31f8b6b06b29
+--- /dev/null
++++ b/dist/module/components/native/RNGHPressable.d.ts
+@@ -0,0 +1,3 @@
++import { PressableProps } from 'react-native-gesture-handler';
++export declare const RNGHPressable: (props: PressableProps) => React.JSX.Element;
++export default RNGHPressable;
+diff --git a/dist/module/components/native/RNGHPressable.js b/dist/module/components/native/RNGHPressable.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..a4666810929925d3ee402af75ab59324dabc9e98
+--- /dev/null
++++ b/dist/module/components/native/RNGHPressable.js
+@@ -0,0 +1,34 @@
++import { jsx } from "react/jsx-runtime";
++import { Pressable as RNPressable } from "react-native-gesture-handler";
++import { UniwindStore } from "../../core/native/index.js";
++import { copyComponentProperties } from "../utils.js";
++import { useStyle } from "./useStyle.js";
++export const RNGHPressable = copyComponentProperties(RNPressable, (props) => {
++  const style = useStyle(
++    props.className,
++    props,
++    {
++      isDisabled: Boolean(props.disabled)
++    }
++  );
++  return /* @__PURE__ */ jsx(
++    RNPressable,
++    {
++      ...props,
++      style: (state) => {
++        if (state.pressed) {
++          return [
++            UniwindStore.getStyles(
++              props.className,
++              props,
++              { isDisabled: Boolean(props.disabled), isPressed: true }
++            ).styles,
++            typeof props.style === "function" ? props.style(state) : props.style
++          ];
++        }
++        return [style, typeof props.style === "function" ? props.style(state) : props.style];
++      }
++    }
++  );
++});
++export default RNGHPressable;
+diff --git a/dist/module/index.d.ts b/dist/module/index.d.ts
+index 5bdf9de44872d1dc8d2319c0ca00fc8e1d35875f..2343e90b33e6db896f89ae6cd05d09e6443238f8 100644
+--- a/dist/module/index.d.ts
++++ b/dist/module/index.d.ts
+@@ -1,5 +1,7 @@
++import RNGHPressable from './components/native/RNGHPressable';
+ export { Uniwind } from './core';
+ export { withUniwind } from './hoc';
+ export type { ApplyUniwind, ApplyUniwindOptions } from './hoc/types';
+ export { useCSSVariable, useResolveClassNames, useUniwind } from './hooks';
+ export type { UniwindConfig } from './types';
++export { RNGHPressable };
+diff --git a/dist/module/index.js b/dist/module/index.js
+index acb1a9a968d14e0ceb21820449482eba4b21948e..e9f7fddea8f37a7e703fded1ea84152044a2d946 100644
+--- a/dist/module/index.js
++++ b/dist/module/index.js
+@@ -1,3 +1,5 @@
++import RNGHPressable from "./components/native/RNGHPressable.js";
+ export { Uniwind } from "./core/index.js";
+ export { withUniwind } from "./hoc/index.js";
+ export { useCSSVariable, useResolveClassNames, useUniwind } from "./hooks/index.js";
++export { RNGHPressable };
+diff --git a/src/components/native/RNGHPressable.tsx b/src/components/native/RNGHPressable.tsx
+new file mode 100644
+index 0000000000000000000000000000000000000000..13a94eeff99db3bff47b2c86f441cfd1d8e3c66a
+--- /dev/null
++++ b/src/components/native/RNGHPressable.tsx
+@@ -0,0 +1,36 @@
++import { Pressable as RNPressable, PressableProps } from 'react-native-gesture-handler'
++import { UniwindStore } from '../../core/native'
++import { copyComponentProperties } from '../utils'
++import { useStyle } from './useStyle'
++
++export const RNGHPressable = copyComponentProperties(RNPressable, (props: PressableProps) => {
++    const style = useStyle(
++        props.className,
++        props,
++        {
++            isDisabled: Boolean(props.disabled),
++        },
++    )
++
++    return (
++        <RNPressable
++            {...props}
++            style={state => {
++                if (state.pressed) {
++                    return [
++                        UniwindStore.getStyles(
++                            props.className,
++                            props,
++                            { isDisabled: Boolean(props.disabled), isPressed: true },
++                        ).styles,
++                        typeof props.style === 'function' ? props.style(state) : props.style,
++                    ]
++                }
++
++                return [style, typeof props.style === 'function' ? props.style(state) : props.style]
++            }}
++        />
++    )
++})
++
++export default RNGHPressable
+diff --git a/src/index.ts b/src/index.ts
+index f57b0c1cbf6de19f5199a3d47479ed4021a11143..43c51197ecbd78cddff0c7ee8ef0d95dcc2737a9 100644
+--- a/src/index.ts
++++ b/src/index.ts
+@@ -1,5 +1,8 @@
++import RNGHPressable from './components/native/RNGHPressable'
++
+ export { Uniwind } from './core'
+ export { withUniwind } from './hoc'
+ export type { ApplyUniwind, ApplyUniwindOptions } from './hoc/types'
+ export { useCSSVariable, useResolveClassNames, useUniwind } from './hooks'
+ export type { UniwindConfig } from './types'
++export { RNGHPressable }

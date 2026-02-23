@@ -1,7 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import TrackPlayer from "@weights-ai/react-native-track-player";
 import { useCallback, useState } from "react";
-import { Pressable } from "react-native";
 
 import { ActivityZone } from "~/resources/icons/ActivityZone";
 import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
@@ -18,6 +17,7 @@ import { getMediaLinkContext } from "~/navigation/utils/router";
 import { AppearanceSheet } from "./AppearanceSheet";
 import { PlaybackSpeedSheet } from "./PlaybackSpeedSheet";
 
+import { Pressable } from "~/components/Base/Pressable";
 import { ScrollView } from "~/components/Base/ScrollView";
 import { NumberStepper } from "~/components/Form/NumberStepper";
 import { CachedSlider } from "~/components/Form/Slider";

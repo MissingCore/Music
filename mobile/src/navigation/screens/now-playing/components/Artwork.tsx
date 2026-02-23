@@ -1,6 +1,6 @@
 import { useAtomValue } from "jotai";
 import { useTranslation } from "react-i18next";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 import { GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedStyle,
@@ -16,6 +16,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { isSeekingAtom } from "../helpers/Seekbar.context";
 import { useVinylSeekbar } from "../helpers/useVinylSeekbar";
 
+import { Pressable } from "~/components/Base/Pressable";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import { Vinyl } from "~/modules/media/components/Vinyl";
 

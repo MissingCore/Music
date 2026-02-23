@@ -1,8 +1,9 @@
 import type { ParseKeys } from "i18next";
-import type { PressableProps } from "react-native";
 import { Modal as RNModal, View } from "react-native";
 
 import { cn } from "~/lib/style";
+import { GestureHandlerRootView } from "./Base/GestureHandlerRootView";
+import type { PressableProps } from "./Base/Pressable";
 import { ExtendedTButton } from "./Form/Button";
 import { TStyledText } from "./Typography/StyledText";
 
@@ -15,11 +16,11 @@ export function Modal(props: { visible: boolean; children: React.ReactNode }) {
       navigationBarTranslucent
       transparent
     >
-      <View className="flex-1 items-center justify-center bg-black/50 px-4">
+      <GestureHandlerRootView className="flex-1 items-center justify-center bg-black/50 px-4">
         <View className="w-full gap-8 rounded-xl bg-surfaceContainerLowest p-4 pt-6">
           {props.children}
         </View>
-      </View>
+      </GestureHandlerRootView>
     </RNModal>
   );
 }

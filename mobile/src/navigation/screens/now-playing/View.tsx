@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 
 import type { TrackWithRelations } from "~/db/schema";
 
@@ -30,6 +30,7 @@ import { useSleepTimerStore } from "./sheets/SleepTimerSheet/store";
 
 import { OnRTL } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
+import { Pressable } from "~/components/Base/Pressable";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { Marquee } from "~/components/Marquee";
 import { SafeContainer } from "~/components/SafeContainer";

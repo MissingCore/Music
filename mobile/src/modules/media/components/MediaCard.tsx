@@ -1,12 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
-import { Pressable } from "react-native";
 
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { getMediaLinkContext } from "~/navigation/utils/router";
 
 import { cn } from "~/lib/style";
 import type { LegendListProps } from "~/components/Base/LegendList";
+import { RNGHPressable } from "~/components/Base/Pressable";
 import { StyledText } from "~/components/Typography/StyledText";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import type { MediaCardContent, MediaCardProps } from "./MediaCard.type";
@@ -26,7 +26,7 @@ export function MediaCard({
   ...imgProps
 }: MediaCardProps) {
   return (
-    <Pressable
+    <RNGHPressable
       onPress={onPress}
       style={{ maxWidth: imgProps.size }}
       // Using `grow` instead of `w-full` because only 1 item gets shown otherwise.
@@ -39,7 +39,7 @@ export function MediaCard({
       <StyledText dim numberOfLines={1}>
         {description}
       </StyledText>
-    </Pressable>
+    </RNGHPressable>
   );
 }
 //#endregion

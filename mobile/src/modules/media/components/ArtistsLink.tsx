@@ -1,5 +1,4 @@
 import { useNavigation } from "@react-navigation/native";
-import { Pressable } from "react-native";
 
 import {
   navigateToArtist,
@@ -8,6 +7,7 @@ import {
 
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
+import { Pressable } from "~/components/Base/Pressable";
 import { Marquee } from "~/components/Marquee";
 import { StyledText } from "~/components/Typography/StyledText";
 import type { PopStrategy } from "~/stores/Session/types";

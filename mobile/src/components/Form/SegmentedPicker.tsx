@@ -1,4 +1,4 @@
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -8,6 +8,7 @@ import Animated, {
 import type { Icon } from "~/resources/icons/type";
 
 import { cn } from "~/lib/style";
+import { Pressable } from "../Base/Pressable";
 import { Em } from "../Typography/StyledText";
 
 export type PickerOption = {
