@@ -55,11 +55,9 @@ export async function getArtistAlbums(id: string): Promise<ArtistAlbum[]> {
   return results
     .sort((a, b) => b.maxYear - a.maxYear || b.minYear - a.minYear)
     .map(({ minYear, maxYear, ...album }) => {
-      let yearStr = "————";
-      if (minYear !== -1) {
-        yearStr =
-          maxYear === minYear ? `${maxYear}` : `${minYear} - ${maxYear}`;
-      }
+      let yearStr = `${minYear} - ${maxYear}`;
+      if (minYear === -1) yearStr = "————";
+      else if (minYear === maxYear) yearStr = `${maxYear}`;
 
       return { ...album, year: yearStr };
     });
