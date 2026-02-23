@@ -57,21 +57,6 @@ export function useAlbumForScreen(albumId: string) {
     },
   });
 }
-
-export function useAlbums() {
-  return useQuery({
-    ...q.albums.all,
-    select: (data) =>
-      data
-        .filter(({ trackCount }) => trackCount > 0)
-        .map(({ artistsKey, ...album }) => ({
-          ...album,
-          artistName: AlbumArtistsKey.toString(artistsKey),
-          duration: Number(album.duration) || 0,
-        }))
-        .sort((a, b) => a.name.localeCompare(b.name)),
-  });
-}
 //#endregion
 
 //#region Mutations

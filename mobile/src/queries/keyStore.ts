@@ -17,6 +17,7 @@ import {
   getTrackGenres,
   getTrackPlaylists,
 } from "~/api/track";
+import { getAlbumsSummary } from "~/data/album/api";
 import { getArtist, getArtistsSummary } from "~/data/artist/api";
 import { getGenre, getGenresSummary } from "~/data/genre/api";
 
@@ -30,21 +31,7 @@ export const queries = createQueryKeyStore({
   albums: {
     all: {
       queryKey: null,
-      queryFn: () => {
-        return db
-          .select({
-            id: albums.id,
-            name: albums.name,
-            artistsKey: albums.artistsKey,
-            artwork: albums.artwork,
-            duration: sum(tracks.duration),
-            trackCount: count(tracks.id),
-          })
-          .from(albums)
-          .innerJoin(tracks, eq(albums.id, tracks.albumId))
-          .groupBy(albums.name)
-          .orderBy(iAsc(albums.name), iAsc(albums.artistsKey));
-      },
+      queryFn: getAlbumsSummary,
     },
     detail: (albumId: string) => ({
       queryKey: [albumId],
