@@ -11,6 +11,8 @@ import { omitKeys } from "~/utils/object";
 import type { AlbumTrack } from "./types";
 import { unencodeJSONArray } from "../utils";
 
+type InsertedAlbum = typeof albums.$inferInsert;
+
 const albumFields = omitKeys(getTableColumns(albums), [
   "altArtwork",
   "embeddedArtwork",
@@ -118,5 +120,11 @@ export async function getAlbumsSummary() {
       duration: Number(album.duration) || 0,
     }))
     .sort((a, b) => a.name.localeCompare(b.name));
+}
+//#endregion
+
+//#region PATCH Methods
+export async function updateAlbum(id: string, values: Partial<InsertedAlbum>) {
+  return db.update(albums).set(values).where(eq(albums.id, id));
 }
 //#endregion

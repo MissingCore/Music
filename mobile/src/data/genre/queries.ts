@@ -1,8 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import type { genres } from "~/db/schema";
-
 import { queries as q } from "~/queries/keyStore";
 import { updateGenre } from "./api";
 
@@ -44,9 +42,8 @@ export function useGenres() {
 export function useUpdateGenre(genreName: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (
-      updatedValues: Partial<Omit<typeof genres.$inferInsert, "name">>,
-    ) => updateGenre(genreName, updatedValues),
+    mutationFn: (updatedValues: { artwork?: string | null }) =>
+      updateGenre(genreName, updatedValues),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: q.genres._def });
     },

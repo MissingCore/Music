@@ -1,9 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
 import { AlbumArtistsKey } from "~/api/album.utils";
+import { Resynchronize } from "~/stores/Playback/actions";
 import { queries as q } from "~/queries/keyStore";
+import { updateAlbum } from "./api";
 
+import { clearAllQueries } from "~/lib/react-query";
 import { formatSeconds } from "~/utils/number";
 
 //#region Queries
@@ -50,5 +53,22 @@ export function useAlbumForScreen(albumId: string) {
 
 export function useAlbums() {
   return useQuery({ ...q.albums.all });
+}
+//#endregion
+
+//#region Mutations
+export function useUpdateAlbum(albumId: string) {
+  return useMutation({
+    mutationFn: ({ artwork }: { artwork?: string | null }) =>
+      updateAlbum(albumId, { altArtwork: artwork }),
+    onSuccess: async () => {
+      // Changing the album artwork affects a lot of things, so we'll just
+      // clear all the queries.
+      clearAllQueries();
+
+      // Revalidate `activeTrack` in Playback store if needed.
+      await Resynchronize.onActiveTrack({ type: "album", id: albumId });
+    },
+  });
 }
 //#endregion

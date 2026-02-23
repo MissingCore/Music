@@ -8,8 +8,9 @@ import { eq, inArray, isNotNull, or } from "drizzle-orm";
 import { db } from "~/db";
 import { albums, tracks } from "~/db/schema";
 
-import { getAlbums, updateAlbum } from "~/api/album";
+import { getAlbums } from "~/api/album";
 import { getTracks, updateTrack } from "~/api/track";
+import { updateAlbum } from "~/data/album/api";
 import { scanningProgressStore } from "../ScanningProgress";
 
 import { ImageDirectory } from "~/lib/file-system";

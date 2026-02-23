@@ -2,10 +2,9 @@ import type { UseMutationResult } from "@tanstack/react-query";
 import { useState } from "react";
 import { useWindowDimensions } from "react-native";
 
-import { useAlbum } from "~/data/album/queries";
+import { useAlbum, useUpdateAlbum } from "~/data/album/queries";
 import { useArtist, useUpdateArtist } from "~/data/artist/queries";
 import { useGenre, useUpdateGenre } from "~/data/genre/queries";
-import { useUpdateAlbumArtwork } from "~/queries/album";
 import { usePlaylist, useUpdatePlaylist } from "~/queries/playlist";
 import { useTrack, useUpdateTrackArtwork } from "~/queries/track";
 
@@ -23,7 +22,7 @@ type ArtworkSheetProps = { id: string; ref: TrueSheetRef };
 /** Sheet allowing us to change the artwork of an album. */
 export function AlbumArtworkSheet(props: ArtworkSheetProps) {
   const { data } = useAlbum(props.id);
-  const updateAlbumArtwork = useUpdateAlbumArtwork(props.id);
+  const updateAlbumArtwork = useUpdateAlbum(props.id);
 
   return (
     <DetachedSheet ref={props.ref} contentContainerClassName="items-center">
