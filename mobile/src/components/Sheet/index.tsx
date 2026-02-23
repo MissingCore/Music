@@ -5,19 +5,16 @@ import type { ParseKeys } from "i18next";
 import { useState } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { withUniwind } from "uniwind";
 
 import { useIsKeyboardVisible } from "~/stores/ListenerState";
 import { useSafeAreaHeight } from "~/hooks/useSafeAreaHeight";
 
 import { cn } from "~/lib/style";
 import type { TrueSheetRef } from "./useSheetRef";
+import { GestureHandlerRootView } from "../Base/GestureHandlerRootView";
 import { Marquee } from "../Marquee";
 import { TEm } from "../Typography/StyledText";
-
-const WrappedGestureHandlerRootView = withUniwind(GestureHandlerRootView);
 
 interface SheetProps extends Pick<
   TrueSheetProps,
@@ -105,7 +102,7 @@ export function DetachedSheet(props: SheetProps) {
           "h-full": props.snapTop,
         })}
       >
-        <WrappedGestureHandlerRootView
+        <GestureHandlerRootView
           style={[
             { maxHeight: maxHeight - (EDGE_SPACER + bottom), gap },
             props.contentContainerStyle,
@@ -129,7 +126,7 @@ export function DetachedSheet(props: SheetProps) {
             ) : null}
           </View>
           {props.children}
-        </WrappedGestureHandlerRootView>
+        </GestureHandlerRootView>
       </View>
       <Toasts
         // @ts-expect-error - We added the `sheetOpts` prop via a patch.

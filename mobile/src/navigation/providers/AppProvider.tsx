@@ -4,7 +4,6 @@ import { NavigationBar } from "@zoontek/react-native-navigation-bar";
 import { platformApiLevel } from "expo-device";
 import { useMemo } from "react";
 import { StatusBar, View } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { Provider as PaperProvider } from "react-native-paper";
 import {
@@ -17,6 +16,7 @@ import { ListenerStateStoreProvider } from "~/stores/ListenerState";
 import { useCurrentTheme } from "~/hooks/useTheme";
 
 import { queryClient } from "~/lib/react-query";
+import { GestureHandlerRootView } from "~/components/Base/GestureHandlerRootView";
 
 /** All providers used by the app. */
 export function AppProvider(props: { children: React.ReactNode }) {

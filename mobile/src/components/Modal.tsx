@@ -1,14 +1,11 @@
 import type { ParseKeys } from "i18next";
 import { Modal as RNModal, View } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { withUniwind } from "uniwind";
 
 import { cn } from "~/lib/style";
+import { GestureHandlerRootView } from "./Base/GestureHandlerRootView";
 import type { PressableProps } from "./Base/Pressable";
 import { ExtendedTButton } from "./Form/Button";
 import { TStyledText } from "./Typography/StyledText";
-
-const WrappedGestureHandlerRootView = withUniwind(GestureHandlerRootView);
 
 export function Modal(props: { visible: boolean; children: React.ReactNode }) {
   return (
@@ -19,11 +16,11 @@ export function Modal(props: { visible: boolean; children: React.ReactNode }) {
       navigationBarTranslucent
       transparent
     >
-      <WrappedGestureHandlerRootView className="flex-1 items-center justify-center bg-black/50 px-4">
+      <GestureHandlerRootView className="flex-1 items-center justify-center bg-black/50 px-4">
         <View className="w-full gap-8 rounded-xl bg-surfaceContainerLowest p-4 pt-6">
           {props.children}
         </View>
-      </WrappedGestureHandlerRootView>
+      </GestureHandlerRootView>
     </RNModal>
   );
 }
