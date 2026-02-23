@@ -128,7 +128,7 @@ async function getRecentListEntry({ id, type }: PlayFromSource) {
       data.tracks = [];
       entry = formatForMediaCard({ type: "album", data, t: i18next.t });
     } else if (type === "artist") {
-      const data = await getArtist(id, true);
+      const { albums: _, ...data } = await getArtist(id, true);
       entry = formatForMediaCard({ type: "artist", data, t: i18next.t });
     } else if (type === "folder") {
       const numTracks = (await getFolderTracks(id)).length;
