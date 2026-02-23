@@ -4,34 +4,12 @@ import { db } from "~/db";
 import type { Album } from "~/db/schema";
 import { albums, albumsToArtists, artists } from "~/db/schema";
 
-import i18next from "~/modules/i18n";
-
 import { iAsc } from "~/lib/drizzle";
 import { AlbumArtistsKey } from "./album.utils";
-import type { QueryManyWithTracksFn, QueryOneWithTracksFn } from "./types";
+import type { QueryManyWithTracksFn } from "./types";
 import { getColumns, withTracks } from "./utils";
 
 //#region GET Methods
-const _getAlbum: QueryOneWithTracksFn<Album, false> =
-  () => async (id, options) => {
-    const album = await db.query.albums.findFirst({
-      where: eq(albums.id, id),
-      columns: getColumns(options?.columns),
-      with: withTracks(
-        {
-          ...options,
-          orderBy: (fields, { asc }) => [asc(fields.disc), asc(fields.track)],
-        },
-        { defaultWithAlbum: false, ...options },
-      ),
-    });
-    if (!album) throw new Error(i18next.t("err.msg.noAlbums"));
-    return album;
-  };
-
-/** Get specified album. Throws error if nothing is found. */
-export const getAlbum = _getAlbum();
-
 const _getAlbums: QueryManyWithTracksFn<Album, false> =
   () => async (options) => {
     return db.query.albums.findMany({

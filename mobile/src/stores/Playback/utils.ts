@@ -3,12 +3,12 @@ import type { AddTrack } from "@weights-ai/react-native-track-player";
 import type { TrackWithRelations } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import { getAlbum } from "~/api/album";
 import { getArtistsString } from "~/api/artist.utils";
 import { getFolderTracks } from "~/api/folder";
 import { getPlaylist } from "~/api/playlist";
 import { getSortedTracks } from "~/api/track";
 import { getTrackArtwork } from "~/api/track.utils";
+import { getAlbum, getAlbumTracks } from "~/data/album/api";
 import { getArtistTracks } from "~/data/artist/api";
 import { getGenreTracks } from "~/data/genre/api";
 import type { PlayFromSource } from "./types";
@@ -64,8 +64,7 @@ export async function getSourceName({ type, id }: PlayFromSource) {
       // a trailing slash.
       name = id.split("/").at(-2) ?? "";
     } else {
-      name = (await getAlbum(id, { columns: ["name"], withTracks: false }))
-        .name;
+      name = (await getAlbum(id, true)).name;
     }
   } catch {}
   return name;
@@ -78,11 +77,8 @@ export async function getTrackIdsList({ type, id }: PlayFromSource) {
 
   try {
     if (type === "album") {
-      const data = await getAlbum(id, {
-        columns: [],
-        trackColumns: ["id"],
-      });
-      trackIds = data.tracks.map(({ id }) => id);
+      const data = await getAlbumTracks(id, true);
+      trackIds = data.map((t) => t.id);
     } else if (type === "artist") {
       const data = await getArtistTracks(id, true);
       trackIds = data.map((t) => t.id);
