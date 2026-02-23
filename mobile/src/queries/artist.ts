@@ -1,42 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useTranslation } from "react-i18next";
 
 import type { artists } from "~/db/schema";
 
 import { updateArtist } from "~/api/artist";
-import { getTrackArtwork } from "~/api/track.utils";
 import { queries as q } from "./keyStore";
-
-import { formatSeconds } from "~/utils/number";
 
 //#region Queries
 /** Get specified artist. */
 export function useArtist(artistName: string) {
   return useQuery({ ...q.artists.detail(artistName) });
-}
-
-/** Format artist information for artist's `(current)` screen. */
-export function useArtistForScreen(artistName: string) {
-  const { t } = useTranslation();
-  return useQuery({
-    ...q.artists.detail(artistName),
-    select: ({ name, artwork, albums, tracks }) => ({
-      name,
-      imageSource: artwork,
-      metadata: [
-        t("term.artist"),
-        t("plural.track", { count: tracks.length }),
-        formatSeconds(tracks.reduce((total, curr) => total + curr.duration, 0)),
-      ],
-      albums: albums.length > 0 ? albums : null,
-      tracks: tracks.map((track) => ({
-        id: track.id,
-        title: track.name,
-        description: track.album?.name ?? "—",
-        imageSource: getTrackArtwork(track),
-      })),
-    }),
-  });
 }
 
 export function useArtists() {

@@ -3,38 +3,6 @@ import { eq } from "drizzle-orm";
 import { db } from "~/db";
 import { artists } from "~/db/schema";
 
-import { TrackList } from "./track.utils";
-
-//#region GET Methods
-/** Get the albums an artist has released in descending order. */
-export async function getArtistAlbums(id: string) {
-  const allAlbums = await db.query.albumsToArtists.findMany({
-    where: (fields, { eq }) => eq(fields.artistName, id),
-    columns: {},
-    with: {
-      album: {
-        with: {
-          tracks: { columns: { year: true } },
-        },
-      },
-    },
-  });
-  const albumWithYear = allAlbums
-    .filter(({ album }) => album.tracks.length > 0)
-    .map(({ album: { tracks, ...album } }) => {
-      return { ...album, year: TrackList.yearRange(tracks) };
-    });
-  // FIXME: Once Hermes supports `toSorted`, use it instead.
-  albumWithYear.sort(
-    (a, b) =>
-      b.year.maxYear - a.year.maxYear || b.year.minYear - a.year.minYear,
-  );
-  return albumWithYear.map(({ year, ...album }) => {
-    return { ...album, releaseYear: year.range };
-  });
-}
-//#endregion
-
 //#region POST Methods
 /** Create new artist entries. */
 export async function createArtists(

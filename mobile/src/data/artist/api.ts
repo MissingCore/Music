@@ -10,7 +10,7 @@ import {
 } from "~/db/schema";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
-import type { ArtistTrack } from "./types";
+import type { ArtistAlbum, ArtistTrack } from "./types";
 
 //#region GET Methods
 /** Get all data associated with an artist. */
@@ -34,7 +34,7 @@ export async function getArtist<TOnlyIds extends boolean = false>(
  * Return the albums associated with an artist, the newest albums first.
  * It's not guaranteed that the artist exists.
  */
-export async function getArtistAlbums(id: string) {
+export async function getArtistAlbums(id: string): Promise<ArtistAlbum[]> {
   const results = await db
     .select({
       id: albums.id,
@@ -53,7 +53,7 @@ export async function getArtistAlbums(id: string) {
   return results
     .sort((a, b) => b.maxYear - a.maxYear || b.minYear - a.minYear)
     .map(({ minYear, maxYear, ...album }) => {
-      let yearStr = "—";
+      let yearStr = "————";
       if (minYear !== -1) {
         yearStr =
           maxYear === minYear ? `${maxYear}` : `${minYear} - ${maxYear}`;
