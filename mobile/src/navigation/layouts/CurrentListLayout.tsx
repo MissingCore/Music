@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { View, useWindowDimensions } from "react-native";
 import type { SharedValue } from "react-native-reanimated";
@@ -56,7 +56,7 @@ export function CurrentListLayout<TData>({
   const contentStartOffset = insets.top + ESTIMATED_TOPAPPBAR_HEIGHT + 16;
 
   //#region Header Height Calculations
-  const [headerHeight, _setHeaderHeight] = useState(
+  const headerHeight = useSharedValue(
     contentStartOffset -
       minStickyTopOffset +
       imageSize +
@@ -65,13 +65,12 @@ export function CurrentListLayout<TData>({
   );
   const setHeaderHeight = useCallback(
     (e: LayoutChangeEvent) => {
-      _setHeaderHeight(
+      headerHeight.value =
         e.nativeEvent.layout.height -
-          contentStartOffset +
-          ESTIMATED_TOPAPPBAR_YPAD,
-      );
+        contentStartOffset +
+        ESTIMATED_TOPAPPBAR_YPAD;
     },
-    [contentStartOffset],
+    [headerHeight, contentStartOffset],
   );
   //#endregion
 
@@ -80,6 +79,7 @@ export function CurrentListLayout<TData>({
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (e) => {
+      "worklet";
       scrollPosition.value = e.contentOffset.y;
     },
   });
@@ -87,7 +87,7 @@ export function CurrentListLayout<TData>({
   const stickyStyles = useAnimatedStyle(() => ({
     paddingTop: minStickyTopOffset,
     transform: [
-      { translateY: Math.max(0, headerHeight - scrollPosition.value) },
+      { translateY: Math.max(0, headerHeight.value - scrollPosition.value) },
     ],
   }));
   //#endregion
