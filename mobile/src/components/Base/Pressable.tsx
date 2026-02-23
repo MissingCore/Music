@@ -4,5 +4,7 @@ import type { PressableProps as RNGHPressableProps } from "react-native-gesture-
 import { RNGHPressable } from "uniwind";
 
 export type PressableProps = RNPressableProps;
-
 export const Pressable = RNPresasble;
+
+export type { RNGHPressableProps };
+export { RNGHPressable };

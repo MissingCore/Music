@@ -5,7 +5,7 @@ import { View } from "react-native";
 import { DoNotDisturbOn } from "~/resources/icons/DoNotDisturbOn";
 
 import { cn } from "~/lib/style";
-import { Pressable } from "../Base/Pressable";
+import { RNGHPressable } from "../Base/Pressable";
 import { IconButton } from "../Form/Button/Icon";
 
 type RemovableItemProps = {
@@ -28,7 +28,7 @@ export const RemovableItem = memo(function RemovableItem(
   const { t } = useTranslation();
 
   const Wrapper = useMemo(
-    () => (props.onPress ? Pressable : View),
+    () => (props.onPress ? RNGHPressable : View),
     [props.onPress],
   );
 
@@ -48,6 +48,7 @@ export const RemovableItem = memo(function RemovableItem(
         onPress={props.onRemove}
         disabled={props.disableRemove}
         size="xs"
+        rngh
       />
       {props.children}
     </Wrapper>
