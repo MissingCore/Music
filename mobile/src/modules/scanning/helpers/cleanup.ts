@@ -32,7 +32,7 @@ export const AppCleanUp = {
     // Get all the uris of images saved in the database.
     const usedUris = (
       await Promise.all([
-        ...[artists, playlists].map((schema) =>
+        ...[artists, genres, playlists].map((schema) =>
           db
             .select({ artwork: schema.artwork })
             .from(schema)
