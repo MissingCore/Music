@@ -1,11 +1,18 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
+import type { artists } from "~/db/schema";
+
 import { queries as q } from "~/queries/keyStore";
+import { updateArtist } from "./api";
 
 import { formatSeconds } from "~/utils/number";
 
 //#region Queries
+export function useArtist(artistName: string) {
+  return useQuery({ ...q.artists.detail(artistName) });
+}
+
 export function useArtistForScreen(artistName: string) {
   const { t } = useTranslation();
   return useQuery({
@@ -31,5 +38,19 @@ export function useArtistForScreen(artistName: string) {
 
 export function useArtists() {
   return useQuery({ ...q.artists.all });
+}
+//#endregion
+
+//#region Mutations
+export function useUpdateArtist(artistName: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (
+      updatedValues: Partial<Omit<typeof artists.$inferInsert, "name">>,
+    ) => updateArtist(artistName, updatedValues),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: q.artists._def });
+    },
+  });
 }
 //#endregion
