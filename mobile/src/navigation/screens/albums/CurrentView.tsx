@@ -62,7 +62,7 @@ export default function Album({
 
   if (isPending || error) {
     return (
-      <SafeContainer additionalTopOffset={56}>
+      <SafeContainer additionalTopOffset={56} className="flex-1">
         <PagePlaceholder isPending={isPending} />
       </SafeContainer>
     );
