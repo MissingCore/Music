@@ -1,7 +1,7 @@
-import { eq, sql } from "drizzle-orm";
+import { and, eq, exists, isNull, like, sql } from "drizzle-orm";
 
 import { db } from "~/db";
-import { albums, tracks } from "~/db/schema";
+import { albums, fileNodes, tracks } from "~/db/schema";
 
 import { iAsc } from "~/lib/drizzle";
 import { addTrailingSlash } from "~/utils/string";
@@ -11,6 +11,57 @@ import { unencodeJSONArray } from "../utils";
 import { getOrderedTrackArtistsView } from "../views";
 
 //#region GET Methods
+/** Get all data associated with a folder. `path` doesn't include `file:///`. */
+export async function getFolder<TOnlyIds extends boolean = false>(
+  path: Maybe<string>,
+  onlyIds?: TOnlyIds,
+) {
+  const [folderDirectories, folderTracks] = await Promise.all([
+    getFolderDirectories(path),
+    getFolderTracks(path, onlyIds),
+  ]);
+
+  return { directories: folderDirectories, tracks: folderTracks };
+}
+
+/**
+ * Return the directories associated with a folder directory. It's not
+ * guaranteed that the folder exists.
+ */
+export async function getFolderDirectories(path: Maybe<string>) {
+  const directories = await db
+    .select()
+    .from(fileNodes)
+    .where(
+      and(
+        path
+          ? eq(fileNodes.parentPath, addTrailingSlash(path))
+          : isNull(fileNodes.parentPath),
+        exists(
+          db
+            .select({ id: tracks.id })
+            .from(tracks)
+            .where(
+              like(
+                tracks.uri,
+                sql<string>`CONCAT('file:///', ${fileNodes.path}, '%')`,
+              ),
+            )
+            .limit(1),
+        ),
+      ),
+    )
+    .orderBy(iAsc(fileNodes.name));
+
+  return directories.sort((a, b) =>
+    a.name.localeCompare(b.name, undefined, {
+      // So folder order is: "1-10", "11-20" instead of: "1-10", "101-110".
+      numeric: true,
+      caseFirst: "upper",
+    }),
+  );
+}
+
 /**
  * Return the tracks associated with a folder directory. It's not guaranteed
  * that the folder exists.
