@@ -6,10 +6,10 @@ import { db } from "~/db";
 import { playlists } from "~/db/schema";
 import type { SlimFolder, SlimTrackWithAlbum } from "~/db/slimTypes";
 
-import { AlbumArtistsKey } from "~/api/album.utils";
 import { getPlaylists } from "~/api/playlist";
 import { getTracks } from "~/api/track";
 import { getAlbums } from "~/data/album/api";
+import { AlbumArtistsKey } from "~/data/album/utils";
 
 import { iAsc } from "~/lib/drizzle";
 import { addTrailingSlash } from "~/utils/string";

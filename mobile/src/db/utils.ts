@@ -8,10 +8,10 @@ import type {
   SlimPlaylistWithTracks,
 } from "./slimTypes";
 
-import { AlbumArtistsKey } from "~/api/album.utils";
 import { getArtistsString } from "~/api/artist.utils";
 import { getPlaylistArtwork } from "~/api/playlist.utils";
 import { getTrackArtwork } from "~/api/track.utils";
+import { AlbumArtistsKey } from "~/data/album/utils";
 
 import type { AtLeast, Prettify } from "~/utils/types";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";

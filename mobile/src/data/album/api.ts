@@ -20,12 +20,10 @@ import {
 } from "~/db/schema";
 import type { SlimAlbum, SlimAlbumWithTracks } from "~/db/slimTypes";
 
-// FIXME: Want to eventually move to `~/data/albums/utils.ts`.
-import { AlbumArtistsKey } from "~/api/album.utils";
-
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { omitKeys } from "~/utils/object";
 import type { AlbumTrack } from "./types";
+import { AlbumArtistsKey } from "./utils";
 import type { DrizzleFilter } from "../types";
 import { unencodeJSONArray } from "../utils";
 

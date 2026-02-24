@@ -14,10 +14,10 @@ import { tracksToArtists, tracksToGenres } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 import { Info } from "~/resources/icons/Info";
-import { AlbumArtistsKey } from "~/api/album.utils";
 import { updateTrack } from "~/api/track";
 import { useTrack, useTrackGenres } from "~/queries/track";
 import { upsertAlbums } from "~/data/album/api";
+import { AlbumArtistsKey } from "~/data/album/utils";
 import { createArtists } from "~/data/artist/api";
 import { createGenres } from "~/data/genre/api";
 import { Resynchronize } from "~/stores/Playback/actions";
