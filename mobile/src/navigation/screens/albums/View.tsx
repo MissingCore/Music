@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { useAlbums } from "~/queries/album";
+import { useAlbums } from "~/data/album/queries";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { useViewLayout } from "~/stores/ViewPreference/hooks/useViewLayout";
 import { useViewOrder } from "~/stores/ViewPreference/hooks/useViewOrder";

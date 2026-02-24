@@ -4,7 +4,6 @@ import { count, eq, ne, sql, sum } from "drizzle-orm";
 import { db } from "~/db";
 import { albums, playlists, tracks, tracksToPlaylists } from "~/db/schema";
 
-import { getAlbum, getAlbums } from "~/api/album";
 import { getFolder } from "~/api/folder";
 import { getPlaylist, getPlaylists } from "~/api/playlist";
 import {
@@ -17,6 +16,7 @@ import {
   getTrackGenres,
   getTrackPlaylists,
 } from "~/api/track";
+import { getAlbum, getAlbums, getAlbumsSummary } from "~/data/album/api";
 import { getArtist, getArtistsSummary } from "~/data/artist/api";
 import { getGenre, getGenresSummary } from "~/data/genre/api";
 
@@ -30,21 +30,7 @@ export const queries = createQueryKeyStore({
   albums: {
     all: {
       queryKey: null,
-      queryFn: () => {
-        return db
-          .select({
-            id: albums.id,
-            name: albums.name,
-            artistsKey: albums.artistsKey,
-            artwork: albums.artwork,
-            duration: sum(tracks.duration),
-            trackCount: count(tracks.id),
-          })
-          .from(albums)
-          .innerJoin(tracks, eq(albums.id, tracks.albumId))
-          .groupBy(albums.name)
-          .orderBy(iAsc(albums.name), iAsc(albums.artistsKey));
-      },
+      queryFn: getAlbumsSummary,
     },
     detail: (albumId: string) => ({
       queryKey: [albumId],
@@ -238,11 +224,7 @@ export const queries = createQueryKeyStore({
 /** Get favorited albums & playlists. */
 async function getFavoriteLists() {
   const [favAlbums, favPlaylists] = await Promise.all([
-    getAlbums({
-      where: [eq(albums.isFavorite, true)],
-      columns: ["id", "name", "artistsKey", "artwork"],
-      withTracks: false,
-    }),
+    getAlbums(undefined, [eq(albums.isFavorite, true)]),
     getPlaylists({
       where: [eq(playlists.isFavorite, true)],
       columns: ["name", "artwork"],

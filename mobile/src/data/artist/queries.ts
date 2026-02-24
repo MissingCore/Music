@@ -1,8 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import type { artists } from "~/db/schema";
-
 import { queries as q } from "~/queries/keyStore";
 import { updateArtist } from "./api";
 
@@ -45,9 +43,8 @@ export function useArtists() {
 export function useUpdateArtist(artistName: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (
-      updatedValues: Partial<Omit<typeof artists.$inferInsert, "name">>,
-    ) => updateArtist(artistName, updatedValues),
+    mutationFn: (updatedValues: { artwork?: string | null }) =>
+      updateArtist(artistName, updatedValues),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: q.artists._def });
     },

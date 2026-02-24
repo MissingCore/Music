@@ -11,11 +11,11 @@ import type { TrackWithRelations } from "~/db/schema";
 import { albums, playlists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import { getAlbums } from "~/api/album";
 import { createPlaylist, getPlaylists, updatePlaylist } from "~/api/playlist";
 import { sanitizePlaylistName } from "~/api/playlist.utils";
 import { getTracks } from "~/api/track";
 import { TrackList } from "~/api/track.utils";
+import { getAlbums } from "~/data/album/api";
 
 import { pickDirectory } from "~/lib/file-system";
 import { clearAllQueries } from "~/lib/react-query";
@@ -108,7 +108,7 @@ async function findExistingTracksFactory() {
 async function exportBackup() {
   // Get favorited values.
   const [favAlbums, favPlaylists] = await Promise.all([
-    getAlbums({ where: [eq(albums.isFavorite, true)] }),
+    getAlbums(undefined, [eq(albums.isFavorite, true)]),
     getPlaylists({ where: [eq(playlists.isFavorite, true)] }),
   ]);
   // Get all user-generated playlists.

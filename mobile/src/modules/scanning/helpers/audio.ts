@@ -11,9 +11,9 @@ import { db } from "~/db";
 import type { InvalidTrack } from "~/db/schema";
 import { invalidTracks, tracksToArtists, tracksToGenres } from "~/db/schema";
 
-import { upsertAlbums } from "~/api/album";
-import { AlbumArtistsKey } from "~/api/album.utils";
 import { deleteTracks, upsertTracks } from "~/api/track";
+import { upsertAlbums } from "~/data/album/api";
+import { AlbumArtistsKey } from "~/data/album/utils";
 import { createArtists } from "~/data/artist/api";
 import { createGenres } from "~/data/genre/api";
 import { preferenceStore } from "~/stores/Preference/store";

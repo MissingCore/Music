@@ -6,10 +6,10 @@ import { db } from "~/db";
 import { playlists } from "~/db/schema";
 import type { SlimFolder, SlimTrackWithAlbum } from "~/db/slimTypes";
 
-import { getAlbums } from "~/api/album";
-import { AlbumArtistsKey } from "~/api/album.utils";
 import { getPlaylists } from "~/api/playlist";
 import { getTracks } from "~/api/track";
+import { getAlbums } from "~/data/album/api";
+import { AlbumArtistsKey } from "~/data/album/utils";
 
 import { iAsc } from "~/lib/drizzle";
 import { addTrailingSlash } from "~/utils/string";
@@ -100,10 +100,7 @@ async function getAllMedia() {
   // too complicated to read.
   const [allAlbums, allArtists, allFolders, allPlaylists, allTracks] =
     await Promise.all([
-      getAlbums({
-        columns: ["id", "name", "artistsKey", "artwork"],
-        trackColumns: ["id", "name", "artwork"],
-      }),
+      getAlbums(true),
       db.query.artists.findMany({
         orderBy: (fields) => iAsc(fields.name),
         //? Relation used to filter out artists with no tracks.

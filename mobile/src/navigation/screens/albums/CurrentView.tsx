@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { Favorite } from "~/resources/icons/Favorite";
-import { useAlbumForScreen, useFavoriteAlbum } from "~/queries/album";
+import { useAlbumForScreen, useFavoriteAlbum } from "~/data/album/queries";
 
 import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
@@ -61,7 +61,7 @@ export default function Album({
 
   if (isPending || error) {
     return (
-      <SafeContainer additionalTopOffset={56}>
+      <SafeContainer additionalTopOffset={56} className="flex-1">
         <PagePlaceholder isPending={isPending} />
       </SafeContainer>
     );
@@ -80,7 +80,7 @@ export default function Album({
         // List Header Props
         listInfo={{
           title: data.name,
-          artists: data.artistNames,
+          artists: data.artists,
           metadata: data.metadata,
           Actions: (
             <View className="flex-row gap-1">

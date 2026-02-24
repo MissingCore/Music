@@ -10,10 +10,10 @@ import type {
 } from "~/db/slimTypes";
 
 import { MoreVert } from "~/resources/icons/MoreVert";
-import { AlbumArtistsKey } from "~/api/album.utils";
 import { getArtistsString } from "~/api/artist.utils";
 import { getPlaylistArtwork } from "~/api/playlist.utils";
 import { getTrackArtwork } from "~/api/track.utils";
+import { AlbumArtistsKey } from "~/data/album/utils";
 import { presentTrackSheet } from "~/stores/Session/actions";
 
 import type { ColorRole } from "~/lib/style";

@@ -1,8 +1,8 @@
-export type GenreTrack = {
+export type AlbumTrack = {
   id: string;
   name: string;
-  artwork: string | null;
   duration: number;
-  album: string | null;
+  disc: number | null;
+  track: number | null;
   artists: string[] | null;
 };
