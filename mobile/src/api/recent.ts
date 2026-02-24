@@ -8,8 +8,8 @@ import { formatForMediaCard, formatForTrack } from "~/db/utils";
 import i18next from "~/modules/i18n";
 import { getAlbumDetails } from "~/data/album/api";
 import { getArtist } from "~/data/artist/api";
+import { getFolderTracks } from "~/data/folder/api";
 import { getGenre } from "~/data/genre/api";
-import { getFolderTracks } from "./folder";
 import { getPlaylist } from "./playlist";
 
 import { ReservedPlaylists } from "~/modules/media/constants";
@@ -128,7 +128,7 @@ async function getRecentListEntry({ id, type }: PlayFromSource) {
       const { albums: _, ...data } = await getArtist(id, true);
       entry = formatForMediaCard({ type: "artist", data, t: i18next.t });
     } else if (type === "folder") {
-      const numTracks = (await getFolderTracks(id)).length;
+      const numTracks = (await getFolderTracks(id, true)).length;
       if (numTracks === 0) throw new Error("Folder is empty.");
       entry = {
         type: "folder",
