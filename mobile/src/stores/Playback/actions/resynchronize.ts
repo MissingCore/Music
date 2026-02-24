@@ -1,8 +1,10 @@
 import TrackPlayer from "@weights-ai/react-native-track-player";
 
-import { updatePlayedMediaList } from "~/api/recent";
 import { getTrack } from "~/api/track";
-import { removePlayedList } from "~/data/recent/api";
+import {
+  removePlayedMediaList,
+  updatePlayedMediaList,
+} from "~/data/recent/api";
 
 import { playbackStore } from "../store";
 import type { PlayFromSource } from "../types";
@@ -58,7 +60,7 @@ export async function onRename({
   } catch {
     // This means `newSource` already exists in the Recent List, so
     // just delete `oldSource`.
-    await removePlayedList(oldSource);
+    await removePlayedMediaList(oldSource);
   }
 
   const { playingFrom } = playbackStore.getState();

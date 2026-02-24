@@ -48,7 +48,7 @@ export async function getRecentLists() {
   });
 
   // Silently remove recently played media lists that no longer exist.
-  Promise.allSettled(errors.map(removePlayedList));
+  Promise.allSettled(errors.map(removePlayedMediaList));
 
   return newRecentList;
 }
@@ -82,8 +82,48 @@ export async function getRecentTracks() {
 }
 //#endregion
 
+//#region PATCH Methods
+export async function updatePlayedMediaList({
+  oldSource,
+  newSource,
+}: Record<"oldSource" | "newSource", PlayFromSource>) {
+  return db
+    .update(playedMediaLists)
+    .set(newSource)
+    .where(
+      and(
+        eq(playedMediaLists.id, oldSource.id),
+        eq(playedMediaLists.type, oldSource.type),
+      ),
+    );
+}
+//#endregion
+
+//#region PUT Methods
+export async function addPlayedMediaList(entry: PlayFromSource) {
+  const lastPlayedAt = Date.now();
+  return db
+    .insert(playedMediaLists)
+    .values({ ...entry, lastPlayedAt })
+    .onConflictDoUpdate({
+      target: [playedMediaLists.id, playedMediaLists.type],
+      set: { lastPlayedAt },
+    });
+}
+
+export async function addPlayedTrack(id: string) {
+  return db
+    .update(tracks)
+    .set({
+      lastPlayedAt: Date.now(),
+      playCount: sql`${tracks.playCount} + 1`,
+    })
+    .where(eq(tracks.id, id));
+}
+//#endregion
+
 //#region DELETE Methods
-export async function removePlayedList(entry: PlayFromSource) {
+export async function removePlayedMediaList(entry: PlayFromSource) {
   return db
     .delete(playedMediaLists)
     .where(
