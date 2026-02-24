@@ -1,7 +1,22 @@
-import { count, eq, getTableColumns, max, min, sql, sum } from "drizzle-orm";
+import {
+  count,
+  eq,
+  getTableColumns,
+  inArray,
+  max,
+  min,
+  sql,
+  sum,
+} from "drizzle-orm";
 
 import { db } from "~/db";
-import { albums, tracks, tracksToArtists } from "~/db/schema";
+import {
+  albums,
+  albumsToArtists,
+  artists,
+  tracks,
+  tracksToArtists,
+} from "~/db/schema";
 
 // FIXME: Want to eventually move to `~/data/albums/utils.ts`.
 import { AlbumArtistsKey } from "~/api/album.utils";
@@ -125,5 +140,46 @@ export async function getAlbumsSummary() {
 //#region PATCH Methods
 export async function updateAlbum(id: string, values: Partial<InsertedAlbum>) {
   return db.update(albums).set(values).where(eq(albums.id, id));
+}
+//#endregion
+
+//#region PUT Methods
+/** Create/update album entries and its relations. Returns the created albums. */
+export function upsertAlbums(entries: InsertedAlbum[]) {
+  return db.transaction(async (tx) => {
+    const results = await tx
+      .insert(albums)
+      .values(entries)
+      .onConflictDoUpdate({
+        target: [albums.name, albums.artistsKey],
+        // Replace `name` with passed name to allow `.returning()` to return
+        // a value if a conflict occurs.
+        set: { name: sql`excluded.name` },
+      })
+      .returning();
+
+    // Create album-artist relations along with artists if they don't exist.
+    const newArtists = new Set<string>();
+    const newRels: Array<{ albumId: string; artistName: string }> = [];
+    results.forEach(({ id: albumId, artistsKey }) => {
+      AlbumArtistsKey.deconstruct(artistsKey).forEach((artistName) => {
+        newArtists.add(artistName);
+        newRels.push({ albumId, artistName });
+      });
+    });
+
+    if (newRels.length > 0) {
+      const artistEntries = [...newArtists].map((name) => ({ name }));
+      await tx.insert(artists).values(artistEntries).onConflictDoNothing();
+      // Remove old album-artist relations before inserting new ones.
+      const albumIds = results.map(({ id }) => id);
+      await tx
+        .delete(albumsToArtists)
+        .where(inArray(albumsToArtists.albumId, albumIds));
+      await tx.insert(albumsToArtists).values(newRels);
+    }
+
+    return results;
+  });
 }
 //#endregion
