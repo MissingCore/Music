@@ -46,7 +46,7 @@ export async function getAlbum<TOnlyIds extends boolean = false>(
 
 /** Get the album object along with it's year. */
 export async function getAlbumDetails(id: string) {
-  const [albumDetails, [range]] = await Promise.all([
+  const [details, [range]] = await Promise.all([
     throwIfNoResults(
       db.query.albums.findFirst({ where: eq(albums.id, id) }),
       "err.msg.noAlbums",
@@ -63,7 +63,7 @@ export async function getAlbumDetails(id: string) {
     else yearStr = `${range.minYear} - ${range.maxYear}`;
   }
 
-  return { ...albumDetails, year: yearStr };
+  return { ...details, year: yearStr };
 }
 
 /**
