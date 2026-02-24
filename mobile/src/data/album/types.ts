@@ -4,6 +4,5 @@ export type AlbumTrack = {
   duration: number;
   disc: number | null;
   track: number | null;
-  /** **Note:** May be empty. */
-  artists: string[];
+  artists: string[] | null;
 };

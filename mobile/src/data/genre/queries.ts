@@ -26,7 +26,7 @@ export function useGenreForScreen(genreName: string) {
       tracks: tracks.map((track) => ({
         id: track.id,
         title: track.name,
-        description: track.artists.join(", ") || "—",
+        description: track.artists?.join(", ") ?? "—",
         imageSource: track.artwork,
       })),
     }),

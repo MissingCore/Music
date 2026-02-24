@@ -35,11 +35,9 @@ export function useAlbumForScreen(albumId: string) {
         ],
         tracks: tracks.map(({ name: title, duration, artists, ...rest }) => {
           let description = formatSeconds(duration);
-          const diffArtists = artists.filter(
-            (name) => !albumArtists.includes(name),
-          );
-          if (diffArtists.length > 0) {
-            description += ` • ${diffArtists.join(", ")}`;
+          if (Array.isArray(artists)) {
+            const diff = artists.filter((name) => !albumArtists.includes(name));
+            if (diff.length > 0) description += ` • ${diff.join(", ")}`;
           }
 
           return { ...rest, title, description, imageSource: null };

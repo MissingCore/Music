@@ -5,5 +5,5 @@ export function unencodeJSONArray(rawJSONString: string) {
     const asArr: Array<string | null> = JSON.parse(rawJSONString);
     results = asArr.filter((name) => name !== null);
   } catch {}
-  return results;
+  return results.length > 0 ? results : null;
 }

@@ -4,6 +4,5 @@ export type GenreTrack = {
   artwork: string | null;
   duration: number;
   album: string | null;
-  /** **Note:** May be empty. */
-  artists: string[];
+  artists: string[] | null;
 };
