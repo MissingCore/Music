@@ -63,7 +63,7 @@ export function useFavoriteAlbum(albumId: string) {
       await wait(1);
       return updateAlbum(albumId, { isFavorite });
     },
-    onSuccess: async () => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: q.albums.detail(albumId).queryKey,
       });
