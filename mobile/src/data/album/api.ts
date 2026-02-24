@@ -11,13 +11,7 @@ import {
 } from "drizzle-orm";
 
 import { db } from "~/db";
-import {
-  albums,
-  albumsToArtists,
-  artists,
-  tracks,
-  tracksToArtists,
-} from "~/db/schema";
+import { albums, albumsToArtists, artists, tracks } from "~/db/schema";
 import type { SlimAlbum, SlimAlbumWithTracks } from "~/db/slimTypes";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
@@ -26,6 +20,7 @@ import type { AlbumTrack } from "./types";
 import { AlbumArtistsKey } from "./utils";
 import type { DrizzleFilter } from "../types";
 import { unencodeJSONArray } from "../utils";
+import { getOrderedTrackArtistsView } from "../views";
 
 type InsertedAlbum = typeof albums.$inferInsert;
 
@@ -79,12 +74,7 @@ export async function getAlbumTracks<TOnlyIds extends boolean = false>(
   id: string,
   onlyIds?: TOnlyIds,
 ) {
-  //? Subquery to order the artist names associated with a track.
-  const orderedTrackArtists = db
-    .select(getTableColumns(tracksToArtists))
-    .from(tracksToArtists)
-    .orderBy(iAsc(tracksToArtists.artistName))
-    .as("ordered_track_artists");
+  const orderedTrackArtists = getOrderedTrackArtistsView();
 
   const results = await db
     .select(

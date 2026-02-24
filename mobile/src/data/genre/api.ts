@@ -1,17 +1,12 @@
 import { count, eq, getTableColumns, sql, sum } from "drizzle-orm";
 
 import { db } from "~/db";
-import {
-  albums,
-  genres,
-  tracks,
-  tracksToArtists,
-  tracksToGenres,
-} from "~/db/schema";
+import { albums, genres, tracks, tracksToGenres } from "~/db/schema";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import type { GenreTrack } from "./types";
 import { unencodeJSONArray } from "../utils";
+import { getOrderedTrackArtistsView } from "../views";
 
 type InsertedGenre = typeof genres.$inferInsert;
 
@@ -40,12 +35,7 @@ export async function getGenreTracks<TOnlyIds extends boolean = false>(
   id: string,
   onlyIds?: TOnlyIds,
 ) {
-  //? Subquery to order the artist names associated with a track.
-  const orderedTrackArtists = db
-    .select(getTableColumns(tracksToArtists))
-    .from(tracksToArtists)
-    .orderBy(iAsc(tracksToArtists.artistName))
-    .as("ordered_track_artists");
+  const orderedTrackArtists = getOrderedTrackArtistsView();
 
   const results = await db
     .select(
