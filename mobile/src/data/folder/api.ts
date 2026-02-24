@@ -91,8 +91,6 @@ export async function getFolderTracks<TOnlyIds extends boolean = false>(
             >`coalesce(${tracks.artwork}, ${albums.artwork})`.as(
               "derived_artwork",
             ),
-            duration: tracks.duration,
-            album: albums.name,
             /** We need to unencode these fields. */
             artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
           },

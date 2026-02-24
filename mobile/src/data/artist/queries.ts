@@ -4,8 +4,6 @@ import { useTranslation } from "react-i18next";
 import { queries as q } from "~/queries/keyStore";
 import { updateArtist } from "./api";
 
-import { formatSeconds } from "~/utils/number";
-
 //#region Queries
 export function useArtist(artistName: string) {
   return useQuery({ ...q.artists.detail(artistName) });
@@ -15,13 +13,13 @@ export function useArtistForScreen(artistName: string) {
   const { t } = useTranslation();
   return useQuery({
     ...q.artists.detail(artistName),
-    select: ({ name, artwork, albums, tracks }) => ({
+    select: ({ name, artwork, albums, tracks, duration }) => ({
       name,
       imageSource: artwork,
       metadata: [
         t("term.artist"),
         t("plural.track", { count: tracks.length }),
-        formatSeconds(tracks.reduce((total, curr) => total + curr.duration, 0)),
+        duration,
       ],
       albums: albums.length > 0 ? albums : null,
       tracks: tracks.map((track) => ({

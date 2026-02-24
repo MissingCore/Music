@@ -4,8 +4,6 @@ import { useTranslation } from "react-i18next";
 import { queries as q } from "~/queries/keyStore";
 import { updateGenre } from "./api";
 
-import { formatSeconds } from "~/utils/number";
-
 //#region Queries
 export function useGenre(genreName: string) {
   return useQuery({ ...q.genres.detail(genreName) });
@@ -15,13 +13,13 @@ export function useGenreForScreen(genreName: string) {
   const { t } = useTranslation();
   return useQuery({
     ...q.genres.detail(genreName),
-    select: ({ name, artwork, tracks }) => ({
+    select: ({ name, artwork, tracks, duration }) => ({
       name,
       imageSource: artwork,
       metadata: [
         t("term.genre"),
         t("plural.track", { count: tracks.length }),
-        formatSeconds(tracks.reduce((total, curr) => total + curr.duration, 0)),
+        duration,
       ],
       tracks: tracks.map((track) => ({
         id: track.id,

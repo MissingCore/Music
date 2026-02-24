@@ -10,6 +10,7 @@ import {
 } from "~/db/schema";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
+import { formatSeconds } from "~/utils/number";
 import type { ArtistAlbum, ArtistTrack } from "./types";
 
 type InsertedArtist = typeof artists.$inferInsert;
@@ -21,15 +22,31 @@ export async function getArtist<TOnlyIds extends boolean = false>(
   onlyIds?: TOnlyIds,
 ) {
   const [artistDetails, artistAlbums, artistTracks] = await Promise.all([
-    throwIfNoResults(
-      db.query.artists.findFirst({ where: eq(artists.name, id) }),
-      "err.msg.noArtists",
-    ),
+    getArtistDetails(id),
     getArtistAlbums(id),
     getArtistTracks(id, onlyIds),
   ]);
 
   return { ...artistDetails, albums: artistAlbums, tracks: artistTracks };
+}
+
+export async function getArtistDetails(id: string) {
+  const [details, [agg]] = await Promise.all([
+    throwIfNoResults(
+      db.query.artists.findFirst({ where: eq(artists.name, id) }),
+      "err.msg.noArtists",
+    ),
+    db
+      .select({ duration: sum(tracks.duration) })
+      .from(tracksToArtists)
+      .where(eq(tracksToArtists.artistName, id))
+      .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id)),
+  ]);
+
+  return {
+    ...details,
+    duration: formatSeconds(agg?.duration ? +agg.duration : 0),
+  };
 }
 
 /**

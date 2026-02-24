@@ -4,6 +4,7 @@ import { db } from "~/db";
 import { albums, genres, tracks, tracksToGenres } from "~/db/schema";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
+import { formatSeconds } from "~/utils/number";
 import type { GenreTrack } from "./types";
 import { unencodeJSONArray } from "../utils";
 import { getOrderedTrackArtistsView } from "../views";
@@ -17,14 +18,30 @@ export async function getGenre<TOnlyIds extends boolean = false>(
   onlyIds?: TOnlyIds,
 ) {
   const [genreDetails, genreTracks] = await Promise.all([
-    throwIfNoResults(
-      db.query.genres.findFirst({ where: eq(genres.name, id) }),
-      "err.msg.noGenres",
-    ),
+    getGenreDetails(id),
     getGenreTracks(id, onlyIds),
   ]);
 
   return { ...genreDetails, tracks: genreTracks };
+}
+
+export async function getGenreDetails(id: string) {
+  const [details, [agg]] = await Promise.all([
+    throwIfNoResults(
+      db.query.genres.findFirst({ where: eq(genres.name, id) }),
+      "err.msg.noGenres",
+    ),
+    db
+      .select({ duration: sum(tracks.duration) })
+      .from(tracksToGenres)
+      .where(eq(tracksToGenres.genreName, id))
+      .innerJoin(tracks, eq(tracksToGenres.trackId, tracks.id)),
+  ]);
+
+  return {
+    ...details,
+    duration: formatSeconds(agg?.duration ? +agg.duration : 0),
+  };
 }
 
 /**
@@ -49,8 +66,6 @@ export async function getGenreTracks<TOnlyIds extends boolean = false>(
             >`coalesce(${tracks.artwork}, ${albums.artwork})`.as(
               "derived_artwork",
             ),
-            duration: tracks.duration,
-            album: albums.name,
             /** We need to unencode these fields. */
             artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
           },
