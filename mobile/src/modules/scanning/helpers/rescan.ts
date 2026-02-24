@@ -6,6 +6,7 @@ import { db } from "~/db";
 import { fileNodes, invalidTracks, tracks } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
+import { createFolders } from "~/data/folder/api";
 import { Resynchronize } from "~/stores/Playback/actions";
 
 import { clearAllQueries } from "~/lib/react-query";
@@ -14,7 +15,6 @@ import { wait } from "~/utils/promise";
 import { findAndSaveArtwork } from "./artwork";
 import { findAndSaveAudio } from "./audio";
 import { AppCleanUp } from "./cleanup";
-import { savePathComponents } from "./folder";
 
 /** Look through our library for any new or updated tracks. */
 export async function rescanForTracks(deepScan = false) {
@@ -35,7 +35,7 @@ export async function rescanForTracks(deepScan = false) {
     const allTracks = await db.query.tracks.findMany({
       columns: { uri: true },
     });
-    await savePathComponents(allTracks.map(({ uri }) => uri));
+    await createFolders(allTracks.map(({ uri }) => uri));
 
     // Make sure we retry invalid tracks.
     // eslint-disable-next-line drizzle/enforce-delete-with-where

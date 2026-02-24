@@ -18,7 +18,7 @@ import Animated, {
 
 import type { FileNode } from "~/db/schema";
 
-import { useFolderContent } from "~/queries/folder";
+import { useFolderContent } from "~/data/folder/queries";
 
 import { NScrollListLayout } from "~/navigation/layouts/NScrollLayout";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
@@ -97,7 +97,7 @@ export default function Folders({
   const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
 
   const renderedData = useMemo(
-    () => [...(data?.subDirectories ?? []), ...(listData ?? [])],
+    () => [...(data?.directories ?? []), ...(listData ?? [])],
     [data, listData],
   );
   //#endregion

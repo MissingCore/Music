@@ -4,7 +4,6 @@ import { count, eq, ne, sql, sum } from "drizzle-orm";
 import { db } from "~/db";
 import { albums, playlists, tracks, tracksToPlaylists } from "~/db/schema";
 
-import { getFolder } from "~/api/folder";
 import { getPlaylist, getPlaylists } from "~/api/playlist";
 import {
   getRecentlyPlayedMediaLists,
@@ -18,6 +17,7 @@ import {
 } from "~/api/track";
 import { getAlbum, getAlbums, getAlbumsSummary } from "~/data/album/api";
 import { getArtist, getArtistsSummary } from "~/data/artist/api";
+import { getFolder } from "~/data/folder/api";
 import { getGenre, getGenresSummary } from "~/data/genre/api";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
