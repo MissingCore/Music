@@ -38,10 +38,27 @@ index 69bf79e04c1dfeed50e3b6265913d96b2f7bffbb..f7298ac52ba3df719f5666a7214292e3
    isVisible,
    useHideAnimation
  };
-diff --git a/dist/typescript/index.d.ts b/dist/typescript/index.d.ts
+diff --git a/dist/typescript/commonjs/index.d.ts b/dist/typescript/commonjs/index.d.ts
 index 9f59e3730d028bd4553d81a5db3d41ca96c2b4d7..f6f993865451ad5b9c7a97905b3b0ae5abb22723 100644
---- a/dist/typescript/index.d.ts
-+++ b/dist/typescript/index.d.ts
+--- a/dist/typescript/commonjs/index.d.ts
++++ b/dist/typescript/commonjs/index.d.ts
+@@ -50,10 +50,12 @@ export type UseHideAnimation = {
+     brand: BrandProps;
+ };
+ export declare function hide(config?: Config): Promise<void>;
++export declare const isSystemDarkMode: boolean;
+ export declare function isVisible(): boolean;
+ export declare function useHideAnimation(config: UseHideAnimationConfig): UseHideAnimation;
+ declare const _default: {
+     hide: typeof hide;
++    isSystemDarkMode: typeof isSystemDarkMode;
+     isVisible: typeof isVisible;
+     useHideAnimation: typeof useHideAnimation;
+ };
+diff --git a/dist/typescript/module/index.d.ts b/dist/typescript/module/index.d.ts
+index 9f59e3730d028bd4553d81a5db3d41ca96c2b4d7..f6f993865451ad5b9c7a97905b3b0ae5abb22723 100644
+--- a/dist/typescript/module/index.d.ts
++++ b/dist/typescript/module/index.d.ts
 @@ -50,10 +50,12 @@ export type UseHideAnimation = {
      brand: BrandProps;
  };
