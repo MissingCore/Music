@@ -16,12 +16,12 @@ import {
 } from "~/db/schema";
 
 import { updatePlaylist } from "~/api/playlist";
+import { createFolders } from "~/data/folder/api";
 import { playbackStore } from "~/stores/Playback/store";
 import { preferenceStore } from "~/stores/Preference/store";
 
 import type { PlayFromSource } from "~/stores/Playback/types";
 import type { Tab } from "~/stores/Preference/types";
-import { savePathComponents } from "./folder";
 import type { MigrationOption } from "../constants";
 import { MigrationHistory } from "../constants";
 
@@ -84,7 +84,7 @@ const MigrationFunctionMap: Record<
       ),
     );
     // The "placeholder" portion won't get saved.
-    await savePathComponents(
+    await createFolders(
       oldRootNodes.map((node) => "file:///" + node.path + "placeholder"),
     );
   },

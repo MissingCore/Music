@@ -15,6 +15,7 @@ import { deleteTracks, upsertTracks } from "~/api/track";
 import { upsertAlbums } from "~/data/album/api";
 import { AlbumArtistsKey } from "~/data/album/utils";
 import { createArtists } from "~/data/artist/api";
+import { createFolders } from "~/data/folder/api";
 import { createGenres } from "~/data/genre/api";
 import { preferenceStore } from "~/stores/Preference/store";
 import { scanningProgressStore } from "../ScanningProgress";
@@ -29,7 +30,6 @@ import {
   removeFileExtension,
   splitOn,
 } from "~/utils/string";
-import { savePathComponents } from "./folder";
 
 /**
  * Difference in `modificiationTime` to trigger a refetch. This is due to
@@ -166,7 +166,7 @@ export async function findAndSaveAudio() {
       });
     }
     if (results.length === 0) continue;
-    await savePathComponents(results.map(({ uri }) => uri));
+    await createFolders(results.map(({ uri }) => uri));
 
     //#region Album & Artist Creation
     const usedArtists = new Set<string>();
