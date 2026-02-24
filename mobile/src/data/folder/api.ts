@@ -26,8 +26,8 @@ export async function getFolder<TOnlyIds extends boolean = false>(
 }
 
 /**
- * Return the directories associated with a folder directory. It's not
- * guaranteed that the folder exists.
+ * Return the directories associated with a folder. It's not guaranteed
+ * that the folder exists.
  */
 export async function getFolderDirectories(path: Maybe<string>) {
   const directories = await db
@@ -64,8 +64,8 @@ export async function getFolderDirectories(path: Maybe<string>) {
 }
 
 /**
- * Return the tracks associated with a folder directory. It's not guaranteed
- * that the folder exists.
+ * Return the tracks associated with a folder. It's not guaranteed that
+ * the folder exists.
  */
 export async function getFolderTracks<TOnlyIds extends boolean = false>(
   path: Maybe<string>,
