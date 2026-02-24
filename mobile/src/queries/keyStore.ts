@@ -6,10 +6,6 @@ import { albums, playlists, tracks, tracksToPlaylists } from "~/db/schema";
 
 import { getPlaylist } from "~/api/playlist";
 import {
-  getRecentlyPlayedMediaLists,
-  getRecentlyPlayedTracks,
-} from "~/api/recent";
-import {
   getSortedTracks,
   getTrack,
   getTrackGenres,
@@ -21,6 +17,7 @@ import { getFavoriteLists } from "~/data/favorite/api";
 import { getFolder } from "~/data/folder/api";
 import { getGenre, getGenresSummary } from "~/data/genre/api";
 import { getLyric, getLyricsSummary } from "~/data/lyric/api";
+import { getRecentMedia } from "~/data/recent/api";
 
 import { iAsc } from "~/lib/drizzle";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
@@ -54,7 +51,7 @@ export const queries = createQueryKeyStore({
   favorites: {
     lists: {
       queryKey: null,
-      queryFn: () => getFavoriteLists(),
+      queryFn: getFavoriteLists,
     },
   },
   /** Query keys used in `useQuery` for folders. */
@@ -187,13 +184,9 @@ export const queries = createQueryKeyStore({
 
   /** Query keys used in `useQuery` for recently played media. */
   recent: {
-    mediaLists: {
+    all: {
       queryKey: null,
-      queryFn: () => getRecentlyPlayedMediaLists(),
-    },
-    tracks: {
-      queryKey: null,
-      queryFn: () => getRecentlyPlayedTracks(),
+      queryFn: getRecentMedia,
     },
   },
 });

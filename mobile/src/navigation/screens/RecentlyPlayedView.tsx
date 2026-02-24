@@ -2,15 +2,14 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import { RECENT_DAY_RANGE } from "~/api/recent";
+import { RECENT_DAY_RANGE } from "~/data/recent/api";
+import { useRecentlyPlayedMedia } from "~/data/recent/queries";
 import { queries as q } from "~/queries/keyStore";
-import {
-  useRecentlyPlayedMediaLists,
-  useRecentlyPlayedTracks,
-} from "~/queries/recent";
 import { useGetColumn } from "~/hooks/useGetColumn";
+
 import { useBottomActionsInset } from "../hooks/useBottomActions";
 import { getMediaLinkContext } from "../utils/router";
+import { PagePlaceholder } from "../components/Placeholder";
 
 import { queryClient } from "~/lib/react-query";
 import { FlatList, getListItemLayout } from "~/components/Base/List";
@@ -18,7 +17,6 @@ import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
 import { Track } from "~/modules/media/components/Track";
-import { PagePlaceholder } from "../components/Placeholder";
 
 // Information about this track list.
 const trackSource = {
@@ -30,29 +28,20 @@ export default function RecentlyPlayed() {
   const { t } = useTranslation();
   const isFocused = useIsFocused();
   const bottomInset = useBottomActionsInset();
-  const recentlyPlayedMediaLists = useRecentlyPlayedMediaLists();
-  const recentlyPlayedTracks = useRecentlyPlayedTracks();
+  const { isPending, error, data } = useRecentlyPlayedMedia();
 
-  const isAwaitingContent =
-    recentlyPlayedMediaLists.isPending && recentlyPlayedTracks.isPending;
-  const hasNoContent =
-    recentlyPlayedMediaLists.data?.length === 0 &&
-    recentlyPlayedTracks.data?.length === 0;
+  const hasNoContent = data?.lists?.length === 0 && data?.tracks?.length === 0;
 
   useEffect(() => {
     if (isFocused) {
-      queryClient.invalidateQueries({
-        predicate: ({ queryKey }) =>
-          queryKey === q.recent.mediaLists.queryKey ||
-          queryKey === q.recent.tracks.queryKey,
-      });
+      queryClient.invalidateQueries({ queryKey: q.recent.all.queryKey });
     }
   }, [isFocused]);
 
-  if (isAwaitingContent || hasNoContent) {
+  if (isPending || error || hasNoContent) {
     return (
       <PagePlaceholder
-        isPending={isAwaitingContent}
+        isPending={isPending}
         errMsg={t("feat.playedRecent.extra.notFound", {
           amount: RECENT_DAY_RANGE,
         })}
@@ -62,15 +51,13 @@ export default function RecentlyPlayed() {
 
   return (
     <FlatList
-      data={recentlyPlayedTracks.data}
+      data={data.tracks}
       keyExtractor={({ id }) => id}
       renderItem={({ item }) => (
         <Track {...item} trackSource={trackSource} className="mb-2" />
       )}
       getItemLayout={getListItemLayout}
-      ListHeaderComponent={
-        <RecentlyPlayedLists data={recentlyPlayedMediaLists.data} />
-      }
+      ListHeaderComponent={<RecentlyPlayedLists data={data.lists} />}
       className="-mb-2"
       contentContainerClassName="px-4 pt-4"
       contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
