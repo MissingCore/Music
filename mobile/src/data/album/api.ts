@@ -32,13 +32,10 @@ const albumFields = omitKeys(getTableColumns(albums), [
 
 //#region GET Methods
 /** Get all data associated with an album. */
-export async function getAlbum<TOnlyIds extends boolean = false>(
-  id: string,
-  onlyIds?: TOnlyIds,
-) {
+export async function getAlbum(id: string) {
   const [albumDetails, albumTracks] = await Promise.all([
     getAlbumDetails(id),
-    getAlbumTracks(id, onlyIds),
+    getAlbumTracks(id),
   ]);
 
   return { ...albumDetails, tracks: albumTracks };

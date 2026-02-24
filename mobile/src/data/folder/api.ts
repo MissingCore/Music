@@ -13,13 +13,10 @@ import { getOrderedTrackArtistsView } from "../views";
 
 //#region GET Methods
 /** Get all data associated with a folder. `path` doesn't include `file:///`. */
-export async function getFolder<TOnlyIds extends boolean = false>(
-  path: Maybe<string>,
-  onlyIds?: TOnlyIds,
-) {
+export async function getFolder(path: Maybe<string>) {
   const [folderDirectories, folderTracks] = await Promise.all([
     getFolderDirectories(path),
-    getFolderTracks(path, onlyIds),
+    getFolderTracks(path),
   ]);
 
   return { directories: folderDirectories, tracks: folderTracks };
