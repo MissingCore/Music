@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { useLyricForTrack } from "~/queries/lyric";
+import { useLyricForTrack } from "~/data/lyric/queries";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
 

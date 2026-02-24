@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { queries as q } from "./keyStore";
+import { queries as q } from "~/queries/keyStore";
 
 //#region Queries
 export function useLyric(lyricId: string) {

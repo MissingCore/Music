@@ -1,7 +1,7 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { eq } from "drizzle-orm";
-import { Fragment, useEffect, useMemo } from "react";
+import { Fragment, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -11,9 +11,8 @@ import { tracksToLyrics } from "~/db/schema";
 import { Add } from "~/resources/icons/Add";
 import { Edit } from "~/resources/icons/Edit";
 import { LinkOff } from "~/resources/icons/LinkOff";
-import { getArtistsString } from "~/api/artist.utils";
+import { useLyric } from "~/data/lyric/queries";
 import { queries as q } from "~/queries/keyStore";
-import { useLyric } from "~/queries/lyric";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
@@ -42,13 +41,6 @@ export default function Lyric({
   const navigation = useNavigation();
   const { isPending, error, data } = useLyric(lyricId);
   const linkTracksSheetRef = useSheetRef();
-
-  const linkedTracks = useMemo(() => {
-    if (!data?.tracksToLyrics) return [];
-    return data.tracksToLyrics
-      .map(({ track }) => track)
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }, [data?.tracksToLyrics]);
 
   useEffect(() => {
     return () => {
@@ -86,38 +78,29 @@ export default function Lyric({
               onPress={() => linkTracksSheetRef.current?.present()}
             />
           </SegmentedList.CustomItem>
-          {linkedTracks.length > 0 ? (
+          {data.tracks.length > 0 ? (
             <SegmentedList.CustomItem>
-              {linkedTracks.map(({ id, name, ...meta }, index) => {
-                const albumName = meta.album?.name;
-                const artistsString = getArtistsString(
-                  meta.tracksToArtists,
-                  false,
-                );
-                return (
-                  <Fragment key={id}>
-                    {index > 0 ? <Divider className="mx-4" /> : null}
-                    <View className="flex-row gap-2 p-4 pr-2">
-                      <View className="shrink grow">
-                        <StyledText className="text-sm">{name}</StyledText>
-                        {artistsString ? (
-                          <StyledText dim className="text-onSurface/80">
-                            {artistsString}
-                          </StyledText>
-                        ) : null}
-                        {albumName ? (
-                          <StyledText dim>{albumName}</StyledText>
-                        ) : null}
-                      </View>
-                      <IconButton
-                        Icon={LinkOff}
-                        accessibilityLabel={t("template.entryRemove", { name })}
-                        onPress={() => unlinkTrack({ trackId: id, lyricId })}
-                      />
+              {data.tracks.map(({ id, name, album, artists }, index) => (
+                <Fragment key={id}>
+                  {index > 0 ? <Divider className="mx-4" /> : null}
+                  <View className="flex-row gap-2 p-4 pr-2">
+                    <View className="shrink grow">
+                      <StyledText className="text-sm">{name}</StyledText>
+                      {artists ? (
+                        <StyledText dim className="text-onSurface/80">
+                          {artists.join(", ")}
+                        </StyledText>
+                      ) : null}
+                      {album ? <StyledText dim>{album}</StyledText> : null}
                     </View>
-                  </Fragment>
-                );
-              })}
+                    <IconButton
+                      Icon={LinkOff}
+                      accessibilityLabel={t("template.entryRemove", { name })}
+                      onPress={() => unlinkTrack({ trackId: id, lyricId })}
+                    />
+                  </View>
+                </Fragment>
+              ))}
             </SegmentedList.CustomItem>
           ) : null}
         </SegmentedList>

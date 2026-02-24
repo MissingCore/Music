@@ -1,13 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
-import { eq } from "drizzle-orm";
 import { Fragment, useMemo, useState } from "react";
 import { View } from "react-native";
 import { z } from "zod/mini";
 
-import { db } from "~/db";
-import { lyrics } from "~/db/schema";
-
+import { deleteLyric } from "~/data/lyric/api";
 import { queries as q } from "~/queries/keyStore";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
@@ -88,7 +85,7 @@ function DeleteWorkflow({
     setIsSubmitting(true);
     await wait(1);
     try {
-      await db.delete(lyrics).where(eq(lyrics.id, data.id));
+      await deleteLyric(data.id);
       queryClient.invalidateQueries({ queryKey: q.lyrics._def });
       navigation.goBack();
       navigation.goBack();

@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
 import { History } from "~/resources/icons/History";
-import { useFavoriteListsForCards } from "~/queries/favorite";
+import { useFavoriteListsForCards } from "~/data/favorite/queries";
 
 import { NScrollLayout } from "~/navigation/layouts/NScrollLayout";
 

@@ -4,12 +4,11 @@ import { useTranslation } from "react-i18next";
 import type { AlbumWithTracks } from "~/db/schema";
 import { formatForMediaCard } from "~/db/utils";
 
-import { queries as q } from "./keyStore";
+import { queries as q } from "~/queries/keyStore";
 
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 //#region Queries
-/** Return list of `MediaCardContent` of favorited albums & playlists. */
 export function useFavoriteListsForCards() {
   const { t } = useTranslation();
   return useQuery({

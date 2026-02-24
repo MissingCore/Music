@@ -2,14 +2,11 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
-import { eq } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
 
-import { db } from "~/db";
-import { lyrics } from "~/db/schema";
-
+import { updateLyric } from "~/data/lyric/api";
+import { useLyric } from "~/data/lyric/queries";
 import { queries as q } from "~/queries/keyStore";
-import { useLyric } from "~/queries/lyric";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
@@ -39,7 +36,7 @@ export default function ModifyLyric({
       initialData={initData}
       onSubmit={async ({ id: _, ...entry }) => {
         try {
-          await db.update(lyrics).set(entry).where(eq(lyrics.id, lyricId));
+          await updateLyric(lyricId, entry);
 
           queryClient.resetQueries({ queryKey: q.lyrics._def });
           navigation.goBack();

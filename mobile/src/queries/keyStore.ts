@@ -4,7 +4,7 @@ import { count, eq, ne, sql, sum } from "drizzle-orm";
 import { db } from "~/db";
 import { albums, playlists, tracks, tracksToPlaylists } from "~/db/schema";
 
-import { getPlaylist, getPlaylists } from "~/api/playlist";
+import { getPlaylist } from "~/api/playlist";
 import {
   getRecentlyPlayedMediaLists,
   getRecentlyPlayedTracks,
@@ -15,12 +15,14 @@ import {
   getTrackGenres,
   getTrackPlaylists,
 } from "~/api/track";
-import { getAlbum, getAlbums, getAlbumsSummary } from "~/data/album/api";
+import { getAlbum, getAlbumsSummary } from "~/data/album/api";
 import { getArtist, getArtistsSummary } from "~/data/artist/api";
+import { getFavoriteLists } from "~/data/favorite/api";
 import { getFolder } from "~/data/folder/api";
 import { getGenre, getGenresSummary } from "~/data/genre/api";
+import { getLyric, getLyricsSummary } from "~/data/lyric/api";
 
-import { iAsc, throwIfNoResults } from "~/lib/drizzle";
+import { iAsc } from "~/lib/drizzle";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import type { ScreenSortOptions } from "~/stores/ViewPreference/constants";
 
@@ -77,40 +79,15 @@ export const queries = createQueryKeyStore({
   lyrics: {
     all: {
       queryKey: null,
-      queryFn: () =>
-        db.query.lyrics.findMany({
-          columns: { lyrics: false },
-          with: { tracksToLyrics: true },
-          orderBy: (fields) => iAsc(fields.name),
-        }),
+      queryFn: getLyricsSummary,
     },
     detail: (lyricId: string) => ({
       queryKey: [lyricId],
-      queryFn: () =>
-        throwIfNoResults(
-          db.query.lyrics.findFirst({
-            where: (fields, { eq }) => eq(fields.id, lyricId),
-            with: {
-              tracksToLyrics: {
-                with: {
-                  track: {
-                    columns: { id: true, name: true },
-                    with: {
-                      album: { columns: { name: true } },
-                      tracksToArtists: {
-                        orderBy: (fields) => iAsc(fields.artistName),
-                        columns: { artistName: true },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          }),
-        ),
+      queryFn: () => getLyric(lyricId),
     }),
     forTrack: (trackId: string) => ({
       queryKey: [trackId],
+      // FIXME: Have a `getTracklyrics` in `~/data/track/api.ts`.
       queryFn: async () => {
         const data = await db.query.tracksToLyrics.findFirst({
           where: (fields, { eq }) => eq(fields.trackId, trackId),
@@ -220,17 +197,3 @@ export const queries = createQueryKeyStore({
     },
   },
 });
-
-/** Get favorited albums & playlists. */
-async function getFavoriteLists() {
-  const [favAlbums, favPlaylists] = await Promise.all([
-    getAlbums(undefined, [eq(albums.isFavorite, true)]),
-    getPlaylists({
-      where: [eq(playlists.isFavorite, true)],
-      columns: ["name", "artwork"],
-      trackColumns: ["artwork"],
-      albumColumns: ["artwork"],
-    }),
-  ]);
-  return { albums: favAlbums, playlists: favPlaylists };
-}

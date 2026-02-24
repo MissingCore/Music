@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { Add } from "~/resources/icons/Add";
 import { Edit } from "~/resources/icons/Edit";
-import { useLyrics } from "~/queries/lyric";
+import { useLyrics } from "~/data/lyric/queries";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
@@ -38,9 +38,7 @@ export default function Lyrics() {
         renderItem={({ item, index, listSize }) => (
           <SegmentedList.Item
             labelText={item.name}
-            supportingText={t("plural.track", {
-              count: item.tracksToLyrics.length,
-            })}
+            supportingText={t("plural.track", { count: item.trackCount })}
             RightElement={<Edit />}
             onPress={() => navigation.navigate("Lyric", { id: item.id })}
             className={cn({

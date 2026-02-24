@@ -4,9 +4,7 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import { db } from "~/db";
-import { lyrics } from "~/db/schema";
-
+import { createLyric } from "~/data/lyric/api";
 import { queries as q } from "~/queries/keyStore";
 
 import { ToastOptions } from "~/lib/toast";
@@ -21,7 +19,7 @@ export default function CreateLyric() {
     <ModifyLyricBase
       onSubmit={async ({ id: _, ...entry }) => {
         try {
-          const [newLyric] = await db.insert(lyrics).values(entry).returning();
+          const newLyric = await createLyric(entry);
           if (!newLyric) throw new Error("Lyric not returned after insertion.");
 
           queryClient.invalidateQueries({ queryKey: q.lyrics._def });
