@@ -42,7 +42,6 @@ export async function getArtistAlbums(id: string): Promise<ArtistAlbum[]> {
       id: albums.id,
       name: albums.name,
       artwork: albums.artwork,
-      //* These works. If we have no year, they return `null`.
       minYear: sql<number>`coalesce(min(${tracks.year}), -1)`,
       maxYear: sql<number>`coalesce(max(${tracks.year}), -1)`,
     })
