@@ -1,4 +1,5 @@
 import {
+  and,
   count,
   eq,
   getTableColumns,
@@ -17,6 +18,7 @@ import {
   tracks,
   tracksToArtists,
 } from "~/db/schema";
+import type { SlimAlbum, SlimAlbumWithTracks } from "~/db/slimTypes";
 
 // FIXME: Want to eventually move to `~/data/albums/utils.ts`.
 import { AlbumArtistsKey } from "~/api/album.utils";
@@ -24,6 +26,7 @@ import { AlbumArtistsKey } from "~/api/album.utils";
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { omitKeys } from "~/utils/object";
 import type { AlbumTrack } from "./types";
+import type { DrizzleFilter } from "../types";
 import { unencodeJSONArray } from "../utils";
 
 type InsertedAlbum = typeof albums.$inferInsert;
@@ -31,6 +34,7 @@ type InsertedAlbum = typeof albums.$inferInsert;
 const albumFields = omitKeys(getTableColumns(albums), [
   "altArtwork",
   "embeddedArtwork",
+  "isFavorite",
 ]);
 
 //#region GET Methods
@@ -112,6 +116,34 @@ export async function getAlbumTracks<TOnlyIds extends boolean = false>(
           artists: unencodeJSONArray(artists as string),
         }))
   ) as TOnlyIds extends true ? Array<{ id: string }> : AlbumTrack[];
+}
+
+/** Return albums in their "slim" form. */
+export async function getAlbums<
+  TWithTracks extends boolean | undefined = false,
+>(withTracks?: TWithTracks, conditions?: DrizzleFilter) {
+  return db.query.albums.findMany({
+    where: and(...(conditions ?? [])),
+    columns: { id: true, name: true, artistsKey: true, artwork: true },
+    ...(withTracks
+      ? {
+          with: {
+            tracks: {
+              columns: { id: true, name: true, artwork: true },
+              with: {
+                tracksToArtists: {
+                  columns: { artistName: true },
+                },
+              },
+              orderBy: [iAsc(tracks.disc), iAsc(tracks.track)],
+            },
+          },
+        }
+      : {}),
+    orderBy: [iAsc(albums.name), iAsc(albums.artistsKey)],
+  }) as unknown as Promise<
+    Array<TWithTracks extends true ? SlimAlbumWithTracks : SlimAlbum>
+  >;
 }
 
 /** Get information summarizing each album (sorted by names). */
