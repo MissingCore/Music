@@ -1,12 +1,12 @@
 import { and, eq, sql } from "drizzle-orm";
 
 import { db } from "~/db";
-import type { PlayedMediaList } from "~/db/schema";
+import type { AlbumWithTracks, PlayedMediaList } from "~/db/schema";
 import { playedMediaLists, tracks } from "~/db/schema";
 import { formatForMediaCard, formatForTrack } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
-import { getAlbum } from "~/data/album/api";
+import { getAlbumDetails } from "~/data/album/api";
 import { getArtist } from "~/data/artist/api";
 import { getGenre } from "~/data/genre/api";
 import { getFolderTracks } from "./folder";
@@ -121,7 +121,8 @@ async function getRecentListEntry({ id, type }: PlayFromSource) {
   try {
     let entry: MediaCardContent;
     if (type === "album") {
-      const data = await getAlbum(id, true);
+      const data = (await getAlbumDetails(id)) as unknown as AlbumWithTracks;
+      data.tracks = [];
       entry = formatForMediaCard({ type: "album", data, t: i18next.t });
     } else if (type === "artist") {
       const { albums: _, ...data } = await getArtist(id, true);

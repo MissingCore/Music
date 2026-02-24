@@ -8,7 +8,7 @@ import { getFolderTracks } from "~/api/folder";
 import { getPlaylist } from "~/api/playlist";
 import { getSortedTracks } from "~/api/track";
 import { getTrackArtwork } from "~/api/track.utils";
-import { getAlbum, getAlbumTracks } from "~/data/album/api";
+import { getAlbumDetails, getAlbumTracks } from "~/data/album/api";
 import { getArtistTracks } from "~/data/artist/api";
 import { getGenreTracks } from "~/data/genre/api";
 import type { PlayFromSource } from "./types";
@@ -64,7 +64,7 @@ export async function getSourceName({ type, id }: PlayFromSource) {
       // a trailing slash.
       name = id.split("/").at(-2) ?? "";
     } else {
-      name = (await getAlbum(id, true)).name;
+      name = (await getAlbumDetails(id)).name;
     }
   } catch {}
   return name;

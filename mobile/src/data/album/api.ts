@@ -24,16 +24,34 @@ export async function getAlbum<TOnlyIds extends boolean = false>(
   id: string,
   onlyIds?: TOnlyIds,
 ) {
-  const [albumDetails, albumTracks, albumYear] = await Promise.all([
+  const [albumDetails, albumTracks] = await Promise.all([
+    getAlbumDetails(id),
+    getAlbumTracks(id, onlyIds),
+  ]);
+
+  return { ...albumDetails, tracks: albumTracks };
+}
+
+/** Get the album object along with it's year. */
+export async function getAlbumDetails(id: string) {
+  const [albumDetails, [range]] = await Promise.all([
     throwIfNoResults(
       db.query.albums.findFirst({ where: eq(albums.id, id) }),
       "err.msg.noAlbums",
     ),
-    getAlbumTracks(id, onlyIds),
-    getAlbumYear(id),
+    db
+      .select({ minYear: min(tracks.year), maxYear: max(tracks.year) })
+      .from(tracks)
+      .where(eq(tracks.albumId, id)),
   ]);
 
-  return { ...albumDetails, tracks: albumTracks, year: albumYear };
+  let yearStr: string | null = null;
+  if (range && range.minYear !== null && range.maxYear !== null) {
+    if (range.minYear === range.maxYear) yearStr = `${range.maxYear}`;
+    else yearStr = `${range.minYear} - ${range.maxYear}`;
+  }
+
+  return { ...albumDetails, year: yearStr };
 }
 
 /**
@@ -79,25 +97,6 @@ export async function getAlbumTracks<TOnlyIds extends boolean = false>(
           artists: unencodeJSONArray(artists as string),
         }))
   ) as TOnlyIds extends true ? Array<{ id: string }> : AlbumTrack[];
-}
-
-/**
- * Return the year associated with an album. It's not guaranteed that
- * the album exists.
- */
-export async function getAlbumYear(id: string) {
-  const [range] = await db
-    .select({ minYear: min(tracks.year), maxYear: max(tracks.year) })
-    .from(tracks)
-    .where(eq(tracks.albumId, id));
-
-  let yearStr: string | null = null;
-  if (range && range.minYear !== null && range.maxYear !== null) {
-    if (range.minYear === range.maxYear) yearStr = `${range.maxYear}`;
-    else yearStr = `${range.minYear} - ${range.maxYear}`;
-  }
-
-  return yearStr;
 }
 
 /** Get information summarizing each album (sorted by names). */

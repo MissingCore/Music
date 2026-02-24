@@ -9,19 +9,6 @@ export const TrackList = {
     const trackIds = new Set(list2.map(({ id }) => id));
     return list1.filter(({ id }) => !trackIds.has(id)).concat(list2);
   },
-
-  /** Returns the year range from the `year` field on tracks. */
-  yearRange<TData extends { year: number | null }>(trackList: TData[]) {
-    const years = trackList
-      .filter(({ year }) => year !== null)
-      .map(({ year }) => year) as number[];
-    if (years.length === 0) return { minYear: -1, maxYear: -1, range: null };
-    const minYear = Math.min(...years);
-    const maxYear = Math.max(...years);
-    const range =
-      minYear === maxYear ? `${maxYear}` : `${minYear} - ${maxYear}`;
-    return { minYear, maxYear, range };
-  },
 };
 
 //#region Artwork
