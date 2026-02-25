@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import type { playlists } from "~/db/schema";
 
@@ -13,38 +13,6 @@ import { Resynchronize } from "~/stores/Playback/actions";
 import { queries as q } from "./keyStore";
 
 import { wait } from "~/utils/promise";
-
-//#region Queries
-/** Get the names of all playlists. */
-export function usePlaylistsNames() {
-  return useQuery({
-    ...q.playlists.all,
-    select: (data) => data.map(({ name }) => name),
-  });
-}
-
-export function usePlaylists() {
-  return useQuery({
-    ...q.playlists.all,
-    select: (data) =>
-      data
-        .map(({ collageArtwork, ...playlist }) => {
-          let collage: string[] = [];
-          try {
-            const asArr: Array<string | null> = JSON.parse(collageArtwork);
-            collage = asArr.filter((artwork) => artwork !== null).slice(0, 4);
-          } catch {}
-
-          return {
-            ...playlist,
-            duration: Number(playlist.duration) || 0,
-            artwork: playlist.artwork ?? collage,
-          };
-        })
-        .sort((a, b) => a.name.localeCompare(b.name)),
-  });
-}
-//#endregion
 
 //#region Mutations
 /** Create a new playlist. */

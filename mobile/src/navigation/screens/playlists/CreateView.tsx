@@ -3,7 +3,8 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
 
-import { useCreatePlaylist, usePlaylistsNames } from "~/queries/playlist";
+import { usePlaylistsNames } from "~/data/playlist/queries";
+import { useCreatePlaylist } from "~/queries/playlist";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ModifyPlaylistBase } from "./components/ModifyViewBase";

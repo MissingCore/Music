@@ -31,4 +31,15 @@ export function usePlaylistForScreen(playlistName: string) {
     }),
   });
 }
+
+export function usePlaylists() {
+  return useQuery({ ...q.playlists.all });
+}
+
+export function usePlaylistsNames() {
+  return useQuery({
+    ...q.playlists.all,
+    select: (data) => data.map((p) => p.name),
+  });
+}
 //#endregion
