@@ -134,6 +134,7 @@ export async function getPlaylistsSummary(conditions?: DrizzleFilter) {
     })
     .from(playlists)
     .where(and(...(conditions ?? [])))
+    //? We use `leftJoin` instead of `innerJoin` as we want empty playlists.
     .leftJoin(
       orderedPlaylistTracks,
       eq(playlists.name, orderedPlaylistTracks.playlistName),
