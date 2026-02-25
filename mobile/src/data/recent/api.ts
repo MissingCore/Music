@@ -140,7 +140,7 @@ export async function removePlayedMediaList(entry: PlayFromSource) {
 async function getRecentListEntry(source: PlayFromSource) {
   const { id, type } = source;
   try {
-    let entry = {} as MediaCardContent;
+    let entry = { type, id } as MediaCardContent;
     if (type === "album") {
       const data = (await getAlbumDetails(id)) as unknown as AlbumWithTracks;
       data.tracks = [];
@@ -162,9 +162,6 @@ async function getRecentListEntry(source: PlayFromSource) {
       const data = await getGenre(id, true);
       entry = formatForMediaCard({ type: "genre", data, t: i18next.t });
     } else {
-      entry.type = "playlist";
-      entry.id = id;
-
       if (id === ReservedPlaylists.tracks) {
         const numTracks = await db.$count(tracks);
         entry.title = i18next.t("term.tracks");
