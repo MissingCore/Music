@@ -106,26 +106,62 @@ export async function getPlaylistTracks<
   ) as TOnlyIds extends true ? Array<{ id: string }> : PlaylistTrack[];
 }
 
+export async function getPlaylists(conditions?: DrizzleFilter) {
+  const orderedPlaylistTracks = getOrderedPlaylistTracksView();
+
+  const results = await db
+    .select({
+      name: playlists.name,
+      groupedTracks: sql<string>`
+        json_group_array(
+          json_object(
+            'id', ${orderedPlaylistTracks.id},
+            'name', ${orderedPlaylistTracks.name},
+            'rawArtistName', ${orderedPlaylistTracks.rawArtistName},
+            'album', ${orderedPlaylistTracks.album}
+          )
+        )`.as("grouped_tracks"),
+    })
+    .from(playlists)
+    .where(and(...(conditions ?? [])))
+    //? We use `leftJoin` instead of `innerJoin` as we want empty playlists.
+    .leftJoin(
+      orderedPlaylistTracks,
+      eq(playlists.name, orderedPlaylistTracks.playlistName),
+    )
+    .groupBy(playlists.name)
+    .orderBy(iAsc(playlists.name));
+
+  return results
+    .map(({ name, groupedTracks }) => {
+      let parsedResults: Array<{
+        id: string;
+        name: string;
+        rawArtistName: string | null;
+        album: string | null;
+      }> = [];
+      try {
+        const asArray: any[] = JSON.parse(groupedTracks);
+        parsedResults = asArray.filter(
+          (i) => i.name !== null && i.artistName !== null && i.album !== null,
+        );
+      } catch {}
+
+      return {
+        id: name,
+        name:
+          name === FavoritesPlaylistKey
+            ? i18next.t("term.favoriteTracks")
+            : name,
+        tracks: parsedResults,
+      };
+    })
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
 /** Get information summarizing each playlist (sorted by names). */
 export async function getPlaylistsSummary(conditions?: DrizzleFilter) {
-  const orderedPlaylistTracks = db
-    .select({
-      playlistName: tracksToPlaylists.playlistName,
-      position: tracksToPlaylists.position, //? To preserve order.
-      id: tracks.id,
-      duration: tracks.duration,
-      derivedArtwork: sql<
-        string | null
-      >`coalesce(${tracks.artwork}, ${albums.artwork})`.as("derived_artwork"),
-    })
-    .from(tracksToPlaylists)
-    .innerJoin(tracks, eq(tracksToPlaylists.trackId, tracks.id))
-    .leftJoin(albums, eq(tracks.albumId, albums.id))
-    .orderBy(
-      iAsc(tracksToPlaylists.playlistName),
-      iAsc(tracksToPlaylists.position),
-    )
-    .as("ordered_playlist_tracks");
+  const orderedPlaylistTracks = getOrderedPlaylistTracksView();
 
   const results = await db
     .select({
@@ -233,5 +269,32 @@ export async function deletePlaylist(id: string) {
       .where(eq(tracksToPlaylists.playlistName, id));
     await tx.delete(playlists).where(eq(playlists.name, id));
   });
+}
+//#endregion
+
+//#region Internal Utils
+function getOrderedPlaylistTracksView() {
+  return db
+    .select({
+      playlistName: tracksToPlaylists.playlistName,
+      position: tracksToPlaylists.position, //? To preserve order.
+      id: tracks.id,
+      name: tracks.name,
+      rawArtistName: tracks.rawArtistName,
+      //? For some weird reason, using `albums.name` directly returns `tracks.name`.
+      album: sql<string>`${albums.name}`.as("album"),
+      duration: tracks.duration,
+      derivedArtwork: sql<
+        string | null
+      >`coalesce(${tracks.artwork}, ${albums.artwork})`.as("derived_artwork"),
+    })
+    .from(tracksToPlaylists)
+    .innerJoin(tracks, eq(tracksToPlaylists.trackId, tracks.id))
+    .leftJoin(albums, eq(tracks.albumId, albums.id))
+    .orderBy(
+      iAsc(tracksToPlaylists.playlistName),
+      iAsc(tracksToPlaylists.position),
+    )
+    .as("ordered_playlist_tracks_view");
 }
 //#endregion

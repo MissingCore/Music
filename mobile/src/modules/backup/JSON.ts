@@ -7,15 +7,17 @@ import { useTranslation } from "react-i18next";
 import { z } from "zod/mini";
 
 import { db } from "~/db";
-import type { TrackWithRelations } from "~/db/schema";
 import { albums, playlists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import { getPlaylists } from "~/api/playlist";
 import { getTracks } from "~/api/track";
 import { TrackList } from "~/api/track.utils";
 import { getAlbums } from "~/data/album/api";
-import { createPlaylist, updatePlaylist } from "~/data/playlist/api";
+import {
+  createPlaylist,
+  getPlaylists,
+  updatePlaylist,
+} from "~/data/playlist/api";
 import { sanitizePlaylistName } from "~/data/playlist/utils";
 
 import { pickDirectory } from "~/lib/file-system";
@@ -59,14 +61,6 @@ const MusicBackup = z.object({
 //#endregion
 
 //#region Helpers
-function getRawTrack({
-  name,
-  rawArtistName,
-  album,
-}: Pick<TrackWithRelations, "name" | "rawArtistName" | "album">) {
-  return { name, artistName: rawArtistName, albumName: album?.name };
-}
-
 /** Creates a factory function that finds albums associated to `RawAlbum`. */
 async function findExistingAlbumsFactory() {
   const allAlbums = await getAlbums();
@@ -110,7 +104,7 @@ async function exportBackup() {
   // Get favorited values.
   const [favAlbums, favPlaylists] = await Promise.all([
     getAlbums(undefined, [eq(albums.isFavorite, true)]),
-    getPlaylists({ where: [eq(playlists.isFavorite, true)] }),
+    getPlaylists([eq(playlists.isFavorite, true)]),
   ]);
   // Get all user-generated playlists.
   const allPlaylists = await getPlaylists();
@@ -130,9 +124,14 @@ async function exportBackup() {
         //! [Deprecated] For backwards compatibility.
         tracks: [],
       },
-      playlists: allPlaylists.map(({ name, tracks }) => {
-        return { name, tracks: tracks.map(getRawTrack) };
-      }),
+      playlists: allPlaylists.map(({ name, tracks }) => ({
+        name,
+        tracks: tracks.map((t) => ({
+          name: t.name,
+          artistName: t.rawArtistName,
+          albumName: t.album,
+        })),
+      })),
     }),
   );
 }
@@ -178,7 +177,10 @@ async function importBackup() {
       // Create or update playlist to have the current track order.
       if (exists) {
         await updatePlaylist(name, {
-          tracks: TrackList.merge(exists.tracks, playlistTracks),
+          tracks: TrackList.merge<{ id: string }>(
+            exists.tracks,
+            playlistTracks,
+          ),
         });
       } else await createPlaylist({ name, tracks: playlistTracks });
     }),
