@@ -2,7 +2,6 @@ import type {
   SlimAlbumWithTracks,
   SlimArtist,
   SlimFolder,
-  SlimPlaylistWithTracks,
   SlimTrackWithAlbum,
 } from "~/db/slimTypes";
 
@@ -16,7 +15,7 @@ export type SearchCallbacks = {
   album: (album: SlimAlbumWithTracks) => void | Promise<void>;
   artist: (artist: SlimArtist) => void | Promise<void>;
   folder: (folder: SlimFolder) => void | Promise<void>;
-  playlist: (playlist: SlimPlaylistWithTracks) => void | Promise<void>;
+  playlist: (playlist: SearchPlaylistResult) => void | Promise<void>;
   track: (track: SlimTrackWithAlbum) => void | Promise<void>;
 };
 
@@ -25,6 +24,13 @@ export type SearchResults = {
   album: SlimAlbumWithTracks[];
   artist: SlimArtist[];
   folder: SlimFolder[];
-  playlist: SlimPlaylistWithTracks[];
+  playlist: SearchPlaylistResult[];
   track: SlimTrackWithAlbum[];
 };
+
+//#region Search Result Types
+export type SearchPlaylistResult = {
+  name: string;
+  artwork: string | Array<string | null> | null;
+};
+//#endregion

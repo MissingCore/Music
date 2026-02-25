@@ -5,13 +5,11 @@ import { View } from "react-native";
 import type {
   SlimAlbumWithTracks,
   SlimArtist,
-  SlimPlaylistWithTracks,
   SlimTrackWithAlbum,
 } from "~/db/slimTypes";
 
 import { MoreVert } from "~/resources/icons/MoreVert";
 import { getArtistsString } from "~/api/artist.utils";
-import { getPlaylistArtwork } from "~/api/playlist.utils";
 import { getTrackArtwork } from "~/api/track.utils";
 import { AlbumArtistsKey } from "~/data/album/utils";
 import { presentTrackSheet } from "~/stores/Session/actions";
@@ -31,6 +29,7 @@ import { useSearch } from "../hooks/useSearch";
 import type {
   SearchCallbacks,
   SearchCategories,
+  SearchPlaylistResult,
   SearchResults,
 } from "../types";
 
@@ -250,13 +249,12 @@ function formatResults(results: Partial<SearchResults>, tab: SearchTab) {
 type MediaRelations =
   | { type: "album"; data: SlimAlbumWithTracks }
   | { type: "artist"; data: SlimArtist }
-  | { type: "playlist"; data: SlimPlaylistWithTracks }
+  | { type: "playlist"; data: SearchPlaylistResult }
   | { type: "track"; data: SlimTrackWithAlbum };
 
 /** Get the artwork of the media that'll be displayed. */
 function getArtwork({ type, data }: MediaRelations) {
-  if (type === "album" || type === "artist") return data.artwork;
-  if (type === "playlist") return getPlaylistArtwork(data);
-  return getTrackArtwork(data);
+  if (type === "track") return getTrackArtwork(data);
+  return data.artwork;
 }
 //#endregion
