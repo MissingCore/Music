@@ -1,12 +1,12 @@
-import { count, eq, getTableColumns, ne, sql, sum } from "drizzle-orm";
+import { and, count, eq, getTableColumns, sql, sum } from "drizzle-orm";
 
 import { db } from "~/db";
 import { albums, playlists, tracks, tracksToPlaylists } from "~/db/schema";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { formatSeconds } from "~/utils/number";
-import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import type { PlaylistTrack } from "./types";
+import type { DrizzleFilter } from "../types";
 import { unencodeJSONArray, unencodeJSONArtworkArray } from "../utils";
 import { getOrderedTrackArtistsView } from "../views";
 
@@ -94,7 +94,7 @@ export async function getPlaylistTracks<
 }
 
 /** Get information summarizing each playlist (sorted by names). */
-export async function getPlaylistsSummary() {
+export async function getPlaylistsSummary(conditions?: DrizzleFilter) {
   const orderedPlaylistTracks = db
     .select({
       playlistName: tracksToPlaylists.playlistName,
@@ -123,7 +123,7 @@ export async function getPlaylistsSummary() {
       collageArtwork: sql<string>`json_group_array(${orderedPlaylistTracks.derivedArtwork})`,
     })
     .from(playlists)
-    .where(ne(playlists.name, FavoritesPlaylistKey))
+    .where(and(...(conditions ?? [])))
     .leftJoin(
       orderedPlaylistTracks,
       eq(playlists.name, orderedPlaylistTracks.playlistName),

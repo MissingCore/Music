@@ -2,19 +2,14 @@ import { eq } from "drizzle-orm";
 
 import { albums, playlists } from "~/db/schema";
 
-import { getPlaylists } from "~/api/playlist";
-import { getAlbums } from "../album/api";
+import { getAlbumsSummary } from "../album/api";
+import { getPlaylistsSummary } from "../playlist/api";
 
 //#region GET Methods
 export async function getFavoriteLists() {
   const [favAlbums, favPlaylists] = await Promise.all([
-    getAlbums(undefined, [eq(albums.isFavorite, true)]),
-    getPlaylists({
-      where: [eq(playlists.isFavorite, true)],
-      columns: ["name", "artwork"],
-      trackColumns: ["artwork"],
-      albumColumns: ["artwork"],
-    }),
+    getAlbumsSummary([eq(albums.isFavorite, true)]),
+    getPlaylistsSummary([eq(playlists.isFavorite, true)]),
   ]);
   return { albums: favAlbums, playlists: favPlaylists };
 }

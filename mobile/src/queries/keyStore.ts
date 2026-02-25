@@ -1,6 +1,8 @@
 import { createQueryKeyStore } from "@lukemorales/query-key-factory";
+import { ne } from "drizzle-orm";
 
 import { db } from "~/db";
+import { playlists } from "~/db/schema";
 
 import {
   getSortedTracks,
@@ -26,7 +28,7 @@ export const queries = createQueryKeyStore({
   albums: {
     all: {
       queryKey: null,
-      queryFn: getAlbumsSummary,
+      queryFn: () => getAlbumsSummary(),
     },
     detail: (albumId: string) => ({
       queryKey: [albumId],
@@ -95,7 +97,8 @@ export const queries = createQueryKeyStore({
   playlists: {
     all: {
       queryKey: null,
-      queryFn: getPlaylistsSummary,
+      queryFn: () =>
+        getPlaylistsSummary([ne(playlists.name, FavoritesPlaylistKey)]),
     },
     detail: (playlistName: string) => ({
       queryKey: [playlistName],

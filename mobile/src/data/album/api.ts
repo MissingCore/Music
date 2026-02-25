@@ -131,7 +131,7 @@ export async function getAlbums<
 }
 
 /** Get information summarizing each album (sorted by names). */
-export async function getAlbumsSummary() {
+export async function getAlbumsSummary(conditions?: DrizzleFilter) {
   const results = await db
     .select({
       ...albumFields,
@@ -139,6 +139,7 @@ export async function getAlbumsSummary() {
       trackCount: count(tracks.id),
     })
     .from(albums)
+    .where(and(...(conditions ?? [])))
     .innerJoin(tracks, eq(albums.id, tracks.albumId))
     .groupBy(albums.name)
     .orderBy(iAsc(albums.name), iAsc(albums.artistsKey));
