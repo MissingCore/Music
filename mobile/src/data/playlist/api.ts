@@ -47,7 +47,7 @@ export async function getPlaylistDetails(id: string) {
       .from(tracksToPlaylists)
       .where(eq(tracksToPlaylists.playlistName, id))
       .innerJoin(tracks, eq(tracksToPlaylists.trackId, tracks.id)),
-    getPlaylistTracks(id, undefined, 4),
+    getPlaylistTracks(id, false, 4),
   ]);
 
   return {
