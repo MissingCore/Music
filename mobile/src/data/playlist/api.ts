@@ -8,7 +8,6 @@ import i18next from "~/modules/i18n";
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { formatSeconds } from "~/utils/number";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
-
 import type {
   PlaylistSummary,
   PlaylistSummaryTrack,
@@ -81,7 +80,6 @@ export async function getPlaylistTracks<
               "derived_artwork",
             ),
             duration: tracks.duration,
-            album: albums.name,
             uri: tracks.uri,
             /** We need to unencode these fields. */
             artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
@@ -248,7 +246,7 @@ function getOrderedPlaylistTracksView() {
       name: tracks.name,
       rawArtistName: tracks.rawArtistName,
       //? For some weird reason, using `albums.name` directly returns `tracks.name`.
-      album: sql<string>`${albums.name}`.as("album"),
+      album: sql<string | null>`${albums.name}`.as("album"),
       duration: tracks.duration,
       derivedArtwork: sql<
         string | null
@@ -277,7 +275,7 @@ function parsePlaylistTracks(tracks?: string) {
   try {
     const asArray: any[] = JSON.parse(tracks);
     results = asArray.filter(
-      (i) => i.name !== null && i.artistName !== null && i.album !== null,
+      (i) => i.name !== null || i.rawArtistName !== null || i.album !== null,
     );
   } catch {}
   return results;

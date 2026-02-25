@@ -87,7 +87,7 @@ async function findExistingTracksFactory() {
           (t) =>
             t.name === entry.name &&
             t.rawArtistName === entry.artistName &&
-            t.album?.name === entry.albumName,
+            t.album?.name === (entry.albumName || undefined),
         ),
       )
       .filter((entry) => entry !== undefined);
@@ -117,15 +117,15 @@ async function exportBackup() {
   backupFile.write(
     JSON.stringify({
       favorites: {
-        playlists: favPlaylists.map(({ name }) => name),
+        playlists: favPlaylists.map(({ id }) => id),
         albums: favAlbums.map(({ name, artistsKey }) => {
           return { name, artistName: artistsKey };
         }),
         //! [Deprecated] For backwards compatibility.
         tracks: [],
       },
-      playlists: allPlaylists.map(({ name, tracks }) => ({
-        name,
+      playlists: allPlaylists.map(({ id, tracks }) => ({
+        name: id,
         tracks: tracks.map((t) => ({
           name: t.name,
           artistName: t.rawArtistName,
@@ -172,7 +172,7 @@ async function importBackup() {
   ]);
   await Promise.allSettled(
     importedPlaylists.map(async ({ name, tracks: plTracks }) => {
-      const exists = allPlaylists.find((pl) => pl.name === name);
+      const exists = allPlaylists.find((pl) => pl.id === name);
       const playlistTracks = findExistingTracks(plTracks);
       // Create or update playlist to have the current track order.
       if (exists) {

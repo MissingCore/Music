@@ -9,7 +9,9 @@ export type PlaylistTrack = {
 };
 
 export type PlaylistSummary = {
+  /** The raw `name` field stored in the `Playlists` schema. */
   id: string;
+  /** Parsed `name` field to translate `FavoritesPlaylistKey`. */
   name: string;
   artwork: string | Array<string | null> | null;
   duration: number;
