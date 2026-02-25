@@ -4,13 +4,13 @@ import { db } from "~/db";
 import { albums, playlists, tracks, tracksToPlaylists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import { sanitizePlaylistName } from "~/api/playlist.utils";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { formatSeconds } from "~/utils/number";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 import type { PlaylistTrack } from "./types";
+import { sanitizePlaylistName } from "./utils";
 import type { DrizzleFilter } from "../types";
 import { unencodeJSONArray, unencodeJSONArtworkArray } from "../utils";
 import { getOrderedTrackArtistsView } from "../views";
@@ -183,7 +183,7 @@ export async function createPlaylist(entry: {
 //#region PATCH Methods
 export async function updatePlaylist(
   id: string,
-  values: Partial<InsertedPlaylist> & { tracks: Array<{ id: string }> },
+  values: Partial<InsertedPlaylist> & { tracks?: Array<{ id: string }> },
 ) {
   const { name, tracks, ...rest } = values;
   const sanitizedName = name ? sanitizePlaylistName(name) : undefined;

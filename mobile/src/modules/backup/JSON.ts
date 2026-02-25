@@ -12,11 +12,11 @@ import { albums, playlists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 import { getPlaylists } from "~/api/playlist";
-import { sanitizePlaylistName } from "~/api/playlist.utils";
 import { getTracks } from "~/api/track";
 import { TrackList } from "~/api/track.utils";
 import { getAlbums } from "~/data/album/api";
 import { createPlaylist, updatePlaylist } from "~/data/playlist/api";
+import { sanitizePlaylistName } from "~/data/playlist/utils";
 
 import { pickDirectory } from "~/lib/file-system";
 import { clearAllQueries } from "~/lib/react-query";
