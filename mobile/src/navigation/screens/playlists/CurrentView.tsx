@@ -7,8 +7,10 @@ import { View } from "react-native";
 import { Edit } from "~/resources/icons/Edit";
 import { Favorite } from "~/resources/icons/Favorite";
 import { FileSave } from "~/resources/icons/FileSave";
-import { usePlaylistForScreen } from "~/data/playlist/queries";
-import { useFavoritePlaylist } from "~/queries/playlist";
+import {
+  useFavoritePlaylist,
+  usePlaylistForScreen,
+} from "~/data/playlist/queries";
 
 import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";

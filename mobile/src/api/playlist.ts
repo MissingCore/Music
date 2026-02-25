@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and } from "drizzle-orm";
 
 import { db } from "~/db";
 import type {
@@ -6,12 +6,8 @@ import type {
   PlaylistWithJunction,
   PlaylistWithTracks,
 } from "~/db/schema";
-import { playlists, tracksToPlaylists } from "~/db/schema";
-
-import i18next from "~/modules/i18n";
 
 import { iAsc } from "~/lib/drizzle";
-import { sanitizePlaylistName } from "./playlist.utils";
 import type { QueryManyWithTracksFn } from "./types";
 import { getColumns, withRelations } from "./utils";
 
@@ -45,95 +41,6 @@ const _getPlaylists: QueryManyWithTracksFn<Playlist> =
  * **Note:** Do not use the `withTracks` option with this function.
  */
 export const getPlaylists = _getPlaylists();
-//#endregion
-
-//#region POST Methods
-/** Create a new playlist entry. */
-export async function createPlaylist(
-  entry: typeof playlists.$inferInsert & { tracks?: Array<{ id: string }> },
-) {
-  const { tracks, name, ...newPlaylist } = entry;
-  const playlistName = sanitizePlaylistName(name);
-  return db.transaction(async (tx) => {
-    await tx
-      .insert(playlists)
-      .values({ ...newPlaylist, name: playlistName })
-      .onConflictDoNothing();
-
-    // Create track relations with playlist if provided.
-    if (tracks && tracks.length > 0) {
-      await tx.insert(tracksToPlaylists).values(
-        tracks.map((t, position) => {
-          return { trackId: t.id, playlistName, position };
-        }),
-      );
-    }
-  });
-}
-//#endregion
-
-//#region PATCH Methods
-/** Update the `favorite` status of a playlist. */
-export async function favoritePlaylist(id: string, isFavorite: boolean) {
-  return updatePlaylist(id, { isFavorite });
-}
-
-/** Update specified playlist. */
-export async function updatePlaylist(
-  id: string,
-  values: Partial<typeof playlists.$inferInsert> & {
-    tracks?: Array<{ id: string }>;
-  },
-) {
-  const { tracks, name, ...rest } = values;
-  const sanitizedName = name ? sanitizePlaylistName(name) : undefined;
-  return db.transaction(async (tx) => {
-    try {
-      await tx
-        .update(playlists)
-        .set({ ...rest, name: sanitizedName })
-        .where(eq(playlists.name, id));
-    } catch (err) {
-      if (!(err as Error).message.includes("No values to set")) {
-        // If we tried to change the playlist name that's already in use.
-        throw new Error(i18next.t("err.msg.usedName"));
-      }
-    }
-    // Ensure track relationship is preserved.
-    if (tracks) {
-      await tx
-        .delete(tracksToPlaylists)
-        .where(eq(tracksToPlaylists.playlistName, id));
-      // Add relations if necessary (`tracks = []` means the playlist has no tracks).
-      if (tracks.length > 0) {
-        await tx.insert(tracksToPlaylists).values(
-          tracks.map((t, position) => {
-            const usedName = sanitizedName ?? id;
-            return { trackId: t.id, playlistName: usedName, position };
-          }),
-        );
-      }
-    } else if (!!sanitizedName) {
-      // Otherwise, the playlist name was changed.
-      await tx
-        .update(tracksToPlaylists)
-        .set({ playlistName: sanitizedName })
-        .where(eq(tracksToPlaylists.playlistName, id));
-    }
-  });
-}
-//#endregion
-
-//#region DELETE Methods
-/** Delete specified playlist. */
-export async function deletePlaylist(id: string) {
-  return db.transaction(async (tx) => {
-    await tx
-      .delete(tracksToPlaylists)
-      .where(eq(tracksToPlaylists.playlistName, id));
-    await tx.delete(playlists).where(eq(playlists.name, id));
-  });
-}
 //#endregion
 
 //#region Internal Utils

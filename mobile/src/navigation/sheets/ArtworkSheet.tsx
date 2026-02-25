@@ -5,8 +5,7 @@ import { useWindowDimensions } from "react-native";
 import { useAlbum, useUpdateAlbum } from "~/data/album/queries";
 import { useArtist, useUpdateArtist } from "~/data/artist/queries";
 import { useGenre, useUpdateGenre } from "~/data/genre/queries";
-import { usePlaylist } from "~/data/playlist/queries";
-import { useUpdatePlaylist } from "~/queries/playlist";
+import { usePlaylist, useUpdatePlaylist } from "~/data/playlist/queries";
 import { useTrack, useUpdateTrackArtwork } from "~/queries/track";
 
 import { pickImage } from "~/lib/file-system";

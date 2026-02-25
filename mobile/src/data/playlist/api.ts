@@ -4,6 +4,7 @@ import { db } from "~/db";
 import { albums, playlists, tracks, tracksToPlaylists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
+import { sanitizePlaylistName } from "~/api/playlist.utils";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { formatSeconds } from "~/utils/number";
@@ -13,6 +14,8 @@ import type { PlaylistTrack } from "./types";
 import type { DrizzleFilter } from "../types";
 import { unencodeJSONArray, unencodeJSONArtworkArray } from "../utils";
 import { getOrderedTrackArtistsView } from "../views";
+
+type InsertedPlaylist = typeof playlists.$inferInsert;
 
 //#region GET Methods
 /** Get all data associated with a playlist. */
@@ -154,5 +157,81 @@ export async function getPlaylistsSummary(conditions?: DrizzleFilter) {
       duration: Number(playlist.duration) || 0,
     }))
     .sort((a, b) => a.name.localeCompare(b.name));
+}
+//#endregion
+
+//#region POST Methods
+export async function createPlaylist(entry: {
+  name: string;
+  tracks?: Array<{ id: string }>;
+}) {
+  const name = sanitizePlaylistName(entry.name);
+  return db.transaction(async (tx) => {
+    await tx.insert(playlists).values({ name }).onConflictDoNothing();
+    // Create playlist-track relations.
+    if (entry.tracks && entry.tracks.length > 0) {
+      await tx.insert(tracksToPlaylists).values(
+        entry.tracks.map((t, position) => {
+          return { playlistName: name, trackId: t.id, position };
+        }),
+      );
+    }
+  });
+}
+//#endregion
+
+//#region PATCH Methods
+export async function updatePlaylist(
+  id: string,
+  values: Partial<InsertedPlaylist> & { tracks: Array<{ id: string }> },
+) {
+  const { name, tracks, ...rest } = values;
+  const sanitizedName = name ? sanitizePlaylistName(name) : undefined;
+  return db.transaction(async (tx) => {
+    try {
+      await tx
+        .update(playlists)
+        .set({ ...rest, name: sanitizedName })
+        .where(eq(playlists.name, id));
+    } catch (err) {
+      if (!(err as Error).message.includes("No values to set")) {
+        // If we tried to change the playlist name that's already in use.
+        throw new Error(i18next.t("err.msg.usedName"));
+      }
+    }
+
+    // Handle playlist-track relations.
+    if (tracks) {
+      await tx
+        .delete(tracksToPlaylists)
+        .where(eq(tracksToPlaylists.playlistName, id));
+      // Re-add relations if they exist.
+      if (tracks.length > 0) {
+        await tx.insert(tracksToPlaylists).values(
+          tracks.map((t, position) => {
+            const latestName = sanitizedName ?? id; // Use updated name if that got changed.
+            return { playlistName: latestName, trackId: t.id, position };
+          }),
+        );
+      }
+    } else if (sanitizedName !== undefined) {
+      // If the playlist name has changed, update the relations.
+      await tx
+        .update(tracksToPlaylists)
+        .set({ playlistName: sanitizedName })
+        .where(eq(tracksToPlaylists.playlistName, id));
+    }
+  });
+}
+//#endregion
+
+//#region DELETE Methods
+export async function deletePlaylist(id: string) {
+  return db.transaction(async (tx) => {
+    await tx
+      .delete(tracksToPlaylists)
+      .where(eq(tracksToPlaylists.playlistName, id));
+    await tx.delete(playlists).where(eq(playlists.name, id));
+  });
 }
 //#endregion

@@ -15,7 +15,7 @@ import { DragHandle } from "~/resources/icons/DragHandle";
 import { getArtistsString } from "~/api/artist.utils";
 import { sanitizePlaylistName } from "~/api/playlist.utils";
 import { TrackList, getTrackArtwork } from "~/api/track.utils";
-import { useDeletePlaylist } from "~/queries/playlist";
+import { useDeletePlaylist } from "~/data/playlist/queries";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
