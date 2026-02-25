@@ -1,13 +1,6 @@
-import type {
-  Album,
-  Artist,
-  FileNode,
-  Genre,
-  Playlist,
-  Track,
-} from "~/db/schema";
+import type { Album, Artist, FileNode, Genre, Track } from "~/db/schema";
 
-import type { Artwork, TrackArtwork } from "~/api/track.utils";
+import type { Artwork } from "~/api/track.utils";
 
 /** Minimum data typically used from `Album`. */
 export type SlimAlbum = Pick<Album, "id" | "name" | "artistsKey" | "artwork">;
@@ -21,10 +14,6 @@ export type SlimFolder = FileNode & { tracks: SlimTrackWithAlbum[] };
 
 /** Minimum data typically used from `Genre`. */
 export type SlimGenre = Pick<Genre, "name" | "artwork">;
-
-/** Minimum data typically used from `Playlist`. */
-export type SlimPlaylist = Pick<Playlist, "name" | "artwork">;
-export type SlimPlaylistWithTracks = SlimPlaylist & { tracks: TrackArtwork[] };
 
 /** Minimum data typically used from `Track`. */
 export type SlimTrack = Pick<Track, "id" | "name" | "artwork"> & {

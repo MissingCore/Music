@@ -5,6 +5,7 @@ import type {
   SlimTrackWithAlbum,
 } from "~/db/slimTypes";
 
+import type { PlaylistSummary } from "~/data/playlist/types";
 import type { MediaType } from "~/stores/Playback/types";
 
 /** Categories of media that can be returned by search. */
@@ -29,8 +30,5 @@ export type SearchResults = {
 };
 
 //#region Search Result Types
-export type SearchPlaylistResult = {
-  name: string;
-  artwork: string | Array<string | null> | null;
-};
+export type SearchPlaylistResult = Pick<PlaylistSummary, "name" | "artwork">;
 //#endregion
