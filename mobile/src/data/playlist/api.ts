@@ -3,8 +3,12 @@ import { and, count, eq, getTableColumns, sql, sum } from "drizzle-orm";
 import { db } from "~/db";
 import { albums, playlists, tracks, tracksToPlaylists } from "~/db/schema";
 
+import i18next from "~/modules/i18n";
+
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { formatSeconds } from "~/utils/number";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
+
 import type { PlaylistTrack } from "./types";
 import type { DrizzleFilter } from "../types";
 import { unencodeJSONArray, unencodeJSONArtworkArray } from "../utils";
@@ -39,10 +43,16 @@ export async function getPlaylistDetails(id: string) {
     getPlaylistTracks(id, undefined, 4),
   ]);
 
-  const artwork = details.artwork ?? trackArtwork.map((t) => t.artwork);
-  const duration = formatSeconds(agg?.duration ? +agg.duration : 0);
-
-  return { ...details, artwork, duration };
+  return {
+    ...details,
+    id: details.name,
+    name:
+      details.name === FavoritesPlaylistKey
+        ? i18next.t("term.favoriteTracks")
+        : details.name,
+    artwork: details.artwork ?? trackArtwork.map((t) => t.artwork),
+    duration: formatSeconds(agg?.duration ? +agg.duration : 0),
+  };
 }
 
 /**
@@ -132,8 +142,11 @@ export async function getPlaylistsSummary(conditions?: DrizzleFilter) {
     .orderBy(iAsc(playlists.name));
 
   return results
-    .map(({ collageArtwork, ...playlist }) => ({
+    .map(({ collageArtwork, name, ...playlist }) => ({
       ...playlist,
+      id: name,
+      name:
+        name === FavoritesPlaylistKey ? i18next.t("term.favoriteTracks") : name,
       artwork:
         playlist.artwork ??
         unencodeJSONArtworkArray(collageArtwork, playlist.trackCount === 0),

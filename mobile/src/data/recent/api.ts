@@ -14,10 +14,7 @@ import { getGenre } from "../genre/api";
 import { getPlaylist } from "../playlist/api";
 
 import { iDesc } from "~/lib/drizzle";
-import {
-  FavoritesPlaylistKey,
-  ReservedPlaylists,
-} from "~/modules/media/constants";
+import { ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
 import { unencodeJSONArray } from "../utils";
 import { getOrderedTrackArtistsView } from "../views";
@@ -167,7 +164,6 @@ async function getRecentListEntry(source: PlayFromSource) {
     } else {
       entry.type = "playlist";
       entry.id = id;
-      entry.title = id;
 
       if (id === ReservedPlaylists.tracks) {
         const numTracks = await db.$count(tracks);
@@ -176,9 +172,7 @@ async function getRecentListEntry(source: PlayFromSource) {
         entry.description = i18next.t("plural.track", { count: numTracks });
       } else {
         const data = await getPlaylist(id, true);
-        if (id === FavoritesPlaylistKey) {
-          entry.title = i18next.t("term.favoriteTracks");
-        }
+        entry.title = data.name;
         entry.source = data.artwork;
         entry.description = i18next.t("plural.track", {
           count: data.tracks.length,

@@ -23,7 +23,7 @@ export function useFavoriteListsForCards() {
         ...data.playlists.map<MediaCardContent>((playlist) => ({
           type: "playlist",
           source: playlist.artwork,
-          id: playlist.name,
+          id: playlist.id,
           title: playlist.name,
           description: t("plural.track", { count: playlist.trackCount }),
         })),
