@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
 
-import { useCreatePlaylist, usePlaylistsNames } from "~/queries/playlist";
+import { useCreatePlaylist, usePlaylistsNames } from "~/data/playlist/queries";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ModifyPlaylistBase } from "./components/ModifyViewBase";
@@ -21,13 +21,13 @@ export default function CreatePlaylist() {
   return (
     <ModifyPlaylistBase
       usedNames={playlistsNames}
-      onSubmit={async ({ name: playlistName, tracks }) => {
+      onSubmit={async ({ name, tracks }) => {
         await mutateGuardAsync(
           createPlaylist,
-          { playlistName, tracks },
+          { name, tracks },
           {
             onSuccess: () => {
-              navigation.replace("Playlist", { id: playlistName });
+              navigation.replace("Playlist", { id: name });
             },
             onError: () => {
               toast.error(t("err.flow.generic.title"), ToastOptions);

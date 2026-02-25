@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Add } from "~/resources/icons/Add";
-import { usePlaylists } from "~/queries/playlist";
+import { usePlaylists } from "~/data/playlist/queries";
 import { useViewLayout } from "~/stores/ViewPreference/hooks/useViewLayout";
 import { useViewOrder } from "~/stores/ViewPreference/hooks/useViewOrder";
 

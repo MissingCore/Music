@@ -6,10 +6,10 @@ import { db } from "~/db";
 import { playlists } from "~/db/schema";
 import type { SlimFolder, SlimTrackWithAlbum } from "~/db/slimTypes";
 
-import { getPlaylists } from "~/api/playlist";
 import { getTracks } from "~/api/track";
 import { getAlbums } from "~/data/album/api";
 import { AlbumArtistsKey } from "~/data/album/utils";
+import { getPlaylistsSummary } from "~/data/playlist/api";
 
 import { iAsc } from "~/lib/drizzle";
 import { addTrailingSlash } from "~/utils/string";
@@ -109,12 +109,7 @@ async function getAllMedia() {
       db.query.fileNodes.findMany({
         orderBy: (f, { asc }) => [asc(f.parentPath), asc(f.name)],
       }),
-      getPlaylists({
-        where: [ne(playlists.name, FavoritesPlaylistKey)],
-        columns: ["name", "artwork"],
-        trackColumns: ["artwork"],
-        albumColumns: ["artwork"],
-      }),
+      getPlaylistsSummary(false, [ne(playlists.name, FavoritesPlaylistKey)]),
       getTracks({
         columns: ["id", "name", "artwork", "parentFolder"],
         albumColumns: ["name", "artwork"],
@@ -141,10 +136,9 @@ async function getAllMedia() {
         return f;
       })
       .filter(({ tracks }) => tracks.length > 0),
-    playlist: allPlaylists.map(({ tracks, ...playlist }) => ({
-      ...playlist,
-      tracks: tracks.map(({ tracksToArtists: _, ...track }) => track),
-    })),
+    playlist: allPlaylists.map(({ name, artwork }) => {
+      return { name, artwork };
+    }),
     track: allTracks.map(({ parentFolder: _, ...t }) => t),
   } satisfies SearchResults;
 }

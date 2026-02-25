@@ -13,7 +13,7 @@ type InsertedGenre = typeof genres.$inferInsert;
 
 //#region GET Methods
 /** Get all data associated with a genre. */
-export async function getGenre<TOnlyIds extends boolean = false>(
+export async function getGenre<TOnlyIds extends boolean | undefined = false>(
   id: string,
   onlyIds?: TOnlyIds,
 ) {
@@ -48,10 +48,9 @@ export async function getGenreDetails(id: string) {
  * Return the tracks associated with a genre. It's not guaranteed that
  * the genre exists.
  */
-export async function getGenreTracks<TOnlyIds extends boolean = false>(
-  id: string,
-  onlyIds?: TOnlyIds,
-) {
+export async function getGenreTracks<
+  TOnlyIds extends boolean | undefined = false,
+>(id: string, onlyIds?: TOnlyIds) {
   const orderedTrackArtists = getOrderedTrackArtistsView();
 
   const results = await db

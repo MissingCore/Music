@@ -6,12 +6,12 @@ import { albums, playedMediaLists, tracks } from "~/db/schema";
 import { formatForMediaCard } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
-import { getPlaylist } from "~/api/playlist";
 import type { PlayFromSource } from "~/stores/Playback/types";
 import { getAlbumDetails } from "../album/api";
 import { getArtist } from "../artist/api";
 import { getFolderTracks } from "../folder/api";
 import { getGenre } from "../genre/api";
+import { getPlaylist } from "../playlist/api";
 
 import { iDesc } from "~/lib/drizzle";
 import { ReservedPlaylists } from "~/modules/media/constants";
@@ -140,7 +140,7 @@ export async function removePlayedMediaList(entry: PlayFromSource) {
 async function getRecentListEntry(source: PlayFromSource) {
   const { id, type } = source;
   try {
-    let entry: MediaCardContent;
+    let entry = { type, id } as MediaCardContent;
     if (type === "album") {
       const data = (await getAlbumDetails(id)) as unknown as AlbumWithTracks;
       data.tracks = [];
@@ -162,29 +162,18 @@ async function getRecentListEntry(source: PlayFromSource) {
       const data = await getGenre(id, true);
       entry = formatForMediaCard({ type: "genre", data, t: i18next.t });
     } else {
-      let data = null;
       if (id === ReservedPlaylists.tracks) {
         const numTracks = await db.$count(tracks);
-        data = {
-          name: id,
-          artwork: id,
-          tracks: Array.from({ length: numTracks }, () => ({
-            artwork: null,
-            album: null,
-          })),
-        };
-      } else {
-        data = await getPlaylist(id, {
-          columns: ["name", "artwork"],
-          trackColumns: ["artwork"],
-          albumColumns: ["artwork"],
-        });
-      }
-      entry = formatForMediaCard({ type: "playlist", data, t: i18next.t });
-
-      // Translate the names of these special playlists.
-      if (entry && id === ReservedPlaylists.tracks) {
         entry.title = i18next.t("term.tracks");
+        entry.source = id;
+        entry.description = i18next.t("plural.track", { count: numTracks });
+      } else {
+        const data = await getPlaylist(id, true);
+        entry.title = data.name;
+        entry.source = data.artwork;
+        entry.description = i18next.t("plural.track", {
+          count: data.tracks.length,
+        });
       }
     }
     return { data: entry, source, error: false } as const;

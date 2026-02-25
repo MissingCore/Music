@@ -1,4 +1,4 @@
-import { usePlaylistsNames } from "~/queries/playlist";
+import { usePlaylistsNames } from "~/data/playlist/queries";
 import {
   useAddToPlaylist,
   useRemoveFromPlaylist,

@@ -7,15 +7,18 @@ import { useTranslation } from "react-i18next";
 import { z } from "zod/mini";
 
 import { db } from "~/db";
-import type { TrackWithRelations } from "~/db/schema";
 import { albums, playlists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import { createPlaylist, getPlaylists, updatePlaylist } from "~/api/playlist";
-import { sanitizePlaylistName } from "~/api/playlist.utils";
 import { getTracks } from "~/api/track";
 import { TrackList } from "~/api/track.utils";
 import { getAlbums } from "~/data/album/api";
+import {
+  createPlaylist,
+  getPlaylistsSummary,
+  updatePlaylist,
+} from "~/data/playlist/api";
+import { sanitizePlaylistName } from "~/data/playlist/utils";
 
 import { pickDirectory } from "~/lib/file-system";
 import { clearAllQueries } from "~/lib/react-query";
@@ -58,14 +61,6 @@ const MusicBackup = z.object({
 //#endregion
 
 //#region Helpers
-function getRawTrack({
-  name,
-  rawArtistName,
-  album,
-}: Pick<TrackWithRelations, "name" | "rawArtistName" | "album">) {
-  return { name, artistName: rawArtistName, albumName: album?.name };
-}
-
 /** Creates a factory function that finds albums associated to `RawAlbum`. */
 async function findExistingAlbumsFactory() {
   const allAlbums = await getAlbums();
@@ -92,7 +87,7 @@ async function findExistingTracksFactory() {
           (t) =>
             t.name === entry.name &&
             t.rawArtistName === entry.artistName &&
-            t.album?.name === entry.albumName,
+            t.album?.name === (entry.albumName || undefined),
         ),
       )
       .filter((entry) => entry !== undefined);
@@ -108,11 +103,11 @@ async function findExistingTracksFactory() {
 async function exportBackup() {
   // Get favorited values.
   const [favAlbums, favPlaylists] = await Promise.all([
-    getAlbums(undefined, [eq(albums.isFavorite, true)]),
-    getPlaylists({ where: [eq(playlists.isFavorite, true)] }),
+    getAlbums(false, [eq(albums.isFavorite, true)]),
+    getPlaylistsSummary(false, [eq(playlists.isFavorite, true)]),
   ]);
   // Get all user-generated playlists.
-  const allPlaylists = await getPlaylists();
+  const allPlaylists = await getPlaylistsSummary(true);
 
   // User selects location to save this backup file.
   const dir = await pickDirectory();
@@ -122,16 +117,21 @@ async function exportBackup() {
   backupFile.write(
     JSON.stringify({
       favorites: {
-        playlists: favPlaylists.map(({ name }) => name),
+        playlists: favPlaylists.map(({ id }) => id),
         albums: favAlbums.map(({ name, artistsKey }) => {
           return { name, artistName: artistsKey };
         }),
         //! [Deprecated] For backwards compatibility.
         tracks: [],
       },
-      playlists: allPlaylists.map(({ name, tracks }) => {
-        return { name, tracks: tracks.map(getRawTrack) };
-      }),
+      playlists: allPlaylists.map(({ id, tracks }) => ({
+        name: id,
+        tracks: tracks.map((t) => ({
+          name: t.name,
+          artistName: t.rawArtistName,
+          albumName: t.album,
+        })),
+      })),
     }),
   );
 }
@@ -159,7 +159,7 @@ async function importBackup() {
     throw new Error(i18next.t("err.msg.invalidStructure"));
   }
 
-  const allPlaylists = await getPlaylists();
+  const allPlaylists = await getPlaylistsSummary(true);
 
   const findExistingAlbums = await findExistingAlbumsFactory();
   const findExistingTracks = await findExistingTracksFactory();
@@ -172,12 +172,15 @@ async function importBackup() {
   ]);
   await Promise.allSettled(
     importedPlaylists.map(async ({ name, tracks: plTracks }) => {
-      const exists = allPlaylists.find((pl) => pl.name === name);
+      const exists = allPlaylists.find((pl) => pl.id === name);
       const playlistTracks = findExistingTracks(plTracks);
       // Create or update playlist to have the current track order.
       if (exists) {
         await updatePlaylist(name, {
-          tracks: TrackList.merge(exists.tracks, playlistTracks),
+          tracks: TrackList.merge<{ id: string }>(
+            exists.tracks,
+            playlistTracks,
+          ),
         });
       } else await createPlaylist({ name, tracks: playlistTracks });
     }),

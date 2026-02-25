@@ -64,10 +64,9 @@ export async function getFolderDirectories(path: Maybe<string>) {
  * Return the tracks associated with a folder. It's not guaranteed that
  * the folder exists.
  */
-export async function getFolderTracks<TOnlyIds extends boolean = false>(
-  path: Maybe<string>,
-  onlyIds?: TOnlyIds,
-) {
+export async function getFolderTracks<
+  TOnlyIds extends boolean | undefined = false,
+>(path: Maybe<string>, onlyIds?: TOnlyIds) {
   if (!path) {
     return [] as unknown as TOnlyIds extends true
       ? Array<{ id: string }>

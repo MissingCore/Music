@@ -15,8 +15,8 @@ import {
   waveformSamples,
 } from "~/db/schema";
 
-import { updatePlaylist } from "~/api/playlist";
 import { createFolders } from "~/data/folder/api";
+import { updatePlaylist } from "~/data/playlist/api";
 import { playbackStore } from "~/stores/Playback/store";
 import { preferenceStore } from "~/stores/Preference/store";
 

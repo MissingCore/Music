@@ -17,7 +17,7 @@ type InsertedArtist = typeof artists.$inferInsert;
 
 //#region GET Methods
 /** Get all data associated with an artist. */
-export async function getArtist<TOnlyIds extends boolean = false>(
+export async function getArtist<TOnlyIds extends boolean | undefined = false>(
   id: string,
   onlyIds?: TOnlyIds,
 ) {
@@ -83,10 +83,9 @@ export async function getArtistAlbums(id: string): Promise<ArtistAlbum[]> {
  * Return the tracks associated with an artist. It's not guaranteed that
  * the artist exists.
  */
-export async function getArtistTracks<TOnlyIds extends boolean = false>(
-  id: string,
-  onlyIds?: TOnlyIds,
-) {
+export async function getArtistTracks<
+  TOnlyIds extends boolean | undefined = false,
+>(id: string, onlyIds?: TOnlyIds) {
   const results = await db
     .select(
       onlyIds

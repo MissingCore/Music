@@ -1,10 +1,9 @@
 import { createQueryKeyStore } from "@lukemorales/query-key-factory";
-import { count, eq, ne, sql, sum } from "drizzle-orm";
+import { ne } from "drizzle-orm";
 
 import { db } from "~/db";
-import { albums, playlists, tracks, tracksToPlaylists } from "~/db/schema";
+import { playlists } from "~/db/schema";
 
-import { getPlaylist } from "~/api/playlist";
 import {
   getSortedTracks,
   getTrack,
@@ -17,9 +16,9 @@ import { getFavoriteLists } from "~/data/favorite/api";
 import { getFolder } from "~/data/folder/api";
 import { getGenre, getGenresSummary } from "~/data/genre/api";
 import { getLyric, getLyricsSummary } from "~/data/lyric/api";
+import { getPlaylist, getPlaylistsSummary } from "~/data/playlist/api";
 import { getRecentMedia } from "~/data/recent/api";
 
-import { iAsc } from "~/lib/drizzle";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import type { ScreenSortOptions } from "~/stores/ViewPreference/constants";
 
@@ -29,7 +28,7 @@ export const queries = createQueryKeyStore({
   albums: {
     all: {
       queryKey: null,
-      queryFn: getAlbumsSummary,
+      queryFn: () => getAlbumsSummary(),
     },
     detail: (albumId: string) => ({
       queryKey: [albumId],
@@ -98,47 +97,8 @@ export const queries = createQueryKeyStore({
   playlists: {
     all: {
       queryKey: null,
-      queryFn: () => {
-        //? Create a subquery which orders the tracks as `json_group_array` doesn't
-        //? guarantee respecting the order from `orderBy`.
-        const ordered = db
-          .select({
-            playlistName: tracksToPlaylists.playlistName,
-            position: tracksToPlaylists.position,
-            //! For some weird reason, defining this between `playlistName` &
-            //! `position` with `tracksToPlaylists.trackId` results in the
-            //! incorrect order of tracks.
-            trackId: tracks.id,
-            trackDuration: tracks.duration,
-            derivedArtwork: sql<
-              string | null
-            >`coalesce(${tracks.artwork}, ${albums.artwork})`.as(
-              "derived_artwork",
-            ),
-          })
-          .from(tracksToPlaylists)
-          .innerJoin(tracks, eq(tracksToPlaylists.trackId, tracks.id))
-          .leftJoin(albums, eq(tracks.albumId, albums.id))
-          .orderBy(
-            iAsc(tracksToPlaylists.playlistName),
-            iAsc(tracksToPlaylists.position),
-          )
-          .as("ordered");
-        return db
-          .select({
-            name: playlists.name,
-            artwork: playlists.artwork,
-            duration: sum(ordered.trackDuration),
-            trackCount: count(ordered.trackId),
-            /** We need to unencode this string. */
-            collageArtwork: sql<string>`json_group_array(${ordered.derivedArtwork})`,
-          })
-          .from(playlists)
-          .leftJoin(ordered, eq(playlists.name, ordered.playlistName))
-          .groupBy(playlists.name)
-          .where(ne(playlists.name, FavoritesPlaylistKey))
-          .orderBy(iAsc(playlists.name));
-      },
+      queryFn: () =>
+        getPlaylistsSummary(false, [ne(playlists.name, FavoritesPlaylistKey)]),
     },
     detail: (playlistName: string) => ({
       queryKey: [playlistName],
