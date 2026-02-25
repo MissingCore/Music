@@ -12,40 +12,10 @@ import i18next from "~/modules/i18n";
 
 import { iAsc } from "~/lib/drizzle";
 import { sanitizePlaylistName } from "./playlist.utils";
-import type { QueryManyWithTracksFn, QueryOneWithTracksFn } from "./types";
+import type { QueryManyWithTracksFn } from "./types";
 import { getColumns, withRelations } from "./utils";
 
 //#region GET Methods
-const _getPlaylist: QueryOneWithTracksFn<Playlist> =
-  () => async (id, options) => {
-    const playlist = await db.query.playlists.findFirst({
-      where: eq(playlists.name, id),
-      columns: getColumns(options?.columns),
-      with: {
-        // Note: `where` only works on the 1st "with" block.
-        tracksToPlaylists: {
-          columns: {},
-          with: {
-            track: {
-              columns: getColumns(options?.trackColumns),
-              ...withRelations({ defaultWithAlbum: true, ...options }),
-            },
-          },
-          orderBy: (fields, { asc }) => asc(fields.position),
-        },
-      },
-    });
-    if (!playlist) throw new Error(i18next.t("err.msg.noPlaylists"));
-    return fixPlaylistJunction(playlist);
-  };
-
-/**
- * Get specified playlist. Throws error if nothing is found.
- *
- * **Note:** Do not use the `withTracks` option with this function.
- */
-export const getPlaylist = _getPlaylist();
-
 const _getPlaylists: QueryManyWithTracksFn<Playlist> =
   () => async (options) => {
     const allPlaylists = await db.query.playlists.findMany({

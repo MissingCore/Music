@@ -4,13 +4,13 @@ import type { TrackWithRelations } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 import { getArtistsString } from "~/api/artist.utils";
-import { getPlaylist } from "~/api/playlist";
 import { getSortedTracks } from "~/api/track";
 import { getTrackArtwork } from "~/api/track.utils";
 import { getAlbumDetails, getAlbumTracks } from "~/data/album/api";
 import { getArtistTracks } from "~/data/artist/api";
 import { getFolderTracks } from "~/data/folder/api";
 import { getGenreTracks } from "~/data/genre/api";
+import { getPlaylistTracks } from "~/data/playlist/api";
 import type { PlayFromSource } from "./types";
 
 import { shuffleArray } from "~/utils/object";
@@ -93,12 +93,8 @@ export async function getTrackIdsList({ type, id }: PlayFromSource) {
         const sortedTracks = await getSortedTracks("sortedIds");
         trackIds = sortedTracks.map(({ id }) => id);
       } else {
-        const data = await getPlaylist(id, {
-          columns: [],
-          trackColumns: ["id"],
-          withAlbum: false,
-        });
-        trackIds = data.tracks.map(({ id }) => id);
+        const data = await getPlaylistTracks(id, true);
+        trackIds = data.map((t) => t.id);
       }
     }
   } catch {}

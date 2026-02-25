@@ -60,12 +60,14 @@ export async function getPlaylistTracks<
         : {
             id: tracks.id,
             name: tracks.name,
-            album: albums.name,
             artwork: sql<
               string | null
             >`coalesce(${tracks.artwork}, ${albums.artwork})`.as(
               "derived_artwork",
             ),
+            duration: tracks.duration,
+            album: albums.name,
+            uri: tracks.uri,
             /** We need to unencode these fields. */
             artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
           },
