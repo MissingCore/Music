@@ -7,3 +7,20 @@ export type PlaylistTrack = {
   duration: number;
   uri: string;
 };
+
+export type PlaylistSummary = {
+  id: string;
+  name: string;
+  artwork: string | Array<string | null> | null;
+  duration: number;
+  trackCount: number;
+  isFavorite: boolean;
+};
+
+export type PlaylistSummaryTrack = {
+  id: string;
+  name: string;
+  /** @deprecated */
+  rawArtistName: string | null;
+  album: string | null;
+};

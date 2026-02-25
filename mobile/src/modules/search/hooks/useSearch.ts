@@ -109,7 +109,7 @@ async function getAllMedia() {
       db.query.fileNodes.findMany({
         orderBy: (f, { asc }) => [asc(f.parentPath), asc(f.name)],
       }),
-      getPlaylistsSummary([ne(playlists.name, FavoritesPlaylistKey)]),
+      getPlaylistsSummary(false, [ne(playlists.name, FavoritesPlaylistKey)]),
       getTracks({
         columns: ["id", "name", "artwork", "parentFolder"],
         albumColumns: ["name", "artwork"],

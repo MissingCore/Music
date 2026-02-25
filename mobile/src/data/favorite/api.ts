@@ -9,7 +9,7 @@ import { getPlaylistsSummary } from "../playlist/api";
 export async function getFavoriteLists() {
   const [favAlbums, favPlaylists] = await Promise.all([
     getAlbumsSummary([eq(albums.isFavorite, true)]),
-    getPlaylistsSummary([eq(playlists.isFavorite, true)]),
+    getPlaylistsSummary(false, [eq(playlists.isFavorite, true)]),
   ]);
   return { albums: favAlbums, playlists: favPlaylists };
 }

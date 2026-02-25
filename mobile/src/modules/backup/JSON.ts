@@ -15,7 +15,7 @@ import { TrackList } from "~/api/track.utils";
 import { getAlbums } from "~/data/album/api";
 import {
   createPlaylist,
-  getPlaylists,
+  getPlaylistsSummary,
   updatePlaylist,
 } from "~/data/playlist/api";
 import { sanitizePlaylistName } from "~/data/playlist/utils";
@@ -104,10 +104,10 @@ async function exportBackup() {
   // Get favorited values.
   const [favAlbums, favPlaylists] = await Promise.all([
     getAlbums(undefined, [eq(albums.isFavorite, true)]),
-    getPlaylists([eq(playlists.isFavorite, true)]),
+    getPlaylistsSummary(true, [eq(playlists.isFavorite, true)]),
   ]);
   // Get all user-generated playlists.
-  const allPlaylists = await getPlaylists();
+  const allPlaylists = await getPlaylistsSummary(true);
 
   // User selects location to save this backup file.
   const dir = await pickDirectory();
@@ -159,7 +159,7 @@ async function importBackup() {
     throw new Error(i18next.t("err.msg.invalidStructure"));
   }
 
-  const allPlaylists = await getPlaylists();
+  const allPlaylists = await getPlaylistsSummary(true);
 
   const findExistingAlbums = await findExistingAlbumsFactory();
   const findExistingTracks = await findExistingTracksFactory();

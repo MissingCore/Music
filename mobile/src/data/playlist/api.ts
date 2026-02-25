@@ -9,7 +9,11 @@ import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { formatSeconds } from "~/utils/number";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
-import type { PlaylistTrack } from "./types";
+import type {
+  PlaylistSummary,
+  PlaylistSummaryTrack,
+  PlaylistTrack,
+} from "./types";
 import { sanitizePlaylistName } from "./utils";
 import type { DrizzleFilter } from "../types";
 import { unencodeJSONArray, unencodeJSONArtworkArray } from "../utils";
@@ -103,54 +107,10 @@ export async function getPlaylistTracks<
   ) as TOnlyIds extends true ? Array<{ id: string }> : PlaylistTrack[];
 }
 
-export async function getPlaylists(conditions?: DrizzleFilter) {
-  const orderedPlaylistTracks = getOrderedPlaylistTracksView();
-
-  const results = await db
-    .select({
-      name: playlists.name,
-      groupedTracks: sql<string>`
-        json_group_array(
-          json_object(
-            'id', ${orderedPlaylistTracks.id},
-            'name', ${orderedPlaylistTracks.name},
-            'rawArtistName', ${orderedPlaylistTracks.rawArtistName},
-            'album', ${orderedPlaylistTracks.album}
-          )
-        )`.as("grouped_tracks"),
-    })
-    .from(playlists)
-    .where(and(...(conditions ?? [])))
-    //? We use `leftJoin` instead of `innerJoin` as we want empty playlists.
-    .leftJoin(
-      orderedPlaylistTracks,
-      eq(playlists.name, orderedPlaylistTracks.playlistName),
-    )
-    .groupBy(playlists.name)
-    .orderBy(iAsc(playlists.name));
-
-  return results
-    .map(({ name, groupedTracks }) => {
-      let parsedResults: Array<{
-        id: string;
-        name: string;
-        rawArtistName: string | null;
-        album: string | null;
-      }> = [];
-      try {
-        const asArray: any[] = JSON.parse(groupedTracks);
-        parsedResults = asArray.filter(
-          (i) => i.name !== null && i.artistName !== null && i.album !== null,
-        );
-      } catch {}
-
-      return { id: name, name: parsePlaylistName(name), tracks: parsedResults };
-    })
-    .sort((a, b) => a.name.localeCompare(b.name));
-}
-
 /** Get information summarizing each playlist (sorted by names). */
-export async function getPlaylistsSummary(conditions?: DrizzleFilter) {
+export async function getPlaylistsSummary<
+  TWithTracks extends boolean | undefined = false,
+>(withTracks?: TWithTracks, conditions?: DrizzleFilter) {
   const orderedPlaylistTracks = getOrderedPlaylistTracksView();
 
   const results = await db
@@ -158,8 +118,22 @@ export async function getPlaylistsSummary(conditions?: DrizzleFilter) {
       ...getTableColumns(playlists),
       duration: sum(orderedPlaylistTracks.duration),
       trackCount: count(orderedPlaylistTracks.id),
-      /** We need to unencode this string. */
+      /** We need to unencode these strings. */
       collageArtwork: sql<string>`json_group_array(${orderedPlaylistTracks.derivedArtwork})`,
+      //! This field is "hacked" in, with the main use for the "JSON Backup" feature.
+      ...(withTracks
+        ? {
+            tracks: sql<string>`
+              json_group_array(
+                json_object(
+                  'id', ${orderedPlaylistTracks.id},
+                  'name', ${orderedPlaylistTracks.name},
+                  'rawArtistName', ${orderedPlaylistTracks.rawArtistName},
+                  'album', ${orderedPlaylistTracks.album}
+                )
+              )`.as("grouped_tracks"),
+          }
+        : {}),
     })
     .from(playlists)
     .where(and(...(conditions ?? [])))
@@ -172,7 +146,7 @@ export async function getPlaylistsSummary(conditions?: DrizzleFilter) {
     .orderBy(iAsc(playlists.name));
 
   return results
-    .map(({ collageArtwork, name, ...playlist }) => ({
+    .map(({ collageArtwork, name, tracks, ...playlist }) => ({
       ...playlist,
       id: name,
       name: parsePlaylistName(name),
@@ -180,8 +154,11 @@ export async function getPlaylistsSummary(conditions?: DrizzleFilter) {
         playlist.artwork ??
         unencodeJSONArtworkArray(collageArtwork, playlist.trackCount === 0),
       duration: Number(playlist.duration) || 0,
+      ...(withTracks ? { tracks: parsePlaylistTracks(tracks) } : {}),
     }))
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .sort((a, b) => a.name.localeCompare(b.name)) as TWithTracks extends true
+    ? Array<PlaylistSummary & { tracks: PlaylistSummaryTrack[] }>
+    : PlaylistSummary[];
 }
 //#endregion
 
@@ -292,5 +269,17 @@ function parsePlaylistName(name: string) {
   return name === FavoritesPlaylistKey
     ? i18next.t("term.favoriteTracks")
     : name;
+}
+
+function parsePlaylistTracks(tracks?: string) {
+  if (!tracks) return [];
+  let results: PlaylistSummaryTrack[] = [];
+  try {
+    const asArray: any[] = JSON.parse(tracks);
+    results = asArray.filter(
+      (i) => i.name !== null && i.artistName !== null && i.album !== null,
+    );
+  } catch {}
+  return results;
 }
 //#endregion

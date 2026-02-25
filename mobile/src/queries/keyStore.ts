@@ -98,7 +98,7 @@ export const queries = createQueryKeyStore({
     all: {
       queryKey: null,
       queryFn: () =>
-        getPlaylistsSummary([ne(playlists.name, FavoritesPlaylistKey)]),
+        getPlaylistsSummary(false, [ne(playlists.name, FavoritesPlaylistKey)]),
     },
     detail: (playlistName: string) => ({
       queryKey: [playlistName],
