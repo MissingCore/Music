@@ -73,33 +73,19 @@ export async function getSourceName({ type, id }: PlayFromSource) {
 //#region List Utils
 /** Get list of tracks ids from a `PlayFromSource`. */
 export async function getTrackIdsList({ type, id }: PlayFromSource) {
-  let trackIds: string[] = [];
+  let trackIds: Array<{ id: string }> = [];
 
   try {
-    if (type === "album") {
-      const data = await getAlbumTracks(id, true);
-      trackIds = data.map((t) => t.id);
-    } else if (type === "artist") {
-      const data = await getArtistTracks(id, true);
-      trackIds = data.map((t) => t.id);
-    } else if (type === "folder") {
-      const data = await getFolderTracks(id, true); // `id` contains pathname.
-      trackIds = data.map((t) => t.id);
-    } else if (type === "genre") {
-      const data = await getGenreTracks(id, true);
-      trackIds = data.map((t) => t.id);
-    } else {
-      if (ReservedNames.has(id)) {
-        const sortedTracks = await getSortedTracks("sortedIds");
-        trackIds = sortedTracks.map(({ id }) => id);
-      } else {
-        const data = await getPlaylistTracks(id, true);
-        trackIds = data.map((t) => t.id);
-      }
-    }
+    if (type === "album") trackIds = await getAlbumTracks(id, true);
+    else if (type === "artist") trackIds = await getArtistTracks(id, true);
+    else if (type === "folder") trackIds = await getFolderTracks(id, true);
+    else if (type === "genre") trackIds = await getGenreTracks(id, true);
+    else if (ReservedNames.has(id))
+      trackIds = await getSortedTracks("sortedIds");
+    else trackIds = await getPlaylistTracks(id, true);
   } catch {}
 
-  return trackIds;
+  return trackIds.map((t) => t.id);
 }
 
 /** Returns information necessary to switch `queue` seamlessly. */
