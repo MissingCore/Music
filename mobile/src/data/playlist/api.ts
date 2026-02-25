@@ -49,10 +49,7 @@ export async function getPlaylistDetails(id: string) {
   return {
     ...details,
     id: details.name,
-    name:
-      details.name === FavoritesPlaylistKey
-        ? i18next.t("term.favoriteTracks")
-        : details.name,
+    name: parsePlaylistName(details.name),
     artwork: details.artwork ?? trackArtwork.map((t) => t.artwork),
     duration: formatSeconds(agg?.duration ? +agg.duration : 0),
   };
@@ -147,14 +144,7 @@ export async function getPlaylists(conditions?: DrizzleFilter) {
         );
       } catch {}
 
-      return {
-        id: name,
-        name:
-          name === FavoritesPlaylistKey
-            ? i18next.t("term.favoriteTracks")
-            : name,
-        tracks: parsedResults,
-      };
+      return { id: name, name: parsePlaylistName(name), tracks: parsedResults };
     })
     .sort((a, b) => a.name.localeCompare(b.name));
 }
@@ -185,8 +175,7 @@ export async function getPlaylistsSummary(conditions?: DrizzleFilter) {
     .map(({ collageArtwork, name, ...playlist }) => ({
       ...playlist,
       id: name,
-      name:
-        name === FavoritesPlaylistKey ? i18next.t("term.favoriteTracks") : name,
+      name: parsePlaylistName(name),
       artwork:
         playlist.artwork ??
         unencodeJSONArtworkArray(collageArtwork, playlist.trackCount === 0),
@@ -296,5 +285,12 @@ function getOrderedPlaylistTracksView() {
       iAsc(tracksToPlaylists.position),
     )
     .as("ordered_playlist_tracks_view");
+}
+
+/** Checks to see if the playlist name needs to be translated for `FavoritesPlaylistKey`. */
+function parsePlaylistName(name: string) {
+  return name === FavoritesPlaylistKey
+    ? i18next.t("term.favoriteTracks")
+    : name;
 }
 //#endregion
