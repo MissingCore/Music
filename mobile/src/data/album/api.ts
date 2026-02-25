@@ -67,10 +67,9 @@ export async function getAlbumDetails(id: string) {
  * Return the tracks associated with an album. It's not guaranteed that
  * the album exists.
  */
-export async function getAlbumTracks<TOnlyIds extends boolean = false>(
-  id: string,
-  onlyIds?: TOnlyIds,
-) {
+export async function getAlbumTracks<
+  TOnlyIds extends boolean | undefined = false,
+>(id: string, onlyIds?: TOnlyIds) {
   const orderedTrackArtists = getOrderedTrackArtistsView();
 
   const results = await db
