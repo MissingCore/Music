@@ -41,7 +41,7 @@ export async function getAlbum(id: string) {
   return { ...albumDetails, tracks: albumTracks };
 }
 
-/** Get the album object along with it's year. */
+/** Get the album object along with its year. */
 export async function getAlbumDetails(id: string) {
   const [details, [range]] = await Promise.all([
     throwIfNoResults(

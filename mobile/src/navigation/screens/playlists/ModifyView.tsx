@@ -4,17 +4,11 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
 
-import {
-  usePlaylist,
-  usePlaylistsNames,
-  useUpdatePlaylist,
-} from "~/queries/playlist";
+import { usePlaylist } from "~/data/playlist/queries";
+import { usePlaylistsNames, useUpdatePlaylist } from "~/queries/playlist";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
-import {
-  ModifyPlaylistBase,
-  formatTrackForForm,
-} from "./components/ModifyViewBase";
+import { ModifyPlaylistBase } from "./components/ModifyViewBase";
 
 import { mutateGuardAsync } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
@@ -48,7 +42,12 @@ export default function ModifyPlaylist({
 
   const initData = {
     name: id,
-    tracks: playlistQuery.data.tracks.map(formatTrackForForm),
+    tracks: playlistQuery.data.tracks.map((track) => ({
+      id: track.id,
+      name: track.name,
+      artists: track.artists?.join(", ") ?? "—",
+      artwork: track.artwork,
+    })),
   };
 
   return (

@@ -4,7 +4,6 @@ import { count, eq, ne, sql, sum } from "drizzle-orm";
 import { db } from "~/db";
 import { albums, playlists, tracks, tracksToPlaylists } from "~/db/schema";
 
-import { getPlaylist } from "~/api/playlist";
 import {
   getSortedTracks,
   getTrack,
@@ -17,6 +16,7 @@ import { getFavoriteLists } from "~/data/favorite/api";
 import { getFolder } from "~/data/folder/api";
 import { getGenre, getGenresSummary } from "~/data/genre/api";
 import { getLyric, getLyricsSummary } from "~/data/lyric/api";
+import { getPlaylist } from "~/data/playlist/api";
 import { getRecentMedia } from "~/data/recent/api";
 
 import { iAsc } from "~/lib/drizzle";

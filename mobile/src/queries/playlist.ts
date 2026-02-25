@@ -1,8 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useTranslation } from "react-i18next";
 
 import type { playlists } from "~/db/schema";
-import { formatForTrack } from "~/db/utils";
 
 import {
   createPlaylist,
@@ -10,42 +8,13 @@ import {
   favoritePlaylist,
   updatePlaylist,
 } from "~/api/playlist";
-import { getPlaylistArtwork, sanitizePlaylistName } from "~/api/playlist.utils";
+import { sanitizePlaylistName } from "~/api/playlist.utils";
 import { Resynchronize } from "~/stores/Playback/actions";
 import { queries as q } from "./keyStore";
 
-import { formatSeconds } from "~/utils/number";
 import { wait } from "~/utils/promise";
 
 //#region Queries
-/** Get specified playlist. */
-export function usePlaylist(playlistName: string) {
-  return useQuery({
-    ...q.playlists.detail(playlistName),
-    select: (data) => ({ ...data, imageSource: getPlaylistArtwork(data) }),
-  });
-}
-
-/** Format playlist information for playlist's `(current)` screen. */
-export function usePlaylistForScreen(playlistName: string) {
-  const { t } = useTranslation();
-  return useQuery({
-    ...q.playlists.detail(playlistName),
-    select: ({ name, artwork, isFavorite, tracks }) => ({
-      name,
-      imageSource: getPlaylistArtwork({ artwork, tracks }),
-      metadata: [
-        t("term.playlist"),
-        t("plural.track", { count: tracks.length }),
-        formatSeconds(tracks.reduce((total, curr) => total + curr.duration, 0)),
-      ],
-      tracks: tracks.map((track) => formatForTrack(track)),
-
-      isFavorite,
-    }),
-  });
-}
-
 /** Get the names of all playlists. */
 export function usePlaylistsNames() {
   return useQuery({

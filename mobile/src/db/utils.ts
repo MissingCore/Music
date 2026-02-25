@@ -1,6 +1,5 @@
 import type { TFunction } from "i18next";
 
-import type { Album, Track } from "./schema";
 import type {
   SlimAlbum,
   SlimArtist,
@@ -8,14 +7,11 @@ import type {
   SlimPlaylistWithTracks,
 } from "./slimTypes";
 
-import { getArtistsString } from "~/api/artist.utils";
 import { getPlaylistArtwork } from "~/api/playlist.utils";
-import { getTrackArtwork } from "~/api/track.utils";
 import { AlbumArtistsKey } from "~/data/album/utils";
 
-import type { AtLeast, Prettify } from "~/utils/types";
+import type { Prettify } from "~/utils/types";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
-import type { TrackContent } from "~/modules/media/components/Track.type";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 //#region Format for Component
@@ -43,19 +39,5 @@ export function formatForMediaCard({ type, data, t }: MediaCardFormatter) {
   }
 
   return { type, source, id, title, description } as MediaCardContent;
-}
-
-/** Format data to be used in `<Track />`. */
-export function formatForTrack(
-  track: AtLeast<Track, "id" | "name" | "artwork"> & {
-    album: AtLeast<Album, "artwork"> | null;
-    tracksToArtists: Array<{ artistName: string }>;
-  },
-) {
-  const { id, name, tracksToArtists } = track;
-  const imageSource = getTrackArtwork(track);
-  const description = getArtistsString(tracksToArtists);
-
-  return { id, imageSource, title: name, description } satisfies TrackContent;
 }
 //#endregion
