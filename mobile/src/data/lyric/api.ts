@@ -4,7 +4,6 @@ import { db } from "~/db";
 import { albums, lyrics, tracks, tracksToLyrics } from "~/db/schema";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
-import type { LyricTrack } from "./types";
 import { unencodeJSONArray } from "../utils";
 import { getOrderedTrackArtistsView } from "../views";
 
@@ -12,13 +11,10 @@ type InsertedLyric = typeof lyrics.$inferInsert;
 
 //#region GET Methods
 /** Get all data associated with a lyric. */
-export async function getLyric<TOnlyIds extends boolean = false>(
-  id: string,
-  onlyIds?: TOnlyIds,
-) {
+export async function getLyric(id: string) {
   const [lyricDetails, lyricTracks] = await Promise.all([
     throwIfNoResults(db.query.lyrics.findFirst({ where: eq(lyrics.id, id) })),
-    getLyricTracks(id, onlyIds),
+    getLyricTracks(id),
   ]);
 
   return { ...lyricDetails, tracks: lyricTracks };
@@ -28,24 +24,17 @@ export async function getLyric<TOnlyIds extends boolean = false>(
  * Return the tracks associated with a lyric. It's not guaranteed that
  * the lyric exists.
  */
-export async function getLyricTracks<TOnlyIds extends boolean = false>(
-  id: string,
-  onlyIds?: TOnlyIds,
-) {
+export async function getLyricTracks(id: string) {
   const orderedTrackArtists = getOrderedTrackArtistsView();
 
   const results = await db
-    .select(
-      onlyIds
-        ? { id: tracks.id }
-        : {
-            id: tracks.id,
-            name: tracks.name,
-            album: albums.name,
-            /** We need to unencode these fields. */
-            artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
-          },
-    )
+    .select({
+      id: tracks.id,
+      name: tracks.name,
+      album: albums.name,
+      /** We need to unencode these fields. */
+      artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
+    })
     .from(tracksToLyrics)
     .where(eq(tracksToLyrics.lyricId, id))
     .innerJoin(tracks, eq(tracksToLyrics.trackId, tracks.id))
@@ -54,14 +43,10 @@ export async function getLyricTracks<TOnlyIds extends boolean = false>(
     .groupBy(tracksToLyrics.trackId)
     .orderBy(iAsc(tracks.name));
 
-  return (
-    onlyIds
-      ? results
-      : results.map(({ artists, ...rest }) => ({
-          ...rest,
-          artists: unencodeJSONArray(artists as string),
-        }))
-  ) as TOnlyIds extends true ? Array<{ id: string }> : LyricTrack[];
+  return results.map(({ artists, ...rest }) => ({
+    ...rest,
+    artists: unencodeJSONArray(artists as string),
+  }));
 }
 
 /** Get information summarizing each lyric (sorted by names). */

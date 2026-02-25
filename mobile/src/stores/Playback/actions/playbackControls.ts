@@ -1,6 +1,6 @@
 import TrackPlayer, { State } from "@weights-ai/react-native-track-player";
 
-import { addPlayedMediaList } from "~/api/recent";
+import { addPlayedMediaList } from "~/data/recent/api";
 import { preferenceStore } from "~/stores/Preference/store";
 
 import { playbackStore } from "../store";

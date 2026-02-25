@@ -19,7 +19,7 @@ import {
   waveformSamples,
 } from "~/db/schema";
 
-import { RECENT_RANGE_MS } from "~/api/recent";
+import { RECENT_RANGE_MS } from "~/data/recent/api";
 import { Queue } from "~/stores/Playback/actions";
 
 import { ImageDirectory, deleteImage } from "~/lib/file-system";

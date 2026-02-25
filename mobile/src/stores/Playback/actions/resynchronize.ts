@@ -1,7 +1,10 @@
 import TrackPlayer from "@weights-ai/react-native-track-player";
 
-import { removePlayedMediaList, updatePlayedMediaList } from "~/api/recent";
 import { getTrack } from "~/api/track";
+import {
+  removePlayedMediaList,
+  updatePlayedMediaList,
+} from "~/data/recent/api";
 
 import { playbackStore } from "../store";
 import type { PlayFromSource } from "../types";
