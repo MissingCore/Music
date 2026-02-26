@@ -1,17 +1,12 @@
-import { and, eq, sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 import { db } from "~/db";
-import type { Album, Track } from "~/db/schema";
 import { albums, tracks, tracksToArtists } from "~/db/schema";
 
 import { viewPreferenceStore } from "~/stores/ViewPreference/store";
 
 import { iAsc, iDesc } from "~/lib/drizzle";
-import type { BooleanPriority } from "~/utils/types";
 import type { ScreenSortOptions } from "~/stores/ViewPreference/constants";
-import { getTrackArtwork } from "./track.utils";
-import type { DrizzleFilter, QueriedTrack } from "./types";
-import { getColumns, withRelations } from "./utils";
 
 //#region GET Methods
 /** Get the genres that this track has. */
@@ -30,34 +25,6 @@ export async function getTrackPlaylists(id: string) {
     columns: { playlistName: true },
   });
   return allTrackPlaylists.map(({ playlistName }) => playlistName);
-}
-
-/** Get multiple tracks. */
-export async function getTracks<
-  TCols extends keyof Track,
-  ACols extends keyof Album,
-  WithAlbum_User extends boolean | undefined,
->(options?: {
-  where?: DrizzleFilter;
-  columns?: TCols[];
-  albumColumns?: [ACols, ...ACols[]];
-  withAlbum?: WithAlbum_User;
-}) {
-  const allTracks = await db.query.tracks.findMany({
-    where: and(...(options?.where ?? [])),
-    columns: getColumns(options?.columns),
-    ...withRelations({ defaultWithAlbum: true, ...options }),
-    orderBy: (fields) => iAsc(fields.name),
-  });
-  const hasArtwork =
-    options?.columns === undefined ||
-    options?.columns.includes("artwork" as TCols);
-  return allTracks.map((t) => {
-    if (hasArtwork) t.artwork = getTrackArtwork(t);
-    return t;
-  }) as Array<
-    QueriedTrack<BooleanPriority<WithAlbum_User, true>, TCols, ACols>
-  >;
 }
 
 export type SortedTracksMode = "sortedIds" | "sortedTracks";

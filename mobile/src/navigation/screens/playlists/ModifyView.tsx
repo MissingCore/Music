@@ -11,7 +11,10 @@ import {
 } from "~/data/playlist/queries";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
-import { ModifyPlaylistBase } from "./components/ModifyViewBase";
+import {
+  formatTrackForForm,
+  ModifyPlaylistBase,
+} from "./components/ModifyViewBase";
 
 import { mutateGuardAsync } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
@@ -45,12 +48,7 @@ export default function ModifyPlaylist({
 
   const initData = {
     name: id,
-    tracks: playlistQuery.data.tracks.map((track) => ({
-      id: track.id,
-      name: track.name,
-      artists: track.artists?.join(", ") ?? "—",
-      artwork: track.artwork,
-    })),
+    tracks: playlistQuery.data.tracks.map(formatTrackForForm),
   };
 
   return (

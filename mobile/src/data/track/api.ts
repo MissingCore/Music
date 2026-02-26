@@ -4,12 +4,18 @@ import { db } from "~/db";
 import type { InvalidTrack } from "~/db/schema";
 import { albums, invalidTracks, tracks, tracksToPlaylists } from "~/db/schema";
 
-import { getExcludedColumns, iDesc, throwIfNoResults } from "~/lib/drizzle";
+import {
+  getExcludedColumns,
+  iAsc,
+  iDesc,
+  throwIfNoResults,
+} from "~/lib/drizzle";
 import { omitKeys } from "~/utils/object";
 import { TrackRelationTables } from "./constants";
-import type { Track } from "./types";
-import { getOrderedTrackArtistsView } from "../views";
+import type { BulkQueriedTrack, Track } from "./types";
+import type { DrizzleFilter } from "../types";
 import { unencodeJSONArray } from "../utils";
+import { getOrderedTrackArtistsView } from "../views";
 
 type InsertedTrack = typeof tracks.$inferInsert;
 type InsertedTrackPlaylistRelation = typeof tracksToPlaylists.$inferInsert;
@@ -47,6 +53,39 @@ export async function getTrack(id: string): Promise<Track> {
   );
 
   return { ...result!, artists: unencodeJSONArray(result!.artists) };
+}
+
+export async function getTracks(
+  conditions?: DrizzleFilter,
+): Promise<BulkQueriedTrack[]> {
+  const orderedTrackArtists = getOrderedTrackArtistsView();
+
+  const results = await db
+    .select({
+      id: tracks.id,
+      name: tracks.name,
+      rawArtistName: tracks.rawArtistName,
+      artwork: sql<
+        string | null
+      >`coalesce(${tracks.artwork}, ${albums.artwork})`.as("derived_artwork"),
+      albumId: tracks.albumId,
+      album: sql<string | null>`${albums.name}`.as("album"),
+      uri: tracks.uri,
+      parentFolder: tracks.parentFolder,
+      /** We need to unencode these fields. */
+      artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
+    })
+    .from(tracks)
+    .where(and(...(conditions ?? [])))
+    .leftJoin(albums, eq(tracks.albumId, albums.id))
+    .leftJoin(orderedTrackArtists, eq(tracks.id, orderedTrackArtists.trackId))
+    .groupBy(tracks.id)
+    .orderBy(iAsc(tracks.name));
+
+  return results.map(({ artists, ...track }) => ({
+    ...track,
+    artists: unencodeJSONArray(artists),
+  }));
 }
 //#endregion
 

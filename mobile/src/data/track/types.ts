@@ -14,3 +14,15 @@ export type Track = Prettify<
     artists: string[] | null;
   }
 >;
+
+export type BulkQueriedTrack = {
+  id: string;
+  name: string;
+  rawArtistName: string | null;
+  artwork: string | null;
+  albumId: string | null;
+  album: string | null;
+  artists: string[] | null;
+  uri: string;
+  parentFolder: string | null;
+};

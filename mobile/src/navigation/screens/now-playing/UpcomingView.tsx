@@ -7,8 +7,7 @@ import { tracks } from "~/db/schema";
 
 import { Cached } from "~/resources/icons/Cached";
 import { DragHandle } from "~/resources/icons/DragHandle";
-import { getArtistsString } from "~/api/artist.utils";
-import { getTracks } from "~/api/track";
+import { getTracks } from "~/data/track/api";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 
@@ -160,7 +159,7 @@ const RenderItem = memo(
         <SearchResult
           type="track"
           title={item.name}
-          description={getArtistsString(item.tracksToArtists)}
+          description={item.artists?.join(", ") ?? "—"}
           imageSource={item.artwork}
           LeftElement={item.active ? <PlayingIndicator /> : undefined}
           RightElement={
@@ -200,11 +199,7 @@ async function getQueueTracks() {
   // Since there's potentially duplicate tracks.
   const queueTrackIds = queue.map(extractTrackId);
   const queueSet = new Set(queueTrackIds);
-  const unorderedTracks = await getTracks({
-    where: [inArray(tracks.id, [...queueSet])],
-    columns: ["id", "name", "artwork"],
-    albumColumns: ["artwork"],
-  });
+  const unorderedTracks = await getTracks([inArray(tracks.id, [...queueSet])]);
 
   // Structure as a map for faster searching.
   const trackMap = Object.fromEntries(
