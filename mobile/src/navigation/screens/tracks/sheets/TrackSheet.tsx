@@ -14,12 +14,8 @@ import { LowPriority } from "~/resources/icons/LowPriority";
 import { PlaylistAdd } from "~/resources/icons/PlaylistAdd";
 import { QueueMusic } from "~/resources/icons/QueueMusic";
 import { Schedule } from "~/resources/icons/Schedule";
-import {
-  useAddToPlaylist,
-  useHideTrack,
-  useRemoveFromPlaylist,
-  useTrackFavoriteStatus,
-} from "~/queries/track";
+import { useHideTrack, useTrackFavoriteStatus } from "~/queries/track";
+import { useToggleTrackInPlaylist } from "~/data/track/queries";
 import { Queue } from "~/stores/Playback/actions";
 import { useSessionStore } from "~/stores/Session/store";
 
@@ -168,28 +164,18 @@ function IconActions(props: {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { data: favoriteStatus } = useTrackFavoriteStatus(props.data.id);
-  const addToPlaylist = useAddToPlaylist(props.data.id);
-  const removeFromPlaylist = useRemoveFromPlaylist(props.data.id);
+  const toggleInPlaylist = useToggleTrackInPlaylist(props.data.id);
   const hideTrack = useHideTrack();
 
   const favStatus = favoriteStatus ?? false;
-  const isFav =
-    addToPlaylist.isPending || removeFromPlaylist.isPending
-      ? !favStatus
-      : favStatus;
+  const isFav = toggleInPlaylist.isPending ? !favStatus : favStatus;
 
   return (
     <View className="flex-row justify-between gap-1 rounded-md bg-surfaceContainerLowest px-1">
       <IconButton
         Icon={Favorite}
         accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
-        onPress={() =>
-          mutateGuard(
-            // @ts-expect-error - We don't care about return type.
-            isFav ? removeFromPlaylist : addToPlaylist,
-            FavoritesPlaylistKey,
-          )
-        }
+        onPress={() => mutateGuard(toggleInPlaylist, FavoritesPlaylistKey)}
         filled={isFav}
         size="md"
       />

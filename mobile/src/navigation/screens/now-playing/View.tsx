@@ -11,11 +11,8 @@ import { MoreHoriz } from "~/resources/icons/MoreHoriz";
 import { MoreVert } from "~/resources/icons/MoreVert";
 import { Timer } from "~/resources/icons/Timer";
 import { ViewAgenda } from "~/resources/icons/ViewAgenda";
-import {
-  useAddToPlaylist,
-  useRemoveFromPlaylist,
-  useTrackFavoriteStatus,
-} from "~/queries/track";
+import { useTrackFavoriteStatus } from "~/queries/track";
+import { useToggleTrackInPlaylist } from "~/data/track/queries";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
@@ -119,26 +116,16 @@ function Metadata({ track }: { track: TrackWithRelations }) {
 function FavoriteButton(props: { trackId: string }) {
   const { t } = useTranslation();
   const { data: favoriteStatus } = useTrackFavoriteStatus(props.trackId); // Since we don't revalidate the Zustand store.
-  const addToPlaylist = useAddToPlaylist(props.trackId);
-  const removeFromPlaylist = useRemoveFromPlaylist(props.trackId);
+  const toggleInPlaylist = useToggleTrackInPlaylist(props.trackId);
 
   const favStatus = favoriteStatus ?? false;
-  const isFav =
-    addToPlaylist.isPending || removeFromPlaylist.isPending
-      ? !favStatus
-      : favStatus;
+  const isFav = toggleInPlaylist.isPending ? !favStatus : favStatus;
 
   return (
     <IconButton
       Icon={Favorite}
       accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
-      onPress={() =>
-        mutateGuard(
-          // @ts-expect-error - We don't care about return type.
-          isFav ? removeFromPlaylist : addToPlaylist,
-          FavoritesPlaylistKey,
-        )
-      }
+      onPress={() => mutateGuard(toggleInPlaylist, FavoritesPlaylistKey)}
       filled={isFav}
       size="lg"
     />

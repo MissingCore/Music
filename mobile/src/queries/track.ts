@@ -1,17 +1,16 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { db } from "~/db";
 import type { TrackWithRelations } from "~/db/schema";
 import { hiddenTracks } from "~/db/schema";
 
-import { addToPlaylist, deleteTracks, removeFromPlaylist } from "~/api/track";
+import { deleteTracks } from "~/api/track";
 import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { Queue } from "~/stores/Playback/actions";
 import { queries as q } from "./keyStore";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
-import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 //#region Queries
 /** Get specified track. */
@@ -45,27 +44,6 @@ export function useSortedTracks(isReady = true) {
 //#endregion
 
 //#region Mutations
-/** Add track to playlist. */
-export function useAddToPlaylist(trackId: string) {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (playlistName: string) =>
-      addToPlaylist({ trackId, playlistName }),
-    onSuccess: (_, playlistName) => {
-      if (playlistName === FavoritesPlaylistKey) {
-        queryClient.invalidateQueries({
-          queryKey: q.tracks.detail(trackId)._ctx.isFavorite.queryKey,
-        });
-      }
-      queryClient.invalidateQueries({
-        queryKey: q.tracks.detail(trackId)._ctx.playlists.queryKey,
-      });
-      queryClient.invalidateQueries({ queryKey: q.playlists._def });
-      queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
-    },
-  });
-}
-
 /** Hide a track. */
 export function useHideTrack() {
   return useMutation({
@@ -81,27 +59,6 @@ export function useHideTrack() {
       // There's a lot of places where this track may appear.
       clearAllQueries();
       await Queue.removeIds([track.id]);
-    },
-  });
-}
-
-/** Remove track from playlist. */
-export function useRemoveFromPlaylist(trackId: string) {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (playlistName: string) =>
-      removeFromPlaylist({ trackId, playlistName }),
-    onSuccess: (_, playlistName) => {
-      if (playlistName === FavoritesPlaylistKey) {
-        queryClient.invalidateQueries({
-          queryKey: q.tracks.detail(trackId)._ctx.isFavorite.queryKey,
-        });
-      }
-      queryClient.invalidateQueries({
-        queryKey: q.tracks.detail(trackId)._ctx.playlists.queryKey,
-      });
-      queryClient.invalidateQueries({ queryKey: q.playlists._def });
-      queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
     },
   });
 }

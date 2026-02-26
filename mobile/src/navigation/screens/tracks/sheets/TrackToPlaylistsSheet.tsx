@@ -1,9 +1,6 @@
 import { usePlaylistsNames } from "~/data/playlist/queries";
-import {
-  useAddToPlaylist,
-  useRemoveFromPlaylist,
-  useTrackPlaylists,
-} from "~/queries/track";
+import { useToggleTrackInPlaylist } from "~/data/track/queries";
+import { useTrackPlaylists } from "~/queries/track";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
@@ -20,8 +17,7 @@ const GLOBAL_SHEET_KEY = "TrackToPlaylistsSheet";
 export function TrackToPlaylistsSheet({ id }: { id: string }) {
   const { data: playlistsNames } = usePlaylistsNames();
   const { data: inList } = useTrackPlaylists(id);
-  const addToPlaylist = useAddToPlaylist(id);
-  const removeFromPlaylist = useRemoveFromPlaylist(id);
+  const toggleInPlaylist = useToggleTrackInPlaylist(id);
   const sheetListHandlers = useEnableSheetScroll();
 
   return (
@@ -39,13 +35,7 @@ export function TrackToPlaylistsSheet({ id }: { id: string }) {
           return (
             <CheckboxField
               checked={selected}
-              onCheck={() =>
-                mutateGuard(
-                  // @ts-expect-error - We don't care about return type.
-                  selected ? removeFromPlaylist : addToPlaylist,
-                  name,
-                )
-              }
+              onCheck={() => mutateGuard(toggleInPlaylist, name)}
               className="mb-2"
             >
               <Marquee color="surfaceBright">

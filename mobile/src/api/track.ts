@@ -171,30 +171,6 @@ export async function getSortedTracks<
 }
 //#endregion
 
-//#region PUT Methods
-/** Add a track to a playlist. */
-export async function addToPlaylist(
-  entry: typeof tracksToPlaylists.$inferInsert,
-) {
-  return db.transaction(async (tx) => {
-    // Get largest position value (which is the last track in the playlist).
-    const lastTrack = await tx.query.tracksToPlaylists.findFirst({
-      where: (fields, { eq }) => eq(fields.playlistName, entry.playlistName),
-      orderBy: (fields, { desc }) => desc(fields.position),
-    });
-    // Add track to the end of the playlist (if we didn't provide a `position` value).
-    const nextPos = (lastTrack?.position ?? -1) + 1;
-    await tx
-      .insert(tracksToPlaylists)
-      .values({ position: nextPos, ...entry })
-      .onConflictDoUpdate({
-        target: [tracksToPlaylists.trackId, tracksToPlaylists.playlistName],
-        set: { position: entry.position ?? nextPos },
-      });
-  });
-}
-//#endregion
-
 //#region DELETE Methods
 type ErrorInfo = { errorName: string; errorMessage: string };
 
@@ -261,19 +237,5 @@ export async function deleteTracks(
         ]),
       });
   });
-}
-
-/** Remove a track from a playlist. */
-export async function removeFromPlaylist(
-  entry: typeof tracksToPlaylists.$inferInsert,
-) {
-  return db
-    .delete(tracksToPlaylists)
-    .where(
-      and(
-        eq(tracksToPlaylists.trackId, entry.trackId),
-        eq(tracksToPlaylists.playlistName, entry.playlistName),
-      ),
-    );
 }
 //#endregion
