@@ -4,6 +4,7 @@ import { db } from "~/db";
 import { hiddenTracks } from "~/db/schema";
 
 import { Queue, Resynchronize } from "~/stores/Playback/actions";
+import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { queries as q } from "~/queries/keyStore";
 import { deleteTracks, toggleTrackInPlaylist, updateTrack } from "./api";
 import type { Track } from "./types";
@@ -28,11 +29,16 @@ export function useTrackGenres(trackId: string) {
 export function useTrackPlaylists(trackId: string) {
   return useQuery({ ...q.tracks.detail(trackId)._ctx.playlists });
 }
-
-export function usePlaylists() {
-  return useQuery({ ...q.playlists.all });
-}
 //#endregion
+
+export function useSortedTracks(isReady = true) {
+  const trackIsAsc = useViewPreferenceStore((s) => s.trackIsAsc);
+  const trackOrder = useViewPreferenceStore((s) => s.trackOrder);
+  return useQuery({
+    ...q.tracks.sorted(trackOrder, trackIsAsc),
+    enabled: isReady,
+  });
+}
 //#endregion
 
 //#region Mutations
