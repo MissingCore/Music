@@ -1,10 +1,34 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { Resynchronize } from "~/stores/Playback/actions";
 import { queries as q } from "~/queries/keyStore";
 import { toggleTrackInPlaylist, updateTrack } from "./api";
 
 import { clearAllQueries } from "~/lib/react-query";
+
+//#region Queries
+export function useTrack(trackId: string) {
+  return useQuery({ ...q.tracks.detail(trackId) });
+}
+
+//#region Relation Queries
+export function useTrackFavoriteStatus(trackId: string) {
+  return useQuery({ ...q.tracks.detail(trackId)._ctx.isFavorite });
+}
+
+export function useTrackGenres(trackId: string) {
+  return useQuery({ ...q.tracks.detail(trackId)._ctx.genres });
+}
+
+export function useTrackPlaylists(trackId: string) {
+  return useQuery({ ...q.tracks.detail(trackId)._ctx.playlists });
+}
+
+export function usePlaylists() {
+  return useQuery({ ...q.playlists.all });
+}
+//#endregion
+//#endregion
 
 //#region Mutations
 export function useToggleTrackInPlaylist(trackId: string) {

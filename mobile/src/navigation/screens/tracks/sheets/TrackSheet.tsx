@@ -12,8 +12,11 @@ import { LowPriority } from "~/resources/icons/LowPriority";
 import { PlaylistAdd } from "~/resources/icons/PlaylistAdd";
 import { QueueMusic } from "~/resources/icons/QueueMusic";
 import { Schedule } from "~/resources/icons/Schedule";
-import { useHideTrack, useTrackFavoriteStatus } from "~/queries/track";
-import { useToggleTrackInPlaylist } from "~/data/track/queries";
+import { useHideTrack } from "~/queries/track";
+import {
+  useToggleTrackInPlaylist,
+  useTrackFavoriteStatus,
+} from "~/data/track/queries";
 import type { Track } from "~/data/track/types";
 import { Queue } from "~/stores/Playback/actions";
 import { useSessionStore } from "~/stores/Session/store";

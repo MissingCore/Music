@@ -6,8 +6,7 @@ import { useAlbum, useUpdateAlbum } from "~/data/album/queries";
 import { useArtist, useUpdateArtist } from "~/data/artist/queries";
 import { useGenre, useUpdateGenre } from "~/data/genre/queries";
 import { usePlaylist, useUpdatePlaylist } from "~/data/playlist/queries";
-import { useUpdateTrack } from "~/data/track/queries";
-import { useTrack } from "~/queries/track";
+import { useTrack, useUpdateTrack } from "~/data/track/queries";
 
 import { pickImage } from "~/lib/file-system";
 import { mutateGuard } from "~/lib/react-query";

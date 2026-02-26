@@ -11,6 +11,7 @@ import {
   throwIfNoResults,
 } from "~/lib/drizzle";
 import { omitKeys } from "~/utils/object";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { TrackRelationTables } from "./constants";
 import type { BulkQueriedTrack, Track } from "./types";
 import type { DrizzleFilter } from "../types";
@@ -54,6 +55,43 @@ export async function getTrack(id: string): Promise<Track> {
 
   return { ...result!, artists: unencodeJSONArray(result!.artists) };
 }
+
+//#region Get Relations
+export async function getTrackFavoriteStatus(id: string) {
+  const isFavorited = await db.query.tracksToPlaylists.findFirst({
+    where: (fields, { and, eq }) =>
+      and(
+        eq(fields.playlistName, FavoritesPlaylistKey),
+        eq(fields.trackId, id),
+      ),
+  });
+  return isFavorited ? true : false;
+}
+
+export async function getTrackGenres(id: string) {
+  const results = await db.query.tracksToGenres.findMany({
+    where: (fields, { eq }) => eq(fields.trackId, id),
+    columns: { genreName: true },
+  });
+  return results.map((rel) => rel.genreName);
+}
+
+export async function getTrackLyrics(id: string) {
+  const result = await db.query.tracksToLyrics.findFirst({
+    where: (fields, { eq }) => eq(fields.trackId, id),
+    with: { lyric: true },
+  });
+  return result?.lyric ?? null;
+}
+
+export async function getTrackPlaylists(id: string) {
+  const results = await db.query.tracksToPlaylists.findMany({
+    where: (fields, { eq }) => eq(fields.trackId, id),
+    columns: { playlistName: true },
+  });
+  return results.map((rel) => rel.playlistName);
+}
+//#endregion
 
 export async function getTracks(
   conditions?: DrizzleFilter,

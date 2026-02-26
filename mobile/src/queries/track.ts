@@ -13,26 +13,6 @@ import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
 
 //#region Queries
-/** Get specified track. */
-export function useTrack(trackId: string) {
-  return useQuery({ ...q.tracks.detail(trackId) });
-}
-
-/** Returns if the track is favorited. */
-export function useTrackFavoriteStatus(trackId: string) {
-  return useQuery({ ...q.tracks.detail(trackId)._ctx.isFavorite });
-}
-
-/** Return the names of the playlists this track is in. */
-export function useTrackPlaylists(trackId: string) {
-  return useQuery({ ...q.tracks.detail(trackId)._ctx.playlists });
-}
-
-/** Return the names of the genres the track has. */
-export function useTrackGenres(trackId: string) {
-  return useQuery({ ...q.tracks.detail(trackId)._ctx.genres });
-}
-
 export function useSortedTracks(isReady = true) {
   const trackIsAsc = useViewPreferenceStore((s) => s.trackIsAsc);
   const trackOrder = useViewPreferenceStore((s) => s.trackOrder);

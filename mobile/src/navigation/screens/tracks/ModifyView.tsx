@@ -14,12 +14,12 @@ import { tracksToArtists, tracksToGenres } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 import { Info } from "~/resources/icons/Info";
-import { useTrack, useTrackGenres } from "~/queries/track";
 import { upsertAlbums } from "~/data/album/api";
 import { AlbumArtistsKey } from "~/data/album/utils";
 import { createArtists } from "~/data/artist/api";
 import { createGenres } from "~/data/genre/api";
 import { updateTrack } from "~/data/track/api";
+import { useTrack, useTrackGenres } from "~/data/track/queries";
 import { Resynchronize } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { getArtworkUri } from "~/modules/scanning/helpers/artwork";

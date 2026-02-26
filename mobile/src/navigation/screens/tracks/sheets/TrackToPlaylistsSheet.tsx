@@ -1,6 +1,8 @@
 import { usePlaylistsNames } from "~/data/playlist/queries";
-import { useToggleTrackInPlaylist } from "~/data/track/queries";
-import { useTrackPlaylists } from "~/queries/track";
+import {
+  useToggleTrackInPlaylist,
+  useTrackPlaylists,
+} from "~/data/track/queries";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 

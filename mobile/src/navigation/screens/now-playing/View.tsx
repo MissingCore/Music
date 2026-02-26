@@ -9,8 +9,10 @@ import { MoreHoriz } from "~/resources/icons/MoreHoriz";
 import { MoreVert } from "~/resources/icons/MoreVert";
 import { Timer } from "~/resources/icons/Timer";
 import { ViewAgenda } from "~/resources/icons/ViewAgenda";
-import { useTrackFavoriteStatus } from "~/queries/track";
-import { useToggleTrackInPlaylist } from "~/data/track/queries";
+import {
+  useToggleTrackInPlaylist,
+  useTrackFavoriteStatus,
+} from "~/data/track/queries";
 import type { Track } from "~/data/track/types";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
