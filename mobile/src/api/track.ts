@@ -193,14 +193,6 @@ export async function addToPlaylist(
       });
   });
 }
-
-/** Create new track entries, or update existing ones. */
-export function upsertTracks(entries: Array<typeof tracks.$inferInsert>) {
-  return db.insert(tracks).values(entries).onConflictDoUpdate({
-    target: tracks.id,
-    set: UpsertFields,
-  });
-}
 //#endregion
 
 //#region DELETE Methods
@@ -284,23 +276,4 @@ export async function removeFromPlaylist(
       ),
     );
 }
-//#endregion
-
-//#region Internal Utils
-const UpsertFields = getExcludedColumns([
-  "name",
-  "rawArtistName", // ! This field is deprecated.
-  "albumId",
-  "track",
-  "disc",
-  "year",
-  "format",
-  "bitrate",
-  "sampleRate",
-  "duration",
-  "uri",
-  "modificationTime",
-  "fetchedArt",
-  "size",
-]);
 //#endregion
