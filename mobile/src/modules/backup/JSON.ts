@@ -10,7 +10,6 @@ import { db } from "~/db";
 import { albums, playlists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import { TrackList } from "~/api/track.utils";
 import { getAlbumsSummary } from "~/data/album/api";
 import {
   createPlaylist,
@@ -19,6 +18,7 @@ import {
 } from "~/data/playlist/api";
 import { sanitizePlaylistName } from "~/data/playlist/utils";
 import { getTracks } from "~/data/track/api";
+import { mergeTracks } from "~/data/track/utils";
 
 import { pickDirectory } from "~/lib/file-system";
 import { clearAllQueries } from "~/lib/react-query";
@@ -177,7 +177,7 @@ async function importBackup() {
       // Create or update playlist to have the current track order.
       if (exists) {
         await updatePlaylist(name, {
-          tracks: TrackList.merge(exists.tracks, playlistTracks),
+          tracks: mergeTracks(exists.tracks, playlistTracks),
         });
       } else await createPlaylist({ name, tracks: playlistTracks });
     }),

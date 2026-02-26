@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { MoreVert } from "~/resources/icons/MoreVert";
-import { getTrackArtwork } from "~/api/track.utils";
 import { AlbumArtistsKey } from "~/data/album/utils";
 import type { GenreTrack } from "~/data/genre/types";
 import { presentTrackSheet } from "~/stores/Session/actions";
@@ -21,11 +20,8 @@ import { SearchBar } from "./SearchBar";
 import { SearchResult } from "./SearchResult";
 import { useSearch } from "../hooks/useSearch";
 import type {
-  SearchAlbumResult,
-  SearchArtistResult,
   SearchCallbacks,
   SearchCategories,
-  SearchPlaylistResult,
   SearchResults,
 } from "../types";
 
@@ -233,24 +229,12 @@ function formatResults(results: Partial<SearchResults>, tab: SearchTab) {
           type: key as SearchCategories[number],
           imageSource:
             // @ts-expect-error - Values are of correct types.
-            key !== "folder" ? getArtwork({ type: key, data: item }) : null,
+            key !== "folder" ? item.artwork : null,
           title: item.name,
           description,
           entry: item,
         };
       }),
     ]);
-}
-
-type MediaRelations =
-  | { type: "album"; data: SearchAlbumResult }
-  | { type: "artist"; data: SearchArtistResult }
-  | { type: "playlist"; data: SearchPlaylistResult }
-  | { type: "track"; data: GenreTrack };
-
-/** Get the artwork of the media that'll be displayed. */
-function getArtwork({ type, data }: MediaRelations) {
-  if (type === "track") return getTrackArtwork(data);
-  return data.artwork;
 }
 //#endregion
