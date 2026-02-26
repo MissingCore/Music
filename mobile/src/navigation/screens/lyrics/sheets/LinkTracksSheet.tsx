@@ -4,7 +4,7 @@ import { db } from "~/db";
 import { tracksToLyrics } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import { queries as q } from "~/queries/keyStore";
+import { queries as q } from "~/data/keyStore";
 
 import { queryClient } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";

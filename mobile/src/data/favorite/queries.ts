@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import { queries as q } from "~/queries/keyStore";
+import { queries as q } from "../keyStore";
 
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";

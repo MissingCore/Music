@@ -5,9 +5,9 @@ import { hiddenTracks } from "~/db/schema";
 
 import { Queue, Resynchronize } from "~/stores/Playback/actions";
 import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
-import { queries as q } from "~/queries/keyStore";
 import { deleteTracks, toggleTrackInPlaylist, updateTrack } from "./api";
 import type { Track } from "./types";
+import { queries as q } from "../keyStore";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";

@@ -4,9 +4,9 @@ import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
+import { queries as q } from "~/data/keyStore";
 import { updateLyric } from "~/data/lyric/api";
 import { useLyric } from "~/data/lyric/queries";
-import { queries as q } from "~/queries/keyStore";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 

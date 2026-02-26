@@ -11,8 +11,8 @@ import { tracksToLyrics } from "~/db/schema";
 import { Add } from "~/resources/icons/Add";
 import { Edit } from "~/resources/icons/Edit";
 import { LinkOff } from "~/resources/icons/LinkOff";
+import { queries as q } from "~/data/keyStore";
 import { useLyric } from "~/data/lyric/queries";
-import { queries as q } from "~/queries/keyStore";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";

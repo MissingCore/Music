@@ -2,9 +2,9 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
+import { queries as q } from "~/data/keyStore";
 import { RECENT_DAY_RANGE } from "~/data/recent/api";
 import { useRecentlyPlayedMedia } from "~/data/recent/queries";
-import { queries as q } from "~/queries/keyStore";
 import { useGetColumn } from "~/hooks/useGetColumn";
 
 import { useBottomActionsInset } from "../hooks/useBottomActions";

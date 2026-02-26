@@ -4,8 +4,8 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
+import { queries as q } from "~/data/keyStore";
 import { createLyric } from "~/data/lyric/api";
-import { queries as q } from "~/queries/keyStore";
 
 import { ToastOptions } from "~/lib/toast";
 import { ModifyLyricBase } from "./components/ModifyViewBase";

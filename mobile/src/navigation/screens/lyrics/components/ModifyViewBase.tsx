@@ -4,8 +4,8 @@ import { Fragment, useMemo, useState } from "react";
 import { View } from "react-native";
 import { z } from "zod/mini";
 
+import { queries as q } from "~/data/keyStore";
 import { deleteLyric } from "~/data/lyric/api";
-import { queries as q } from "~/queries/keyStore";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 

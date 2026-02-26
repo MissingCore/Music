@@ -3,14 +3,14 @@ import { ne } from "drizzle-orm";
 
 import { playlists } from "~/db/schema";
 
-import { getAlbum, getAlbumsSummary } from "~/data/album/api";
-import { getArtist, getArtistsSummary } from "~/data/artist/api";
-import { getFavoriteLists } from "~/data/favorite/api";
-import { getFolder } from "~/data/folder/api";
-import { getGenre, getGenresSummary } from "~/data/genre/api";
-import { getLyric, getLyricsSummary } from "~/data/lyric/api";
-import { getPlaylist, getPlaylistsSummary } from "~/data/playlist/api";
-import { getRecentMedia } from "~/data/recent/api";
+import { getAlbum, getAlbumsSummary } from "./album/api";
+import { getArtist, getArtistsSummary } from "./artist/api";
+import { getFavoriteLists } from "./favorite/api";
+import { getFolder } from "./folder/api";
+import { getGenre, getGenresSummary } from "./genre/api";
+import { getLyric, getLyricsSummary } from "./lyric/api";
+import { getPlaylist, getPlaylistsSummary } from "./playlist/api";
+import { getRecentMedia } from "./recent/api";
 import {
   getSortedTracks,
   getTrack,
@@ -18,7 +18,7 @@ import {
   getTrackGenres,
   getTrackLyrics,
   getTrackPlaylists,
-} from "~/data/track/api";
+} from "./track/api";
 
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import type { ScreenSortOptions } from "~/stores/ViewPreference/constants";

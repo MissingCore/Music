@@ -4,9 +4,9 @@ import { useTranslation } from "react-i18next";
 import type { playlists } from "~/db/schema";
 
 import { Resynchronize } from "~/stores/Playback/actions";
-import { queries as q } from "~/queries/keyStore";
 import { createPlaylist, deletePlaylist, updatePlaylist } from "./api";
 import { sanitizePlaylistName } from "./utils";
+import { queries as q } from "../keyStore";
 
 import { wait } from "~/utils/promise";
 

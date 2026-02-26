@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import { queries as q } from "~/queries/keyStore";
 import { updateArtist } from "./api";
+import { queries as q } from "../keyStore";
 
 //#region Queries
 export function useArtist(artistName: string) {

@@ -2,9 +2,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
 import { Resynchronize } from "~/stores/Playback/actions";
-import { queries as q } from "~/queries/keyStore";
 import { updateAlbum } from "./api";
 import { AlbumArtistsKey } from "./utils";
+import { queries as q } from "../keyStore";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { formatSeconds } from "~/utils/number";
