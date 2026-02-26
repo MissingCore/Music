@@ -342,9 +342,6 @@ export const tracksToGenresRelations = relations(tracksToGenres, ({ one }) => ({
 
 //#region Types
 export type Artist = InferSelectModel<typeof artists>;
-export type ArtistWithTracks = Prettify<
-  Artist & { tracks: TrackWithRelations[] }
->;
 
 export type Album = InferSelectModel<typeof albums>;
 export type AlbumWithTracks = Prettify<Album & { tracks: Track[] }>;
@@ -367,28 +364,13 @@ export type HiddenTrack = InferSelectModel<typeof hiddenTracks>;
 
 export type InvalidTrack = InferSelectModel<typeof invalidTracks>;
 
-export type Playlist = InferSelectModel<typeof playlists>;
-export type PlaylistWithJunction = Prettify<
-  Playlist & { tracksToPlaylists: Array<{ track: TrackWithRelations }> }
->;
-export type PlaylistWithTracks = Prettify<
-  Playlist & { tracks: TrackWithRelations[] }
->;
-
-export type TrackToPlaylist = InferSelectModel<typeof tracksToPlaylists>;
-
 export type FileNode = InferSelectModel<typeof fileNodes>;
-export type FileNodeWithParent = Prettify<
-  FileNode & { parent: FileNode | null }
->;
 
 export type PlayedMediaList = Prettify<
   InferSelectModel<typeof playedMediaLists> & PlayFromSource
 >;
 
 export type WaveformSample = InferSelectModel<typeof waveformSamples>;
-
-export type Lyric = InferSelectModel<typeof lyrics>;
 
 export type Genre = InferSelectModel<typeof genres>;
 //#endregion
