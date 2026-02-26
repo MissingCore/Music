@@ -80,7 +80,7 @@ export function useUpdateTrack(trackId: string) {
     mutationFn: ({ artwork }: { artwork?: string | null }) =>
       updateTrack(trackId, { altArtwork: artwork }),
     onSuccess: async () => {
-      // Changing the album artwork affects a lot of things, so we'll just
+      // Changing the track artwork affects a lot of things, so we'll just
       // clear all the queries.
       clearAllQueries();
 
