@@ -5,17 +5,16 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { z } from "zod/mini";
 
-import type { SlimTrackWithAlbum } from "~/db/slimTypes";
-
 import i18next from "~/modules/i18n";
 import { Add } from "~/resources/icons/Add";
 import { Cancel } from "~/resources/icons/Cancel";
 import { CheckCircle } from "~/resources/icons/CheckCircle";
 import { DragHandle } from "~/resources/icons/DragHandle";
-import { getArtistsString } from "~/api/artist.utils";
-import { TrackList, getTrackArtwork } from "~/api/track.utils";
+//! FIXME: We probably want to import this from somewhere more "general".
+import type { GenreTrack } from "~/data/genre/types";
 import { useDeletePlaylist } from "~/data/playlist/queries";
 import { sanitizePlaylistName } from "~/data/playlist/utils";
+import { mergeTracks } from "~/data/track/utils";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
@@ -173,10 +172,7 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
         album: ({ tracks, ...album }) => {
           setFields((prev) =>
             getTracksFields(
-              TrackList.merge(
-                prev.tracks,
-                tracks.map((t) => formatTrackForForm({ ...t, album })),
-              ),
+              mergeTracks(prev.tracks, tracks.map(formatTrackForForm)),
             ),
           );
           toast(
@@ -187,7 +183,7 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
         folder: ({ name, tracks }) => {
           setFields((prev) =>
             getTracksFields(
-              TrackList.merge(prev.tracks, tracks.map(formatTrackForForm)),
+              mergeTracks(prev.tracks, tracks.map(formatTrackForForm)),
             ),
           );
           toast(i18next.t("template.entryAdded", { name }), ToastOptions);
@@ -468,12 +464,12 @@ function useFormState() {
 //#endregion
 
 //#region Utils
-export function formatTrackForForm(t: SlimTrackWithAlbum) {
+export function formatTrackForForm(track: GenreTrack) {
   return {
-    id: t.id,
-    name: t.name,
-    artists: getArtistsString(t.tracksToArtists),
-    artwork: getTrackArtwork(t),
+    id: track.id,
+    name: track.name,
+    artists: track.artists?.join(", ") ?? "—",
+    artwork: track.artwork,
   };
 }
 

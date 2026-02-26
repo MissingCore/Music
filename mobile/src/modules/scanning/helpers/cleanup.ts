@@ -12,14 +12,10 @@ import {
   playedMediaLists,
   playlists,
   tracks,
-  tracksToArtists,
-  tracksToGenres,
-  tracksToLyrics,
-  tracksToPlaylists,
-  waveformSamples,
 } from "~/db/schema";
 
 import { RECENT_RANGE_MS } from "~/data/recent/api";
+import { TrackRelationTables } from "~/data/track/constants";
 import { Queue } from "~/stores/Playback/actions";
 
 import { ImageDirectory, deleteImage } from "~/lib/file-system";
@@ -139,13 +135,7 @@ export const AppCleanUp = {
         ...[hiddenTracks, invalidTracks, tracks].map((sch) =>
           db.delete(sch).where(inArray(sch.id, unusedTrackIds)),
         ),
-        ...[
-          tracksToArtists,
-          tracksToGenres,
-          tracksToLyrics,
-          tracksToPlaylists,
-          waveformSamples,
-        ].map((sch) =>
+        ...TrackRelationTables.map((sch) =>
           db.delete(sch).where(inArray(sch.trackId, unusedTrackIds)),
         ),
       ]);

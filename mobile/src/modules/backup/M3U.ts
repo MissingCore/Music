@@ -6,8 +6,8 @@ import { File, Paths } from "expo-file-system";
 import { db } from "~/db";
 import { tracks } from "~/db/schema";
 
-import { getTracks } from "~/api/track";
 import { getPlaylist } from "~/data/playlist/api";
+import { getTracks } from "~/data/track/api";
 
 import i18next from "~/modules/i18n";
 
@@ -59,11 +59,7 @@ export async function readM3UPlaylist() {
         ? trackPaths.map((path) => joinPaths(fileDirectory, path))
         : trackPaths;
 
-  const playlistTracks = await getTracks({
-    where: [inArray(tracks.uri, trackUris)],
-    columns: ["id", "name", "artwork", "uri"],
-    albumColumns: ["name", "artwork"],
-  });
+  const playlistTracks = await getTracks([inArray(tracks.uri, trackUris)]);
 
   // Ensure found values are in order.
   const playlistTrackMap = Object.fromEntries(

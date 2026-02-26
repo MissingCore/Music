@@ -3,8 +3,6 @@ import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import type { TrackWithRelations } from "~/db/schema";
-
 import type { Icon } from "~/resources/icons/type";
 import { Delete } from "~/resources/icons/Delete";
 import { Edit } from "~/resources/icons/Edit";
@@ -15,11 +13,11 @@ import { PlaylistAdd } from "~/resources/icons/PlaylistAdd";
 import { QueueMusic } from "~/resources/icons/QueueMusic";
 import { Schedule } from "~/resources/icons/Schedule";
 import {
-  useAddToPlaylist,
   useHideTrack,
-  useRemoveFromPlaylist,
+  useToggleTrackInPlaylist,
   useTrackFavoriteStatus,
-} from "~/queries/track";
+} from "~/data/track/queries";
+import type { Track } from "~/data/track/types";
 import { Queue } from "~/stores/Playback/actions";
 import { useSessionStore } from "~/stores/Session/store";
 
@@ -76,7 +74,7 @@ export function TrackSheet() {
 }
 
 //#region Introduction
-function TrackIntro({ data }: { data: TrackWithRelations }) {
+function TrackIntro({ data }: { data: Track }) {
   const navigation = useNavigation();
   const currNavRoutes = useNavigationState((s) => s.routes);
 
@@ -97,7 +95,7 @@ function TrackIntro({ data }: { data: TrackWithRelations }) {
           </StyledText>
         </Marquee>
         <ArtistsLink
-          artistNames={data.tracksToArtists.map((rel) => rel.artistName)}
+          artists={data.artists}
           beforeNavigation={() => TrueSheet.dismiss(GLOBAL_SHEET_KEY)}
           popStrategy={onNowPlaying ? "popScreen" : undefined}
           marqueeShadowColor="surfaceBright"
@@ -107,10 +105,10 @@ function TrackIntro({ data }: { data: TrackWithRelations }) {
             <Pressable
               onPress={sheetAction(() => {
                 if (onNowPlaying) navigation.goBack();
-                navigation.navigate("Album", { id: data.album!.id });
+                navigation.navigate("Album", { id: data.albumId! });
               })}
             >
-              <StyledText dim>{data.album.name}</StyledText>
+              <StyledText dim>{data.album}</StyledText>
             </Pressable>
           </Marquee>
         ) : null}
@@ -121,7 +119,7 @@ function TrackIntro({ data }: { data: TrackWithRelations }) {
 //#endregion
 
 //#region Metadata
-function TrackMetadata({ data }: { data: TrackWithRelations }) {
+function TrackMetadata({ data }: { data: Track }) {
   return (
     <View className="gap-4 rounded-md bg-surfaceContainerLowest p-4">
       <Marquee
@@ -161,35 +159,22 @@ function TrackMetadata({ data }: { data: TrackWithRelations }) {
 
 //#region Actions
 /** Actions that can be understood with just an icon. */
-function IconActions(props: {
-  data: TrackWithRelations;
-  editArtwork: VoidFunction;
-}) {
+function IconActions(props: { data: Track; editArtwork: VoidFunction }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { data: favoriteStatus } = useTrackFavoriteStatus(props.data.id);
-  const addToPlaylist = useAddToPlaylist(props.data.id);
-  const removeFromPlaylist = useRemoveFromPlaylist(props.data.id);
+  const toggleInPlaylist = useToggleTrackInPlaylist(props.data.id);
   const hideTrack = useHideTrack();
 
   const favStatus = favoriteStatus ?? false;
-  const isFav =
-    addToPlaylist.isPending || removeFromPlaylist.isPending
-      ? !favStatus
-      : favStatus;
+  const isFav = toggleInPlaylist.isPending ? !favStatus : favStatus;
 
   return (
     <View className="flex-row justify-between gap-1 rounded-md bg-surfaceContainerLowest px-1">
       <IconButton
         Icon={Favorite}
         accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
-        onPress={() =>
-          mutateGuard(
-            // @ts-expect-error - We don't care about return type.
-            isFav ? removeFromPlaylist : addToPlaylist,
-            FavoritesPlaylistKey,
-          )
-        }
+        onPress={() => mutateGuard(toggleInPlaylist, FavoritesPlaylistKey)}
         filled={isFav}
         size="md"
       />

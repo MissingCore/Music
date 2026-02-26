@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { useSortedTracks } from "~/queries/track";
+import { useSortedTracks } from "~/data/track/queries";
 import { useDelayedReady } from "~/hooks/useDelayedReady";
 
 import { NScrollListLayout } from "~/navigation/layouts/NScrollLayout";

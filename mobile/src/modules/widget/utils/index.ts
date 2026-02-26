@@ -1,5 +1,3 @@
-import { getArtistsString } from "~/api/artist.utils";
-import { getTrackArtwork } from "~/api/track.utils";
 import { playbackStore } from "~/stores/Playback/store";
 
 import { updateWidgets } from "./update";
@@ -13,8 +11,8 @@ export function getWidgetData(): PlayerWidgetData {
     if (activeTrack) {
       track = {
         title: activeTrack.name,
-        artist: getArtistsString(activeTrack.tracksToArtists, false),
-        artwork: getTrackArtwork(activeTrack),
+        artist: activeTrack.artists?.join(", ") || null,
+        artwork: activeTrack.artwork,
       };
     }
     return { track, isPlaying };

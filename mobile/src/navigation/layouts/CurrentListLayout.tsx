@@ -167,7 +167,7 @@ function ListInfo(props: ListInfoProps) {
           <Em className="text-lg">{props.title}</Em>
         </Marquee>
         {props.artists ? (
-          <ArtistsLink artistNames={props.artists} popStrategy="popTo" />
+          <ArtistsLink artists={props.artists} popStrategy="popTo" />
         ) : null}
         <Marquee contentContainerClassName="gap-0">
           <StyledText dim className="text-xxs">

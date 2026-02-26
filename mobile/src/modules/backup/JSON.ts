@@ -10,15 +10,15 @@ import { db } from "~/db";
 import { albums, playlists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import { getTracks } from "~/api/track";
-import { TrackList } from "~/api/track.utils";
-import { getAlbums } from "~/data/album/api";
+import { getAlbumsSummary } from "~/data/album/api";
 import {
   createPlaylist,
   getPlaylistsSummary,
   updatePlaylist,
 } from "~/data/playlist/api";
 import { sanitizePlaylistName } from "~/data/playlist/utils";
+import { getTracks } from "~/data/track/api";
+import { mergeTracks } from "~/data/track/utils";
 
 import { pickDirectory } from "~/lib/file-system";
 import { clearAllQueries } from "~/lib/react-query";
@@ -63,7 +63,7 @@ const MusicBackup = z.object({
 //#region Helpers
 /** Creates a factory function that finds albums associated to `RawAlbum`. */
 async function findExistingAlbumsFactory() {
-  const allAlbums = await getAlbums();
+  const allAlbums = await getAlbumsSummary();
   return (entries: Array<z.infer<typeof RawAlbum>>) => {
     return entries
       .map((entry) =>
@@ -87,7 +87,7 @@ async function findExistingTracksFactory() {
           (t) =>
             t.name === entry.name &&
             t.rawArtistName === entry.artistName &&
-            t.album?.name === (entry.albumName || undefined),
+            t.album === (entry.albumName || null),
         ),
       )
       .filter((entry) => entry !== undefined);
@@ -103,7 +103,7 @@ async function findExistingTracksFactory() {
 async function exportBackup() {
   // Get favorited values.
   const [favAlbums, favPlaylists] = await Promise.all([
-    getAlbums(false, [eq(albums.isFavorite, true)]),
+    getAlbumsSummary(false, [eq(albums.isFavorite, true)]),
     getPlaylistsSummary(false, [eq(playlists.isFavorite, true)]),
   ]);
   // Get all user-generated playlists.
@@ -177,10 +177,7 @@ async function importBackup() {
       // Create or update playlist to have the current track order.
       if (exists) {
         await updatePlaylist(name, {
-          tracks: TrackList.merge<{ id: string }>(
-            exists.tracks,
-            playlistTracks,
-          ),
+          tracks: mergeTracks(exists.tracks, playlistTracks),
         });
       } else await createPlaylist({ name, tracks: playlistTracks });
     }),

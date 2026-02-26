@@ -2,17 +2,12 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import { createId } from "@paralleldrive/cuid2";
 import TrackPlayer from "@weights-ai/react-native-track-player";
 
-import type { TrackWithRelations } from "~/db/schema";
-
 import i18next from "~/modules/i18n";
 
+import type { Track } from "~/data/track/types";
+import { formatTrackforPlayer } from "~/data/track/utils";
 import { playbackStore } from "../store";
-import {
-  extractTrackId,
-  formatTrackforPlayer,
-  getTrackIdsList,
-  getUpdatedLists,
-} from "../utils";
+import { extractTrackId, getTrackIdsList, getUpdatedLists } from "../utils";
 import { preferenceStore } from "../../Preference/store";
 
 import { ToastOptions } from "~/lib/toast";
@@ -110,7 +105,7 @@ export async function removeIds(ids: string[]) {
   // If all tracks were removed.
   if (updatedQueue.length === 0) return reset();
 
-  let newActiveTrack: TrackWithRelations | undefined = activeTrack;
+  let newActiveTrack: Track | undefined = activeTrack;
   // If the active track was removed.
   if (activeTrackRemoved) {
     const newActiveTrackKey = updatedQueue[newQueuePosition];

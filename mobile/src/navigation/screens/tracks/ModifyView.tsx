@@ -14,12 +14,12 @@ import { tracksToArtists, tracksToGenres } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 import { Info } from "~/resources/icons/Info";
-import { updateTrack } from "~/api/track";
-import { useTrack, useTrackGenres } from "~/queries/track";
 import { upsertAlbums } from "~/data/album/api";
 import { AlbumArtistsKey } from "~/data/album/utils";
 import { createArtists } from "~/data/artist/api";
 import { createGenres } from "~/data/genre/api";
+import { updateTrack } from "~/data/track/api";
+import { useTrack, useTrackGenres } from "~/data/track/queries";
 import { Resynchronize } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { getArtworkUri } from "~/modules/scanning/helpers/artwork";
@@ -76,10 +76,10 @@ export default function ModifyTrack({
         id: trackQuery.data.id,
         uri: trackQuery.data.uri,
         name: trackQuery.data.name,
-        artists: trackQuery.data.tracksToArtists.map((t) => t.artistName),
-        album: trackQuery.data.album?.name ?? null,
-        albumArtists: trackQuery.data.album
-          ? AlbumArtistsKey.deconstruct(trackQuery.data.album.artistsKey)
+        artists: trackQuery.data.artists ?? [],
+        album: trackQuery.data.album ?? null,
+        albumArtists: trackQuery.data.albumArtistsKey
+          ? AlbumArtistsKey.deconstruct(trackQuery.data.albumArtistsKey)
           : [],
         year: trackQuery.data.year,
         disc: trackQuery.data.disc,

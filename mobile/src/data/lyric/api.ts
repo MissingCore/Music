@@ -57,8 +57,9 @@ export async function getLyricsSummary() {
       trackCount: count(tracks.id),
     })
     .from(lyrics)
-    .innerJoin(tracksToLyrics, eq(lyrics.id, tracksToLyrics.lyricId))
-    .innerJoin(tracks, eq(tracksToLyrics.trackId, tracks.id))
+    //? We use `leftJoin` instead of `innerJoin` as we want lyrics with no track relations.
+    .leftJoin(tracksToLyrics, eq(lyrics.id, tracksToLyrics.lyricId))
+    .leftJoin(tracks, eq(tracksToLyrics.trackId, tracks.id))
     .groupBy(lyrics.id)
     .orderBy(iAsc(lyrics.name));
 

@@ -3,8 +3,6 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import type { TrackWithRelations } from "~/db/schema";
-
 import { Favorite } from "~/resources/icons/Favorite";
 import { KeyboardArrowDown } from "~/resources/icons/KeyboardArrowDown";
 import { MoreHoriz } from "~/resources/icons/MoreHoriz";
@@ -12,10 +10,10 @@ import { MoreVert } from "~/resources/icons/MoreVert";
 import { Timer } from "~/resources/icons/Timer";
 import { ViewAgenda } from "~/resources/icons/ViewAgenda";
 import {
-  useAddToPlaylist,
-  useRemoveFromPlaylist,
+  useToggleTrackInPlaylist,
   useTrackFavoriteStatus,
-} from "~/queries/track";
+} from "~/data/track/queries";
+import type { Track } from "~/data/track/types";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
@@ -65,7 +63,7 @@ export default function NowPlaying() {
 }
 
 //#region Metadata
-function Metadata({ track }: { track: TrackWithRelations }) {
+function Metadata({ track }: { track: Track }) {
   const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
@@ -76,17 +74,17 @@ function Metadata({ track }: { track: TrackWithRelations }) {
           <StyledText className="text-xl/[1.125]">{track.name}</StyledText>
         </Marquee>
         <ArtistsLink
-          artistNames={track.tracksToArtists.map((rel) => rel.artistName)}
+          artists={track.artists}
           popStrategy="popScreen"
           className="text-sm/[1.125]"
         />
         {track.album ? (
           <Marquee>
             <Pressable
-              onPress={() => navigation.popTo("Album", { id: track.album!.id })}
+              onPress={() => navigation.popTo("Album", { id: track.albumId })}
             >
               <StyledText dim className="text-sm/[1.125]">
-                {track.album.name}
+                {track.album}
               </StyledText>
             </Pressable>
           </Marquee>
@@ -119,26 +117,16 @@ function Metadata({ track }: { track: TrackWithRelations }) {
 function FavoriteButton(props: { trackId: string }) {
   const { t } = useTranslation();
   const { data: favoriteStatus } = useTrackFavoriteStatus(props.trackId); // Since we don't revalidate the Zustand store.
-  const addToPlaylist = useAddToPlaylist(props.trackId);
-  const removeFromPlaylist = useRemoveFromPlaylist(props.trackId);
+  const toggleInPlaylist = useToggleTrackInPlaylist(props.trackId);
 
   const favStatus = favoriteStatus ?? false;
-  const isFav =
-    addToPlaylist.isPending || removeFromPlaylist.isPending
-      ? !favStatus
-      : favStatus;
+  const isFav = toggleInPlaylist.isPending ? !favStatus : favStatus;
 
   return (
     <IconButton
       Icon={Favorite}
       accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
-      onPress={() =>
-        mutateGuard(
-          // @ts-expect-error - We don't care about return type.
-          isFav ? removeFromPlaylist : addToPlaylist,
-          FavoritesPlaylistKey,
-        )
-      }
+      onPress={() => mutateGuard(toggleInPlaylist, FavoritesPlaylistKey)}
       filled={isFav}
       size="lg"
     />

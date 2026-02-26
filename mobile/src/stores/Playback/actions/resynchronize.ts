@@ -1,18 +1,15 @@
 import TrackPlayer from "@weights-ai/react-native-track-player";
 
-import { getTrack } from "~/api/track";
 import {
   removePlayedMediaList,
   updatePlayedMediaList,
 } from "~/data/recent/api";
+import { getTrack } from "~/data/track/api";
+import { formatTrackforPlayer } from "~/data/track/utils";
 
 import { playbackStore } from "../store";
 import type { PlayFromSource } from "../types";
-import {
-  arePlaybackSourceEqual,
-  formatTrackforPlayer,
-  getSourceName,
-} from "../utils";
+import { arePlaybackSourceEqual, getSourceName } from "../utils";
 
 /** See if we should revalidate the `activeTrack` value stored in the Playback store. */
 export async function onActiveTrack(args: {
@@ -22,7 +19,7 @@ export async function onActiveTrack(args: {
 }) {
   const { activeTrack } = playbackStore.getState();
   if (!activeTrack) return;
-  if (args.type === "album" && activeTrack.album?.id !== args.id) return;
+  if (args.type === "album" && activeTrack.albumId !== args.id) return;
   if (args.type === "track" && activeTrack.id !== args.id) return;
 
   try {

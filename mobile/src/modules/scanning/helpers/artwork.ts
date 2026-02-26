@@ -8,8 +8,8 @@ import { eq, inArray, isNotNull, or } from "drizzle-orm";
 import { db } from "~/db";
 import { albums, tracks } from "~/db/schema";
 
-import { getTracks, updateTrack } from "~/api/track";
-import { getAlbums, updateAlbum } from "~/data/album/api";
+import { getAlbumsSummary, updateAlbum } from "~/data/album/api";
+import { getTracks, updateTrack } from "~/data/track/api";
 import { scanningProgressStore } from "../ScanningProgress";
 
 import { ImageDirectory } from "~/lib/file-system";
@@ -28,7 +28,9 @@ export async function findAndSaveArtwork() {
   const stopwatch = new Stopwatch();
 
   // Ensure we don't unnecessarily search for artwork.
-  const albumsWithCovers = await getAlbums(false, [isNotNull(albums.artwork)]);
+  const albumsWithCovers = await getAlbumsSummary(false, [
+    isNotNull(albums.artwork),
+  ]);
   const idsWithCover = albumsWithCovers.map(({ id }) => id);
   await db
     .update(tracks)
@@ -37,11 +39,7 @@ export async function findAndSaveArtwork() {
       or(inArray(tracks.albumId, idsWithCover), isNotNull(tracks.artwork)),
     );
 
-  const uncheckedTracks = await getTracks({
-    columns: ["id", "name", "albumId", "uri"],
-    withAlbum: false,
-    where: [eq(tracks.fetchedArt, false)],
-  });
+  const uncheckedTracks = await getTracks([eq(tracks.fetchedArt, false)]);
   // Sort tracks to optimize SQL queries.
   const singles: PartialTrack[] = [];
   const albumTracks: Record<string, PartialTrack[]> = {};

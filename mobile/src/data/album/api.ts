@@ -4,6 +4,7 @@ import {
   eq,
   getTableColumns,
   inArray,
+  isNotNull,
   max,
   min,
   sql,
@@ -12,11 +13,10 @@ import {
 
 import { db } from "~/db";
 import { albums, albumsToArtists, artists, tracks } from "~/db/schema";
-import type { SlimAlbum, SlimAlbumWithTracks } from "~/db/slimTypes";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { omitKeys } from "~/utils/object";
-import type { AlbumTrack } from "./types";
+import type { AlbumSummary, AlbumSummaryTrack, AlbumTrack } from "./types";
 import { AlbumArtistsKey } from "./utils";
 import type { DrizzleFilter } from "../types";
 import { unencodeJSONArray } from "../utils";
@@ -102,55 +102,51 @@ export async function getAlbumTracks<
   ) as TOnlyIds extends true ? Array<{ id: string }> : AlbumTrack[];
 }
 
-/** Return albums in their "slim" form. */
-export async function getAlbums<
+/** Get information summarizing each album (sorted by names). */
+export async function getAlbumsSummary<
   TWithTracks extends boolean | undefined = false,
 >(withTracks?: TWithTracks, conditions?: DrizzleFilter) {
-  return db.query.albums.findMany({
-    where: and(...(conditions ?? [])),
-    columns: { id: true, name: true, artistsKey: true, artwork: true },
-    ...(withTracks
-      ? {
-          with: {
-            tracks: {
-              columns: { id: true, name: true, artwork: true },
-              with: {
-                tracksToArtists: {
-                  columns: { artistName: true },
-                },
-              },
-              orderBy: [iAsc(tracks.disc), iAsc(tracks.track)],
-            },
-          },
-        }
-      : {}),
-    orderBy: [iAsc(albums.name), iAsc(albums.artistsKey)],
-  }) as unknown as Promise<
-    Array<TWithTracks extends true ? SlimAlbumWithTracks : SlimAlbum>
-  >;
-}
+  const orderedAlbumTracks = getOrderedAlbumTracksView();
 
-/** Get information summarizing each album (sorted by names). */
-export async function getAlbumsSummary(conditions?: DrizzleFilter) {
   const results = await db
     .select({
       ...albumFields,
-      duration: sum(tracks.duration),
-      trackCount: count(tracks.id),
+      duration: sum(orderedAlbumTracks.duration),
+      trackCount: count(orderedAlbumTracks.id),
+      //! This field is "hacked" in.
+      ...(withTracks
+        ? {
+            tracks: sql<string>`
+              json_group_array(
+                json_object(
+                  'id', ${orderedAlbumTracks.id},
+                  'name', ${orderedAlbumTracks.name},
+                  'artwork', ${orderedAlbumTracks.artwork},
+                  'artists', ${orderedAlbumTracks.artists}
+                )
+              )`.as("grouped_tracks"),
+          }
+        : {}),
     })
     .from(albums)
     .where(and(...(conditions ?? [])))
-    .innerJoin(tracks, eq(albums.id, tracks.albumId))
+    .innerJoin(orderedAlbumTracks, eq(albums.id, orderedAlbumTracks.albumId))
     .groupBy(albums.name)
     .orderBy(iAsc(albums.name), iAsc(albums.artistsKey));
 
   return results
-    .map(({ artistsKey, ...album }) => ({
+    .map(({ artistsKey, tracks, ...album }) => ({
       ...album,
+      artistsKey,
       artistName: AlbumArtistsKey.toString(artistsKey),
       duration: Number(album.duration) || 0,
+      ...(withTracks
+        ? { tracks: parseAlbumTracks(album.artwork, tracks) }
+        : {}),
     }))
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .sort((a, b) => a.name.localeCompare(b.name)) as TWithTracks extends true
+    ? Array<AlbumSummary & { tracks: AlbumSummaryTrack[] }>
+    : AlbumSummary[];
 }
 //#endregion
 
@@ -198,5 +194,49 @@ export function upsertAlbums(entries: InsertedAlbum[]) {
 
     return results;
   });
+}
+//#endregion
+
+//#region Internal Utils
+function getOrderedAlbumTracksView() {
+  const orderedTrackArtists = getOrderedTrackArtistsView();
+
+  return db
+    .select({
+      id: tracks.id,
+      name: tracks.name,
+      albumId: tracks.albumId,
+      disc: tracks.disc,
+      track: tracks.track,
+      duration: tracks.duration,
+      artwork: tracks.artwork,
+      /** We need to unencode these fields. */
+      artists:
+        sql<string>`json_group_array(${orderedTrackArtists.artistName})`.as(
+          "grouped_artists",
+        ),
+    })
+    .from(tracks)
+    .where(isNotNull(tracks.albumId))
+    .leftJoin(orderedTrackArtists, eq(tracks.id, orderedTrackArtists.trackId))
+    .groupBy(tracks.id)
+    .orderBy(iAsc(tracks.disc), iAsc(tracks.track))
+    .as("ordered_album_tracks_view");
+}
+
+function parseAlbumTracks(albumArtwork: string | null, tracks?: string) {
+  if (!tracks) return [];
+  let results: AlbumSummaryTrack[] = [];
+  try {
+    const asArray: any[] = JSON.parse(tracks);
+    results = asArray
+      .filter((i) => i.id !== null)
+      .map((i) => ({
+        ...i,
+        artwork: i.artwork ?? albumArtwork,
+        artists: unencodeJSONArray(i.artists),
+      }));
+  } catch {}
+  return results;
 }
 //#endregion

@@ -1,43 +1,35 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { db } from "~/db";
-import type { TrackWithRelations } from "~/db/schema";
 import { hiddenTracks } from "~/db/schema";
 
-import {
-  addToPlaylist,
-  deleteTracks,
-  removeFromPlaylist,
-  updateTrack,
-} from "~/api/track";
-import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { Queue, Resynchronize } from "~/stores/Playback/actions";
-import { queries as q } from "./keyStore";
+import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
+import { queries as q } from "~/queries/keyStore";
+import { deleteTracks, toggleTrackInPlaylist, updateTrack } from "./api";
+import type { Track } from "./types";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
-import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 //#region Queries
-/** Get specified track. */
 export function useTrack(trackId: string) {
   return useQuery({ ...q.tracks.detail(trackId) });
 }
 
-/** Returns if the track is favorited. */
+//#region Relation Queries
 export function useTrackFavoriteStatus(trackId: string) {
   return useQuery({ ...q.tracks.detail(trackId)._ctx.isFavorite });
 }
 
-/** Return the names of the playlists this track is in. */
-export function useTrackPlaylists(trackId: string) {
-  return useQuery({ ...q.tracks.detail(trackId)._ctx.playlists });
-}
-
-/** Return the names of the genres the track has. */
 export function useTrackGenres(trackId: string) {
   return useQuery({ ...q.tracks.detail(trackId)._ctx.genres });
 }
+
+export function useTrackPlaylists(trackId: string) {
+  return useQuery({ ...q.tracks.detail(trackId)._ctx.playlists });
+}
+//#endregion
 
 export function useSortedTracks(isReady = true) {
   const trackIsAsc = useViewPreferenceStore((s) => s.trackIsAsc);
@@ -50,31 +42,9 @@ export function useSortedTracks(isReady = true) {
 //#endregion
 
 //#region Mutations
-/** Add track to playlist. */
-export function useAddToPlaylist(trackId: string) {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (playlistName: string) =>
-      addToPlaylist({ trackId, playlistName }),
-    onSuccess: (_, playlistName) => {
-      if (playlistName === FavoritesPlaylistKey) {
-        queryClient.invalidateQueries({
-          queryKey: q.tracks.detail(trackId)._ctx.isFavorite.queryKey,
-        });
-      }
-      queryClient.invalidateQueries({
-        queryKey: q.tracks.detail(trackId)._ctx.playlists.queryKey,
-      });
-      queryClient.invalidateQueries({ queryKey: q.playlists._def });
-      queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
-    },
-  });
-}
-
-/** Hide a track. */
 export function useHideTrack() {
   return useMutation({
-    mutationFn: async ({ track }: { track: TrackWithRelations }) => {
+    mutationFn: async ({ track }: { track: Track }) => {
       const { id, uri, name } = track;
       await wait(1);
       await db
@@ -90,20 +60,14 @@ export function useHideTrack() {
   });
 }
 
-/** Remove track from playlist. */
-export function useRemoveFromPlaylist(trackId: string) {
+export function useToggleTrackInPlaylist(trackId: string) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (playlistName: string) =>
-      removeFromPlaylist({ trackId, playlistName }),
-    onSuccess: (_, playlistName) => {
-      if (playlistName === FavoritesPlaylistKey) {
-        queryClient.invalidateQueries({
-          queryKey: q.tracks.detail(trackId)._ctx.isFavorite.queryKey,
-        });
-      }
+      toggleTrackInPlaylist({ trackId, playlistName }),
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: q.tracks.detail(trackId)._ctx.playlists.queryKey,
+        queryKey: q.tracks.detail(trackId).queryKey,
       });
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
@@ -111,8 +75,7 @@ export function useRemoveFromPlaylist(trackId: string) {
   });
 }
 
-/** Update specified track artwork. */
-export function useUpdateTrackArtwork(trackId: string) {
+export function useUpdateTrack(trackId: string) {
   return useMutation({
     mutationFn: ({ artwork }: { artwork?: string | null }) =>
       updateTrack(trackId, { altArtwork: artwork }),

@@ -1,15 +1,8 @@
 import { createQueryKeyStore } from "@lukemorales/query-key-factory";
 import { ne } from "drizzle-orm";
 
-import { db } from "~/db";
 import { playlists } from "~/db/schema";
 
-import {
-  getSortedTracks,
-  getTrack,
-  getTrackGenres,
-  getTrackPlaylists,
-} from "~/api/track";
 import { getAlbum, getAlbumsSummary } from "~/data/album/api";
 import { getArtist, getArtistsSummary } from "~/data/artist/api";
 import { getFavoriteLists } from "~/data/favorite/api";
@@ -18,6 +11,14 @@ import { getGenre, getGenresSummary } from "~/data/genre/api";
 import { getLyric, getLyricsSummary } from "~/data/lyric/api";
 import { getPlaylist, getPlaylistsSummary } from "~/data/playlist/api";
 import { getRecentMedia } from "~/data/recent/api";
+import {
+  getSortedTracks,
+  getTrack,
+  getTrackFavoriteStatus,
+  getTrackGenres,
+  getTrackLyrics,
+  getTrackPlaylists,
+} from "~/data/track/api";
 
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import type { ScreenSortOptions } from "~/stores/ViewPreference/constants";
@@ -83,14 +84,7 @@ export const queries = createQueryKeyStore({
     }),
     forTrack: (trackId: string) => ({
       queryKey: [trackId],
-      // FIXME: Have a `getTracklyrics` in `~/data/track/api.ts`.
-      queryFn: async () => {
-        const data = await db.query.tracksToLyrics.findFirst({
-          where: (fields, { eq }) => eq(fields.trackId, trackId),
-          with: { lyric: true },
-        });
-        return data?.lyric ?? null;
-      },
+      queryFn: () => getTrackLyrics(trackId),
     }),
   },
   /** Query keys used in `useQuery` for playlists. */
@@ -109,24 +103,16 @@ export const queries = createQueryKeyStore({
   tracks: {
     sorted: (order: ScreenSortOptions<"track">, isAsc: boolean) => ({
       queryKey: [order, isAsc],
-      queryFn: () => getSortedTracks("sortedTracks", { order, isAsc }),
+      queryFn: () => getSortedTracks(false, { order, isAsc }),
     }),
     detail: (trackId: string) => ({
       queryKey: [trackId],
       queryFn: () => getTrack(trackId),
       contextQueries: {
         isFavorite: {
+          // eslint-disable-next-line @tanstack/query/exhaustive-deps
           queryKey: null,
-          queryFn: async () => {
-            const isFavorited = await db.query.tracksToPlaylists.findFirst({
-              where: (fields, { and, eq }) =>
-                and(
-                  eq(fields.playlistName, FavoritesPlaylistKey),
-                  eq(fields.trackId, trackId),
-                ),
-            });
-            return isFavorited ? true : false;
-          },
+          queryFn: () => getTrackFavoriteStatus(trackId),
         },
         genres: {
           // eslint-disable-next-line @tanstack/query/exhaustive-deps

@@ -6,7 +6,7 @@ import { useStore } from "zustand";
 
 import { db } from "~/db";
 import { tracksToPlaylists } from "~/db/schema";
-import { getTrack } from "~/api/track";
+import { getTrack } from "~/data/track/api";
 
 import { createPersistedStore } from "~/lib/zustand";
 import { resetWidgets } from "~/modules/widget/utils/update";
