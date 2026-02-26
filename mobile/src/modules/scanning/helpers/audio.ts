@@ -11,13 +11,12 @@ import { db } from "~/db";
 import type { InvalidTrack } from "~/db/schema";
 import { invalidTracks, tracksToArtists, tracksToGenres } from "~/db/schema";
 
-import { deleteTracks } from "~/api/track";
 import { upsertAlbums } from "~/data/album/api";
 import { AlbumArtistsKey } from "~/data/album/utils";
 import { createArtists } from "~/data/artist/api";
 import { createFolders } from "~/data/folder/api";
 import { createGenres } from "~/data/genre/api";
-import { upsertTracks } from "~/data/track/api";
+import { deleteTracks, upsertTracks } from "~/data/track/api";
 import { preferenceStore } from "~/stores/Preference/store";
 import { scanningProgressStore } from "../ScanningProgress";
 

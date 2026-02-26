@@ -4,7 +4,7 @@ import { db } from "~/db";
 import type { TrackWithRelations } from "~/db/schema";
 import { hiddenTracks } from "~/db/schema";
 
-import { deleteTracks } from "~/api/track";
+import { deleteTracks } from "~/data/track/api";
 import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { Queue } from "~/stores/Playback/actions";
 import { queries as q } from "./keyStore";

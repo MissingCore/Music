@@ -6,8 +6,8 @@ import TrackPlayer, {
 } from "@weights-ai/react-native-track-player";
 
 import i18next from "~/modules/i18n";
-import { deleteTracks } from "~/api/track";
 import { addPlayedTrack } from "~/data/recent/api";
+import { deleteTracks } from "~/data/track/api";
 import { playbackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { preferenceStore } from "~/stores/Preference/store";

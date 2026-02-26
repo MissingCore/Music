@@ -1,22 +1,13 @@
-import { and, eq, inArray, sql } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 
 import { db } from "~/db";
-import type { Album, InvalidTrack, Track } from "~/db/schema";
-import {
-  albums,
-  invalidTracks,
-  tracks,
-  tracksToArtists,
-  tracksToGenres,
-  tracksToLyrics,
-  tracksToPlaylists,
-  waveformSamples,
-} from "~/db/schema";
+import type { Album, Track } from "~/db/schema";
+import { albums, tracks, tracksToArtists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 import { viewPreferenceStore } from "~/stores/ViewPreference/store";
 
-import { getExcludedColumns, iAsc, iDesc } from "~/lib/drizzle";
+import { iAsc, iDesc } from "~/lib/drizzle";
 import type { BooleanPriority } from "~/utils/types";
 import type { ScreenSortOptions } from "~/stores/ViewPreference/constants";
 import { getTrackArtwork } from "./track.utils";
@@ -168,74 +159,5 @@ export async function getSortedTracks<
     .orderBy(isAsc ? iAsc(sortField) : iDesc(sortField)) as unknown as Promise<
     TMode extends "sortedIds" ? Array<{ id: string }> : PreSortedTrack[]
   >;
-}
-//#endregion
-
-//#region DELETE Methods
-type ErrorInfo = { errorName: string; errorMessage: string };
-
-/** Delete track entries, with the option of also inserting them into the `InvalidTrack` schema. */
-export async function deleteTracks(
-  entries: Array<{ id: string; errorInfo?: ErrorInfo }>,
-) {
-  if (entries.length === 0) return;
-  return db.transaction(async (tx) => {
-    const removedIds: string[] = [];
-    const erroredIds = new Set<string>();
-    const errorInfoMap: Record<string, ErrorInfo> = {};
-    for (const { id, errorInfo } of entries) {
-      removedIds.push(id);
-      if (errorInfo) {
-        erroredIds.add(id);
-        errorInfoMap[id] = errorInfo;
-      }
-    }
-
-    // Remove relations.
-    await Promise.all(
-      [
-        tracksToArtists,
-        tracksToGenres,
-        tracksToLyrics,
-        tracksToPlaylists,
-        waveformSamples,
-      ].map((sch) => tx.delete(sch).where(inArray(sch.trackId, removedIds))),
-    );
-
-    const deletedTracks = await tx
-      .delete(tracks)
-      .where(inArray(tracks.id, removedIds))
-      .returning({
-        id: tracks.id,
-        uri: tracks.uri,
-        modificationTime: tracks.modificationTime,
-      });
-
-    // Exit early if we don't need to add entries to the `InvalidTrack` schema.
-    if (erroredIds.size === 0 || deletedTracks.length === 0) return;
-
-    const invalidTracksEntries: InvalidTrack[] = [];
-    for (const deletedTrack of deletedTracks) {
-      if (!erroredIds.has(deletedTrack.id)) continue;
-      const errorInfo = errorInfoMap[deletedTrack.id];
-      if (!errorInfo) continue;
-      invalidTracksEntries.push({ ...deletedTrack, ...errorInfo });
-    }
-
-    if (invalidTracksEntries.length === 0) return;
-    // Insert into `InvalidTrack` schema.
-    await tx
-      .insert(invalidTracks)
-      .values(invalidTracksEntries)
-      .onConflictDoUpdate({
-        target: invalidTracks.id,
-        // Replace existing fields with new values.
-        set: getExcludedColumns([
-          "modificationTime",
-          "errorName",
-          "errorMessage",
-        ]),
-      });
-  });
 }
 //#endregion
