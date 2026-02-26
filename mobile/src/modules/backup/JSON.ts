@@ -11,7 +11,7 @@ import { albums, playlists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 import { TrackList } from "~/api/track.utils";
-import { getAlbums } from "~/data/album/api";
+import { getAlbumsSummary } from "~/data/album/api";
 import {
   createPlaylist,
   getPlaylistsSummary,
@@ -63,7 +63,7 @@ const MusicBackup = z.object({
 //#region Helpers
 /** Creates a factory function that finds albums associated to `RawAlbum`. */
 async function findExistingAlbumsFactory() {
-  const allAlbums = await getAlbums();
+  const allAlbums = await getAlbumsSummary();
   return (entries: Array<z.infer<typeof RawAlbum>>) => {
     return entries
       .map((entry) =>
@@ -103,7 +103,7 @@ async function findExistingTracksFactory() {
 async function exportBackup() {
   // Get favorited values.
   const [favAlbums, favPlaylists] = await Promise.all([
-    getAlbums(false, [eq(albums.isFavorite, true)]),
+    getAlbumsSummary(false, [eq(albums.isFavorite, true)]),
     getPlaylistsSummary(false, [eq(playlists.isFavorite, true)]),
   ]);
   // Get all user-generated playlists.

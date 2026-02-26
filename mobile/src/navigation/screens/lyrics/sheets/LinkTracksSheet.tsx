@@ -4,8 +4,6 @@ import { db } from "~/db";
 import { tracksToLyrics } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import { getArtistsString } from "~/api/artist.utils";
-import { getTrackArtwork } from "~/api/track.utils";
 import { queries as q } from "~/queries/keyStore";
 
 import { queryClient } from "~/lib/react-query";
@@ -30,8 +28,8 @@ export function LinkTracksSheet(props: { ref: TrueSheetRef; lyricId: string }) {
             button
             type="track"
             title={item.name}
-            description={getArtistsString(item.tracksToArtists)}
-            imageSource={getTrackArtwork(item)}
+            description={item.artists?.join(", ") ?? "—"}
+            imageSource={item.artwork}
             onPress={() =>
               linkTrackToLyric({
                 name: item.name,

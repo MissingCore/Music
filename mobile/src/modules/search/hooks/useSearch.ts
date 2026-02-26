@@ -4,18 +4,22 @@ import { useEffect, useRef, useState } from "react";
 
 import { db } from "~/db";
 import { playlists } from "~/db/schema";
-import type { SlimFolder, SlimTrackWithAlbum } from "~/db/slimTypes";
 
-import { getTracks } from "~/api/track";
-import { getAlbums } from "~/data/album/api";
+import { getAlbumsSummary } from "~/data/album/api";
 import { AlbumArtistsKey } from "~/data/album/utils";
+import { getArtistsSummary } from "~/data/artist/api";
+import type { GenreTrack } from "~/data/genre/types";
 import { getPlaylistsSummary } from "~/data/playlist/api";
+import { getTracks } from "~/data/track/api";
 
-import { iAsc } from "~/lib/drizzle";
 import { addTrailingSlash } from "~/utils/string";
 import type { Prettify } from "~/utils/types";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
-import type { SearchCategories, SearchResults } from "../types";
+import type {
+  SearchCategories,
+  SearchFolderResult,
+  SearchResults,
+} from "../types";
 import { lowerHas, lowerStart, matchSort } from "../utils";
 
 /** Returns media specified by query in the given scope. */
@@ -64,12 +68,12 @@ export function useSearch<TScope extends SearchCategories>(
             );
           } else if (mediaType === "track") {
             results = data[mediaType].filter(
-              ({ name, tracksToArtists, album }) =>
+              ({ name, artists, album }) =>
                 lowerHas(name, q) ||
                 // One of track's artist names starts with the query.
-                tracksToArtists.some((i) => lowerStart(i.artistName, q)) ||
+                artists?.some((i) => lowerStart(i, q)) ||
                 // Track's album starts with the query.
-                lowerStart(album?.name, q),
+                lowerStart(album || undefined, q),
             );
           } else {
             results = data[mediaType].filter((i) => lowerHas(i.name, q));
@@ -100,24 +104,17 @@ async function getAllMedia() {
   // too complicated to read.
   const [allAlbums, allArtists, allFolders, allPlaylists, allTracks] =
     await Promise.all([
-      getAlbums(true),
-      db.query.artists.findMany({
-        orderBy: (fields) => iAsc(fields.name),
-        //? Relation used to filter out artists with no tracks.
-        with: { tracksToArtists: { columns: { trackId: true }, limit: 1 } },
-      }),
+      getAlbumsSummary(true),
+      getArtistsSummary(),
       db.query.fileNodes.findMany({
         orderBy: (f, { asc }) => [asc(f.parentPath), asc(f.name)],
       }),
       getPlaylistsSummary(false, [ne(playlists.name, FavoritesPlaylistKey)]),
-      getTracks({
-        columns: ["id", "name", "artwork", "parentFolder"],
-        albumColumns: ["name", "artwork"],
-      }),
+      getTracks(),
     ]);
 
   // Pre-group the tracks by their `parentFolder` to make things a lot faster.
-  const groupedTracks: Record<string, SlimTrackWithAlbum[]> = {};
+  const groupedTracks: Record<string, GenreTrack[]> = {};
   allTracks.forEach(({ parentFolder, ...t }) => {
     if (!parentFolder) return;
 
@@ -126,19 +123,15 @@ async function getAllMedia() {
   });
 
   return {
-    album: allAlbums.filter(({ tracks }) => tracks.length > 0),
-    artist: allArtists
-      .filter(({ tracksToArtists }) => tracksToArtists.length > 0)
-      .map(({ tracksToArtists: _, ...artist }) => artist),
-    folder: (allFolders as SlimFolder[])
+    album: allAlbums,
+    artist: allArtists.map(({ name, artwork }) => ({ name, artwork })),
+    folder: (allFolders as SearchFolderResult[])
       .map((f) => {
         f.tracks = groupedTracks[`file:///${addTrailingSlash(f.path)}`] ?? [];
         return f;
       })
       .filter(({ tracks }) => tracks.length > 0),
-    playlist: allPlaylists.map(({ name, artwork }) => {
-      return { name, artwork };
-    }),
+    playlist: allPlaylists.map(({ name, artwork }) => ({ name, artwork })),
     track: allTracks.map(({ parentFolder: _, ...t }) => t),
   } satisfies SearchResults;
 }

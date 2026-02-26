@@ -2,16 +2,10 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import type {
-  SlimAlbumWithTracks,
-  SlimArtist,
-  SlimTrackWithAlbum,
-} from "~/db/slimTypes";
-
 import { MoreVert } from "~/resources/icons/MoreVert";
-import { getArtistsString } from "~/api/artist.utils";
 import { getTrackArtwork } from "~/api/track.utils";
 import { AlbumArtistsKey } from "~/data/album/utils";
+import type { GenreTrack } from "~/data/genre/types";
 import { presentTrackSheet } from "~/stores/Session/actions";
 
 import type { ColorRole } from "~/lib/style";
@@ -27,6 +21,8 @@ import { SearchBar } from "./SearchBar";
 import { SearchResult } from "./SearchResult";
 import { useSearch } from "../hooks/useSearch";
 import type {
+  SearchAlbumResult,
+  SearchArtistResult,
   SearchCallbacks,
   SearchCategories,
   SearchPlaylistResult,
@@ -134,7 +130,7 @@ function SearchResultsList<TScope extends SearchCategories>(
                       name: item.title,
                     })}
                     onPress={() =>
-                      presentTrackSheet((item.entry as SlimTrackWithAlbum).id)
+                      presentTrackSheet((item.entry as GenreTrack).id)
                     }
                   />
                 ) : undefined
@@ -228,7 +224,7 @@ function formatResults(results: Partial<SearchResults>, tab: SearchTab) {
           description = AlbumArtistsKey.toString(item.artistsKey);
         } else if (key === "track") {
           // @ts-expect-error - Tracks store their artists in this new field.
-          description = getArtistsString(item.tracksToArtists);
+          description = item.artists?.join(", ") ?? "—";
         }
         // @ts-expect-error - `path` should be present in these cases.
         else if (item.path) description = item.path;
@@ -247,10 +243,10 @@ function formatResults(results: Partial<SearchResults>, tab: SearchTab) {
 }
 
 type MediaRelations =
-  | { type: "album"; data: SlimAlbumWithTracks }
-  | { type: "artist"; data: SlimArtist }
+  | { type: "album"; data: SearchAlbumResult }
+  | { type: "artist"; data: SearchArtistResult }
   | { type: "playlist"; data: SearchPlaylistResult }
-  | { type: "track"; data: SlimTrackWithAlbum };
+  | { type: "track"; data: GenreTrack };
 
 /** Get the artwork of the media that'll be displayed. */
 function getArtwork({ type, data }: MediaRelations) {

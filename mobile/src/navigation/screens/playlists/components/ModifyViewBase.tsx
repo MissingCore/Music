@@ -172,10 +172,7 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
         album: ({ tracks, ...album }) => {
           setFields((prev) =>
             getTracksFields(
-              TrackList.merge(
-                prev.tracks,
-                tracks.map((t) => formatTrackForForm({ ...t, album })),
-              ),
+              TrackList.merge(prev.tracks, tracks.map(formatTrackForForm)),
             ),
           );
           toast(

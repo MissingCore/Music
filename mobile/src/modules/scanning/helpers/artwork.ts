@@ -8,7 +8,7 @@ import { eq, inArray, isNotNull, or } from "drizzle-orm";
 import { db } from "~/db";
 import { albums, tracks } from "~/db/schema";
 
-import { getAlbums, updateAlbum } from "~/data/album/api";
+import { getAlbumsSummary, updateAlbum } from "~/data/album/api";
 import { getTracks, updateTrack } from "~/data/track/api";
 import { scanningProgressStore } from "../ScanningProgress";
 
@@ -28,7 +28,9 @@ export async function findAndSaveArtwork() {
   const stopwatch = new Stopwatch();
 
   // Ensure we don't unnecessarily search for artwork.
-  const albumsWithCovers = await getAlbums(false, [isNotNull(albums.artwork)]);
+  const albumsWithCovers = await getAlbumsSummary(false, [
+    isNotNull(albums.artwork),
+  ]);
   const idsWithCover = albumsWithCovers.map(({ id }) => id);
   await db
     .update(tracks)
