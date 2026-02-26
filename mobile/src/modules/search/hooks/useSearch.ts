@@ -8,9 +8,9 @@ import { playlists } from "~/db/schema";
 import { getAlbumsSummary } from "~/data/album/api";
 import { AlbumArtistsKey } from "~/data/album/utils";
 import { getArtistsSummary } from "~/data/artist/api";
-import type { GenreTrack } from "~/data/genre/types";
 import { getPlaylistsSummary } from "~/data/playlist/api";
 import { getTracks } from "~/data/track/api";
+import type { CommonTrack } from "~/data/types";
 
 import { addTrailingSlash } from "~/utils/string";
 import type { Prettify } from "~/utils/types";
@@ -114,7 +114,7 @@ async function getAllMedia() {
     ]);
 
   // Pre-group the tracks by their `parentFolder` to make things a lot faster.
-  const groupedTracks: Record<string, GenreTrack[]> = {};
+  const groupedTracks: Record<string, CommonTrack[]> = {};
   allTracks.forEach(({ parentFolder, ...t }) => {
     if (!parentFolder) return;
 

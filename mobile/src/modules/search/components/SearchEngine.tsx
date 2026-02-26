@@ -5,7 +5,7 @@ import { View } from "react-native";
 import { MoreVert } from "~/resources/icons/MoreVert";
 import { AlbumArtistsKey } from "~/data/album/utils";
 import { getArtistsString } from "~/data/artist/utils";
-import type { GenreTrack } from "~/data/genre/types";
+import type { CommonTrack } from "~/data/types";
 import { presentTrackSheet } from "~/stores/Session/actions";
 
 import type { ColorRole } from "~/lib/style";
@@ -127,7 +127,7 @@ function SearchResultsList<TScope extends SearchCategories>(
                       name: item.title,
                     })}
                     onPress={() =>
-                      presentTrackSheet((item.entry as GenreTrack).id)
+                      presentTrackSheet((item.entry as CommonTrack).id)
                     }
                   />
                 ) : undefined

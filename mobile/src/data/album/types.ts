@@ -11,16 +11,9 @@ export type AlbumSummary = {
   id: string;
   name: string;
   artistsKey: string;
-  //! FIXME: We probably want to fix this field.
+  /** Used for home screen sorting. */
   artistName: string;
   artwork: string | null;
   duration: number;
   trackCount: number;
-};
-
-export type AlbumSummaryTrack = {
-  id: string;
-  name: string;
-  artwork: string | null;
-  artists: string[] | null;
 };

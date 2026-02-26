@@ -7,7 +7,7 @@ import { albums, fileNodes, tracks } from "~/db/schema";
 import { iAsc } from "~/lib/drizzle";
 import { addTrailingSlash } from "~/utils/string";
 import type { Maybe } from "~/utils/types";
-import type { FolderTrack } from "./types";
+import type { CommonTrack } from "../types";
 import { unencodeJSONArray } from "../utils";
 import { getOrderedTrackArtistsView } from "../views";
 
@@ -70,7 +70,7 @@ export async function getFolderTracks<
   if (!path) {
     return [] as unknown as TOnlyIds extends true
       ? Array<{ id: string }>
-      : FolderTrack[];
+      : CommonTrack[];
   }
 
   const orderedTrackArtists = getOrderedTrackArtistsView();
@@ -105,7 +105,7 @@ export async function getFolderTracks<
           ...rest,
           artists: unencodeJSONArray(artists as string),
         }))
-  ) as TOnlyIds extends true ? Array<{ id: string }> : FolderTrack[];
+  ) as TOnlyIds extends true ? Array<{ id: string }> : CommonTrack[];
 }
 //#endregion
 

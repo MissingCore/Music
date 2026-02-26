@@ -16,9 +16,9 @@ import { albums, albumsToArtists, artists, tracks } from "~/db/schema";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { omitKeys } from "~/utils/object";
-import type { AlbumSummary, AlbumSummaryTrack, AlbumTrack } from "./types";
+import type { AlbumSummary, AlbumTrack } from "./types";
 import { AlbumArtistsKey } from "./utils";
-import type { DrizzleFilter } from "../types";
+import type { CommonTrack, DrizzleFilter } from "../types";
 import { unencodeJSONArray } from "../utils";
 import { getOrderedTrackArtistsView } from "../views";
 
@@ -145,7 +145,7 @@ export async function getAlbumsSummary<
         : {}),
     }))
     .sort((a, b) => a.name.localeCompare(b.name)) as TWithTracks extends true
-    ? Array<AlbumSummary & { tracks: AlbumSummaryTrack[] }>
+    ? Array<AlbumSummary & { tracks: CommonTrack[] }>
     : AlbumSummary[];
 }
 //#endregion
@@ -226,7 +226,7 @@ function getOrderedAlbumTracksView() {
 
 function parseAlbumTracks(albumArtwork: string | null, tracks?: string) {
   if (!tracks) return [];
-  let results: AlbumSummaryTrack[] = [];
+  let results: CommonTrack[] = [];
   try {
     const asArray: any[] = JSON.parse(tracks);
     results = asArray

@@ -5,7 +5,7 @@ import { albums, genres, tracks, tracksToGenres } from "~/db/schema";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { formatSeconds } from "~/utils/number";
-import type { GenreTrack } from "./types";
+import type { CommonTrack } from "../types";
 import { unencodeJSONArray } from "../utils";
 import { getOrderedTrackArtistsView } from "../views";
 
@@ -84,7 +84,7 @@ export async function getGenreTracks<
           ...rest,
           artists: unencodeJSONArray(artists as string),
         }))
-  ) as TOnlyIds extends true ? Array<{ id: string }> : GenreTrack[];
+  ) as TOnlyIds extends true ? Array<{ id: string }> : CommonTrack[];
 }
 
 /** Get information summarizing each genre (sorted by names). */

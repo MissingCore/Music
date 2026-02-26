@@ -344,15 +344,6 @@ export const tracksToGenresRelations = relations(tracksToGenres, ({ one }) => ({
 export type Artist = InferSelectModel<typeof artists>;
 
 export type Album = InferSelectModel<typeof albums>;
-export type AlbumWithTracks = Prettify<Album & { tracks: Track[] }>;
-
-export type Track = Omit<
-  InferSelectModel<typeof tracks>,
-  "rawArtistName" | "isFavorite" | "hiddenAt"
-> & {
-  /** @deprecated Access the artist name through the new junction table. */
-  rawArtistName: string | null;
-};
 
 export type HiddenTrack = InferSelectModel<typeof hiddenTracks>;
 

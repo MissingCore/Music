@@ -11,11 +11,10 @@ import { Cancel } from "~/resources/icons/Cancel";
 import { CheckCircle } from "~/resources/icons/CheckCircle";
 import { DragHandle } from "~/resources/icons/DragHandle";
 import { getArtistsString } from "~/data/artist/utils";
-//! FIXME: We probably want to import this from somewhere more "general".
-import type { GenreTrack } from "~/data/genre/types";
 import { useDeletePlaylist } from "~/data/playlist/queries";
 import { sanitizePlaylistName } from "~/data/playlist/utils";
 import { mergeTracks } from "~/data/track/utils";
+import type { CommonTrack } from "~/data/types";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
@@ -465,7 +464,7 @@ function useFormState() {
 //#endregion
 
 //#region Utils
-export function formatTrackForForm(track: GenreTrack) {
+export function formatTrackForForm(track: CommonTrack) {
   return {
     id: track.id,
     name: track.name,

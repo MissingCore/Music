@@ -1,8 +1,7 @@
 import type { Album, FileNode } from "~/db/schema";
 
-//! FIXME: We probably want to import this from somewhere more "general".
-import type { GenreTrack } from "~/data/genre/types";
 import type { PlaylistSummary } from "~/data/playlist/types";
+import type { CommonTrack } from "~/data/types";
 import type { MediaType } from "~/stores/Playback/types";
 
 /** Categories of media that can be returned by search. */
@@ -14,7 +13,7 @@ export type SearchCallbacks = {
   artist: (artist: SearchArtistResult) => void | Promise<void>;
   folder: (folder: SearchFolderResult) => void | Promise<void>;
   playlist: (playlist: SearchPlaylistResult) => void | Promise<void>;
-  track: (track: GenreTrack) => void | Promise<void>;
+  track: (track: CommonTrack) => void | Promise<void>;
 };
 
 /** Data that can be returned from search. */
@@ -23,7 +22,7 @@ export type SearchResults = {
   artist: SearchArtistResult[];
   folder: SearchFolderResult[];
   playlist: SearchPlaylistResult[];
-  track: GenreTrack[];
+  track: CommonTrack[];
 };
 
 //#region Search Result Types
@@ -31,12 +30,12 @@ export type SearchAlbumResult = Pick<
   Album,
   "id" | "name" | "artistsKey" | "artwork"
 > & {
-  tracks: GenreTrack[];
+  tracks: CommonTrack[];
 };
 
 export type SearchArtistResult = { name: string; artwork: string | null };
 
-export type SearchFolderResult = FileNode & { tracks: GenreTrack[] };
+export type SearchFolderResult = FileNode & { tracks: CommonTrack[] };
 
 export type SearchPlaylistResult = Pick<PlaylistSummary, "name" | "artwork">;
 //#endregion

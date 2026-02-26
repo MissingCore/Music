@@ -1,6 +1,7 @@
 import type { tracks } from "~/db/schema";
 
 import type { Prettify } from "~/utils/types";
+import type { CommonTrack } from "../types";
 
 type TRACK_INTERNAL = Omit<
   typeof tracks.$inferSelect,
@@ -18,6 +19,7 @@ export type Track = Prettify<
 export type SortedTrack = {
   id: string;
   name: string;
+  /** Used for home screen sorting. */
   artistName: string | null;
   albumName: string | null;
   duration: number;
@@ -26,14 +28,10 @@ export type SortedTrack = {
   artwork: string | null;
 };
 
-export type BulkQueriedTrack = {
-  id: string;
-  name: string;
+export type BulkQueriedTrack = CommonTrack & {
   rawArtistName: string | null;
-  artwork: string | null;
   albumId: string | null;
   album: string | null;
-  artists: string[] | null;
   uri: string;
   parentFolder: string | null;
 };
