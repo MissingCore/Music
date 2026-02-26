@@ -15,6 +15,17 @@ export type Track = Prettify<
   }
 >;
 
+export type SortedTrack = {
+  id: string;
+  name: string;
+  artistName: string | null;
+  albumName: string | null;
+  duration: number;
+  discoverTime: number;
+  modificationTime: number;
+  artwork: string | null;
+};
+
 export type BulkQueriedTrack = {
   id: string;
   name: string;

@@ -3,7 +3,6 @@ import { ne } from "drizzle-orm";
 
 import { playlists } from "~/db/schema";
 
-import { getSortedTracks } from "~/api/track";
 import { getAlbum, getAlbumsSummary } from "~/data/album/api";
 import { getArtist, getArtistsSummary } from "~/data/artist/api";
 import { getFavoriteLists } from "~/data/favorite/api";
@@ -13,6 +12,7 @@ import { getLyric, getLyricsSummary } from "~/data/lyric/api";
 import { getPlaylist, getPlaylistsSummary } from "~/data/playlist/api";
 import { getRecentMedia } from "~/data/recent/api";
 import {
+  getSortedTracks,
   getTrack,
   getTrackFavoriteStatus,
   getTrackGenres,
@@ -103,7 +103,7 @@ export const queries = createQueryKeyStore({
   tracks: {
     sorted: (order: ScreenSortOptions<"track">, isAsc: boolean) => ({
       queryKey: [order, isAsc],
-      queryFn: () => getSortedTracks("sortedTracks", { order, isAsc }),
+      queryFn: () => getSortedTracks(false, { order, isAsc }),
     }),
     detail: (trackId: string) => ({
       queryKey: [trackId],
