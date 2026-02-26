@@ -1,4 +1,6 @@
-import type { Artist, TrackWithRelations, WaveformSample } from "~/db/schema";
+import type { Artist, WaveformSample } from "~/db/schema";
+
+import type { Track } from "~/data/track/types";
 
 import type { PopStrategy } from "./types";
 
@@ -10,7 +12,7 @@ export interface SessionStore {
   volume: number;
 
   /** Track displayed in global track sheet. */
-  displayedTrack: TrackWithRelations | null;
+  displayedTrack: Track | null;
   /** Artists displayed in global artist sheet. */
   displayedArtists: { artists: Artist[]; popStrategy?: PopStrategy } | null;
 

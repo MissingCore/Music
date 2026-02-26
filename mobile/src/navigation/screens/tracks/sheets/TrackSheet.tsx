@@ -3,8 +3,6 @@ import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import type { TrackWithRelations } from "~/db/schema";
-
 import type { Icon } from "~/resources/icons/type";
 import { Delete } from "~/resources/icons/Delete";
 import { Edit } from "~/resources/icons/Edit";
@@ -16,6 +14,7 @@ import { QueueMusic } from "~/resources/icons/QueueMusic";
 import { Schedule } from "~/resources/icons/Schedule";
 import { useHideTrack, useTrackFavoriteStatus } from "~/queries/track";
 import { useToggleTrackInPlaylist } from "~/data/track/queries";
+import type { Track } from "~/data/track/types";
 import { Queue } from "~/stores/Playback/actions";
 import { useSessionStore } from "~/stores/Session/store";
 
@@ -72,7 +71,7 @@ export function TrackSheet() {
 }
 
 //#region Introduction
-function TrackIntro({ data }: { data: TrackWithRelations }) {
+function TrackIntro({ data }: { data: Track }) {
   const navigation = useNavigation();
   const currNavRoutes = useNavigationState((s) => s.routes);
 
@@ -93,7 +92,7 @@ function TrackIntro({ data }: { data: TrackWithRelations }) {
           </StyledText>
         </Marquee>
         <ArtistsLink
-          artistNames={data.tracksToArtists.map((rel) => rel.artistName)}
+          artists={data.artists}
           beforeNavigation={() => TrueSheet.dismiss(GLOBAL_SHEET_KEY)}
           popStrategy={onNowPlaying ? "popScreen" : undefined}
           marqueeShadowColor="surfaceBright"
@@ -103,10 +102,10 @@ function TrackIntro({ data }: { data: TrackWithRelations }) {
             <Pressable
               onPress={sheetAction(() => {
                 if (onNowPlaying) navigation.goBack();
-                navigation.navigate("Album", { id: data.album!.id });
+                navigation.navigate("Album", { id: data.albumId! });
               })}
             >
-              <StyledText dim>{data.album.name}</StyledText>
+              <StyledText dim>{data.album}</StyledText>
             </Pressable>
           </Marquee>
         ) : null}
@@ -117,7 +116,7 @@ function TrackIntro({ data }: { data: TrackWithRelations }) {
 //#endregion
 
 //#region Metadata
-function TrackMetadata({ data }: { data: TrackWithRelations }) {
+function TrackMetadata({ data }: { data: Track }) {
   return (
     <View className="gap-4 rounded-md bg-surfaceContainerLowest p-4">
       <Marquee
@@ -157,10 +156,7 @@ function TrackMetadata({ data }: { data: TrackWithRelations }) {
 
 //#region Actions
 /** Actions that can be understood with just an icon. */
-function IconActions(props: {
-  data: TrackWithRelations;
-  editArtwork: VoidFunction;
-}) {
+function IconActions(props: { data: Track; editArtwork: VoidFunction }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { data: favoriteStatus } = useTrackFavoriteStatus(props.data.id);

@@ -353,12 +353,6 @@ export type Track = Omit<
   /** @deprecated Access the artist name through the new junction table. */
   rawArtistName: string | null;
 };
-export type TrackWithRelations = Prettify<
-  Track & {
-    album: Album | null;
-    tracksToArtists: Array<{ artistName: string }>;
-  }
->;
 
 export type HiddenTrack = InferSelectModel<typeof hiddenTracks>;
 

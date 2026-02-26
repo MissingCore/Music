@@ -1,10 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { db } from "~/db";
-import type { TrackWithRelations } from "~/db/schema";
 import { hiddenTracks } from "~/db/schema";
 
 import { deleteTracks } from "~/data/track/api";
+import type { Track } from "~/data/track/types";
 import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { Queue } from "~/stores/Playback/actions";
 import { queries as q } from "./keyStore";
@@ -47,7 +47,7 @@ export function useSortedTracks(isReady = true) {
 /** Hide a track. */
 export function useHideTrack() {
   return useMutation({
-    mutationFn: async ({ track }: { track: TrackWithRelations }) => {
+    mutationFn: async ({ track }: { track: Track }) => {
       const { id, uri, name } = track;
       await wait(1);
       await db

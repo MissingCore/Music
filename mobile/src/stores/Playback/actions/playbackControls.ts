@@ -1,6 +1,7 @@
 import TrackPlayer, { State } from "@weights-ai/react-native-track-player";
 
 import { addPlayedMediaList } from "~/data/recent/api";
+import { formatTrackforPlayer } from "~/data/track/utils";
 import { preferenceStore } from "~/stores/Preference/store";
 
 import { playbackStore } from "../store";
@@ -9,7 +10,6 @@ import type { PlayFromSource } from "../types";
 import {
   arePlaybackSourceEqual,
   extractTrackId,
-  formatTrackforPlayer,
   getSourceName,
   getTrackIdsList,
   getUpdatedLists,

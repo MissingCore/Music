@@ -3,8 +3,6 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import type { TrackWithRelations } from "~/db/schema";
-
 import { Favorite } from "~/resources/icons/Favorite";
 import { KeyboardArrowDown } from "~/resources/icons/KeyboardArrowDown";
 import { MoreHoriz } from "~/resources/icons/MoreHoriz";
@@ -13,6 +11,7 @@ import { Timer } from "~/resources/icons/Timer";
 import { ViewAgenda } from "~/resources/icons/ViewAgenda";
 import { useTrackFavoriteStatus } from "~/queries/track";
 import { useToggleTrackInPlaylist } from "~/data/track/queries";
+import type { Track } from "~/data/track/types";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
@@ -62,7 +61,7 @@ export default function NowPlaying() {
 }
 
 //#region Metadata
-function Metadata({ track }: { track: TrackWithRelations }) {
+function Metadata({ track }: { track: Track }) {
   const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
@@ -73,17 +72,17 @@ function Metadata({ track }: { track: TrackWithRelations }) {
           <StyledText className="text-xl/[1.125]">{track.name}</StyledText>
         </Marquee>
         <ArtistsLink
-          artistNames={track.tracksToArtists.map((rel) => rel.artistName)}
+          artists={track.artists}
           popStrategy="popScreen"
           className="text-sm/[1.125]"
         />
         {track.album ? (
           <Marquee>
             <Pressable
-              onPress={() => navigation.popTo("Album", { id: track.album!.id })}
+              onPress={() => navigation.popTo("Album", { id: track.albumId })}
             >
               <StyledText dim className="text-sm/[1.125]">
-                {track.album.name}
+                {track.album}
               </StyledText>
             </Pressable>
           </Marquee>

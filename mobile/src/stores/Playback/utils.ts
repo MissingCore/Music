@@ -1,11 +1,5 @@
-import type { AddTrack } from "@weights-ai/react-native-track-player";
-
-import type { TrackWithRelations } from "~/db/schema";
-
 import i18next from "~/modules/i18n";
-import { getArtistsString } from "~/api/artist.utils";
 import { getSortedTracks } from "~/api/track";
-import { getTrackArtwork } from "~/api/track.utils";
 import { getAlbumDetails, getAlbumTracks } from "~/data/album/api";
 import { getArtistTracks } from "~/data/artist/api";
 import { getFolderTracks } from "~/data/folder/api";
@@ -14,7 +8,6 @@ import { getPlaylistTracks } from "~/data/playlist/api";
 import type { PlayFromSource } from "./types";
 
 import { shuffleArray } from "~/utils/object";
-import { getSafeUri } from "~/utils/string";
 import {
   FavoritesPlaylistKey,
   ReservedNames,
@@ -34,19 +27,6 @@ export function arePlaybackSourceEqual(
 /** Extract the track id if formatted as `${track_id}__${unique_id}`. */
 export function extractTrackId(key: string) {
   return key.split("__")[0]!;
-}
-
-/** Format track data to be used with the RNTP queue. */
-export function formatTrackforPlayer(track: TrackWithRelations) {
-  return {
-    url: getSafeUri(track.uri),
-    artwork: getTrackArtwork(track) ?? undefined,
-    title: track.name,
-    artist: getArtistsString(track.tracksToArtists, false) || "No Artist",
-    album: track.album?.name ?? undefined,
-    duration: track.duration,
-    id: track.id,
-  } satisfies AddTrack;
 }
 
 /** Returns the name of the `PlayFromSource`. */

@@ -10,6 +10,7 @@ type TRACK_INTERNAL = Omit<
 export type Track = Prettify<
   TRACK_INTERNAL & {
     album: string | null;
+    albumArtistsKey: string | null;
     artists: string[] | null;
   }
 >;

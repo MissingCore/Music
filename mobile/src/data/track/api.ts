@@ -32,6 +32,9 @@ export async function getTrack(id: string): Promise<Track> {
           string | null
         >`coalesce(${tracks.artwork}, ${albums.artwork})`.as("derived_artwork"),
         album: sql<string | null>`${albums.name}`.as("album"),
+        albumArtistsKey: sql<string | null>`${albums.artistsKey}`.as(
+          "album_artists_key",
+        ),
         /** We need to unencode these fields. */
         artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
       })
