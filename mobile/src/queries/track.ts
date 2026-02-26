@@ -4,14 +4,9 @@ import { db } from "~/db";
 import type { TrackWithRelations } from "~/db/schema";
 import { hiddenTracks } from "~/db/schema";
 
-import {
-  addToPlaylist,
-  deleteTracks,
-  removeFromPlaylist,
-  updateTrack,
-} from "~/api/track";
+import { addToPlaylist, deleteTracks, removeFromPlaylist } from "~/api/track";
 import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
-import { Queue, Resynchronize } from "~/stores/Playback/actions";
+import { Queue } from "~/stores/Playback/actions";
 import { queries as q } from "./keyStore";
 
 import { clearAllQueries } from "~/lib/react-query";
@@ -107,22 +102,6 @@ export function useRemoveFromPlaylist(trackId: string) {
       });
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
-    },
-  });
-}
-
-/** Update specified track artwork. */
-export function useUpdateTrackArtwork(trackId: string) {
-  return useMutation({
-    mutationFn: ({ artwork }: { artwork?: string | null }) =>
-      updateTrack(trackId, { altArtwork: artwork }),
-    onSuccess: async () => {
-      // Changing the track artwork affects a lot of things, so we'll just
-      // clear all the queries.
-      clearAllQueries();
-
-      // Revalidate `activeTrack` in Playback store if needed.
-      await Resynchronize.onActiveTrack({ type: "track", id: trackId });
     },
   });
 }

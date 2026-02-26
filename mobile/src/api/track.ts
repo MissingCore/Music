@@ -171,16 +171,6 @@ export async function getSortedTracks<
 }
 //#endregion
 
-//#region PATCH Methods
-/** Update specified track. */
-export async function updateTrack(
-  id: string,
-  values: Partial<typeof tracks.$inferInsert>,
-) {
-  return db.update(tracks).set(values).where(eq(tracks.id, id));
-}
-//#endregion
-
 //#region PUT Methods
 /** Add a track to a playlist. */
 export async function addToPlaylist(

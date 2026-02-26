@@ -6,7 +6,8 @@ import { useAlbum, useUpdateAlbum } from "~/data/album/queries";
 import { useArtist, useUpdateArtist } from "~/data/artist/queries";
 import { useGenre, useUpdateGenre } from "~/data/genre/queries";
 import { usePlaylist, useUpdatePlaylist } from "~/data/playlist/queries";
-import { useTrack, useUpdateTrackArtwork } from "~/queries/track";
+import { useUpdateTrack } from "~/data/track/queries";
+import { useTrack } from "~/queries/track";
 
 import { pickImage } from "~/lib/file-system";
 import { mutateGuard } from "~/lib/react-query";
@@ -87,14 +88,14 @@ export function PlaylistArtworkSheet(props: ArtworkSheetProps) {
 /** Sheet allowing us to change the artwork of a track. */
 export function TrackArtworkSheet(props: ArtworkSheetProps) {
   const { data } = useTrack(props.id);
-  const updateTrackArtwork = useUpdateTrackArtwork(props.id);
+  const updateTrack = useUpdateTrack(props.id);
 
   return (
     <DetachedSheet ref={props.ref} contentContainerClassName="items-center">
       <BaseArtworkSheetContent
         type="track"
         imageSource={data?.artwork ?? null}
-        mutationResult={updateTrackArtwork}
+        mutationResult={updateTrack}
         disabled={data?.altArtwork === null}
       />
     </DetachedSheet>
