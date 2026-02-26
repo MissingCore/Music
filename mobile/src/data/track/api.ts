@@ -34,6 +34,7 @@ const trackFields = omitKeys(getTableColumns(tracks), [
   "rawArtistName",
   "isFavorite",
   "hiddenAt",
+  "artwork",
 ]);
 
 //#region GET Methods

@@ -113,7 +113,7 @@ export async function getAlbumsSummary<
       ...albumFields,
       duration: sum(orderedAlbumTracks.duration),
       trackCount: count(orderedAlbumTracks.id),
-      //! This field is "hacked" in, with the main use for the "JSON Backup" feature.
+      //! This field is "hacked" in.
       ...(withTracks
         ? {
             tracks: sql<string>`
