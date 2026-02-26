@@ -4,7 +4,6 @@ import { db } from "~/db";
 import type { Album, Track } from "~/db/schema";
 import { albums, tracks, tracksToArtists } from "~/db/schema";
 
-import i18next from "~/modules/i18n";
 import { viewPreferenceStore } from "~/stores/ViewPreference/store";
 
 import { iAsc, iDesc } from "~/lib/drizzle";
@@ -15,34 +14,6 @@ import type { DrizzleFilter, QueriedTrack } from "./types";
 import { getColumns, withRelations } from "./utils";
 
 //#region GET Methods
-/** Get specified track. Throws error if nothing is found. */
-export async function getTrack<
-  TCols extends keyof Track,
-  ACols extends keyof Album,
-  WithAlbum_User extends boolean | undefined,
->(
-  id: string,
-  options?: {
-    columns?: TCols[];
-    albumColumns?: [ACols, ...ACols[]];
-    withAlbum?: WithAlbum_User;
-  },
-) {
-  const track = await db.query.tracks.findFirst({
-    where: eq(tracks.id, id),
-    columns: getColumns(options?.columns),
-    ...withRelations({ defaultWithAlbum: true, ...options }),
-  });
-  if (!track) throw new Error(i18next.t("err.msg.noTracks"));
-  const hasArtwork =
-    options?.columns === undefined ||
-    options?.columns.includes("artwork" as TCols);
-  return {
-    ...track,
-    ...(hasArtwork ? { artwork: getTrackArtwork(track) } : {}),
-  } as QueriedTrack<BooleanPriority<WithAlbum_User, true>, TCols, ACols>;
-}
-
 /** Get the genres that this track has. */
 export async function getTrackGenres(id: string) {
   const allTrackGenres = await db.query.tracksToGenres.findMany({

@@ -1,14 +1,51 @@
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq, getTableColumns, inArray, sql } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { InvalidTrack } from "~/db/schema";
-import { invalidTracks, tracks, tracksToPlaylists } from "~/db/schema";
+import { albums, invalidTracks, tracks, tracksToPlaylists } from "~/db/schema";
 
-import { getExcludedColumns, iDesc } from "~/lib/drizzle";
+import { getExcludedColumns, iDesc, throwIfNoResults } from "~/lib/drizzle";
+import { omitKeys } from "~/utils/object";
 import { TrackRelationTables } from "./constants";
+import type { Track } from "./types";
+import { getOrderedTrackArtistsView } from "../views";
+import { unencodeJSONArray } from "../utils";
 
 type InsertedTrack = typeof tracks.$inferInsert;
 type InsertedTrackPlaylistRelation = typeof tracksToPlaylists.$inferInsert;
+
+const trackFields = omitKeys(getTableColumns(tracks), [
+  "rawArtistName",
+  "isFavorite",
+  "hiddenAt",
+]);
+
+//#region GET Methods
+export async function getTrack(id: string): Promise<Track> {
+  const orderedTrackArtists = getOrderedTrackArtistsView();
+
+  const [result] = await throwIfNoResults(
+    db
+      .select({
+        ...trackFields,
+        artwork: sql<
+          string | null
+        >`coalesce(${tracks.artwork}, ${albums.artwork})`.as("derived_artwork"),
+        album: sql<string | null>`${albums.name}`.as("album"),
+        /** We need to unencode these fields. */
+        artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
+      })
+      .from(tracks)
+      .where(eq(tracks.id, id))
+      .leftJoin(albums, eq(tracks.albumId, albums.id))
+      .leftJoin(orderedTrackArtists, eq(tracks.id, orderedTrackArtists.trackId))
+      .groupBy(tracks.id),
+    "err.msg.noTracks",
+  );
+
+  return { ...result!, artists: unencodeJSONArray(result!.artists) };
+}
+//#endregion
 
 //#region PATCH Methods
 export async function updateTrack(

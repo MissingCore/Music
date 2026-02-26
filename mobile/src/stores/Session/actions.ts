@@ -3,7 +3,7 @@ import type { NavigationProp } from "@react-navigation/native";
 
 import { db } from "~/db";
 
-import { getTrack } from "~/api/track";
+import { getTrack } from "~/data/track/api";
 
 import { sessionStore } from "./store";
 import type { PopStrategy } from "./types";

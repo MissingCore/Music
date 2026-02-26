@@ -6,7 +6,6 @@ import { playlists } from "~/db/schema";
 
 import {
   getSortedTracks,
-  getTrack,
   getTrackGenres,
   getTrackPlaylists,
 } from "~/api/track";
@@ -18,6 +17,7 @@ import { getGenre, getGenresSummary } from "~/data/genre/api";
 import { getLyric, getLyricsSummary } from "~/data/lyric/api";
 import { getPlaylist, getPlaylistsSummary } from "~/data/playlist/api";
 import { getRecentMedia } from "~/data/recent/api";
+import { getTrack } from "~/data/track/api";
 
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import type { ScreenSortOptions } from "~/stores/ViewPreference/constants";
