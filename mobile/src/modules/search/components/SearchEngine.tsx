@@ -4,6 +4,7 @@ import { View } from "react-native";
 
 import { MoreVert } from "~/resources/icons/MoreVert";
 import { AlbumArtistsKey } from "~/data/album/utils";
+import { getArtistsString } from "~/data/artist/utils";
 import type { GenreTrack } from "~/data/genre/types";
 import { presentTrackSheet } from "~/stores/Session/actions";
 
@@ -220,7 +221,7 @@ function formatResults(results: Partial<SearchResults>, tab: SearchTab) {
           description = AlbumArtistsKey.toString(item.artistsKey);
         } else if (key === "track") {
           // @ts-expect-error - Tracks store their artists in this new field.
-          description = item.artists?.join(", ") ?? "—";
+          description = getArtistsString(item.artists);
         }
         // @ts-expect-error - `path` should be present in these cases.
         else if (item.path) description = item.path;

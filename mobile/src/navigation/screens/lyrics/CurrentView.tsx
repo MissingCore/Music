@@ -12,6 +12,7 @@ import { Add } from "~/resources/icons/Add";
 import { Edit } from "~/resources/icons/Edit";
 import { LinkOff } from "~/resources/icons/LinkOff";
 import { queries as q } from "~/data/keyStore";
+import { getArtistsString } from "~/data/artist/utils";
 import { useLyric } from "~/data/lyric/queries";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
@@ -88,7 +89,7 @@ export default function Lyric({
                       <StyledText className="text-sm">{name}</StyledText>
                       {artists ? (
                         <StyledText dim className="text-onSurface/80">
-                          {artists.join(", ")}
+                          {getArtistsString(artists)}
                         </StyledText>
                       ) : null}
                       {album ? <StyledText dim>{album}</StyledText> : null}

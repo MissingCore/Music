@@ -9,6 +9,7 @@ import i18next from "~/modules/i18n";
 import type { PlayFromSource } from "~/stores/Playback/types";
 import { getAlbumDetails } from "../album/api";
 import { getArtist } from "../artist/api";
+import { getArtistsString } from "../artist/utils";
 import { getFolderTracks } from "../folder/api";
 import { getGenre } from "../genre/api";
 import { getPlaylist } from "../playlist/api";
@@ -76,7 +77,7 @@ export async function getRecentTracks() {
   return results.map((track) => ({
     id: track.id,
     title: track.name,
-    description: unencodeJSONArray(track.artists as string)?.join(", ") ?? "—",
+    description: getArtistsString(unencodeJSONArray(track.artists as string)),
     imageSource: track.artwork,
   }));
 }

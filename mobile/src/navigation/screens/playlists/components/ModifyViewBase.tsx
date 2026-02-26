@@ -10,6 +10,7 @@ import { Add } from "~/resources/icons/Add";
 import { Cancel } from "~/resources/icons/Cancel";
 import { CheckCircle } from "~/resources/icons/CheckCircle";
 import { DragHandle } from "~/resources/icons/DragHandle";
+import { getArtistsString } from "~/data/artist/utils";
 //! FIXME: We probably want to import this from somewhere more "general".
 import type { GenreTrack } from "~/data/genre/types";
 import { useDeletePlaylist } from "~/data/playlist/queries";
@@ -468,7 +469,7 @@ export function formatTrackForForm(track: GenreTrack) {
   return {
     id: track.id,
     name: track.name,
-    artists: track.artists?.join(", ") ?? "—",
+    artists: getArtistsString(track.artists),
     artwork: track.artwork,
   };
 }

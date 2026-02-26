@@ -4,7 +4,7 @@ import { View } from "react-native";
 
 import { db } from "~/db";
 
-import { getArtistsString } from "~/api/artist.utils";
+import { getArtistsString } from "~/data/artist/utils";
 
 import { iAsc } from "~/lib/drizzle";
 import { FlatList } from "~/components/Base/List";
@@ -105,7 +105,10 @@ async function getMostPlayedTracks() {
     const formattedTrack = {
       ...track,
       albumName: album?.name ?? null,
-      artistsString: getArtistsString(tracksToArtists, false),
+      artistsString: getArtistsString(
+        tracksToArtists.map((t) => t.artistName),
+        null,
+      ),
     };
 
     if (!recentPlacement) {

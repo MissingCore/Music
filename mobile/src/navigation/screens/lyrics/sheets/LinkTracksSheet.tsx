@@ -5,6 +5,7 @@ import { tracksToLyrics } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 import { queries as q } from "~/data/keyStore";
+import { getArtistsString } from "~/data/artist/utils";
 
 import { queryClient } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
@@ -28,7 +29,7 @@ export function LinkTracksSheet(props: { ref: TrueSheetRef; lyricId: string }) {
             button
             type="track"
             title={item.name}
-            description={item.artists?.join(", ") ?? "—"}
+            description={getArtistsString(item.artists)}
             imageSource={item.artwork}
             onPress={() =>
               linkTrackToLyric({

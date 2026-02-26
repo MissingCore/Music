@@ -4,6 +4,7 @@ import {
   navigateToArtist,
   presentArtistsSheet,
 } from "~/stores/Session/actions";
+import { getArtistsString } from "~/data/artist/utils";
 
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
@@ -39,7 +40,7 @@ export function ArtistsLink(props: {
         }}
       >
         <StyledText className={cn("text-xs text-primary", props.className)}>
-          {props.artists.join(", ")}
+          {getArtistsString(props.artists)}
         </StyledText>
       </Pressable>
     </Marquee>

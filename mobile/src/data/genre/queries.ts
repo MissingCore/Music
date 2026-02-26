@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { updateGenre } from "./api";
 import { queries as q } from "../keyStore";
+import { getArtistsString } from "../artist/utils";
 
 //#region Queries
 export function useGenre(genreName: string) {
@@ -24,7 +25,7 @@ export function useGenreForScreen(genreName: string) {
       tracks: tracks.map((track) => ({
         id: track.id,
         title: track.name,
-        description: track.artists?.join(", ") ?? "—",
+        description: getArtistsString(track.artists),
         imageSource: track.artwork,
       })),
     }),

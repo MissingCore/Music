@@ -1,6 +1,7 @@
 import type { AddTrack } from "@weights-ai/react-native-track-player";
 
 import type { Track } from "./types";
+import { getArtistsString } from "../artist/utils";
 
 import { getSafeUri } from "~/utils/string";
 
@@ -23,7 +24,7 @@ export function formatTrackforPlayer(track: Track) {
     url: getSafeUri(track.uri),
     artwork: track.artwork || undefined,
     title: track.name,
-    artist: track.artists?.join(", ") || "No Artist",
+    artist: getArtistsString(track.artists, "No Artist"),
     album: track.album || undefined,
     duration: track.duration,
     id: track.id,

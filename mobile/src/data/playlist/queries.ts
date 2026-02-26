@@ -7,6 +7,7 @@ import { Resynchronize } from "~/stores/Playback/actions";
 import { createPlaylist, deletePlaylist, updatePlaylist } from "./api";
 import { sanitizePlaylistName } from "./utils";
 import { queries as q } from "../keyStore";
+import { getArtistsString } from "../artist/utils";
 
 import { wait } from "~/utils/promise";
 
@@ -34,7 +35,7 @@ export function usePlaylistForScreen(playlistName: string) {
       tracks: tracks.map((track) => ({
         id: track.id,
         title: track.name,
-        description: track.artists?.join(", ") ?? "—",
+        description: getArtistsString(track.artists),
         imageSource: track.artwork,
       })),
 

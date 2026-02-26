@@ -1,4 +1,5 @@
 import { playbackStore } from "~/stores/Playback/store";
+import { getArtistsString } from "~/data/artist/utils";
 
 import { updateWidgets } from "./update";
 import type { WidgetName } from "../constants/Widgets";
@@ -11,7 +12,7 @@ export function getWidgetData(): PlayerWidgetData {
     if (activeTrack) {
       track = {
         title: activeTrack.name,
-        artist: activeTrack.artists?.join(", ") || null,
+        artist: getArtistsString(activeTrack.artists, null),
         artwork: activeTrack.artwork,
       };
     }

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { queries as q } from "../keyStore";
+import { getArtistsString } from "../artist/utils";
 
 //#region Queries
 export function useFolderContent(folderPath?: string) {
@@ -11,7 +12,7 @@ export function useFolderContent(folderPath?: string) {
       tracks: tracks.map((track) => ({
         id: track.id,
         title: track.name,
-        description: track.artists?.join(", ") ?? "—",
+        description: getArtistsString(track.artists),
         imageSource: track.artwork,
       })),
     }),

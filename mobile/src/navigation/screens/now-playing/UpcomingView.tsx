@@ -7,6 +7,7 @@ import { tracks } from "~/db/schema";
 
 import { Cached } from "~/resources/icons/Cached";
 import { DragHandle } from "~/resources/icons/DragHandle";
+import { getArtistsString } from "~/data/artist/utils";
 import { getTracks } from "~/data/track/api";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
@@ -159,7 +160,7 @@ const RenderItem = memo(
         <SearchResult
           type="track"
           title={item.name}
-          description={item.artists?.join(", ") ?? "—"}
+          description={getArtistsString(item.artists)}
           imageSource={item.artwork}
           LeftElement={item.active ? <PlayingIndicator /> : undefined}
           RightElement={

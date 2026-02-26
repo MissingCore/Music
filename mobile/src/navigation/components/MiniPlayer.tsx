@@ -5,6 +5,7 @@ import { View } from "react-native";
 
 import { Pause } from "~/resources/icons/Pause";
 import { PlayArrow } from "~/resources/icons/PlayArrow";
+import { getArtistsString } from "~/data/artist/utils";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -79,7 +80,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
             <StyledText>{track.name}</StyledText>
           </Marquee>
           <Marquee color="surfaceContainerLowest">
-            <StyledText dim>{track.artists?.join(", ") ?? "—"}</StyledText>
+            <StyledText dim>{getArtistsString(track.artists)}</StyledText>
           </Marquee>
         </TextWrapper>
 
