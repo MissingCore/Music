@@ -1,10 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { Resynchronize } from "~/stores/Playback/actions";
+import { db } from "~/db";
+import { hiddenTracks } from "~/db/schema";
+
+import { Queue, Resynchronize } from "~/stores/Playback/actions";
 import { queries as q } from "~/queries/keyStore";
-import { toggleTrackInPlaylist, updateTrack } from "./api";
+import { deleteTracks, toggleTrackInPlaylist, updateTrack } from "./api";
+import type { Track } from "./types";
 
 import { clearAllQueries } from "~/lib/react-query";
+import { wait } from "~/utils/promise";
 
 //#region Queries
 export function useTrack(trackId: string) {
@@ -31,6 +36,24 @@ export function usePlaylists() {
 //#endregion
 
 //#region Mutations
+export function useHideTrack() {
+  return useMutation({
+    mutationFn: async ({ track }: { track: Track }) => {
+      const { id, uri, name } = track;
+      await wait(1);
+      await db
+        .insert(hiddenTracks)
+        .values({ id, uri, name, hiddenAt: Date.now() });
+      await deleteTracks([{ id }]);
+    },
+    onSuccess: async (_, { track }) => {
+      // There's a lot of places where this track may appear.
+      clearAllQueries();
+      await Queue.removeIds([track.id]);
+    },
+  });
+}
+
 export function useToggleTrackInPlaylist(trackId: string) {
   const queryClient = useQueryClient();
   return useMutation({

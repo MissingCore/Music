@@ -12,8 +12,8 @@ import { LowPriority } from "~/resources/icons/LowPriority";
 import { PlaylistAdd } from "~/resources/icons/PlaylistAdd";
 import { QueueMusic } from "~/resources/icons/QueueMusic";
 import { Schedule } from "~/resources/icons/Schedule";
-import { useHideTrack } from "~/queries/track";
 import {
+  useHideTrack,
   useToggleTrackInPlaylist,
   useTrackFavoriteStatus,
 } from "~/data/track/queries";
