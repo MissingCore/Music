@@ -1,8 +1,6 @@
-import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
-import { queries as q } from "~/data/keyStore";
 import { RECENT_DAY_RANGE } from "~/data/recent/api";
 import { useRecentlyPlayedMedia } from "~/data/recent/queries";
 import { useGetColumn } from "~/hooks/useGetColumn";
@@ -11,7 +9,6 @@ import { useBottomActionsInset } from "../hooks/useBottomActions";
 import { getMediaLinkContext } from "../utils/router";
 import { PagePlaceholder } from "../components/Placeholder";
 
-import { queryClient } from "~/lib/react-query";
 import { FlatList, getListItemLayout } from "~/components/Base/List";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaCard } from "~/modules/media/components/MediaCard";
@@ -26,17 +23,10 @@ const trackSource = {
 
 export default function RecentlyPlayed() {
   const { t } = useTranslation();
-  const isFocused = useIsFocused();
   const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = useRecentlyPlayedMedia();
 
   const hasNoContent = data?.lists?.length === 0 && data?.tracks?.length === 0;
-
-  useEffect(() => {
-    if (isFocused) {
-      queryClient.invalidateQueries({ queryKey: q.recent.all.queryKey });
-    }
-  }, [isFocused]);
 
   if (isPending || error || hasNoContent) {
     return (
