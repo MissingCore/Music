@@ -1,6 +1,6 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useNavigation } from "@react-navigation/native";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { z } from "zod/mini";
@@ -106,22 +106,54 @@ export function ModifyPlaylistBase(props: {
 const FormInput = FormInputImpl<PlaylistEntry>();
 
 function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
-  const { data, setFields, isSubmitting } = useFormState();
+  const {
+    data: { tracks: playlistTracks },
+    setFields,
+    isSubmitting,
+  } = useFormState();
   const addTracksSheetRef = useSheetRef();
 
+  //#region Deferred Data
+  //! Re-rendering the list after adding new tracks is the cause of slow
+  //! adding of tracks via the sheet.
+  const [deferredData, setDeferredData] = useState(playlistTracks);
+  const skipDelay = useRef(false);
+
+  //? Skip an extra render cycle by not updating `setDelayedData` in a
+  //? `useEffect` and avoid items flashing from prior position.
+  if (skipDelay.current) {
+    skipDelay.current = false;
+    setDeferredData(playlistTracks);
+  }
+
+  useEffect(() => {
+    const timeout = !skipDelay.current
+      ? setTimeout(() => setDeferredData(playlistTracks), 1000)
+      : undefined;
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
+  }, [playlistTracks]);
+  //#endregion
+
   const removeTrack = useCallback(
-    (id: string) =>
+    (id: string) => {
+      skipDelay.current = true;
       setFields((prev) =>
         getTracksFields(prev.tracks.filter((t) => t.id !== id)),
-      ),
+      );
+    },
     [setFields],
   );
 
   const reorderTrack = useCallback(
-    ({ from: fromIndex, to: toIndex }: { from: number; to: number }) =>
+    ({ from: fromIndex, to: toIndex }: { from: number; to: number }) => {
+      skipDelay.current = true;
       setFields((prev) =>
         getTracksFields(moveArray(prev.tracks, { fromIndex, toIndex })),
-      ),
+      );
+    },
     [setFields],
   );
 
@@ -145,7 +177,7 @@ function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
       <AddTracksSheet ref={addTracksSheetRef} />
       <DragList
         pointerEvents={isSubmitting ? "none" : "auto"}
-        data={data.tracks}
+        data={deferredData}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         onReorder={reorderTrack}
