@@ -52,6 +52,9 @@ importers:
       '@lukemorales/query-key-factory':
         specifier: 1.3.4
         version: 1.3.4(@tanstack/query-core@5.90.20)(@tanstack/react-query@5.90.21(react@19.1.4))
+      '@missingcore/music-glyph-toys':
+        specifier: github:MissingCore/music-glyph-toys#430bf73328e5209cd7713ebf49d031f944909442
+        version: https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/430bf73328e5209cd7713ebf49d031f944909442(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
       '@missingcore/react-native-actual-path':
         specifier: 0.1.0
         version: 0.1.0(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
@@ -1546,6 +1549,13 @@ packages:
     peerDependencies:
       '@tanstack/query-core': '>= 4.0.0'
       '@tanstack/react-query': '>= 4.0.0'
+
+  '@missingcore/music-glyph-toys@https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/430bf73328e5209cd7713ebf49d031f944909442':
+    resolution: {tarball: https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/430bf73328e5209cd7713ebf49d031f944909442}
+    version: 0.2.2
+    peerDependencies:
+      react: '*'
+      react-native: '*'
 
   '@missingcore/react-native-actual-path@0.1.0':
     resolution: {integrity: sha512-XbOZJsT8J9t8i2sFDw1GgTGnStxxtSQxiowj86M8a2kRb0sOX6V8F/kb5A3r8Ws6khWpQQooFD/JVZEztt/Qdw==}
@@ -7199,6 +7209,11 @@ snapshots:
     dependencies:
       '@tanstack/query-core': 5.90.20
       '@tanstack/react-query': 5.90.21(react@19.1.4)
+
+  '@missingcore/music-glyph-toys@https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/430bf73328e5209cd7713ebf49d031f944909442(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)':
+    dependencies:
+      react: 19.1.4
+      react-native: 0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4)
 
   '@missingcore/react-native-actual-path@0.1.0(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)':
     dependencies:
