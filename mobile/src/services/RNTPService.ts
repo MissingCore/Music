@@ -1,5 +1,10 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import BackgroundTimer from "@boterop/react-native-background-timer";
+import {
+  GlyphButton,
+  GlyphToy,
+  MatrixAction,
+} from "@missingcore/music-glyph-toys";
 import TrackPlayer, {
   Event,
   State,
@@ -49,6 +54,15 @@ const ValidErrors = [
 
 /** How we handle the actions in the media control notification. */
 export async function PlaybackService() {
+  GlyphButton.onMount(() => {
+    GlyphToy.connect();
+  });
+
+  GlyphButton.onTouchUp(async ({ action }) => {
+    if (action === MatrixAction.PLAY_PAUSE) await PlaybackControls.playToggle();
+    if (action === MatrixAction.SKIP) await PlaybackControls.next();
+  });
+
   TrackPlayer.addEventListener(Event.ServiceKilled, async () => {
     await revalidateWidgets({ openApp: true });
   });
