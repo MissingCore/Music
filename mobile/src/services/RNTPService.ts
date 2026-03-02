@@ -54,9 +54,7 @@ const ValidErrors = [
 
 /** How we handle the actions in the media control notification. */
 export async function PlaybackService() {
-  GlyphButton.onMount(() => {
-    GlyphToy.connect();
-  });
+  GlyphButton.onMount(GlyphToy.connect);
 
   GlyphButton.onTouchUp(async ({ action }) => {
     if (action === MatrixAction.PLAY_PAUSE) await PlaybackControls.playToggle();
@@ -208,6 +206,7 @@ export async function PlaybackService() {
       );
     }
 
+    if (e.track.artwork) GlyphToy.setMatrixArtwork(e.track.artwork);
     await revalidateWidgets();
     prevTrackId = e.track.id;
   });
