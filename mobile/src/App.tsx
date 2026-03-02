@@ -1,4 +1,4 @@
-import { onCleanUp } from "@missingcore/music-glyph-toys";
+import { GlyphToy } from "@missingcore/music-glyph-toys";
 import TrackPlayer from "@weights-ai/react-native-track-player";
 import { useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
@@ -86,7 +86,7 @@ function handleAppLifeCycle() {
   // Ensure the RNTP service gets destroyed on app close.
   return () => {
     if (!preferenceStore.getState().continuePlaybackOnDismiss) {
-      onCleanUp();
+      GlyphToy.disconnect();
       TrackPlayer.reset().catch();
     }
   };
