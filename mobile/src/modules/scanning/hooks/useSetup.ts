@@ -1,3 +1,4 @@
+import { GlyphToy } from "@missingcore/music-glyph-toys";
 import TrackPlayer, { RepeatMode } from "@weights-ai/react-native-track-player";
 import { useEffect, useState } from "react";
 
@@ -31,6 +32,7 @@ export function useSetup() {
 
     (async () => {
       setSetupState("pending");
+      GlyphToy.connect();
       await onAppStartUpInit;
 
       // Ensure widget has up-to-date data as the Playback store isn't

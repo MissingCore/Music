@@ -1,6 +1,7 @@
 /* Polyfills */
 import "intl-pluralrules";
 
+import { GlyphToy } from "@missingcore/music-glyph-toys";
 import TrackPlayer from "@weights-ai/react-native-track-player";
 import { registerRootComponent } from "expo";
 import { registerWidgetTaskHandler } from "react-native-android-widget";
@@ -16,6 +17,7 @@ registerRootComponent(App);
   `react-native-track-player`.
 */
 TrackPlayer.registerPlaybackService(() => PlaybackService);
+GlyphToy.connect();
 (async () => {
   await onAppStartUpInit;
 })();

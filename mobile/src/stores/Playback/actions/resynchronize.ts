@@ -1,3 +1,4 @@
+import { GlyphToy } from "@missingcore/music-glyph-toys";
 import TrackPlayer from "@weights-ai/react-native-track-player";
 
 import {
@@ -33,6 +34,8 @@ export async function onActiveTrack(args: {
       0,
       formatTrackforPlayer(updatedTrackData),
     );
+
+    GlyphToy.setMatrixArtwork(updatedTrackData.artwork);
   } catch {}
 }
 
