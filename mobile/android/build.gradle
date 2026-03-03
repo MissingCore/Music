@@ -6,13 +6,12 @@ buildscript {
     mavenCentral()
   }
   dependencies {
+    if (findProperty('music.WITH_SENTRY')?.toBoolean()) {
+      classpath("io.sentry:sentry-android-gradle-plugin:5.12.1")
+    }
     classpath('com.android.tools.build:gradle')
     classpath('com.facebook.react:react-native-gradle-plugin')
     classpath('org.jetbrains.kotlin:kotlin-gradle-plugin')
-
-    if (findProperty('music.WITH_SENTRY')?.toBoolean()) {
-      classpath('io.sentry:sentry-android-gradle-plugin:5.9.0')
-    }
   }
 }
 

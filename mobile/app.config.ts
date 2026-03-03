@@ -100,9 +100,22 @@ export default (): ExpoConfig => ({
       { android: { enforceNavigationBarContrast: false } },
     ],
     ["react-native-android-widget", widgetPluginConfig],
+    ["@sentry/react-native/expo", sentryPluginConfig],
   ],
   newArchEnabled: true,
 });
+
+//#region Sentry Plugin Configs
+const sentryPluginConfig = {
+  experimental_android: {
+    enableAndroidGradlePlugin: true,
+    autoUploadProguardMapping: true,
+    uploadNativeSymbols: true,
+    includeNativeSources: true,
+    includeSourceContext: true,
+  },
+};
+//#endregion
 
 //#region Widget Plugin Configs
 const widgetPluginConfig: WithAndroidWidgetsParams = {
