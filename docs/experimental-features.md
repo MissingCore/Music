@@ -2,6 +2,13 @@
 
 Most experimental features require you to enable it in the "Experimental Features" screen (`Settings > Experimental Features`).
 
+## Glyph Toy
+
+[Documentation can be found in the dedicated `music-glyph-toys` repository](https://github.com/MissingCore/music-glyph-toys?tab=readme-ov-file#toy-design--usage), with notes on the interaction support we added to simulate media controls via the Glyph Button.
+
+> [!IMPORTANT]
+> There's a high probability of the Glyph Button interactions not working since I don't have a Nothing Phone 3 to test things out (which might be caused by the connection between the toy and the app not being correctly implemented).
+
 ## Ignore Interruptions
 
 This enables playback to continue when an interruption (ie: call, notification, timer) occurs.
