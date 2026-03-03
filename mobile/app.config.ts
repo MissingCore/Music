@@ -107,6 +107,8 @@ export default (): ExpoConfig => ({
 
 //#region Sentry Plugin Configs
 const sentryPluginConfig = {
+  project: "music",
+  organization: "missingcore",
   experimental_android: {
     enableAndroidGradlePlugin: true,
     autoUploadProguardMapping: true,
