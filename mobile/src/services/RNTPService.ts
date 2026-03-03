@@ -206,7 +206,7 @@ export async function PlaybackService() {
       );
     }
 
-    if (e.track.artwork) GlyphToy.setMatrixArtwork(e.track.artwork);
+    GlyphToy.setMatrixArtwork(e.track?.artwork || null);
     await revalidateWidgets();
     prevTrackId = e.track.id;
   });

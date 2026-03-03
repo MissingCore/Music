@@ -35,9 +35,7 @@ export async function onActiveTrack(args: {
       formatTrackforPlayer(updatedTrackData),
     );
 
-    if (updatedTrackData.artwork) {
-      GlyphToy.setMatrixArtwork(updatedTrackData.artwork);
-    }
+    GlyphToy.setMatrixArtwork(updatedTrackData.artwork);
   } catch {}
 }
 

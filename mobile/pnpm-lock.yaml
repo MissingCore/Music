@@ -53,8 +53,8 @@ importers:
         specifier: 1.3.4
         version: 1.3.4(@tanstack/query-core@5.90.20)(@tanstack/react-query@5.90.21(react@19.1.4))
       '@missingcore/music-glyph-toys':
-        specifier: github:MissingCore/music-glyph-toys#03cf1ec5466de415e133702db81583b1ce4ef4e5
-        version: https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/03cf1ec5466de415e133702db81583b1ce4ef4e5(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
+        specifier: github:MissingCore/music-glyph-toys#262740634820cafdbf3599be667fe2e17af7b2d3
+        version: https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/262740634820cafdbf3599be667fe2e17af7b2d3(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
       '@missingcore/react-native-actual-path':
         specifier: 0.1.0
         version: 0.1.0(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
@@ -1550,9 +1550,9 @@ packages:
       '@tanstack/query-core': '>= 4.0.0'
       '@tanstack/react-query': '>= 4.0.0'
 
-  '@missingcore/music-glyph-toys@https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/03cf1ec5466de415e133702db81583b1ce4ef4e5':
-    resolution: {tarball: https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/03cf1ec5466de415e133702db81583b1ce4ef4e5}
-    version: 0.2.2
+  '@missingcore/music-glyph-toys@https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/262740634820cafdbf3599be667fe2e17af7b2d3':
+    resolution: {tarball: https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/262740634820cafdbf3599be667fe2e17af7b2d3}
+    version: 0.3.0
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -7210,7 +7210,7 @@ snapshots:
       '@tanstack/query-core': 5.90.20
       '@tanstack/react-query': 5.90.21(react@19.1.4)
 
-  '@missingcore/music-glyph-toys@https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/03cf1ec5466de415e133702db81583b1ce4ef4e5(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)':
+  '@missingcore/music-glyph-toys@https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/262740634820cafdbf3599be667fe2e17af7b2d3(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)':
     dependencies:
       react: 19.1.4
       react-native: 0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4)
