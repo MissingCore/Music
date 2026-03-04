@@ -5,7 +5,9 @@ const { withUniwindConfig } = require("uniwind/metro");
 let config = null;
 
 if (process.env.EXPO_PUBLIC_WITH_SENTRY === "true") {
-  const { getSentryExpoConfig } = require("@sentry/react-native/metro");
+  const { getSentryExpoConfig } = require("@sentry/react-native/metro", {
+    includeWebReplay: false,
+  });
   config = getSentryExpoConfig(__dirname);
 } else {
   const { getDefaultConfig } = require("expo/metro-config");

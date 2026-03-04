@@ -6,13 +6,12 @@ buildscript {
     mavenCentral()
   }
   dependencies {
+    if (findProperty('music.WITH_SENTRY')?.toBoolean()) {
+      classpath("io.sentry:sentry-android-gradle-plugin:6.1.0")
+    }
     classpath('com.android.tools.build:gradle')
     classpath('com.facebook.react:react-native-gradle-plugin')
     classpath('org.jetbrains.kotlin:kotlin-gradle-plugin')
-
-    if (findProperty('music.WITH_SENTRY')?.toBoolean()) {
-      classpath('io.sentry:sentry-android-gradle-plugin:5.9.0')
-    }
   }
 }
 
@@ -23,14 +22,6 @@ allprojects {
     maven { url 'https://jitpack.io' }
     maven {
       url "$rootDir/../node_modules/@missingcore/music-glyph-toys/android/glyph-matrix-sdk"
-    }
-  }
-}
-
-subprojects {
-  configurations.all {
-    if (findProperty('music.WITH_SENTRY')?.toBoolean()) {
-      exclude group: 'io.sentry', module: 'sentry-android-replay'
     }
   }
 }

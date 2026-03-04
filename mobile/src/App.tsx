@@ -26,6 +26,8 @@ import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
 import { bgWait } from "~/utils/promise";
 
 if (SENTRY_ENABLED) {
+  const RemovedIntegrations = new Set(["ConsoleLogs", "MobileReplay"]);
+
   Sentry.init({
     dsn: "https://bbd726405356cdfb20b85f5f924fd3e3@o4507687432617984.ingest.us.sentry.io/4507687447101440",
     ignoreErrors: [
@@ -36,6 +38,10 @@ if (SENTRY_ENABLED) {
       "No matching browser activity found",
       "non-premultiplied bitmap",
     ],
+    //? Disable logging console messages in Sentry introduced in `@sentry/react-native@7.4.0`.
+    integrations(integrations: Array<{ name: string }>) {
+      return integrations.filter((i) => !RemovedIntegrations.has(i.name));
+    },
   });
 }
 
