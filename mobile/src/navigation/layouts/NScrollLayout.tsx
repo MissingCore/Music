@@ -49,7 +49,8 @@ import { AccentText } from "~/components/Typography/AccentText";
 const INVALID_STATE = -1;
 const SNAP_PERCENT = 0.35;
 
-const ESTIMATE_HEADER_HEIGHT = 130; //? Includes the shadow underneath the header.
+//? Includes the shadow underneath the header, but doesn't include the top insets.
+const ESTIMATE_HEADER_HEIGHT = 101.5;
 const SHADOW_HEIGHT = 24;
 
 //#region NScrollLayout
@@ -70,7 +71,9 @@ export function NScrollLayout(props: {
   const bottomOffset = bottomInset.withNav + 16;
 
   // Shy Header
-  const [topBarHeight, setTopBarHeight] = useState(ESTIMATE_HEADER_HEIGHT);
+  const [topBarHeight, setTopBarHeight] = useState(
+    ESTIMATE_HEADER_HEIGHT + insets.top,
+  );
   const headerHeight = topBarHeight - SHADOW_HEIGHT;
 
   const shyHeaderContext = useShyHeaderContext({
@@ -155,7 +158,7 @@ export function NScrollListLayout<TData>({
 
   // Shy Header
   const [topBarHeight, setTopBarHeight] = useState(
-    ESTIMATE_HEADER_HEIGHT + estimatedSubheaderHeight,
+    ESTIMATE_HEADER_HEIGHT + insets.top + estimatedSubheaderHeight,
   );
   const headerHeight = topBarHeight - SHADOW_HEIGHT;
 
@@ -233,7 +236,7 @@ function ShyHeader(props: {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const [containerHeight, setContainerHeight] = useState(
-    ESTIMATE_HEADER_HEIGHT,
+    ESTIMATE_HEADER_HEIGHT + insets.top,
   );
 
   return (
