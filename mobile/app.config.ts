@@ -100,7 +100,11 @@ export default (): ExpoConfig => ({
       { android: { enforceNavigationBarContrast: false } },
     ],
     ["react-native-android-widget", widgetPluginConfig],
-    ["@sentry/react-native/expo", sentryPluginConfig],
+    //? Even if we uninstall `@sentry/react-native`, the build will fail
+    //? due to it being referenced in the plugin.
+    process.env.EXPO_PUBLIC_WITH_SENTRY === "true"
+      ? ["@sentry/react-native/expo", sentryPluginConfig]
+      : [],
   ],
   newArchEnabled: true,
 });
