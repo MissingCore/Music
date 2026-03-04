@@ -252,5 +252,7 @@ if (findProperty('music.WITH_SENTRY')?.toBoolean()) {
         autoInstallation {
             enabled = false
         }
+        // https://docs.sentry.io/platforms/android/configuration/gradle/#configure
+        telemetry = false
     }
 }
