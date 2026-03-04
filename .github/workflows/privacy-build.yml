@@ -17,8 +17,9 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Uninstall `@sentry/react-native` dependency
-        run: pnpm uninstall @sentry/react-native
-        shell: bash
+        run: |
+          pnpm uninstall @sentry/react-native
+          pnpm sync:licenses
 
       - name: Setup JDK 18
         uses: actions/setup-java@v4
