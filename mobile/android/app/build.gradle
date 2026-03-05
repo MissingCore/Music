@@ -81,6 +81,11 @@ def enableMinifyInReleaseBuilds = (findProperty('android.enableMinifyInReleaseBu
  */
 def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
+def reactNativeArchitectures() {
+  def value = project.getProperties().get("reactNativeArchitectures")
+  return value ? value.split(",") : ["armeabi-v7a", "x86", "arm64-v8a", "x86_64"]
+}
+
 android {
     ndkVersion rootProject.ext.ndkVersion
 
@@ -107,8 +112,8 @@ android {
         abi {
             reset()
             enable true
-            include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
             universalApk false  // If true, also generate a universal APK
+            include (*reactNativeArchitectures())
         }
     }
     signingConfigs {
@@ -169,6 +174,21 @@ android {
     }
     androidResources {
         ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~'
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            // For each separate APK per architecture, set a unique version code as described here:
+            // https://developer.android.com/studio/build/configure-apk-splits.html
+            def versionCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
+            def abi = output.getFilter(com.android.build.OutputFile.ABI)
+            if (abi != null) {  // `abi == null` for universal APKs
+                //! Via our release script, we ensure that we don't increment the
+                //! "ones" place (which would cause a version conflict on future
+                //! versions).
+                output.versionCodeOverride = defaultConfig.versionCode + versionCodes.get(abi)
+            }
+        }
     }
 }
 

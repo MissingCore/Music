@@ -54,7 +54,7 @@ def bumpVersion():
   with open(Path("./package.json"), "w", encoding="utf8") as f:
     json.dump(package_json, f, indent=2)
     f.write("\n") # Keep the new line at the end of the file.
-  
+
   # Update version in `app.config.ts`.
   app_config = []
   with open(Path("./app.config.ts"), encoding="utf8") as f:
@@ -63,7 +63,9 @@ def bumpVersion():
       find_versionName = re.search(r'(.+version: )".+",', line)
       if (find_versionCode):
         # Get value in 2nd parenthesized subgroup.
-        newVersionCode = int(find_versionCode.group(2)) + 1
+        #   - We increment by 10 due to assigning a different code for
+        #     each APK architecture.
+        newVersionCode = int(find_versionCode.group(2)) + 10
         app_config.append(
           f"{find_versionCode.group(1)}{newVersionCode},\n"
           )
@@ -76,7 +78,7 @@ def bumpVersion():
   with open(Path("./app.config.ts"), "w", encoding="utf8") as f:
     for line in app_config:
       f.write(line)
-  
+
   # Update version in `build.gradle`.
   build_gradle = []
   with open(Path("./android/app/build.gradle"), encoding="utf8") as f:
@@ -96,7 +98,7 @@ def bumpVersion():
   with open(Path("./android/app/build.gradle"), "w", encoding="utf8") as f:
     for line in build_gradle:
       f.write(line)
-      
+
 
 if __name__ == "__main__":
   bumpVersion()
