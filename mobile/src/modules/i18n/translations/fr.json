@@ -7,6 +7,8 @@
     "artists": "Artistes",
     "folder": "Dossier",
     "folders": "Dossiers",
+    "genre": null,
+    "genres": null,
     "playlist": "Playlist",
     "playlists": "Playlists",
     "track": "Titre",
@@ -31,15 +33,19 @@
     "disc": "CD {{count}}"
   },
   "template": {
+    "entryAdd": null,
     "entryAdded": "`{{- name}}` ajouté.",
     "entryRemove": "Supprimer `{{- name}}`.",
     "entryRemoved": "`{{- name}}` supprimé.",
+    "entryManage": null,
     "entrySeeMore": "Voir plus sur `{{- name}}`.",
     "notFound": "`{{- name}}` n'existe pas.",
+    "entryMove": null,
     "entryShow": "Afficher `{{- name}}`",
     "entryHide": "Cacher `{{- name}}`",
     "entryEnable": "Activer `{{- name}}`",
-    "entryDisable": "Désactiver `{{- name}}`"
+    "entryDisable": "Désactiver `{{- name}}`",
+    "noContentFound": null
   },
   "plural": {
     "entry_one": "{{count}} entrée",
@@ -57,6 +63,9 @@
     "unsaved": "Vous avez des modifications non enregistrées.",
     "stay": "Rester",
     "leave": "Quitter",
+    "create": null,
+    "delete": null,
+    "edit": null,
     "clear": "Réinitialiser",
     "reset": "Réinitialiser",
     "validation": {
@@ -81,10 +90,10 @@
       "usedName": "Ce nom ne peut pas être utilisé.",
       "noContent": "Aucun contenu trouvé.",
       "noErrors": "Aucune erreur trouvée.",
-      "noFilters": "Aucun filtre trouvé.",
       "noResults": "Aucun résultat trouvé.",
       "noAlbums": "Aucun album trouvé.",
       "noArtists": "Aucun artiste trouvé.",
+      "noGenres": null,
       "noPlaylists": "Aucune playlist trouvée.",
       "noTracks": "Aucun titre trouvé.",
       "noHiddenTracks": "Aucune piste masquée trouvée.",
@@ -98,7 +107,7 @@
       "extra": {
         "downloadAPK": "Télécharger le dernier APK",
         "updateGoogle": "Mettre à jour via le Play Store",
-        "version": "Version",
+        "version": null,
         "checkUpdates": null,
         "rcNotification": "Notification de pré-version"
       }
@@ -134,7 +143,6 @@
       "title": "Gestes du mini-lecteur"
     },
     "nowPlayingDesign": {
-      "title": "Design de l'écran \"En cours de lecture\"",
       "extra": {
         "plain": "Classique",
         "vinyl": "Vinyle",
@@ -198,12 +206,19 @@
         "volume": "Volume de l'application"
       }
     },
+    "continuePlaybackOnDismiss": {
+      "title": "Continuer la lecture à la fermeture",
+      "description": "Laisse la lecture de la musique continuer lorsque vous fermez l'application des tâches récentes. Forcer l'arrêt de l'application pour interrompre la lecture."
+    },
     "repeatOnSkip": {
       "title": "Garder le mode Répéter lors du passage au titre suivant",
       "brief": "Ne pas basculer en mode « Répéter » depuis « Répéter le titre » lors du saut."
     },
     "restoreLastPosition": {
       "title": "Restaurer à partir de la dernière position jouée"
+    },
+    "lyrics": {
+      "title": null
     },
     "scanning": {
       "title": "Recherche de musique"
@@ -226,7 +241,8 @@
       "brief": "Si cette option est désactivée, utilisez la fonction de nouvelle analyse pour détecter les titres nouveaux, mis à jour et supprimés."
     },
     "listAllow": {
-      "title": "Liste d'autorisation"
+      "title": "Liste d'autorisation",
+      "description": null
     },
     "listBlock": {
       "title": "Liste de blocage",
@@ -236,12 +252,15 @@
       "title": "Ignorer les audios courts",
       "description": "Durée en seconde des audios à ignorer."
     },
+    "separators": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
+    },
     "experimental": {
       "title": "Fonctionnalités Expérimentales"
-    },
-    "continuePlaybackOnDismiss": {
-      "title": "Continuer la lecture à la fermeture",
-      "description": "Laisse la lecture de la musique continuer lorsque vous fermez l'application des tâches récentes. Forcer l'arrêt de l'application pour interrompre la lecture."
     },
     "ignoreInterrupt": {
       "title": "Ignorer les interruptions",
@@ -334,11 +353,16 @@
     "modalViewPreference": {
       "title": null,
       "extra": {
+        "layout": null,
+        "list": null,
+        "grid": null,
+        "compactGrid": null,
         "sort": "Ordre de tri",
         "asc": "Ordre croissant",
-        "alphabetical": "Alphabétique",
         "discover": "Découvrez le temps",
-        "modified": "Modifié récemment"
+        "duration": null,
+        "modified": "Modifié récemment",
+        "trackCount": null
       }
     },
     "modalTrack": {

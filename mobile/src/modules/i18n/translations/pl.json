@@ -7,6 +7,8 @@
     "artists": "Artyści",
     "folder": "Katalog",
     "folders": "Katalogi",
+    "genre": null,
+    "genres": null,
     "playlist": "Playlista",
     "playlists": "Playlisty",
     "track": "Utwór",
@@ -31,15 +33,19 @@
     "disc": "CD {{count}}"
   },
   "template": {
+    "entryAdd": null,
     "entryAdded": "Dodano `{{- name}}`.",
     "entryRemove": "Usuń `{{- name}}`.",
     "entryRemoved": "Usunięto `{{- name}}`.",
+    "entryManage": null,
     "entrySeeMore": "Zobacz więcej o `{{- name}}`.",
     "notFound": "`{{- name}}` nie istnieje.",
+    "entryMove": null,
     "entryShow": "Pokaż `{{- name}}`",
     "entryHide": "Ukryj `{{- name}}`",
     "entryEnable": "Włącz `{{- name}}`",
-    "entryDisable": "Wyłącz `{{- name}}`"
+    "entryDisable": "Wyłącz `{{- name}}`",
+    "noContentFound": null
   },
   "plural": {
     "entry_one": "{{count}} element",
@@ -57,6 +63,9 @@
     "unsaved": "Masz niezapisane zmiany.",
     "stay": "Zostań",
     "leave": "Wyjdź",
+    "create": null,
+    "delete": null,
+    "edit": null,
     "clear": "Wyczyść",
     "reset": "Odrzuć zmiany",
     "validation": {
@@ -81,10 +90,10 @@
       "usedName": "Nie można użyć tej nazwy.",
       "noContent": "Brak zawartości.",
       "noErrors": "Brak błędów.",
-      "noFilters": "Brak filtrów.",
       "noResults": "Brak wyników.",
       "noAlbums": "Brak albumów.",
       "noArtists": "Brak artystów.",
+      "noGenres": null,
       "noPlaylists": "Brak playlist.",
       "noTracks": "Brak utworów.",
       "noHiddenTracks": "Brak ukrytych utworów.",
@@ -134,7 +143,6 @@
       "title": "Gesty w miniodtwarzaczu"
     },
     "nowPlayingDesign": {
-      "title": "Wygląd ekranu `Odtwarzane teraz`",
       "extra": {
         "plain": "Zwykły",
         "vinyl": "Winyl",
@@ -198,12 +206,19 @@
         "volume": "Głośność aplikacji"
       }
     },
+    "continuePlaybackOnDismiss": {
+      "title": "Odtwarzanie po zamknięciu",
+      "description": "Pozwól na kontynuowanie odtwarzania po zamknięciu aplikacji. Wymuś zatrzymanie aplikacji, aby zatrzymać odtwarzanie."
+    },
     "repeatOnSkip": {
       "title": "Zachowaj zapętlenie po pominięciu",
       "brief": "Nie zmieniaj trybu na `Zapętl` z `Zapętl jedną` po pominięciu."
     },
     "restoreLastPosition": {
       "title": "Przywróć ostatnio odtwarzaną pozycję"
+    },
+    "lyrics": {
+      "title": null
     },
     "scanning": {
       "title": "Skanowanie"
@@ -226,7 +241,8 @@
       "brief": "Po wyłączeniu będziesz musieć ręcznie uruchamiać skanowanie, by wykryć nowe lub usunięte utwory."
     },
     "listAllow": {
-      "title": "Biała lista"
+      "title": "Biała lista",
+      "description": null
     },
     "listBlock": {
       "title": "Czarna lista",
@@ -236,12 +252,15 @@
       "title": "Ignoruj krótkie nagrania",
       "description": "Nagrania krótsze niż poniższa ilość sekund nie będą zapisywane."
     },
+    "separators": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
+    },
     "experimental": {
       "title": "Funkcje eksperymentalne"
-    },
-    "continuePlaybackOnDismiss": {
-      "title": "Odtwarzanie po zamknięciu",
-      "description": "Pozwól na kontynuowanie odtwarzania po zamknięciu aplikacji. Wymuś zatrzymanie aplikacji, aby zatrzymać odtwarzanie."
     },
     "ignoreInterrupt": {
       "title": "Ignoruj przerwania",
@@ -334,11 +353,16 @@
     "modalViewPreference": {
       "title": null,
       "extra": {
+        "layout": null,
+        "list": null,
+        "grid": null,
+        "compactGrid": null,
         "sort": "Kolejność sortowania",
         "asc": "Rosnąco",
-        "alphabetical": "Alfabetycznie",
         "discover": "Data wydania",
-        "modified": "Data modyfikacji"
+        "duration": null,
+        "modified": "Data modyfikacji",
+        "trackCount": null
       }
     },
     "modalTrack": {

@@ -7,6 +7,8 @@
     "artists": "Artistas",
     "folder": "Carpeta",
     "folders": "Carpetas",
+    "genre": null,
+    "genres": null,
     "playlist": "Lista de reproducción",
     "playlists": "Listas de reproducción",
     "track": "Canción",
@@ -31,15 +33,19 @@
     "disc": "Disco {{count}}"
   },
   "template": {
+    "entryAdd": null,
     "entryAdded": "`{{- name}}` añadido.",
     "entryRemove": "Eliminar `{{- name}}`.",
     "entryRemoved": "`{{- name}}` eliminado.",
+    "entryManage": null,
     "entrySeeMore": "Ver más sobre `{{- name}}`.",
     "notFound": "`{{- name}}` no existe.",
+    "entryMove": null,
     "entryShow": "Mostrar `{{- name}}`",
     "entryHide": "Ocultar `{{- name}}`",
     "entryEnable": "Activar `{{- name}}`",
-    "entryDisable": "Desactivar `{{- name}}`"
+    "entryDisable": "Desactivar `{{- name}}`",
+    "noContentFound": null
   },
   "plural": {
     "entry_one": "{{count}} entrada",
@@ -57,6 +63,9 @@
     "unsaved": "Puede que tengas cambios sin guardar.",
     "stay": "Quedarse",
     "leave": "Salir",
+    "create": null,
+    "delete": null,
+    "edit": null,
     "clear": "Limpiar",
     "reset": "Restablecer",
     "validation": {
@@ -81,10 +90,10 @@
       "usedName": "Ese nombre no puede usarse.",
       "noContent": "No se encontró contenido.",
       "noErrors": "No se encontraron errores.",
-      "noFilters": "No se encontraron filtros.",
       "noResults": "No se encontraron resultados.",
       "noAlbums": "No se encontraron álbumes.",
       "noArtists": "No se encontraron artistas.",
+      "noGenres": null,
       "noPlaylists": "No se encontraron listas de reproducción.",
       "noTracks": "No se encontraron canciones.",
       "noHiddenTracks": "No se encontraron canciones ocultas.",
@@ -134,7 +143,6 @@
       "title": "Gestos del mini reproductor"
     },
     "nowPlayingDesign": {
-      "title": "Diseño de la reproducción",
       "extra": {
         "plain": "Simple",
         "vinyl": "Vinilo",
@@ -198,12 +206,19 @@
         "volume": "Volumen"
       }
     },
+    "continuePlaybackOnDismiss": {
+      "title": "Seguir reproduciendo al cerrar",
+      "description": "La música continúa aunque cierres la app desde tareas recientes."
+    },
     "repeatOnSkip": {
       "title": "Mantener repetición al saltar",
       "brief": "Evita que \"Repetir una\" cambie al saltar canción."
     },
     "restoreLastPosition": {
       "title": "Restaurar última posición"
+    },
+    "lyrics": {
+      "title": null
     },
     "scanning": {
       "title": "Escaneo"
@@ -226,7 +241,8 @@
       "brief": "Si está desactivado, usa el reescaneo manual para detectar cambios."
     },
     "listAllow": {
-      "title": "Lista de permitidos"
+      "title": "Lista de permitidos",
+      "description": null
     },
     "listBlock": {
       "title": "Lista de bloqueados",
@@ -236,12 +252,15 @@
       "title": "Ignorar audio corto",
       "description": "Duración mínima para guardar una canción."
     },
+    "separators": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
+    },
     "experimental": {
       "title": "Funciones experimentales"
-    },
-    "continuePlaybackOnDismiss": {
-      "title": "Seguir reproduciendo al cerrar",
-      "description": "La música continúa aunque cierres la app desde tareas recientes."
     },
     "ignoreInterrupt": {
       "title": "Ignorar interrupciones",
@@ -334,11 +353,16 @@
     "modalViewPreference": {
       "title": null,
       "extra": {
+        "layout": null,
+        "list": null,
+        "grid": null,
+        "compactGrid": null,
         "sort": "Ordenar",
         "asc": "Ascendente",
-        "alphabetical": "Alfabético",
         "discover": "Descubrir",
-        "modified": "Fecha de modificación"
+        "duration": null,
+        "modified": "Fecha de modificación",
+        "trackCount": null
       }
     },
     "modalTrack": {

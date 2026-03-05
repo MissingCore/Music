@@ -7,6 +7,8 @@
     "artists": "アーティスト",
     "folder": "フォルダ",
     "folders": "フォルダ",
+    "genre": null,
+    "genres": null,
     "playlist": "プレイリスト",
     "playlists": "プレイリスト",
     "track": "トラック",
@@ -31,15 +33,19 @@
     "disc": "ディスク {{count}}"
   },
   "template": {
+    "entryAdd": null,
     "entryAdded": "｢{{- name}}｣を追加しました。",
     "entryRemove": "｢{{- name}}｣を削除します。",
     "entryRemoved": "｢{{- name}}｣を削除しました。",
+    "entryManage": null,
     "entrySeeMore": "｢{{- name}}｣の詳細を確認します。",
     "notFound": "｢{{- name}}｣は存在しません。",
+    "entryMove": null,
     "entryShow": "｢{{- name}}｣を表示",
     "entryHide": "｢{{- name}}｣を非表示",
     "entryEnable": "「{{- name}}」を有効化",
-    "entryDisable": "「{{- name}}」を無効化"
+    "entryDisable": "「{{- name}}」を無効化",
+    "noContentFound": null
   },
   "plural": {
     "entry_one": "{{count}} 件のエントリ",
@@ -57,6 +63,9 @@
     "unsaved": "変更が保存されていません。",
     "stay": "留まる",
     "leave": "離れる",
+    "create": null,
+    "delete": null,
+    "edit": null,
     "clear": "消去",
     "reset": "リセット",
     "validation": {
@@ -81,10 +90,10 @@
       "usedName": "その名前は使用できません。",
       "noContent": "コンテンツが見つかりませんでした。",
       "noErrors": "エラーは見つかりませんでした。",
-      "noFilters": "フィルタが見つかりません。",
       "noResults": "結果が見つかりませんでした。",
       "noAlbums": "アルバムが見つかりません。",
       "noArtists": "アーティストが見つかりません。",
+      "noGenres": null,
       "noPlaylists": "プレイリストが見つかりません。",
       "noTracks": "トラックが見つかりません。",
       "noHiddenTracks": "非表示のトラックは見つかりません。",
@@ -134,7 +143,6 @@
       "title": "ミニプレーヤージェスチャー"
     },
     "nowPlayingDesign": {
-      "title": "再生中画面のデザイン",
       "extra": {
         "plain": "プレーン",
         "vinyl": "ヴァイナル",
@@ -198,12 +206,19 @@
         "volume": "アプリの音量"
       }
     },
+    "continuePlaybackOnDismiss": {
+      "title": "閉じても再生を続行する",
+      "description": "最近のタスクからアプリを終了しても音楽の再生を継続します。再生を停止するには、アプリを強制停止してください。"
+    },
     "repeatOnSkip": {
       "title": "スキップ時にリピートモードを維持する",
       "brief": "スキップ時に「1 回リピート」を「リピート」に切り替えないようにします。"
     },
     "restoreLastPosition": {
       "title": "最後に再生した位置を復元"
+    },
+    "lyrics": {
+      "title": null
     },
     "scanning": {
       "title": "音楽のスキャン"
@@ -226,7 +241,8 @@
       "brief": "無効化した場合は再スキャン機能を使用して新しいトラック、更新したトラック、および削除されたトラックの検出します。"
     },
     "listAllow": {
-      "title": "許可リスト"
+      "title": "許可リスト",
+      "description": null
     },
     "listBlock": {
       "title": "ブロックリスト",
@@ -236,12 +252,15 @@
       "title": "再生時間が短い音楽を無視する",
       "description": "保存をしない音楽の再生時間 (秒数)。"
     },
+    "separators": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
+    },
     "experimental": {
       "title": "試験的な機能"
-    },
-    "continuePlaybackOnDismiss": {
-      "title": "閉じても再生を続行する",
-      "description": "最近のタスクからアプリを終了しても音楽の再生を継続します。再生を停止するには、アプリを強制停止してください。"
     },
     "ignoreInterrupt": {
       "title": "中断を無視する",
@@ -334,11 +353,16 @@
     "modalViewPreference": {
       "title": null,
       "extra": {
+        "layout": null,
+        "list": null,
+        "grid": null,
+        "compactGrid": null,
         "sort": "並べ替え順",
         "asc": "昇順",
-        "alphabetical": "アルファベット",
         "discover": "時間を見つける",
-        "modified": "最終更新"
+        "duration": null,
+        "modified": "最終更新",
+        "trackCount": null
       }
     },
     "modalTrack": {

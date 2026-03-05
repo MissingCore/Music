@@ -7,6 +7,8 @@
     "artists": "Sanatçılar",
     "folder": "Klasör",
     "folders": "Klasörler",
+    "genre": null,
+    "genres": null,
     "playlist": "Çalma Listesi",
     "playlists": "Çalma Listeleri",
     "track": "Parça",
@@ -31,15 +33,19 @@
     "disc": "Disk {{count}}"
   },
   "template": {
+    "entryAdd": null,
     "entryAdded": "`{{- name}}` eklendi.",
     "entryRemove": "`{{- name}}` adlı öğeyi kaldır.",
     "entryRemoved": "`{{- name}}` kaldırıldı.",
+    "entryManage": null,
     "entrySeeMore": "`{{- name}}` hakkında daha fazlasını gör.",
     "notFound": "`{{- name}}` bulunamadı.",
+    "entryMove": null,
     "entryShow": "`{{- name}}` göster",
     "entryHide": "`{{- name}}` gizle",
     "entryEnable": "`{{- name}}` etkinleştir",
-    "entryDisable": "`{{- name}}` devre dışı bırak"
+    "entryDisable": "`{{- name}}` devre dışı bırak",
+    "noContentFound": null
   },
   "plural": {
     "entry_one": "{{count}} giriş",
@@ -57,6 +63,9 @@
     "unsaved": "Kaydedilmemiş değişiklikleriniz olabilir.",
     "stay": "Kal",
     "leave": "Ayrıl",
+    "create": null,
+    "delete": null,
+    "edit": null,
     "clear": "Temizle",
     "reset": "Sıfırla",
     "validation": {
@@ -81,10 +90,10 @@
       "usedName": "Bu isim kullanılamaz.",
       "noContent": "İçerik bulunamadı.",
       "noErrors": "Hata bulunamadı.",
-      "noFilters": "Filtre bulunamadı.",
       "noResults": "Sonuç bulunamadı.",
       "noAlbums": "Albüm bulunamadı.",
       "noArtists": "Sanatçı bulunamadı.",
+      "noGenres": null,
       "noPlaylists": "Çalma listesi bulunamadı.",
       "noTracks": "Parça bulunamadı.",
       "noHiddenTracks": "Gizli parça bulunamadı.",
@@ -134,7 +143,6 @@
       "title": "Mini Oynatıcı Hareketleri"
     },
     "nowPlayingDesign": {
-      "title": "Şu An Çalan Ekranı Tasarımı",
       "extra": {
         "plain": "Sade",
         "vinyl": "Plak",
@@ -198,12 +206,19 @@
         "volume": "Uygulama Sesi"
       }
     },
+    "continuePlaybackOnDismiss": {
+      "title": "Kapatıldığında Oynatmaya Devam Et",
+      "description": "Uygulamayı son görevlerden kapattığınızda müzik çalmaya devam etsin. Çalmayı durdurmak için uygulamayı zorla durdurun."
+    },
     "repeatOnSkip": {
       "title": "Parça Atlandığında Tekrarlama Modunu Koru",
       "brief": "Parça atlandığında modu \"Tek Parçayı Tekrarla\" konumundan \"Tekrarla\" konumuna değiştirmeyin."
     },
     "restoreLastPosition": {
       "title": "Son Çalınan Konumdan Geri Yükle"
+    },
+    "lyrics": {
+      "title": null
     },
     "scanning": {
       "title": "Tarama"
@@ -226,7 +241,8 @@
       "brief": "Devre dışı bırakılırsa, yeni, güncellenmiş ve kaldırılmış parçaları tespit etmek için Yeniden Tara özelliğini kullanın."
     },
     "listAllow": {
-      "title": "İzin Listesi"
+      "title": "İzin Listesi",
+      "description": null
     },
     "listBlock": {
       "title": "Engelleme Listesi",
@@ -236,12 +252,15 @@
       "title": "Kısa Sesleri Yoksay",
       "description": "Kaydetmek istemediğimiz seslerin saniye cinsinden süresi."
     },
+    "separators": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
+    },
     "experimental": {
       "title": "Deneysel Özellikler"
-    },
-    "continuePlaybackOnDismiss": {
-      "title": "Kapatıldığında Oynatmaya Devam Et",
-      "description": "Uygulamayı son görevlerden kapattığınızda müzik çalmaya devam etsin. Çalmayı durdurmak için uygulamayı zorla durdurun."
     },
     "ignoreInterrupt": {
       "title": "Kesintileri Yoksay",
@@ -334,11 +353,16 @@
     "modalViewPreference": {
       "title": null,
       "extra": {
+        "layout": null,
+        "list": null,
+        "grid": null,
+        "compactGrid": null,
         "sort": "Sıralama Düzeni",
         "asc": "Artan Sıralama",
-        "alphabetical": "Alfabetik",
         "discover": "Keşif Zamanı",
-        "modified": "Son Değiştirilme"
+        "duration": null,
+        "modified": "Son Değiştirilme",
+        "trackCount": null
       }
     },
     "modalTrack": {

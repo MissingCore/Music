@@ -7,6 +7,8 @@
     "artists": "Исполнители",
     "folder": "Папка",
     "folders": "Папки",
+    "genre": null,
+    "genres": null,
     "playlist": "Плейлист",
     "playlists": "Плейлисты",
     "track": "Трек",
@@ -31,15 +33,19 @@
     "disc": "Диск {{count}}"
   },
   "template": {
+    "entryAdd": null,
     "entryAdded": "`{{- name}}` Добавлен.",
     "entryRemove": "Удалить `{{- name}}`.",
     "entryRemoved": "`{{- name}}` удалён.",
+    "entryManage": null,
     "entrySeeMore": "Узнать больше о `{{- name}}`.",
     "notFound": "`{{- name}}` не существует.",
+    "entryMove": null,
     "entryShow": "Показать `{{- name}}`",
     "entryHide": "Скрыть `{{- name}}`",
     "entryEnable": "Включить `{{- name}}`",
-    "entryDisable": "Отключить `{{- name}}`"
+    "entryDisable": "Отключить `{{- name}}`",
+    "noContentFound": null
   },
   "plural": {
     "entry_one": "{{count}} запись",
@@ -57,6 +63,9 @@
     "unsaved": "У вас могут быть несохраненные изменения.",
     "stay": "Остаться",
     "leave": "Выйти",
+    "create": null,
+    "delete": null,
+    "edit": null,
     "clear": "Очистить",
     "reset": "Сброс",
     "validation": {
@@ -81,10 +90,10 @@
       "usedName": "Это имя не может быть использовано.",
       "noContent": "Контент не найден.",
       "noErrors": "Ошибки не найдены.",
-      "noFilters": "Фильтры не найдены.",
       "noResults": "Результаты не найдены.",
       "noAlbums": "Альбомы не найдены.",
       "noArtists": "Артисты не найдены.",
+      "noGenres": null,
       "noPlaylists": "Плейлисты не найдены.",
       "noTracks": "Треки не найдены.",
       "noHiddenTracks": "Нет скрытых треков.",
@@ -134,7 +143,6 @@
       "title": null
     },
     "nowPlayingDesign": {
-      "title": "Проигрываемый дизайн экрана",
       "extra": {
         "plain": "Обычный",
         "vinyl": "Винил",
@@ -198,12 +206,19 @@
         "volume": "Громкость приложения"
       }
     },
+    "continuePlaybackOnDismiss": {
+      "title": "Воспроизводить при свёртывании",
+      "description": "Музыка продолжит воспроизводиться, когда приложение закрыто. Полное закрытие остановить воспроизведение."
+    },
     "repeatOnSkip": {
       "title": "Не выключать режим повтора при пропуске",
       "brief": "Не переключаться в режим \"Повтор\" с режима \"Повторять одну\" после пропуска."
     },
     "restoreLastPosition": {
       "title": "Сохранить на последнем остановившемся моменте"
+    },
+    "lyrics": {
+      "title": null
     },
     "scanning": {
       "title": "Сканирование"
@@ -226,7 +241,8 @@
       "brief": null
     },
     "listAllow": {
-      "title": "Белый список"
+      "title": "Белый список",
+      "description": null
     },
     "listBlock": {
       "title": "Черный список",
@@ -236,12 +252,15 @@
       "title": "Игнорирование коротких аудио",
       "description": "Длительность аудио в секундах, которую мы не сохраняем."
     },
+    "separators": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
+    },
     "experimental": {
       "title": "Экспериментальные функции"
-    },
-    "continuePlaybackOnDismiss": {
-      "title": "Воспроизводить при свёртывании",
-      "description": "Музыка продолжит воспроизводиться, когда приложение закрыто. Полное закрытие остановить воспроизведение."
     },
     "ignoreInterrupt": {
       "title": "Игнорировать прерывания",
@@ -334,11 +353,16 @@
     "modalViewPreference": {
       "title": null,
       "extra": {
+        "layout": null,
+        "list": null,
+        "grid": null,
+        "compactGrid": null,
         "sort": "Порядок сортировки",
         "asc": "По возрастанию",
-        "alphabetical": "Алфавитный",
         "discover": "Время на прослушивание музыки",
-        "modified": "Последнее изменение"
+        "duration": null,
+        "modified": "Последнее изменение",
+        "trackCount": null
       }
     },
     "modalTrack": {

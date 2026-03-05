@@ -7,6 +7,8 @@
     "artists": "कलाकार",
     "folder": "फोल्डर",
     "folders": "फोल्डर्स",
+    "genre": null,
+    "genres": null,
     "playlist": "प्लेलिस्ट",
     "playlists": "प्लेलिस्ट्स",
     "track": "ट्रैक",
@@ -31,15 +33,19 @@
     "disc": "डिस्क {{count}}"
   },
   "template": {
+    "entryAdd": null,
     "entryAdded": "`{{- name}}` जोड़ा गया।",
     "entryRemove": "`{{- name}}` हटाएँ।",
     "entryRemoved": "`{{- name}}` हटा दिया गया।",
+    "entryManage": null,
     "entrySeeMore": "`{{- name}}` के बारे में और देखें।",
     "notFound": "`{{- name}}` मौजूद नहीं है।",
+    "entryMove": null,
     "entryShow": "`{{- name}}` दिखाएँ",
     "entryHide": "`{{- name}}` छुपाएँ",
     "entryEnable": null,
-    "entryDisable": null
+    "entryDisable": null,
+    "noContentFound": null
   },
   "plural": {
     "entry_one": "{{count}} प्रविष्टि",
@@ -57,6 +63,9 @@
     "unsaved": "आपके पास कुछ असहेजित परिवर्तन हो सकते हैं।",
     "stay": "रहें",
     "leave": "छोड़ें",
+    "create": null,
+    "delete": null,
+    "edit": null,
     "clear": null,
     "reset": null,
     "validation": {
@@ -81,10 +90,10 @@
       "usedName": "यह नाम उपयोग नहीं किया जा सकता।",
       "noContent": "कोई सामग्री नहीं मिली।",
       "noErrors": "कोई त्रुटि नहीं मिली।",
-      "noFilters": "कोई फ़िल्टर नहीं मिला।",
       "noResults": "कोई परिणाम नहीं मिला।",
       "noAlbums": "कोई एल्बम नहीं मिला।",
       "noArtists": "कोई कलाकार नहीं मिला।",
+      "noGenres": null,
       "noPlaylists": "कोई प्लेलिस्ट नहीं मिली।",
       "noTracks": "कोई ट्रैक नहीं मिला।",
       "noHiddenTracks": null,
@@ -134,7 +143,6 @@
       "title": null
     },
     "nowPlayingDesign": {
-      "title": "अभी चल रहा स्क्रीन डिज़ाइन",
       "extra": {
         "plain": "साधारण",
         "vinyl": "विनाइल",
@@ -198,11 +206,18 @@
         "volume": null
       }
     },
+    "continuePlaybackOnDismiss": {
+      "title": null,
+      "description": null
+    },
     "repeatOnSkip": {
       "title": null,
       "brief": null
     },
     "restoreLastPosition": {
+      "title": null
+    },
+    "lyrics": {
       "title": null
     },
     "scanning": {
@@ -226,7 +241,8 @@
       "brief": null
     },
     "listAllow": {
-      "title": "अनुमति सूची"
+      "title": "अनुमति सूची",
+      "description": null
     },
     "listBlock": {
       "title": "ब्लॉक सूची",
@@ -236,12 +252,15 @@
       "title": "छोटे ऑडियो को अनदेखा करें",
       "description": "ऑडियो की अवधि (सेकंड में) जिसे हम सहेजना नहीं चाहते।"
     },
+    "separators": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
+    },
     "experimental": {
       "title": null
-    },
-    "continuePlaybackOnDismiss": {
-      "title": null,
-      "description": null
     },
     "ignoreInterrupt": {
       "title": null,
@@ -334,11 +353,16 @@
     "modalViewPreference": {
       "title": null,
       "extra": {
+        "layout": null,
+        "list": null,
+        "grid": null,
+        "compactGrid": null,
         "sort": "क्रम",
         "asc": "आरोही क्रम",
-        "alphabetical": "वर्णमाला क्रम",
         "discover": null,
-        "modified": "अंतिम बदलाव"
+        "duration": null,
+        "modified": "अंतिम बदलाव",
+        "trackCount": null
       }
     },
     "modalTrack": {

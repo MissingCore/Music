@@ -7,6 +7,8 @@
     "artists": "Kunstnere",
     "folder": "Mappe",
     "folders": "Mapper",
+    "genre": null,
+    "genres": null,
     "playlist": "Playliste",
     "playlists": "Playlister",
     "track": "Sang",
@@ -31,15 +33,19 @@
     "disc": "Plade {{count}}"
   },
   "template": {
+    "entryAdd": null,
     "entryAdded": "\"{{- name}}\" blev tilføjet.",
     "entryRemove": "Fjern \"{{- name}}\".",
     "entryRemoved": "\"{{- name}}\" blev fjernet.",
+    "entryManage": null,
     "entrySeeMore": "Se mere om \"{{- name}}\".",
     "notFound": "\"{{- name}}\" findes ikke.",
+    "entryMove": null,
     "entryShow": "Vis \"{{- name}}\"",
     "entryHide": "Gem \"{{- name}}\"",
     "entryEnable": "Aktivér \"{{- name}}\"",
-    "entryDisable": "Deaktivér \"{{- name}}\""
+    "entryDisable": "Deaktivér \"{{- name}}\"",
+    "noContentFound": null
   },
   "plural": {
     "entry_one": "{{count}} indlæg",
@@ -57,6 +63,9 @@
     "unsaved": "Du har muligvis ugemte ændringer.",
     "stay": "Bliv her",
     "leave": "Luk",
+    "create": null,
+    "delete": null,
+    "edit": null,
     "clear": "Ryd",
     "reset": null,
     "validation": {
@@ -81,10 +90,10 @@
       "usedName": "Dette navn kan ikke bruges.",
       "noContent": "Intet indhold fundet.",
       "noErrors": "Ingen fejl fundet.",
-      "noFilters": "Ingen filtre fundet.",
       "noResults": "Ingen resultater fundet.",
       "noAlbums": "Intet album fundet.",
       "noArtists": "Ingen kunstnere fundet.",
+      "noGenres": null,
       "noPlaylists": "Ingen playlister fundet.",
       "noTracks": "Ingen sange fundet.",
       "noHiddenTracks": null,
@@ -134,7 +143,6 @@
       "title": null
     },
     "nowPlayingDesign": {
-      "title": "Design af Afspiller-nu-skærmen",
       "extra": {
         "plain": "Kun cover",
         "vinyl": "Kun vinyl",
@@ -198,11 +206,18 @@
         "volume": "Appens lydstyrke"
       }
     },
+    "continuePlaybackOnDismiss": {
+      "title": null,
+      "description": null
+    },
     "repeatOnSkip": {
       "title": "Behold gentagelsesindstilling ved næste sang",
       "brief": "Ændr ikke gentagelsesindstillingen fra \"Gentag én\" til \"Gentag\", når der skiftes til næste sang."
     },
     "restoreLastPosition": {
+      "title": null
+    },
+    "lyrics": {
       "title": null
     },
     "scanning": {
@@ -226,7 +241,8 @@
       "brief": null
     },
     "listAllow": {
-      "title": "Tilladelsesliste"
+      "title": "Tilladelsesliste",
+      "description": null
     },
     "listBlock": {
       "title": "Blokeringsliste",
@@ -236,12 +252,15 @@
       "title": "Ignorér korte audiofiler",
       "description": "Varighed i sekunder af audiofiler, der ikke skal gemmes."
     },
+    "separators": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
+    },
     "experimental": {
       "title": null
-    },
-    "continuePlaybackOnDismiss": {
-      "title": null,
-      "description": null
     },
     "ignoreInterrupt": {
       "title": "Ignorér afbrydelser",
@@ -334,11 +353,16 @@
     "modalViewPreference": {
       "title": null,
       "extra": {
+        "layout": null,
+        "list": null,
+        "grid": null,
+        "compactGrid": null,
         "sort": "Sortering",
         "asc": "Stigende rækkefølge",
-        "alphabetical": "Alfabetisk",
         "discover": null,
-        "modified": "Senest gemt/ændret"
+        "duration": null,
+        "modified": "Senest gemt/ændret",
+        "trackCount": null
       }
     },
     "modalTrack": {

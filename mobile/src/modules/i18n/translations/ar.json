@@ -7,6 +7,8 @@
     "artists": "فنانون",
     "folder": "مجلد",
     "folders": "مجلدات",
+    "genre": null,
+    "genres": null,
     "playlist": "قائمة تشغيل",
     "playlists": "قوائم التشغيل",
     "track": "أغنية",
@@ -31,15 +33,19 @@
     "disc": "قرص {{count}}"
   },
   "template": {
+    "entryAdd": null,
     "entryAdded": "تمت إضافة `{{- name}}`.",
     "entryRemove": "إزالة `{{- name}}`.",
     "entryRemoved": "تمت إزالة `{{- name}}`.",
+    "entryManage": null,
     "entrySeeMore": "عرض المزيد حول `{{- name}}`.",
     "notFound": "`{{- name}}` غير موجود.",
+    "entryMove": null,
     "entryShow": "إظهار `{{- name}}`",
     "entryHide": "إخفاء `{{- name}}`",
     "entryEnable": "تفعيل `{{- name}}`",
-    "entryDisable": "تعطيل `{{- name}}`"
+    "entryDisable": "تعطيل `{{- name}}`",
+    "noContentFound": null
   },
   "plural": {
     "entry_one": "{{count}} إدخال",
@@ -57,6 +63,9 @@
     "unsaved": "قد تكون لديك تغييرات غير محفوظة.",
     "stay": "البقاء",
     "leave": "مغادرة",
+    "create": null,
+    "delete": null,
+    "edit": null,
     "clear": "مسح",
     "reset": "إعادة تعيين",
     "validation": {
@@ -81,10 +90,10 @@
       "usedName": "لا يمكن استخدام هذا الاسم.",
       "noContent": "لم يتم العثور على محتوى.",
       "noErrors": "لم يتم العثور على أخطاء.",
-      "noFilters": "لم يتم العثور على عوامل تصفية.",
       "noResults": "لم يتم العثور على نتائج.",
       "noAlbums": "لم يتم العثور على ألبومات.",
       "noArtists": "لم يتم العثور على فنانين.",
+      "noGenres": null,
       "noPlaylists": "لم يتم العثور على قوائم تشغيل.",
       "noTracks": "لم يتم العثور على أغاني.",
       "noHiddenTracks": "لم يتم العثور على أغاني مخفية.",
@@ -134,7 +143,6 @@
       "title": null
     },
     "nowPlayingDesign": {
-      "title": "تصميم شاشة التشغيل الآن",
       "extra": {
         "plain": "بسيط",
         "vinyl": "أسطوانة",
@@ -198,12 +206,19 @@
         "volume": "مستوى صوت التطبيق"
       }
     },
+    "continuePlaybackOnDismiss": {
+      "title": "متابعة التشغيل عند الإغلاق",
+      "description": "السماح باستمرار تشغيل الموسيقى عند إغلاق التطبيق من المهام الحديثة. أوقف التطبيق بالقوة لإيقاف التشغيل."
+    },
     "repeatOnSkip": {
       "title": "الاحتفاظ بوضع التكرار عند التخطي",
       "brief": "عدم التبديل من وضع \"تكرار أغنية واحدة\" إلى \"تكرار\" عند التخطي."
     },
     "restoreLastPosition": {
       "title": "حفظ آخر موضع تشغيل"
+    },
+    "lyrics": {
+      "title": null
     },
     "scanning": {
       "title": "المسح"
@@ -226,7 +241,8 @@
       "brief": null
     },
     "listAllow": {
-      "title": "القائمة المسموحة"
+      "title": "القائمة المسموحة",
+      "description": null
     },
     "listBlock": {
       "title": "القائمة المحظورة",
@@ -236,12 +252,15 @@
       "title": "تجاهل الصوت القصير",
       "description": "مدة الصوت بالثواني التي لا نريد حفظها."
     },
+    "separators": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
+    },
     "experimental": {
       "title": "ميزات تجريبية"
-    },
-    "continuePlaybackOnDismiss": {
-      "title": "متابعة التشغيل عند الإغلاق",
-      "description": "السماح باستمرار تشغيل الموسيقى عند إغلاق التطبيق من المهام الحديثة. أوقف التطبيق بالقوة لإيقاف التشغيل."
     },
     "ignoreInterrupt": {
       "title": "تجاهل المقاطعات",
@@ -334,11 +353,16 @@
     "modalViewPreference": {
       "title": null,
       "extra": {
+        "layout": null,
+        "list": null,
+        "grid": null,
+        "compactGrid": null,
         "sort": "ترتيب الفرز",
         "asc": "ترتيب تصاعدي",
-        "alphabetical": "أبجدي",
         "discover": "وقت الاكتشاف",
-        "modified": "آخر تعديل"
+        "duration": null,
+        "modified": "آخر تعديل",
+        "trackCount": null
       }
     },
     "modalTrack": {
