@@ -233,7 +233,8 @@
       "description": "Memiliki prioritas lebih tinggi terhadap entri dalam daftar perizinan."
     },
     "minTrackDuration": {
-      "title": "Abaikan Audio Pendek"
+      "title": "Abaikan Audio Pendek",
+      "description": "Durasi audio dalam detik yang tidak ingin kami simpan."
     },
     "experimental": {
       "title": null

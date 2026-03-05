@@ -233,7 +233,8 @@
       "description": "Ma wyższy priorytet niż elementy na białej liście."
     },
     "minTrackDuration": {
-      "title": "Ignoruj krótkie nagrania"
+      "title": "Ignoruj krótkie nagrania",
+      "description": "Nagrania krótsze niż poniższa ilość sekund nie będą zapisywane."
     },
     "experimental": {
       "title": "Funkcje eksperymentalne"

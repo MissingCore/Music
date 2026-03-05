@@ -233,7 +233,8 @@
       "description": "Hat höhere Priorität als die Einträge in der Zulassungsliste."
     },
     "minTrackDuration": {
-      "title": "Ignoriere kurzes Audio"
+      "title": "Ignoriere kurzes Audio",
+      "description": "Dauer in Sekunden des Audios, das wir nicht speichern möchten."
     },
     "experimental": {
       "title": "Experimentelle Funktionen"

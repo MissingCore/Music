@@ -233,7 +233,8 @@
       "description": "許可リスト内のエントリよりも優先されます。"
     },
     "minTrackDuration": {
-      "title": "再生時間が短い音楽を無視する"
+      "title": "再生時間が短い音楽を無視する",
+      "description": "保存をしない音楽の再生時間 (秒数)。"
     },
     "experimental": {
       "title": "試験的な機能"

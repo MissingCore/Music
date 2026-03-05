@@ -233,7 +233,8 @@
       "description": "Tiene prioridad sobre la lista de permitidos."
     },
     "minTrackDuration": {
-      "title": "Ignorar audio corto"
+      "title": "Ignorar audio corto",
+      "description": "Duración mínima para guardar una canción."
     },
     "experimental": {
       "title": "Funciones experimentales"

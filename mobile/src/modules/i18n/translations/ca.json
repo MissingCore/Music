@@ -233,7 +233,8 @@
       "description": "Té prioritat per sobre de les entrades de la llista de permeses."
     },
     "minTrackDuration": {
-      "title": "Ignora àudios curts"
+      "title": "Ignora àudios curts",
+      "description": "Durada en segons dels àudios que no vols guardar."
     },
     "experimental": {
       "title": null

@@ -233,7 +233,8 @@
       "description": "İzin listesindeki girdilere göre daha yüksek önceliğe sahiptir."
     },
     "minTrackDuration": {
-      "title": "Kısa Sesleri Yoksay"
+      "title": "Kısa Sesleri Yoksay",
+      "description": "Kaydetmek istemediğimiz seslerin saniye cinsinden süresi."
     },
     "experimental": {
       "title": "Deneysel Özellikler"
