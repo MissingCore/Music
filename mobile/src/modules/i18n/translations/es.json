@@ -86,7 +86,9 @@
       "noAlbums": "No se encontraron álbumes.",
       "noArtists": "No se encontraron artistas.",
       "noPlaylists": "No se encontraron listas de reproducción.",
-      "noTracks": "No se encontraron canciones."
+      "noTracks": "No se encontraron canciones.",
+      "noHiddenTracks": "No se encontraron canciones ocultas.",
+      "noLyrics": null
     }
   },
   "feat": {
@@ -181,11 +183,7 @@
     },
     "hiddenTracks": {
       "title": "Canciones ocultas",
-      "brief": "Canciones que no se muestran en la aplicación.",
-      "extra": {
-        "hiddenAt": "Ocultada en {{- date}}.",
-        "notFound": "No se encontraron canciones ocultas."
-      }
+      "brief": "Canciones que no se muestran en la aplicación."
     },
     "saveErrors": {
       "title": "Errores al guardar",

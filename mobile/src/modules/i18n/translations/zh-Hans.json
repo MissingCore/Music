@@ -86,7 +86,9 @@
       "noAlbums": "未找到专辑。",
       "noArtists": "未找到艺术家。",
       "noPlaylists": "未找到播放列表。",
-      "noTracks": "未找到歌曲。"
+      "noTracks": "未找到歌曲。",
+      "noHiddenTracks": "未找到隐藏的曲目。",
+      "noLyrics": null
     }
   },
   "feat": {
@@ -181,11 +183,7 @@
     },
     "hiddenTracks": {
       "title": "隐藏曲目",
-      "brief": "曲目未在应用中显示。",
-      "extra": {
-        "hiddenAt": null,
-        "notFound": "未找到隐藏的曲目。"
-      }
+      "brief": "曲目未在应用中显示。"
     },
     "saveErrors": {
       "title": "保存错误",

@@ -86,7 +86,9 @@
       "noAlbums": "कोई एल्बम नहीं मिला।",
       "noArtists": "कोई कलाकार नहीं मिला।",
       "noPlaylists": "कोई प्लेलिस्ट नहीं मिली।",
-      "noTracks": "कोई ट्रैक नहीं मिला।"
+      "noTracks": "कोई ट्रैक नहीं मिला।",
+      "noHiddenTracks": null,
+      "noLyrics": null
     }
   },
   "feat": {
@@ -181,11 +183,7 @@
     },
     "hiddenTracks": {
       "title": null,
-      "brief": null,
-      "extra": {
-        "hiddenAt": null,
-        "notFound": null
-      }
+      "brief": null
     },
     "saveErrors": {
       "title": "त्रुटियाँ सहेजें",

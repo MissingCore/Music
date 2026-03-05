@@ -86,7 +86,9 @@
       "noAlbums": "Aucun album trouvé.",
       "noArtists": "Aucun artiste trouvé.",
       "noPlaylists": "Aucune playlist trouvée.",
-      "noTracks": "Aucun titre trouvé."
+      "noTracks": "Aucun titre trouvé.",
+      "noHiddenTracks": "Aucune piste masquée trouvée.",
+      "noLyrics": null
     }
   },
   "feat": {
@@ -181,11 +183,7 @@
     },
     "hiddenTracks": {
       "title": "Pistes Masqués",
-      "brief": "Pistes non affichées dans l'application.",
-      "extra": {
-        "hiddenAt": "Caché le {{- date}}.",
-        "notFound": "Aucune piste masquée trouvée."
-      }
+      "brief": "Pistes non affichées dans l'application."
     },
     "saveErrors": {
       "title": "Erreurs d'enregistrement",

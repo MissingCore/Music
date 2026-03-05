@@ -86,7 +86,9 @@
       "noAlbums": "Keine Alben gefunden.",
       "noArtists": "Keine Künstler gefunden.",
       "noPlaylists": "Keine Playlists gefunden.",
-      "noTracks": "Keine Lieder gefunden."
+      "noTracks": "Keine Lieder gefunden.",
+      "noHiddenTracks": "Keine versteckten Tracks gefunden.",
+      "noLyrics": null
     }
   },
   "feat": {
@@ -181,11 +183,7 @@
     },
     "hiddenTracks": {
       "title": "Versteckte Tracks",
-      "brief": "Tracks nicht in der App angezeigt.",
-      "extra": {
-        "hiddenAt": "Versteckt an {{- date}}.",
-        "notFound": "Keine versteckten Tracks gefunden."
-      }
+      "brief": "Tracks nicht in der App angezeigt."
     },
     "saveErrors": {
       "title": "Fehler beim Speichern",

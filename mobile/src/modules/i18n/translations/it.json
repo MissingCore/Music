@@ -86,7 +86,9 @@
       "noAlbums": "Nessun $t(term.album) trovato.",
       "noArtists": "Nessun $t(term.artist) trovato.",
       "noPlaylists": "Nessuna $t(term.playlist) trovata.",
-      "noTracks": "Nessun $t(term.track) trovato."
+      "noTracks": "Nessun $t(term.track) trovato.",
+      "noHiddenTracks": null,
+      "noLyrics": null
     }
   },
   "feat": {
@@ -181,11 +183,7 @@
     },
     "hiddenTracks": {
       "title": null,
-      "brief": null,
-      "extra": {
-        "hiddenAt": null,
-        "notFound": null
-      }
+      "brief": null
     },
     "saveErrors": {
       "title": "Salva errori",

@@ -78,7 +78,7 @@ function LyricsContent(props: { trackId: string; offset: number }) {
         style={{ paddingTop: props.offset }}
         className="items-center gap-8 pb-4"
       >
-        <TEm textKey="feat.lyrics.extra.notFound" className="text-lg" />
+        <TEm textKey="err.msg.noLyrics" className="text-lg" />
         <Button
           onPress={() => navigation.navigate("Lyrics")}
           className="rounded-full bg-primary px-8 active:bg-primaryDim"

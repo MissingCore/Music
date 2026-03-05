@@ -86,7 +86,9 @@
       "noAlbums": "アルバムが見つかりません。",
       "noArtists": "アーティストが見つかりません。",
       "noPlaylists": "プレイリストが見つかりません。",
-      "noTracks": "トラックが見つかりません。"
+      "noTracks": "トラックが見つかりません。",
+      "noHiddenTracks": "非表示のトラックは見つかりません。",
+      "noLyrics": null
     }
   },
   "feat": {
@@ -181,11 +183,7 @@
     },
     "hiddenTracks": {
       "title": "非表示のトラック",
-      "brief": "アプリから非表示にしたトラックです。",
-      "extra": {
-        "hiddenAt": "{{- date}} に非表示にしました。",
-        "notFound": "非表示のトラックは見つかりません。"
-      }
+      "brief": "アプリから非表示にしたトラックです。"
     },
     "saveErrors": {
       "title": "エラーの保存",

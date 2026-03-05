@@ -86,7 +86,9 @@
       "noAlbums": "No s'ha trobat cap àlbum.",
       "noArtists": "No s'ha trobat cap artista.",
       "noPlaylists": "No s'ha trobat cap llista.",
-      "noTracks": "No s'han trobat pistes."
+      "noTracks": "No s'han trobat pistes.",
+      "noHiddenTracks": null,
+      "noLyrics": null
     }
   },
   "feat": {
@@ -181,11 +183,7 @@
     },
     "hiddenTracks": {
       "title": null,
-      "brief": null,
-      "extra": {
-        "hiddenAt": null,
-        "notFound": null
-      }
+      "brief": null
     },
     "saveErrors": {
       "title": "Errors al guardar",

@@ -86,7 +86,9 @@
       "noAlbums": "Brak albumów.",
       "noArtists": "Brak artystów.",
       "noPlaylists": "Brak playlist.",
-      "noTracks": "Brak utworów."
+      "noTracks": "Brak utworów.",
+      "noHiddenTracks": "Brak ukrytych utworów.",
+      "noLyrics": null
     }
   },
   "feat": {
@@ -181,11 +183,7 @@
     },
     "hiddenTracks": {
       "title": "Ukryte utwory",
-      "brief": "Utwory, które nie są wyświetlane w aplikacji.",
-      "extra": {
-        "hiddenAt": "Data ukrycia: {{- date}}.",
-        "notFound": "Brak ukrytych utworów."
-      }
+      "brief": "Utwory, które nie są wyświetlane w aplikacji."
     },
     "saveErrors": {
       "title": "Błędy zapisu",

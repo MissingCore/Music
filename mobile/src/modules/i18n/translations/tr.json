@@ -86,7 +86,9 @@
       "noAlbums": "Albüm bulunamadı.",
       "noArtists": "Sanatçı bulunamadı.",
       "noPlaylists": "Çalma listesi bulunamadı.",
-      "noTracks": "Parça bulunamadı."
+      "noTracks": "Parça bulunamadı.",
+      "noHiddenTracks": "Gizli parça bulunamadı.",
+      "noLyrics": null
     }
   },
   "feat": {
@@ -181,11 +183,7 @@
     },
     "hiddenTracks": {
       "title": "Gizli Parçalar",
-      "brief": "Uygulamada gösterilmeyen parçalar.",
-      "extra": {
-        "hiddenAt": "{{- date}} tarihinde gizlendi.",
-        "notFound": "Gizli parça bulunamadı."
-      }
+      "brief": "Uygulamada gösterilmeyen parçalar."
     },
     "saveErrors": {
       "title": "Kaydetme Hataları",

@@ -113,7 +113,7 @@ function ScreenContents(props: { data: HiddenTrack[] }) {
         </View>
       )}
       ListEmptyComponent={
-        <ContentPlaceholder errMsgKey="feat.hiddenTracks.extra.notFound" />
+        <ContentPlaceholder errMsgKey="err.msg.noHiddenTracks" />
       }
       contentContainerClassName="p-4 pt-2"
     />

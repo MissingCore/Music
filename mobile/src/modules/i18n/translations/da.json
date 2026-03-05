@@ -86,7 +86,9 @@
       "noAlbums": "Intet album fundet.",
       "noArtists": "Ingen kunstnere fundet.",
       "noPlaylists": "Ingen playlister fundet.",
-      "noTracks": "Ingen sange fundet."
+      "noTracks": "Ingen sange fundet.",
+      "noHiddenTracks": null,
+      "noLyrics": null
     }
   },
   "feat": {
@@ -181,11 +183,7 @@
     },
     "hiddenTracks": {
       "title": null,
-      "brief": null,
-      "extra": {
-        "hiddenAt": null,
-        "notFound": null
-      }
+      "brief": null
     },
     "saveErrors": {
       "title": "Fejl under gemning",

@@ -86,7 +86,9 @@
       "noAlbums": "Tidak ada album yang ditemukan.",
       "noArtists": "Tidak ada artis yang ditemukan.",
       "noPlaylists": "Tidak ada daftar putar yang ditemukan.",
-      "noTracks": "Tidak ada trek yang ditemukan."
+      "noTracks": "Tidak ada trek yang ditemukan.",
+      "noHiddenTracks": null,
+      "noLyrics": null
     }
   },
   "feat": {
@@ -181,11 +183,7 @@
     },
     "hiddenTracks": {
       "title": null,
-      "brief": null,
-      "extra": {
-        "hiddenAt": null,
-        "notFound": null
-      }
+      "brief": null
     },
     "saveErrors": {
       "title": "Simpan Galat",
