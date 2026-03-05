@@ -7,6 +7,8 @@
     "artists": "خوانندگان",
     "folder": "پوشه",
     "folders": "پوشه ها",
+    "genre": null,
+    "genres": null,
     "playlist": "لیست پخش",
     "playlists": "لیست های پخش",
     "track": "آهنگ",
@@ -31,15 +33,19 @@
     "disc": "دیسک {{count}}"
   },
   "template": {
+    "entryAdd": null,
     "entryAdded": "`{{- name}}` اضافه شد.",
     "entryRemove": "حذف `{{- name}}`.",
     "entryRemoved": "`{{- name}}` حذف شد.",
+    "entryManage": null,
     "entrySeeMore": "اطلاعات بیشتر درباره `{{- name}}`.",
     "notFound": "`{{- name}}` وجود ندارد.",
+    "entryMove": null,
     "entryShow": "نمایش `{{- name}}`",
     "entryHide": "مخفی کردن `{{- name}}`",
     "entryEnable": "فعال کردن `{{- name}}`",
-    "entryDisable": "غیرفعال کردن `{{- name}}`"
+    "entryDisable": "غیرفعال کردن `{{- name}}`",
+    "noContentFound": null
   },
   "plural": {
     "entry_one": "{{count}} مورد",
@@ -57,6 +63,9 @@
     "unsaved": "ممکن است تغییرات ذخیره نشده‌ای داشته باشید.",
     "stay": "ماندن",
     "leave": "خروج",
+    "create": null,
+    "delete": null,
+    "edit": null,
     "clear": "پاک کردن",
     "reset": "بازنشانی",
     "validation": {
@@ -81,10 +90,10 @@
       "usedName": "این نام قابل استفاده نیست.",
       "noContent": "هیچ محتوایی یافت نشد.",
       "noErrors": "هیچ خطایی یافت نشد.",
-      "noFilters": "هیچ فیلتری یافت نشد.",
       "noResults": "هیچ نتیجه‌ای یافت نشد.",
       "noAlbums": "هیچ آلبومی یافت نشد.",
       "noArtists": "هیچ خواننده‌ای یافت نشد.",
+      "noGenres": null,
       "noPlaylists": "هیچ لیست پخشی یافت نشد.",
       "noTracks": "هیچ آهنگی یافت نشد.",
       "noHiddenTracks": "هیچ آهنگ مخفی یافت نشد.",
@@ -134,7 +143,6 @@
       "title": "انیمیشن های مینی پلیر"
     },
     "nowPlayingDesign": {
-      "title": "طراحی صفحه در حال پخش",
       "extra": {
         "plain": "ساده",
         "vinyl": "گرامافون",
@@ -198,12 +206,19 @@
         "volume": "صدای برنامه"
       }
     },
+    "continuePlaybackOnDismiss": {
+      "title": "ادامه پخش پس از بستن",
+      "description": "اجازه دهید تا پخش موسیقی در هنگام بستن برنامه از لیست وظایف، ادامه پیداکند. برای توقف پخش برنامه را به زور متوقف کنید."
+    },
     "repeatOnSkip": {
       "title": "حفظ حالت تکرار هنگام رد کردن",
       "brief": "حالت را از \"تکرار یکی\" به \"تکرار\" هنگام رد کردن تغییر نده."
     },
     "restoreLastPosition": {
       "title": "ذخیره آخرین موقعیت پخش"
+    },
+    "lyrics": {
+      "title": null
     },
     "scanning": {
       "title": "اسکن موسیقی"
@@ -226,7 +241,8 @@
       "brief": "در صورت غیرفعال بودن، از ویژگی اسکن مجدد برای تشخیص آهنگ‌های جدید، به‌روزرسانی شده و حذف شده استفاده کنید."
     },
     "listAllow": {
-      "title": "لیست مجاز"
+      "title": "لیست مجاز",
+      "description": null
     },
     "listBlock": {
       "title": "لیست مسدود",
@@ -236,12 +252,15 @@
       "title": "نادیده گرفتن صدای کوتاه",
       "description": "مدت زمان به ثانیه صدایی که نمی خواهیم ذخیره کنیم."
     },
+    "separators": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
+    },
     "experimental": {
       "title": "ویژگی های آزمایشی"
-    },
-    "continuePlaybackOnDismiss": {
-      "title": "ادامه پخش پس از بستن",
-      "description": "اجازه دهید تا پخش موسیقی در هنگام بستن برنامه از لیست وظایف، ادامه پیداکند. برای توقف پخش برنامه را به زور متوقف کنید."
     },
     "ignoreInterrupt": {
       "title": "نادیده گرفتن وقفه ها",
@@ -334,11 +353,16 @@
     "modalViewPreference": {
       "title": null,
       "extra": {
+        "layout": null,
+        "list": null,
+        "grid": null,
+        "compactGrid": null,
         "sort": "ترتیب مرتب سازی",
         "asc": "ترتیب صعودی",
-        "alphabetical": "الفبایی",
         "discover": "زمان پیداشدن",
-        "modified": "آخرین تغییر"
+        "duration": null,
+        "modified": "آخرین تغییر",
+        "trackCount": null
       }
     },
     "modalTrack": {

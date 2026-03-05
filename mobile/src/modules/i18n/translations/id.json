@@ -7,6 +7,8 @@
     "artists": "Artis",
     "folder": "Folder",
     "folders": "Folder",
+    "genre": null,
+    "genres": null,
     "playlist": "Daftar Putar",
     "playlists": "Daftar Putar",
     "track": "Trek",
@@ -31,15 +33,19 @@
     "disc": "Disk {{count}}"
   },
   "template": {
+    "entryAdd": null,
     "entryAdded": "`{{- name}}` telah ditambahkan.",
     "entryRemove": "`{{- name}}` Dihapus.",
     "entryRemoved": "`{{- name}}` Telah Dihapus.",
+    "entryManage": null,
     "entrySeeMore": "Lihat selengkapnya tentang `{{- name}}`.",
     "notFound": "`{{- name}}` tidak ditemukan.",
+    "entryMove": null,
     "entryShow": "Tampilkan `{{- name}}`",
     "entryHide": "Sembunyikan `{{- name}}`",
     "entryEnable": "Aktifkan `{{- name}}`",
-    "entryDisable": "Nonaktifkan `{{- name}}`"
+    "entryDisable": "Nonaktifkan `{{- name}}`",
+    "noContentFound": null
   },
   "plural": {
     "entry_one": "{{count}} entri",
@@ -57,6 +63,9 @@
     "unsaved": "Anda masih memiliki perubahan yang belum disimpan.",
     "stay": "Tetap disini",
     "leave": "Keluar",
+    "create": null,
+    "delete": null,
+    "edit": null,
     "clear": "Hapus",
     "reset": null,
     "validation": {
@@ -81,10 +90,10 @@
       "usedName": "Nama ini tidak bisa digunakan.",
       "noContent": "Tidak ada konten yang ditemukan.",
       "noErrors": "Tidak ada masalah yang ditemukan.",
-      "noFilters": "Tidak ada filter yang ditemukan.",
       "noResults": "Tidak ada hasil yang ditemukan.",
       "noAlbums": "Tidak ada album yang ditemukan.",
       "noArtists": "Tidak ada artis yang ditemukan.",
+      "noGenres": null,
       "noPlaylists": "Tidak ada daftar putar yang ditemukan.",
       "noTracks": "Tidak ada trek yang ditemukan.",
       "noHiddenTracks": null,
@@ -134,7 +143,6 @@
       "title": null
     },
     "nowPlayingDesign": {
-      "title": "Desain Layar Pemutaran Saat Ini",
       "extra": {
         "plain": "Plain",
         "vinyl": "Vinyl",
@@ -198,11 +206,18 @@
         "volume": "Volume Aplikasi"
       }
     },
+    "continuePlaybackOnDismiss": {
+      "title": null,
+      "description": null
+    },
     "repeatOnSkip": {
       "title": "Tetap dalam Mode Mengulang saat Melewati",
       "brief": "Jangan mengalihkan mode ke \"Ulangi\" dari \"Ulangi Sekali\" saat melewati."
     },
     "restoreLastPosition": {
+      "title": null
+    },
+    "lyrics": {
       "title": null
     },
     "scanning": {
@@ -226,7 +241,8 @@
       "brief": null
     },
     "listAllow": {
-      "title": "Diizinkan"
+      "title": "Diizinkan",
+      "description": null
     },
     "listBlock": {
       "title": "Diblokir",
@@ -236,12 +252,15 @@
       "title": "Abaikan Audio Pendek",
       "description": "Durasi audio dalam detik yang tidak ingin kami simpan."
     },
+    "separators": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
+    },
     "experimental": {
       "title": null
-    },
-    "continuePlaybackOnDismiss": {
-      "title": null,
-      "description": null
     },
     "ignoreInterrupt": {
       "title": "Abaikan Interupsi",
@@ -334,11 +353,16 @@
     "modalViewPreference": {
       "title": null,
       "extra": {
+        "layout": null,
+        "list": null,
+        "grid": null,
+        "compactGrid": null,
         "sort": "urutan penyortiran",
         "asc": "Urutan Naik",
-        "alphabetical": "Alfabet",
         "discover": null,
-        "modified": "Terakhir Diubah"
+        "duration": null,
+        "modified": "Terakhir Diubah",
+        "trackCount": null
       }
     },
     "modalTrack": {

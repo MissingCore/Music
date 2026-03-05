@@ -7,6 +7,8 @@
     "artists": "Artisti",
     "folder": "Cartella",
     "folders": "Cartelle",
+    "genre": null,
+    "genres": null,
     "playlist": "Playlist",
     "playlists": "Playlist",
     "track": "Brano",
@@ -31,15 +33,19 @@
     "disc": "Disco {{count}}"
   },
   "template": {
+    "entryAdd": null,
     "entryAdded": "`{{- name}}` aggiunto.",
     "entryRemove": "Rimuovi `{{- name}}`.",
     "entryRemoved": "Rimosso `{{- name}}`.",
+    "entryManage": null,
     "entrySeeMore": "Vedi di più su `{{- name}}`.",
     "notFound": "`{{- name}}` non esiste.",
+    "entryMove": null,
     "entryShow": "Mostra `{{- name}}`",
     "entryHide": "Nascondi `{{- name}}`",
     "entryEnable": "Attiva `{{- name}}`",
-    "entryDisable": "Disattiva `{{- name}}`"
+    "entryDisable": "Disattiva `{{- name}}`",
+    "noContentFound": null
   },
   "plural": {
     "entry_one": "{{count}} voce",
@@ -57,6 +63,9 @@
     "unsaved": "Potresti avere delle modifiche non salvate.",
     "stay": "Aspetta",
     "leave": "Esci",
+    "create": null,
+    "delete": null,
+    "edit": null,
     "clear": "Cancella",
     "reset": null,
     "validation": {
@@ -81,10 +90,10 @@
       "usedName": "Quel nome non può essere utilizzato.",
       "noContent": "Nessun contenuto trovato.",
       "noErrors": "Nessun errore trovato.",
-      "noFilters": "Nessun filtro trovato.",
       "noResults": "Nessun risultato trovato.",
       "noAlbums": "Nessun $t(term.album) trovato.",
       "noArtists": "Nessun $t(term.artist) trovato.",
+      "noGenres": null,
       "noPlaylists": "Nessuna $t(term.playlist) trovata.",
       "noTracks": "Nessun $t(term.track) trovato.",
       "noHiddenTracks": null,
@@ -134,7 +143,6 @@
       "title": null
     },
     "nowPlayingDesign": {
-      "title": "Schermata \"Riproduzione in corso\"",
       "extra": {
         "plain": "Classico",
         "vinyl": "Vinile",
@@ -198,11 +206,18 @@
         "volume": "Volume dell'app"
       }
     },
+    "continuePlaybackOnDismiss": {
+      "title": null,
+      "description": null
+    },
     "repeatOnSkip": {
       "title": "Mantieni modalità \"$t(term.repeat)\" al cambio brano",
       "brief": "Non cambiare a \"$t(term.repeat)\" da \"$t(term.repeatOne)\" quando salti un brano."
     },
     "restoreLastPosition": {
+      "title": null
+    },
+    "lyrics": {
       "title": null
     },
     "scanning": {
@@ -226,7 +241,8 @@
       "brief": null
     },
     "listAllow": {
-      "title": null
+      "title": null,
+      "description": null
     },
     "listBlock": {
       "title": null,
@@ -236,12 +252,15 @@
       "title": "Ignora audio corti",
       "description": "Durata (in secondi) degli audio da non salvare."
     },
+    "separators": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
+    },
     "experimental": {
       "title": null
-    },
-    "continuePlaybackOnDismiss": {
-      "title": null,
-      "description": null
     },
     "ignoreInterrupt": {
       "title": "Ignora interruzioni",
@@ -334,11 +353,16 @@
     "modalViewPreference": {
       "title": null,
       "extra": {
+        "layout": null,
+        "list": null,
+        "grid": null,
+        "compactGrid": null,
         "sort": "Ordine",
         "asc": "Ordine ascendente",
-        "alphabetical": "Alfabetico",
         "discover": null,
-        "modified": "Ultima modifica"
+        "duration": null,
+        "modified": "Ultima modifica",
+        "trackCount": null
       }
     },
     "modalTrack": {

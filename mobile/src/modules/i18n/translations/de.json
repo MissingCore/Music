@@ -7,6 +7,8 @@
     "artists": "Künstler",
     "folder": "Dateiordner",
     "folders": "Dateiordner",
+    "genre": null,
+    "genres": null,
     "playlist": "Playlist",
     "playlists": "Playlists",
     "track": "Lied",
@@ -31,15 +33,19 @@
     "disc": "CD {{count}}"
   },
   "template": {
+    "entryAdd": null,
     "entryAdded": "`{{- name}}` hinzugefügt.",
     "entryRemove": "`{{- name}}` entfernen.",
     "entryRemoved": "Hat `{{- name}}` entfernt.",
+    "entryManage": null,
     "entrySeeMore": "Mehr über `{{- name}}` sehen.",
     "notFound": "`{{- name}}` existiert nicht.",
+    "entryMove": null,
     "entryShow": "`{{- name}}` anzeigen",
     "entryHide": "`{{- name}}` verstecken",
     "entryEnable": "`{{- name}}` aktivieren",
-    "entryDisable": "`{{- name}}` deaktivieren"
+    "entryDisable": "`{{- name}}` deaktivieren",
+    "noContentFound": null
   },
   "plural": {
     "entry_one": "{{count}} Eintrag",
@@ -57,6 +63,9 @@
     "unsaved": "Möglicherweise hast du noch nicht gespeicherte Änderungen.",
     "stay": "Bleiben",
     "leave": "Verlassen",
+    "create": null,
+    "delete": null,
+    "edit": null,
     "clear": "Leeren",
     "reset": "Zurücksetzen",
     "validation": {
@@ -81,10 +90,10 @@
       "usedName": "Dieser Name kann nicht genutzt werden.",
       "noContent": "Kein Inhalt gefunden.",
       "noErrors": "Keine Fehler gefunden.",
-      "noFilters": "Keine Filter gefunden.",
       "noResults": "Keine Ergebnisse gefunden.",
       "noAlbums": "Keine Alben gefunden.",
       "noArtists": "Keine Künstler gefunden.",
+      "noGenres": null,
       "noPlaylists": "Keine Playlists gefunden.",
       "noTracks": "Keine Lieder gefunden.",
       "noHiddenTracks": "Keine versteckten Tracks gefunden.",
@@ -98,7 +107,7 @@
       "extra": {
         "downloadAPK": "Die neueste APK herunterladen",
         "updateGoogle": "Update über Play Store",
-        "version": "Version",
+        "version": null,
         "checkUpdates": null,
         "rcNotification": "Benachrichtigung für Vorabversion"
       }
@@ -134,7 +143,6 @@
       "title": "Miniplayer Gesten"
     },
     "nowPlayingDesign": {
-      "title": "Design des Jetzt-Läuft-Bildschirms",
       "extra": {
         "plain": "Einfach",
         "vinyl": "Vinyl",
@@ -198,12 +206,19 @@
         "volume": "App-Lautstärke"
       }
     },
+    "continuePlaybackOnDismiss": {
+      "title": "Wiedergabe beim Schließen fortsetzen",
+      "description": "Die Musikwiedergabe wird fortgesetzt, wenn die App aus den zuletzt verwendeten Apps entfernt wird. Die Wiedergabe kann mit force stop beendet werden."
+    },
     "repeatOnSkip": {
       "title": "Wiederholungsmodus beim Überspringen behalten",
       "brief": "Beim Überspringen nicht von \"Ein Lied wiederholen\" auf \"Wiederholen\" umschalten."
     },
     "restoreLastPosition": {
       "title": "Zuletzt gespielte Position speichern"
+    },
+    "lyrics": {
+      "title": null
     },
     "scanning": {
       "title": "Scannen"
@@ -226,7 +241,8 @@
       "brief": "Wenn deaktiviert, verwenden Sie die Scan-Funktion, um neue, aktualisierte und entfernte Titel zu erkennen."
     },
     "listAllow": {
-      "title": "Zulassungsliste"
+      "title": "Zulassungsliste",
+      "description": null
     },
     "listBlock": {
       "title": "Sperrliste",
@@ -236,12 +252,15 @@
       "title": "Ignoriere kurzes Audio",
       "description": "Dauer in Sekunden des Audios, das wir nicht speichern möchten."
     },
+    "separators": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
+    },
     "experimental": {
       "title": "Experimentelle Funktionen"
-    },
-    "continuePlaybackOnDismiss": {
-      "title": "Wiedergabe beim Schließen fortsetzen",
-      "description": "Die Musikwiedergabe wird fortgesetzt, wenn die App aus den zuletzt verwendeten Apps entfernt wird. Die Wiedergabe kann mit force stop beendet werden."
     },
     "ignoreInterrupt": {
       "title": "Unterbrechungen ignorieren",
@@ -334,11 +353,16 @@
     "modalViewPreference": {
       "title": null,
       "extra": {
+        "layout": null,
+        "list": null,
+        "grid": null,
+        "compactGrid": null,
         "sort": "Sortierreihenfolge",
         "asc": "Aufsteigende Reihenfolge",
-        "alphabetical": "Alphabetische Reihenfolge",
         "discover": "Zuletzt Hinzugefügt",
-        "modified": "Zuletzt Geändert"
+        "duration": null,
+        "modified": "Zuletzt Geändert",
+        "trackCount": null
       }
     },
     "modalTrack": {
