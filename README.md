@@ -1,4 +1,4 @@
-<img src=".github/assets/SOCIAL_PREVIEW_v2.png" alt="Music app screen previews" />
+<img src=".github/assets/SOCIAL_PREVIEW_v3.png" alt="Music app screen previews" />
 
 # Music
 
@@ -21,6 +21,7 @@ A Nothing inspired **local** music player.
   <img src="./.github/assets/Promo - UI.png" width=250>
   <img src="./.github/assets/Promo - Playlist Track Order.png" width=250>
   <img src="./.github/assets/Promo - Artwork.png" width=250>
+  <img src="./.github/assets/Promo - Local Metadata Editor.png" width=250>
   <img src="./.github/assets/Promo - Themes.png" width=250>
   <img src="./.github/assets/Promo - Community Translations.png" width=250>
   <img src="./.github/assets/Promo - Experimental Widgets.png" width=250>
@@ -30,9 +31,11 @@ A Nothing inspired **local** music player.
 
 - Supports Android 7+
 - Works with Nothing Music Widget & Glyph Music Visualization
-- Diverse music organization: Albums, Artists, Favorites, Folder Structure, Playlists
+- Diverse music organization: Albums, Artists, Favorites, Folder Structure, Genres, Playlists
 - Local metadata editor for quick changes (doesn't modify the actual file)
-- Artwork customizability for Albums, Artists, Playlists, and Tracks
+- Multi-artist support
+- Artwork customizability for Albums, Artists, Genres, Playlists, and Tracks
+- BYO (Bring Your Own) Lyrics
 - Background playback w/ media control notification
 - Queue manipulation (track removal & reordering)
 - Theoretical support of [these media formats](https://developer.android.com/media/platform/supported-formats#audio-formats)
