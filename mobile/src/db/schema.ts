@@ -356,6 +356,4 @@ export type PlayedMediaList = Prettify<
 >;
 
 export type WaveformSample = InferSelectModel<typeof waveformSamples>;
-
-export type Genre = InferSelectModel<typeof genres>;
 //#endregion

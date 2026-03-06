@@ -20,7 +20,7 @@ import { deleteTracks, upsertTracks } from "~/data/track/api";
 import { preferenceStore } from "~/stores/Preference/store";
 import { scanningProgressStore } from "../ScanningProgress";
 
-import { getExcludedColumns, withColumns } from "~/lib/drizzle";
+import { getExcludedColumns } from "~/lib/drizzle";
 import { Stopwatch } from "~/utils/debug";
 import { chunkArray } from "~/utils/object";
 import { BATCH_PRESETS, isFulfilled, isRejected } from "~/utils/promise";
@@ -88,7 +88,12 @@ export async function findAndSaveAudio() {
 
   //#region Change Detection
   const savedTracks = await db.query.tracks.findMany({
-    columns: withColumns(["id", "modificationTime", "uri", "editedMetadata"]),
+    columns: {
+      id: true,
+      modificationTime: true,
+      uri: true,
+      editedMetadata: true,
+    },
   });
   const hiddenTracks = await db.query.hiddenTracks.findMany();
   const erroredTracks = await db.query.invalidTracks.findMany();

@@ -25,15 +25,6 @@ export const iAsc = (column: AnySQLiteColumn | SQLiteColumn | SQLWrapper) =>
 export const iDesc = (column: AnySQLiteColumn | SQLiteColumn | SQLWrapper) =>
   sql`${column} COLLATE NOCASE DESC, ${column} DESC`;
 
-/**
- * Return an object for the `columns` field in Drizzle's Query
- * Builder that returns the specified columns.
- */
-export function withColumns<T extends string>(columns: T[]) {
-  const columnsObj = Object.fromEntries(columns.map((col) => [col, true]));
-  return columnsObj as Record<T, true>;
-}
-
 /** Returns an object mapping columns to its `excluded.` notation. */
 export function getExcludedColumns<T extends string>(columns: T[]) {
   return Object.fromEntries(

@@ -1,11 +1,3 @@
-/** Abbreviate large numbers. */
-export function abbreviateNum(num: number) {
-  return Intl.NumberFormat("en-US", {
-    notation: "compact",
-    maximumFractionDigits: 1,
-  }).format(num);
-}
-
 /** Convert bit rate to kbit/s. */
 export function abbreviateBitRate(rate: number) {
   return `${(rate / 1000).toFixed(2).replace(".00", "")} kbit/s`;
