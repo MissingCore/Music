@@ -110,10 +110,18 @@ android {
      */
     splits {
         abi {
+            // If building app bundle (`.aab`), disable split abis due to build failing.
+            // https://issuetracker.google.com/issues/402800800#comment13
+
+            // App bundle tasks usually contain "bundle" in their name.
+            def isBuildingBundle = gradle.startParameter.taskNames.any { it.toLowerCase().contains("bundle") }
+
+            // Disable split abis when building app bundle.
+            enable !isBuildingBundle
+
             reset()
-            enable true
-            universalApk false  // If true, also generate a universal APK
             include (*reactNativeArchitectures())
+            universalApk false  // If true, also generate a universal APK
         }
     }
     signingConfigs {
