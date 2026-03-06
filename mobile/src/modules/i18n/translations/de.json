@@ -107,7 +107,7 @@
       "extra": {
         "downloadAPK": "Die neueste APK herunterladen",
         "updateGoogle": "Update über Play Store",
-        "version": null,
+        "version": "Version",
         "checkUpdates": null,
         "rcNotification": "Benachrichtigung für Vorabversion"
       }

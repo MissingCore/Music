@@ -7,8 +7,8 @@
     "artists": "Artistes",
     "folder": "Dossier",
     "folders": "Dossiers",
-    "genre": null,
-    "genres": null,
+    "genre": "Genre",
+    "genres": "Genres",
     "playlist": "Playlist",
     "playlists": "Playlists",
     "track": "Titre",
@@ -33,19 +33,19 @@
     "disc": "CD {{count}}"
   },
   "template": {
-    "entryAdd": null,
+    "entryAdd": "Ajouter `{{- name}}`.",
     "entryAdded": "`{{- name}}` ajouté.",
     "entryRemove": "Supprimer `{{- name}}`.",
     "entryRemoved": "`{{- name}}` supprimé.",
-    "entryManage": null,
+    "entryManage": "Gérer `{{- name}}`",
     "entrySeeMore": "Voir plus sur `{{- name}}`.",
     "notFound": "`{{- name}}` n'existe pas.",
-    "entryMove": null,
+    "entryMove": "Déplacer `{{- name}}`",
     "entryShow": "Afficher `{{- name}}`",
     "entryHide": "Cacher `{{- name}}`",
     "entryEnable": "Activer `{{- name}}`",
     "entryDisable": "Désactiver `{{- name}}`",
-    "noContentFound": null
+    "noContentFound": "Aucun {{- name}} trouvé."
   },
   "plural": {
     "entry_one": "{{count}} entrée",
@@ -63,9 +63,9 @@
     "unsaved": "Vous avez des modifications non enregistrées.",
     "stay": "Rester",
     "leave": "Quitter",
-    "create": null,
-    "delete": null,
-    "edit": null,
+    "create": "Créer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
     "clear": "Réinitialiser",
     "reset": "Réinitialiser",
     "validation": {
@@ -93,11 +93,11 @@
       "noResults": "Aucun résultat trouvé.",
       "noAlbums": "Aucun album trouvé.",
       "noArtists": "Aucun artiste trouvé.",
-      "noGenres": null,
+      "noGenres": "Aucun genre trouvé.",
       "noPlaylists": "Aucune playlist trouvée.",
       "noTracks": "Aucun titre trouvé.",
-      "noHiddenTracks": "Aucune piste masquée trouvée.",
-      "noLyrics": null
+      "noHiddenTracks": "Aucun titre masqué trouvé.",
+      "noLyrics": "Aucune parole trouvée."
     }
   },
   "feat": {
@@ -107,8 +107,8 @@
       "extra": {
         "downloadAPK": "Télécharger le dernier APK",
         "updateGoogle": "Mettre à jour via le Play Store",
-        "version": null,
-        "checkUpdates": null,
+        "version": "Version",
+        "checkUpdates": "Vérifier les mises à jour",
         "rcNotification": "Notification de pré-version"
       }
     },
@@ -158,7 +158,7 @@
       "extra": {
         "contribute": "Contribuer aux traductions",
         "useLTR": "Utilisez la disposition LTR avec un langage RTL. Redémarrage requis.",
-        "translators": null
+        "translators": "Traducteurs"
       }
     },
     "backup": {
@@ -218,7 +218,7 @@
       "title": "Restaurer à partir de la dernière position jouée"
     },
     "lyrics": {
-      "title": null
+      "title": "Paroles"
     },
     "scanning": {
       "title": "Recherche de musique"
@@ -242,7 +242,7 @@
     },
     "listAllow": {
       "title": "Liste d'autorisation",
-      "description": null
+      "description": "Précisez où se trouvent les titres."
     },
     "listBlock": {
       "title": "Liste de blocage",
@@ -253,10 +253,10 @@
       "description": "Durée en seconde des audios à ignorer."
     },
     "separators": {
-      "title": null,
+      "title": "Séparateurs à valeurs multiples",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "S'applique aux nouveaux titres. Utilisez la fonction de réanalyse approfondie pour mettre à jour les titres existants.",
+        "line2": "Avertissement : cela peut entraîner l'identification erronée de certaines balises comme ayant plusieurs valeurs. Ne s'applique pas aux titres que vous avez modifiés manuellement."
       }
     },
     "experimental": {
@@ -299,8 +299,8 @@
     },
     "onboarding": {
       "extra": {
-        "configureSettings": null,
-        "startScan": null,
+        "configureSettings": "Configurer les paramètres",
+        "startScan": "Commencer à scanner les titres",
         "saveTracks": "Sauvegarde des titres",
         "saveImages": "Sauvegarde des images"
       }
@@ -343,7 +343,7 @@
         "line2": "Remarque : vos modifications peuvent être réinitialisées si ce fichier est modifié."
       },
       "extra": {
-        "albumArtists": "Artiste de l'album",
+        "albumArtists": "Artistes de l'album",
         "disc": "Disque",
         "name": "Nom",
         "trackNumber": "Numéro de Piste",
@@ -351,18 +351,18 @@
       }
     },
     "modalViewPreference": {
-      "title": null,
+      "title": "Options d'écran",
       "extra": {
-        "layout": null,
-        "list": null,
-        "grid": null,
-        "compactGrid": null,
+        "layout": "Mise en page",
+        "list": "Liste",
+        "grid": "Grille",
+        "compactGrid": "Grille compacte",
         "sort": "Ordre de tri",
         "asc": "Ordre croissant",
         "discover": "Découvrez le temps",
-        "duration": null,
+        "duration": "Durée",
         "modified": "Modifié récemment",
-        "trackCount": null
+        "trackCount": "Nombre de titres"
       }
     },
     "modalTrack": {
