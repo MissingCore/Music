@@ -54,7 +54,7 @@ const ValidErrors = [
 
 /** How we handle the actions in the media control notification. */
 export async function PlaybackService() {
-  GlyphButton.onMount(GlyphToy.connect);
+  GlyphButton.onMount(() => GlyphToy.connect());
 
   GlyphButton.onTouchUp(async ({ action }) => {
     if (action === MatrixAction.PLAY_PAUSE) await PlaybackControls.playToggle();
