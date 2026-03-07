@@ -61,8 +61,7 @@ A Nothing inspired **local** music player.
 
 ## Permissions
 
-This (hopefully) lists all permissions required by Music based on those requested in the code and defined in the App Manifest.
-[App Manifest](./mobile/android/app/src/main/AndroidManifest.xml).
+This (hopefully) lists all permissions required by Music based on those requested in the code and defined in the [App Manifest](./mobile/android/app/src/main/AndroidManifest.xml).
 
 |          | Permissions                                                                                                                                                                                                                                                                                                                                                                                 |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
