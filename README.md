@@ -47,6 +47,19 @@ A Nothing inspired **local** music player.
 > [!NOTE]  
 > This app is designed to work best on "phone" layouts and isn't tested for larger screens (i.e., foldables/tablets). We may improve the layout for larger screens in the future.
 
+## Installation
+
+### Google Play
+
+Install the app directly from the Play Store.
+
+### GitHub (APK)
+
+1. Go to the [Releases](https://github.com/MissingCore/Music/releases) page.
+2. Download the latest APK.
+3. Enable "Install unknown apps" if needed.
+4. Install the APK on your device.
+
 ## Built With
 
 [![React Native][React Native]][React Native-url]
@@ -106,19 +119,6 @@ The [full list of translators can be found here](./TRANSLATORS.md). A huge thank
    <img alt="Star History Chart" src="https://api.star-history.com/image?repos=MissingCore/Music&type=date&legend=top-left" />
  </picture>
 </a>
-
-## Installation
-
-### Google Play
-
-Install the app directly from the Play Store.
-
-### GitHub (APK)
-
-1. Go to the [Releases](https://github.com/MissingCore/Music/releases) page
-2. Download the latest APK
-3. Enable "Install unknown apps" if needed
-4. Install the APK on your device
 
 # Legal
 
