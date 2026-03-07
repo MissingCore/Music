@@ -1,7 +1,6 @@
 <img src=".github/assets/SOCIAL_PREVIEW_v3.png" alt="Music app screen previews" />
 
-# Music <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f3b6/512.gif" alt="🎶" width="25" height="25">
-</picture>
+# Music <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f3b6/512.gif" alt="🎶" width="24" height="24">
 
 ![Android-API][Android-API]
 [![Release][Release]][Release-url]
@@ -98,7 +97,7 @@ The [full list of translators can be found here](./TRANSLATORS.md). A huge thank
 |   Català    |      [@T-K-Y-M](https://www.github.com/T-K-Y-M)      |
 |    हिंदी    |    [@OxSourabh](https://www.github.com/OxSourabh)    |
 
-## Star History <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f31f/512.gif" alt="🌟" width="32" height="32">
+## Star History <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f31f/512.gif" alt="🌟" width="20" height="20">
 
 <a href="https://www.star-history.com/?repos=MissingCore%2FMusic&type=date&legend=top-left">
  <picture>
@@ -111,9 +110,11 @@ The [full list of translators can be found here](./TRANSLATORS.md). A huge thank
 ## Installation
 
 ### Google Play
+
 Install the app directly from the Play Store.
 
 ### GitHub (APK)
+
 1. Go to the [Releases](https://github.com/MissingCore/Music/releases) page
 2. Download the latest APK
 3. Enable "Install unknown apps" if needed
