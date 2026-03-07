@@ -1,6 +1,7 @@
 <img src=".github/assets/SOCIAL_PREVIEW_v3.png" alt="Music app screen previews" />
 
-# Music
+# Music <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f3b6/512.gif" alt="🎶" width="25" height="25">
+</picture>
 
 ![Android-API][Android-API]
 [![Release][Release]][Release-url]
@@ -45,7 +46,7 @@ A Nothing inspired **local** music player.
 - **`[🧪 Experimental]`** [3 widget variants](./docs/widgets.md)
 
 > [!NOTE]  
-> This app is designed to work best on "phone" layouts and isn't tested for larger screens (ie: foldables/tablets). We may improve the layout for larger screens in the future.
+> This app is designed to work best on "phone" layouts and isn't tested for larger screens (i.e., foldables/tablets). We may improve the layout for larger screens in the future.
 
 ## Built With
 
@@ -60,7 +61,8 @@ A Nothing inspired **local** music player.
 
 ## Permissions
 
-This (hopefully) lists out all the permissions required by Music based on the permissions asked in the code and values listed out in the [App Manifest](./mobile/android/app/src/main/AndroidManifest.xml).
+This (hopefully) lists all permissions required by Music based on those requested in the code and defined in the App Manifest.
+[App Manifest](./mobile/android/app/src/main/AndroidManifest.xml).
 
 |          | Permissions                                                                                                                                                                                                                                                                                                                                                                                 |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -96,6 +98,27 @@ The [full list of translators can be found here](./TRANSLATORS.md). A huge thank
 |   Türkçe    |   [@mikropsoft](https://www.github.com/mikropsoft)   |
 |   Català    |      [@T-K-Y-M](https://www.github.com/T-K-Y-M)      |
 |    हिंदी    |    [@OxSourabh](https://www.github.com/OxSourabh)    |
+
+## Star History <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f31f/512.gif" alt="🌟" width="32" height="32">
+
+<a href="https://www.star-history.com/?repos=MissingCore%2FMusic&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=MissingCore/Music&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=MissingCore/Music&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=MissingCore/Music&type=date&legend=top-left" />
+ </picture>
+</a>
+
+## Installation
+
+### Google Play
+Install the app directly from the Play Store.
+
+### GitHub (APK)
+1. Go to the [Releases](https://github.com/MissingCore/Music/releases) page
+2. Download the latest APK
+3. Enable "Install unknown apps" if needed
+4. Install the APK on your device
 
 # Legal
 
