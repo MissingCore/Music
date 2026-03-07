@@ -86,7 +86,9 @@ export function useCurrentTheme() {
   const deviceTheme = useColorScheme();
   const savedTheme = usePreferenceStore((s) => s.theme);
 
-  return savedTheme === "system" ? (deviceTheme ?? "light") : savedTheme;
+  //? Restore the old behavior where we got `null` instead of `unspecified`.
+  const rawTheme = deviceTheme === "unspecified" ? null : deviceTheme;
+  return savedTheme === "system" ? (rawTheme ?? "light") : savedTheme;
 }
 
 /** Returns the dynamic colors determined by the current theme. */
