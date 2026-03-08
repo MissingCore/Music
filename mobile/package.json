@@ -31,7 +31,7 @@
     "@lukemorales/query-key-factory": "1.3.4",
     "@missingcore/music-glyph-toys": "github:MissingCore/music-glyph-toys#bbd70768ca76dff4a585905f02ea6f60c9cd2f38",
     "@missingcore/react-native-actual-path": "0.1.0",
-    "@missingcore/react-native-metadata-retriever": "github:MissingCore/react-native-metadata-retriever#bc14a741652b21fc3e97224f680178ddb4311ecd",
+    "@missingcore/react-native-metadata-retriever": "github:MissingCore/react-native-metadata-retriever#b21753264791cbb3d5c1f5bd11725dd1b54c3f0f",
     "@paralleldrive/cuid2": "3.3.0",
     "@react-navigation/material-top-tabs": "7.4.18",
     "@react-navigation/native": "7.1.33",

@@ -59,8 +59,8 @@ importers:
         specifier: 0.1.0
         version: 0.1.0(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
       '@missingcore/react-native-metadata-retriever':
-        specifier: github:MissingCore/react-native-metadata-retriever#bc14a741652b21fc3e97224f680178ddb4311ecd
-        version: https://codeload.github.com/MissingCore/react-native-metadata-retriever/tar.gz/bc14a741652b21fc3e97224f680178ddb4311ecd(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
+        specifier: github:MissingCore/react-native-metadata-retriever#b21753264791cbb3d5c1f5bd11725dd1b54c3f0f
+        version: https://codeload.github.com/MissingCore/react-native-metadata-retriever/tar.gz/b21753264791cbb3d5c1f5bd11725dd1b54c3f0f(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)
       '@paralleldrive/cuid2':
         specifier: 3.3.0
         version: 3.3.0
@@ -1563,8 +1563,8 @@ packages:
       react: '*'
       react-native: '*'
 
-  '@missingcore/react-native-metadata-retriever@https://codeload.github.com/MissingCore/react-native-metadata-retriever/tar.gz/bc14a741652b21fc3e97224f680178ddb4311ecd':
-    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-metadata-retriever/tar.gz/bc14a741652b21fc3e97224f680178ddb4311ecd}
+  '@missingcore/react-native-metadata-retriever@https://codeload.github.com/MissingCore/react-native-metadata-retriever/tar.gz/b21753264791cbb3d5c1f5bd11725dd1b54c3f0f':
+    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-metadata-retriever/tar.gz/b21753264791cbb3d5c1f5bd11725dd1b54c3f0f}
     version: 2.5.0
     peerDependencies:
       react: '*'
@@ -7195,7 +7195,7 @@ snapshots:
       react: 19.1.4
       react-native: 0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4)
 
-  '@missingcore/react-native-metadata-retriever@https://codeload.github.com/MissingCore/react-native-metadata-retriever/tar.gz/bc14a741652b21fc3e97224f680178ddb4311ecd(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)':
+  '@missingcore/react-native-metadata-retriever@https://codeload.github.com/MissingCore/react-native-metadata-retriever/tar.gz/b21753264791cbb3d5c1f5bd11725dd1b54c3f0f(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4))(react@19.1.4)':
     dependencies:
       react: 19.1.4
       react-native: 0.81.6(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.4)
