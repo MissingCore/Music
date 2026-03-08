@@ -1,6 +1,7 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useNavigation } from "@react-navigation/native";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { atom, useAtomValue, useSetAtom } from "jotai";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { z } from "zod/mini";
@@ -48,6 +49,8 @@ import { FormInputImpl, InputLabel } from "~/modules/form/FormState/FormInput";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import type { SearchCallbacks } from "~/modules/search/types";
+
+const skipDeferredDataAtom = atom(false);
 
 export function ModifyPlaylistBase(props: {
   onSubmit: (data: PlaylistEntry) => void | Promise<void>;
@@ -117,44 +120,45 @@ function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
   //! Re-rendering the list after adding new tracks is the cause of slow
   //! adding of tracks via the sheet.
   const [deferredData, setDeferredData] = useState(playlistTracks);
-  const skipDelay = useRef(false);
+  const skipDelay = useAtomValue(skipDeferredDataAtom);
+  const setSkipDelay = useSetAtom(skipDeferredDataAtom);
 
   //? Skip an extra render cycle by not updating `setDelayedData` in a
   //? `useEffect` and avoid items flashing from prior position.
-  if (skipDelay.current) {
-    skipDelay.current = false;
+  if (skipDelay) {
+    setSkipDelay(false);
     setDeferredData(playlistTracks);
   }
 
   useEffect(() => {
-    const timeout = !skipDelay.current
+    const timeout = !skipDelay
       ? setTimeout(() => setDeferredData(playlistTracks), 1000)
       : undefined;
 
     return () => {
       if (timeout) clearTimeout(timeout);
     };
-  }, [playlistTracks]);
+  }, [playlistTracks, skipDelay]);
   //#endregion
 
   const removeTrack = useCallback(
     (id: string) => {
-      skipDelay.current = true;
+      setSkipDelay(true);
       setFields((prev) =>
         getTracksFields(prev.tracks.filter((t) => t.id !== id)),
       );
     },
-    [setFields],
+    [setFields, setSkipDelay],
   );
 
   const reorderTrack = useCallback(
     ({ from: fromIndex, to: toIndex }: { from: number; to: number }) => {
-      skipDelay.current = true;
+      setSkipDelay(true);
       setFields((prev) =>
         getTracksFields(moveArray(prev.tracks, { fromIndex, toIndex })),
       );
     },
-    [setFields],
+    [setFields, setSkipDelay],
   );
 
   //#region Stable Callbacks
@@ -370,16 +374,19 @@ function ImportM3UWorkflow({
 }: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
   const { t } = useTranslation();
   const { data, setFields, isSubmitting, setIsSubmitting } = useFormState();
+  const setSkipDelay = useSetAtom(skipDeferredDataAtom);
 
   const onImport = async () => {
     setIsSubmitting(true);
     try {
       const { name, tracks: playlistTracks } = await readM3UPlaylist();
       toast(t("feat.backup.extra.importSuccess"), ToastOptions);
+      await wait(100);
       const updatedFields: Partial<PlaylistEntry> = getTracksFields(
         playlistTracks.map(formatTrackForForm),
       );
       if (!data.name && !!name) updatedFields.name = name;
+      setSkipDelay(true);
       setFields(updatedFields);
     } catch (err) {
       toast.error((err as Error).message, ToastOptions);
