@@ -4,8 +4,7 @@ import {
 } from "@missingcore/react-native-metadata-retriever";
 import { inArray } from "drizzle-orm";
 import { File } from "expo-file-system";
-import type { Asset as MediaLibraryAsset } from "expo-media-library";
-import { getAssetsAsync } from "expo-media-library";
+import { AssetField, MediaType, Query } from "expo-media-library/next";
 
 import { db } from "~/db";
 import type { InvalidTrack } from "~/db/schema";
@@ -30,6 +29,14 @@ import {
   removeFileExtension,
   splitOn,
 } from "~/utils/string";
+
+type MediaLibraryAsset = {
+  id: string;
+  filename: string;
+  uri: string;
+  duration: number;
+  modificationTime: number;
+};
 
 /**
  * Difference in `modificiationTime` to trigger a refetch. This is due to
@@ -60,16 +67,30 @@ export async function findAndSaveAudio() {
   // Get all audio files discoverable by `expo-media-library`.
   const foundAssets: MediaLibraryAsset[] = [];
   let isComplete = false;
-  let lastRead: string | undefined;
+  let iteration = 0;
   do {
-    const { assets, endCursor, hasNextPage } = await getAssetsAsync({
-      after: lastRead,
-      first: BATCH_PRESETS.LIGHT,
-      mediaType: "audio",
-    });
-    foundAssets.push(...assets);
-    lastRead = endCursor;
-    isComplete = !hasNextPage;
+    const rawAssets = await new Query()
+      .eq(AssetField.MEDIA_TYPE, MediaType.AUDIO)
+      // Ensure track meets the minimum duration requirement.
+      .gt(AssetField.DURATION, minSeconds)
+      .limit(BATCH_PRESETS.LIGHT)
+      .offset(iteration * BATCH_PRESETS.LIGHT)
+      .exe();
+
+    //! We assume that this won't throw an error.
+    const assetInfos = await Promise.allSettled(
+      rawAssets.map(async (asset) => ({
+        id: asset.id,
+        filename: await asset.getFilename(),
+        uri: decodeURIComponent(await asset.getUri()),
+        duration: (await asset.getDuration()) ?? 0,
+        modificationTime: (await asset.getModificationTime()) ?? 0,
+      })),
+    );
+
+    foundAssets.push(...assetInfos.filter(isFulfilled).map((r) => r.value));
+    iteration += 1;
+    isComplete = foundAssets.length < BATCH_PRESETS.LIGHT;
   } while (!isComplete);
 
   const discoveredTracks = foundAssets.filter(
@@ -77,9 +98,7 @@ export async function findAndSaveAudio() {
       // Ensure track is in the allowlist if it's non-empty.
       (listAllow.length === 0 || listAllow.some((p) => a.uri.startsWith(p))) &&
       // Ensure track isn't in the blocklist.
-      !listBlock.some((p) => a.uri.startsWith(p)) &&
-      // Ensure track meets the minimum duration requirement.
-      a.duration > minSeconds,
+      !listBlock.some((p) => a.uri.startsWith(p)),
   );
   console.log(
     `Found ${foundAssets.length} tracks, filtered down to ${discoveredTracks.length} in ${stopwatch.lapTime()}.`,
