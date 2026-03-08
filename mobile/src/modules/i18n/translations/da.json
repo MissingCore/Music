@@ -7,8 +7,8 @@
     "artists": "Kunstnere",
     "folder": "Mappe",
     "folders": "Mapper",
-    "genre": null,
-    "genres": null,
+    "genre": "Genre",
+    "genres": "Genrer",
     "playlist": "Playliste",
     "playlists": "Playlister",
     "track": "Sang",
@@ -24,8 +24,8 @@
     "favorites": "Favoritter",
     "unFavorite": "Favorisér ikke længere",
     "favoriteTracks": "Yndlingssange",
-    "all": null,
-    "more": null,
+    "all": "Alle",
+    "more": "Mere",
     "home": "Startside",
     "settings": "Indstillinger",
     "upcoming": "Næste sange",
@@ -33,19 +33,19 @@
     "disc": "Plade {{count}}"
   },
   "template": {
-    "entryAdd": null,
+    "entryAdd": "Tilføj \"{{- name}}\".",
     "entryAdded": "\"{{- name}}\" blev tilføjet.",
     "entryRemove": "Fjern \"{{- name}}\".",
     "entryRemoved": "\"{{- name}}\" blev fjernet.",
-    "entryManage": null,
+    "entryManage": "Administrér \"{{- name}}\"",
     "entrySeeMore": "Se mere om \"{{- name}}\".",
     "notFound": "\"{{- name}}\" findes ikke.",
-    "entryMove": null,
+    "entryMove": "Flyt \"{{- name}}\"",
     "entryShow": "Vis \"{{- name}}\"",
     "entryHide": "Gem \"{{- name}}\"",
     "entryEnable": "Aktivér \"{{- name}}\"",
     "entryDisable": "Deaktivér \"{{- name}}\"",
-    "noContentFound": null
+    "noContentFound": "\"{{- name}}\" blev ikke fundet."
   },
   "plural": {
     "entry_one": "{{count}} indlæg",
@@ -63,11 +63,11 @@
     "unsaved": "Du har muligvis ugemte ændringer.",
     "stay": "Bliv her",
     "leave": "Luk",
-    "create": null,
-    "delete": null,
-    "edit": null,
+    "create": "Opret",
+    "delete": "Slet",
+    "edit": "Redigér",
     "clear": "Ryd",
-    "reset": null,
+    "reset": "Nulstil",
     "validation": {
       "unique": "Navn er ikke blevet brugt"
     }
@@ -93,11 +93,11 @@
       "noResults": "Ingen resultater fundet.",
       "noAlbums": "Intet album fundet.",
       "noArtists": "Ingen kunstnere fundet.",
-      "noGenres": null,
+      "noGenres": "Ingen genrer fundet.",
       "noPlaylists": "Ingen playlister fundet.",
       "noTracks": "Ingen sange fundet.",
-      "noHiddenTracks": null,
-      "noLyrics": null
+      "noHiddenTracks": "Ingen skjulte sange fundet.",
+      "noLyrics": "Ingen sangtekster fundet."
     }
   },
   "feat": {
@@ -108,8 +108,8 @@
         "downloadAPK": "Download den nyeste APK",
         "updateGoogle": "Opdatér via Play Store",
         "version": "App-Version",
-        "checkUpdates": null,
-        "rcNotification": null
+        "checkUpdates": "Tjek for opdateringer",
+        "rcNotification": "Notifikation, når en ny forudversion udgives"
       }
     },
     "appearance": {
@@ -133,14 +133,14 @@
       "title": "Rækkefølge af faner",
       "brief": "Tilpas rækkefølgen og synligheden af fanerne.",
       "extra": {
-        "setHomeTab": null
+        "setHomeTab": "Åbn {{- name}}-fanen, når appen åbnes."
       }
     },
     "minAlbumLength": {
-      "title": null
+      "title": "Mindst mulige albumlængde"
     },
     "miniplayerGestures": {
-      "title": null
+      "title": "Swipe-styring i miniplayer"
     },
     "nowPlayingDesign": {
       "extra": {
@@ -150,20 +150,20 @@
       }
     },
     "quickScroll": {
-      "title": null,
-      "brief": null
+      "title": "Scrollbar",
+      "brief": "Vis Nothing-lignende scrollbar på understøttede skærme."
     },
     "language": {
       "title": "Sprog",
       "extra": {
         "contribute": "Bidrag oversættelser",
-        "useLTR": null,
-        "translators": null
+        "useLTR": "Brug LTR-layout. Genstart påkrævet.",
+        "translators": "Oversættere"
       }
     },
     "backup": {
       "title": "Backup",
-      "description": "Overfør data fra denne app til andre enheder via en `music_backup.json` fil.",
+      "description": "Overfør data fra denne app til andre enheder via en \"music_backup.json\" fil.",
       "extra": {
         "export": "Eksportér",
         "exportSuccess": "Backup oprettet.",
@@ -183,15 +183,15 @@
       }
     },
     "mostPlayed": {
-      "title": null,
-      "brief": null,
+      "title": "Hyppigst afspillede sange",
+      "brief": "Dine mest afspillede sange i én liste.",
       "extra": {
-        "playCount": null
+        "playCount": "Afspillet {{count}} gange"
       }
     },
     "hiddenTracks": {
-      "title": null,
-      "brief": null
+      "title": "Skjulte sange",
+      "brief": "Sange, der ikke bliver vist i appen."
     },
     "saveErrors": {
       "title": "Fejl under gemning",
@@ -200,25 +200,25 @@
     "playback": {
       "title": "Afspilning",
       "extra": {
-        "delay": null,
+        "delay": "Pause mellem sange",
         "options": "Ekstra optioner til afspilning",
         "speed": "Afspilningshastighed",
         "volume": "Appens lydstyrke"
       }
     },
     "continuePlaybackOnDismiss": {
-      "title": null,
-      "description": null
+      "title": "Fortsæt afspilning",
+      "description": "Lad musikken fortsætte, når du fjerner appen fra seneste opgaver. Gennemtving standsning af appen for at stoppe afspilningen."
     },
     "repeatOnSkip": {
       "title": "Behold gentagelsesindstilling ved næste sang",
       "brief": "Ændr ikke gentagelsesindstillingen fra \"Gentag én\" til \"Gentag\", når der skiftes til næste sang."
     },
     "restoreLastPosition": {
-      "title": null
+      "title": "Fortsæt samme sted, når du åbner appen igen"
     },
     "lyrics": {
-      "title": null
+      "title": "Sangtekster"
     },
     "scanning": {
       "title": "Scanning"
@@ -237,50 +237,50 @@
       "brief": "Scanner alle filer på enheden. Kan tage længere tid end den normale scanning."
     },
     "rescanOnLaunch": {
-      "title": null,
-      "brief": null
+      "title": "Scan efter sange hver gang, du åbner appen",
+      "brief": "Hvis deaktiveret, skal du bruge funktionen \"Scan igen\" for at appen opdager nye, opdaterede og slettede sange."
     },
     "listAllow": {
       "title": "Tilladelsesliste",
-      "description": null
+      "description": "Angiv, hvor sange kan findes."
     },
     "listBlock": {
       "title": "Blokeringsliste",
       "description": "Blokeringslisten har højere prioritet end Tilladelseslisten."
     },
     "minTrackDuration": {
-      "title": "Ignorér korte audiofiler",
-      "description": "Varighed i sekunder af audiofiler, der ikke skal gemmes."
+      "title": "Ignorér korte lydfiler",
+      "description": "Varighed i sekunder af lydfiler, der ikke skal gemmes."
     },
     "separators": {
-      "title": null,
+      "title": "Multi-value-separatorer",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Gælder kun for nye sange. Brug funktionen \"Grundig scanning\" til at opdatere eksisterende spor.",
+        "line2": "Advarsel: Dette kan resultere i, at nogle tags fejlagtigt identificeres som at have flere værdier. Gælder ikke for sange, du manuelt har ændret."
       }
     },
     "experimental": {
-      "title": null
+      "title": "Eksperimentelle Funktioner"
     },
     "ignoreInterrupt": {
       "title": "Ignorér afbrydelser",
-      "brief": "Fortsæt med at afspille musik, når du får et opkald eller en notifikation. Du bliver nødt til manuelt at pause/afspille musikken i disse situationer."
+      "brief": "Fortsæt med at afspille sange, når du får et opkald eller en notifikation. Du bliver nødt til manuelt at pause/afspille musikken i disse situationer."
     },
     "sleepTimer": {
-      "title": null,
-      "description": null,
+      "title": "Sleep timer",
+      "description": "Stopper med at afspille sange efter det angivne antal minutter.",
       "extra": {
-        "start": null,
-        "stopTime": null,
-        "extend": null
+        "start": "Start",
+        "stopTime": "Afspilning vil stoppe klokken {{- time}}.",
+        "extend": "Udvid timer, indtil igangværende sang er afsluttet."
       }
     },
     "waveformSlider": {
       "title": "Slider i bølgeform",
       "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
+        "purgeCache": "Slet cachelagrede bølgeformer",
+        "purgeCacheBrief": "Frigør lagerplads for at genberegne bølgeformer af afspillede sange.",
+        "purgeCacheToast": "Bølgeform-cache ryddet."
       }
     },
     "code": {
@@ -299,8 +299,8 @@
     },
     "onboarding": {
       "extra": {
-        "configureSettings": null,
-        "startScan": null,
+        "configureSettings": "Konfigurér indstillinger",
+        "startScan": "Start scan",
         "saveTracks": "Gemmer sange",
         "saveImages": "Gemmer billeder"
       }
@@ -308,7 +308,7 @@
     "playedRecent": {
       "title": "Nyligt afspillet",
       "extra": {
-        "notFound": null
+        "notFound": "Intet blev spillet i de seneste {{amount}} dage."
       }
     },
     "search": {
@@ -325,44 +325,44 @@
     },
     "directory": {
       "extra": {
-        "add": "Tilføj Directory",
-        "select": "Vælg Directory"
+        "add": "Tilføj mappe",
+        "select": "Vælg mappe"
       }
     },
     "playlist": {
       "extra": {
-        "m3uImport": null,
-        "m3uExport": null,
-        "absolute": null,
-        "relative": null
+        "m3uImport": "Importér M3U-playliste",
+        "m3uExport": "Eksportér som M3U-fil",
+        "absolute": "Absolut",
+        "relative": "Relativ"
       }
     },
     "trackMetadata": {
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Redigér hvordan sangen vises i denne app. Dette ændrer ikke selve filen.",
+        "line2": "Bemærk: Dine ændringer vil måske blive nulstillet, hvis filen ændres."
       },
       "extra": {
-        "albumArtists": null,
-        "disc": null,
-        "name": null,
-        "trackNumber": null,
-        "year": null
+        "albumArtists": "Albumkunstnere",
+        "disc": "Plade",
+        "name": "Navn",
+        "trackNumber": "Sangnummer",
+        "year": "Udgivelsesår"
       }
     },
     "modalViewPreference": {
-      "title": null,
+      "title": "Skærmindstillinger",
       "extra": {
-        "layout": null,
-        "list": null,
-        "grid": null,
-        "compactGrid": null,
+        "layout": "Layout",
+        "list": "Liste",
+        "grid": "Gitter",
+        "compactGrid": "Kompakt gitter",
         "sort": "Sortering",
         "asc": "Stigende rækkefølge",
-        "discover": null,
-        "duration": null,
+        "discover": "Senest opdaget af appen",
+        "duration": "Varighed",
         "modified": "Senest gemt/ændret",
-        "trackCount": null
+        "trackCount": "Antal sange"
       }
     },
     "modalTrack": {
@@ -377,11 +377,11 @@
     "queue": {
       "extra": {
         "add": "Tilføj til kø",
-        "playNext": null,
-        "playLast": null,
+        "playNext": "Afspil som næste",
+        "playLast": "Afspil sidst",
         "toast": "\"{{- name}}\" tilføjet til kø.",
-        "queueAwareNext": null,
-        "queueAwareNextBrief": null
+        "queueAwareNext": "Kø-bevidst \"Afspil som næste\"",
+        "queueAwareNextBrief": "Forsøger at tilføje sang efter den sidste \"Afspil som næste\"-sang i køen."
       }
     }
   }
