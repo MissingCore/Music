@@ -118,6 +118,7 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "@missingcore/music-glyph-toys",
+      "@missingcore/react-native-metadata-retriever",
       "@sentry/cli",
       "@weights-ai/react-native-track-player",
       "sharp"
