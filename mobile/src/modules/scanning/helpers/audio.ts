@@ -90,7 +90,7 @@ export async function findAndSaveAudio() {
 
     foundAssets.push(...assetInfos.filter(isFulfilled).map((r) => r.value));
     iteration += 1;
-    isComplete = foundAssets.length < BATCH_PRESETS.LIGHT;
+    isComplete = rawAssets.length < BATCH_PRESETS.LIGHT;
   } while (!isComplete);
 
   const discoveredTracks = foundAssets.filter(
