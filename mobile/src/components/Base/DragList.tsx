@@ -1,4 +1,15 @@
-import { createContext, memo, use, useCallback, useMemo, useRef } from "react";
+import {
+  createContext,
+  memo,
+  use,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import type { LayoutChangeEvent } from "react-native";
+import { View } from "react-native";
 import type {
   ReorderableListProps,
   ReorderableListDragStartEvent,
@@ -10,6 +21,8 @@ import ReorerableList, {
 import { scheduleOnRN } from "react-native-worklets";
 import type { StoreApi } from "zustand";
 import { createStore, useStore } from "zustand";
+
+import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
 import { cn } from "~/lib/style";
 import { getListItemLayout } from "./List";
@@ -33,6 +46,8 @@ export const DragList = memo(function DragList(props) {
   );
 }) as DragListSignature;
 
+type MountedState = "unmounted" | "pending" | "mounted";
+
 const DragListInternal = memo(function DragListInternal({
   initialScrollIndex,
   ...props
@@ -51,21 +66,68 @@ const DragListInternal = memo(function DragListInternal({
     scheduleOnRN(setActiveIndex, null);
   }, [setActiveIndex]);
 
+  //#region `initialScrollIndex` Hacks
+  const [mountedState, setMountedState] = useState<MountedState>("unmounted");
+  const containerHeightRef = useRef(0);
+  const [shouldUseInitialScrollIndex, setShouldUseInitialScrollIndex] =
+    useState(typeof initialScrollIndex === "number");
+
+  const setContainerHeight = useCallback((e: LayoutChangeEvent) => {
+    containerHeightRef.current = e.nativeEvent.layout.height;
+  }, []);
+
+  //? If the list isn't scrollable, items that aren't at `initialScrollIndex`
+  //? won't get rendered.
+  const updateShouldUseInitialScrollIndex = useCallback(
+    (_: number, contentHeight: number) => {
+      if (mountedState === "mounted") return;
+      setShouldUseInitialScrollIndex(
+        contentHeight > containerHeightRef.current,
+      );
+    },
+    [mountedState],
+  );
+
+  //? Delay render of list due to having an `initialScrollIndex` making
+  //? items not at that index render later.
+  useEffect(() => {
+    if (mountedState !== "unmounted") return;
+    const canMount = typeof initialScrollIndex !== "number";
+    setMountedState(canMount ? "mounted" : "pending");
+    if (canMount) return;
+    setTimeout(() => {
+      setMountedState("mounted");
+    }, 250);
+  }, [initialScrollIndex, mountedState]);
+  //#endregion
+
   return (
-    <ReorerableList
-      overScrollMode="never"
-      showsHorizontalScrollIndicator={false}
-      showsVerticalScrollIndicator={false}
-      windowSize={3} // We don't need that many screens rendered on mount.
-      cellAnimations={cellAnimations}
-      initialScrollIndex={initialScrollIndex}
-      {...props}
-      onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
-      getItemLayout={getListItemLayout}
-      className="-mb-2"
-      contentContainerClassName={cn("py-4", props.contentContainerClassName)}
-    />
+    <View onLayout={setContainerHeight} className="relative flex-1">
+      <ReorerableList
+        key={String(shouldUseInitialScrollIndex)}
+        overScrollMode="never"
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        windowSize={3} // We don't need that many screens rendered on mount.
+        cellAnimations={cellAnimations}
+        initialScrollIndex={
+          shouldUseInitialScrollIndex ? initialScrollIndex : undefined
+        }
+        {...props}
+        onContentSizeChange={updateShouldUseInitialScrollIndex}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        getItemLayout={getListItemLayout}
+        className="-mb-2"
+        contentContainerClassName={cn("py-4", props.contentContainerClassName)}
+      />
+      {mountedState !== "mounted" ? (
+        <PagePlaceholder
+          isPending
+          wrapperClassName="absolute inset-0 bg-surface"
+        />
+      ) : null}
+    </View>
   );
 }) as DragListSignature;
 
