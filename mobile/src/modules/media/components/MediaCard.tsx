@@ -6,7 +6,7 @@ import { getMediaLinkContext } from "~/navigation/utils/router";
 
 import { cn } from "~/lib/style";
 import type { LegendListProps } from "~/components/Base/LegendList";
-import { RNGHPressable } from "~/components/Base/Pressable";
+import { Pressable } from "~/components/Base/Pressable";
 import { StyledText } from "~/components/Typography/StyledText";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import type { MediaCardContent, MediaCardProps } from "./MediaCard.type";
@@ -26,7 +26,7 @@ export function MediaCard({
   ...imgProps
 }: MediaCardProps) {
   return (
-    <RNGHPressable
+    <Pressable
       onPress={onPress}
       style={{ maxWidth: imgProps.size }}
       // Using `grow` instead of `w-full` because only 1 item gets shown otherwise.
@@ -39,7 +39,7 @@ export function MediaCard({
       <StyledText dim numberOfLines={1}>
         {description}
       </StyledText>
-    </RNGHPressable>
+    </Pressable>
   );
 }
 //#endregion

@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { View } from "react-native";
 
 import type { Icon } from "~/resources/icons/type";
@@ -6,8 +6,8 @@ import { useTheme } from "~/hooks/useTheme";
 
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
-import type { PressProps, RNGHPressProps } from "./types";
-import { Pressable, RNGHPressable } from "../../Base/Pressable";
+import type { PressProps } from "./types";
+import { Pressable } from "../../Base/Pressable";
 
 export type ButtonSize = "xs" | "sm" | "md" | "lg";
 
@@ -18,7 +18,7 @@ const ButtonConfig = {
   lg: { buttonSize: "min-h-12 min-w-12", iconSize: 32 },
 } as const;
 
-type IconButtonProps = {
+type IconButtonProps = PressProps & {
   Icon: (props: Icon) => React.JSX.Element;
   accessibilityLabel: string;
   /** Defaults to `md`. */
@@ -27,7 +27,7 @@ type IconButtonProps = {
   filled?: boolean;
   className?: string;
   _iconColor?: ColorRole;
-} & ((PressProps & { rngh?: boolean }) | (RNGHPressProps & { rngh: true }));
+};
 
 //#region Default
 export const IconButton = memo(function IconButton({
@@ -39,15 +39,8 @@ export const IconButton = memo(function IconButton({
 }: IconButtonProps) {
   const { surfaceContainerHigh } = useTheme();
   const { buttonSize, iconSize } = ButtonConfig[size];
-
-  const Wrapper = useMemo(
-    () => (props.rngh ? RNGHPressable : Pressable),
-    [props.rngh],
-  );
-
   return (
-    //@ts-expect-error - Pressable props are compatible.
-    <Wrapper
+    <Pressable
       {...props}
       className={cn(
         "items-center justify-center rounded-full disabled:opacity-25",
@@ -64,7 +57,7 @@ export const IconButton = memo(function IconButton({
           <Icon size={iconSize} color={_iconColor} filled={filled} />
         </View>
       )}
-    </Wrapper>
+    </Pressable>
   );
 });
 //#endregion
@@ -78,15 +71,8 @@ export const FilledIconButton = memo(function FilledIconButton({
   ...props
 }: IconButtonProps) {
   const { buttonSize, iconSize } = ButtonConfig[size];
-
-  const Wrapper = useMemo(
-    () => (props.rngh ? RNGHPressable : Pressable),
-    [props.rngh],
-  );
-
   return (
-    //@ts-expect-error - Pressable props are compatible.
-    <Wrapper
+    <Pressable
       {...props}
       className={cn(
         "items-center justify-center rounded-full bg-surfaceContainerLowest active:bg-surfaceContainer disabled:opacity-25",
@@ -95,7 +81,7 @@ export const FilledIconButton = memo(function FilledIconButton({
       )}
     >
       <Icon size={iconSize} color={_iconColor} filled={filled} />
-    </Wrapper>
+    </Pressable>
   );
 });
 //#endregion
