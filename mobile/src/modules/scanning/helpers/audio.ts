@@ -80,7 +80,8 @@ export async function findAndSaveAudio() {
     //! We assume that this won't throw an error.
     const assetInfos = await Promise.allSettled(
       rawAssets.map(async (asset) => ({
-        id: asset.id,
+        //? `id` field looks like: "content://media/external/audio/media/1000001309"
+        id: asset.id.split("/").at(-1)!,
         filename: await asset.getFilename(),
         uri: decodeURIComponent(await asset.getUri()),
         duration: (await asset.getDuration()) ?? 0,
