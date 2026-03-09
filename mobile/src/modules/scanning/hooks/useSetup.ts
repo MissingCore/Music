@@ -37,7 +37,7 @@ export function useSetup() {
 
       // Ensure widget has up-to-date data as the Playback store isn't
       // immediately hydrated.
-      await revalidateWidgets({ openApp: true });
+      await revalidateWidgets({ openApp: !playbackStore.getState().isPlaying });
 
       const { repeat, playingFrom, activeKey } = playbackStore.getState();
       const { restoreLastPosition, continuePlaybackOnDismiss } =
