@@ -1,0 +1,18 @@
+diff --git a/Libraries/Utilities/Appearance.js b/Libraries/Utilities/Appearance.js
+index 9b7758c3afa3c9874c911045e258abf5219e8af5..56e54167670befc79ee371a871138e4af2528313 100644
+--- a/Libraries/Utilities/Appearance.js
++++ b/Libraries/Utilities/Appearance.js
+@@ -99,7 +99,12 @@ export function setColorScheme(colorScheme: ColorSchemeName): void {
+   if (NativeAppearance != null) {
+     NativeAppearance.setColorScheme(colorScheme);
+     state.appearance = {
+-      colorScheme,
++      // When setting to 'unspecified', get the actual system color scheme.
++      // Fall back to the passed value if getColorScheme() returns null.
++      colorScheme:
++        colorScheme === 'unspecified'
++          ? (NativeAppearance.getColorScheme() ?? colorScheme)
++          : colorScheme,
+     };
+   }
+ }
