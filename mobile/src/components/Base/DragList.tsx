@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
+import type { LayoutChangeEvent } from "react-native";
 import { View } from "react-native";
 import type {
   ReorderableListProps,
@@ -24,7 +25,7 @@ import { createStore, useStore } from "zustand";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
 import { cn } from "~/lib/style";
-import { getListItemLayout, useFlatListRef } from "./List";
+import { getListItemLayout } from "./List";
 
 type DragListSignature = <T>(
   props: Omit<
@@ -51,9 +52,6 @@ const DragListInternal = memo(function DragListInternal({
   initialScrollIndex,
   ...props
 }) {
-  const listRef = useFlatListRef();
-  const [mountedState, setMountedState] = useState<MountedState>("unmounted");
-
   const setActiveIndex = useDragListStore((s) => s.setActiveIndex);
 
   const onDragStart = useCallback(
@@ -68,34 +66,55 @@ const DragListInternal = memo(function DragListInternal({
     scheduleOnRN(setActiveIndex, null);
   }, [setActiveIndex]);
 
-  //! FIXME: Hack to get `initialScrollIndex` working. We have to use
-  //! `scrollToOffset` instead of `scrollToIndex` as we get the following
-  //! error:
-  //!   - "scrollToIndex out of range: item length 0 but minimum is 1"
+  //#region `initialScrollIndex` Hacks
+  const [mountedState, setMountedState] = useState<MountedState>("unmounted");
+  const containerHeightRef = useRef(0);
+  const [shouldUseInitialScrollIndex, setShouldUseInitialScrollIndex] =
+    useState(typeof initialScrollIndex === "number");
+
+  const setContainerHeight = useCallback((e: LayoutChangeEvent) => {
+    containerHeightRef.current = e.nativeEvent.layout.height;
+  }, []);
+
+  //? If the list isn't scrollable, items that aren't at `initialScrollIndex`
+  //? won't get rendered.
+  const updateShouldUseInitialScrollIndex = useCallback(
+    (_: number, contentHeight: number) => {
+      if (mountedState === "mounted") return;
+      setShouldUseInitialScrollIndex(
+        contentHeight > containerHeightRef.current,
+      );
+    },
+    [mountedState],
+  );
+
+  //? Delay render of list due to having an `initialScrollIndex` making
+  //? items not at that index render later.
   useEffect(() => {
     if (mountedState !== "unmounted") return;
     const canMount = typeof initialScrollIndex !== "number";
     setMountedState(canMount ? "mounted" : "pending");
     if (canMount) return;
-    listRef.current?.scrollToOffset({
-      offset: 56 * initialScrollIndex,
-      animated: false,
-    });
     setTimeout(() => {
       setMountedState("mounted");
     }, 250);
-  }, [listRef, initialScrollIndex, mountedState]);
+  }, [initialScrollIndex, mountedState]);
+  //#endregion
 
   return (
-    <View className="relative flex-1">
+    <View onLayout={setContainerHeight} className="relative flex-1">
       <ReorerableList
-        ref={listRef}
+        key={String(shouldUseInitialScrollIndex)}
         overScrollMode="never"
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         windowSize={3} // We don't need that many screens rendered on mount.
         cellAnimations={cellAnimations}
+        initialScrollIndex={
+          shouldUseInitialScrollIndex ? initialScrollIndex : undefined
+        }
         {...props}
+        onContentSizeChange={updateShouldUseInitialScrollIndex}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
         getItemLayout={getListItemLayout}
