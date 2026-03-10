@@ -12,7 +12,7 @@
   "author": "cyanChill",
   "scripts": {
     "start": "expo start",
-    "android": "expo run:android",
+    "android": "expo run:android --variant debugOptimized",
     "android:prod": "expo run:android --variant release",
     "atlas": "npx expo export --platform android && npx expo-atlas",
     "typecheck": "tsc --noEmit",
@@ -112,7 +112,10 @@
   },
   "reanimated": {
     "staticFeatureFlags": {
-      "ANDROID_SYNCHRONOUSLY_UPDATE_UI_PROPS": false
+      "ANDROID_SYNCHRONOUSLY_UPDATE_UI_PROPS": false,
+      "DISABLE_COMMIT_PAUSING_MECHANISM": true,
+      "USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS": true,
+      "USE_SYNCHRONIZABLE_FOR_MUTABLES": true
     }
   },
   "pnpm": {
