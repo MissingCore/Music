@@ -111,6 +111,7 @@ export async function getAlbumsSummary<
   const results = await db
     .select({
       ...albumFields,
+      maxYear: max(orderedAlbumTracks.year),
       duration: sum(orderedAlbumTracks.duration),
       trackCount: count(orderedAlbumTracks.id),
       //! This field is "hacked" in.
@@ -210,6 +211,7 @@ function getOrderedAlbumTracksView() {
       track: tracks.track,
       duration: tracks.duration,
       artwork: tracks.artwork,
+      year: tracks.year,
       /** We need to unencode these fields. */
       artists:
         sql<string>`json_group_array(${orderedTrackArtists.artistName})`.as(

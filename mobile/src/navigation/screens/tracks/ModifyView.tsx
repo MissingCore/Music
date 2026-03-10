@@ -5,6 +5,7 @@ import {
 } from "@missingcore/react-native-metadata-retriever";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { eq } from "drizzle-orm";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { z } from "zod/mini";
@@ -13,8 +14,10 @@ import { db } from "~/db";
 import { tracksToArtists, tracksToGenres } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
+import { ColorWand } from "~/resources/icons/ColorWand";
 import { Info } from "~/resources/icons/Info";
 import { upsertAlbums } from "~/data/album/api";
+import type { AlbumSummary } from "~/data/album/types";
 import { AlbumArtistsKey } from "~/data/album/utils";
 import { createArtists } from "~/data/artist/api";
 import { createGenres } from "~/data/genre/api";
@@ -28,12 +31,16 @@ import { AppCleanUp } from "~/modules/scanning/helpers/cleanup";
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 import { router } from "~/navigation/utils/router";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
+import { AddAlbumSheet } from "./sheets/AddAlbumSheet";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
 import { splitOn } from "~/utils/string";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { ExtendedTButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
+import { TextInput } from "~/components/Form/Input";
+import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
 import { ZSchema } from "~/modules/form/utils";
 import {
@@ -43,6 +50,7 @@ import {
 import {
   ArrayFormInputImpl,
   FormInputImpl,
+  InputLabel,
 } from "~/modules/form/FormState/FormInput";
 
 type Props = StaticScreenProps<{ id: string }>;
@@ -110,48 +118,87 @@ const ArrayFormInput = ArrayFormInputImpl<TrackMetadata>();
 
 function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
   const { t } = useTranslation();
-  return (
-    <KeyboardAwareScrollView
-      // Remove 16px as `KeyboardAwareScrollView` adds an element at the
-      // end of the ScrollView, causing an additional application of `gap`.
-      contentContainerStyle={{ paddingBottom: bottomOffset - 16 }}
-      contentContainerClassName="gap-4 p-4"
-    >
-      <View className="flex-row gap-2 rounded-md bg-surfaceContainerLowest p-4 pl-2">
-        <Info size={20} color="onSurfaceVariant" />
-        <StyledText dim className="shrink grow text-sm">
-          {t("feat.trackMetadata.description.line1")}
-          {"\n\n"}
-          {t("feat.trackMetadata.description.line2")}
-        </StyledText>
-      </View>
+  const { data, setFields, isSubmitting } = useFormState();
+  const addAlbumSheetRef = useSheetRef();
 
-      <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
-      <ArrayFormInput labelKey="term.artists" field="artists" />
-      <FormInput labelKey="term.album" field="album" />
-      <ArrayFormInput
-        labelKey="feat.trackMetadata.extra.albumArtists"
-        field="albumArtists"
-      />
-      <View className="flex-row items-end gap-4">
+  const onSelectAlbum = useCallback(
+    (selectedAlbum: AlbumSummary) => {
+      setFields({
+        album: selectedAlbum.name,
+        albumArtists: AlbumArtistsKey.deconstruct(selectedAlbum.artistsKey),
+        year: selectedAlbum.maxYear,
+      });
+      addAlbumSheetRef.current?.dismiss();
+    },
+    [addAlbumSheetRef, setFields],
+  );
+
+  return (
+    <>
+      <AddAlbumSheet ref={addAlbumSheetRef} onSelect={onSelectAlbum} />
+      <KeyboardAwareScrollView
+        // Remove 16px as `KeyboardAwareScrollView` adds an element at the
+        // end of the ScrollView, causing an additional application of `gap`.
+        contentContainerStyle={{ paddingBottom: bottomOffset - 16 }}
+        contentContainerClassName="gap-4 p-4"
+      >
+        <View className="flex-row gap-2 rounded-md bg-surfaceContainerLowest p-4 pl-2">
+          <Info size={20} color="onSurfaceVariant" />
+          <StyledText dim className="shrink grow text-sm">
+            {t("feat.trackMetadata.description.line1")}
+            {"\n\n"}
+            {t("feat.trackMetadata.description.line2")}
+          </StyledText>
+        </View>
+
+        <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
+        <ArrayFormInput labelKey="term.artists" field="artists" />
+        <View className="flex-1">
+          <InputLabel
+            labelKey="term.album"
+            RightElement={
+              <IconButton
+                Icon={ColorWand}
+                accessibilityLabel={t("template.entryAdd", {
+                  name: t("term.album"),
+                })}
+                onPress={() => addAlbumSheetRef.current?.present()}
+                disabled={isSubmitting}
+                size="xs"
+              />
+            }
+          />
+          <TextInput
+            editable={!isSubmitting}
+            value={data.album || ""}
+            onChangeText={(text) => setFields({ album: text })}
+            className="w-full rounded-sm border border-outline p-2"
+          />
+        </View>
+        <ArrayFormInput
+          labelKey="feat.trackMetadata.extra.albumArtists"
+          field="albumArtists"
+        />
+        <View className="flex-row items-end gap-4">
+          <FormInput
+            labelKey="feat.trackMetadata.extra.disc"
+            field="disc"
+            numeric
+          />
+          <FormInput
+            labelKey="feat.trackMetadata.extra.trackNumber"
+            field="track"
+            numeric
+          />
+        </View>
         <FormInput
-          labelKey="feat.trackMetadata.extra.disc"
-          field="disc"
+          labelKey="feat.trackMetadata.extra.year"
+          field="year"
           numeric
         />
-        <FormInput
-          labelKey="feat.trackMetadata.extra.trackNumber"
-          field="track"
-          numeric
-        />
-      </View>
-      <FormInput
-        labelKey="feat.trackMetadata.extra.year"
-        field="year"
-        numeric
-      />
-      <ArrayFormInput labelKey="term.genres" field="genres" />
-    </KeyboardAwareScrollView>
+        <ArrayFormInput labelKey="term.genres" field="genres" />
+      </KeyboardAwareScrollView>
+    </>
   );
 }
 //#endregion
