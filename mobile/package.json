@@ -113,7 +113,7 @@
   "reanimated": {
     "staticFeatureFlags": {
       "ANDROID_SYNCHRONOUSLY_UPDATE_UI_PROPS": false,
-      "DISABLE_COMMIT_PAUSING_MECHANISM": true,
+      "DISABLE_COMMIT_PAUSING_MECHANISM": false,
       "USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS": true,
       "USE_SYNCHRONIZABLE_FOR_MUTABLES": true
     }
