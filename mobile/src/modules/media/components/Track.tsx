@@ -2,11 +2,14 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { MoreVert } from "~/resources/icons/MoreVert";
+import { QueueMusic } from "~/resources/icons/QueueMusic";
 import { usePlaybackStore } from "~/stores/Playback/store";
-import { PlaybackControls } from "~/stores/Playback/actions";
+import { PlaybackControls, Queue } from "~/stores/Playback/actions";
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
 
 import type { LegendListProps } from "~/components/Base/LegendList";
+import { Pressable } from "~/components/Base/Pressable";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
@@ -28,6 +31,7 @@ export function Track({
   ...props
 }: TrackProps) {
   const { t } = useTranslation();
+  const quickAddQueue = usePreferenceStore((s) => s.quickAddQueue);
 
   const overriddenLeftElement = useMemo(
     () => (showIndicator ? <PlayingIndicator /> : LeftElement),
@@ -43,11 +47,22 @@ export function Track({
       }
       LeftElement={overriddenLeftElement}
       RightElement={
-        <IconButton
-          Icon={MoreVert}
-          accessibilityLabel={t("template.entrySeeMore", { name: props.title })}
-          onPress={() => presentTrackSheet(id)}
-        />
+        <Pressable className="h-full flex-row items-center gap-1">
+          {quickAddQueue ? (
+            <IconButton
+              Icon={QueueMusic}
+              accessibilityLabel={t("feat.queue.extra.playNext")}
+              onPress={() => Queue.add({ id, name: props.title })}
+            />
+          ) : null}
+          <IconButton
+            Icon={MoreVert}
+            accessibilityLabel={t("template.entrySeeMore", {
+              name: props.title,
+            })}
+            onPress={() => presentTrackSheet(id)}
+          />
+        </Pressable>
       }
       poppyLabel={showIndicator}
       {...props}

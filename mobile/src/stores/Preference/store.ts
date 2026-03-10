@@ -63,6 +63,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     miniplayerGestures: false,
     nowPlayingDesign: "vinyl",
 
+    quickAddQueue: false,
     quickScroll: true,
 
     playbackDelay: 0,

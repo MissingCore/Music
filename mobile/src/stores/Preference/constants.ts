@@ -60,6 +60,8 @@ export interface PreferenceStore {
   /** Design used for the Now Playing screen. */
   nowPlayingDesign: NowPlayingDesign;
 
+  /** Shows button to add track to queue on `<Track />` item. */
+  quickAddQueue: boolean;
   /** Show functional Nothing-styled scrollbar on supported screens. */
   quickScroll: boolean;
 

@@ -409,6 +409,8 @@
 
         "toast": "`{{- name}}` added to queue.",
 
+        "quickAdd": "Quick Add to Queue",
+
         "queueAwareNext": "Queue-Aware Play Next",
         "queueAwareNextBrief": "Attempts to add track after the last \"Play Next\" track."
       }

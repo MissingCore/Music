@@ -23,6 +23,10 @@ export async function toggleContinuePlaybackOnDismiss() {
   );
 }
 
+export function toggleQuickAddQueue() {
+  preferenceStore.setState((prev) => ({ quickAddQueue: !prev.quickAddQueue }));
+}
+
 export function toggleQuickScroll() {
   preferenceStore.setState((prev) => ({ quickScroll: !prev.quickScroll }));
 }
