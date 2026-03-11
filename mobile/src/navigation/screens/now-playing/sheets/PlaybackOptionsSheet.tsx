@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import TrackPlayer from "@weights-ai/react-native-track-player";
+import TrackPlayer from "react-native-track-player";
 import { useCallback, useState } from "react";
 
 import { ActivityZone } from "~/resources/icons/ActivityZone";

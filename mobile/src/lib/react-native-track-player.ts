@@ -1,7 +1,7 @@
 import TrackPlayer, {
   AppKilledPlaybackBehavior,
   Capability,
-} from "@weights-ai/react-native-track-player";
+} from "react-native-track-player";
 
 import { wait } from "~/utils/promise";
 

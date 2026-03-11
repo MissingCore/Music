@@ -1,5 +1,5 @@
 import { GlyphToy } from "@missingcore/music-glyph-toys";
-import TrackPlayer from "@weights-ai/react-native-track-player";
+import TrackPlayer from "react-native-track-player";
 import { useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 import Bootsplash from "react-native-bootsplash";

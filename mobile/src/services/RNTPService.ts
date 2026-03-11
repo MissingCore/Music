@@ -8,7 +8,7 @@ import {
 import TrackPlayer, {
   Event,
   State,
-} from "@weights-ai/react-native-track-player";
+} from "react-native-track-player";
 
 import i18next from "~/modules/i18n";
 import { addPlayedTrack } from "~/data/recent/api";
@@ -61,9 +61,9 @@ export async function PlaybackService() {
     if (action === MatrixAction.SKIP) await PlaybackControls.next();
   });
 
-  TrackPlayer.addEventListener(Event.ServiceKilled, async () => {
-    await revalidateWidgets({ openApp: true });
-  });
+  // TrackPlayer.addEventListener(Event.ServiceKilled, async () => {
+  //   await revalidateWidgets({ openApp: true });
+  // });
 
   TrackPlayer.addEventListener(Event.RemotePlay, async () => {
     await PlaybackControls.play();

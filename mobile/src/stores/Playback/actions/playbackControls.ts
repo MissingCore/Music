@@ -1,4 +1,4 @@
-import TrackPlayer, { State } from "@weights-ai/react-native-track-player";
+import TrackPlayer, { State } from "react-native-track-player";
 
 import { addPlayedMediaList } from "~/data/recent/api";
 import { formatTrackforPlayer } from "~/data/track/utils";

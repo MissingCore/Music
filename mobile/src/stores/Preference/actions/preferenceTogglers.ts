@@ -1,4 +1,4 @@
-import TrackPlayer from "@weights-ai/react-native-track-player";
+import TrackPlayer from "react-native-track-player";
 import { I18nManager } from "react-native";
 
 import i18next from "~/modules/i18n";

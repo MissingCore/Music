@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useProgress } from "@weights-ai/react-native-track-player";
+import { useProgress } from "react-native-track-player";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
