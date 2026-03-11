@@ -18,6 +18,7 @@ export default function AppearanceSettings() {
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
   const theme = usePreferenceStore((s) => s.theme);
   const miniplayerGestures = usePreferenceStore((s) => s.miniplayerGestures);
+  const dragClearPlayback = usePreferenceStore((s) => s.dragClearPlayback);
   const quickAddQueue = usePreferenceStore((s) => s.quickAddQueue);
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const accentFontSheetRef = useSheetRef();
@@ -62,6 +63,11 @@ export default function AppearanceSettings() {
             labelTextKey="feat.miniplayerGestures.title"
             onPress={PreferenceTogglers.toggleMiniplayerGestures}
             RightElement={<Switch enabled={miniplayerGestures} />}
+          />
+          <SegmentedList.Item
+            labelTextKey="feat.miniplayerGestures.extra.dragClearPlayback"
+            onPress={PreferenceTogglers.toggleDragClearPlayback}
+            RightElement={<Switch enabled={dragClearPlayback} />}
           />
           <SegmentedList.Item
             labelTextKey="feat.queue.extra.quickAdd"

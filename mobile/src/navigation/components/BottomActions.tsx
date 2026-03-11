@@ -1,6 +1,7 @@
 import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
+import { useAtomValue } from "jotai";
 import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
@@ -22,7 +23,7 @@ import { Pressable } from "~/components/Base/Pressable";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { StyledText } from "~/components/Typography/StyledText";
 import type { Tab } from "~/stores/Preference/types";
-import { MiniPlayer } from "./MiniPlayer";
+import { MiniPlayer, visibleBeforeResetAtom } from "./MiniPlayer";
 
 //#region Bottom Actions
 /** Actions stickied to the bottom of the screens. */
@@ -50,9 +51,13 @@ function Navbar({ stacked = false, hidden = false }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { hasNewUpdate } = useHasNewUpdate();
+  const miniPlayerVisible = useAtomValue(visibleBeforeResetAtom);
 
   return (
-    <View
+    <Animated.View
+      //? Hack to prevent weird layout animations when miniplayer gets removed
+      //? and when we re-add the navbar.
+      layout={!miniPlayerVisible ? LinearTransition : undefined}
       className={cn(
         "flex-row items-center overflow-hidden rounded-md bg-surfaceContainerLowest py-1",
         { "rounded-t-xs": stacked, "hidden opacity-0": hidden },
@@ -76,7 +81,7 @@ function Navbar({ stacked = false, hidden = false }) {
           <View className="absolute top-3 right-3 size-2 rounded-full bg-primary" />
         )}
       </View>
-    </View>
+    </Animated.View>
   );
 }
 

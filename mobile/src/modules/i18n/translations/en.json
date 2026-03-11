@@ -161,7 +161,10 @@
       "title": "Minimum Album Length"
     },
     "miniplayerGestures": {
-      "title": "Miniplayer Gestures"
+      "title": "Miniplayer Gestures",
+      "extra": {
+        "dragClearPlayback": "Drag Miniplayer Down to Clear Playback"
+      }
     },
     "nowPlayingDesign": {
       "extra": {

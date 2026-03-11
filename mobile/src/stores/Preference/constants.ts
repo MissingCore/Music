@@ -57,6 +57,8 @@ export interface PreferenceStore {
   minAlbumLength: number;
   /** If we want swipe controls on the miniplayer. */
   miniplayerGestures: boolean;
+  /** If dragging the miniplayer down will reset the playback store. */
+  dragClearPlayback: boolean;
   /** Design used for the Now Playing screen. */
   nowPlayingDesign: NowPlayingDesign;
 

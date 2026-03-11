@@ -61,6 +61,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
 
     minAlbumLength: 0,
     miniplayerGestures: false,
+    dragClearPlayback: false,
     nowPlayingDesign: "vinyl",
 
     quickAddQueue: false,

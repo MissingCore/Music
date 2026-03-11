@@ -22,6 +22,11 @@ export async function toggleContinuePlaybackOnDismiss() {
     getTrackPlayerOptions({ continuePlaybackOnDismiss: nextState }),
   );
 }
+export function toggleDragClearPlayback() {
+  preferenceStore.setState((prev) => ({
+    dragClearPlayback: !prev.dragClearPlayback,
+  }));
+}
 
 export function toggleQuickAddQueue() {
   preferenceStore.setState((prev) => ({ quickAddQueue: !prev.quickAddQueue }));
