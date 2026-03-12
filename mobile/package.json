@@ -74,7 +74,7 @@
     "react-native-safe-area-context": "5.7.0",
     "react-native-screens": "4.24.0",
     "react-native-svg": "15.15.3",
-    "react-native-track-player": "github:MissingCore/rntp#4689bb290e7b8832df260f8651f52c4d2dcf5d62",
+    "react-native-track-player": "github:MissingCore/rntp#f9369e6a5665515d6a4f55f07595a37be5ea4afe",
     "react-native-worklets": "0.7.4",
     "tailwind-merge": "3.5.0",
     "uniwind": "1.5.0",
