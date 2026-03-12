@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
-import TrackPlayer from "react-native-track-player";
 import { useCallback, useState } from "react";
+import TrackPlayer from "react-native-track-player";
 
 import { ActivityZone } from "~/resources/icons/ActivityZone";
 import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";

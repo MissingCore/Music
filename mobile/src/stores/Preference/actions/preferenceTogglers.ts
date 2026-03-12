@@ -1,5 +1,5 @@
-import TrackPlayer from "react-native-track-player";
 import { I18nManager } from "react-native";
+import TrackPlayer from "react-native-track-player";
 
 import i18next from "~/modules/i18n";
 

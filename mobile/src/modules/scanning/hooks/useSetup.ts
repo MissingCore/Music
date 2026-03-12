@@ -1,6 +1,6 @@
 import { GlyphToy } from "@missingcore/music-glyph-toys";
-import TrackPlayer, { RepeatMode } from "react-native-track-player";
 import { useEffect, useState } from "react";
+import TrackPlayer, { RepeatMode } from "react-native-track-player";
 
 import { addPlayedMediaList } from "~/data/recent/api";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";

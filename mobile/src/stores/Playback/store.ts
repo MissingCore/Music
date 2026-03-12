@@ -1,7 +1,7 @@
+import { inArray } from "drizzle-orm";
 import TrackPlayer, {
   isPlaying as rntpIsPlaying,
 } from "react-native-track-player";
-import { inArray } from "drizzle-orm";
 import { useStore } from "zustand";
 
 import { db } from "~/db";
