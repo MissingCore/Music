@@ -24,9 +24,6 @@ import { bgWait } from "~/utils/promise";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
 
-/** Context to whether we should resume playback after ducking. */
-let resumeAfterDuck: boolean = false;
-
 /** Simple method of tracking whether a different track is being played. */
 let prevTrackId = "";
 /** Increase playback count after a certain duration of play time. */
@@ -128,22 +125,6 @@ export async function PlaybackService() {
       }
       // Load the next track into the queue for smoother playback.
       await TrackPlayer.add(formatTrackforPlayer(nextTrackInfo.activeTrack));
-    }
-  });
-
-  TrackPlayer.addEventListener(Event.RemoteDuck, async (e) => {
-    // Keep playing media when an interruption is detected.
-    if (preferenceStore.getState().ignoreInterrupt) return;
-    if (e.permanent) {
-      await PlaybackControls.stop();
-    } else {
-      if (e.paused) {
-        resumeAfterDuck = playbackStore.getState().isPlaying;
-        await PlaybackControls.pause();
-      } else if (resumeAfterDuck) {
-        await PlaybackControls.play();
-        resumeAfterDuck = false;
-      }
     }
   });
 

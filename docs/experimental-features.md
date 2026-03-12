@@ -9,13 +9,6 @@ Most experimental features require you to enable it in the "Experimental Feature
 > [!IMPORTANT]
 > There's a high probability of the Glyph Button interactions not working since I don't have a Nothing Phone 3 to test things out (which might be caused by the connection between the toy and the app not being correctly implemented).
 
-## Ignore Interruptions
-
-This enables playback to continue when an interruption (ie: call, notification, timer) occurs.
-
-> [!NOTE]
-> You will need to manually pause & unpause the music if you want to stop playback during one of these interruptions (ie: during a call).
-
 ## M3U Files
 
 > No Toggle Required.

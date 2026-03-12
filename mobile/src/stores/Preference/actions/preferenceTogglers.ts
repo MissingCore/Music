@@ -36,12 +36,6 @@ export function toggleQuickScroll() {
   preferenceStore.setState((prev) => ({ quickScroll: !prev.quickScroll }));
 }
 
-export function toggleIgnoreInterrupt() {
-  preferenceStore.setState((prev) => ({
-    ignoreInterrupt: !prev.ignoreInterrupt,
-  }));
-}
-
 export function toggleForceLTR() {
   const nextState = !preferenceStore.getState().forceLTR;
   preferenceStore.setState({ forceLTR: nextState });

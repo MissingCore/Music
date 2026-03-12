@@ -95,8 +95,6 @@ export interface PreferenceStore {
   rcNotification: boolean;
 
   //! Experimental Features
-  /** Whether we'll continue playback through any interruptions. */
-  ignoreInterrupt: boolean;
   /**
    * Have smooth transitions that was removed with the Playback store
    * rewrite. The plan is to eventually make this stable.

@@ -17,7 +17,6 @@ import { Switch } from "~/components/UI/Switch";
 
 export default function ExperimentalSettings() {
   const { t } = useTranslation();
-  const ignoreInterrupt = usePreferenceStore((s) => s.ignoreInterrupt);
   const smoothPlaybackTransition = usePreferenceStore(
     (s) => s.smoothPlaybackTransition,
   );
@@ -25,20 +24,12 @@ export default function ExperimentalSettings() {
 
   return (
     <ListLayout>
-      <SegmentedList>
-        <SegmentedList.Item
-          labelTextKey="feat.ignoreInterrupt.title"
-          supportingText={t("feat.ignoreInterrupt.brief")}
-          onPress={PreferenceTogglers.toggleIgnoreInterrupt}
-          RightElement={<Switch enabled={ignoreInterrupt} />}
-        />
-        <SegmentedList.Item
-          labelText="Smooth Playback Transition"
-          supportingText="Restores smooth playback transitions seen pre-v2.7.0. This will eventually become stable. You should disable this if you encounter issues."
-          onPress={PreferenceTogglers.toggleSmoothPlaybackTransition}
-          RightElement={<Switch enabled={smoothPlaybackTransition} />}
-        />
-      </SegmentedList>
+      <SegmentedList.Item
+        labelText="Smooth Playback Transition"
+        supportingText="Restores smooth playback transitions seen pre-v2.7.0. This will eventually become stable. You should disable this if you encounter issues."
+        onPress={PreferenceTogglers.toggleSmoothPlaybackTransition}
+        RightElement={<Switch enabled={smoothPlaybackTransition} />}
+      />
 
       <SegmentedList.Item
         labelTextKey="feat.queue.extra.queueAwareNext"

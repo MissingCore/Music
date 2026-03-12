@@ -191,8 +191,8 @@ importers:
         specifier: 15.15.3
         version: 15.15.3(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-track-player:
-        specifier: github:MissingCore/rntp#f9369e6a5665515d6a4f55f07595a37be5ea4afe
-        version: https://codeload.github.com/MissingCore/rntp/tar.gz/f9369e6a5665515d6a4f55f07595a37be5ea4afe(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
+        specifier: github:MissingCore/rntp#ea6b5949ed063559f0ba7352facc95adf06c4397
+        version: https://codeload.github.com/MissingCore/rntp/tar.gz/ea6b5949ed063559f0ba7352facc95adf06c4397(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-worklets:
         specifier: 0.7.4
         version: 0.7.4(@babel/core@7.29.0)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
@@ -4878,8 +4878,8 @@ packages:
       react-native: '*'
       react-native-pager-view: '>= 6.0.0'
 
-  react-native-track-player@https://codeload.github.com/MissingCore/rntp/tar.gz/f9369e6a5665515d6a4f55f07595a37be5ea4afe:
-    resolution: {tarball: https://codeload.github.com/MissingCore/rntp/tar.gz/f9369e6a5665515d6a4f55f07595a37be5ea4afe}
+  react-native-track-player@https://codeload.github.com/MissingCore/rntp/tar.gz/ea6b5949ed063559f0ba7352facc95adf06c4397:
+    resolution: {tarball: https://codeload.github.com/MissingCore/rntp/tar.gz/ea6b5949ed063559f0ba7352facc95adf06c4397}
     version: 5.0.0-alpha0
     peerDependencies:
       react: '*'
@@ -10814,7 +10814,7 @@ snapshots:
       react-native-pager-view: 8.0.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       use-latest-callback: 0.2.6(react@19.2.0)
 
-  react-native-track-player@https://codeload.github.com/MissingCore/rntp/tar.gz/f9369e6a5665515d6a4f55f07595a37be5ea4afe(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
+  react-native-track-player@https://codeload.github.com/MissingCore/rntp/tar.gz/ea6b5949ed063559f0ba7352facc95adf06c4397(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
     dependencies:
       react: 19.2.0
       react-native: 0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0)
