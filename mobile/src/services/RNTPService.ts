@@ -62,6 +62,12 @@ export async function PlaybackService() {
     await revalidateWidgets({ openApp: true });
   });
 
+  //? On some devices (so far OnePlus 6), only `RemotePlayPause` is fired
+  //? instead of `RemotePlay` + `RemotePause` from media control notifications.
+  TrackPlayer.addEventListener(Event.RemotePlayPause, async () => {
+    await PlaybackControls.playToggle();
+  });
+
   TrackPlayer.addEventListener(Event.RemotePlay, async () => {
     await PlaybackControls.play();
   });
