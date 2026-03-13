@@ -1,5 +1,4 @@
 import { GlyphToy } from "@missingcore/music-glyph-toys";
-import TrackPlayer from "@weights-ai/react-native-track-player";
 import { useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 import Bootsplash from "react-native-bootsplash";
@@ -9,6 +8,7 @@ import Animated, {
   withDelay,
   withTiming,
 } from "react-native-reanimated";
+import TrackPlayer from "react-native-track-player";
 import { scheduleOnRN } from "react-native-worklets";
 
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";

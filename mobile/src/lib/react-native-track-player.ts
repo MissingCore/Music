@@ -1,7 +1,9 @@
 import TrackPlayer, {
   AppKilledPlaybackBehavior,
   Capability,
-} from "@weights-ai/react-native-track-player";
+} from "react-native-track-player";
+
+import { playbackStore } from "~/stores/Playback/store";
 
 import { wait } from "~/utils/promise";
 
@@ -81,10 +83,8 @@ export const onAppStartUpInit = setupPlayer();
 
 /** Checks to see if the RNTP service is set up. */
 export async function isRNTPSetUp() {
-  try {
-    await TrackPlayer.getVolume();
-    return true;
-  } catch {
-    return false;
-  }
+  //! I think since RNTP can be setup headlessly now, we need to change
+  //! the method to determine if the app context is valid.
+  const activeKey = playbackStore.getState().activeKey;
+  return activeKey !== undefined;
 }

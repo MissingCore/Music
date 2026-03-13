@@ -1,5 +1,5 @@
-import TrackPlayer from "@weights-ai/react-native-track-player";
 import { I18nManager } from "react-native";
+import TrackPlayer from "react-native-track-player";
 
 import i18next from "~/modules/i18n";
 
@@ -34,12 +34,6 @@ export function toggleQuickAddQueue() {
 
 export function toggleQuickScroll() {
   preferenceStore.setState((prev) => ({ quickScroll: !prev.quickScroll }));
-}
-
-export function toggleIgnoreInterrupt() {
-  preferenceStore.setState((prev) => ({
-    ignoreInterrupt: !prev.ignoreInterrupt,
-  }));
 }
 
 export function toggleForceLTR() {

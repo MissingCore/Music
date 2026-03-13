@@ -5,10 +5,7 @@ import {
   GlyphToy,
   MatrixAction,
 } from "@missingcore/music-glyph-toys";
-import TrackPlayer, {
-  Event,
-  State,
-} from "@weights-ai/react-native-track-player";
+import TrackPlayer, { Event, State } from "react-native-track-player";
 
 import i18next from "~/modules/i18n";
 import { addPlayedTrack } from "~/data/recent/api";
@@ -26,9 +23,6 @@ import { ToastOptions } from "~/lib/toast";
 import { bgWait } from "~/utils/promise";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
-
-/** Context to whether we should resume playback after ducking. */
-let resumeAfterDuck: boolean = false;
 
 /** Simple method of tracking whether a different track is being played. */
 let prevTrackId = "";
@@ -63,6 +57,12 @@ export async function PlaybackService() {
 
   TrackPlayer.addEventListener(Event.ServiceKilled, async () => {
     await revalidateWidgets({ openApp: true });
+  });
+
+  //? On some devices (so far OnePlus 6), only `RemotePlayPause` is fired
+  //? instead of `RemotePlay` + `RemotePause` from media control notifications.
+  TrackPlayer.addEventListener(Event.RemotePlayPause, async () => {
+    await PlaybackControls.playToggle();
   });
 
   TrackPlayer.addEventListener(Event.RemotePlay, async () => {
@@ -125,22 +125,6 @@ export async function PlaybackService() {
       }
       // Load the next track into the queue for smoother playback.
       await TrackPlayer.add(formatTrackforPlayer(nextTrackInfo.activeTrack));
-    }
-  });
-
-  TrackPlayer.addEventListener(Event.RemoteDuck, async (e) => {
-    // Keep playing media when an interruption is detected.
-    if (preferenceStore.getState().ignoreInterrupt) return;
-    if (e.permanent) {
-      await PlaybackControls.stop();
-    } else {
-      if (e.paused) {
-        resumeAfterDuck = playbackStore.getState().isPlaying;
-        await PlaybackControls.pause();
-      } else if (resumeAfterDuck) {
-        await PlaybackControls.play();
-        resumeAfterDuck = false;
-      }
     }
   });
 

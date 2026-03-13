@@ -1,4 +1,4 @@
-import type { AddTrack } from "@weights-ai/react-native-track-player";
+import type { AddTrack } from "react-native-track-player";
 
 import type { Track } from "./types";
 import { getArtistsString } from "../artist/utils";

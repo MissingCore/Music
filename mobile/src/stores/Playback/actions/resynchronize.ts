@@ -1,5 +1,5 @@
 import { GlyphToy } from "@missingcore/music-glyph-toys";
-import TrackPlayer from "@weights-ai/react-native-track-player";
+import TrackPlayer from "react-native-track-player";
 
 import {
   removePlayedMediaList,

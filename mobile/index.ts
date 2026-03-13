@@ -2,9 +2,9 @@
 import "intl-pluralrules";
 
 import { GlyphToy } from "@missingcore/music-glyph-toys";
-import TrackPlayer from "@weights-ai/react-native-track-player";
 import { registerRootComponent } from "expo";
 import { registerWidgetTaskHandler } from "react-native-android-widget";
+import TrackPlayer from "react-native-track-player";
 
 import App from "./src/App";
 import { onAppStartUpInit } from "./src/lib/react-native-track-player";

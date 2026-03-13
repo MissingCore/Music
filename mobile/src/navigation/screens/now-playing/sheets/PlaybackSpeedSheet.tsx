@@ -1,8 +1,8 @@
-import TrackPlayer from "@weights-ai/react-native-track-player";
 import { useState } from "react";
 import { View } from "react-native";
 import type { SharedValue } from "react-native-reanimated";
 import { useSharedValue } from "react-native-reanimated";
+import TrackPlayer from "react-native-track-player";
 
 import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
 import { sessionStore, useSessionStore } from "~/stores/Session/store";

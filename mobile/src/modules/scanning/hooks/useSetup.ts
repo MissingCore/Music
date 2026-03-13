@@ -1,6 +1,6 @@
 import { GlyphToy } from "@missingcore/music-glyph-toys";
-import TrackPlayer, { RepeatMode } from "@weights-ai/react-native-track-player";
 import { useEffect, useState } from "react";
+import TrackPlayer, { RepeatMode } from "react-native-track-player";
 
 import { addPlayedMediaList } from "~/data/recent/api";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
@@ -34,6 +34,8 @@ export function useSetup() {
       setSetupState("pending");
       GlyphToy.connect();
       await onAppStartUpInit;
+
+      await TrackPlayer.registerEvents();
 
       // Ensure widget has up-to-date data as the Playback store isn't
       // immediately hydrated.

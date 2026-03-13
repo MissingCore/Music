@@ -1,6 +1,6 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { createId } from "@paralleldrive/cuid2";
-import TrackPlayer from "@weights-ai/react-native-track-player";
+import TrackPlayer from "react-native-track-player";
 
 import i18next from "~/modules/i18n";
 
