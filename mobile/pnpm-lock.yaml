@@ -21,7 +21,7 @@ patchedDependencies:
     hash: c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec
     path: patches/react-native.patch
   react-native-android-widget:
-    hash: 96926d4b630574ce4e917c35b2bb92ad922bca996cd126d0b5c181372ba6bffe
+    hash: 76086a3acf039a4f6cbb5b07cc82fff79bc692eee51794ac488f7e37ffc208bd
     path: patches/react-native-android-widget.patch
   react-native-bootsplash:
     hash: 1216d77ce7ff8888c684dc1adae67cf58b29a21cc24eec21f180ad9fdf408348
@@ -150,7 +150,7 @@ importers:
         version: 0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0)
       react-native-android-widget:
         specifier: 0.20.1
-        version: 0.20.1(patch_hash=96926d4b630574ce4e917c35b2bb92ad922bca996cd126d0b5c181372ba6bffe)(expo@55.0.6)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
+        version: 0.20.1(patch_hash=76086a3acf039a4f6cbb5b07cc82fff79bc692eee51794ac488f7e37ffc208bd)(expo@55.0.6)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-audio-analyzer:
         specifier: 3.1.0
         version: 3.1.0(react-native-nitro-modules@0.34.1(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
@@ -10685,7 +10685,7 @@ snapshots:
 
   react-is@19.2.4: {}
 
-  react-native-android-widget@0.20.1(patch_hash=96926d4b630574ce4e917c35b2bb92ad922bca996cd126d0b5c181372ba6bffe)(expo@55.0.6)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
+  react-native-android-widget@0.20.1(patch_hash=76086a3acf039a4f6cbb5b07cc82fff79bc692eee51794ac488f7e37ffc208bd)(expo@55.0.6)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
     dependencies:
       react: 19.2.0
       react-native: 0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0)

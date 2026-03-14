@@ -15,6 +15,7 @@ export async function widgetTaskHandler({
   widgetInfo,
   widgetAction,
   clickAction,
+  clickActionData,
   renderWidget,
 }: WidgetTaskHandlerProps) {
   const Widget =
@@ -39,6 +40,12 @@ export async function widgetTaskHandler({
     case "WIDGET_CLICK":
       if (!(await isRNTPSetUp())) {
         openApp();
+        return;
+      }
+
+      //! "Hack" to prevent re-firing old widget click events that started
+      //! to get re-sent when we swap over to the New Architecture.
+      if (((clickActionData?.validUntil as number) ?? 0) - Date.now() < 0) {
         return;
       }
 

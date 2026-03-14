@@ -28,6 +28,21 @@ index 55ba4fd01e0ee8dbee6e1adc687cd0a0d572a050..08ee5595b6c0266678341182eed72720
      @ReactMethod
      public void drawWidget(ReadableMap config, String widgetName) {
          try {
+diff --git a/android/src/main/java/com/reactnativeandroidwidget/RNWidgetProvider.java b/android/src/main/java/com/reactnativeandroidwidget/RNWidgetProvider.java
+index c138d81671f73cf471d46a506c7a71d81ee457e7..5a32df8711e96690f0c3f3548f486894eab8537b 100644
+--- a/android/src/main/java/com/reactnativeandroidwidget/RNWidgetProvider.java
++++ b/android/src/main/java/com/reactnativeandroidwidget/RNWidgetProvider.java
+@@ -144,6 +144,10 @@ public class RNWidgetProvider extends AppWidgetProvider {
+ 
+         if (incomingIntent.hasExtra("clickAction")) {
+             Bundle clickActionData = incomingIntent.getBundleExtra("clickActionData");
++            // Add a `validUntil` field to prevent triggering actions that get re-sent later
++            // for no reason (started after switching to the New Architecture).
++            clickActionData.putLong("validUntil", (long) System.currentTimeMillis() + 5000L);
++
+             additionalData = new Data.Builder()
+                 .putString("clickAction", incomingIntent.getStringExtra("clickAction"))
+                 .putString("clickActionData", new JSONObject(Arguments.fromBundle(clickActionData).toHashMap()).toString())
 diff --git a/android/src/oldarch/AndroidWidgetSpec.java b/android/src/oldarch/AndroidWidgetSpec.java
 index 09e70c4412d411e6137bfd6a1aed09e45474c4c1..d8fab875b137fbf4b2d9d4a1dbee7989b4ff4f33 100644
 --- a/android/src/oldarch/AndroidWidgetSpec.java
