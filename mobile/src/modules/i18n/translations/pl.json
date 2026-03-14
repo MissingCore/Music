@@ -7,8 +7,8 @@
     "artists": "Artyści",
     "folder": "Katalog",
     "folders": "Katalogi",
-    "genre": null,
-    "genres": null,
+    "genre": "Gatunek",
+    "genres": "Gatunki",
     "playlist": "Playlista",
     "playlists": "Playlisty",
     "track": "Utwór",
@@ -33,19 +33,19 @@
     "disc": "CD {{count}}"
   },
   "template": {
-    "entryAdd": null,
+    "entryAdd": "Dodaj `{{- name}}`.",
     "entryAdded": "Dodano `{{- name}}`.",
     "entryRemove": "Usuń `{{- name}}`.",
     "entryRemoved": "Usunięto `{{- name}}`.",
-    "entryManage": null,
+    "entryManage": "Zarządzaj `{{- name}}`",
     "entrySeeMore": "Zobacz więcej o `{{- name}}`.",
     "notFound": "`{{- name}}` nie istnieje.",
-    "entryMove": null,
+    "entryMove": "Przenieś `{{- name}}`",
     "entryShow": "Pokaż `{{- name}}`",
     "entryHide": "Ukryj `{{- name}}`",
     "entryEnable": "Włącz `{{- name}}`",
     "entryDisable": "Wyłącz `{{- name}}`",
-    "noContentFound": null
+    "noContentFound": "Nie znaleziono {{- name}}."
   },
   "plural": {
     "entry_one": "{{count}} element",
@@ -63,9 +63,9 @@
     "unsaved": "Masz niezapisane zmiany.",
     "stay": "Zostań",
     "leave": "Wyjdź",
-    "create": null,
-    "delete": null,
-    "edit": null,
+    "create": "Utwórz",
+    "delete": "Usuń",
+    "edit": "Edytuj",
     "clear": "Wyczyść",
     "reset": "Odrzuć zmiany",
     "validation": {
@@ -93,11 +93,11 @@
       "noResults": "Brak wyników.",
       "noAlbums": "Brak albumów.",
       "noArtists": "Brak artystów.",
-      "noGenres": null,
+      "noGenres": "Brak gatunków.",
       "noPlaylists": "Brak playlist.",
       "noTracks": "Brak utworów.",
       "noHiddenTracks": "Brak ukrytych utworów.",
-      "noLyrics": null
+      "noLyrics": "Brak tekstów."
     }
   },
   "feat": {
@@ -108,7 +108,7 @@
         "downloadAPK": "Pobierz najnowszy plik APK",
         "updateGoogle": "Zaktualizuj przez Sklep Play",
         "version": "Wersja",
-        "checkUpdates": null,
+        "checkUpdates": "Sprawdź dostępność aktualizacji",
         "rcNotification": "Powiadomienia o wersjach Pre-Release"
       }
     },
@@ -218,7 +218,7 @@
       "title": "Przywróć ostatnio odtwarzaną pozycję"
     },
     "lyrics": {
-      "title": null
+      "title": "Teksty"
     },
     "scanning": {
       "title": "Skanowanie"
@@ -237,12 +237,12 @@
       "brief": "Ignoruje wszystkie reguły pomijania, które przyspieszają standardowe szukanie."
     },
     "rescanOnLaunch": {
-      "title": "Skanowanie przy uruchomienu",
+      "title": "Skanowanie przy uruchomieniu",
       "brief": "Po wyłączeniu będziesz musieć ręcznie uruchamiać skanowanie, by wykryć nowe lub usunięte utwory."
     },
     "listAllow": {
       "title": "Biała lista",
-      "description": null
+      "description": "Określ, gdzie szukać utworów."
     },
     "listBlock": {
       "title": "Czarna lista",
@@ -253,10 +253,10 @@
       "description": "Nagrania krótsze niż poniższa ilość sekund nie będą zapisywane."
     },
     "separators": {
-      "title": null,
+      "title": "Separator wielu wartości",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Wpływa tylko na nowe utwory. Użyj funkcji `Głębokie skanowanie`, aby zaktualizować istniejące.",
+        "line2": "Uwaga: To może doprowadzić do błędnego rozpoznania wielu tagów. Nie dotyczy utworów zmodyfikowanych ręcznie."
       }
     },
     "experimental": {
@@ -299,8 +299,8 @@
     },
     "onboarding": {
       "extra": {
-        "configureSettings": null,
-        "startScan": null,
+        "configureSettings": "Konfiguruj ustawienia",
+        "startScan": "Rozpocznij wyszukiwanie utworów",
         "saveTracks": "Dodawanie utworów...",
         "saveImages": "Dodawanie obrazów..."
       }
@@ -308,7 +308,7 @@
     "playedRecent": {
       "title": "Ostatnio odtwarzane",
       "extra": {
-        "notFound": "Nic nie odtwarzono w przeciągu ostatnich {{amount}} dni."
+        "notFound": "Nic nie odtwarzano w ciągu ostatnich {{amount}} dni."
       }
     },
     "search": {
@@ -351,18 +351,18 @@
       }
     },
     "modalViewPreference": {
-      "title": null,
+      "title": "Opcje ekranu",
       "extra": {
-        "layout": null,
-        "list": null,
-        "grid": null,
-        "compactGrid": null,
+        "layout": "Układ",
+        "list": "Lista",
+        "grid": "Siatka",
+        "compactGrid": "Kompaktowa siatka",
         "sort": "Kolejność sortowania",
         "asc": "Rosnąco",
         "discover": "Data wydania",
-        "duration": null,
+        "duration": "Długość",
         "modified": "Data modyfikacji",
-        "trackCount": null
+        "trackCount": "Ilość utworów"
       }
     },
     "modalTrack": {
@@ -381,7 +381,7 @@
         "playLast": "Odtwórz jako ostatnią",
         "toast": "Dodano do kolejki: `{{- name}}`.",
         "queueAwareNext": "Odtwórz jako następną z zachowaniem kolejności",
-        "queueAwareNextBrief": "Utwór dodany jako nastepny zostanie umiejscowiony za ostatnim dodanym jako następnym."
+        "queueAwareNextBrief": "Utwór dodany jako następny zostanie umiejscowiony za ostatnim dodanym jako następnym."
       }
     }
   }
