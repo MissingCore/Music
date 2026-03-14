@@ -83,7 +83,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
       Gesture.Pan()
         .enabled(dragClearPlayback)
         // Only register for vertical pan, allowing swipe gesture to work.
-        .activeOffsetY([-1, 1])
+        .activeOffsetY([-10, 10])
         .onUpdate(({ translationY }) => {
           panAmount.value = Math.max(0, translationY);
         })
