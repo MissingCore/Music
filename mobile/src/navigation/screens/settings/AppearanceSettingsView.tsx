@@ -17,9 +17,6 @@ export default function AppearanceSettings() {
   const accentFont = usePreferenceStore((s) => s.accentFont);
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
   const theme = usePreferenceStore((s) => s.theme);
-  const miniplayerGestures = usePreferenceStore((s) => s.miniplayerGestures);
-  const dragClearPlayback = usePreferenceStore((s) => s.dragClearPlayback);
-  const quickAddQueue = usePreferenceStore((s) => s.quickAddQueue);
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const accentFontSheetRef = useSheetRef();
   const primaryFontSheetRef = useSheetRef();
@@ -58,29 +55,12 @@ export default function AppearanceSettings() {
           onPress={() => tabOrderSheetRef.current?.present()}
         />
 
-        <SegmentedList>
-          <SegmentedList.Item
-            labelTextKey="feat.miniplayerGestures.title"
-            onPress={PreferenceTogglers.toggleMiniplayerGestures}
-            RightElement={<Switch enabled={miniplayerGestures} />}
-          />
-          <SegmentedList.Item
-            labelTextKey="feat.miniplayerGestures.extra.dragClearPlayback"
-            onPress={PreferenceTogglers.toggleDragClearPlayback}
-            RightElement={<Switch enabled={dragClearPlayback} />}
-          />
-          <SegmentedList.Item
-            labelTextKey="feat.queue.extra.quickAdd"
-            onPress={PreferenceTogglers.toggleQuickAddQueue}
-            RightElement={<Switch enabled={quickAddQueue} />}
-          />
-          <SegmentedList.Item
-            labelTextKey="feat.quickScroll.title"
-            supportingText={t("feat.quickScroll.brief")}
-            onPress={PreferenceTogglers.toggleQuickScroll}
-            RightElement={<Switch enabled={quickScroll} />}
-          />
-        </SegmentedList>
+        <SegmentedList.Item
+          labelTextKey="feat.quickScroll.title"
+          supportingText={t("feat.quickScroll.brief")}
+          onPress={PreferenceTogglers.toggleQuickScroll}
+          RightElement={<Switch enabled={quickScroll} />}
+        />
       </ListLayout>
     </>
   );

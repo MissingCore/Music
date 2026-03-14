@@ -153,7 +153,7 @@ function HiddenTrackList(props: {
           />
         </View>
       )}
-      ItemSeparatorComponent={() => <Divider className="my-2 mr-3" />}
+      ItemSeparatorComponent={() => <Divider className="my-2 mr-2" />}
       className="shrink grow p-2 pr-1"
     />
   );

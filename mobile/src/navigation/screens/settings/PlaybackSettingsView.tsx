@@ -13,6 +13,9 @@ export default function PlaybackSettings() {
   const continuePlaybackOnDismiss = usePreferenceStore(
     (s) => s.continuePlaybackOnDismiss,
   );
+  const dragClearPlayback = usePreferenceStore((s) => s.dragClearPlayback);
+  const miniplayerGestures = usePreferenceStore((s) => s.miniplayerGestures);
+  const quickAddQueue = usePreferenceStore((s) => s.quickAddQueue);
   const repeatOnSkip = usePreferenceStore((s) => s.repeatOnSkip);
   const restoreLastPosition = usePreferenceStore((s) => s.restoreLastPosition);
 
@@ -38,6 +41,24 @@ export default function PlaybackSettings() {
         onPress={PreferenceTogglers.toggleRepeatOnSkip}
         RightElement={<Switch enabled={repeatOnSkip} />}
       />
+
+      <SegmentedList>
+        <SegmentedList.Item
+          labelTextKey="feat.miniplayerGestures.title"
+          onPress={PreferenceTogglers.toggleMiniplayerGestures}
+          RightElement={<Switch enabled={miniplayerGestures} />}
+        />
+        <SegmentedList.Item
+          labelTextKey="feat.miniplayerGestures.extra.dragClearPlayback"
+          onPress={PreferenceTogglers.toggleDragClearPlayback}
+          RightElement={<Switch enabled={dragClearPlayback} />}
+        />
+        <SegmentedList.Item
+          labelTextKey="feat.queue.extra.quickAdd"
+          onPress={PreferenceTogglers.toggleQuickAddQueue}
+          RightElement={<Switch enabled={quickAddQueue} />}
+        />
+      </SegmentedList>
     </ListLayout>
   );
 }

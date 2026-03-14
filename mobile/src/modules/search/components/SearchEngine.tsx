@@ -151,7 +151,7 @@ function SearchResultsList<TScope extends SearchCategories>(
                   </Pressable>
                 ) : undefined
               }
-              className={cn("mb-2 pr-1", {
+              className={cn("mb-2", {
                 "pr-4": !props.withTrackActions || item.type !== "track",
                 "rounded-full": item.type === "artist",
               })}
