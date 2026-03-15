@@ -13,6 +13,7 @@ import { preferenceStore } from "../../Preference/store";
 import { ToastOptions } from "~/lib/toast";
 import { clamp } from "~/utils/number";
 import { moveArray } from "~/utils/object";
+import { bgWait } from "~/utils/promise";
 import { isString } from "~/utils/validation";
 
 interface QueueInsertionProps {
@@ -116,6 +117,7 @@ export async function removeIds(ids: string[]) {
     // If no track was found, then `reset()` was called.
     if (!newActiveTrack) return;
 
+    await bgWait(250);
     await TrackPlayer.load(formatTrackforPlayer(newActiveTrack));
   }
 

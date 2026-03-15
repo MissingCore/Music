@@ -46,6 +46,9 @@ const ValidErrors = [
   "android-failed-runtime-check",
 ];
 
+/** The list of track ids which have errored. */
+const erroredTrackIds = new Set<string>();
+
 /** How we handle the actions in the media control notification. */
 export async function PlaybackService() {
   GlyphButton.onMount(() => GlyphToy.connect());
@@ -199,7 +202,12 @@ export async function PlaybackService() {
     // When this event is called, `TrackPlayer.getActiveTrack()` should
     // contain the track that caused the error.
     const erroredTrack = await TrackPlayer.getActiveTrack();
-    console.log(`[${e.code}] ${e.message}`, erroredTrack);
+
+    //! For some weird reason, `PlaybackError` may fire twice for a given track.
+    if (erroredTrack) {
+      if (erroredTrackIds.has(erroredTrack.id)) return;
+      erroredTrackIds.add(erroredTrack.id);
+    }
 
     if (erroredTrack) {
       // Delete the track that caused the error from certain scenarios.
