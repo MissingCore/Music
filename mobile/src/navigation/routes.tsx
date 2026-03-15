@@ -233,7 +233,6 @@ export const RootStack = createNativeStackNavigator({
   screens: {
     HomeScreens: {
       screen: RootScreens,
-      layout: ({ children }) => children,
       options: { headerShown: false },
     },
     RecentlyPlayed: {
@@ -282,7 +281,6 @@ export const RootStack = createNativeStackNavigator({
         },
         ModifyPlaylist: {
           screen: ModifyPlaylist,
-          layout: ({ children }) => children,
           options: { title: "form.edit" },
         },
         ModifyTrack: {
@@ -292,7 +290,6 @@ export const RootStack = createNativeStackNavigator({
       },
     },
     Lyric: {
-      screenLayout: ({ children }) => children,
       screenOptions: {
         animation: "fade",
       },
@@ -313,7 +310,6 @@ export const RootStack = createNativeStackNavigator({
       },
     },
     Setting: {
-      screenLayout: ({ children }) => children,
       screenOptions: {
         animation: "fade",
       },
@@ -328,7 +324,6 @@ export const RootStack = createNativeStackNavigator({
         },
         Insights: {
           screen: Insights,
-          layout: ({ children }) => <DeferredRender>{children}</DeferredRender>,
           options: { title: "feat.insights.title" },
         },
         HiddenTracks: {

@@ -57,18 +57,21 @@ export function CurrentListLayout<TData>({
 
   //#region Header Height Calculations
   const headerHeight = useSharedValue(
-    contentStartOffset -
-      minStickyTopOffset +
-      imageSize +
-      (listInfo.artists ? 70 : 50) +
-      32, // Required gaps
+    Math.round(
+      contentStartOffset -
+        minStickyTopOffset +
+        imageSize +
+        (listInfo.artists ? 70 : 50) +
+        32, // Required gaps
+    ),
   );
   const setHeaderHeight = useCallback(
     (e: LayoutChangeEvent) => {
-      headerHeight.value =
+      headerHeight.value = Math.round(
         e.nativeEvent.layout.height -
-        contentStartOffset +
-        ESTIMATED_TOPAPPBAR_YPAD;
+          contentStartOffset +
+          ESTIMATED_TOPAPPBAR_YPAD,
+      );
     },
     [headerHeight, contentStartOffset],
   );
