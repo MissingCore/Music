@@ -266,7 +266,7 @@
     },
     "listAllow": {
       "title": "Allowlist",
-      "description": "Specify where tracks can be found."
+      "description": "Specify where tracks can be found. If empty, will look everywhere."
     },
     "listBlock": {
       "title": "Blocklist",

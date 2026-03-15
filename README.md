@@ -49,6 +49,9 @@ A Nothing inspired **local** music player.
 
 ## Installation
 
+> [!NOTE]  
+> If you install the app via Google Play, you can't update via the APKs from GitHub (and vice versa).
+
 ### Google Play
 
 Install the app directly from the Play Store.
