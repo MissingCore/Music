@@ -166,9 +166,9 @@
       "description": "Transfer data dari aplikasi ini antar perangkat melalui berkas `music_backup.json`.",
       "extra": {
         "export": "Ekspor",
-        "exportSuccess": "Cadangan berhasil dibuat.",
+        "exportSuccess": null,
         "import": "Impor",
-        "importSuccess": "Impor cadangan selesai."
+        "importSuccess": null
       }
     },
     "insights": {

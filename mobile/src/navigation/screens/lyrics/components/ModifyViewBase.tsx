@@ -1,6 +1,8 @@
+import { toast } from "@backpackapp-io/react-native-toast";
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
-import { Fragment, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { z } from "zod/mini";
 
@@ -9,6 +11,7 @@ import { deleteLyric } from "~/data/lyric/api";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 
+import { ToastOptions } from "~/lib/toast";
 import { wait } from "~/utils/promise";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { ExtendedTButton } from "~/components/Form/Button";
@@ -22,6 +25,7 @@ import {
   FormInputImpl,
   TextareaImpl,
 } from "~/modules/form/FormState/FormInput";
+import { readLyricFile } from "../helpers/readLyricFile";
 
 export function ModifyLyricBase(props: {
   onSubmit: (data: LyricEntry) => void | Promise<void>;
@@ -31,7 +35,7 @@ export function ModifyLyricBase(props: {
   const { offset, floatingContentProps } = useFloatingContent();
 
   const RenderedWorkflow = useMemo(
-    () => (props.mode === "edit" ? DeleteWorkflow : Fragment),
+    () => (props.mode === "edit" ? DeleteWorkflow : ImportWorkflow),
     [props.mode],
   );
 
@@ -66,6 +70,41 @@ function LyricForm({ bottomOffset }: { bottomOffset: number }) {
       <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
       <Textarea labelKey="feat.lyrics.title" field="lyrics" />
     </KeyboardAwareScrollView>
+  );
+}
+//#endregion
+
+//#region Import Workflow
+function ImportWorkflow({
+  floatingContentProps,
+}: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
+  const { t } = useTranslation();
+  const { setFields, isSubmitting, setIsSubmitting } = useFormState();
+
+  const onImport = async () => {
+    setIsSubmitting(true);
+    try {
+      const { name, contents } = await readLyricFile();
+      toast(t("feat.backup.extra.importSuccess"), ToastOptions);
+      await wait(100);
+      setFields({ name, lyrics: contents });
+    } catch (err) {
+      toast.error((err as Error).message, ToastOptions);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <View {...floatingContentProps}>
+      <ExtendedTButton
+        textKey="feat.backup.extra.import"
+        onPress={onImport}
+        disabled={isSubmitting}
+        className="bg-secondary active:bg-secondaryDim"
+        textClassName="text-onSecondary"
+      />
+    </View>
   );
 }
 //#endregion

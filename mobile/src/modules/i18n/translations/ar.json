@@ -166,9 +166,9 @@
       "description": "نقل البيانات من هذا التطبيق عبر الأجهزة من خلال ملف `music_backup.json`.",
       "extra": {
         "export": "تصدير",
-        "exportSuccess": "تم إنشاء النسخة الاحتياطية بنجاح.",
+        "exportSuccess": null,
         "import": "استيراد",
-        "importSuccess": "اكتمل استيراد النسخة الاحتياطية."
+        "importSuccess": null
       }
     },
     "insights": {

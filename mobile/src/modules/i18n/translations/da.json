@@ -166,9 +166,9 @@
       "description": "Overfør data fra denne app til andre enheder via en \"music_backup.json\" fil.",
       "extra": {
         "export": "Eksportér",
-        "exportSuccess": "Backup oprettet.",
+        "exportSuccess": null,
         "import": "Importér",
-        "importSuccess": "Import af backup afsluttet."
+        "importSuccess": null
       }
     },
     "insights": {
