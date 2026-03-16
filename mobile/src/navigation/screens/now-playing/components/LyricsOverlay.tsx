@@ -80,7 +80,9 @@ function LyricsContent(props: { trackId: string; offset: number }) {
       >
         <TEm textKey="err.msg.noLyrics" className="text-lg" />
         <Button
-          onPress={() => navigation.navigate("Lyrics")}
+          onPress={() =>
+            navigation.navigate("Lyrics", { linkTo: props.trackId })
+          }
           className="rounded-full bg-primary px-8 active:bg-primaryDim"
         >
           <Em className="text-center text-sm text-onPrimary">

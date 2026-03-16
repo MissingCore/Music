@@ -1,3 +1,4 @@
+import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
@@ -14,7 +15,13 @@ import { SegmentedList } from "~/components/List/Segmented";
 import { SearchList } from "~/modules/search/components/SearchList";
 import { containSorter } from "~/modules/search/utils";
 
-export default function Lyrics() {
+type Props = StaticScreenProps<{ linkTo?: string }>;
+
+export default function Lyrics({
+  route: {
+    params: { linkTo },
+  },
+}: Props) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { isPending, data } = useLyrics();
@@ -27,7 +34,11 @@ export default function Lyrics() {
           <FilledIconButton
             Icon={Add}
             accessibilityLabel={t("form.create")}
-            onPress={() => navigation.navigate("CreateLyric")}
+            onPress={() => {
+              // Clear `linkTo` param as it should get "used".
+              if (linkTo) navigation.setParams({ linkTo: undefined });
+              navigation.navigate("CreateLyric", { linkTo });
+            }}
           />
         )}
       />

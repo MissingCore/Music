@@ -84,7 +84,7 @@ export default function Settings() {
           />
           <SegmentedList.Item
             labelTextKey="feat.lyrics.title"
-            onPress={() => navigation.navigate("Lyrics")}
+            onPress={() => navigation.navigate("Lyrics", {})}
             LeftElement={<Lyrics />}
             className="gap-4"
           />
