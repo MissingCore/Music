@@ -90,7 +90,13 @@ function LyricsContent(props: { trackId: string; offset: number }) {
       </View>
     );
   } else if (isSynchronized) {
-    return <SynchronizedLyrics lines={lyricsLines} offset={props.offset} />;
+    return (
+      <SynchronizedLyrics
+        key={props.trackId}
+        lines={lyricsLines}
+        offset={props.offset}
+      />
+    );
   }
   return (
     <FlatList
@@ -111,7 +117,6 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
   // Use `useProgress` as `Event.PlaybackProgressUpdated` fires once a second.
   const { position } = useProgress(50, false);
   const listRef = useFlatListRef();
-  const [mounted, setMounted] = useState(false);
   const [activeLineIndex, setActiveLineIndex] = useState(-1);
   const prevActiveLineIndex = useRef(-1);
   const [inActiveWordStartIndex, setInActiveWordStartIndex] = useState(0);
@@ -140,12 +145,6 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
   }, []);
   //#endregion
 
-  // Call `mounted` after a delay as for some weird reason, `scrollToIndex`
-  // doesn't initially work when called.
-  const onLayout = useCallback(() => {
-    setTimeout(() => setMounted(true), 250);
-  }, []);
-
   useEffect(() => {
     // Calculate active index.
     const positionMS = position * 1000;
@@ -165,7 +164,7 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
     }
 
     // Checks to see if we should auto-scroll.
-    if (!listRef.current || !mounted || !autoScroll) return;
+    if (!listRef.current || !autoScroll) return;
     // Scroll to active index.
     if (newIndex === -1) {
       listRef.current.scrollToOffset({ offset: 0 });
@@ -180,7 +179,7 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
       viewOffset: (SCROLL_OFFSET + LINE_GAP) / 2,
       viewPosition: 0.5,
     });
-  }, [listRef, parsedLines, position, mounted, autoScroll]);
+  }, [listRef, parsedLines, position, autoScroll]);
 
   // Pre-format the rendered content so that we don't recalculate this
   // on every render.
@@ -210,8 +209,9 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
   return (
     <MemoLyricList
       ref={listRef}
-      onLayout={onLayout}
       data={renderedLines}
+      //? Force all items to render, allowing `scrollToIndex` to work.
+      initialNumToRender={renderedLines.length}
       onScrollBeginDrag={onPauseAutoScroll}
       onScrollEndDrag={debouncedResumeAutoScroll}
       offset={props.offset}
