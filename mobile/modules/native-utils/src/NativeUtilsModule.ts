@@ -1,13 +1,13 @@
 import { NativeModule, requireNativeModule } from "expo";
 
 declare class NativeUtilsModule extends NativeModule {
-  PI: number;
+  isSystemDarkMode: boolean;
   launchAppViaIntent(): void;
 }
 
 const nativeModule = requireNativeModule<NativeUtilsModule>("NativeUtils");
 
-export const PI = nativeModule.PI;
+export const isSystemDarkMode = nativeModule.isSystemDarkMode;
 
 export function launchAppViaIntent() {
   return nativeModule.launchAppViaIntent();

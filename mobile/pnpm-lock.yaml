@@ -23,9 +23,6 @@ patchedDependencies:
   react-native-android-widget:
     hash: 700a44715e685edefbbcca4d1c8a1a80c90ea32f567b124241138d01b981b064
     path: patches/react-native-android-widget.patch
-  react-native-bootsplash:
-    hash: 1216d77ce7ff8888c684dc1adae67cf58b29a21cc24eec21f180ad9fdf408348
-    path: patches/react-native-bootsplash.patch
   react-native-paper:
     hash: 4861a614642079819628426e488de07f5f16a3b2dffa6a600746ee38d7883eb9
     path: patches/react-native-paper.patch
@@ -156,7 +153,7 @@ importers:
         version: 3.1.0(react-native-nitro-modules@0.34.1(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-bootsplash:
         specifier: 7.1.0
-        version: 7.1.0(patch_hash=1216d77ce7ff8888c684dc1adae67cf58b29a21cc24eec21f180ad9fdf408348)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
+        version: 7.1.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-gesture-handler:
         specifier: 2.30.0
         version: 2.30.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
@@ -10698,7 +10695,7 @@ snapshots:
       react-native: 0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0)
       react-native-nitro-modules: 0.34.1(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
 
-  react-native-bootsplash@7.1.0(patch_hash=1216d77ce7ff8888c684dc1adae67cf58b29a21cc24eec21f180ad9fdf408348)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
+  react-native-bootsplash@7.1.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
     dependencies:
       '@expo/config-plugins': 55.0.6
       commander: 14.0.3

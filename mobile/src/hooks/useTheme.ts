@@ -1,6 +1,6 @@
+import { isSystemDarkMode } from "@missingcore/native-utils";
 import { useMemo } from "react";
 import { useColorScheme } from "react-native";
-import { isSystemDarkMode } from "react-native-bootsplash";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 

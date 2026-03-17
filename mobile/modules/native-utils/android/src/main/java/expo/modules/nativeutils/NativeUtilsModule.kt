@@ -1,6 +1,7 @@
 package expo.modules.nativeutils
 
 import android.content.Context
+import android.content.res.Configuration
 import expo.modules.kotlin.exception.Exceptions
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
@@ -19,9 +20,12 @@ class NativeUtilsModule : Module() {
     // The module will be accessible from `requireNativeModule('NativeUtils')` in JavaScript.
     Name("NativeUtils")
 
-    // Defines constant property on the module.
-    Constant("PI") {
-      Math.PI
+    Constant("isSystemDarkMode") {
+      val currentContext = context
+      if (currentContext == null) return@Constant false
+      val uiMode =
+        currentContext.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+      return@Constant uiMode == Configuration.UI_MODE_NIGHT_YES
     }
 
     Function("launchAppViaIntent") {
