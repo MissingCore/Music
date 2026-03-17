@@ -20,6 +20,8 @@ class NativeUtilsModule : Module() {
     // The module will be accessible from `requireNativeModule('NativeUtils')` in JavaScript.
     Name("NativeUtils")
 
+    // Based on:
+    //  - https://github.com/zoontek/react-native-bootsplash/blob/7.1.0/android/src/main/java/com/zoontek/rnbootsplash/RNBootSplashModuleImpl.kt#L226
     Constant("isSystemDarkMode") {
       val currentContext = context
       if (currentContext == null) return@Constant false
@@ -28,6 +30,8 @@ class NativeUtilsModule : Module() {
       return@Constant uiMode == Configuration.UI_MODE_NIGHT_YES
     }
 
+    // Based on:
+    //  - https://github.com/sAleksovski/react-native-android-widget/blob/v0.20.1/android/src/main/java/com/reactnativeandroidwidget/RNWidgetProvider.java#L123-L130
     Function("launchAppViaIntent") {
       val currentContext = context
       if (currentContext !== null) {
