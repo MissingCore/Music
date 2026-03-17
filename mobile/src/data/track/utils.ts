@@ -5,6 +5,8 @@ import { getArtistsString } from "../artist/utils";
 
 import { getSafeUri } from "~/utils/string";
 
+const MusicGlyph = require("~/resources/images/music-glyph.png");
+
 /**
  * Merge 2 lists of tracks. Tracks that appear in both lists will result
  * in the latest instance of the track being merged so that there'll be
@@ -22,7 +24,7 @@ export function mergeTracks<TData extends { id: string }>(
 export function formatTrackforPlayer(track: Track) {
   return {
     url: getSafeUri(track.uri),
-    artwork: track.artwork || undefined,
+    artwork: track.artwork || MusicGlyph,
     title: track.name,
     artist: getArtistsString(track.artists, "No Artist"),
     album: track.album || undefined,
