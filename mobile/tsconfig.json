@@ -4,9 +4,8 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "src/*"
-      ]
+      "~/*": ["src/*"],
+      "@missingcore/native-utils": ["modules/native-utils"]
     },
     "noUncheckedIndexedAccess": true
   },
@@ -16,9 +15,7 @@
     "**/*.mjs",
     "**/*.ts",
     "**/*.tsx",
-    "uniwind-types.d.ts",
+    "uniwind-types.d.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
