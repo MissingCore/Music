@@ -9,7 +9,7 @@ runs:
       with:
         version: 10
     - name: Setup Node.js with pnpm cache
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v6
       with:
         cache: pnpm
         cache-dependency-path: mobile/pnpm-lock.yaml
