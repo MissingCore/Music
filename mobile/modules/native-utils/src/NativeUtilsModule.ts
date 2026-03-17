@@ -1,12 +1,19 @@
 import { NativeModule, requireNativeModule } from "expo";
 
-import type { NativeUtilsModuleEvents } from "./NativeUtils.types";
-
-declare class NativeUtilsModule extends NativeModule<NativeUtilsModuleEvents> {
+declare class NativeUtilsModule extends NativeModule {
   PI: number;
   hello(): string;
   setValueAsync(value: string): Promise<void>;
 }
 
-// This call loads the native module object from the JSI.
-export default requireNativeModule<NativeUtilsModule>("NativeUtils");
+const nativeModule = requireNativeModule<NativeUtilsModule>("NativeUtils");
+
+export const PI = nativeModule.PI;
+
+export function hello() {
+  return nativeModule.hello();
+}
+
+export function setValueAsync(value: string) {
+  return nativeModule.setValueAsync(value);
+}
