@@ -62,9 +62,7 @@ const Textarea = TextareaImpl<LyricEntry>();
 function LyricForm({ bottomOffset }: { bottomOffset: number }) {
   return (
     <KeyboardAwareScrollView
-      // Remove 24px as `KeyboardAwareScrollView` adds an element at the
-      // end of the ScrollView, causing an additional application of `gap`.
-      contentContainerStyle={{ paddingBottom: bottomOffset - 24 }}
+      contentContainerStyle={{ paddingBottom: bottomOffset }}
       contentContainerClassName="gap-6 p-4"
     >
       <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />

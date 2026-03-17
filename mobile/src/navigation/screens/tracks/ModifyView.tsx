@@ -137,9 +137,7 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
     <>
       <AddAlbumSheet ref={addAlbumSheetRef} onSelect={onSelectAlbum} />
       <KeyboardAwareScrollView
-        // Remove 16px as `KeyboardAwareScrollView` adds an element at the
-        // end of the ScrollView, causing an additional application of `gap`.
-        contentContainerStyle={{ paddingBottom: bottomOffset - 16 }}
+        contentContainerStyle={{ paddingBottom: bottomOffset }}
         contentContainerClassName="gap-4 p-4"
       >
         <View className="flex-row gap-2 rounded-md bg-surfaceContainerLowest p-4 pl-2">
