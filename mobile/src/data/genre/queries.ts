@@ -1,7 +1,6 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import { updateGenre } from "./api";
 import { queries as q } from "../keyStore";
 import { getArtistsString } from "../artist/utils";
 
@@ -34,18 +33,5 @@ export function useGenreForScreen(genreName: string) {
 
 export function useGenres() {
   return useQuery({ ...q.genres.all });
-}
-//#endregion
-
-//#region Mutations
-export function useUpdateGenre(genreName: string) {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (updatedValues: { artwork?: string | null }) =>
-      updateGenre(genreName, updatedValues),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: q.genres._def });
-    },
-  });
 }
 //#endregion

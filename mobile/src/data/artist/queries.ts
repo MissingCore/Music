@@ -1,7 +1,6 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import { updateArtist } from "./api";
 import { queries as q } from "../keyStore";
 
 //#region Queries
@@ -34,18 +33,5 @@ export function useArtistForScreen(artistName: string) {
 
 export function useArtists() {
   return useQuery({ ...q.artists.all });
-}
-//#endregion
-
-//#region Mutations
-export function useUpdateArtist(artistName: string) {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (updatedValues: { artwork?: string | null }) =>
-      updateArtist(artistName, updatedValues),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: q.artists._def });
-    },
-  });
 }
 //#endregion

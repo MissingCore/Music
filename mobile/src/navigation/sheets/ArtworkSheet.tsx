@@ -1,15 +1,22 @@
-import type { UseMutationResult } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useWindowDimensions } from "react-native";
 
-import { useAlbum, useUpdateAlbum } from "~/data/album/queries";
-import { useArtist, useUpdateArtist } from "~/data/artist/queries";
-import { useGenre, useUpdateGenre } from "~/data/genre/queries";
-import { usePlaylist, useUpdatePlaylist } from "~/data/playlist/queries";
-import { useTrack, useUpdateTrack } from "~/data/track/queries";
+import { queries as q } from "~/data/keyStore";
+import { updateAlbum } from "~/data/album/api";
+import { useAlbum } from "~/data/album/queries";
+import { updateArtist } from "~/data/artist/api";
+import { useArtist } from "~/data/artist/queries";
+import { updateGenre } from "~/data/genre/api";
+import { useGenre } from "~/data/genre/queries";
+import { updatePlaylist } from "~/data/playlist/api";
+import { usePlaylist } from "~/data/playlist/queries";
+import { updateTrack } from "~/data/track/api";
+import { useTrack } from "~/data/track/queries";
+import { Resynchronize } from "~/stores/Playback/actions";
 
 import { pickImage } from "~/lib/file-system";
-import { mutateGuard } from "~/lib/react-query";
+import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
 import { DetachedSheet } from "~/components/Sheet";
 import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
@@ -20,16 +27,18 @@ import type { MediaType } from "~/stores/Playback/types";
 type ArtworkSheetProps = { id: string; ref: TrueSheetRef };
 
 /** Sheet allowing us to change the artwork of an album. */
-export function AlbumArtworkSheet(props: ArtworkSheetProps) {
-  const { data } = useAlbum(props.id);
-  const updateAlbumArtwork = useUpdateAlbum(props.id);
-
+export function AlbumArtworkSheet({ id, ref }: ArtworkSheetProps) {
+  const { data } = useAlbum(id);
   return (
-    <DetachedSheet ref={props.ref} contentContainerClassName="items-center">
+    <DetachedSheet ref={ref} contentContainerClassName="items-center">
       <BaseArtworkSheetContent
         type="album"
         imageSource={data?.artwork ?? null}
-        mutationResult={updateAlbumArtwork}
+        onUpdateArtwork={(altArtwork) => updateAlbum(id, { altArtwork })}
+        onSuccess={async () => {
+          clearAllQueries();
+          await Resynchronize.onActiveTrack({ type: "album", id });
+        }}
         disabled={data?.altArtwork === null}
       />
     </DetachedSheet>
@@ -37,64 +46,71 @@ export function AlbumArtworkSheet(props: ArtworkSheetProps) {
 }
 
 /** Sheet allowing us to change the artwork of an artist. */
-export function ArtistArtworkSheet(props: ArtworkSheetProps) {
-  const { data } = useArtist(props.id);
-  const updateArtist = useUpdateArtist(props.id);
-
+export function ArtistArtworkSheet({ id, ref }: ArtworkSheetProps) {
+  const qc = useQueryClient();
+  const { data } = useArtist(id);
   return (
-    <DetachedSheet ref={props.ref} contentContainerClassName="items-center">
+    <DetachedSheet ref={ref} contentContainerClassName="items-center">
       <BaseArtworkSheetContent
         type="artist"
         imageSource={data?.artwork ?? null}
-        mutationResult={updateArtist}
+        onUpdateArtwork={(artwork) => updateArtist(id, { artwork })}
+        onSuccess={() => qc.invalidateQueries({ queryKey: q.artists._def })}
       />
     </DetachedSheet>
   );
 }
 
 /** Sheet allowing us to change the artwork of an genre. */
-export function GenreArtworkSheet(props: ArtworkSheetProps) {
-  const { data } = useGenre(props.id);
-  const updateGenre = useUpdateGenre(props.id);
-
+export function GenreArtworkSheet({ id, ref }: ArtworkSheetProps) {
+  const qc = useQueryClient();
+  const { data } = useGenre(id);
   return (
-    <DetachedSheet ref={props.ref} contentContainerClassName="items-center">
+    <DetachedSheet ref={ref} contentContainerClassName="items-center">
       <BaseArtworkSheetContent
         type="genre"
         imageSource={data?.artwork ?? null}
-        mutationResult={updateGenre}
+        onUpdateArtwork={(artwork) => updateGenre(id, { artwork })}
+        onSuccess={() => qc.invalidateQueries({ queryKey: q.genres._def })}
       />
     </DetachedSheet>
   );
 }
 
 /** Sheet allowing us to change the artwork of a playlist. */
-export function PlaylistArtworkSheet(props: ArtworkSheetProps) {
-  const { data } = usePlaylist(props.id);
-  const updatePlaylist = useUpdatePlaylist(props.id);
-
+export function PlaylistArtworkSheet({ id, ref }: ArtworkSheetProps) {
+  const qc = useQueryClient();
+  const { data } = usePlaylist(id);
   return (
-    <DetachedSheet ref={props.ref} contentContainerClassName="items-center">
+    <DetachedSheet ref={ref} contentContainerClassName="items-center">
       <BaseArtworkSheetContent
         type="playlist"
         imageSource={data?.artwork ?? null}
-        mutationResult={updatePlaylist}
+        onUpdateArtwork={(artwork) => updatePlaylist(id, { artwork })}
+        onSuccess={() => {
+          qc.resetQueries({ queryKey: q.playlists._def });
+          qc.invalidateQueries({ queryKey: q.tracks._def });
+          qc.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
+          qc.invalidateQueries({ queryKey: ["search"] });
+        }}
       />
     </DetachedSheet>
   );
 }
 
 /** Sheet allowing us to change the artwork of a track. */
-export function TrackArtworkSheet(props: ArtworkSheetProps) {
-  const { data } = useTrack(props.id);
-  const updateTrack = useUpdateTrack(props.id);
-
+export function TrackArtworkSheet({ id, ref }: ArtworkSheetProps) {
+  const { data } = useTrack(id);
   return (
-    <DetachedSheet ref={props.ref} contentContainerClassName="items-center">
+    <DetachedSheet ref={ref} contentContainerClassName="items-center">
       <BaseArtworkSheetContent
         type="track"
         imageSource={data?.artwork ?? null}
-        mutationResult={updateTrack}
+        onUpdateArtwork={(altArtwork) => updateTrack(id, { altArtwork })}
+        onSuccess={async () => {
+          clearAllQueries();
+          await Resynchronize.onActiveTrack({ type: "track", id });
+        }}
         disabled={data?.altArtwork === null}
       />
     </DetachedSheet>
@@ -105,11 +121,22 @@ export function TrackArtworkSheet(props: ArtworkSheetProps) {
 function BaseArtworkSheetContent(props: {
   type: MediaType;
   imageSource: MediaImage.ImageSource | MediaImage.ImageSource[];
-  mutationResult: UseMutationResult<any, Error, { artwork?: string | null }>;
+  onUpdateArtwork: (artwork: string | null) => Promise<unknown>;
+  onSuccess: () => Promise<void> | void;
   disabled?: boolean;
 }) {
   const { height, width } = useWindowDimensions();
   const [disabled, setDisabled] = useState(false);
+
+  const onSubmit = async (artwork: Promise<string> | null) => {
+    setDisabled(true);
+    try {
+      await wait(1);
+      await props.onUpdateArtwork(await artwork);
+      await props.onSuccess();
+    } catch {}
+    setDisabled(false);
+  };
 
   return (
     <>
@@ -123,12 +150,7 @@ function BaseArtworkSheetContent(props: {
       <SheetButtonGroup
         leftButton={{
           textKey: "feat.artwork.extra.remove",
-          onPress: async () => {
-            setDisabled(true);
-            await wait(1);
-            mutateGuard(props.mutationResult, { artwork: null });
-            setDisabled(false);
-          },
+          onPress: () => onSubmit(null),
           disabled:
             props.disabled ||
             disabled ||
@@ -137,13 +159,7 @@ function BaseArtworkSheetContent(props: {
         }}
         rightButton={{
           textKey: "feat.artwork.extra.change",
-          onPress: async () => {
-            setDisabled(true);
-            try {
-              mutateGuard(props.mutationResult, { artwork: await pickImage() });
-            } catch {}
-            setDisabled(false);
-          },
+          onPress: () => onSubmit(pickImage()),
           disabled,
         }}
       />

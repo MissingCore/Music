@@ -1,5 +1,6 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useNavigation } from "@react-navigation/native";
+import { useQueryClient } from "@tanstack/react-query";
 import { atom, useAtomValue, useSetAtom } from "jotai";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,8 +12,9 @@ import { Add } from "~/resources/icons/Add";
 import { Cancel } from "~/resources/icons/Cancel";
 import { CheckCircle } from "~/resources/icons/CheckCircle";
 import { DragHandle } from "~/resources/icons/DragHandle";
+import { queries as q } from "~/data/keyStore";
 import { getArtistsString } from "~/data/artist/utils";
-import { useDeletePlaylist } from "~/data/playlist/queries";
+import { deletePlaylist } from "~/data/playlist/api";
 import { sanitizePlaylistName } from "~/data/playlist/utils";
 import { mergeTracks } from "~/data/track/utils";
 import type { CommonTrack } from "~/data/types";
@@ -21,7 +23,6 @@ import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { AddMusicSheet } from "../sheets/AddMusicSheet";
 
-import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { ToastOptions } from "~/lib/toast";
 import { moveArray } from "~/utils/object";
@@ -414,21 +415,29 @@ function DeleteWorkflow({
   floatingContentProps,
 }: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
   const navigation = useNavigation();
+  const queryClient = useQueryClient();
   const [lastChance, setLastChance] = useState(false);
   const { data, isSubmitting, setIsSubmitting } = useFormState();
-  const deletePlaylist = useDeletePlaylist(data.name);
 
   const onDelete = async () => {
     setLastChance(false);
     setIsSubmitting(true);
     // Slight buffer before running mutation.
     await wait(1);
-    mutateGuard(deletePlaylist, undefined, {
-      onSuccess: () => {
-        navigation.goBack();
-        navigation.goBack();
-      },
-    });
+    try {
+      await deletePlaylist(data.name);
+
+      queryClient.invalidateQueries({ queryKey: q.playlists._def });
+      queryClient.invalidateQueries({ queryKey: q.tracks._def });
+      queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
+      queryClient.invalidateQueries({ queryKey: ["search"] });
+
+      navigation.goBack();
+      navigation.goBack();
+    } catch {
+      setLastChance(true);
+      setIsSubmitting(false);
+    }
   };
 
   return (

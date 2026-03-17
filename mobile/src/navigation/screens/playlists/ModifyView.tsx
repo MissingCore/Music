@@ -2,13 +2,13 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import {
-  usePlaylist,
-  usePlaylistsNames,
-  useUpdatePlaylist,
-} from "~/data/playlist/queries";
+import { queries as q } from "~/data/keyStore";
+import { updatePlaylist } from "~/data/playlist/api";
+import { usePlaylist, usePlaylistsNames } from "~/data/playlist/queries";
+import { Resynchronize } from "~/stores/Playback/actions";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import {
@@ -16,7 +16,6 @@ import {
   formatTrackForForm,
 } from "./components/ModifyViewBase";
 
-import { mutateGuardAsync } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
 
 type Props = StaticScreenProps<{ id: string }>;
@@ -28,9 +27,9 @@ export default function ModifyPlaylist({
 }: Props) {
   const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const queryClient = useQueryClient();
   const playlistNamesQuery = usePlaylistsNames();
   const playlistQuery = usePlaylist(id);
-  const updatePlaylist = useUpdatePlaylist(id);
 
   if (
     playlistNamesQuery.isPending ||
@@ -64,22 +63,34 @@ export default function ModifyPlaylist({
           initData.tracks.length === tracks.length &&
           initData.tracks.every((t, index) => t.id === tracks[index]?.id);
 
-        await mutateGuardAsync(
-          updatePlaylist,
-          { name: newName, tracks: tracksUnchanged ? undefined : tracks },
-          {
-            onSuccess: () => {
-              navigation.goBack();
-              // If playlist name changed, see the new playlist page.
-              if (newName !== undefined) {
-                navigation.replace("Playlist", { id: newName });
-              }
-            },
-            onError: () => {
-              toast.error(t("err.flow.generic.title"), ToastOptions);
-            },
-          },
-        );
+        try {
+          await updatePlaylist(id, {
+            name: newName, //? Should be sanitized by Zod schema.
+            tracks: tracksUnchanged ? undefined : tracks,
+          });
+
+          if (newName) {
+            await Resynchronize.onRename({
+              oldSource: { type: "playlist", id: playlistName },
+              newSource: { type: "playlist", id: newName },
+            });
+          }
+
+          queryClient.invalidateQueries({ queryKey: q.playlists._def });
+          queryClient.invalidateQueries({ queryKey: q.tracks._def });
+          queryClient.invalidateQueries({
+            queryKey: q.favorites.lists.queryKey,
+          });
+          queryClient.invalidateQueries({ queryKey: ["search"] });
+
+          navigation.goBack();
+          // If playlist name changed, see the new playlist page.
+          if (newName !== undefined) {
+            navigation.replace("Playlist", { id: newName });
+          }
+        } catch {
+          toast.error(t("err.flow.generic.title"), ToastOptions);
+        }
       }}
     />
   );

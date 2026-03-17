@@ -3,9 +3,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { db } from "~/db";
 import { hiddenTracks } from "~/db/schema";
 
-import { Queue, Resynchronize } from "~/stores/Playback/actions";
+import { Queue } from "~/stores/Playback/actions";
 import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
-import { deleteTracks, toggleTrackInPlaylist, updateTrack } from "./api";
+import { deleteTracks, toggleTrackInPlaylist } from "./api";
 import type { Track } from "./types";
 import { queries as q } from "../keyStore";
 
@@ -71,21 +71,6 @@ export function useToggleTrackInPlaylist(trackId: string) {
       });
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
-    },
-  });
-}
-
-export function useUpdateTrack(trackId: string) {
-  return useMutation({
-    mutationFn: ({ artwork }: { artwork?: string | null }) =>
-      updateTrack(trackId, { altArtwork: artwork }),
-    onSuccess: async () => {
-      // Changing the track artwork affects a lot of things, so we'll just
-      // clear all the queries.
-      clearAllQueries();
-
-      // Revalidate `activeTrack` in Playback store if needed.
-      await Resynchronize.onActiveTrack({ type: "track", id: trackId });
     },
   });
 }
