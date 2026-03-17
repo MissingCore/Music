@@ -4,8 +4,8 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"],
-      "@missingcore/native-utils": ["modules/native-utils"]
+      "@missingcore/native-utils": ["modules/native-utils"],
+      "~/*": ["src/*"]
     },
     "noUncheckedIndexedAccess": true
   },
