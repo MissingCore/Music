@@ -2,13 +2,13 @@ import { NativeModule, requireNativeModule } from "expo";
 
 declare class NativeUtilsModule extends NativeModule {
   PI: number;
-  hello(): string;
+  launchAppViaIntent(): void;
 }
 
 const nativeModule = requireNativeModule<NativeUtilsModule>("NativeUtils");
 
 export const PI = nativeModule.PI;
 
-export function hello() {
-  return nativeModule.hello();
+export function launchAppViaIntent() {
+  return nativeModule.launchAppViaIntent();
 }

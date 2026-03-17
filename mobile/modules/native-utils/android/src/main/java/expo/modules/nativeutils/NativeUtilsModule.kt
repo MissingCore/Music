@@ -1,10 +1,15 @@
 package expo.modules.nativeutils
 
+import android.content.Context
+import expo.modules.kotlin.exception.Exceptions
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 import java.net.URL
 
 class NativeUtilsModule : Module() {
+  private val context: Context?
+    get() = appContext.reactContext
+
   // Each module class must implement the definition function. The definition consists of components
   // that describes the module's functionality and behavior.
   // See https://docs.expo.dev/modules/module-api for more details about available components.
@@ -19,9 +24,16 @@ class NativeUtilsModule : Module() {
       Math.PI
     }
 
-    // Defines a JavaScript synchronous function that runs the native code on the JavaScript thread.
-    Function("hello") {
-      "Hello world! 👋"
+    Function("launchAppViaIntent") {
+      val currentContext = context
+      if (currentContext !== null) {
+        try {
+          val launchIntent = currentContext.getPackageManager().getLaunchIntentForPackage(currentContext.getPackageName())
+          currentContext.startActivity(launchIntent)
+        } catch (e: Exception) {
+          e.printStackTrace()
+        }
+      }
     }
   }
 }
