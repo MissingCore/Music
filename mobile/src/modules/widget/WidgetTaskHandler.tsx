@@ -1,6 +1,5 @@
+import { launchAppViaIntent } from "@missingcore/native-utils";
 import type { WidgetTaskHandlerProps } from "react-native-android-widget";
-// @ts-expect-error - Function we export by patching the package.
-import { openApp } from "react-native-android-widget";
 
 import { PlaybackControls } from "~/stores/Playback/actions";
 
@@ -38,16 +37,13 @@ export async function widgetTaskHandler({
       break;
 
     case "WIDGET_CLICK":
-      if (!(await isRNTPSetUp())) {
-        openApp();
-        return;
-      }
-
       //! "Hack" to prevent re-firing old widget click events that started
       //! to get re-sent when we swap over to the New Architecture.
       if (((clickActionData?.validUntil as number) ?? 0) - Date.now() < 0) {
         return;
       }
+
+      if (!(await isRNTPSetUp())) return launchAppViaIntent();
 
       if (clickAction === Action.PlayPause) {
         widgetData.isPlaying = !widgetData.isPlaying;
