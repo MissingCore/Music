@@ -51,7 +51,7 @@ importers:
         version: 3.4.2(patch_hash=e629511ec9a360ce64c6f2cbcb19d75a7b9b47d7dd1d172d57695cb35845ebce)(@react-navigation/native@7.1.33(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native-reanimated@4.2.2(react-native-worklets@0.7.4(@babel/core@7.29.0)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native-worklets@0.7.4(@babel/core@7.29.0)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       '@lukemorales/query-key-factory':
         specifier: 1.3.4
-        version: 1.3.4(@tanstack/query-core@5.90.20)(@tanstack/react-query@5.90.21(react@19.2.0))
+        version: 1.3.4(@tanstack/query-core@5.91.0)(@tanstack/react-query@5.91.0(react@19.2.0))
       '@missingcore/music-glyph-toys':
         specifier: github:MissingCore/music-glyph-toys#bbd70768ca76dff4a585905f02ea6f60c9cd2f38
         version: https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/bbd70768ca76dff4a585905f02ea6f60c9cd2f38(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
@@ -59,8 +59,8 @@ importers:
         specifier: 0.1.0
         version: 0.1.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       '@missingcore/react-native-metadata-retriever':
-        specifier: github:MissingCore/react-native-metadata-retriever#b21753264791cbb3d5c1f5bd11725dd1b54c3f0f
-        version: https://codeload.github.com/MissingCore/react-native-metadata-retriever/tar.gz/b21753264791cbb3d5c1f5bd11725dd1b54c3f0f(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
+        specifier: 3.0.0-beta.1
+        version: 3.0.0-beta.1(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       '@paralleldrive/cuid2':
         specifier: 3.3.0
         version: 3.3.0
@@ -77,8 +77,8 @@ importers:
         specifier: 8.4.0
         version: 8.4.0(expo@55.0.7)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       '@tanstack/react-query':
-        specifier: 5.90.21
-        version: 5.90.21(react@19.2.0)
+        specifier: 5.91.0
+        version: 5.91.0(react@19.2.0)
       '@zoontek/react-native-navigation-bar':
         specifier: 1.1.0
         version: 1.1.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
@@ -185,11 +185,11 @@ importers:
         specifier: 4.24.0
         version: 4.24.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-svg:
-        specifier: 15.15.3
-        version: 15.15.3(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
+        specifier: 15.15.4
+        version: 15.15.4(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-track-player:
-        specifier: github:MissingCore/rntp#0cef130270319af11c75e80edd3ff5c50ab8bac8
-        version: https://codeload.github.com/MissingCore/rntp/tar.gz/0cef130270319af11c75e80edd3ff5c50ab8bac8(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
+        specifier: github:MissingCore/rntp#c5820ff4424a5b4ab7e77bba8532f06404d63f68
+        version: https://codeload.github.com/MissingCore/rntp/tar.gz/c5820ff4424a5b4ab7e77bba8532f06404d63f68(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-worklets:
         specifier: 0.7.4
         version: 0.7.4(@babel/core@7.29.0)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
@@ -198,7 +198,7 @@ importers:
         version: 3.5.0
       uniwind:
         specifier: 1.5.0
-        version: 1.5.0(patch_hash=3282e50b97df69c5b8240ab1b96d1b2f1cc6f3cddbb54b58564b349090b85c0d)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)(tailwindcss@4.2.1)
+        version: 1.5.0(patch_hash=3282e50b97df69c5b8240ab1b96d1b2f1cc6f3cddbb54b58564b349090b85c0d)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)(tailwindcss@4.2.2)
       zod:
         specifier: 4.3.6
         version: 4.3.6
@@ -210,8 +210,8 @@ importers:
         specifier: 7.29.0
         version: 7.29.0
       '@tanstack/eslint-plugin-query':
-        specifier: 5.91.4
-        version: 5.91.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+        specifier: 5.91.5
+        version: 5.91.5(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@types/react':
         specifier: 19.2.14
         version: 19.2.14
@@ -258,8 +258,8 @@ importers:
         specifier: 0.7.2
         version: 0.7.2(prettier@3.8.1)
       tailwindcss:
-        specifier: 4.2.1
-        version: 4.2.1
+        specifier: 4.2.2
+        version: 4.2.2
       typescript:
         specifier: 5.9.3
         version: 5.9.3
@@ -1740,9 +1740,8 @@ packages:
       react: '*'
       react-native: '*'
 
-  '@missingcore/react-native-metadata-retriever@https://codeload.github.com/MissingCore/react-native-metadata-retriever/tar.gz/b21753264791cbb3d5c1f5bd11725dd1b54c3f0f':
-    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-metadata-retriever/tar.gz/b21753264791cbb3d5c1f5bd11725dd1b54c3f0f}
-    version: 2.5.0
+  '@missingcore/react-native-metadata-retriever@3.0.0-beta.1':
+    resolution: {integrity: sha512-xG5meZFmr8SQQLLGNdJ/wsh5dgcVd3lEnGN+PXtedrjqA4teFmNeooT7OZiAd+VEEC4hXQ90F+FNiqB/LrAVog==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -2115,20 +2114,20 @@ packages:
     resolution: {integrity: sha512-F0F7d01fmkQhsTjXezGBLdrl1KresJTcI3DB8EkScCldyKp3Msz4hub4uyYaVnk88BAS1g5DQjjF6F5qczheLA==}
     engines: {node: '>= 10'}
 
-  '@tanstack/eslint-plugin-query@5.91.4':
-    resolution: {integrity: sha512-8a+GAeR7oxJ5laNyYBQ6miPK09Hi18o5Oie/jx8zioXODv/AUFLZQecKabPdpQSLmuDXEBPKFh+W5DKbWlahjQ==}
+  '@tanstack/eslint-plugin-query@5.91.5':
+    resolution: {integrity: sha512-4pqgoT5J+ntkyOoBtnxJu8LYRj3CurfNe92fghJw66mI7pZijKmOulM32Wa48cyVzGtgiuQ2o5KWC9LJVXYcBQ==}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
-      typescript: ^5.0.0
+      typescript: ^5.4.0
     peerDependenciesMeta:
       typescript:
         optional: true
 
-  '@tanstack/query-core@5.90.20':
-    resolution: {integrity: sha512-OMD2HLpNouXEfZJWcKeVKUgQ5n+n3A2JFmBaScpNDUqSrQSjiveC7dKMe53uJUg1nDG16ttFPz2xfilz6i2uVg==}
+  '@tanstack/query-core@5.91.0':
+    resolution: {integrity: sha512-FYXN8Kk9Q5VKuV6AIVaNwMThSi0nvAtR4X7HQoigf6ePOtFcavJYVIzgFhOVdtbBQtCJE3KimDIMMJM2DR1hjw==}
 
-  '@tanstack/react-query@5.90.21':
-    resolution: {integrity: sha512-0Lu6y5t+tvlTJMTO7oh5NSpJfpg/5D41LlThfepTixPYkJ0sE2Jj0m0f6yYqujBwIXlId87e234+MxG3D3g7kg==}
+  '@tanstack/react-query@5.91.0':
+    resolution: {integrity: sha512-S8FODsDTNv0Ym+o/JVBvA6EWiWVhg6K2Q4qFehZyFKk6uW4H9OPbXl4kyiN9hAly0uHJ/1GEbR6kAI4MZWfjEA==}
     peerDependencies:
       react: ^18 || ^19
 
@@ -3025,8 +3024,8 @@ packages:
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  electron-to-chromium@1.5.313:
-    resolution: {integrity: sha512-QBMrTWEf00GXZmJyx2lbYD45jpI3TUFnNIzJ5BBc8piGUDwMPa1GV6HJWTZVvY/eiN3fSopl7NRbgGp9sZ9LTA==}
+  electron-to-chromium@1.5.321:
+    resolution: {integrity: sha512-L2C7Q279W2D/J4PLZLk7sebOILDSWos7bMsMNN06rK482umHUrh/3lM8G7IlHFOYip2oAg5nha1rCMxr/rs6ZQ==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -5018,8 +5017,8 @@ packages:
       react: '*'
       react-native: '*'
 
-  react-native-svg@15.15.3:
-    resolution: {integrity: sha512-/k4KYwPBLGcx2f5d4FjE+vCScK7QOX14cl2lIASJ28u4slHHtIhL0SZKU7u9qmRBHxTCKPoPBtN6haT1NENJNA==}
+  react-native-svg@15.15.4:
+    resolution: {integrity: sha512-boT/vIRgj6zZKBpfTPJJiYWMbZE9duBMOwPK6kCSTgxsS947IFMOq9OgIFkpWZTB7t229H24pDRkh3W9ZK/J1A==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -5031,8 +5030,8 @@ packages:
       react-native: '*'
       react-native-pager-view: '>= 6.0.0'
 
-  react-native-track-player@https://codeload.github.com/MissingCore/rntp/tar.gz/0cef130270319af11c75e80edd3ff5c50ab8bac8:
-    resolution: {tarball: https://codeload.github.com/MissingCore/rntp/tar.gz/0cef130270319af11c75e80edd3ff5c50ab8bac8}
+  react-native-track-player@https://codeload.github.com/MissingCore/rntp/tar.gz/c5820ff4424a5b4ab7e77bba8532f06404d63f68:
+    resolution: {tarball: https://codeload.github.com/MissingCore/rntp/tar.gz/c5820ff4424a5b4ab7e77bba8532f06404d63f68}
     version: 5.0.0-alpha0
     peerDependencies:
       react: '*'
@@ -5451,8 +5450,8 @@ packages:
   tailwindcss@4.1.17:
     resolution: {integrity: sha512-j9Ee2YjuQqYT9bbRTfTZht9W/ytp5H+jJpZKiYdP/bpnXARAuELt9ofP0lPnmHjbga7SNQIxdTAXCmtKVYjN+Q==}
 
-  tailwindcss@4.2.1:
-    resolution: {integrity: sha512-/tBrSQ36vCleJkAOsy9kbNTgaxvGbyOamC30PRePTQe/o1MFwEKHQk4Cn7BNGaPtjp+PuUrByJehM1hgxfq4sw==}
+  tailwindcss@4.2.2:
+    resolution: {integrity: sha512-KWBIxs1Xb6NoLdMVqhbhgwZf2PGBpPEiwOqgI4pFIYbNTfBXiKYyWoTsXgBQ9WFg/OlhnvHaY+AEpW7wSmFo2Q==}
 
   tapable@2.3.0:
     resolution: {integrity: sha512-g9ljZiwki/LfxmQADO3dEY1CbpmXT5Hm2fJ+QaGKwSXUylMybePR7/67YW7jOrrvjEgL1Fmz5kzyAjWVWLlucg==}
@@ -7332,10 +7331,10 @@ snapshots:
       react-native-reanimated: 4.2.2(react-native-worklets@0.7.4(@babel/core@7.29.0)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-worklets: 0.7.4(@babel/core@7.29.0)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
 
-  '@lukemorales/query-key-factory@1.3.4(@tanstack/query-core@5.90.20)(@tanstack/react-query@5.90.21(react@19.2.0))':
+  '@lukemorales/query-key-factory@1.3.4(@tanstack/query-core@5.91.0)(@tanstack/react-query@5.91.0(react@19.2.0))':
     dependencies:
-      '@tanstack/query-core': 5.90.20
-      '@tanstack/react-query': 5.90.21(react@19.2.0)
+      '@tanstack/query-core': 5.91.0
+      '@tanstack/react-query': 5.91.0(react@19.2.0)
 
   '@missingcore/music-glyph-toys@https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/bbd70768ca76dff4a585905f02ea6f60c9cd2f38(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)':
     dependencies:
@@ -7347,7 +7346,7 @@ snapshots:
       react: 19.2.0
       react-native: 0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0)
 
-  '@missingcore/react-native-metadata-retriever@https://codeload.github.com/MissingCore/react-native-metadata-retriever/tar.gz/b21753264791cbb3d5c1f5bd11725dd1b54c3f0f(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)':
+  '@missingcore/react-native-metadata-retriever@3.0.0-beta.1(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)':
     dependencies:
       react: 19.2.0
       react-native: 0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0)
@@ -7782,7 +7781,7 @@ snapshots:
       '@tailwindcss/oxide-win32-arm64-msvc': 4.1.17
       '@tailwindcss/oxide-win32-x64-msvc': 4.1.17
 
-  '@tanstack/eslint-plugin-query@5.91.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
+  '@tanstack/eslint-plugin-query@5.91.5(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/utils': 8.57.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.2(jiti@2.6.1)
@@ -7791,11 +7790,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@tanstack/query-core@5.90.20': {}
+  '@tanstack/query-core@5.91.0': {}
 
-  '@tanstack/react-query@5.90.21(react@19.2.0)':
+  '@tanstack/react-query@5.91.0(react@19.2.0)':
     dependencies:
-      '@tanstack/query-core': 5.90.20
+      '@tanstack/query-core': 5.91.0
       react: 19.2.0
 
   '@tybys/wasm-util@0.10.1':
@@ -8380,7 +8379,7 @@ snapshots:
     dependencies:
       baseline-browser-mapping: 2.10.8
       caniuse-lite: 1.0.30001780
-      electron-to-chromium: 1.5.313
+      electron-to-chromium: 1.5.321
       node-releases: 2.0.36
       update-browserslist-db: 1.2.3(browserslist@4.28.1)
 
@@ -8690,7 +8689,7 @@ snapshots:
 
   ee-first@1.1.1: {}
 
-  electron-to-chromium@1.5.313: {}
+  electron-to-chromium@1.5.321: {}
 
   emoji-regex@8.0.0: {}
 
@@ -11056,7 +11055,7 @@ snapshots:
       react-native: 0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0)
       warn-once: 0.1.1
 
-  react-native-svg@15.15.3(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
+  react-native-svg@15.15.4(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
     dependencies:
       css-select: 5.2.2
       css-tree: 1.1.3
@@ -11071,7 +11070,7 @@ snapshots:
       react-native-pager-view: 8.0.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       use-latest-callback: 0.2.6(react@19.2.0)
 
-  react-native-track-player@https://codeload.github.com/MissingCore/rntp/tar.gz/0cef130270319af11c75e80edd3ff5c50ab8bac8(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
+  react-native-track-player@https://codeload.github.com/MissingCore/rntp/tar.gz/c5820ff4424a5b4ab7e77bba8532f06404d63f68(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
     dependencies:
       react: 19.2.0
       react-native: 0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0)
@@ -11609,7 +11608,7 @@ snapshots:
 
   tailwindcss@4.1.17: {}
 
-  tailwindcss@4.2.1: {}
+  tailwindcss@4.2.2: {}
 
   tapable@2.3.0: {}
 
@@ -11760,7 +11759,7 @@ snapshots:
 
   unicode-property-aliases-ecmascript@2.2.0: {}
 
-  uniwind@1.5.0(patch_hash=3282e50b97df69c5b8240ab1b96d1b2f1cc6f3cddbb54b58564b349090b85c0d)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)(tailwindcss@4.2.1):
+  uniwind@1.5.0(patch_hash=3282e50b97df69c5b8240ab1b96d1b2f1cc6f3cddbb54b58564b349090b85c0d)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)(tailwindcss@4.2.2):
     dependencies:
       '@tailwindcss/node': 4.1.17
       '@tailwindcss/oxide': 4.1.17
@@ -11768,7 +11767,7 @@ snapshots:
       lightningcss: 1.30.1
       react: 19.2.0
       react-native: 0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0)
-      tailwindcss: 4.2.1
+      tailwindcss: 4.2.2
 
   unpipe@1.0.0: {}
 

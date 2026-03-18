@@ -76,7 +76,6 @@ export default (): ExpoConfig => {
             enableBundleCompression: true,
             enableMinifyInReleaseBuilds: true,
             enableShrinkResourcesInReleaseBuilds: true,
-            // reactNativeReleaseLevel: "experimental",
           },
         },
       ],
