@@ -1,8 +1,14 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
-import { atom, useAtomValue, useSetAtom } from "jotai";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  memo,
+  use,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { z } from "zod/mini";
@@ -15,8 +21,8 @@ import { DragHandle } from "~/resources/icons/DragHandle";
 import { queries as q } from "~/data/keyStore";
 import { getArtistsString } from "~/data/artist/utils";
 import { deletePlaylist } from "~/data/playlist/api";
+import { usePlaylistsNames } from "~/data/playlist/queries";
 import { sanitizePlaylistName } from "~/data/playlist/utils";
-import { mergeTracks } from "~/data/track/utils";
 import type { CommonTrack } from "~/data/types";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
@@ -49,15 +55,14 @@ import {
 import { FormInputImpl, InputLabel } from "~/modules/form/FormState/FormInput";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { SearchResult } from "~/modules/search/components/SearchResult";
+import { useAllMedia } from "~/modules/search/hooks/useSearch";
 import type { SearchCallbacks } from "~/modules/search/types";
-
-const skipDeferredDataAtom = atom(false);
 
 export function ModifyPlaylistBase(props: {
   onSubmit: (data: PlaylistEntry) => void | Promise<void>;
   mode?: "create" | "edit";
-  initialData?: Omit<PlaylistEntry, "isFavoritesList" | "trackIds">;
-  usedNames: string[];
+  initialData?: Omit<PlaylistEntry, "isFavoritesList">;
+  referenceData: ReturnType<typeof usePreloadReferenceData>["data"];
 }) {
   const { offset, floatingContentProps } = useFloatingContent();
 
@@ -71,38 +76,45 @@ export function ModifyPlaylistBase(props: {
   // Exclude `FavoritesPlaylistKey` as we don't return it when fetching all
   // playlists & don't check it in `sanitizePlaylistName`.
   const usedNames = useMemo(
-    () => [...props.usedNames, FavoritesPlaylistKey],
-    [props.usedNames],
+    () => [...props.referenceData.playlistNames!, FavoritesPlaylistKey],
+    [props.referenceData.playlistNames],
+  );
+
+  const trackMap = useMemo(
+    () =>
+      Object.fromEntries(props.referenceData.allTracks!.map((t) => [t.id, t])),
+    [props.referenceData.allTracks],
   );
 
   return (
-    <FormStateProvider
-      schema={PlaylistEntrySchema}
-      initData={{
-        isFavoritesList,
-        name: props.initialData?.name ?? "",
-        tracks: props.initialData?.tracks ?? [],
-        trackIds: props.initialData?.tracks.map((t) => t.id) ?? [],
-      }}
-      omittedFields={["isFavoritesList", "tracks"]}
-      onSubmit={props.onSubmit}
-      onConstraints={({ name }) => {
-        // Checks to see if playlist name is unique.
-        let isUnique = false;
-        try {
-          const sanitized = sanitizePlaylistName(name);
-          isUnique =
-            props.initialData?.name === sanitized ||
-            !usedNames.includes(sanitized);
-        } catch {}
-        return isUnique;
-      }}
-    >
-      <PlaylistForm bottomOffset={offset} />
-      {!isFavoritesList ? (
-        <RenderedWorkflow floatingContentProps={floatingContentProps} />
-      ) : null}
-    </FormStateProvider>
+    <CachedTracksContext value={trackMap}>
+      <FormStateProvider
+        schema={PlaylistEntrySchema}
+        initData={{
+          isFavoritesList,
+          name: props.initialData?.name ?? "",
+          trackIds: props.initialData?.trackIds ?? [],
+        }}
+        omittedFields={["isFavoritesList"]}
+        onSubmit={props.onSubmit}
+        onConstraints={({ name }) => {
+          // Checks to see if playlist name is unique.
+          let isUnique = false;
+          try {
+            const sanitized = sanitizePlaylistName(name);
+            isUnique =
+              props.initialData?.name === sanitized ||
+              !usedNames.includes(sanitized);
+          } catch {}
+          return isUnique;
+        }}
+      >
+        <PlaylistForm bottomOffset={offset} />
+        {!isFavoritesList ? (
+          <RenderedWorkflow floatingContentProps={floatingContentProps} />
+        ) : null}
+      </FormStateProvider>
+    </CachedTracksContext>
   );
 }
 
@@ -111,62 +123,33 @@ const FormInput = FormInputImpl<PlaylistEntry>();
 
 function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
   const {
-    data: { tracks: playlistTracks },
+    data: { trackIds },
     setFields,
     isSubmitting,
   } = useFormState();
   const addTracksSheetRef = useSheetRef();
 
-  //#region Deferred Data
-  //! Re-rendering the list after adding new tracks is the cause of slow
-  //! adding of tracks via the sheet.
-  const [deferredData, setDeferredData] = useState(playlistTracks);
-  const skipDelay = useAtomValue(skipDeferredDataAtom);
-  const setSkipDelay = useSetAtom(skipDeferredDataAtom);
-
-  //? Skip an extra render cycle by not updating `setDelayedData` in a
-  //? `useEffect` and avoid items flashing from prior position.
-  if (skipDelay) {
-    setSkipDelay(false);
-    setDeferredData(playlistTracks);
-  }
-
-  useEffect(() => {
-    const timeout = !skipDelay
-      ? setTimeout(() => setDeferredData(playlistTracks), 1000)
-      : undefined;
-
-    return () => {
-      if (timeout) clearTimeout(timeout);
-    };
-  }, [playlistTracks, skipDelay]);
-  //#endregion
-
   const removeTrack = useCallback(
-    (id: string) => {
-      setSkipDelay(true);
-      setFields((prev) =>
-        getTracksFields(prev.tracks.filter((t) => t.id !== id)),
-      );
-    },
-    [setFields, setSkipDelay],
+    (id: string) =>
+      setFields((prev) => ({
+        trackIds: prev.trackIds.filter((tId) => tId !== id),
+      })),
+    [setFields],
   );
 
   const reorderTrack = useCallback(
-    ({ from: fromIndex, to: toIndex }: { from: number; to: number }) => {
-      setSkipDelay(true);
-      setFields((prev) =>
-        getTracksFields(moveArray(prev.tracks, { fromIndex, toIndex })),
-      );
-    },
-    [setFields, setSkipDelay],
+    ({ from: fromIndex, to: toIndex }: { from: number; to: number }) =>
+      setFields((prev) => ({
+        trackIds: moveArray(prev.trackIds, { fromIndex, toIndex }),
+      })),
+    [setFields],
   );
 
   //#region Stable Callbacks
-  const keyExtractor = useCallback(({ id }: { id: string }) => id, []);
+  const keyExtractor = useCallback((tId: string) => tId, []);
 
   const renderItem = useCallback(
-    (args: ListRenderItemInfo<SlimTrackEntry>) => (
+    (args: ListRenderItemInfo<string>) => (
       <RenderItem
         {...args}
         isSubmitting={isSubmitting}
@@ -182,7 +165,7 @@ function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
       <AddTracksSheet ref={addTracksSheetRef} />
       <DragList
         pointerEvents={isSubmitting ? "none" : "auto"}
-        data={deferredData}
+        data={trackIds}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         onReorder={reorderTrack}
@@ -207,32 +190,32 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
     useMemo(
       () => ({
         album: ({ tracks, ...album }) => {
-          setFields((prev) =>
-            getTracksFields(
-              mergeTracks(prev.tracks, tracks.map(formatTrackForForm)),
+          setFields((prev) => ({
+            trackIds: mergeStringArrays(
+              prev.trackIds,
+              tracks.map((t) => t.id),
             ),
-          );
+          }));
           toast(
             i18next.t("template.entryAdded", { name: album.name }),
             ToastOptions,
           );
         },
         folder: ({ name, tracks }) => {
-          setFields((prev) =>
-            getTracksFields(
-              mergeTracks(prev.tracks, tracks.map(formatTrackForForm)),
+          setFields((prev) => ({
+            trackIds: mergeStringArrays(
+              prev.trackIds,
+              tracks.map((t) => t.id),
             ),
-          );
+          }));
           toast(i18next.t("template.entryAdded", { name }), ToastOptions);
         },
         track: (track) => {
-          setFields((prev) =>
-            getTracksFields(
-              prev.tracks
-                .filter(({ id }) => track.id !== id)
-                .concat(formatTrackForForm(track)),
-            ),
-          );
+          setFields((prev) => ({
+            trackIds: prev.trackIds
+              .filter((tId) => track.id !== tId)
+              .concat(track.id),
+          }));
           toast(
             i18next.t("template.entryAdded", { name: track.name }),
             ToastOptions,
@@ -311,7 +294,7 @@ function ListHeaderComponent(props: { showSheet: VoidFunction }) {
 //#endregion
 
 //#region Rendered Item
-type RenderItemProps = ListRenderItemInfo<SlimTrackEntry> & {
+type RenderItemProps = ListRenderItemInfo<string> & {
   isSubmitting: boolean;
   onRemove: (id: string) => void;
 };
@@ -326,11 +309,12 @@ const RenderItem = memo(
     const { t } = useTranslation();
     const initDrag = useInitDrag();
     const { isActive, isDragging } = useDragListState(index);
+    const track = useCachedTrack(item);
 
     return (
       <RemovableItem
-        label={item.name}
-        onRemove={() => onRemove(item.id)}
+        label={track.name}
+        onRemove={() => onRemove(track.id)}
         disableRemove={isDragging}
         //! `bg-surface` is there to prevent collapsing the View.
         className={cn("mb-2 rounded-xs bg-surface", {
@@ -340,13 +324,13 @@ const RenderItem = memo(
       >
         <SearchResult
           type="track"
-          title={item.name}
-          description={item.artists}
-          imageSource={item.artwork}
+          title={track.name}
+          description={getArtistsString(track.artists)}
+          imageSource={track.artwork}
           RightElement={
             <IconButton
               Icon={DragHandle}
-              accessibilityLabel={t("template.entryMove", { name: item.name })}
+              accessibilityLabel={t("template.entryMove", { name: track.name })}
               onPressIn={initDrag}
               disabled={isDragging && !isActive}
               size="xs"
@@ -359,10 +343,9 @@ const RenderItem = memo(
   },
   (oldProps, newProps) => {
     return (
-      oldProps.item.id === newProps.item.id &&
-      (["isSubmitting", "index"] as const).every(
-        (k) => oldProps[k] === newProps[k],
-      )
+      oldProps.item === newProps.item &&
+      oldProps.index === newProps.index &&
+      oldProps.isSubmitting === newProps.isSubmitting
     );
   },
 );
@@ -375,7 +358,6 @@ function ImportM3UWorkflow({
 }: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
   const { t } = useTranslation();
   const { data, setFields, isSubmitting, setIsSubmitting } = useFormState();
-  const setSkipDelay = useSetAtom(skipDeferredDataAtom);
 
   const onImport = async () => {
     setIsSubmitting(true);
@@ -383,11 +365,10 @@ function ImportM3UWorkflow({
       const { name, tracks: playlistTracks } = await readM3UPlaylist();
       toast(t("feat.backup.extra.importSuccess"), ToastOptions);
       await wait(100);
-      const updatedFields: Partial<PlaylistEntry> = getTracksFields(
-        playlistTracks.map(formatTrackForForm),
-      );
+      const updatedFields: Partial<PlaylistEntry> = {
+        trackIds: playlistTracks.map((t) => t.id),
+      };
       if (!data.name && !!name) updatedFields.name = name;
-      setSkipDelay(true);
       setFields(updatedFields);
     } catch (err) {
       toast.error((err as Error).message, ToastOptions);
@@ -469,13 +450,6 @@ function DeleteWorkflow({
 //#endregion
 
 //#region Schema
-const SlimTrackSchema = z.object({
-  id: ZSchema.NonEmptyString,
-  name: ZSchema.NonEmptyString,
-  artists: ZSchema.NonEmptyString,
-  artwork: ZSchema.NullableString,
-});
-
 const PlaylistNameSchema = z.pipe(
   ZSchema.NonEmptyString,
   z.transform((str, ctx) => {
@@ -498,13 +472,10 @@ const PlaylistEntrySchema = z.object({
   isFavoritesList: z.boolean(),
   // Actual form fields:
   name: PlaylistNameSchema,
-  tracks: z.array(SlimTrackSchema),
-  //? Field derived from `tracks`.
   trackIds: z.array(ZSchema.NonEmptyString),
 });
 
 type PlaylistEntry = z.infer<typeof PlaylistEntrySchema>;
-type SlimTrackEntry = z.infer<typeof SlimTrackSchema>;
 
 function useFormState() {
   return useFormStateContext<PlaylistEntry>();
@@ -512,19 +483,28 @@ function useFormState() {
 //#endregion
 
 //#region Utils
-export function formatTrackForForm(track: CommonTrack) {
+export function usePreloadReferenceData() {
+  const playlistNamesQuery = usePlaylistsNames();
+  const allMediaQuery = useAllMedia();
+
   return {
-    id: track.id,
-    name: track.name,
-    artists: getArtistsString(track.artists),
-    artwork: track.artwork,
+    isPending: playlistNamesQuery.isPending || allMediaQuery.isPending,
+    error: playlistNamesQuery.error || allMediaQuery.error,
+    data: {
+      playlistNames: playlistNamesQuery.data,
+      allTracks: allMediaQuery.data?.track,
+    },
   };
 }
 
-/** Return `tracks` & the derived `trackIds` field. */
-function getTracksFields(
-  tracks: SlimTrackEntry[],
-): Pick<PlaylistEntry, "tracks" | "trackIds"> {
-  return { tracks, trackIds: tracks.map((t) => t.id) };
+const CachedTracksContext = createContext<Record<string, CommonTrack>>({});
+function useCachedTrack(trackId: string) {
+  const context = use(CachedTracksContext);
+  return useMemo(() => context[trackId]!, [context, trackId]);
+}
+
+function mergeStringArrays(arr1: string[], arr2: string[]) {
+  const incomingStrs = new Set(arr2);
+  return arr1.filter((str) => !incomingStrs.has(str)).concat(arr2);
 }
 //#endregion

@@ -6,10 +6,12 @@ import { useTranslation } from "react-i18next";
 
 import { queries as q } from "~/data/keyStore";
 import { createPlaylist } from "~/data/playlist/api";
-import { usePlaylistsNames } from "~/data/playlist/queries";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
-import { ModifyPlaylistBase } from "./components/ModifyViewBase";
+import {
+  ModifyPlaylistBase,
+  usePreloadReferenceData,
+} from "./components/ModifyViewBase";
 
 import { ToastOptions } from "~/lib/toast";
 
@@ -17,15 +19,18 @@ export default function CreatePlaylist() {
   const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const queryClient = useQueryClient();
-  const { isPending, error, data: playlistsNames } = usePlaylistsNames();
+  const { isPending, error, data } = usePreloadReferenceData();
 
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
   return (
     <ModifyPlaylistBase
-      usedNames={playlistsNames}
-      onSubmit={async ({ name, tracks }) => {
+      referenceData={data}
+      onSubmit={async ({ name, trackIds }) => {
         try {
-          await createPlaylist({ name, tracks });
+          await createPlaylist({
+            name,
+            tracks: trackIds.map((id) => ({ id })),
+          });
 
           queryClient.invalidateQueries({ queryKey: q.playlists._def });
           queryClient.invalidateQueries({ queryKey: q.tracks._def });

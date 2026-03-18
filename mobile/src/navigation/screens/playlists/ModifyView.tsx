@@ -7,13 +7,13 @@ import { useTranslation } from "react-i18next";
 
 import { queries as q } from "~/data/keyStore";
 import { updatePlaylist } from "~/data/playlist/api";
-import { usePlaylist, usePlaylistsNames } from "~/data/playlist/queries";
+import { usePlaylist } from "~/data/playlist/queries";
 import { Resynchronize } from "~/stores/Playback/actions";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import {
   ModifyPlaylistBase,
-  formatTrackForForm,
+  usePreloadReferenceData,
 } from "./components/ModifyViewBase";
 
 import { ToastOptions } from "~/lib/toast";
@@ -28,45 +28,47 @@ export default function ModifyPlaylist({
   const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const queryClient = useQueryClient();
-  const playlistNamesQuery = usePlaylistsNames();
   const playlistQuery = usePlaylist(id);
+  const preloadFormDataQuery = usePreloadReferenceData();
 
   if (
-    playlistNamesQuery.isPending ||
-    playlistNamesQuery.error ||
+    preloadFormDataQuery.isPending ||
+    preloadFormDataQuery.error ||
     playlistQuery.isPending ||
     playlistQuery.error ||
     !playlistQuery.data
   ) {
     return (
       <PagePlaceholder
-        isPending={playlistNamesQuery.isPending || playlistQuery.isPending}
+        isPending={preloadFormDataQuery.isPending || playlistQuery.isPending}
       />
     );
   }
 
   const initData = {
     name: id,
-    tracks: playlistQuery.data.tracks.map(formatTrackForForm),
+    trackIds: playlistQuery.data.tracks.map((t) => t.id),
   };
 
   return (
     <ModifyPlaylistBase
       mode="edit"
-      usedNames={playlistNamesQuery.data}
+      referenceData={preloadFormDataQuery.data}
       initialData={initData}
-      onSubmit={async ({ name: playlistName, tracks }) => {
+      onSubmit={async ({ name: playlistName, trackIds }) => {
         // Don't update playlist name if it hasn't changed.
         const newName = id === playlistName ? undefined : playlistName;
         // Don't update tracks if they didn't change.
         const tracksUnchanged =
-          initData.tracks.length === tracks.length &&
-          initData.tracks.every((t, index) => t.id === tracks[index]?.id);
+          initData.trackIds.length === trackIds.length &&
+          initData.trackIds.every((tId, index) => tId === trackIds[index]);
 
         try {
           await updatePlaylist(id, {
             name: newName, //? Should be sanitized by Zod schema.
-            tracks: tracksUnchanged ? undefined : tracks,
+            tracks: tracksUnchanged
+              ? undefined
+              : trackIds.map((id) => ({ id })),
           });
 
           if (newName) {
