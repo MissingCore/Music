@@ -1,6 +1,6 @@
 import type { ParseKeys } from "i18next";
 import type { Dispatch, SetStateAction } from "react";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { LayoutChangeEvent, ViewStyle } from "react-native";
 import { I18nManager, View } from "react-native";
@@ -8,11 +8,12 @@ import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, {
   clamp,
+  useAnimatedReaction,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
 } from "react-native-reanimated";
-import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
+import { scheduleOnRN } from "react-native-worklets";
 
 import type { Icon } from "~/resources/icons/type";
 import { useColor } from "~/hooks/useTheme";
@@ -251,8 +252,6 @@ type SliderOverlayProps = {
   formatValue: (val: number) => string;
 };
 
-const LISTENER_ID = 987654321;
-
 const SliderOverlay = memo(function SliderOverlay(
   props: SliderOverlayProps & {
     value: SharedValue<number>;
@@ -262,16 +261,10 @@ const SliderOverlay = memo(function SliderOverlay(
   const { t } = useTranslation();
   const [currentValue, setCurrentValue] = useState(() => props.value.value);
 
-  useEffect(() => {
-    scheduleOnUI(() =>
-      props.value.addListener(LISTENER_ID, (value) =>
-        scheduleOnRN(setCurrentValue, value),
-      ),
-    );
-    return () => {
-      scheduleOnUI(() => props.value.removeListener(LISTENER_ID));
-    };
-  }, [props.value]);
+  useAnimatedReaction(
+    () => props.value.value,
+    (currVal) => scheduleOnRN(setCurrentValue, currVal),
+  );
 
   const formattedValue = props.formatValue(currentValue);
 

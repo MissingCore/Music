@@ -1,5 +1,5 @@
 import AudioWaveView from "@kaannn/react-native-waveform";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { useWindowDimensions } from "react-native";
 import { computeAmplitude } from "react-native-audio-analyzer";
 
@@ -97,11 +97,10 @@ export function useWaveformSamples(id: string, uri: string) {
     sessionStore.setState({ activeWaveformContext: entry });
   }, [estimatedBarCount, id, samplesFallback, uri]);
 
-  useEffect(() => {
-    if (!waveformSlider || lastQueriedTrack.current === id) return;
+  if (waveformSlider && lastQueriedTrack.current !== id) {
     lastQueriedTrack.current = id;
     getTrackWaveform();
-  }, [getTrackWaveform, id, waveformSlider]);
+  }
 
   return useMemo(
     () => activeWaveformContext?.samples || samplesFallback,

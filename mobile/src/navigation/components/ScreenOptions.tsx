@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import type { ParseKeys } from "i18next";
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 
 type SupportedScreenOptions = {
   headerLeft?: () => React.ReactNode;
@@ -11,7 +11,7 @@ type SupportedScreenOptions = {
 export function ScreenOptions(options: SupportedScreenOptions) {
   const navigation = useNavigation();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions(options);
   }, [navigation, options]);
 

@@ -1,7 +1,7 @@
 import BackgroundTimer from "@boterop/react-native-background-timer";
 import { useNavigation } from "@react-navigation/native";
 import { atom, useSetAtom } from "jotai";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -58,9 +58,11 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
   //#region Bottom Actions Layout Animation
   const setVisibleBeforeReset = useSetAtom(visibleBeforeResetAtom);
 
-  useEffect(() => {
+  const prevTrack = useRef<typeof track>(undefined);
+  if (prevTrack.current !== track) {
+    prevTrack.current = track;
     setVisibleBeforeReset(!!track);
-  }, [track, setVisibleBeforeReset]);
+  }
   //#endregion
 
   const TextWrapper = useMemo(
@@ -98,9 +100,9 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
 
   useAnimatedReaction(
     () => panAmount.value,
-    (curr, prev) => {
+    (currVal, prevVal) => {
       const threshold = insets.bottom + bottomInsets.withNav;
-      if (curr > threshold && (prev === null || prev < threshold)) {
+      if (currVal > threshold && (prevVal === null || prevVal < threshold)) {
         scheduleOnRN(onResetStore);
       }
     },

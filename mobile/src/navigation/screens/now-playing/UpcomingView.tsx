@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { inArray } from "drizzle-orm";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { tracks } from "~/db/schema";
@@ -40,11 +40,14 @@ export default function Upcoming() {
   const [cachedData, setCachedData] = useState<TrackData[]>([]);
   const [isSynchronizing, setIsSynchronizing] = useState(false);
 
-  // Sync our local state with the store data (this should be called twice
-  // since we won't revalidate the query on changes).
-  useEffect(() => {
-    if (data) setCachedData(data);
-  }, [data]);
+  // Populate `cachedData` (which we use to render as it's faster than waiting
+  // for the query to update) whenever `useQueueTracks` updates (which is mainly
+  // when we resynchronize the list).
+  const prevData = useRef<TrackData[]>([]);
+  if (data && prevData.current !== data) {
+    prevData.current = data;
+    setCachedData(data);
+  }
 
   const modifiedData = useMemo(() => {
     if (cachedData.length === 0) return [];

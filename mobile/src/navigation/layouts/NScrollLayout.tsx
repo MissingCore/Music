@@ -1,9 +1,9 @@
 import type { ParseKeys } from "i18next";
 import {
   useCallback,
-  useEffect,
   useImperativeHandle,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -20,6 +20,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { scheduleOnUI } from "react-native-worklets";
 
 import { MoreHoriz } from "~/resources/icons/MoreHoriz";
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -302,11 +303,15 @@ function useShyHeaderContext(args: {
   }));
 
   // Reset `headerTranslation` when the layout changes.
-  useEffect(() => {
-    headerTranslation.value = 0;
-    cancelAnimation(translationTimer);
-    translationTimer.value = 0;
-  }, [headerTranslation, translationTimer, args.resetOn]);
+  const resetTriggerValue = useRef(args.resetOn);
+  if (resetTriggerValue.current !== args.resetOn) {
+    resetTriggerValue.current = args.resetOn;
+    scheduleOnUI(() => {
+      headerTranslation.value = 0;
+      cancelAnimation(translationTimer);
+      translationTimer.value = 0;
+    });
+  }
   //#endregion
 
   //#region Scroll Animations

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import type { AnimatedRef, SharedValue } from "react-native-reanimated";
@@ -6,12 +6,13 @@ import type { ReanimatedScrollEvent } from "react-native-reanimated/lib/typescri
 import Animated, {
   clamp,
   scrollTo,
+  useAnimatedReaction,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
+import { scheduleOnRN } from "react-native-worklets";
 
 interface ScrollbarProps {
   listRef: AnimatedRef<any>;
@@ -29,7 +30,6 @@ interface ScrollbarProps {
 const THUMB_SIZE = 48;
 const COLLAPSED_THUMB_SIZE = 6;
 
-const SCROLL_SUBSCRIPTION_ID = 1234567890;
 /** Delay before the scrollbar becomes invisible. */
 const HIDE_DELAY = 2000;
 
@@ -97,21 +97,15 @@ export function Scrollbar({
 
   //* Show scrollbar when we're scrolling and hide it after a delay
   //* after stopping when the thumb is released.
-  useEffect(() => {
-    scheduleOnUI(() =>
-      listScrollAmount.addListener(SCROLL_SUBSCRIPTION_ID, () => {
-        isScrollingBuffer.value = 1;
-        if (isOngoing.value) return;
-        isScrollingBuffer.value = withTiming(0, { duration: HIDE_DELAY });
-      }),
-    );
-
-    return () => {
-      scheduleOnUI(() =>
-        listScrollAmount.removeListener(SCROLL_SUBSCRIPTION_ID),
-      );
-    };
-  }, [isOngoing, listScrollAmount, isScrollingBuffer, prevY]);
+  useAnimatedReaction(
+    () => listScrollAmount.value,
+    (_, prevVal) => {
+      if (prevVal === null) return; //? Don't call on "initialization".
+      isScrollingBuffer.value = 1;
+      if (isOngoing.value) return;
+      isScrollingBuffer.value = withTiming(0, { duration: HIDE_DELAY });
+    },
+  );
   //#endregion
 
   //#region Gestures

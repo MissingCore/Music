@@ -1,8 +1,13 @@
 import { atom, useAtomValue, useSetAtom } from "jotai";
 import { useCallback, useEffect, useRef } from "react";
 import { AppState } from "react-native";
-import { Easing, makeMutable, withTiming } from "react-native-reanimated";
-import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
+import {
+  Easing,
+  makeMutable,
+  useAnimatedReaction,
+  withTiming,
+} from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
 
 import { useInForeground } from "~/stores/ListenerState";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
@@ -11,8 +16,6 @@ import { useSessionStore } from "~/stores/Session/store";
 export const animatedPositionAtom = atom(makeMutable(0));
 export const isSeekingAtom = atom(false);
 export const renderedPositionAtom = atom(0);
-
-const LISTENER_ID = 24680;
 
 /** Lift shared logic for tracking the current playback progress in a shared value. */
 export function SeekbarContext(props: { children: React.ReactNode }) {
@@ -74,17 +77,12 @@ export function SeekbarContext(props: { children: React.ReactNode }) {
   }, [animateSlider, animatedPosition, isPlaying, isSeeking, lastPosition]);
 
   // Synchronize JS state with shared value.
-  useEffect(() => {
-    if (!inForeground) return;
-    scheduleOnUI(() =>
-      animatedPosition.addListener(LISTENER_ID, (value) =>
-        scheduleOnRN(setRenderedPos, value),
-      ),
-    );
-    return () => {
-      scheduleOnUI(() => animatedPosition.removeListener(LISTENER_ID));
-    };
-  }, [animatedPosition, setRenderedPos, inForeground]);
+  useAnimatedReaction(
+    () => animatedPosition.value,
+    (currVal) => {
+      if (inForeground) scheduleOnRN(setRenderedPos, currVal);
+    },
+  );
 
   return props.children;
 }

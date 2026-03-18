@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import { useViewPreferenceStore } from "../store";
 import type { ScreenSortOptions, SortOptionTypeMap } from "../constants";
@@ -14,7 +14,12 @@ export function useViewOrder<
   const [cachedComputation, setCachedComputation] = useState<
     Record<string, TData[]>
   >({});
+
   const dataCache = useRef(data);
+  if (data !== dataCache.current) {
+    dataCache.current = data;
+    setCachedComputation({});
+  }
 
   const sortedData = useMemo(() => {
     if (!dataCache.current) return;
@@ -40,13 +45,6 @@ export function useViewOrder<
     setCachedComputation((prev) => ({ ...prev, [cacheKey]: sortedResults }));
     return sortedResults;
   }, [isAsc, orderBy, cachedComputation]);
-
-  useEffect(() => {
-    if (data !== dataCache.current) {
-      setCachedComputation({});
-      dataCache.current = data;
-    }
-  }, [data]);
 
   return sortedData;
 }
