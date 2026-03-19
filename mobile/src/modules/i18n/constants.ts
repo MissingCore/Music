@@ -78,6 +78,7 @@ export const LANGUAGES = [
     name: "हिंदी",
     translators: [
       { display: "Sourabh Mishra", link: "https://www.github.com/OxSourabh" },
+      { display: "Earendel", link: "https://github.com/Earendel-lab" },
     ],
   },
   {
