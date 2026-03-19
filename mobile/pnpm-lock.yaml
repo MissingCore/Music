@@ -26,9 +26,6 @@ patchedDependencies:
   react-native-paper:
     hash: 4861a614642079819628426e488de07f5f16a3b2dffa6a600746ee38d7883eb9
     path: patches/react-native-paper.patch
-  uniwind:
-    hash: 3282e50b97df69c5b8240ab1b96d1b2f1cc6f3cddbb54b58564b349090b85c0d
-    path: patches/uniwind.patch
 
 importers:
 
@@ -198,7 +195,7 @@ importers:
         version: 3.5.0
       uniwind:
         specifier: 1.6.0
-        version: 1.6.0(patch_hash=3282e50b97df69c5b8240ab1b96d1b2f1cc6f3cddbb54b58564b349090b85c0d)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)(tailwindcss@4.2.2)
+        version: 1.6.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)(tailwindcss@4.2.2)
       zod:
         specifier: 4.3.6
         version: 4.3.6
@@ -11759,7 +11756,7 @@ snapshots:
 
   unicode-property-aliases-ecmascript@2.2.0: {}
 
-  uniwind@1.6.0(patch_hash=3282e50b97df69c5b8240ab1b96d1b2f1cc6f3cddbb54b58564b349090b85c0d)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)(tailwindcss@4.2.2):
+  uniwind@1.6.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)(tailwindcss@4.2.2):
     dependencies:
       '@tailwindcss/node': 4.2.1
       '@tailwindcss/oxide': 4.2.1
