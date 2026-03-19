@@ -142,7 +142,7 @@
     "miniplayerGestures": {
       "title": "Gestes du mini-lecteur",
       "extra": {
-        "dragClearPlayback": null
+        "dragClearPlayback": "Faites glisser le mini-lecteur vers le bas pour effacer l'historique de lecture"
       }
     },
     "nowPlayingDesign": {
@@ -245,7 +245,7 @@
     },
     "listAllow": {
       "title": "Liste d'autorisation",
-      "description": "Précisez où se trouvent les titres."
+      "description": "Indiquez l'emplacement des titres. Si ce champ est vide, la recherche s'effectuera partout."
     },
     "listBlock": {
       "title": "Liste de blocage",
@@ -383,7 +383,7 @@
         "playNext": "Jouer juste après",
         "playLast": "Jouer en dernier",
         "toast": "`{{- name}}` ajouté à la file d'attente.",
-        "quickAdd": null,
+        "quickAdd": "Ajouter rapidement à la file d'attente",
         "queueAwareNext": "Lecture suivante en fonction de la file d'attente",
         "queueAwareNextBrief": "Tentatives d'ajout d'un morceau après le dernier morceau \"Lecture suivante\"."
       }
