@@ -7,8 +7,8 @@
     "artists": "कलाकार",
     "folder": "फोल्डर",
     "folders": "फोल्डर्स",
-    "genre": null,
-    "genres": null,
+    "genre": "शैली",
+    "genres": "शैलियाँ",
     "playlist": "प्लेलिस्ट",
     "playlists": "प्लेलिस्ट्स",
     "track": "ट्रैक",
@@ -24,28 +24,28 @@
     "favorites": "पसंदीदा",
     "unFavorite": "पसंदीदा हटाएँ",
     "favoriteTracks": "पसंदीदा ट्रैक्स",
-    "all": null,
-    "more": null,
+    "all": "सभी",
+    "more": "और भी",
     "home": "होम",
     "settings": "सेटिंग्स",
     "upcoming": "आगामी",
-    "playingFrom": null,
+    "playingFrom": "यहाँ से चल रहा है",
     "disc": "डिस्क {{count}}"
   },
   "template": {
-    "entryAdd": null,
+    "entryAdd": "`{{- name}}` जोड़ें।",
     "entryAdded": "`{{- name}}` जोड़ा गया।",
     "entryRemove": "`{{- name}}` हटाएँ।",
     "entryRemoved": "`{{- name}}` हटा दिया गया।",
-    "entryManage": null,
+    "entryManage": "{{- name}} प्रबंधित करें",
     "entrySeeMore": "`{{- name}}` के बारे में और देखें।",
     "notFound": "`{{- name}}` मौजूद नहीं है।",
-    "entryMove": null,
+    "entryMove": "`{{- name}}` स्थानांतरित करें",
     "entryShow": "`{{- name}}` दिखाएँ",
     "entryHide": "`{{- name}}` छुपाएँ",
-    "entryEnable": null,
-    "entryDisable": null,
-    "noContentFound": null
+    "entryEnable": "`{{- name}}` सक्षम करें",
+    "entryDisable": "`{{- name}}` अक्षम करें",
+    "noContentFound": "कोई {{- name}} नहीं मिला।"
   },
   "plural": {
     "entry_one": "{{count}} प्रविष्टि",
@@ -63,11 +63,11 @@
     "unsaved": "आपके पास कुछ असहेजित परिवर्तन हो सकते हैं।",
     "stay": "रहें",
     "leave": "छोड़ें",
-    "create": null,
-    "delete": null,
-    "edit": null,
-    "clear": null,
-    "reset": null,
+    "create": "बनाएँ",
+    "delete": "हटाएं",
+    "edit": "संपादित करें",
+    "clear": "सब हटाएँ",
+    "reset": "रीसेट करें",
     "validation": {
       "unique": "अद्वितीय"
     }
@@ -93,11 +93,11 @@
       "noResults": "कोई परिणाम नहीं मिला।",
       "noAlbums": "कोई एल्बम नहीं मिला।",
       "noArtists": "कोई कलाकार नहीं मिला।",
-      "noGenres": null,
+      "noGenres": "कोई शैली नहीं मिली।",
       "noPlaylists": "कोई प्लेलिस्ट नहीं मिली।",
       "noTracks": "कोई ट्रैक नहीं मिला।",
-      "noHiddenTracks": null,
-      "noLyrics": null
+      "noHiddenTracks": "कोई छुपा हुआ ट्रैक नहीं मिला।",
+      "noLyrics": "कोई गीत का बोल नहीं मिला।"
     }
   },
   "feat": {
@@ -108,8 +108,8 @@
         "downloadAPK": "नवीनतम APK डाउनलोड करें",
         "updateGoogle": "Play Store के माध्यम से अपडेट करें",
         "version": "संस्करण",
-        "checkUpdates": null,
-        "rcNotification": null
+        "checkUpdates": "अपडेट जांचें",
+        "rcNotification": "प्री-रिलीज़ सूचना"
       }
     },
     "appearance": {
@@ -118,7 +118,7 @@
     "font": {
       "extra": {
         "accent": "अक्षर शैली",
-        "primary": null
+        "primary": "मुख्य फ़ॉन्ट"
       }
     },
     "theme": {
@@ -133,32 +133,35 @@
       "title": "होम टैब्स क्रम",
       "brief": "टैब्स के क्रम और दृश्यता को अनुकूलित करें।",
       "extra": {
-        "setHomeTab": null
+        "setHomeTab": "ऐप लॉन्च पर `{{- name}}` टैब खोलें।"
       }
     },
     "minAlbumLength": {
-      "title": null
+      "title": "न्यूनतम एल्बम लंबाई"
     },
     "miniplayerGestures": {
-      "title": null
+      "title": "मिनीप्लेयर जेस्चर",
+      "extra": {
+        "dragClearPlayback": null
+      }
     },
     "nowPlayingDesign": {
       "extra": {
         "plain": "साधारण",
         "vinyl": "विनाइल",
-        "vinylOld": null
+        "vinylOld": "विनाइल (लीगेसी)"
       }
     },
     "quickScroll": {
-      "title": null,
-      "brief": null
+      "title": "त्वरित स्क्रॉल",
+      "brief": "सपोर्टेड स्क्रीन पर Nothing स्टाइल वाली स्क्रॉलबार दिखाएँ।"
     },
     "language": {
       "title": "भाषा",
       "extra": {
         "contribute": "अनुवाद में योगदान दें",
-        "useLTR": null,
-        "translators": null
+        "useLTR": "LTR लेआउट का उपयोग करें। पुनः प्रारंभ आवश्यक है।",
+        "translators": "अनुवादक"
       }
     },
     "backup": {
@@ -183,42 +186,42 @@
       }
     },
     "mostPlayed": {
-      "title": null,
-      "brief": null,
+      "title": "सबसे ज्यादा चले",
+      "brief": "ट्रैकों की सभी समय की रैंकिंग।",
       "extra": {
-        "playCount": null
+        "playCount": "{{count}} प्ले"
       }
     },
     "hiddenTracks": {
-      "title": null,
-      "brief": null
+      "title": "छुपे हुए ट्रैक",
+      "brief": "ऐप में दिखाई न देने वाले ट्रैक।"
     },
     "saveErrors": {
       "title": "त्रुटियाँ सहेजें",
       "brief": "कुछ ट्रैक्स क्यों नहीं सहेजे गए, इसका कारण देखें।"
     },
     "playback": {
-      "title": null,
+      "title": "प्लेबैक",
       "extra": {
-        "delay": null,
-        "options": null,
-        "speed": null,
-        "volume": null
+        "delay": "प्लेबैक विलंब",
+        "options": "प्लेबैक विकल्प",
+        "speed": "प्लेबैक गति",
+        "volume": "ऐप वॉल्यूम"
       }
     },
     "continuePlaybackOnDismiss": {
-      "title": null,
-      "description": null
+      "title": "बंद करने पर प्लेबैक जारी रखें",
+      "description": "जब आप ऐप को हाल की गतिविधियों से बंद करें तो संगीत प्लेबैक जारी रहे। प्लेबैक रोकने के लिए ऐप को फ़ोर्स स्टॉप करें।"
     },
     "repeatOnSkip": {
-      "title": null,
-      "brief": null
+      "title": "स्किप करने पर रिपीट मोड चालू रखें",
+      "brief": "स्किप करने पर मोड को \"रिपीट वन\" से \"रिपीट\" में न बदलें।"
     },
     "restoreLastPosition": {
-      "title": null
+      "title": "अंतिम प्ले किए गए स्थान से पुनर्स्थापित करें"
     },
     "lyrics": {
-      "title": null
+      "title": "गीत के बोल"
     },
     "scanning": {
       "title": "स्कैनिंग"
@@ -237,12 +240,12 @@
       "brief": "सामान्य पुनः स्कैन फीचर को तेज करने वाले किसी भी छोड़ने वाले उपायों को अनदेखा करता है।"
     },
     "rescanOnLaunch": {
-      "title": null,
-      "brief": null
+      "title": "लॉन्च पर फिर से स्कैन करें",
+      "brief": "यदि अक्षम है, तो नए, अपडेट किए गए और हटाए गए ट्रैक का पता लगाने के लिए फिर से स्कैन फ़ीचर का उपयोग करें।"
     },
     "listAllow": {
       "title": "अनुमति सूची",
-      "description": null
+      "description": "निर्देशित करें कि ट्रैक कहाँ पाए जा सकते हैं।"
     },
     "listBlock": {
       "title": "ब्लॉक सूची",
@@ -253,34 +256,34 @@
       "description": "ऑडियो की अवधि (सेकंड में) जिसे हम सहेजना नहीं चाहते।"
     },
     "separators": {
-      "title": null,
+      "title": "मल्टी-वैल्यू सेपरेटर",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "यह नए ट्रैकों पर लागू होता है। मौजूदा ट्रैकों को अपडेट करने के लिए डीप रिस्कैन फ़ीचर का उपयोग करें।",
+        "line2": "चेतावनी: इससे कुछ टैग्स को गलत तरीके से कई मानों वाले के रूप में पहचानने का परिणाम हो सकता है। यह उन ट्रैकों पर लागू नहीं होता जिन्हें आपने मैन्युअली संशोधित किया है।"
       }
     },
     "experimental": {
-      "title": null
+      "title": "प्रयोगात्मक फीचर"
     },
     "ignoreInterrupt": {
-      "title": null,
-      "brief": null
+      "title": "विघटनों को अनदेखा करें",
+      "brief": "जब कोई विघटन (जैसे कि नोटिफिकेशन या कॉल) होता है, तो ऑडियो चलाना जारी रखें। इन स्थितियों में आपको म्यूज़िक को मैन्युअली पॉज़ और अनपॉज़ करना होगा।"
     },
     "sleepTimer": {
-      "title": null,
-      "description": null,
+      "title": "सोने का टाइमर",
+      "description": "निर्दिष्ट मिनटों के बाद ऑडियो चलाना रोकें।",
       "extra": {
-        "start": null,
-        "stopTime": null,
-        "extend": null
+        "start": "शुरू करें",
+        "stopTime": "ऑडियो {{- time}} पर रुक जाएगा।",
+        "extend": "ट्रैक खत्म होने तक टाइमर बढ़ाएँ।"
       }
     },
     "waveformSlider": {
-      "title": null,
+      "title": "वेवफॉर्म स्लाइडर",
       "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
+        "purgeCache": "कैश्ड वेवफॉर्म्स को हटाएँ",
+        "purgeCacheBrief": "यह स्टोरेज को मुक्त करता है ताकि खेले गए ट्रैकों के वेवफॉर्म्स को फिर से गणना किया जा सके।",
+        "purgeCacheToast": "वेवफॉर्म कैश साफ़ किया गया।"
       }
     },
     "code": {
@@ -299,8 +302,8 @@
     },
     "onboarding": {
       "extra": {
-        "configureSettings": null,
-        "startScan": null,
+        "configureSettings": "सेटिंग्स कॉन्फ़िगर करें",
+        "startScan": "ट्रैक स्कैन करना शुरू करें",
         "saveTracks": "ट्रैक्स सहेज रहा है",
         "saveImages": "छवियाँ सहेज रहा है"
       }
@@ -308,7 +311,7 @@
     "playedRecent": {
       "title": "हाल ही में चलाए गए",
       "extra": {
-        "notFound": null
+        "notFound": "पिछले {{amount}} दिनों में कुछ भी नहीं खेला गया।"
       }
     },
     "search": {
@@ -331,38 +334,38 @@
     },
     "playlist": {
       "extra": {
-        "m3uImport": null,
-        "m3uExport": null,
-        "absolute": null,
-        "relative": null
+        "m3uImport": "M3U प्लेलिस्ट आयात करें",
+        "m3uExport": "M3U के रूप में निर्यात करें",
+        "absolute": "निरपेक्ष",
+        "relative": "सापेक्ष"
       }
     },
     "trackMetadata": {
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "इस ऐप में ट्रैक के दिखने का तरीका संपादित करें। यह फ़ाइल को स्वयं संशोधित नहीं करता है।",
+        "line2": "ध्यान दें: यदि यह फ़ाइल बदलती है तो आपके परिवर्तन रीसेट हो सकते हैं।"
       },
       "extra": {
-        "albumArtists": null,
-        "disc": null,
-        "name": null,
-        "trackNumber": null,
-        "year": null
+        "albumArtists": "एल्बम कलाकार",
+        "disc": "डिस्क",
+        "name": "नाम",
+        "trackNumber": "ट्रैक संख्या",
+        "year": "वर्ष"
       }
     },
     "modalViewPreference": {
-      "title": null,
+      "title": "स्क्रीन विकल्प",
       "extra": {
-        "layout": null,
-        "list": null,
-        "grid": null,
-        "compactGrid": null,
+        "layout": "लेआउट",
+        "list": "सूची",
+        "grid": "ग्रिड",
+        "compactGrid": "संक्षिप्त ग्रिड",
         "sort": "क्रम",
         "asc": "आरोही क्रम",
-        "discover": null,
-        "duration": null,
+        "discover": "खोज समय",
+        "duration": "अवधि",
         "modified": "अंतिम बदलाव",
-        "trackCount": null
+        "trackCount": "ट्रैक संख्या"
       }
     },
     "modalTrack": {
@@ -377,11 +380,12 @@
     "queue": {
       "extra": {
         "add": "कतार में जोड़ें",
-        "playNext": null,
-        "playLast": null,
+        "playNext": "अगला चलाएँ",
+        "playLast": "अंतिम चलाएँ",
         "toast": "`{{- name}}` कतार में जोड़ा गया।",
-        "queueAwareNext": null,
-        "queueAwareNextBrief": null
+        "quickAdd": null,
+        "queueAwareNext": "क्यू-सजग अगला चलाएँ",
+        "queueAwareNextBrief": "अंतिम \"अगला चलाएँ\" ट्रैक के बाद ट्रैक जोड़ने का प्रयास करता है।"
       }
     }
   }

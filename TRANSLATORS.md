@@ -56,6 +56,7 @@
 ## [हिंदी] Hindi
 
 - [@OxSourabh](https://www.github.com/OxSourabh)
+- [@Earendel-lab](https://github.com/Earendel-lab)
 
 ## [Polski] Polish
 

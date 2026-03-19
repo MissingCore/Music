@@ -140,7 +140,10 @@
       "title": "Albüm Süresi Filtresi"
     },
     "miniplayerGestures": {
-      "title": "Mini Oynatıcı Hareketleri"
+      "title": "Mini Oynatıcı Hareketleri",
+      "extra": {
+        "dragClearPlayback": null
+      }
     },
     "nowPlayingDesign": {
       "extra": {
@@ -380,6 +383,7 @@
         "playNext": "Sıradakini Çal",
         "playLast": "Sonuncuyu Çal",
         "toast": "`{{- name}}` sıraya eklendi.",
+        "quickAdd": null,
         "queueAwareNext": "Sıraya Duyarlı Sıradakini Çal",
         "queueAwareNextBrief": "Son \"Sıradakini Çal\" parçasından sonra parça ekleme denemeleri."
       }

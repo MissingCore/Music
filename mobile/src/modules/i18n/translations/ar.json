@@ -140,7 +140,10 @@
       "title": null
     },
     "miniplayerGestures": {
-      "title": null
+      "title": null,
+      "extra": {
+        "dragClearPlayback": null
+      }
     },
     "nowPlayingDesign": {
       "extra": {
@@ -380,6 +383,7 @@
         "playNext": null,
         "playLast": null,
         "toast": "تمت إضافة `{{- name}}` إلى قائمة الانتظار.",
+        "quickAdd": null,
         "queueAwareNext": null,
         "queueAwareNextBrief": null
       }

@@ -140,7 +140,10 @@
       "title": "Filtr długości albumu"
     },
     "miniplayerGestures": {
-      "title": "Gesty w miniodtwarzaczu"
+      "title": "Gesty w miniodtwarzaczu",
+      "extra": {
+        "dragClearPlayback": null
+      }
     },
     "nowPlayingDesign": {
       "extra": {
@@ -380,6 +383,7 @@
         "playNext": "Odtwórz jako następną",
         "playLast": "Odtwórz jako ostatnią",
         "toast": "Dodano do kolejki: `{{- name}}`.",
+        "quickAdd": null,
         "queueAwareNext": "Odtwórz jako następną z zachowaniem kolejności",
         "queueAwareNextBrief": "Utwór dodany jako następny zostanie umiejscowiony za ostatnim dodanym jako następnym."
       }

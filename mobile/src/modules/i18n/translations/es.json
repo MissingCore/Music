@@ -140,7 +140,10 @@
       "title": "Filtro por tamaño de álbum"
     },
     "miniplayerGestures": {
-      "title": "Gestos del mini reproductor"
+      "title": "Gestos del mini reproductor",
+      "extra": {
+        "dragClearPlayback": null
+      }
     },
     "nowPlayingDesign": {
       "extra": {
@@ -380,6 +383,7 @@
         "playNext": "Reproducir a continuación",
         "playLast": "Reproducir al final",
         "toast": "`{{- name}}` añadida a la cola.",
+        "quickAdd": null,
         "queueAwareNext": "Insertar como siguiente",
         "queueAwareNextBrief": "Intenta colocar la canción después de la última marcada como \"Reproducir a continuación\"."
       }
