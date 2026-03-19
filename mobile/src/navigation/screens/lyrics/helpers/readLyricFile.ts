@@ -1,3 +1,4 @@
+import { getActualPath } from "@missingcore/react-native-actual-path";
 import { getDocumentAsync } from "expo-document-picker";
 import { File } from "expo-file-system";
 
@@ -11,11 +12,11 @@ export async function readLyricFile() {
   if (canceled) throw new Error(i18next.t("err.msg.actionCancel"));
   if (!assets[0]) throw new Error(i18next.t("err.msg.noSelect"));
 
-  const documentFile = new File(assets[0].uri);
-  const lyricInfo = {
-    name: documentFile.name.split(".").slice(0, -1).join("."),
-    contents: await documentFile.text(),
-  };
+  const fileLocation = await getActualPath(assets[0].uri);
+  if (!fileLocation) throw new Error(i18next.t("err.flow.generic.title"));
 
-  return lyricInfo;
+  return {
+    name: fileLocation.split("/").at(-1)?.split(".")[0],
+    contents: await new File(assets[0].uri).text(),
+  };
 }

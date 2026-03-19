@@ -58,6 +58,7 @@ export default function Lyrics({
             })}
           />
         )}
+        emptyMsgKey="err.msg.noLyrics"
         wrapperClassName="px-4 pt-4"
         contentContainerClassName="pb-4"
       />
