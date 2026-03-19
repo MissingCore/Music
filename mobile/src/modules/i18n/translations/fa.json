@@ -140,7 +140,10 @@
       "title": "فیتر اندازه آلبوم"
     },
     "miniplayerGestures": {
-      "title": "انیمیشن های مینی پلیر"
+      "title": "انیمیشن های مینی پلیر",
+      "extra": {
+        "dragClearPlayback": null
+      }
     },
     "nowPlayingDesign": {
       "extra": {
@@ -380,6 +383,7 @@
         "playNext": null,
         "playLast": null,
         "toast": "`{{- name}}` به صف اضافه شد.",
+        "quickAdd": null,
         "queueAwareNext": null,
         "queueAwareNextBrief": null
       }

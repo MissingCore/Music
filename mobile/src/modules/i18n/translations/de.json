@@ -140,7 +140,10 @@
       "title": "Albumlängen-Filter"
     },
     "miniplayerGestures": {
-      "title": "Miniplayer Gesten"
+      "title": "Miniplayer Gesten",
+      "extra": {
+        "dragClearPlayback": null
+      }
     },
     "nowPlayingDesign": {
       "extra": {
@@ -380,6 +383,7 @@
         "playNext": "Als Nächstes",
         "playLast": "Als Letztes",
         "toast": "`{{- name}}` wurde zur Warteschlange hinzugefügt.",
+        "quickAdd": null,
         "queueAwareNext": "Warteschlangen-gerechtes \"Als Nächstes\"",
         "queueAwareNextBrief": "Versuche um nach dem letzten „Nächsten abspielen“-Titel weitere Titel hinzuzufügen."
       }

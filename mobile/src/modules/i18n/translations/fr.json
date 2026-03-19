@@ -140,7 +140,10 @@
       "title": "Filtre de Durée d'Album"
     },
     "miniplayerGestures": {
-      "title": "Gestes du mini-lecteur"
+      "title": "Gestes du mini-lecteur",
+      "extra": {
+        "dragClearPlayback": null
+      }
     },
     "nowPlayingDesign": {
       "extra": {
@@ -380,6 +383,7 @@
         "playNext": "Jouer juste après",
         "playLast": "Jouer en dernier",
         "toast": "`{{- name}}` ajouté à la file d'attente.",
+        "quickAdd": null,
         "queueAwareNext": "Lecture suivante en fonction de la file d'attente",
         "queueAwareNextBrief": "Tentatives d'ajout d'un morceau après le dernier morceau \"Lecture suivante\"."
       }

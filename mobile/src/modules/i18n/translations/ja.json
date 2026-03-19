@@ -140,7 +140,10 @@
       "title": "アルバムの再生時間でフィルター"
     },
     "miniplayerGestures": {
-      "title": "ミニプレーヤージェスチャー"
+      "title": "ミニプレーヤージェスチャー",
+      "extra": {
+        "dragClearPlayback": null
+      }
     },
     "nowPlayingDesign": {
       "extra": {
@@ -380,6 +383,7 @@
         "playNext": "次に再生",
         "playLast": "最後に再生",
         "toast": "｢{{- name}}｣がキューに追加されました。",
+        "quickAdd": null,
         "queueAwareNext": "キューの認識による次の再生",
         "queueAwareNextBrief": "最後の「次に再生」するトラックの後にトラックを追加します。"
       }
