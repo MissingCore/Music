@@ -17,6 +17,7 @@ import { useCurrentTheme } from "~/hooks/useTheme";
 
 import { queryClient } from "~/lib/react-query";
 import { GestureHandlerRootView } from "~/components/Base/GestureHandlerRootView";
+import { Toaster } from "~/components/Toast/Toaster";
 
 /** All providers used by the app. */
 export function AppProvider(props: { children: React.ReactNode }) {
@@ -30,6 +31,7 @@ export function AppProvider(props: { children: React.ReactNode }) {
               <ListenerStateStoreProvider />
               <ChildrenWrapper {...props} />
               <ToastProvider />
+              <Toaster />
             </QueryClientProvider>
           </GestureHandlerRootView>
         </PaperProvider>
