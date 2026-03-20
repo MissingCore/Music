@@ -44,7 +44,21 @@ function ToastItem({ toast, exiting }: { toast: Toast; exiting?: boolean }) {
         if (finished && exiting) scheduleOnRN(onRemove);
       },
     );
-  }, [animationState, exiting, onRemove]);
+
+    //? Auto-dismiss toast after `4s` if `toast.autoDismiss = true`.
+    let autoDismissTimer: ReturnType<typeof setTimeout>;
+    if (toast.autoDismiss && !exiting) {
+      autoDismissTimer = setTimeout(() => {
+        animationState.value = withTiming(0, { duration: 500 }, (finished) => {
+          if (finished) scheduleOnRN(onRemove);
+        });
+      }, 4500);
+    }
+
+    return () => {
+      if (autoDismissTimer) clearTimeout(autoDismissTimer);
+    };
+  }, [animationState, exiting, onRemove, toast.autoDismiss]);
 
   const toastStyles = useAnimatedStyle(() => ({
     top: insets.top + 16,
