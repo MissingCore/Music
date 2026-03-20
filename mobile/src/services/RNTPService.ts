@@ -193,8 +193,14 @@ export async function PlaybackService() {
       );
     }
 
-    // FIXME: Sentry reporting error that we're getting an object when it expects a string.
-    // GlyphToy.setMatrixArtwork(e.track?.artwork || null);
+    //! To fix an issue where the media notification looked funny when
+    //! there was no embedded artwork, we added a fallback of
+    //! `require("~/resources/images/music-glyph.png")`. This caused an
+    //! issue due to `GlyphToy.setMatrixArtwork` expecting `string | null`.
+    let trackArtwork = e.track?.artwork || null;
+    if (typeof trackArtwork !== "string") trackArtwork = null;
+    GlyphToy.setMatrixArtwork(trackArtwork);
+
     await revalidateWidgets();
     prevTrackId = e.track.id;
   });
