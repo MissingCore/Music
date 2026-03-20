@@ -193,7 +193,8 @@ export async function PlaybackService() {
       );
     }
 
-    GlyphToy.setMatrixArtwork(e.track?.artwork || null);
+    // FIXME: Sentry reporting error that we're getting an object when it expects a string.
+    // GlyphToy.setMatrixArtwork(e.track?.artwork || null);
     await revalidateWidgets();
     prevTrackId = e.track.id;
   });

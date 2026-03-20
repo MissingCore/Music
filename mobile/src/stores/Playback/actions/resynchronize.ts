@@ -1,4 +1,4 @@
-import { GlyphToy } from "@missingcore/music-glyph-toys";
+// import { GlyphToy } from "@missingcore/music-glyph-toys";
 import TrackPlayer from "react-native-track-player";
 
 import {
@@ -35,7 +35,8 @@ export async function onActiveTrack(args: {
       formatTrackforPlayer(updatedTrackData),
     );
 
-    GlyphToy.setMatrixArtwork(updatedTrackData.artwork);
+    // FIXME: Sentry reporting error that we're getting an object when it expects a string.
+    // GlyphToy.setMatrixArtwork(updatedTrackData.artwork);
   } catch {}
 }
 
