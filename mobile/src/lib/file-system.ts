@@ -48,6 +48,19 @@ export async function pickDirectory() {
   }
 }
 
+/** Returns selected file if it exists. Throws error if nothing was selected. */
+export async function pickFile(mimeType: string) {
+  try {
+    const files = await File.pickFileAsync(undefined, mimeType);
+    const file = Array.isArray(files) ? files[0] : files;
+    if (!file?.exists) throw new Error(i18next.t("err.msg.noSelect"));
+    return file;
+  } catch {
+    // If the user cancels picking a file, `File.pickFileAsync` throws an error.
+    throw new Error(i18next.t("err.msg.actionCancel"));
+  }
+}
+
 /**
  * Helper to open the image picker, allowing the user to pick 1 image,
  * then saves that image to our file system, returning the file uri.

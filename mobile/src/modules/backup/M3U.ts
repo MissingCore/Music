@@ -1,7 +1,6 @@
 import { getActualPath } from "@missingcore/react-native-actual-path";
 import { inArray } from "drizzle-orm";
-import { getDocumentAsync } from "expo-document-picker";
-import { File, Paths } from "expo-file-system";
+import { Paths } from "expo-file-system";
 
 import { db } from "~/db";
 import { tracks } from "~/db/schema";
@@ -11,25 +10,17 @@ import { getTracks } from "~/data/track/api";
 
 import i18next from "~/modules/i18n";
 
-import { joinPaths, pickDirectory } from "~/lib/file-system";
+import { joinPaths, pickDirectory, pickFile } from "~/lib/file-system";
 
 //#region Import
 export async function readM3UPlaylist() {
-  // Select the M3U file we'll be importing from.
-  //  - We want the `content://` uri instead of the cached uri.
-  const { assets, canceled } = await getDocumentAsync({
-    type: ["audio/x-mpegurl"],
-    copyToCacheDirectory: false,
-  });
-  if (canceled) throw new Error(i18next.t("err.msg.actionCancel"));
-  if (!assets[0]) throw new Error(i18next.t("err.msg.noSelect"));
+  const m3uFile = await pickFile("audio/x-mpegurl");
 
-  const fileLocation = await getActualPath(assets[0].uri);
+  const fileLocation = await getActualPath(m3uFile.contentUri);
   if (!fileLocation) throw new Error(i18next.t("err.flow.generic.title"));
 
   const fileDirectory = fileLocation.split("/").slice(0, -1).join("/");
   const fileName = fileLocation.split("/").at(-1)?.split(".")[0];
-  const m3uFile = new File(assets[0].uri);
   const fileContent = await m3uFile.text();
 
   // List of "file names" in the playlist.
