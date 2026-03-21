@@ -1,8 +1,7 @@
-import { toast } from "@backpackapp-io/react-native-toast";
+import { toast } from "@missingcore/toast";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQueryClient } from "@tanstack/react-query";
-import { useTranslation } from "react-i18next";
 
 import { queries as q } from "~/data/keyStore";
 import { createPlaylist } from "~/data/playlist/api";
@@ -13,10 +12,7 @@ import {
   usePreloadReferenceData,
 } from "./components/ModifyViewBase";
 
-import { ToastOptions } from "~/lib/toast";
-
 export default function CreatePlaylist() {
-  const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const queryClient = useQueryClient();
   const { isPending, error, data } = usePreloadReferenceData();
@@ -37,7 +33,7 @@ export default function CreatePlaylist() {
           queryClient.invalidateQueries({ queryKey: ["search"] });
           navigation.replace("Playlist", { id: name });
         } catch {
-          toast.error(t("err.flow.generic.title"), ToastOptions);
+          toast.tError("err.flow.generic.title");
         }
       }}
     />

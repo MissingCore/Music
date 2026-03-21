@@ -1,8 +1,7 @@
-import { toast } from "@backpackapp-io/react-native-toast";
+import { toast } from "@missingcore/toast";
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { z } from "zod/mini";
 
@@ -11,7 +10,6 @@ import { deleteLyric } from "~/data/lyric/api";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 
-import { ToastOptions } from "~/lib/toast";
 import { wait } from "~/utils/promise";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { ExtendedTButton } from "~/components/Form/Button";
@@ -76,18 +74,17 @@ function LyricForm({ bottomOffset }: { bottomOffset: number }) {
 function ImportWorkflow({
   floatingContentProps,
 }: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
-  const { t } = useTranslation();
   const { setFields, isSubmitting, setIsSubmitting } = useFormState();
 
   const onImport = async () => {
     setIsSubmitting(true);
     try {
       const { name, contents } = await readLyricFile();
-      toast(t("feat.backup.extra.importSuccess"), ToastOptions);
+      toast.t("feat.backup.extra.importSuccess");
       await wait(100);
       setFields({ name, lyrics: contents });
     } catch (err) {
-      toast.error((err as Error).message, ToastOptions);
+      toast.error((err as Error).message);
     } finally {
       setIsSubmitting(false);
     }

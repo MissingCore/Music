@@ -1,5 +1,5 @@
-import { toast } from "@backpackapp-io/react-native-toast";
 import { getActualPath } from "@missingcore/react-native-actual-path";
+import { toast } from "@missingcore/toast";
 import { Directory } from "expo-file-system";
 import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
@@ -11,7 +11,6 @@ import { CreateNewFolder } from "~/resources/icons/CreateNewFolder";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 
 import { pickDirectory } from "~/lib/file-system";
-import { ToastOptions } from "~/lib/toast";
 import { addTrailingSlash, getSafeUri } from "~/utils/string";
 import { FlatList } from "~/components/Base/List";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
@@ -38,7 +37,6 @@ export function ScanFilterListSheet(props: {
     <DetachedSheet
       ref={props.ref}
       titleKey={`feat.${props.listType}.title`}
-      keyboardAndToast
       snapTop
     >
       <TStyledText
@@ -83,7 +81,7 @@ function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
       }));
     },
     onError: (trimmedPath) => {
-      toast.error(t("template.notFound", { name: trimmedPath }), ToastOptions);
+      toast.error(t("template.notFound", { name: trimmedPath }));
     },
     onConstraints: (trimmedPath) => {
       return (
@@ -147,7 +145,7 @@ async function pickPath() {
   try {
     dir = await pickDirectory();
   } catch {
-    toast.error(i18next.t("err.msg.actionCancel"), ToastOptions);
+    toast.tError("err.msg.actionCancel");
     return;
   }
 
@@ -165,7 +163,7 @@ async function pickPath() {
   } catch {}
 
   if (!dirUri) {
-    toast.error(i18next.t("err.flow.generic.title"), ToastOptions);
+    toast.tError("err.flow.generic.title");
     return;
   }
 
@@ -176,9 +174,6 @@ function removePath(filterList: FilterList, removedPath: string) {
   preferenceStore.setState((prev) => ({
     [filterList]: prev[filterList].filter((path) => path !== removedPath),
   }));
-  toast(
-    i18next.t("template.entryRemoved", { name: removedPath }),
-    ToastOptions,
-  );
+  toast(i18next.t("template.entryRemoved", { name: removedPath }));
 }
 //#endregion

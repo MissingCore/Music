@@ -1,10 +1,10 @@
-import { toast } from "@backpackapp-io/react-native-toast";
 import BackgroundTimer from "@boterop/react-native-background-timer";
 import {
   GlyphButton,
   GlyphToy,
   MatrixAction,
 } from "@missingcore/music-glyph-toys";
+import { toast } from "@missingcore/toast";
 import TrackPlayer, { Event, State } from "react-native-track-player";
 
 import i18next from "~/modules/i18n";
@@ -19,7 +19,6 @@ import { AppCleanUp } from "~/modules/scanning/helpers/cleanup";
 import { router } from "~/navigation/utils/router";
 
 import { clearAllQueries } from "~/lib/react-query";
-import { ToastOptions } from "~/lib/toast";
 import { bgWait } from "~/utils/promise";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
@@ -244,10 +243,7 @@ export async function PlaybackService() {
         }
       }
 
-      toast.error(
-        i18next.t("template.notFound", { name: erroredTrack.title }),
-        ToastOptions,
-      );
+      toast.error(i18next.t("template.notFound", { name: erroredTrack.title }));
     } else {
       // If we get this event when there's no active track, just reset.
       await playbackStore.getState().reset();

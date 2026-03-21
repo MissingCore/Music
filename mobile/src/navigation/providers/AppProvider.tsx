@@ -1,8 +1,7 @@
-import { Toasts } from "@backpackapp-io/react-native-toast";
+import { Toaster } from "@missingcore/toast";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { NavigationBar } from "@zoontek/react-native-navigation-bar";
-import { platformApiLevel } from "expo-device";
-import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { StatusBar, View } from "react-native";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { Provider as PaperProvider } from "react-native-paper";
@@ -13,7 +12,8 @@ import {
 
 import "../../global.css";
 import { ListenerStateStoreProvider } from "~/stores/ListenerState";
-import { useCurrentTheme } from "~/hooks/useTheme";
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { useCurrentTheme, useTheme } from "~/hooks/useTheme";
 
 import { queryClient } from "~/lib/react-query";
 import { GestureHandlerRootView } from "~/components/Base/GestureHandlerRootView";
@@ -64,16 +64,22 @@ function ChildrenWrapper(props: { children: React.ReactNode }) {
 
 //#region Toast Provider
 function ToastProvider() {
-  const insets = useSafeAreaInsets();
+  const { t } = useTranslation();
+  const theme = useTheme();
+  const primaryFont = usePreferenceStore((s) => s.primaryFont);
 
-  // Need to provide some extra insets for the global toast provider due
-  // to Android API 35+ changing what we get for "height" from `useWindowDimensions()`.
-  //  - https://github.com/facebook/react-native/issues/47080#issuecomment-2421914957
-  const extraInsets = useMemo(() => {
-    if (!platformApiLevel || platformApiLevel < 35) return undefined;
-    return { bottom: insets.top + insets.bottom };
-  }, [insets]);
-
-  return <Toasts extraInsets={extraInsets} />;
+  return (
+    <Toaster
+      t={t}
+      theme={{
+        fontFamily: primaryFont,
+        surface: theme.surfaceContainerLowest,
+        onSurface: theme.onSurface,
+        surfaceBorder: theme.surfaceContainerHigh,
+        error: theme.error,
+        onError: theme.onError,
+      }}
+    />
+  );
 }
 //#endregion

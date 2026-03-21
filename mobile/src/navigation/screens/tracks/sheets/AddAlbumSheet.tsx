@@ -13,7 +13,7 @@ export function AddAlbumSheet(props: {
 }) {
   const { data } = useAlbums();
   return (
-    <DetachedSheet ref={props.ref} keyboardAndToast snapTop>
+    <DetachedSheet ref={props.ref} snapTop>
       <SearchList
         data={data}
         keyExtractor={({ id }) => id}

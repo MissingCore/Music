@@ -11,7 +11,7 @@ import { linkTrackToLyric } from "../helpers/linkTrackToLyric";
 export function LinkTracksSheet(props: { ref: TrueSheetRef; lyricId: string }) {
   const { data } = useAllMedia();
   return (
-    <DetachedSheet ref={props.ref} keyboardAndToast snapTop>
+    <DetachedSheet ref={props.ref} snapTop>
       <SearchList
         data={data?.track ?? []}
         keyExtractor={({ id }) => id}

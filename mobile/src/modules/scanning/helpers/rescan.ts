@@ -1,16 +1,14 @@
-import { toast } from "@backpackapp-io/react-native-toast";
+import { toast } from "@missingcore/toast";
 import { useMutation } from "@tanstack/react-query";
 import { and, eq, isNull } from "drizzle-orm";
 
 import { db } from "~/db";
 import { fileNodes, invalidTracks, tracks } from "~/db/schema";
 
-import i18next from "~/modules/i18n";
 import { createFolders } from "~/data/folder/api";
 import { Resynchronize } from "~/stores/Playback/actions";
 
 import { clearAllQueries } from "~/lib/react-query";
-import { ToastOptions } from "~/lib/toast";
 import { wait } from "~/utils/promise";
 import { findAndSaveArtwork } from "./artwork";
 import { findAndSaveAudio } from "./audio";
@@ -18,10 +16,7 @@ import { AppCleanUp } from "./cleanup";
 
 /** Look through our library for any new or updated tracks. */
 export async function rescanForTracks(deepScan = false) {
-  const toastId = toast(i18next.t("feat.rescan.extra.start"), {
-    ...ToastOptions,
-    duration: Infinity,
-  });
+  toast.t("feat.rescan.extra.start", { autoDismiss: false });
 
   try {
     // Slight buffer before we run our code due to the code blocking the
@@ -72,18 +67,10 @@ export async function rescanForTracks(deepScan = false) {
     // Ensure queries are all up-to-date.
     clearAllQueries();
 
-    toast(i18next.t("feat.rescan.extra.success"), {
-      ...ToastOptions,
-      id: toastId,
-      duration: 4000,
-    });
+    toast.t("feat.rescan.extra.success");
   } catch (err) {
     console.log(err);
-    toast.error(i18next.t("feat.rescan.extra.fail"), {
-      ...ToastOptions,
-      id: toastId,
-      duration: 4000,
-    });
+    toast.tError("feat.rescan.extra.fail");
   }
 }
 

@@ -1,8 +1,6 @@
-import { Toasts } from "@backpackapp-io/react-native-toast";
 import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import type { ParseKeys } from "i18next";
-import { useState } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -29,8 +27,6 @@ interface SheetProps extends Pick<
   onCleanup?: VoidFunction;
   /** If the sheet should open at max screen height. */
   snapTop?: boolean;
-  /** Indicates a sheet can display keyboard & toast. */
-  keyboardAndToast?: boolean;
   /** Gap between content in sheet. Defaults to `24`. */
   gap?: number;
   /** Styles applied to the internal `GestureHandlerRootView`. */
@@ -63,15 +59,12 @@ export function DetachedSheet(props: SheetProps) {
   const { bottom } = useSafeAreaInsets();
   const keyboardVisible = useIsKeyboardVisible();
   const maxHeight = useMaxDetachedSheetHeight();
-  const [sheetHeight, setSheetHeight] = useState(0);
-  const [disableToastAnim, setDisableToastAnim] = useState(true);
 
   const gap = props.gap ?? 24;
 
   return (
     <TrueSheet
       ref={props.ref}
-      onLayout={(e) => setSheetHeight(e.nativeEvent.layout.height)}
       name={props.globalKey}
       detents={[props.snapTop ? 1 : "auto"]}
       backgroundColor="transparent"
@@ -79,12 +72,8 @@ export function DetachedSheet(props: SheetProps) {
       maxHeight={maxHeight}
       grabber={false}
       draggable={props.draggable}
-      // Re-enable toast animations after sheet is finished presenting.
-      onDidPresent={() => setDisableToastAnim(false)}
       onDidDismiss={() => {
         if (props.onCleanup) props.onCleanup();
-        // Disable toast animations when sheet is dismissed.
-        setDisableToastAnim(true);
       }}
       // Events used for `<DetachedDimView />`.
       onBackPress={props.onBackPress}
@@ -128,15 +117,6 @@ export function DetachedSheet(props: SheetProps) {
           {props.children}
         </GestureHandlerRootView>
       </View>
-      <Toasts
-        // @ts-expect-error - We added the `sheetOpts` prop via a patch.
-        sheetOpts={{
-          height: sheetHeight - bottom,
-          needKeyboardOffset: props.keyboardAndToast,
-        }}
-        // A duration of 0 doesn't work.
-        globalAnimationConfig={disableToastAnim ? { duration: 1 } : undefined}
-      />
     </TrueSheet>
   );
 }

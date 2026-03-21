@@ -1,8 +1,8 @@
-import { toast } from "@backpackapp-io/react-native-toast";
 import {
   MetadataPresets,
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
+import { toast } from "@missingcore/toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { eq } from "drizzle-orm";
 import { useCallback } from "react";
@@ -13,7 +13,6 @@ import { z } from "zod/mini";
 import { db } from "~/db";
 import { tracksToArtists, tracksToGenres } from "~/db/schema";
 
-import i18next from "~/modules/i18n";
 import { ColorWand } from "~/resources/icons/ColorWand";
 import { Info } from "~/resources/icons/Info";
 import { upsertAlbums } from "~/data/album/api";
@@ -34,7 +33,6 @@ import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { AddAlbumSheet } from "./sheets/AddAlbumSheet";
 
 import { clearAllQueries } from "~/lib/react-query";
-import { ToastOptions } from "~/lib/toast";
 import { splitOn } from "~/utils/string";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { ExtendedTButton } from "~/components/Form/Button";
@@ -341,7 +339,7 @@ async function onEditTrack(data: TrackMetadata) {
     clearAllQueries();
     router.back();
   } catch {
-    toast.error(i18next.t("err.flow.generic.title"), ToastOptions);
+    toast.tError("err.flow.generic.title");
   }
 }
 //#endregion

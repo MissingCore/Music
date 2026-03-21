@@ -1,6 +1,5 @@
 | Name | License | Source |
 | ---- | ------- | ------ |
-| @backpackapp-io/react-native-toast | MIT | https://github.com/backpackapp-io/react-native-toast |
 | @boterop/react-native-background-timer | MIT | https://github.com/boterop/react-native-background-timer |
 | @kaannn/react-native-waveform | MIT | https://github.com/kagantemizkan/react-native-audio-wave |
 | @legendapp/list | MIT | https://github.com/LegendApp/legend-list |

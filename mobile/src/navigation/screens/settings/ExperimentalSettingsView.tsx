@@ -1,17 +1,15 @@
-import { toast } from "@backpackapp-io/react-native-toast";
+import { toast } from "@missingcore/toast";
 import { useTranslation } from "react-i18next";
 
 import { db } from "~/db";
 import { waveformSamples } from "~/db/schema";
 
-import i18next from "~/modules/i18n";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { sessionStore } from "~/stores/Session/store";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 
-import { ToastOptions } from "~/lib/toast";
 import { SegmentedList } from "~/components/List/Segmented";
 import { Switch } from "~/components/UI/Switch";
 
@@ -52,6 +50,6 @@ async function purgeWaveformCache() {
   // eslint-disable-next-line drizzle/enforce-delete-with-where
   await db.delete(waveformSamples);
   sessionStore.setState({ activeWaveformContext: null });
-  toast(i18next.t("feat.waveformSlider.extra.purgeCacheToast"), ToastOptions);
+  toast.t("feat.waveformSlider.extra.purgeCacheToast");
 }
 //#endregion

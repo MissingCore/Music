@@ -1,4 +1,4 @@
-import { toast } from "@backpackapp-io/react-native-toast";
+import { toast } from "@missingcore/toast";
 import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
 
@@ -8,7 +8,6 @@ import { Close } from "~/resources/icons/Close";
 import { Info } from "~/resources/icons/Info";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 
-import { ToastOptions } from "~/lib/toast";
 import { FlatList } from "~/components/Base/List";
 import { Divider } from "~/components/Divider";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
@@ -117,9 +116,6 @@ function removeSeparator(removedSeparator: string) {
       (separator) => separator !== removedSeparator,
     ),
   }));
-  toast(
-    i18next.t("template.entryRemoved", { name: removedSeparator }),
-    ToastOptions,
-  );
+  toast(i18next.t("template.entryRemoved", { name: removedSeparator }));
 }
 //#endregion
