@@ -1,2 +1,2 @@
-export { Toaster } from "./src/Toaster";
-export { toast } from "./src/toast";
+export { Toaster } from "./src/components/Toaster";
+export { toast } from "./src/core/toast";

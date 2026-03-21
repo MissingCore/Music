@@ -12,3 +12,8 @@ export interface Toast {
 }
 
 export type ToastOptions = Partial<Pick<Toast, "autoDismiss">>;
+
+export type ToastTheme = Record<
+  "surface" | "onSurface" | "surfaceBorder" | "error" | "onError",
+  `#${string}`
+> & { fontFamily: string };

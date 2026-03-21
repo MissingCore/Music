@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo } from "react";
-import { useWindowDimensions } from "react-native";
+import { StyleSheet, Text, useWindowDimensions } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedStyle,
@@ -8,31 +8,18 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-import { useToastStore } from "./store";
-import type { Toast } from "./types";
-
-import { cn } from "~/lib/style";
-import { StyledText } from "../../../src/components/Typography/StyledText";
 import { scheduleOnRN } from "react-native-worklets";
 
-export function Toaster() {
-  const toasts = useToastStore((s) => s.toasts);
+import { useToastStore } from "../core/store";
+import type { Toast as ToastData, ToastTheme } from "../core/types";
 
-  //? We'll have at most 2 toasts rendered at once (with one of them animating away).
-  const visibleToasts = toasts.slice(0, 2);
+type Props = {
+  toast: ToastData;
+  exiting?: boolean;
+  theme: ToastTheme;
+};
 
-  return visibleToasts.map((toast, index) => (
-    <ToastItem
-      //? The `key` is to prevent re-mounting when the other toast is removed.
-      key={toast.id}
-      toast={toast}
-      exiting={index === 0 && visibleToasts.length > 1}
-    />
-  ));
-}
-
-function ToastItem({ toast, exiting }: { toast: Toast; exiting?: boolean }) {
+export function Toast({ toast, exiting, theme }: Props) {
   const insets = useSafeAreaInsets();
   const windowDimensions = useWindowDimensions();
   const removeToast = useToastStore((s) => s.removeToast);
@@ -112,26 +99,57 @@ function ToastItem({ toast, exiting }: { toast: Toast; exiting?: boolean }) {
   }));
   //#endregion
 
+  const decideColor = useCallback(
+    (errorColor: string, defaultColor: string) =>
+      toast.type === "error" ? errorColor : defaultColor,
+    [toast.type],
+  );
+
   return (
     <GestureDetector gesture={panGesture}>
       <Animated.View
         onLayout={(e) => {
           toastHeight.value = e.nativeEvent.layout.height;
         }}
-        style={toastStyles}
-        className={cn(
-          "absolute left-1/2 min-h-6 items-center justify-center rounded-sm border border-surfaceContainerHigh bg-surfaceContainerLowest p-2",
-          { "border-error bg-error": toast.type === "error" },
-        )}
+        style={[
+          styles.container,
+          {
+            backgroundColor: decideColor(theme.error, theme.surface),
+            borderColor: decideColor(theme.error, theme.surfaceBorder),
+          },
+          toastStyles,
+        ]}
       >
-        <StyledText
-          className={cn("text-center text-sm", {
-            "text-onError": toast.type === "error",
-          })}
+        <Text
+          style={[
+            styles.text,
+            {
+              color: decideColor(theme.onError, theme.onSurface),
+              fontFamily: theme.fontFamily,
+            },
+          ]}
         >
           {toast.message}
-        </StyledText>
+        </Text>
       </Animated.View>
     </GestureDetector>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    position: "absolute",
+    left: "50%",
+    minHeight: 32,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderStyle: "solid",
+  },
+  text: {
+    fontSize: 14,
+    textAlign: "center",
+  },
+});

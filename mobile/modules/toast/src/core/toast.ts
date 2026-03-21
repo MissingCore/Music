@@ -1,7 +1,6 @@
 import { createId } from "@paralleldrive/cuid2";
 import type { ParseKeys } from "i18next";
 
-import i18next from "~/modules/i18n";
 import { toastStore } from "./store";
 import type { Toast, ToastOptions, ToastType } from "./types";
 
@@ -23,7 +22,7 @@ function createHandler<T extends boolean>(
   i18n?: T,
 ): ToastHandler<T> {
   return (msg, options) => {
-    const message = i18n ? i18next.t(msg as ParseKeys) : msg;
+    const message = i18n ? toastStore.getState().t(msg as ParseKeys) : msg;
     const newToast = createToast(message, type, options);
     toastStore.setState((prev) => ({ toasts: [...prev.toasts, newToast] }));
   };
