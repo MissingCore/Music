@@ -1,16 +1,15 @@
-import { toast } from "@backpackapp-io/react-native-toast";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { ConversionPath } from "~/resources/icons/ConversionPath";
 import { Graph1 } from "~/resources/icons/Graph1";
 
-import { ToastOptions } from "~/lib/toast";
 import { ExtendedTButton } from "~/components/Form/Button";
 import type { PickerOption } from "~/components/Form/SegmentedPicker";
 import { SegmentedPicker } from "~/components/Form/SegmentedPicker";
 import { DetachedSheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
+import Toast from "~/components/Toast";
 import { exportPlaylistAsM3U } from "~/modules/backup/M3U";
 
 export function ExportM3USheet(props: { ref: TrueSheetRef; id: string }) {
@@ -30,9 +29,9 @@ export function ExportM3USheet(props: { ref: TrueSheetRef; id: string }) {
     setIsExporting(true);
     try {
       await exportPlaylistAsM3U(props.id, selectedIdx === 0);
-      toast(t("feat.backup.extra.exportSuccess"), ToastOptions);
+      Toast.tSuccess("feat.backup.extra.exportSuccess");
     } catch (err) {
-      toast.error((err as Error).message, ToastOptions);
+      Toast.error((err as Error).message);
     } finally {
       setIsExporting(false);
     }

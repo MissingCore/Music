@@ -1,4 +1,3 @@
-import { toast } from "@backpackapp-io/react-native-toast";
 import { createId } from "@paralleldrive/cuid2";
 import TrackPlayer from "react-native-track-player";
 
@@ -10,11 +9,11 @@ import { playbackStore } from "../store";
 import { extractTrackId, getTrackIdsList, getUpdatedLists } from "../utils";
 import { preferenceStore } from "../../Preference/store";
 
-import { ToastOptions } from "~/lib/toast";
 import { clamp } from "~/utils/number";
 import { moveArray } from "~/utils/object";
 import { bgWait } from "~/utils/promise";
 import { isString } from "~/utils/validation";
+import Toast from "~/components/Toast";
 
 interface QueueInsertionProps {
   id: string | string[];
@@ -212,7 +211,7 @@ function insertIntoQueue({
   after,
 }: QueueInsertionProps & { after: number }) {
   const { queue, numQueuedNext } = playbackStore.getState();
-  toast(i18next.t("feat.queue.extra.toast", { name }), ToastOptions);
+  Toast.success(i18next.t("feat.queue.extra.toast", { name }));
 
   if (queue.length === 0) return;
   const uniqueId = createId();

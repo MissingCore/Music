@@ -1,5 +1,3 @@
-import { toast } from "@backpackapp-io/react-native-toast";
-
 import { db } from "~/db";
 import { tracksToLyrics } from "~/db/schema";
 
@@ -7,7 +5,7 @@ import i18next from "~/modules/i18n";
 import { queries as q } from "~/data/keyStore";
 
 import { queryClient } from "~/lib/react-query";
-import { ToastOptions } from "~/lib/toast";
+import Toast from "~/components/Toast";
 
 export async function linkTrackToLyric(
   entry: { name: string; trackId: string; lyricId: string },
@@ -27,7 +25,5 @@ export async function linkTrackToLyric(
   queryClient.invalidateQueries({
     queryKey: q.lyrics.detail(entry.lyricId).queryKey,
   });
-  if (toastLinkage) {
-    toast(i18next.t("template.entryAdded", { name }), ToastOptions);
-  }
+  if (toastLinkage) Toast.success(i18next.t("template.entryAdded", { name }));
 }

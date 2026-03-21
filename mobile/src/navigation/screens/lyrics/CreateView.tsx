@@ -1,14 +1,12 @@
-import { toast } from "@backpackapp-io/react-native-toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQueryClient } from "@tanstack/react-query";
-import { useTranslation } from "react-i18next";
 
 import { queries as q } from "~/data/keyStore";
 import { createLyric } from "~/data/lyric/api";
 
-import { ToastOptions } from "~/lib/toast";
+import Toast from "~/components/Toast";
 import { ModifyLyricBase } from "./components/ModifyViewBase";
 import { linkTrackToLyric } from "./helpers/linkTrackToLyric";
 
@@ -19,7 +17,6 @@ export default function CreateLyric({
     params: { linkTo },
   },
 }: Props) {
-  const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const queryClient = useQueryClient();
 
@@ -38,7 +35,7 @@ export default function CreateLyric({
           queryClient.invalidateQueries({ queryKey: q.lyrics._def });
           navigation.replace("Lyric", { id: newLyric.id });
         } catch {
-          toast.error(t("err.flow.generic.title"), ToastOptions);
+          Toast.tError("err.flow.generic.title");
         }
       }}
     />

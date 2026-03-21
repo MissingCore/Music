@@ -1,9 +1,7 @@
-import { toast } from "@backpackapp-io/react-native-toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQueryClient } from "@tanstack/react-query";
-import { useTranslation } from "react-i18next";
 
 import { queries as q } from "~/data/keyStore";
 import { updatePlaylist } from "~/data/playlist/api";
@@ -16,7 +14,7 @@ import {
   usePreloadReferenceData,
 } from "./components/ModifyViewBase";
 
-import { ToastOptions } from "~/lib/toast";
+import Toast from "~/components/Toast";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -25,7 +23,6 @@ export default function ModifyPlaylist({
     params: { id },
   },
 }: Props) {
-  const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const queryClient = useQueryClient();
   const playlistQuery = usePlaylist(id);
@@ -91,7 +88,7 @@ export default function ModifyPlaylist({
             navigation.replace("Playlist", { id: newName });
           }
         } catch {
-          toast.error(t("err.flow.generic.title"), ToastOptions);
+          Toast.tError("err.flow.generic.title");
         }
       }}
     />

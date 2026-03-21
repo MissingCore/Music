@@ -1,4 +1,3 @@
-import { toast } from "@backpackapp-io/react-native-toast";
 import { getActualPath } from "@missingcore/react-native-actual-path";
 import { Directory } from "expo-file-system";
 import { useTranslation } from "react-i18next";
@@ -11,7 +10,6 @@ import { CreateNewFolder } from "~/resources/icons/CreateNewFolder";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 
 import { pickDirectory } from "~/lib/file-system";
-import { ToastOptions } from "~/lib/toast";
 import { addTrailingSlash, getSafeUri } from "~/utils/string";
 import { FlatList } from "~/components/Base/List";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
@@ -20,6 +18,7 @@ import { Marquee } from "~/components/Marquee";
 import { DetachedSheet } from "~/components/Sheet";
 import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
+import Toast from "~/components/Toast";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { useInputForm } from "~/modules/form/useInputForm";
 
@@ -82,7 +81,7 @@ function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
       }));
     },
     onError: (trimmedPath) => {
-      toast.error(t("template.notFound", { name: trimmedPath }), ToastOptions);
+      Toast.error(t("template.notFound", { name: trimmedPath }));
     },
     onConstraints: (trimmedPath) => {
       return (
@@ -146,7 +145,7 @@ async function pickPath() {
   try {
     dir = await pickDirectory();
   } catch {
-    toast.error(i18next.t("err.msg.actionCancel"), ToastOptions);
+    Toast.tError("err.msg.actionCancel");
     return;
   }
 
@@ -164,7 +163,7 @@ async function pickPath() {
   } catch {}
 
   if (!dirUri) {
-    toast.error(i18next.t("err.flow.generic.title"), ToastOptions);
+    Toast.tError("err.flow.generic.title");
     return;
   }
 
@@ -175,9 +174,6 @@ function removePath(filterList: FilterList, removedPath: string) {
   preferenceStore.setState((prev) => ({
     [filterList]: prev[filterList].filter((path) => path !== removedPath),
   }));
-  toast(
-    i18next.t("template.entryRemoved", { name: removedPath }),
-    ToastOptions,
-  );
+  Toast.success(i18next.t("template.entryRemoved", { name: removedPath }));
 }
 //#endregion

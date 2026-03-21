@@ -1,4 +1,3 @@
-import { toast } from "@backpackapp-io/react-native-toast";
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -13,7 +12,6 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { z } from "zod/mini";
 
-import i18next from "~/modules/i18n";
 import { Add } from "~/resources/icons/Add";
 import { Cancel } from "~/resources/icons/Cancel";
 import { CheckCircle } from "~/resources/icons/CheckCircle";
@@ -30,7 +28,6 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { AddMusicSheet } from "../sheets/AddMusicSheet";
 
 import { cn } from "~/lib/style";
-import { ToastOptions } from "~/lib/toast";
 import { moveArray } from "~/utils/object";
 import { wait } from "~/utils/promise";
 import {
@@ -45,6 +42,7 @@ import { RemovableItem } from "~/components/List/RemovableItem";
 import { ModalTemplate } from "~/components/Modal";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import Toast from "~/components/Toast";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { readM3UPlaylist } from "~/modules/backup/M3U";
 import { ZSchema } from "~/modules/form/utils";
@@ -184,6 +182,7 @@ function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
 
 //#region Add Tracks Sheet
 function AddTracksSheet(props: { ref: TrueSheetRef }) {
+  const { t } = useTranslation();
   const { setFields } = useFormState();
 
   const searchCallbacks: Pick<SearchCallbacks, "album" | "folder" | "track"> =
@@ -196,10 +195,7 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
               tracks.map((t) => t.id),
             ),
           }));
-          toast(
-            i18next.t("template.entryAdded", { name: album.name }),
-            ToastOptions,
-          );
+          Toast.success(t("template.entryAdded", { name: album.name }));
         },
         folder: ({ name, tracks }) => {
           setFields((prev) => ({
@@ -208,7 +204,7 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
               tracks.map((t) => t.id),
             ),
           }));
-          toast(i18next.t("template.entryAdded", { name }), ToastOptions);
+          Toast.success(t("template.entryAdded", { name }));
         },
         track: (track) => {
           setFields((prev) => ({
@@ -216,13 +212,10 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
               .filter((tId) => track.id !== tId)
               .concat(track.id),
           }));
-          toast(
-            i18next.t("template.entryAdded", { name: track.name }),
-            ToastOptions,
-          );
+          Toast.success(t("template.entryAdded", { name: track.name }));
         },
       }),
-      [setFields],
+      [t, setFields],
     );
 
   return <AddMusicSheet ref={props.ref} callbacks={searchCallbacks} />;
@@ -356,14 +349,13 @@ const RenderItem = memo(
 function ImportM3UWorkflow({
   floatingContentProps,
 }: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
-  const { t } = useTranslation();
   const { data, setFields, isSubmitting, setIsSubmitting } = useFormState();
 
   const onImport = async () => {
     setIsSubmitting(true);
     try {
       const { name, tracks: playlistTracks } = await readM3UPlaylist();
-      toast(t("feat.backup.extra.importSuccess"), ToastOptions);
+      Toast.tSuccess("feat.backup.extra.importSuccess");
       await wait(100);
       const updatedFields: Partial<PlaylistEntry> = {
         trackIds: playlistTracks.map((t) => t.id),
@@ -371,7 +363,7 @@ function ImportM3UWorkflow({
       if (!data.name && !!name) updatedFields.name = name;
       setFields(updatedFields);
     } catch (err) {
-      toast.error((err as Error).message, ToastOptions);
+      Toast.error((err as Error).message);
     } finally {
       setIsSubmitting(false);
     }

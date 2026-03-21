@@ -1,9 +1,7 @@
-import { toast } from "@backpackapp-io/react-native-toast";
 import { useMutation } from "@tanstack/react-query";
 import { getDocumentAsync } from "expo-document-picker";
 import { File } from "expo-file-system";
 import { eq, inArray } from "drizzle-orm";
-import { useTranslation } from "react-i18next";
 import { z } from "zod/mini";
 
 import { db } from "~/db";
@@ -22,7 +20,7 @@ import { mergeTracks } from "~/data/track/utils";
 
 import { pickDirectory } from "~/lib/file-system";
 import { clearAllQueries } from "~/lib/react-query";
-import { ToastOptions } from "~/lib/toast";
+import Toast from "~/components/Toast";
 import { ZSchema } from "../form/utils";
 import { FavoritesPlaylistKey } from "../media/constants";
 
@@ -209,28 +207,26 @@ async function importBackup() {
 
 //#region Mutation Hooks
 export const useExportBackup = () => {
-  const { t } = useTranslation();
   return useMutation({
     mutationFn: exportBackup,
     onSuccess: () => {
-      toast(t("feat.backup.extra.exportSuccess"), ToastOptions);
+      Toast.tSuccess("feat.backup.extra.exportSuccess");
     },
     onError: (err) => {
-      toast.error(err.message, ToastOptions);
+      Toast.error(err.message);
     },
   });
 };
 
 export const useImportBackup = () => {
-  const { t } = useTranslation();
   return useMutation({
     mutationFn: importBackup,
     onSuccess: () => {
       clearAllQueries();
-      toast(t("feat.backup.extra.importSuccess"), ToastOptions);
+      Toast.tSuccess("feat.backup.extra.importSuccess");
     },
     onError: (err) => {
-      toast.error(err.message, ToastOptions);
+      Toast.error(err.message);
     },
   });
 };

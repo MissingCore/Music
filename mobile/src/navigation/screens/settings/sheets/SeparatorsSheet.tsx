@@ -1,4 +1,3 @@
-import { toast } from "@backpackapp-io/react-native-toast";
 import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
 
@@ -8,7 +7,6 @@ import { Close } from "~/resources/icons/Close";
 import { Info } from "~/resources/icons/Info";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 
-import { ToastOptions } from "~/lib/toast";
 import { FlatList } from "~/components/Base/List";
 import { Divider } from "~/components/Divider";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
@@ -17,6 +15,7 @@ import { Marquee } from "~/components/Marquee";
 import { DetachedSheet } from "~/components/Sheet";
 import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
+import Toast from "~/components/Toast";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { useInputForm } from "~/modules/form/useInputForm";
 
@@ -117,9 +116,6 @@ function removeSeparator(removedSeparator: string) {
       (separator) => separator !== removedSeparator,
     ),
   }));
-  toast(
-    i18next.t("template.entryRemoved", { name: removedSeparator }),
-    ToastOptions,
-  );
+  Toast.success(i18next.t("template.entryRemoved", { name: removedSeparator }));
 }
 //#endregion
