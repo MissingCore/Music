@@ -42,7 +42,7 @@ import { RemovableItem } from "~/components/List/RemovableItem";
 import { ModalTemplate } from "~/components/Modal";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import Toast from "~/components/Toast";
+import { toast } from "~/components/Toast";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { readM3UPlaylist } from "~/modules/backup/M3U";
 import { ZSchema } from "~/modules/form/utils";
@@ -195,7 +195,7 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
               tracks.map((t) => t.id),
             ),
           }));
-          Toast.success(t("template.entryAdded", { name: album.name }));
+          toast(t("template.entryAdded", { name: album.name }));
         },
         folder: ({ name, tracks }) => {
           setFields((prev) => ({
@@ -204,7 +204,7 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
               tracks.map((t) => t.id),
             ),
           }));
-          Toast.success(t("template.entryAdded", { name }));
+          toast(t("template.entryAdded", { name }));
         },
         track: (track) => {
           setFields((prev) => ({
@@ -212,7 +212,7 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
               .filter((tId) => track.id !== tId)
               .concat(track.id),
           }));
-          Toast.success(t("template.entryAdded", { name: track.name }));
+          toast(t("template.entryAdded", { name: track.name }));
         },
       }),
       [t, setFields],
@@ -355,7 +355,7 @@ function ImportM3UWorkflow({
     setIsSubmitting(true);
     try {
       const { name, tracks: playlistTracks } = await readM3UPlaylist();
-      Toast.tSuccess("feat.backup.extra.importSuccess");
+      toast.t("feat.backup.extra.importSuccess");
       await wait(100);
       const updatedFields: Partial<PlaylistEntry> = {
         trackIds: playlistTracks.map((t) => t.id),
@@ -363,7 +363,7 @@ function ImportM3UWorkflow({
       if (!data.name && !!name) updatedFields.name = name;
       setFields(updatedFields);
     } catch (err) {
-      Toast.error((err as Error).message);
+      toast.error((err as Error).message);
     } finally {
       setIsSubmitting(false);
     }

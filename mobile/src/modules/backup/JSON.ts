@@ -20,7 +20,7 @@ import { mergeTracks } from "~/data/track/utils";
 
 import { pickDirectory } from "~/lib/file-system";
 import { clearAllQueries } from "~/lib/react-query";
-import Toast from "~/components/Toast";
+import { toast } from "~/components/Toast";
 import { ZSchema } from "../form/utils";
 import { FavoritesPlaylistKey } from "../media/constants";
 
@@ -210,10 +210,10 @@ export const useExportBackup = () => {
   return useMutation({
     mutationFn: exportBackup,
     onSuccess: () => {
-      Toast.tSuccess("feat.backup.extra.exportSuccess");
+      toast.t("feat.backup.extra.exportSuccess");
     },
     onError: (err) => {
-      Toast.error(err.message);
+      toast.error(err.message);
     },
   });
 };
@@ -223,10 +223,10 @@ export const useImportBackup = () => {
     mutationFn: importBackup,
     onSuccess: () => {
       clearAllQueries();
-      Toast.tSuccess("feat.backup.extra.importSuccess");
+      toast.t("feat.backup.extra.importSuccess");
     },
     onError: (err) => {
-      Toast.error(err.message);
+      toast.error(err.message);
     },
   });
 };

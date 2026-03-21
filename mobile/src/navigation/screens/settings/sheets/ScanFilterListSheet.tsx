@@ -18,7 +18,7 @@ import { Marquee } from "~/components/Marquee";
 import { DetachedSheet } from "~/components/Sheet";
 import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import Toast from "~/components/Toast";
+import { toast } from "~/components/Toast";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { useInputForm } from "~/modules/form/useInputForm";
 
@@ -81,7 +81,7 @@ function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
       }));
     },
     onError: (trimmedPath) => {
-      Toast.error(t("template.notFound", { name: trimmedPath }));
+      toast.error(t("template.notFound", { name: trimmedPath }));
     },
     onConstraints: (trimmedPath) => {
       return (
@@ -145,7 +145,7 @@ async function pickPath() {
   try {
     dir = await pickDirectory();
   } catch {
-    Toast.tError("err.msg.actionCancel");
+    toast.tError("err.msg.actionCancel");
     return;
   }
 
@@ -163,7 +163,7 @@ async function pickPath() {
   } catch {}
 
   if (!dirUri) {
-    Toast.tError("err.flow.generic.title");
+    toast.tError("err.flow.generic.title");
     return;
   }
 
@@ -174,6 +174,6 @@ function removePath(filterList: FilterList, removedPath: string) {
   preferenceStore.setState((prev) => ({
     [filterList]: prev[filterList].filter((path) => path !== removedPath),
   }));
-  Toast.success(i18next.t("template.entryRemoved", { name: removedPath }));
+  toast(i18next.t("template.entryRemoved", { name: removedPath }));
 }
 //#endregion

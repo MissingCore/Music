@@ -15,7 +15,7 @@ import { Marquee } from "~/components/Marquee";
 import { DetachedSheet } from "~/components/Sheet";
 import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import Toast from "~/components/Toast";
+import { toast } from "~/components/Toast";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { useInputForm } from "~/modules/form/useInputForm";
 
@@ -116,6 +116,6 @@ function removeSeparator(removedSeparator: string) {
       (separator) => separator !== removedSeparator,
     ),
   }));
-  Toast.success(i18next.t("template.entryRemoved", { name: removedSeparator }));
+  toast(i18next.t("template.entryRemoved", { name: removedSeparator }));
 }
 //#endregion

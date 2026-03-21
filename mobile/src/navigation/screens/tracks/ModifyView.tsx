@@ -38,7 +38,7 @@ import { ExtendedTButton } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import Toast from "~/components/Toast";
+import { toast } from "~/components/Toast";
 import { StyledText } from "~/components/Typography/StyledText";
 import { ZSchema } from "~/modules/form/utils";
 import {
@@ -339,7 +339,7 @@ async function onEditTrack(data: TrackMetadata) {
     clearAllQueries();
     router.back();
   } catch {
-    Toast.tError("err.flow.generic.title");
+    toast.tError("err.flow.generic.title");
   }
 }
 //#endregion

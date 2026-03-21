@@ -13,7 +13,7 @@ import { wait } from "~/utils/promise";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { ModalTemplate } from "~/components/Modal";
-import Toast from "~/components/Toast";
+import { toast } from "~/components/Toast";
 import { ZSchema } from "~/modules/form/utils";
 import {
   FormStateProvider,
@@ -80,11 +80,11 @@ function ImportWorkflow({
     setIsSubmitting(true);
     try {
       const { name, contents } = await readLyricFile();
-      Toast.tSuccess("feat.backup.extra.importSuccess");
+      toast.t("feat.backup.extra.importSuccess");
       await wait(100);
       setFields({ name, lyrics: contents });
     } catch (err) {
-      Toast.error((err as Error).message);
+      toast.error((err as Error).message);
     } finally {
       setIsSubmitting(false);
     }

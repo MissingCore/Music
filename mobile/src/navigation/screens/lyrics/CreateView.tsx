@@ -6,7 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { queries as q } from "~/data/keyStore";
 import { createLyric } from "~/data/lyric/api";
 
-import Toast from "~/components/Toast";
+import { toast } from "~/components/Toast";
 import { ModifyLyricBase } from "./components/ModifyViewBase";
 import { linkTrackToLyric } from "./helpers/linkTrackToLyric";
 
@@ -35,7 +35,7 @@ export default function CreateLyric({
           queryClient.invalidateQueries({ queryKey: q.lyrics._def });
           navigation.replace("Lyric", { id: newLyric.id });
         } catch {
-          Toast.tError("err.flow.generic.title");
+          toast.tError("err.flow.generic.title");
         }
       }}
     />

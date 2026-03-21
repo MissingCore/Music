@@ -13,7 +13,7 @@ import { clamp } from "~/utils/number";
 import { moveArray } from "~/utils/object";
 import { bgWait } from "~/utils/promise";
 import { isString } from "~/utils/validation";
-import Toast from "~/components/Toast";
+import { toast } from "~/components/Toast";
 
 interface QueueInsertionProps {
   id: string | string[];
@@ -211,7 +211,7 @@ function insertIntoQueue({
   after,
 }: QueueInsertionProps & { after: number }) {
   const { queue, numQueuedNext } = playbackStore.getState();
-  Toast.success(i18next.t("feat.queue.extra.toast", { name }));
+  toast(i18next.t("feat.queue.extra.toast", { name }));
 
   if (queue.length === 0) return;
   const uniqueId = createId();

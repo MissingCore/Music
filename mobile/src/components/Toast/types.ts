@@ -1,6 +1,8 @@
+export type ToastType = "default" | "error";
+
 export type Toast = {
   id: string;
-  type?: "default" | "error";
+  type?: ToastType;
   message: string;
   /**
    * Defaults `true`. If `false`, toast won't auto-dismiss until another

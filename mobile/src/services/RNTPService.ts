@@ -19,7 +19,7 @@ import { router } from "~/navigation/utils/router";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { bgWait } from "~/utils/promise";
-import Toast from "~/components/Toast";
+import { toast } from "~/components/Toast";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
 
@@ -243,7 +243,7 @@ export async function PlaybackService() {
         }
       }
 
-      Toast.error(i18next.t("template.notFound", { name: erroredTrack.title }));
+      toast.error(i18next.t("template.notFound", { name: erroredTrack.title }));
     } else {
       // If we get this event when there's no active track, just reset.
       await playbackStore.getState().reset();

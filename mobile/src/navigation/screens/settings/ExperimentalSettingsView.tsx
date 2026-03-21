@@ -10,7 +10,7 @@ import { sessionStore } from "~/stores/Session/store";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 
 import { SegmentedList } from "~/components/List/Segmented";
-import Toast from "~/components/Toast";
+import { toast } from "~/components/Toast";
 import { Switch } from "~/components/UI/Switch";
 
 export default function ExperimentalSettings() {
@@ -50,6 +50,6 @@ async function purgeWaveformCache() {
   // eslint-disable-next-line drizzle/enforce-delete-with-where
   await db.delete(waveformSamples);
   sessionStore.setState({ activeWaveformContext: null });
-  Toast.tSuccess("feat.waveformSlider.extra.purgeCacheToast");
+  toast.t("feat.waveformSlider.extra.purgeCacheToast");
 }
 //#endregion

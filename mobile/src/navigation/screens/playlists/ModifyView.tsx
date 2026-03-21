@@ -14,7 +14,7 @@ import {
   usePreloadReferenceData,
 } from "./components/ModifyViewBase";
 
-import Toast from "~/components/Toast";
+import { toast } from "~/components/Toast";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -88,7 +88,7 @@ export default function ModifyPlaylist({
             navigation.replace("Playlist", { id: newName });
           }
         } catch {
-          Toast.tError("err.flow.generic.title");
+          toast.tError("err.flow.generic.title");
         }
       }}
     />

@@ -5,7 +5,7 @@ import i18next from "~/modules/i18n";
 import { queries as q } from "~/data/keyStore";
 
 import { queryClient } from "~/lib/react-query";
-import Toast from "~/components/Toast";
+import { toast } from "~/components/Toast";
 
 export async function linkTrackToLyric(
   entry: { name: string; trackId: string; lyricId: string },
@@ -25,5 +25,5 @@ export async function linkTrackToLyric(
   queryClient.invalidateQueries({
     queryKey: q.lyrics.detail(entry.lyricId).queryKey,
   });
-  if (toastLinkage) Toast.success(i18next.t("template.entryAdded", { name }));
+  if (toastLinkage) toast(i18next.t("template.entryAdded", { name }));
 }

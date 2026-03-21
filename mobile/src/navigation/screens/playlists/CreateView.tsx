@@ -11,7 +11,7 @@ import {
   usePreloadReferenceData,
 } from "./components/ModifyViewBase";
 
-import Toast from "~/components/Toast";
+import { toast } from "~/components/Toast";
 
 export default function CreatePlaylist() {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
@@ -34,7 +34,7 @@ export default function CreatePlaylist() {
           queryClient.invalidateQueries({ queryKey: ["search"] });
           navigation.replace("Playlist", { id: name });
         } catch {
-          Toast.tError("err.flow.generic.title");
+          toast.tError("err.flow.generic.title");
         }
       }}
     />

@@ -9,14 +9,14 @@ import { Resynchronize } from "~/stores/Playback/actions";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
-import Toast from "~/components/Toast";
+import { toast } from "~/components/Toast";
 import { findAndSaveArtwork } from "./artwork";
 import { findAndSaveAudio } from "./audio";
 import { AppCleanUp } from "./cleanup";
 
 /** Look through our library for any new or updated tracks. */
 export async function rescanForTracks(deepScan = false) {
-  Toast.tSuccess("feat.rescan.extra.start", false);
+  toast.t("feat.rescan.extra.start", false);
 
   try {
     // Slight buffer before we run our code due to the code blocking the
@@ -67,10 +67,10 @@ export async function rescanForTracks(deepScan = false) {
     // Ensure queries are all up-to-date.
     clearAllQueries();
 
-    Toast.tSuccess("feat.rescan.extra.success");
+    toast.t("feat.rescan.extra.success");
   } catch (err) {
     console.log(err);
-    Toast.tError("feat.rescan.extra.fail");
+    toast.tError("feat.rescan.extra.fail");
   }
 }
 

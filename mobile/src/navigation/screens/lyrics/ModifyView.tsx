@@ -8,7 +8,7 @@ import { useLyric } from "~/data/lyric/queries";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
-import Toast from "~/components/Toast";
+import { toast } from "~/components/Toast";
 import { ModifyLyricBase } from "./components/ModifyViewBase";
 
 type Props = StaticScreenProps<{ id: string }>;
@@ -38,7 +38,7 @@ export default function ModifyLyric({
           queryClient.resetQueries({ queryKey: q.lyrics._def });
           navigation.goBack();
         } catch {
-          Toast.tError("err.flow.generic.title");
+          toast.tError("err.flow.generic.title");
         }
       }}
     />
