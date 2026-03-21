@@ -1,3 +1,4 @@
+import { toast } from "@missingcore/toast";
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -42,7 +43,6 @@ import { RemovableItem } from "~/components/List/RemovableItem";
 import { ModalTemplate } from "~/components/Modal";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { toast } from "~/components/Toast";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { readM3UPlaylist } from "~/modules/backup/M3U";
 import { ZSchema } from "~/modules/form/utils";

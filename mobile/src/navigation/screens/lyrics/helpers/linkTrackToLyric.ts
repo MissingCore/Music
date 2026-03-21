@@ -1,3 +1,5 @@
+import { toast } from "@missingcore/toast";
+
 import { db } from "~/db";
 import { tracksToLyrics } from "~/db/schema";
 
@@ -5,7 +7,6 @@ import i18next from "~/modules/i18n";
 import { queries as q } from "~/data/keyStore";
 
 import { queryClient } from "~/lib/react-query";
-import { toast } from "~/components/Toast";
 
 export async function linkTrackToLyric(
   entry: { name: string; trackId: string; lyricId: string },

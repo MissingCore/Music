@@ -1,3 +1,4 @@
+import { toast } from "@missingcore/toast";
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
@@ -13,7 +14,6 @@ import { wait } from "~/utils/promise";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { ModalTemplate } from "~/components/Modal";
-import { toast } from "~/components/Toast";
 import { ZSchema } from "~/modules/form/utils";
 import {
   FormStateProvider,

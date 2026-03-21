@@ -1,3 +1,4 @@
+import { Toaster } from "@missingcore/toast";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { NavigationBar } from "@zoontek/react-native-navigation-bar";
 import { StatusBar, View } from "react-native";
@@ -14,7 +15,6 @@ import { useCurrentTheme } from "~/hooks/useTheme";
 
 import { queryClient } from "~/lib/react-query";
 import { GestureHandlerRootView } from "~/components/Base/GestureHandlerRootView";
-import { Toaster } from "~/components/Toast/Toaster";
 
 /** All providers used by the app. */
 export function AppProvider(props: { children: React.ReactNode }) {

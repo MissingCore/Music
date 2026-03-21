@@ -1,3 +1,4 @@
+import { toast } from "@missingcore/toast";
 import { useMutation } from "@tanstack/react-query";
 import { and, eq, isNull } from "drizzle-orm";
 
@@ -9,7 +10,6 @@ import { Resynchronize } from "~/stores/Playback/actions";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
-import { toast } from "~/components/Toast";
 import { findAndSaveArtwork } from "./artwork";
 import { findAndSaveAudio } from "./audio";
 import { AppCleanUp } from "./cleanup";

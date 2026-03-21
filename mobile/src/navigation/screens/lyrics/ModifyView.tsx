@@ -1,3 +1,4 @@
+import { toast } from "@missingcore/toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
@@ -8,7 +9,6 @@ import { useLyric } from "~/data/lyric/queries";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
-import { toast } from "~/components/Toast";
 import { ModifyLyricBase } from "./components/ModifyViewBase";
 
 type Props = StaticScreenProps<{ id: string }>;

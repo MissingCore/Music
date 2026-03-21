@@ -1,3 +1,4 @@
+import { toast } from "@missingcore/toast";
 import { createId } from "@paralleldrive/cuid2";
 import TrackPlayer from "react-native-track-player";
 
@@ -13,7 +14,6 @@ import { clamp } from "~/utils/number";
 import { moveArray } from "~/utils/object";
 import { bgWait } from "~/utils/promise";
 import { isString } from "~/utils/validation";
-import { toast } from "~/components/Toast";
 
 interface QueueInsertionProps {
   id: string | string[];

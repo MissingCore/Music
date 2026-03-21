@@ -1,3 +1,4 @@
+import { toast } from "@missingcore/toast";
 import { useTranslation } from "react-i18next";
 
 import { db } from "~/db";
@@ -10,7 +11,6 @@ import { sessionStore } from "~/stores/Session/store";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 
 import { SegmentedList } from "~/components/List/Segmented";
-import { toast } from "~/components/Toast";
 import { Switch } from "~/components/UI/Switch";
 
 export default function ExperimentalSettings() {

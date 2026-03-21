@@ -1,3 +1,4 @@
+import { toast } from "@missingcore/toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -13,8 +14,6 @@ import {
   ModifyPlaylistBase,
   usePreloadReferenceData,
 } from "./components/ModifyViewBase";
-
-import { toast } from "~/components/Toast";
 
 type Props = StaticScreenProps<{ id: string }>;
 

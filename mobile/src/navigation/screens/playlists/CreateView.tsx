@@ -1,3 +1,4 @@
+import { toast } from "@missingcore/toast";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQueryClient } from "@tanstack/react-query";
@@ -10,8 +11,6 @@ import {
   ModifyPlaylistBase,
   usePreloadReferenceData,
 } from "./components/ModifyViewBase";
-
-import { toast } from "~/components/Toast";
 
 export default function CreatePlaylist() {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();

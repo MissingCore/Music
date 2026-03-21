@@ -4,6 +4,7 @@ import {
   GlyphToy,
   MatrixAction,
 } from "@missingcore/music-glyph-toys";
+import { toast } from "@missingcore/toast";
 import TrackPlayer, { Event, State } from "react-native-track-player";
 
 import i18next from "~/modules/i18n";
@@ -19,7 +20,6 @@ import { router } from "~/navigation/utils/router";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { bgWait } from "~/utils/promise";
-import { toast } from "~/components/Toast";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
 
