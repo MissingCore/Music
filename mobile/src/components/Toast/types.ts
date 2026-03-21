@@ -1,5 +1,5 @@
 export type Toast = {
-  key: string;
+  id: string;
   type?: "default" | "error";
   message: string;
   /**

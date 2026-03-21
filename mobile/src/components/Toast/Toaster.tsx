@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useWindowDimensions } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
@@ -25,7 +25,7 @@ export function Toaster() {
   return visibleToasts.map((toast, index) => (
     <ToastItem
       //? The `key` is to prevent re-mounting when the other toast is removed.
-      key={toast.key}
+      key={toast.id}
       toast={toast}
       exiting={index === 0 && visibleToasts.length > 1}
     />
@@ -35,11 +35,16 @@ export function Toaster() {
 function ToastItem({ toast, exiting }: { toast: Toast; exiting?: boolean }) {
   const insets = useSafeAreaInsets();
   const windowDimensions = useWindowDimensions();
-  const onRemove = useToastStore((s) => s.shiftToast);
+  const removeToast = useToastStore((s) => s.removeToast);
   const animationState = useSharedValue(0);
   const toastHeight = useSharedValue(0);
 
   const topOffset = insets.top + 16;
+
+  const onRemove = useCallback(
+    () => removeToast(toast.id),
+    [removeToast, toast.id],
+  );
 
   //#region Dismiss Gesture
   const panAmount = useSharedValue(0);

@@ -6,14 +6,14 @@ import { toastStore } from "./store";
 
 const Toast = {
   success: (message: string, autoDismiss = true) => {
-    const newToast = { key: createId(), message, autoDismiss };
+    const newToast = { id: createId(), message, autoDismiss };
     toastStore.setState((prev) => ({ toasts: [...prev.toasts, newToast] }));
   },
   tSuccess: (message: ParseKeys, autoDismiss = true) => {
     toastStore.setState((prev) => ({
       toasts: [
         ...prev.toasts,
-        { key: createId(), message: i18next.t(message), autoDismiss },
+        { id: createId(), message: i18next.t(message), autoDismiss },
       ],
     }));
   },
@@ -22,7 +22,7 @@ const Toast = {
     toastStore.setState((prev) => ({
       toasts: [
         ...prev.toasts,
-        { key: createId(), type: "error", message, autoDismiss },
+        { id: createId(), type: "error", message, autoDismiss },
       ],
     }));
   },
@@ -31,7 +31,7 @@ const Toast = {
       toasts: [
         ...prev.toasts,
         {
-          key: createId(),
+          id: createId(),
           type: "error",
           message: i18next.t(message),
           autoDismiss,

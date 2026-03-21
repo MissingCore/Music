@@ -5,14 +5,13 @@ import type { Toast } from "./types";
 
 interface ToastStore {
   toasts: Toast[];
-  /** Pops the first toast. */
-  shiftToast: VoidFunction;
+  removeToast: (toastId: string) => void;
 }
 
 export const toastStore = createStore<ToastStore>()((set) => ({
   toasts: [],
-  shiftToast: () => {
-    set((prev) => ({ toasts: prev.toasts.slice(1) }));
+  removeToast: (toastId) => {
+    set((prev) => ({ toasts: prev.toasts.filter((t) => t.id !== toastId) }));
   },
 }));
 
