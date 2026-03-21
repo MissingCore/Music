@@ -16,7 +16,7 @@ import { AppCleanUp } from "./cleanup";
 
 /** Look through our library for any new or updated tracks. */
 export async function rescanForTracks(deepScan = false) {
-  toast.t("feat.rescan.extra.start", false);
+  toast.t("feat.rescan.extra.start", { autoDismiss: false });
 
   try {
     // Slight buffer before we run our code due to the code blocking the

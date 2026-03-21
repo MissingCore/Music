@@ -1,6 +1,6 @@
 export type ToastType = "default" | "error";
 
-export type Toast = {
+export interface Toast {
   id: string;
   type?: ToastType;
   message: string;
@@ -9,4 +9,6 @@ export type Toast = {
    * toast is queued.
    */
   autoDismiss?: boolean;
-};
+}
+
+export type ToastOptions = Partial<Pick<Toast, "autoDismiss">>;
