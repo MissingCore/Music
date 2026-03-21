@@ -12,7 +12,7 @@ export function AddMusicSheet(props: {
   callbacks: Pick<SearchCallbacks, (typeof searchScope)[number]>;
 }) {
   return (
-    <DetachedSheet ref={props.ref} keyboardAndToast snapTop>
+    <DetachedSheet ref={props.ref} snapTop>
       <SearchEngine
         searchScope={searchScope}
         callbacks={props.callbacks}

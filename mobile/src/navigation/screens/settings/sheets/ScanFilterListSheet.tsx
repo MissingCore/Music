@@ -38,7 +38,6 @@ export function ScanFilterListSheet(props: {
     <DetachedSheet
       ref={props.ref}
       titleKey={`feat.${props.listType}.title`}
-      keyboardAndToast
       snapTop
     >
       <TStyledText
