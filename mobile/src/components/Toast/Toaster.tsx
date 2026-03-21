@@ -39,7 +39,7 @@ function ToastItem({ toast, exiting }: { toast: Toast; exiting?: boolean }) {
   useEffect(() => {
     animationState.value = withTiming(
       exiting ? 0 : 1,
-      { duration: 500 },
+      undefined,
       (finished) => {
         if (finished && exiting) scheduleOnRN(onRemove);
       },
@@ -49,10 +49,10 @@ function ToastItem({ toast, exiting }: { toast: Toast; exiting?: boolean }) {
     let autoDismissTimer: ReturnType<typeof setTimeout>;
     if (toast.autoDismiss && !exiting) {
       autoDismissTimer = setTimeout(() => {
-        animationState.value = withTiming(0, { duration: 500 }, (finished) => {
+        animationState.value = withTiming(0, undefined, (finished) => {
           if (finished) scheduleOnRN(onRemove);
         });
-      }, 4500);
+      }, 4300);
     }
 
     return () => {
