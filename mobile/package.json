@@ -23,7 +23,6 @@
     "release": "git pull && python ./scripts/release/release_bump.py"
   },
   "dependencies": {
-    "@backpackapp-io/react-native-toast": "0.13.0",
     "@boterop/react-native-background-timer": "2.6.0",
     "@kaannn/react-native-waveform": "0.1.4",
     "@legendapp/list": "2.0.19",
@@ -129,7 +128,6 @@
       "markdown-it": "14.1.1"
     },
     "patchedDependencies": {
-      "@backpackapp-io/react-native-toast": "patches/@backpackapp-io__react-native-toast.patch",
       "react-native-android-widget": "patches/react-native-android-widget.patch",
       "@kaannn/react-native-waveform": "patches/@kaannn__react-native-waveform.patch",
       "@lodev09/react-native-true-sheet": "patches/@lodev09__react-native-true-sheet.patch",
