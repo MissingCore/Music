@@ -13,7 +13,7 @@ import { useToastStore } from "./store";
 import type { Toast } from "./types";
 
 import { cn } from "~/lib/style";
-import { StyledText } from "../Typography/StyledText";
+import { StyledText } from "../../../src/components/Typography/StyledText";
 import { scheduleOnRN } from "react-native-worklets";
 
 export function Toaster() {
