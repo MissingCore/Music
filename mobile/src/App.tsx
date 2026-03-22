@@ -1,6 +1,7 @@
 import { GlyphToy } from "@missingcore/music-glyph-toys";
 import { useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
+import AudioBrowser from "react-native-audio-browser";
 import Bootsplash from "react-native-bootsplash";
 import Animated, {
   useAnimatedStyle,
@@ -8,7 +9,6 @@ import Animated, {
   withDelay,
   withTiming,
 } from "react-native-reanimated";
-import TrackPlayer from "react-native-track-player";
 import { scheduleOnRN } from "react-native-worklets";
 
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
@@ -93,7 +93,7 @@ function handleAppLifeCycle() {
   return () => {
     if (!preferenceStore.getState().continuePlaybackOnDismiss) {
       GlyphToy.disconnect();
-      TrackPlayer.reset().catch();
+      AudioBrowser.reset();
     }
   };
 }

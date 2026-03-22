@@ -2,8 +2,8 @@ import { useNavigation } from "@react-navigation/native";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
+import { usePolledProgress } from "react-native-audio-browser";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useProgress } from "react-native-track-player";
 
 import { useLyricForTrack } from "~/data/lyric/queries";
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -116,8 +116,8 @@ function LyricsContent(props: { trackId: string; offset: number }) {
 
 //#region Synchronized Lyrics
 function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
-  // Use `useProgress` as `Event.PlaybackProgressUpdated` fires once a second.
-  const { position } = useProgress(50, false);
+  // Use `usePolledProgress` as `Event.PlaybackProgressUpdated` fires once a second.
+  const { position } = usePolledProgress(50, false);
   const listRef = useFlatListRef();
   const [activeLineIndex, setActiveLineIndex] = useState(-1);
   const prevActiveLineIndex = useRef(-1);
