@@ -5,7 +5,7 @@ import {
   MatrixAction,
 } from "@missingcore/music-glyph-toys";
 import { toast } from "@missingcore/toast";
-import TrackPlayer, { Event, State } from "react-native-track-player";
+import AudioBrowser from "react-native-audio-browser";
 
 import i18next from "~/modules/i18n";
 import { addPlayedTrack } from "~/data/recent/api";
@@ -57,43 +57,26 @@ export async function PlaybackService() {
     if (action === MatrixAction.SKIP) await PlaybackControls.next();
   });
 
-  TrackPlayer.addEventListener(Event.ServiceKilled, async () => {
-    await revalidateWidgets({ openApp: true });
-  });
+  //! This event doesn't exist.
+  // TrackPlayer.addEventListener(Event.ServiceKilled, async () => {
+  //   await revalidateWidgets({ openApp: true });
+  // });
 
-  //? On some devices (so far OnePlus 6), only `RemotePlayPause` is fired
-  //? instead of `RemotePlay` + `RemotePause` from media control notifications.
-  TrackPlayer.addEventListener(Event.RemotePlayPause, async () => {
-    await PlaybackControls.playToggle();
-  });
-
-  TrackPlayer.addEventListener(Event.RemotePlay, async () => {
-    await PlaybackControls.play();
-  });
-
-  TrackPlayer.addEventListener(Event.RemotePause, async () => {
-    await PlaybackControls.pause();
-  });
-
-  TrackPlayer.addEventListener(Event.RemoteNext, async () => {
-    await PlaybackControls.next();
-  });
-
-  TrackPlayer.addEventListener(Event.RemotePrevious, async () => {
-    await PlaybackControls.prev();
-  });
-
-  TrackPlayer.addEventListener(Event.RemoteSeek, async ({ position }) => {
+  AudioBrowser.handleRemotePlay(PlaybackControls.play);
+  AudioBrowser.handleRemotePause(PlaybackControls.pause);
+  AudioBrowser.handleRemoteNext(PlaybackControls.next);
+  AudioBrowser.handleRemotePrevious(PlaybackControls.prev);
+  AudioBrowser.handleRemoteSeek(async ({ position }) => {
     await PlaybackControls.seekTo(position);
   });
 
-  TrackPlayer.addEventListener(Event.PlaybackState, (e) => {
+  AudioBrowser.onPlaybackChanged.addListener((e) => {
     // Only place where we get notified for unexpected pauses such as
     // when disconnecting headphones.
-    if (e.state === State.Paused) playbackStore.setState({ isPlaying: false });
+    if (e.state === "paused") playbackStore.setState({ isPlaying: false });
   });
 
-  TrackPlayer.addEventListener(Event.PlaybackProgressUpdated, async (e) => {
+  AudioBrowser.onProgressUpdated.addListener(async (e) => {
     playbackStore.setState({ lastPosition: e.position });
 
     const { repeat } = playbackStore.getState();
@@ -126,13 +109,13 @@ export async function PlaybackService() {
         return;
       }
       // Load the next track into the queue for smoother playback.
-      await TrackPlayer.add(formatTrackforPlayer(nextTrackInfo.activeTrack));
+      AudioBrowser.add(formatTrackforPlayer(nextTrackInfo.activeTrack));
     }
   });
 
   // Only triggered if repeat mode is `RepeatMode.Off`. This is also called
   // after the `ServiceKilled` event is emitted.
-  TrackPlayer.addEventListener(Event.PlaybackQueueEnded, async () => {
+  AudioBrowser.onQueueEnded.addListener(async () => {
     const { playbackDelay } = preferenceStore.getState();
     if (playbackDelay > 0) await bgWait(playbackDelay * 1000);
 
@@ -140,7 +123,7 @@ export async function PlaybackService() {
     await PlaybackControls.next(true);
   });
 
-  TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (e) => {
+  AudioBrowser.onActiveTrackChanged.addListener(async (e) => {
     if (e.index === undefined || e.track === undefined) return;
 
     //* 🧪 Smooth Playback Transition
@@ -157,10 +140,10 @@ export async function PlaybackService() {
         isNaturalPlayback = true;
         playbackStore.setState(nextTrackInfo);
         // Ensure the RNTP Queue stores a single track.
-        await TrackPlayer.remove([...new Array(e.index).keys()]);
+        AudioBrowser.remove([...new Array(e.index).keys()]);
       } else {
         // Cleans up the RNTP queue if we use the media controls within the track loading window.
-        await TrackPlayer.removeUpcomingTracks();
+        AudioBrowser.removeUpcomingTracks();
       }
     } catch (err) {
       console.log(err);
@@ -181,11 +164,11 @@ export async function PlaybackService() {
     // track. This prevents updating the new track's play count if we manaully
     // swapped tracks or naturally play the next track when `lastPosition > 10`.
     const startAt =
-      isNaturalPlayback || prevTrackId !== e.track.id ? 0 : lastPosition;
+      isNaturalPlayback || prevTrackId !== e.track?.id ? 0 : lastPosition;
     // Only mark a track as played after we pass the 10s mark. This prevents
     // the track being marked as "played" if we skip it.
     if (startAt < 10) {
-      const activeTrackId: string = e.track.id;
+      const activeTrackId: string = e.track?.id;
       playbackCountUpdator = BackgroundTimer.setTimeout(
         async () => await addPlayedTrack(activeTrackId),
         (Math.min(e.track.duration!, 10) - startAt) * 1000,
@@ -201,21 +184,21 @@ export async function PlaybackService() {
     GlyphToy.setMatrixArtwork(trackArtwork);
 
     await revalidateWidgets();
-    prevTrackId = e.track.id;
+    prevTrackId = e.track?.id;
   });
 
-  TrackPlayer.addEventListener(Event.PlaybackError, async (e) => {
-    // When this event is called, `TrackPlayer.getActiveTrack()` should
+  AudioBrowser.onPlaybackError.addListener(async ({ error: e }) => {
+    // When this event is called, `AudioBrowser.getActiveTrack()` should
     // contain the track that caused the error.
-    const erroredTrack = await TrackPlayer.getActiveTrack();
+    const erroredTrack = AudioBrowser.getActiveTrack();
 
     //! For some weird reason, `PlaybackError` may fire twice for a given track.
     if (erroredTrack) {
-      if (erroredTrackIds.has(erroredTrack.id)) return;
-      erroredTrackIds.add(erroredTrack.id);
+      if (erroredTrackIds.has(erroredTrack?.id)) return;
+      erroredTrackIds.add(erroredTrack?.id);
     }
 
-    if (erroredTrack) {
+    if (e && erroredTrack) {
       // Delete the track that caused the error from certain scenarios.
       //  - We've encountered no code when RNTP naturally plays the next
       //  track that throws an error because it doesn't exist.
@@ -227,12 +210,12 @@ export async function PlaybackService() {
 
         await deleteTracks([
           {
-            id: erroredTrack.id,
+            id: erroredTrack?.id,
             errorInfo: { errorName: e.code, errorMessage },
           },
         ]);
         // Attempt to play the next track.
-        await Queue.removeIds([erroredTrack.id]);
+        await Queue.removeIds([erroredTrack?.id]);
         await AppCleanUp.media();
         clearAllQueries();
 
