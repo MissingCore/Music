@@ -4,21 +4,13 @@ import "intl-pluralrules";
 import { GlyphToy } from "@missingcore/music-glyph-toys";
 import { registerRootComponent } from "expo";
 import { registerWidgetTaskHandler } from "react-native-android-widget";
-import TrackPlayer from "react-native-track-player";
 
 import App from "./src/App";
-import { onAppStartUpInit } from "./src/lib/react-native-audio-browser";
+import { setupBrowser } from "./src/lib/react-native-audio-browser";
 import { PlaybackService } from "./src/services/RNTPService";
 import { widgetTaskHandler } from "./src/modules/widget/WidgetTaskHandler";
 
 registerRootComponent(App);
-/*
-  Create custom entry point to potentially fix issues with
-  `react-native-track-player`.
-*/
-TrackPlayer.registerPlaybackService(() => PlaybackService);
 GlyphToy.connect();
-(async () => {
-  await onAppStartUpInit;
-})();
+setupBrowser(PlaybackService);
 registerWidgetTaskHandler(widgetTaskHandler);

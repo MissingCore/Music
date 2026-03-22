@@ -6,10 +6,7 @@ import { addPlayedMediaList } from "~/data/recent/api";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 
-import {
-  getAudioBrowserOptions,
-  onAppStartUpInit,
-} from "~/lib/react-native-audio-browser";
+import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
 
@@ -33,7 +30,6 @@ export function useSetup() {
     (async () => {
       setSetupState("pending");
       GlyphToy.connect();
-      await onAppStartUpInit;
 
       //! Not sure if we need to manually setup the player still (yet).
       //! await TrackPlayer.registerEvents();

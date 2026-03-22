@@ -3,8 +3,6 @@ import AudioBrowser from "react-native-audio-browser";
 
 import { playbackStore } from "~/stores/Playback/store";
 
-import { wait } from "~/utils/promise";
-
 type AdditionalConfig = {
   continuePlaybackOnDismiss?: boolean;
 };
@@ -47,40 +45,20 @@ export function getAudioBrowserOptions(
   };
 }
 
-/**
- * Ensure we setup `react-native-audio-browser` in the foreground in addition
- * to its configurations.
- */
-async function setupPlayer() {
-  const setup = async () => {
-    try {
-      await AudioBrowser.setupPlayer();
-    } catch (_err) {
-      const err = _err as Error & { code?: string };
-      console.log(`[AudioBrowser Error] ${err.code}`);
-      return err.code;
-    }
-  };
-
-  // `setupPlayer` must be called when app is in the foreground, otherwise,
-  // an `'android_cannot_setup_player_in_background'` error will be thrown.
-  while ((await setup()) === "android_cannot_setup_player_in_background") {
-    // Timeouts will only execute when the app is in the foreground. If
-    // it somehow executes in the background, the promise will be rejected
-    // and we'll try this again.
-    await wait(1);
-  }
-
-  AudioBrowser.updateOptions(getAudioBrowserOptions());
-}
-
-/** Promise that sets up AudioBrowser. */
-export const onAppStartUpInit = setupPlayer();
-
 /** Checks to see if the AudioBrowser service is set up. */
 export async function isAudioBrowserSetUp() {
   //! I think since AudioBrowser can be setup headlessly now, we need to
   //! change the method to determine if the app context is valid.
   const activeKey = playbackStore.getState().activeKey;
   return activeKey !== undefined;
+}
+
+/**
+ * Based on the `react-native-audio-browser` example app, we just need to
+ * call `setupPlayer` in the app entry point.
+ */
+export async function setupBrowser(serviceHandler: () => Promise<void>) {
+  await AudioBrowser.setupPlayer();
+  AudioBrowser.updateOptions(getAudioBrowserOptions());
+  serviceHandler();
 }
