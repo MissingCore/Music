@@ -1,7 +1,5 @@
-import TrackPlayer, {
-  AppKilledPlaybackBehavior,
-  Capability,
-} from "react-native-track-player";
+import type { UpdateOptions } from "react-native-audio-browser";
+import AudioBrowser from "react-native-audio-browser";
 
 import { playbackStore } from "~/stores/Playback/store";
 
@@ -14,10 +12,12 @@ type AdditionalConfig = {
 const prevSetConfigs: AdditionalConfig = {};
 
 /**
- * Whenever we use `TrackPlayer.updateOptions()`, we need to include all
+ * Whenever we use `AudioBrowser.updateOptions()`, we need to include all
  * the options (ie: we can't just change one key, leaving the rest the same).
  */
-export function getTrackPlayerOptions(options?: AdditionalConfig) {
+export function getAudioBrowserOptions(
+  options?: AdditionalConfig,
+): UpdateOptions {
   // Merge current & previous config changes when only some keys are specified.
   if (options) {
     for (const [field, value] of Object.entries(options)) {
@@ -30,38 +30,34 @@ export function getTrackPlayerOptions(options?: AdditionalConfig) {
   return {
     android: {
       appKilledPlaybackBehavior: continuePlaybackOnDismiss
-        ? AppKilledPlaybackBehavior.ContinuePlayback
-        : AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
+        ? "continue-playback"
+        : "stop-playback-and-remove-notification",
     },
-    capabilities: [
-      Capability.Play,
-      Capability.Pause,
-      Capability.SkipToNext,
-      Capability.SkipToPrevious,
-      Capability.SeekTo,
-    ],
-    compactCapabilities: [
-      Capability.Play,
-      Capability.Pause,
-      Capability.SkipToNext,
-      Capability.SkipToPrevious,
-    ],
-    icon: require("~/resources/images/music-glyph.png"),
+    capabilities: {
+      stop: false,
+      jumpForward: false,
+      jumpBackward: false,
+      favorite: false,
+      shuffleMode: false,
+      repeatMode: false,
+      playbackRate: false,
+    },
+    // icon: require("~/resources/images/music-glyph.png"),
     progressUpdateEventInterval: 1,
   };
 }
 
 /**
- * Ensure we setup `react-native-track-player` in the foreground in addition
+ * Ensure we setup `react-native-audio-browser` in the foreground in addition
  * to its configurations.
  */
 async function setupPlayer() {
   const setup = async () => {
     try {
-      await TrackPlayer.setupPlayer();
+      await AudioBrowser.setupPlayer();
     } catch (_err) {
       const err = _err as Error & { code?: string };
-      console.log(`[RNTP Error] ${err.code}`);
+      console.log(`[AudioBrowser Error] ${err.code}`);
       return err.code;
     }
   };
@@ -75,16 +71,16 @@ async function setupPlayer() {
     await wait(1);
   }
 
-  await TrackPlayer.updateOptions(getTrackPlayerOptions());
+  AudioBrowser.updateOptions(getAudioBrowserOptions());
 }
 
-/** Promise that sets up RNTP. */
+/** Promise that sets up AudioBrowser. */
 export const onAppStartUpInit = setupPlayer();
 
-/** Checks to see if the RNTP service is set up. */
-export async function isRNTPSetUp() {
-  //! I think since RNTP can be setup headlessly now, we need to change
-  //! the method to determine if the app context is valid.
+/** Checks to see if the AudioBrowser service is set up. */
+export async function isAudioBrowserSetUp() {
+  //! I think since AudioBrowser can be setup headlessly now, we need to
+  //! change the method to determine if the app context is valid.
   const activeKey = playbackStore.getState().activeKey;
   return activeKey !== undefined;
 }

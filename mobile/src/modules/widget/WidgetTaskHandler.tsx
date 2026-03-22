@@ -3,7 +3,7 @@ import type { WidgetTaskHandlerProps } from "react-native-android-widget";
 
 import { PlaybackControls } from "~/stores/Playback/actions";
 
-import { isRNTPSetUp } from "~/lib/react-native-track-player";
+import { isAudioBrowserSetUp } from "~/lib/react-native-audio-browser";
 import { bgWait } from "~/utils/promise";
 import { Action } from "./constants/Action";
 import { nameToWidget } from "./constants/Widgets";
@@ -28,7 +28,7 @@ export async function widgetTaskHandler({
       // Have widget open app if the RNTP service isn't available to
       // prevent things breaking due to the Playback store requiring a RNTP
       // service active (or else the data will get cleared).
-      const shouldOpen = !(await isRNTPSetUp());
+      const shouldOpen = !(await isAudioBrowserSetUp());
       renderWidget(<Widget {...widgetData} openApp={shouldOpen} />);
       break;
 
@@ -43,7 +43,7 @@ export async function widgetTaskHandler({
         return;
       }
 
-      if (!(await isRNTPSetUp())) return launchAppViaIntent();
+      if (!(await isAudioBrowserSetUp())) return launchAppViaIntent();
 
       if (clickAction === Action.PlayPause) {
         widgetData.isPlaying = !widgetData.isPlaying;

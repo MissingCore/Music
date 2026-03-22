@@ -7,7 +7,7 @@ import { registerWidgetTaskHandler } from "react-native-android-widget";
 import TrackPlayer from "react-native-track-player";
 
 import App from "./src/App";
-import { onAppStartUpInit } from "./src/lib/react-native-track-player";
+import { onAppStartUpInit } from "./src/lib/react-native-audio-browser";
 import { PlaybackService } from "./src/services/RNTPService";
 import { widgetTaskHandler } from "./src/modules/widget/WidgetTaskHandler";
 
