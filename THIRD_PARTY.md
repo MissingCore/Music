@@ -56,7 +56,6 @@
 | react-native-safe-area-context | MIT | https://github.com/AppAndFlow/react-native-safe-area-context |
 | react-native-screens | MIT | https://github.com/software-mansion/react-native-screens |
 | react-native-svg | MIT | https://github.com/software-mansion/react-native-svg |
-| react-native-track-player | Apache-2.0 | https://github.com/doublesymmetry/react-native-track-player |
 | react-native-worklets | MIT | https://github.com/software-mansion/react-native-reanimated/tree/main/packages/react-native-worklets |
 | Roboto Font | OFL-1.1 | https://github.com/googlefonts/roboto-3-classic |
 | tailwind-merge | MIT | https://github.com/dcastil/tailwind-merge |
