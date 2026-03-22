@@ -43,6 +43,7 @@
 | react-native | MIT | https://github.com/facebook/react-native |
 | react-native-android-widget | MIT | https://github.com/sAleksovski/react-native-android-widget |
 | react-native-audio-analyzer | MIT | https://github.com/exzos28/react-native-audio-analyzer |
+| react-native-audio-browser | MIT | https://github.com/radio-garden/react-native-audio-browser |
 | react-native-bootsplash | MIT | https://github.com/zoontek/react-native-bootsplash |
 | react-native-gesture-handler | MIT | https://github.com/software-mansion/react-native-gesture-handler |
 | react-native-keyboard-controller | MIT | https://github.com/kirillzyusko/react-native-keyboard-controller |

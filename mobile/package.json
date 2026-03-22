@@ -61,6 +61,7 @@
     "react-native": "0.83.4",
     "react-native-android-widget": "0.20.1",
     "react-native-audio-analyzer": "3.1.0",
+    "react-native-audio-browser": "^0.1.0",
     "react-native-bootsplash": "7.1.0",
     "react-native-gesture-handler": "2.30.0",
     "react-native-keyboard-controller": "1.21.0",

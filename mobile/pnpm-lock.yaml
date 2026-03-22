@@ -142,6 +142,9 @@ importers:
       react-native-audio-analyzer:
         specifier: 3.1.0
         version: 3.1.0(react-native-nitro-modules@0.34.1(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
+      react-native-audio-browser:
+        specifier: ^0.1.0
+        version: 0.1.0(react-native-nitro-modules@0.34.1(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-bootsplash:
         specifier: 7.1.0
         version: 7.1.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
@@ -4910,6 +4913,17 @@ packages:
       react: '*'
       react-native: '*'
       react-native-nitro-modules: ^0.27.3
+
+  react-native-audio-browser@0.1.0:
+    resolution: {integrity: sha512-4AK+96HmBrvpPIx1KO2yG1bgWW01ppRvGBUeQUbYrALCNsFBrv5+wH3Unyxf1mkqAkoWyFpVvEez2KKNBjtNxA==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+      react-native-nitro-modules: '*'
+      shaka-player: ^4.7.9
+    peerDependenciesMeta:
+      shaka-player:
+        optional: true
 
   react-native-bootsplash@7.1.0:
     resolution: {integrity: sha512-0eIaks4SHFmdKAv/j66gnbciY733rBZkyq6dIaPT8DP4v37PyzjRFM9+9x7Ea0XJY+sh+SJ2z/oLfhLbjmziFQ==}
@@ -10922,6 +10936,12 @@ snapshots:
       expo: 55.0.8(@babel/core@7.29.0)(@expo/dom-webview@55.0.3)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)(typescript@5.9.3)
 
   react-native-audio-analyzer@3.1.0(react-native-nitro-modules@0.34.1(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
+    dependencies:
+      react: 19.2.0
+      react-native: 0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0)
+      react-native-nitro-modules: 0.34.1(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
+
+  react-native-audio-browser@0.1.0(react-native-nitro-modules@0.34.1(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
     dependencies:
       react: 19.2.0
       react-native: 0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0)
