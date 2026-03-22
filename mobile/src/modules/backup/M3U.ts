@@ -16,7 +16,15 @@ import { joinPaths, pickDirectory, pickFile } from "~/lib/file-system";
 export async function readM3UPlaylist() {
   const m3uFile = await pickFile("audio/x-mpegurl");
 
-  const fileLocation = await getActualPath(m3uFile.contentUri);
+  let fileLocation = await getActualPath(m3uFile.contentUri);
+  //! One of the versions between Android 11 & 15 breaks `getActualPath` for
+  //! files in the "Download"  directory. We'll "guess" it for those situations.
+  if (
+    m3uFile.contentUri.includes("Download") &&
+    !fileLocation?.includes("Download")
+  ) {
+    fileLocation = `/storage/emulated/0/Download${decodeURIComponent(m3uFile.contentUri.split("Download")[1]!)}`;
+  }
   if (!fileLocation) throw new Error(i18next.t("err.flow.generic.title"));
 
   const fileDirectory = fileLocation.split("/").slice(0, -1).join("/");
