@@ -50,8 +50,8 @@ importers:
         specifier: 0.1.0
         version: 0.1.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       '@missingcore/react-native-audio-analyzer':
-        specifier: 3.2.0-beta.2
-        version: 3.2.0-beta.2(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
+        specifier: 3.2.0-beta.3
+        version: 3.2.0-beta.3(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       '@missingcore/react-native-metadata-retriever':
         specifier: 3.0.0-beta.1
         version: 3.0.0-beta.1(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
@@ -1722,8 +1722,8 @@ packages:
       react: '*'
       react-native: '*'
 
-  '@missingcore/react-native-audio-analyzer@3.2.0-beta.2':
-    resolution: {integrity: sha512-EE3f790x/Mk1Z/x9X9IlG8EtaMH8G+ura8MgjrNbptfRHWZEHwOBVwyK0O5sw2U/Z/betNGwU/negXvM9vQVhg==}
+  '@missingcore/react-native-audio-analyzer@3.2.0-beta.3':
+    resolution: {integrity: sha512-tIarcS5BOSlVk8oTov9e7GeQuI9/ZI7V/rLgdYZdGbBZQJkgeGP1ST1DpwkK8p2OT3upHKjP7+VFQIij+zTEyg==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -7319,7 +7319,7 @@ snapshots:
       react: 19.2.0
       react-native: 0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0)
 
-  '@missingcore/react-native-audio-analyzer@3.2.0-beta.2(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)':
+  '@missingcore/react-native-audio-analyzer@3.2.0-beta.3(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)':
     dependencies:
       react: 19.2.0
       react-native: 0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0)
