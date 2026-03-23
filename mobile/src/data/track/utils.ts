@@ -23,7 +23,7 @@ export function mergeTracks<TData extends { id: string }>(
 /** Format track data to be used with the RNTP queue. */
 export function formatTrackforPlayer(track: Track) {
   return {
-    url: getSafeUri(track.uri),
+    src: getSafeUri(track.uri),
     artwork: track.artwork || MusicGlyph,
     title: track.name,
     artist: getArtistsString(track.artists, "No Artist"),
