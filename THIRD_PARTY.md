@@ -7,6 +7,7 @@
 | @lukemorales/query-key-factory | MIT | https://github.com/lukemorales/query-key-factory |
 | @missingcore/music-glyph-toys | AGPL-3.0-only | https://github.com/MissingCore/music-glyph-toys |
 | @missingcore/react-native-actual-path | MIT | https://github.com/MissingCore/react-native-actual-path |
+| @missingcore/react-native-audio-analyzer | MIT | https://github.com/exzos28/react-native-audio-analyzer |
 | @missingcore/react-native-metadata-retriever | MIT | https://github.com/MissingCore/react-native-metadata-retriever |
 | @paralleldrive/cuid2 | MIT | https://github.com/paralleldrive/cuid2 |
 | @react-navigation/material-top-tabs | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/material-top-tabs |
@@ -42,7 +43,6 @@
 | react-i18next | MIT | https://github.com/i18next/react-i18next |
 | react-native | MIT | https://github.com/facebook/react-native |
 | react-native-android-widget | MIT | https://github.com/sAleksovski/react-native-android-widget |
-| react-native-audio-analyzer | MIT | https://github.com/exzos28/react-native-audio-analyzer |
 | react-native-audio-browser | MIT | https://github.com/radio-garden/react-native-audio-browser |
 | react-native-bootsplash | MIT | https://github.com/zoontek/react-native-bootsplash |
 | react-native-gesture-handler | MIT | https://github.com/software-mansion/react-native-gesture-handler |
