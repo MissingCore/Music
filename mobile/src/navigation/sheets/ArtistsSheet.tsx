@@ -22,7 +22,6 @@ export function ArtistsSheet() {
         keyExtractor={({ name }) => name}
         renderItem={({ item: { name, artwork } }) => (
           <SearchResult
-            button
             type="artist"
             title={name}
             imageSource={artwork}

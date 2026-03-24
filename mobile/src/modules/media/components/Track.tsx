@@ -40,7 +40,6 @@ export function Track({
 
   return (
     <SearchResult
-      button
       type="track"
       onPress={() =>
         PlaybackControls.playFromList({ trackId: id, source: trackSource })

@@ -18,7 +18,6 @@ export function LinkTracksSheet(props: { ref: TrueSheetRef; lyricId: string }) {
         onFilterData={(query, data) => containSorter(data, query, "name")}
         renderItem={({ item }) => (
           <SearchResult
-            button
             type="track"
             title={item.name}
             description={getArtistsString(item.artists)}
