@@ -28,6 +28,5 @@ export function formatTrackforPlayer(track: Track) {
     artist: getArtistsString(track.artists, "No Artist"),
     album: track.album || undefined,
     duration: track.duration,
-    id: track.id,
   } satisfies AddTrack;
 }

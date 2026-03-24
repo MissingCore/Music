@@ -7,6 +7,8 @@ import {
 import { toast } from "@missingcore/toast";
 import AudioBrowser from "react-native-audio-browser";
 
+import { db } from "~/db";
+
 import i18next from "~/modules/i18n";
 import { addPlayedTrack } from "~/data/recent/api";
 import { deleteTracks } from "~/data/track/api";
@@ -24,7 +26,7 @@ import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
 
 /** Simple method of tracking whether a different track is being played. */
-let prevTrackId = "";
+let prevTrackUri: string | undefined;
 /** Increase playback count after a certain duration of play time. */
 let playbackCountUpdator: ReturnType<typeof BackgroundTimer.setTimeout> | null =
   null;
@@ -40,13 +42,10 @@ let nextTrackInfo:
   | undefined;
 
 /** Errors which should cause us to "delete" a track. */
-const ValidErrors = [
-  "android-io-file-not-found",
-  "android-failed-runtime-check",
-];
+const ValidErrors = ["io-file-not-found", "failed-runtime-check"];
 
-/** The list of track ids which have errored. */
-const erroredTrackIds = new Set<string>();
+/** The list of track URIs which have errored. */
+const erroredTrackUris = new Set<string>();
 
 /** How we handle the actions in the media control notification. */
 export async function PlaybackService() {
@@ -126,6 +125,8 @@ export async function PlaybackService() {
   AudioBrowser.onActiveTrackChanged.addListener(async (e) => {
     if (e.index === undefined || e.track === undefined) return;
 
+    const activeTrackUri = e.track.src;
+
     //* 🧪 Smooth Playback Transition
     const { smoothPlaybackTransition } = preferenceStore.getState();
     let isNaturalPlayback = false;
@@ -164,13 +165,12 @@ export async function PlaybackService() {
     // track. This prevents updating the new track's play count if we manaully
     // swapped tracks or naturally play the next track when `lastPosition > 10`.
     const startAt =
-      isNaturalPlayback || prevTrackId !== e.track?.id ? 0 : lastPosition;
+      isNaturalPlayback || prevTrackUri !== activeTrackUri ? 0 : lastPosition;
     // Only mark a track as played after we pass the 10s mark. This prevents
     // the track being marked as "played" if we skip it.
     if (startAt < 10) {
-      const activeTrackId: string = e.track?.id;
       playbackCountUpdator = BackgroundTimer.setTimeout(
-        async () => await addPlayedTrack(activeTrackId),
+        async () => await addPlayedTrack(activeTrackUri),
         (Math.min(e.track.duration!, 10) - startAt) * 1000,
       );
     }
@@ -184,38 +184,52 @@ export async function PlaybackService() {
     GlyphToy.setMatrixArtwork(trackArtwork);
 
     await revalidateWidgets();
-    prevTrackId = e.track?.id;
+    prevTrackUri = activeTrackUri;
   });
 
   AudioBrowser.onPlaybackError.addListener(async ({ error: e }) => {
-    // When this event is called, `AudioBrowser.getActiveTrack()` should
-    // contain the track that caused the error.
-    const erroredTrack = AudioBrowser.getActiveTrack();
+    if (!e) return;
 
-    //! For some weird reason, `PlaybackError` may fire twice for a given track.
-    if (erroredTrack) {
-      if (erroredTrackIds.has(erroredTrack?.id)) return;
-      erroredTrackIds.add(erroredTrack?.id);
-    }
+    //? We don't know exactly what track caused the error, but we can
+    //? infer based on the state of the queue.
+    const [activeTrack, queuedTrack] = AudioBrowser.getQueue();
+    const erroredTrack = (queuedTrack || activeTrack) as AudioBrowser.Track;
 
-    if (e && erroredTrack) {
+    if (erroredTrack.src) {
+      //! For some weird reason, `PlaybackError` may fire twice for a given track.
+      if (erroredTrackUris.has(erroredTrack.src)) return;
+      erroredTrackUris.add(erroredTrack.src);
+
+      const erroredTrackObj = await db.query.tracks.findFirst({
+        where: (fields, { eq }) => eq(fields.uri, erroredTrack.src!),
+      });
+      // Reset if the track doesn't exist in the database.
+      if (!erroredTrackObj) return await playbackStore.getState().reset();
+
+      //? If the errored track was queued, we need to update the store.
+      if (queuedTrack) {
+        const nextTrack = await PlaybackControls.getNextTrack();
+        if (nextTrack) playbackStore.setState(nextTrack);
+        nextTrackInfo = undefined;
+      }
+
       // Delete the track that caused the error from certain scenarios.
       //  - We've encountered no code when RNTP naturally plays the next
       //  track that throws an error because it doesn't exist.
       if (ValidErrors.includes(e.code) || e.code === undefined) {
         let errorMessage = "File not found.";
-        if (e.code === "android-failed-runtime-check")
+        if (e.code === "failed-runtime-check")
           errorMessage =
             "Unexpected runtime error. For example, this may happen if the file has a sample rate greater than or equal to 352.8kHz.";
 
         await deleteTracks([
           {
-            id: erroredTrack?.id,
+            id: erroredTrackObj.id,
             errorInfo: { errorName: e.code, errorMessage },
           },
         ]);
         // Attempt to play the next track.
-        await Queue.removeIds([erroredTrack?.id]);
+        await Queue.removeIds([erroredTrackObj.id]);
         await AppCleanUp.media();
         clearAllQueries();
 
