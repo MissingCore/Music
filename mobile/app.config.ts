@@ -69,6 +69,7 @@ export default (): ExpoConfig => {
       ],
     },
     plugins: [
+      ["expo-asset", { assets: ["src/resources/images/music-glyph.png"] }],
       [
         "expo-build-properties",
         {

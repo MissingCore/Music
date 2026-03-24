@@ -42,6 +42,7 @@
     "clsx": "2.1.1",
     "drizzle-orm": "0.45.1",
     "expo": "55.0.8",
+    "expo-asset": "55.0.10",
     "expo-device": "55.0.10",
     "expo-document-picker": "55.0.9",
     "expo-drizzle-studio-plugin": "0.2.1",

@@ -1,3 +1,4 @@
+import { Asset } from "expo-asset";
 import { Directory, File, Paths } from "expo-file-system";
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import { launchImageLibraryAsync } from "expo-image-picker";
@@ -9,11 +10,38 @@ import type { Maybe } from "~/utils/types";
 
 /** Internal app directory where we store images. */
 export const ImageDirectory = Paths.join(Paths.document, "images");
+export const PlaceholderImageFile = Paths.join(
+  Paths.document,
+  "music-glyph.png",
+);
 
 /** Creates "image" directory if it doesn't already exist. */
-export function createImageDirectory() {
+export async function createImageDirectory() {
   const imgDir = new Directory(ImageDirectory);
   if (!imgDir.exists) imgDir.create();
+
+  //? Save a bundled asset to the local file system as we can't pass a
+  //? `require()` image to `react-native-audio-browser`.
+  //? - Ref: https://github.com/expo/expo/issues/24011#issuecomment-1765820910
+  try {
+    const fallbackImg = new File(PlaceholderImageFile);
+    if (fallbackImg.exists) return;
+
+    const [asset] = await Asset.loadAsync(
+      require("~/resources/images/music-glyph.png"),
+    );
+    if (asset) {
+      const { localUri, hash, type } = asset;
+      let uri = localUri ?? "";
+      if (!uri.startsWith("file://")) {
+        uri = `${Paths.cache.uri}ExponentAsset-${hash}.${type}`;
+      }
+      const cachedAsset = new File(uri);
+      cachedAsset.copy(fallbackImg);
+    }
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 /** Helper to delete an internal image file if it's defined. */

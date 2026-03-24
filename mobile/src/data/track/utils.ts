@@ -3,9 +3,8 @@ import type { Track as AddTrack } from "react-native-audio-browser";
 import type { Track } from "./types";
 import { getArtistsString } from "../artist/utils";
 
+import { PlaceholderImageFile } from "~/lib/file-system";
 import { getSafeUri } from "~/utils/string";
-
-const MusicGlyph = require("~/resources/images/music-glyph.png");
 
 /**
  * Merge 2 lists of tracks. Tracks that appear in both lists will result
@@ -24,7 +23,7 @@ export function mergeTracks<TData extends { id: string }>(
 export function formatTrackforPlayer(track: Track) {
   return {
     src: getSafeUri(track.uri),
-    artwork: track.artwork || MusicGlyph,
+    artwork: track.artwork || PlaceholderImageFile,
     title: track.name,
     artist: getArtistsString(track.artists, "No Artist"),
     album: track.album || undefined,
