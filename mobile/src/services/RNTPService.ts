@@ -57,10 +57,10 @@ export async function PlaybackService() {
     if (action === MatrixAction.SKIP) await PlaybackControls.next();
   });
 
-  //! This event doesn't exist.
-  // TrackPlayer.addEventListener(Event.ServiceKilled, async () => {
-  //   await revalidateWidgets({ openApp: true });
-  // });
+  AudioBrowser.handleBeforeServiceKilled(async () => {
+    if (!preferenceStore.getState().continuePlaybackOnDismiss)
+      await revalidateWidgets({ openApp: true });
+  });
 
   AudioBrowser.handleRemotePlay(PlaybackControls.play);
   AudioBrowser.handleRemotePause(PlaybackControls.pause);

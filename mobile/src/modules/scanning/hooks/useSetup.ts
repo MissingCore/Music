@@ -31,9 +31,6 @@ export function useSetup() {
       setSetupState("pending");
       GlyphToy.connect();
 
-      //! Not sure if we need to manually setup the player still (yet).
-      //! await TrackPlayer.registerEvents();
-
       // Ensure widget has up-to-date data as the Playback store isn't
       // immediately hydrated.
       await revalidateWidgets({ openApp: !playbackStore.getState().isPlaying });
