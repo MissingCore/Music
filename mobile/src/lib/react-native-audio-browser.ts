@@ -39,7 +39,6 @@ export function getAudioBrowserOptions(
       repeatMode: false,
       playbackRate: false,
     },
-    // icon: require("~/resources/images/music-glyph.png"),
     progressUpdateEventInterval: 1,
   };
 }

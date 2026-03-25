@@ -1,12 +1,15 @@
-import { Asset } from "expo-asset";
+import { saveBundledAssetToURI } from "@missingcore/native-utils";
 import { Directory, File, Paths } from "expo-file-system";
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import { launchImageLibraryAsync } from "expo-image-picker";
+import { Image } from "react-native";
 
 import i18next from "~/modules/i18n";
 
 import { addTrailingSlash, removeLeadingSlash } from "~/utils/string";
 import type { Maybe } from "~/utils/types";
+
+const resolveAssetSource = Image.resolveAssetSource;
 
 /** Internal app directory where we store images. */
 export const ImageDirectory = Paths.join(Paths.document, "images");
@@ -22,23 +25,14 @@ export async function createImageDirectory() {
 
   //? Save a bundled asset to the local file system as we can't pass a
   //? `require()` image to `react-native-audio-browser`.
-  //? - Ref: https://github.com/expo/expo/issues/24011#issuecomment-1765820910
+  //? - Ref: https://github.com/expo/expo/issues/41996#issuecomment-3724350425
   try {
     const fallbackImg = new File(PlaceholderImageFile);
     if (fallbackImg.exists) return;
-
-    const [asset] = await Asset.loadAsync(
-      require("~/resources/images/music-glyph.png"),
+    await saveBundledAssetToURI(
+      resolveAssetSource(require("~/resources/images/music-glyph.png")).uri,
+      PlaceholderImageFile,
     );
-    if (asset) {
-      const { localUri, hash, type } = asset;
-      let uri = localUri ?? "";
-      if (!uri.startsWith("file://")) {
-        uri = `${Paths.cache.uri}ExponentAsset-${hash}.${type}`;
-      }
-      const cachedAsset = new File(uri);
-      cachedAsset.copy(fallbackImg);
-    }
   } catch (err) {
     console.log(err);
   }
