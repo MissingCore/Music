@@ -1,6 +1,5 @@
 import type { UpdateOptions } from "react-native-audio-browser";
-
-import { playbackStore } from "~/stores/Playback/store";
+import AudioBrowser from "react-native-audio-browser";
 
 type AdditionalConfig = {
   continuePlaybackOnDismiss?: boolean;
@@ -45,8 +44,8 @@ export function getAudioBrowserOptions(
 
 /** Checks to see if the AudioBrowser service is set up. */
 export async function isAudioBrowserSetUp() {
-  //! I think since AudioBrowser can be setup headlessly now, we need to
-  //! change the method to determine if the app context is valid.
-  const activeKey = playbackStore.getState().activeKey;
-  return activeKey !== undefined;
+  //? Since AudioBrowser can be set up headlessly, we need a new method
+  //? to determine if it's interactable. We do this by checking if the
+  //? current state isn't `none`.
+  return AudioBrowser.getPlayback().state !== "none";
 }
