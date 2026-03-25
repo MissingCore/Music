@@ -18,7 +18,7 @@ export function getWidgetData(): PlayerWidgetData {
     }
     return { track, isPlaying };
   } catch {
-    // We'll end up here if the RNTP service isn't set up yet.
+    // We'll end up here if the AudioBrowser service isn't set up yet.
     return { track: undefined, isPlaying: false };
   }
 }

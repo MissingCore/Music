@@ -25,8 +25,8 @@ export async function widgetTaskHandler({
     case "WIDGET_ADDED":
     case "WIDGET_UPDATE":
     case "WIDGET_RESIZED":
-      // Have widget open app if the RNTP service isn't available to
-      // prevent things breaking due to the Playback store requiring a RNTP
+      // Have widget open app if the AudioBrowser service isn't available to
+      // prevent things breaking due to the Playback store requiring a AudioBrowser
       // service active (or else the data will get cleared).
       const shouldOpen = !(await isAudioBrowserSetUp());
       renderWidget(<Widget {...widgetData} openApp={shouldOpen} />);

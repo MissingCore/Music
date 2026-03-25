@@ -19,7 +19,7 @@ export function mergeTracks<TData extends { id: string }>(
   return list1.filter(({ id }) => !trackIds.has(id)).concat(list2);
 }
 
-/** Format track data to be used with the RNTP queue. */
+/** Format track data to be used with the AudioBrowser queue. */
 export function formatTrackforPlayer(track: Track) {
   return {
     src: getSafeUri(track.uri),

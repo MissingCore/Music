@@ -14,8 +14,8 @@ type SetupState = "idle" | "pending" | "ready";
 
 /**
  * Ensure our Zustand stores are hydrated before we do anything, making
- * sure those that rely on RNTP to be initialized are hydrated after
- * RNTP is initialized.
+ * sure those that rely on AudioBrowser to be initialized are hydrated
+ * after AudioBrowser is initialized.
  */
 export function useSetup() {
   const [setupState, setSetupState] = useState<SetupState>("idle");

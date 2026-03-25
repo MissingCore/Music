@@ -89,7 +89,7 @@ function handleAppLifeCycle() {
   //  - Delay to prevent flicker from change in how onboarding screen is shown.
   bgWait(1).then(() => Bootsplash.hide());
 
-  // Ensure the RNTP service gets destroyed on app close.
+  // Ensure the AudioBrowser service gets destroyed on app close.
   return () => {
     if (!preferenceStore.getState().continuePlaybackOnDismiss) {
       GlyphToy.disconnect();

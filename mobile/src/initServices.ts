@@ -149,10 +149,10 @@ export async function initServices() {
         gaplessPlaybackContext.nextSnapshot
       ) {
         playbackStore.setState(gaplessPlaybackContext.nextSnapshot);
-        // Ensure the RNTP Queue stores a single track.
+        // Ensure the AudioBrowser Queue stores a single track.
         AudioBrowser.remove([...new Array(e.index).keys()]);
       } else {
-        // Cleans up the RNTP queue if we use the media controls within the track loading window.
+        // Cleans up the AudioBrowser queue if we use the media controls within the track loading window.
         AudioBrowser.removeUpcomingTracks();
       }
     } catch (err) {
@@ -210,8 +210,8 @@ export async function initServices() {
       }
 
       // Delete the track that caused the error from certain scenarios.
-      //  - We've encountered no code when RNTP naturally plays the next
-      //  track that throws an error because it doesn't exist.
+      //  - We've encountered no code when AudioBrowser naturally plays
+      //  the next track that throws an error because it doesn't exist.
       if (ValidErrors.includes(e.code) || e.code === undefined) {
         let errorMessage = "File not found.";
         if (e.code === "failed-runtime-check")

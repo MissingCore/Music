@@ -28,8 +28,8 @@ export async function onActiveTrack(args: {
     playbackStore.setState({ activeTrack: updatedTrackData });
 
     // Update media notification with updated metadata.
-    const rntpTrack = AudioBrowser.getActiveTrack();
-    if (!rntpTrack) return;
+    const rnabTrack = AudioBrowser.getActiveTrack();
+    if (!rnabTrack) return;
     AudioBrowser.updateNowPlaying(formatTrackforPlayer(updatedTrackData));
 
     GlyphToy.setMatrixArtwork(updatedTrackData.artwork);
