@@ -76,6 +76,9 @@ export async function PlaybackService() {
   });
 
   AudioBrowser.onProgressUpdated.addListener(async (e) => {
+    //? The 1st emitted event will be a "dummy value":
+    //?   - {"buffered": 0, "duration": 0, "position": 0, "track": 0}
+    if (e.duration === 0) return;
     playbackStore.setState({ lastPosition: e.position });
 
     const { repeat } = playbackStore.getState();
