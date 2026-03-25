@@ -1,5 +1,4 @@
 import type { UpdateOptions } from "react-native-audio-browser";
-import AudioBrowser from "react-native-audio-browser";
 
 import { playbackStore } from "~/stores/Playback/store";
 
@@ -51,14 +50,4 @@ export async function isAudioBrowserSetUp() {
   //! change the method to determine if the app context is valid.
   const activeKey = playbackStore.getState().activeKey;
   return activeKey !== undefined;
-}
-
-/**
- * Based on the `react-native-audio-browser` example app, we just need to
- * call `setupPlayer` in the app entry point.
- */
-export async function setupBrowser(serviceHandler: () => Promise<void>) {
-  await AudioBrowser.setupPlayer();
-  AudioBrowser.updateOptions(getAudioBrowserOptions());
-  serviceHandler();
 }

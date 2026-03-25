@@ -20,42 +20,61 @@ import { sessionStore } from "~/stores/Session/store";
 import { AppCleanUp } from "~/modules/scanning/helpers/cleanup";
 import { router } from "~/navigation/utils/router";
 
+import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 import { clearAllQueries } from "~/lib/react-query";
 import { bgWait } from "~/utils/promise";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
 
-/** Simple method of tracking whether a different track is being played. */
-let prevTrackUri: string | undefined;
-/** Increase playback count after a certain duration of play time. */
-let playbackCountUpdator: ReturnType<typeof BackgroundTimer.setTimeout> | null =
+//#region "Smooth Playback Transition" Constants
+type PlaybackStoreFrame = Awaited<
+  ReturnType<typeof PlaybackControls.getNextTrack>
+>;
+
+let gaplessPlaybackContext = {
+  /** If we're preparing to load the next track / the track has been loaded. */
+  buffering: false,
+  /** Duration of current media. */
+  duration: -1,
+  /** State the Playback store will be in once the next track is played. */
+  nextSnapshot: undefined as PlaybackStoreFrame | undefined,
+};
+//#endregion
+
+//#region Play Count Tracking Constants
+let playCountTimout: ReturnType<typeof BackgroundTimer.setTimeout> | null =
   null;
+//#endregion
 
-/** Duration of active track to check against with experimental smooth transitions. */
-let smoothTransitionContext = { trackDuration: -1, hasLoaded: false };
-/**
- * Stores information about the next track. This can't be used for `hasLoaded` as
- * `hasLoaded` will change immediately while `nextTrackInfo` is async.
- */
-let nextTrackInfo:
-  | Awaited<ReturnType<typeof PlaybackControls.getNextTrack>>
-  | undefined;
-
+//#region Error Handling Constants
 /** Errors which should cause us to "delete" a track. */
 const ValidErrors = ["io-file-not-found", "failed-runtime-check"];
 
-/** The list of track URIs which have errored. */
+/** List of track URIs which have errored. */
 const erroredTrackUris = new Set<string>();
+//#endregion
 
-/** How we handle the actions in the media control notification. */
-export async function PlaybackService() {
+/**
+ * Register services in the `index.ts` file. Doesn't get called on next
+ * app launch if "Continue Playback on Dismiss" is enabled.
+ */
+export async function initServices() {
+  GlyphToy.connect();
+
+  //? Seems like we can setup the playback service in the background/headlessly.
+  await AudioBrowser.setupPlayer();
+  AudioBrowser.updateOptions(getAudioBrowserOptions());
+
+  //#region Glyph Toy Events
   GlyphButton.onMount(() => GlyphToy.connect());
 
   GlyphButton.onTouchUp(async ({ action }) => {
     if (action === MatrixAction.PLAY_PAUSE) await PlaybackControls.playToggle();
     if (action === MatrixAction.SKIP) await PlaybackControls.next();
   });
+  //#endregion
 
+  //#region Media Events
   AudioBrowser.handleBeforeServiceKilled(async () => {
     if (!preferenceStore.getState().continuePlaybackOnDismiss)
       await revalidateWidgets({ openApp: true });
@@ -69,80 +88,67 @@ export async function PlaybackService() {
     await PlaybackControls.seekTo(position);
   });
 
+  // Handle unexpected pauses (ie: disconnecting headphones).
   AudioBrowser.onPlaybackChanged.addListener((e) => {
-    // Only place where we get notified for unexpected pauses such as
-    // when disconnecting headphones.
     if (e.state === "paused") playbackStore.setState({ isPlaying: false });
   });
 
   AudioBrowser.onProgressUpdated.addListener(async (e) => {
-    //? The 1st emitted event will be a "dummy value":
-    //?   - {"buffered": 0, "duration": 0, "position": 0, "track": 0}
+    //? Ignore the 1st emitted event as it returns `duration = 0`.
     if (e.duration === 0) return;
     playbackStore.setState({ lastPosition: e.position });
 
     const { repeat } = playbackStore.getState();
     const { playbackDelay, smoothPlaybackTransition } =
       preferenceStore.getState();
-    const { playbackSpeed } = sessionStore.getState();
 
-    // We might not be able to load the next track in time if we change the
-    // playback speed.
-    const loadingFrame = 5 * Math.max(1, playbackSpeed);
+    // Taking the playback speed into account when optimally loading the next track.
+    const loadingFrame = 5 * Math.max(1, sessionStore.getState().playbackSpeed);
     if (
       //? Ignore if we're repeating the current track.
-      repeat !== RepeatModes.REPEAT_ONE &&
-      //? "Natural Playback Delay" & "Smooth Playback Transition" are mutually
-      //? exclusive features.
-      playbackDelay === 0 &&
-      smoothPlaybackTransition &&
-      !smoothTransitionContext.hasLoaded &&
-      //? Load the next track before the current track ends to minimize the
-      //? need of resynchronizing the next track.
-      e.position + loadingFrame - smoothTransitionContext.trackDuration > 0
+      repeat === RepeatModes.REPEAT_ONE ||
+      //? "Natural Playback Delay" & "Smooth Playback Transition" are mutually exclusive features.
+      playbackDelay > 0 ||
+      !smoothPlaybackTransition ||
+      //? Prevent recomputation.
+      gaplessPlaybackContext.buffering ||
+      //? Prevent early computation (when we're not near the end of the track).
+      e.position + loadingFrame - gaplessPlaybackContext.duration < 0
     ) {
-      smoothTransitionContext.hasLoaded = true;
-      nextTrackInfo = await PlaybackControls.getNextTrack();
-      // Ensure that we handle "No Repeat" mode cleanly (no sound bleed).
-      if (
-        !nextTrackInfo ||
-        (nextTrackInfo.queuePosition === 0 && repeat === RepeatModes.NO_REPEAT)
-      ) {
-        return;
-      }
-      // Load the next track into the queue for smoother playback.
-      AudioBrowser.add(formatTrackforPlayer(nextTrackInfo.activeTrack));
+      return;
     }
+
+    gaplessPlaybackContext.buffering = true;
+    gaplessPlaybackContext.nextSnapshot = await PlaybackControls.getNextTrack();
+    if (!gaplessPlaybackContext.nextSnapshot) return;
+    const { activeTrack, queuePosition } = gaplessPlaybackContext.nextSnapshot;
+    //? Ensure that we handle "No Repeat" mode cleanly (no sound bleed).
+    if (queuePosition === 0 && repeat === RepeatModes.NO_REPEAT) return;
+
+    // Load the next track into the queue for smoother playback.
+    AudioBrowser.add(formatTrackforPlayer(activeTrack));
   });
 
-  // Only triggered if repeat mode is `RepeatMode.Off`. This is also called
-  // after the `ServiceKilled` event is emitted.
+  // Called when "Smooth Playback Transition" doesn't trigger.
   AudioBrowser.onQueueEnded.addListener(async () => {
     const { playbackDelay } = preferenceStore.getState();
     if (playbackDelay > 0) await bgWait(playbackDelay * 1000);
-
-    // `true` provided to prevent updating the repeat setting.
-    await PlaybackControls.next(true);
+    await PlaybackControls.next(true); // Prevent updating the repeat setting.
   });
 
   AudioBrowser.onActiveTrackChanged.addListener(async (e) => {
     if (e.index === undefined || e.track === undefined) return;
-
     const activeTrackUri = e.track.src;
 
     //* 🧪 Smooth Playback Transition
     const { smoothPlaybackTransition } = preferenceStore.getState();
-    let isNaturalPlayback = false;
     try {
       if (
         smoothPlaybackTransition &&
-        //? Check for `hasLoaded` as otherwise, the `prev` controls won't work.
-        smoothTransitionContext.hasLoaded &&
         e.index !== 0 &&
-        nextTrackInfo
+        gaplessPlaybackContext.nextSnapshot
       ) {
-        isNaturalPlayback = true;
-        playbackStore.setState(nextTrackInfo);
+        playbackStore.setState(gaplessPlaybackContext.nextSnapshot);
         // Ensure the RNTP Queue stores a single track.
         AudioBrowser.remove([...new Array(e.index).keys()]);
       } else {
@@ -152,42 +158,29 @@ export async function PlaybackService() {
     } catch (err) {
       console.log(err);
     }
-    smoothTransitionContext = {
-      trackDuration: e.track.duration!,
-      hasLoaded: false,
+    gaplessPlaybackContext = {
+      buffering: false,
+      duration: e.track.duration!,
+      nextSnapshot: undefined,
     };
-    nextTrackInfo = undefined;
 
     //* Play Count Tracking
     const { lastPosition } = playbackStore.getState();
-
-    if (playbackCountUpdator !== null) {
-      BackgroundTimer.clearTimeout(playbackCountUpdator);
-    }
-    // When switching tracks, `lastPosition` will show the value from the prior
-    // track. This prevents updating the new track's play count if we manaully
-    // swapped tracks or naturally play the next track when `lastPosition > 10`.
-    const startAt =
-      isNaturalPlayback || prevTrackUri !== activeTrackUri ? 0 : lastPosition;
+    if (playCountTimout !== null) BackgroundTimer.clearTimeout(playCountTimout);
     // Only mark a track as played after we pass the 10s mark. This prevents
     // the track being marked as "played" if we skip it.
-    if (startAt < 10) {
-      playbackCountUpdator = BackgroundTimer.setTimeout(
+    if (lastPosition < 10) {
+      playCountTimout = BackgroundTimer.setTimeout(
         async () => await addPlayedTrack(activeTrackUri),
-        (Math.min(e.track.duration!, 10) - startAt) * 1000,
+        (Math.min(e.track.duration!, 10) - lastPosition) * 1000,
       );
     }
 
-    //! To fix an issue where the media notification looked funny when
-    //! there was no embedded artwork, we added a fallback of
-    //! `require("~/resources/images/music-glyph.png")`. This caused an
-    //! issue due to `GlyphToy.setMatrixArtwork` expecting `string | null`.
-    let trackArtwork = e.track?.artwork || null;
-    if (typeof trackArtwork !== "string") trackArtwork = null;
-    GlyphToy.setMatrixArtwork(trackArtwork);
+    //? We now fallback to the path specified by `PlaceholderImageFile`
+    //? if we have no embedded artwork.
+    GlyphToy.setMatrixArtwork(e.track.artwork || null);
 
     await revalidateWidgets();
-    prevTrackUri = activeTrackUri;
   });
 
   AudioBrowser.onPlaybackError.addListener(async ({ error: e }) => {
@@ -213,7 +206,7 @@ export async function PlaybackService() {
       if (queuedTrack) {
         const nextTrack = await PlaybackControls.getNextTrack();
         if (nextTrack) playbackStore.setState(nextTrack);
-        nextTrackInfo = undefined;
+        gaplessPlaybackContext.nextSnapshot = undefined;
       }
 
       // Delete the track that caused the error from certain scenarios.
@@ -249,4 +242,5 @@ export async function PlaybackService() {
       await playbackStore.getState().reset();
     }
   });
+  //#endregion
 }
