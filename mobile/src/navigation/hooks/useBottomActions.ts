@@ -41,8 +41,11 @@ export function useRenderBottomActions() {
   );
 }
 
-/** Returns the inset we need to apply to account for the bottom actions. */
-export function useBottomActionsInset() {
+/** Fixed-size bottom offset applied when bottom actions are rendered. */
+export const BottomActionsOffset = 72; // 56px Height + 16px Bottom Padding
+
+/** Returns the offset we need to apply to account for the bottom actions. */
+export function useBottomActionsOffset(additionalOffset = 0) {
   const activeTrack = usePlaybackStore((s) => s.activeTrack);
 
   //? We've previously accounted for whether the miniplayer can be rendered on the
@@ -52,13 +55,8 @@ export function useBottomActionsInset() {
   //? if the miniplayer is rendered.
   const isMiniPlayerRendered = !!activeTrack;
 
-  return useMemo(() => {
-    // Bottom inset on home screen.
-    let withNav = 76; // 60px Navbar Height + 16px Bottom Padding
-    if (isMiniPlayerRendered) withNav += 67; // 64px MiniPlayer Height + 3px Gap
-    // Bottom inset on screens with only MiniPlayer.
-    let onlyPlayer = 0;
-    if (isMiniPlayerRendered) onlyPlayer += 80; // 64px MiniPlayer Height + 16px Bottom Padding
-    return { withNav, onlyPlayer };
-  }, [isMiniPlayerRendered]);
+  return useMemo(
+    () => (isMiniPlayerRendered ? BottomActionsOffset : 0) + additionalOffset,
+    [additionalOffset, isMiniPlayerRendered],
+  );
 }

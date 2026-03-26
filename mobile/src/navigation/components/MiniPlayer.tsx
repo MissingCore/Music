@@ -1,11 +1,13 @@
 import BackgroundTimer from "@boterop/react-native-background-timer";
 import { useNavigation } from "@react-navigation/native";
-import { atom, useSetAtom } from "jotai";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
+  LinearTransition,
+  SlideInLeft,
+  SlideOutLeft,
   useAnimatedReaction,
   useAnimatedStyle,
   useSharedValue,
@@ -21,7 +23,7 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
-import { useBottomActionsInset } from "../hooks/useBottomActions";
+import { BottomActionsOffset } from "../hooks/useBottomActions";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
@@ -36,36 +38,20 @@ import {
 } from "~/modules/media/components/MediaControls";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 
-/** Enables us to to do some logic before the reset function is called. */
-export const visibleBeforeResetAtom = atom(false);
-
 /**
  * Displays a player that appears at the bottom of the screen if we have
  * a song loaded.
  */
-export function MiniPlayer({ hidden = false, stacked = false }) {
+export function MiniPlayer() {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
-  const bottomInsets = useBottomActionsInset();
   const resetPlaybackStore = usePlaybackStore((s) => s.reset);
   const isPlaying = usePlaybackStore((s) => s.isPlaying);
   const track = usePlaybackStore((s) => s.activeTrack);
   const gestureUI = usePreferenceStore((s) => s.miniplayerGestures);
   const dragClearPlayback = usePreferenceStore((s) => s.dragClearPlayback);
   const [isPressed, setIsPressed] = useState(false);
-
-  //#region Bottom Actions Layout Animation
-  const setVisibleBeforeReset = useSetAtom(visibleBeforeResetAtom);
-
-  const prevTrack = useRef<typeof track>(undefined);
-  useEffect(() => {
-    if (prevTrack.current !== track) {
-      prevTrack.current = track;
-      setVisibleBeforeReset(!!track);
-    }
-  }, [setVisibleBeforeReset, track]);
-  //#endregion
 
   const TextWrapper = useMemo(
     () => (gestureUI ? Swipeable : View),
@@ -94,16 +80,15 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
         .onEnd(({ velocityY }) => {
           //? Resetting the playback store is based off pan velocity.
           const metThreshold = velocityY > 1000;
-          if (metThreshold) scheduleOnRN(setVisibleBeforeReset, false);
           panAmount.value = withSpring(metThreshold ? insets.bottom + 256 : 0);
         }),
-    [panAmount, insets, dragClearPlayback, setVisibleBeforeReset],
+    [panAmount, insets, dragClearPlayback],
   );
 
   useAnimatedReaction(
     () => panAmount.value,
     (currVal, prevVal) => {
-      const threshold = insets.bottom + bottomInsets.withNav;
+      const threshold = insets.bottom + BottomActionsOffset;
       if (currVal > threshold && (prevVal === null || prevVal < threshold)) {
         scheduleOnRN(onResetStore);
       }
@@ -115,30 +100,33 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
   }));
   //#endregion
 
-  if (!track || hidden) {
+  if (!track) {
     if (isPressed) setIsPressed(false); // Since `onPressOut` won't get called if this gets hidden.
     return null;
   }
   return (
     <GestureDetector gesture={panGesture}>
       <Animated.View
+        layout={LinearTransition}
+        entering={SlideInLeft}
+        exiting={SlideOutLeft}
         style={animatedStyles}
         className={cn(
-          "z-10 overflow-hidden rounded-md bg-surfaceContainerLowest",
-          { "rounded-b-xs": stacked, "bg-surfaceContainerLow": isPressed },
+          "relative z-10 shrink grow overflow-hidden rounded-full bg-surfaceContainerLowest",
+          { "bg-surfaceContainerLow": isPressed },
         )}
       >
         <Pressable
           onPressIn={() => setIsPressed(true)}
           onPress={() => navigation.navigate("NowPlaying")}
           onPressOut={() => setIsPressed(false)}
-          className="flex-row items-center px-2"
+          className="h-14 flex-row items-center px-1"
         >
           <MediaImage
             type="track"
             size={48}
             source={track.artwork}
-            className="mt-2 mb-1.5 rounded-xs"
+            className="rounded-full"
           />
 
           <TextWrapper
@@ -148,16 +136,18 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
             onSwipeRight={PlaybackControls.prev}
             wrapperClassName="shrink grow justify-center overflow-hidden"
             className={cn({
-              "mx-2 shrink grow": !gestureUI,
-              "bg-surfaceContainerLowest px-2": gestureUI,
+              "mx-1.5 shrink grow": !gestureUI,
+              "bg-surfaceContainerLowest px-1.5": gestureUI,
               "bg-surfaceContainerLow": gestureUI && isPressed,
             })}
           >
             <Marquee color="surfaceContainerLowest">
-              <StyledText>{track.name}</StyledText>
+              <StyledText className="text-sm">{track.name}</StyledText>
             </Marquee>
             <Marquee color="surfaceContainerLowest">
-              <StyledText dim>{getArtistsString(track.artists)}</StyledText>
+              <StyledText dim className="text-xxs">
+                {getArtistsString(track.artists)}
+              </StyledText>
             </Marquee>
           </TextWrapper>
 
@@ -187,13 +177,11 @@ function TrackProgress({ duration }: { duration: number }) {
   const progressPercent = `${(position / duration) * 100}%` as const;
 
   return (
-    <View className="px-2">
-      <View className="h-0.5 w-full rounded-full bg-surfaceContainerHigh">
-        <View
-          style={{ width: progressPercent }}
-          className="h-full rounded-full bg-primary"
-        />
-      </View>
+    <View className="absolute right-2 bottom-0 left-2 h-0.5 bg-surfaceContainerHigh">
+      <View
+        style={{ width: progressPercent }}
+        className="h-full rounded-full bg-primary"
+      />
     </View>
   );
 }

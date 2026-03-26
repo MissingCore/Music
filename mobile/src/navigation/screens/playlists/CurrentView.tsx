@@ -12,7 +12,7 @@ import {
   usePlaylistForScreen,
 } from "~/data/playlist/queries";
 
-import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
+import { useBottomActionsOffset } from "~/navigation/hooks/useBottomActions";
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
 import { PlaylistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
@@ -36,7 +36,7 @@ export default function Playlist({
 }: Props) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const bottomInset = useBottomActionsInset();
+  const bottomOffset = useBottomActionsOffset(16);
   const { isPending, error, data } = usePlaylistForScreen(id);
   const favoritePlaylist = useFavoritePlaylist(id);
   const artworkSheetRef = useSheetRef();
@@ -114,7 +114,7 @@ export default function Playlist({
         imageSource={data.imageSource}
         // FlatList Props
         {...presets}
-        contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
+        contentContainerStyle={{ paddingBottom: bottomOffset }}
       />
     </>
   );

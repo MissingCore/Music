@@ -25,7 +25,7 @@ import { scheduleOnUI } from "react-native-worklets";
 import { MoreHoriz } from "~/resources/icons/MoreHoriz";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
-import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
+import { BottomActionsOffset } from "~/navigation/hooks/useBottomActions";
 
 import type {
   AnimatedLegendListRef,
@@ -62,14 +62,13 @@ export function NScrollLayout(props: {
   children: React.ReactNode;
 }) {
   const insets = useSafeAreaInsets();
-  const bottomInset = useBottomActionsInset();
   const scrollRef = useAnimatedScrollViewRef();
 
   // NScrollbar
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const scrollBarContext = useScrollbarContext();
 
-  const bottomOffset = bottomInset.withNav + 16;
+  const bottomOffset = BottomActionsOffset + 16;
 
   // Shy Header
   const [topBarHeight, setTopBarHeight] = useState(
@@ -145,7 +144,6 @@ export function NScrollListLayout<TData>({
 }) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
-  const bottomInset = useBottomActionsInset();
   const internalListRef = useAnimatedLegendListRef();
   // @ts-expect-error - Should be able to synchronize refs.
   useImperativeHandle(listRef, () => internalListRef.current);
@@ -155,7 +153,7 @@ export function NScrollListLayout<TData>({
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const scrollBarContext = useScrollbarContext();
 
-  const bottomOffset = bottomInset.withNav + 16;
+  const bottomOffset = BottomActionsOffset + 16;
 
   // Shy Header
   const [topBarHeight, setTopBarHeight] = useState(

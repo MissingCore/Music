@@ -2,7 +2,7 @@ import type { StaticScreenProps } from "@react-navigation/native";
 
 import { useGenreForScreen } from "~/data/genre/queries";
 
-import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
+import { useBottomActionsOffset } from "~/navigation/hooks/useBottomActions";
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
 import { GenreArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
@@ -19,7 +19,7 @@ export default function Genre({
     params: { id },
   },
 }: Props) {
-  const bottomInset = useBottomActionsInset();
+  const bottomOffset = useBottomActionsOffset(16);
   const { isPending, error, data } = useGenreForScreen(id);
   const artworkSheetRef = useSheetRef();
 
@@ -55,7 +55,7 @@ export default function Genre({
         imageSource={data.imageSource}
         // FlatList Props
         {...presets}
-        contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
+        contentContainerStyle={{ paddingBottom: bottomOffset }}
       />
     </>
   );

@@ -5,7 +5,7 @@ import { RECENT_DAY_RANGE } from "~/data/recent/api";
 import { useRecentlyPlayedMedia } from "~/data/recent/queries";
 import { useGetColumn } from "~/hooks/useGetColumn";
 
-import { useBottomActionsInset } from "../hooks/useBottomActions";
+import { useBottomActionsOffset } from "../hooks/useBottomActions";
 import { getMediaLinkContext } from "../utils/router";
 import { PagePlaceholder } from "../components/Placeholder";
 
@@ -23,7 +23,7 @@ const trackSource = {
 
 export default function RecentlyPlayed() {
   const { t } = useTranslation();
-  const bottomInset = useBottomActionsInset();
+  const bottomOffset = useBottomActionsOffset(16);
   const { isPending, error, data } = useRecentlyPlayedMedia();
 
   const hasNoContent = data?.lists?.length === 0 && data?.tracks?.length === 0;
@@ -50,7 +50,7 @@ export default function RecentlyPlayed() {
       ListHeaderComponent={<RecentlyPlayedLists data={data.lists} />}
       className="-mb-2"
       contentContainerClassName="px-4 pt-4"
-      contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
+      contentContainerStyle={{ paddingBottom: bottomOffset }}
     />
   );
 }

@@ -6,7 +6,7 @@ import { View } from "react-native";
 import { Favorite } from "~/resources/icons/Favorite";
 import { useAlbumForScreen, useFavoriteAlbum } from "~/data/album/queries";
 
-import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
+import { useBottomActionsOffset } from "~/navigation/hooks/useBottomActions";
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
 import { AlbumArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
@@ -32,7 +32,7 @@ export default function Album({
   },
 }: Props) {
   const { t } = useTranslation();
-  const bottomInset = useBottomActionsInset();
+  const bottomOffset = useBottomActionsOffset(16);
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
   const artworkSheetRef = useSheetRef();
@@ -118,7 +118,7 @@ export default function Album({
           )
         }
         className="-mb-2"
-        contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
+        contentContainerStyle={{ paddingBottom: bottomOffset }}
       />
     </>
   );

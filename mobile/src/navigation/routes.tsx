@@ -55,8 +55,9 @@ import { ArtistsSheet } from "./sheets/ArtistsSheet";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { useTabsByVisibility } from "~/stores/Preference/hooks";
 
-import type { HomeScreenNames } from "./components/BottomActions";
-import { BottomActions, getHomeScreenName } from "./components/BottomActions";
+import { capitalize } from "~/utils/string";
+import type { Tab } from "~/stores/Preference/types";
+import { BottomActions } from "./components/BottomActions";
 import { DeferredRender } from "./components/DeferredRender";
 import { TopAppBar } from "./components/TopAppBar";
 import { NowPlayingTopAppBar } from "./screens/now-playing/components/TopAppBar";
@@ -94,6 +95,13 @@ type RootScreensProps = StaticScreenProps<
     Genres: undefined;
   }>
 >;
+
+type HomeScreenNames = "Home" | `${Capitalize<Exclude<Tab, "home">>}s`;
+
+function getHomeScreenName(tabKey: Tab) {
+  if (tabKey === "home") return "Home";
+  return `${capitalize(tabKey)}s` as const;
+}
 
 function RootScreens(_: RootScreensProps) {
   const navigation = useNavigation();

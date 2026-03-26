@@ -6,7 +6,7 @@ import type { ArtistAlbum } from "~/data/artist/types";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
-import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
+import { useBottomActionsOffset } from "~/navigation/hooks/useBottomActions";
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
 import { ArtistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
@@ -26,7 +26,7 @@ export default function Artist({
     params: { id: artistName },
   },
 }: Props) {
-  const bottomInset = useBottomActionsInset();
+  const bottomOffset = useBottomActionsOffset(16);
   const { isPending, error, data } = useArtistForScreen(artistName);
   const artworkSheetRef = useSheetRef();
 
@@ -63,7 +63,7 @@ export default function Artist({
         SubHeader={<ArtistAlbums albums={data.albums} />}
         // FlatList Props
         {...presets}
-        contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
+        contentContainerStyle={{ paddingBottom: bottomOffset }}
       />
     </>
   );
