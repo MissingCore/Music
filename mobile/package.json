@@ -65,7 +65,7 @@
     "react-native-bootsplash": "7.1.0",
     "react-native-gesture-handler": "2.30.0",
     "react-native-keyboard-controller": "1.21.2",
-    "react-native-markdown-display": "7.0.2",
+    "react-native-markdown-renderer": "4.1.0",
     "react-native-nitro-modules": "0.35.2",
     "react-native-pager-view": "8.0.0",
     "react-native-paper": "5.15.0",
@@ -122,9 +122,6 @@
       "react-native-audio-browser",
       "sharp"
     ],
-    "overrides": {
-      "markdown-it": "14.1.1"
-    },
     "patchedDependencies": {
       "react-native-android-widget": "patches/react-native-android-widget.patch",
       "@kaannn/react-native-waveform": "patches/@kaannn__react-native-waveform.patch",

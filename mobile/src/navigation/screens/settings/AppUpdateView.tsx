@@ -1,7 +1,7 @@
 import { openBrowserAsync } from "expo-web-browser";
 import { useMemo } from "react";
 import { Text, View } from "react-native";
-import Markdown from "react-native-markdown-display";
+import Markdown from "react-native-markdown-renderer";
 
 import { Info } from "~/resources/icons/Info";
 import { LogoGitHub } from "~/resources/icons/LogoGitHub";
@@ -47,30 +47,34 @@ export default function AppUpdate() {
 
         <Markdown
           style={{
-            body: {
-              gap: 12,
-              fontFamily: getFont(primaryFont),
-              fontSize: 12,
+            root: { gap: 12 },
+            text: {
               color: onSurfaceVariant,
+              fontFamily: getFont(primaryFont),
+              fontSize: FontSize.xs,
+              lineHeight: undefined,
             },
+            paragraph: { marginBottom: 0 },
+            headingContainer: { marginTop: 0, marginBottom: 0 },
             heading2: {
               color: onSurface,
               fontFamily: getFont(accentFont),
               fontSize: FontSize.base,
             },
-            fence: {
-              padding: 16,
+            heading2Container: { paddingBottom: 0, borderBottomWidth: 0 },
+            link: { color: onSurfaceVariant, textDecorationLine: "underline" },
+            codeBlock: {
               backgroundColor: `${onSurface}0D`, // 5% Opacity
               borderRadius: 12,
-              borderLeftWidth: 0,
             },
-            hr: {
-              backgroundColor: outlineVariant,
-            },
-            paragraph: {
-              marginTop: 0,
-              marginBottom: 0,
-            },
+            hr: { backgroundColor: outlineVariant },
+            list: { marginBottom: 0 },
+            listOrderedItem: { marginTop: 0 },
+            listOrderedItemIcon: { lineHeight: undefined },
+            listOrderedItemText: { lineHeight: undefined },
+            listUnorderedItem: { marginTop: 0 },
+            listUnorderedItemIcon: { lineHeight: undefined },
+            listUnorderedItemText: { lineHeight: undefined },
           }}
           rules={{
             blockquote: (node, children, _parent, _styles) => (
@@ -101,8 +105,8 @@ export default function AppUpdate() {
             link: (node, children, _parent, styles) => (
               <Text
                 key={node.key}
-                style={styles.link}
-                onPress={() => openBrowserAsync(node.attributes.href)}
+                style={styles.link as any}
+                onPress={() => openBrowserAsync(node.attributes.href!)}
               >
                 {children}
               </Text>

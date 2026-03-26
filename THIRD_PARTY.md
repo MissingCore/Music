@@ -47,7 +47,7 @@
 | react-native-bootsplash | MIT | https://github.com/zoontek/react-native-bootsplash |
 | react-native-gesture-handler | MIT | https://github.com/software-mansion/react-native-gesture-handler |
 | react-native-keyboard-controller | MIT | https://github.com/kirillzyusko/react-native-keyboard-controller |
-| react-native-markdown-display | MIT | https://github.com/iamacup/react-native-markdown-display |
+| react-native-markdown-renderer | MIT | https://github.com/mientjan/react-native-markdown-renderer |
 | react-native-nitro-modules | MIT | https://github.com/mrousavy/nitro |
 | react-native-pager-view | MIT | https://github.com/callstack/react-native-pager-view |
 | react-native-paper | MIT | https://github.com/callstack/react-native-paper |
