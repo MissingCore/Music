@@ -7,8 +7,8 @@
     "artists": "Artistas",
     "folder": "Carpeta",
     "folders": "Carpetas",
-    "genre": null,
-    "genres": null,
+    "genre": "Género",
+    "genres": "Géneros",
     "playlist": "Lista de reproducción",
     "playlists": "Listas de reproducción",
     "track": "Canción",
@@ -33,19 +33,19 @@
     "disc": "Disco {{count}}"
   },
   "template": {
-    "entryAdd": null,
+    "entryAdd": "Agregar `{{- name}}`.",
     "entryAdded": "`{{- name}}` añadido.",
     "entryRemove": "Eliminar `{{- name}}`.",
     "entryRemoved": "`{{- name}}` eliminado.",
-    "entryManage": null,
+    "entryManage": "Gestionar {{- name}}",
     "entrySeeMore": "Ver más sobre `{{- name}}`.",
     "notFound": "`{{- name}}` no existe.",
-    "entryMove": null,
+    "entryMove": "Mover `{{- name}}`",
     "entryShow": "Mostrar `{{- name}}`",
     "entryHide": "Ocultar `{{- name}}`",
     "entryEnable": "Activar `{{- name}}`",
     "entryDisable": "Desactivar `{{- name}}`",
-    "noContentFound": null
+    "noContentFound": "No se encontró {{- name}}."
   },
   "plural": {
     "entry_one": "{{count}} entrada",
@@ -63,9 +63,9 @@
     "unsaved": "Puede que tengas cambios sin guardar.",
     "stay": "Quedarse",
     "leave": "Salir",
-    "create": null,
-    "delete": null,
-    "edit": null,
+    "create": "Crear",
+    "delete": "Borrar",
+    "edit": "Editar",
     "clear": "Limpiar",
     "reset": "Restablecer",
     "validation": {
@@ -93,11 +93,11 @@
       "noResults": "No se encontraron resultados.",
       "noAlbums": "No se encontraron álbumes.",
       "noArtists": "No se encontraron artistas.",
-      "noGenres": null,
+      "noGenres": "No se encontraron géneros.",
       "noPlaylists": "No se encontraron listas de reproducción.",
       "noTracks": "No se encontraron canciones.",
       "noHiddenTracks": "No se encontraron canciones ocultas.",
-      "noLyrics": null
+      "noLyrics": "No se han encontrado letras."
     }
   },
   "feat": {
@@ -108,7 +108,7 @@
         "downloadAPK": "Descargar APK más reciente",
         "updateGoogle": "Actualizar desde Play Store",
         "version": "Versión",
-        "checkUpdates": null,
+        "checkUpdates": "Buscar actualizaciones",
         "rcNotification": "Notificación de versión preliminar"
       }
     },
@@ -142,7 +142,7 @@
     "miniplayerGestures": {
       "title": "Gestos del mini reproductor",
       "extra": {
-        "dragClearPlayback": null
+        "dragClearPlayback": "Desliza hacia abajo para detener la reproducción"
       }
     },
     "nowPlayingDesign": {
@@ -161,7 +161,7 @@
       "extra": {
         "contribute": "Colabora con las traducciones",
         "useLTR": "Forzar diseño LTR en idiomas RTL. Requiere reiniciar.",
-        "translators": null
+        "translators": "Traductores"
       }
     },
     "backup": {
@@ -221,7 +221,7 @@
       "title": "Restaurar última posición"
     },
     "lyrics": {
-      "title": null
+      "title": "Letras"
     },
     "scanning": {
       "title": "Escaneo"
@@ -245,7 +245,7 @@
     },
     "listAllow": {
       "title": "Lista de permitidos",
-      "description": null
+      "description": "Indica dónde buscar música. Si está vacío, se buscará en todo el dispositivo."
     },
     "listBlock": {
       "title": "Lista de bloqueados",
@@ -256,10 +256,10 @@
       "description": "Duración mínima para guardar una canción."
     },
     "separators": {
-      "title": null,
+      "title": "Separadores de valores múltiples",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Solo se aplica a nuevas canciones. Usa el escaneo profundo para actualizar las existentes.",
+        "line2": "Advertencia: Algunas etiquetas podrían detectarse incorrectamente como si tuvieran múltiples valores. No afecta a las canciones que hayas modificado manualmente."
       }
     },
     "experimental": {
@@ -302,8 +302,8 @@
     },
     "onboarding": {
       "extra": {
-        "configureSettings": null,
-        "startScan": null,
+        "configureSettings": "Configurar preferencias",
+        "startScan": "Iniciar búsqueda de canciones",
         "saveTracks": "Guardando canciones",
         "saveImages": "Guardando imágenes"
       }
@@ -354,18 +354,18 @@
       }
     },
     "modalViewPreference": {
-      "title": null,
+      "title": "Opciones de pantalla",
       "extra": {
-        "layout": null,
-        "list": null,
-        "grid": null,
-        "compactGrid": null,
+        "layout": "Diseño",
+        "list": "Lista",
+        "grid": "Cuadrícula",
+        "compactGrid": "Cuadrícula Compacta",
         "sort": "Ordenar",
         "asc": "Ascendente",
         "discover": "Descubrir",
-        "duration": null,
+        "duration": "Duración",
         "modified": "Fecha de modificación",
-        "trackCount": null
+        "trackCount": "Número de canciones"
       }
     },
     "modalTrack": {
@@ -383,7 +383,7 @@
         "playNext": "Reproducir a continuación",
         "playLast": "Reproducir al final",
         "toast": "`{{- name}}` añadida a la cola.",
-        "quickAdd": null,
+        "quickAdd": "Añadir rápidamente a la cola",
         "queueAwareNext": "Insertar como siguiente",
         "queueAwareNextBrief": "Intenta colocar la canción después de la última marcada como \"Reproducir a continuación\"."
       }
