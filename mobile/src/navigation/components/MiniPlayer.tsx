@@ -1,7 +1,7 @@
 import BackgroundTimer from "@boterop/react-native-background-timer";
 import { useNavigation } from "@react-navigation/native";
 import { atom, useSetAtom } from "jotai";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -59,10 +59,12 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
   const setVisibleBeforeReset = useSetAtom(visibleBeforeResetAtom);
 
   const prevTrack = useRef<typeof track>(undefined);
-  if (prevTrack.current !== track) {
-    prevTrack.current = track;
-    setVisibleBeforeReset(!!track);
-  }
+  useEffect(() => {
+    if (prevTrack.current !== track) {
+      prevTrack.current = track;
+      setVisibleBeforeReset(!!track);
+    }
+  }, [setVisibleBeforeReset, track]);
   //#endregion
 
   const TextWrapper = useMemo(
