@@ -169,9 +169,9 @@
       "description": "Transférez vos données entre appareils via un fichier `music_backup.json`.",
       "extra": {
         "export": "Exporter",
-        "exportSuccess": null,
+        "exportSuccess": "L'exportation s'est déroulée avec succès.",
         "import": "Importer",
-        "importSuccess": null
+        "importSuccess": "L'importation s'est déroulée avec succès."
       }
     },
     "insights": {
