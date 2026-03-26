@@ -120,7 +120,6 @@ function SearchResultsList<TScope extends SearchCategories>(
             />
           ) : (
             <SearchResult
-              button
               {...item}
               /* @ts-expect-error - `type` should be limited to our scope. */
               onPress={() => props.callbacks[item.type](item.entry)}

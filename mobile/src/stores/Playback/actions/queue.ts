@@ -1,6 +1,6 @@
 import { toast } from "@missingcore/toast";
 import { createId } from "@paralleldrive/cuid2";
-import TrackPlayer from "react-native-track-player";
+import AudioBrowser from "react-native-audio-browser";
 
 import i18next from "~/modules/i18n";
 
@@ -117,7 +117,7 @@ export async function removeIds(ids: string[]) {
     if (!newActiveTrack) return;
 
     await bgWait(250);
-    await TrackPlayer.load(formatTrackforPlayer(newActiveTrack));
+    AudioBrowser.load(formatTrackforPlayer(newActiveTrack));
   }
 
   playbackStore.setState({
@@ -196,7 +196,7 @@ export async function synchronize() {
   });
 
   // Change playing track if the previous active track doesn't exist in the updated list.
-  if (isDiffTrack) await TrackPlayer.load(formatTrackforPlayer(newTrack));
+  if (isDiffTrack) AudioBrowser.load(formatTrackforPlayer(newTrack));
 }
 
 //#region Internal Utils

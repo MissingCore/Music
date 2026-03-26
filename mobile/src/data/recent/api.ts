@@ -112,14 +112,15 @@ export async function addPlayedMediaList(entry: PlayFromSource) {
     });
 }
 
-export async function addPlayedTrack(id: string) {
+export async function addPlayedTrack(uri: string | undefined) {
+  if (!uri) return;
   return db
     .update(tracks)
     .set({
       lastPlayedAt: Date.now(),
       playCount: sql`${tracks.playCount} + 1`,
     })
-    .where(eq(tracks.id, id));
+    .where(eq(tracks.uri, uri));
 }
 //#endregion
 

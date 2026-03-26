@@ -50,7 +50,6 @@ export function useViewLayout<TData extends Record<string, any>>(
         estimatedItemSize: 56, // 48px Height + 8px Margin Bottom
         renderItem: ({ item: { id, ...item } }) => (
           <SearchResult
-            button
             type={screen}
             {...item}
             onPress={() =>

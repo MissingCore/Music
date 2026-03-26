@@ -70,7 +70,7 @@ Install the app directly from the Play Store.
 [![TypeScript][TypeScript]][TypeScript-url]
 [![Zustand][Zustand]][Zustand-url]
 [![React Query][React Query]][React Query-url]
-[![React Native Track Player][React Native Track Player]][React Native Track Player-url]
+[![React Native Audio Browser][React Native Audio Browser]][React Native Audio Browser-url]
 [![Tailwind CSS][Tailwind CSS]][Tailwind CSS-url]
 [![Drizzle][Drizzle]][Drizzle-url]
 
@@ -152,8 +152,8 @@ Refer to [THIRD_PARTY.md](./THIRD_PARTY.md).
 [Expo-url]: https://docs.expo.dev/
 [React Native]: https://img.shields.io/badge/React_Native-222222?style=for-the-badge&logo=React&logoColor=61DAFB
 [React Native-url]: https://reactnative.dev/
-[React Native Track Player]: https://img.shields.io/badge/React_Native_Track_Player-7253ed?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAVCAYAAACt4nWrAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAHzSURBVHgBjVXRccIwDDUc/2SDZgR3ArIBbECYADpB0gnCBqYTABMEJoBOQDpBsoErkWciHMPFdzrZlvQsPSuOUoFhrd2Q1BBDEnv2mKQQPrkaMsgxIbmRRADJALCBPYU9Ez68ToaAc1AWyJQBSug4EFP4WOMAPgdWcmM0GvH6QJKQ7LCW448kGgLe4ACZWUJqAfA0QMGHn9Ar8F8HDjoY1JAcAc56j7vRiNEh8EkgQ43sFqiCyz2RTElq6CtJyRoHNIg/9yhDhiW6wrXY3HUGfDJ5kTS/cAIMjks20PuHnzCuRWAG4f0ZKKixXroqBVghYjfY1wqTuVcJ9y8PI4BK0ZIXUa0NtCb7X8bg9CyNxFsDHitvn9cr1V74TLXt2QRas7rfHTg2nK04ObXdpx15FDiqIlFF4lW9e1CFA+58wrjH3IB7jfIzlwTpHPYU9HDcGjjPXyuyMbYbBQItMo9EZhpV5SLmhkNmDxo9rjiY+zsDnxp3kqiu552+QhrYc+L+KLEmqj/4Uz6R47c4cEeqpr0vmm9pPqX5StiZhtgHCoGzU+Xt8XPLJZewf3r2ClU+jdDb0nvd0Jon1ZZ/wNofzRDwq8wCF7gFMMvC9v9OGnHvh+hfY7t3pvC6pfB8bt5hbcUvDmDHJUr9CdEAH/dsBH3+AWtRo7d9AnSYAAAAAElFTkSuQmCC
-[React Native Track Player-url]: https://rntp.dev/
+[React Native Audio Browser]: https://img.shields.io/badge/React_Native_Audio_Browser-a8b1ff?style=for-the-badge
+[React Native Audio Browser-url]: https://audiobrowser.dev/
 [React Query]: https://img.shields.io/static/v1?style=for-the-badge&message=React+Query&color=FF4154&logo=React+Query&logoColor=FFFFFF&label=
 [React Query-url]: https://tanstack.com/query/latest
 [Tailwind CSS]: https://img.shields.io/badge/Tailwind_CSS-222222?style=for-the-badge&logo=Tailwind+CSS&logoColor=06B6D4

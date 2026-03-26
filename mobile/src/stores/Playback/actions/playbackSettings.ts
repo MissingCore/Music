@@ -1,6 +1,4 @@
-import TrackPlayer, {
-  RepeatMode as RNTPRepeatMode,
-} from "react-native-track-player";
+import AudioBrowser from "react-native-audio-browser";
 
 import { playbackStore } from "../store";
 import type { RepeatMode } from "../constants";
@@ -17,10 +15,8 @@ export async function cycleRepeat() {
   else if (repeat === RepeatModes.REPEAT_ONE) newMode = RepeatModes.NO_REPEAT;
   playbackStore.setState({ repeat: newMode });
 
-  await TrackPlayer.setRepeatMode(
-    newMode === RepeatModes.REPEAT_ONE
-      ? RNTPRepeatMode.Track
-      : RNTPRepeatMode.Off,
+  AudioBrowser.setRepeatMode(
+    newMode === RepeatModes.REPEAT_ONE ? "track" : "off",
   );
 }
 

@@ -1,11 +1,10 @@
-import type { AddTrack } from "react-native-track-player";
+import type { Track as AddTrack } from "react-native-audio-browser";
 
 import type { Track } from "./types";
 import { getArtistsString } from "../artist/utils";
 
+import { PlaceholderImageFile } from "~/lib/file-system";
 import { getSafeUri } from "~/utils/string";
-
-const MusicGlyph = require("~/resources/images/music-glyph.png");
 
 /**
  * Merge 2 lists of tracks. Tracks that appear in both lists will result
@@ -20,15 +19,14 @@ export function mergeTracks<TData extends { id: string }>(
   return list1.filter(({ id }) => !trackIds.has(id)).concat(list2);
 }
 
-/** Format track data to be used with the RNTP queue. */
+/** Format track data to be used with the AudioBrowser queue. */
 export function formatTrackforPlayer(track: Track) {
   return {
-    url: getSafeUri(track.uri),
-    artwork: track.artwork || MusicGlyph,
+    src: getSafeUri(track.uri),
+    artwork: track.artwork || PlaceholderImageFile,
     title: track.name,
     artist: getArtistsString(track.artists, "No Artist"),
     album: track.album || undefined,
     duration: track.duration,
-    id: track.id,
   } satisfies AddTrack;
 }

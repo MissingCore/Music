@@ -1,4 +1,4 @@
-import TrackPlayer, { State } from "react-native-track-player";
+import AudioBrowser from "react-native-audio-browser";
 
 import { addPlayedMediaList } from "~/data/recent/api";
 import { formatTrackforPlayer } from "~/data/track/utils";
@@ -23,7 +23,7 @@ export async function loadCurrentTrack() {
   const { _hasRestoredPosition, _restoredTrackKey, lastPosition, activeTrack } =
     playbackStore.getState();
   if (!activeTrack) return;
-  await TrackPlayer.load(formatTrackforPlayer(activeTrack));
+  AudioBrowser.load(formatTrackforPlayer(activeTrack));
 
   //* Restore Last Played Position
   if (!_hasRestoredPosition) {
@@ -38,10 +38,12 @@ export async function loadCurrentTrack() {
   }
 }
 
-/** Initialize the RNTP queue. */
+/** Initialize the AudioBrowser queue. */
 export async function preloadCurrentTrack() {
   if (await isLoaded()) return;
-  console.log("[RNTP] Queue is empty, preloading RNTP Queue...");
+  console.log(
+    "[AudioBrowser] Queue is empty, preloading AudioBrowser Queue...",
+  );
   await loadCurrentTrack();
 }
 //#endregion
@@ -56,21 +58,21 @@ type PlayPauseOptions = {
 export async function play(opts?: PlayPauseOptions) {
   playbackStore.setState({ isPlaying: true });
   await preloadCurrentTrack();
-  await TrackPlayer.play();
+  AudioBrowser.play();
   if (!opts?.noRevalidation) revalidateWidgets({ exclude: ["ArtworkPlayer"] });
 }
 
 /** Pause the current playing track. */
 export async function pause(opts?: PlayPauseOptions) {
   playbackStore.setState({ isPlaying: false });
-  await TrackPlayer.pause();
+  AudioBrowser.pause();
   if (!opts?.noRevalidation) revalidateWidgets({ exclude: ["ArtworkPlayer"] });
 }
 
 /** Stop & unload the current playing track (stops loading/buffering). */
 export async function stop() {
   playbackStore.setState({ isPlaying: false });
-  await TrackPlayer.stop();
+  AudioBrowser.stop();
   revalidateWidgets({ openApp: true });
 }
 
@@ -92,7 +94,7 @@ export async function prev() {
   const prevTrack = await getTrack(prevTrackKey);
   if (!prevTrack) return;
 
-  // If the RNTP queue isn't loaded or if we played <=10s of the track,
+  // If the AudioBrowser queue isn't loaded or if we played <=10s of the track,
   // simply update the `currPlayingIdx` & `currPlayingId`
   if (lastPosition <= 10 || !(await isLoaded())) {
     playbackStore.setState({
@@ -136,7 +138,7 @@ export async function next(naturalProgression = false) {
 export async function seekTo(position: number) {
   await preloadCurrentTrack();
   playbackStore.setState({ lastPosition: position });
-  await TrackPlayer.seekTo(position);
+  AudioBrowser.seekTo(position);
 }
 
 /** Play track at specified index in queue. */
@@ -204,7 +206,7 @@ export async function playFromList({
         });
         await loadCurrentTrack();
       }
-      return await play(); // Will preload RNTP queue if empty.
+      return await play(); // Will preload AudioBrowser queue if empty.
     }
   }
 
@@ -236,7 +238,7 @@ export async function playFromList({
 
   // 6. Play this new media list.
   if (isDiffTrack || !(await isLoaded())) await loadCurrentTrack();
-  TrackPlayer.play();
+  AudioBrowser.play();
 
   // 7. Add media list to recent lists.
   addPlayedMediaList(source);
@@ -281,10 +283,10 @@ export async function getNextTrack() {
   };
 }
 
-/** Determine if any tracks are loaded in RNTP on launch. */
+/** Determine if any tracks are loaded in AudioBrowser on launch. */
 async function isLoaded() {
   try {
-    return (await TrackPlayer.getPlaybackState()).state !== State.None;
+    return AudioBrowser.getPlayback().state !== "none";
   } catch {
     return false;
   }

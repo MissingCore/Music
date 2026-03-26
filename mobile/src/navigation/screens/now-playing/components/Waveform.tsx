@@ -1,7 +1,7 @@
+import { computeAmplitude } from "@missingcore/react-native-audio-analyzer";
 import AudioWaveView from "@kaannn/react-native-waveform";
 import { useCallback, useMemo, useRef } from "react";
 import { useWindowDimensions } from "react-native";
-import { computeAmplitude } from "react-native-audio-analyzer";
 
 import { db } from "~/db";
 import { waveformSamples } from "~/db/schema";

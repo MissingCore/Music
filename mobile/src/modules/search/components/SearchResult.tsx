@@ -16,8 +16,6 @@ export namespace SearchResult {
 
   export type Props = Content &
     PressProps & {
-      /** Enables press events. */
-      button?: boolean;
       /** Make this stand out more. */
       poppyLabel?: boolean;
       RightElement?: React.JSX.Element;
@@ -44,7 +42,6 @@ export function SearchResult(props: SearchResult.Props) {
           />
         )
       }
-      _asView={!props.button}
       _labelTextClassName={props.poppyLabel ? "text-primary" : undefined}
     />
   );

@@ -16,3 +16,7 @@ android {
     abortOnError false
   }
 }
+
+dependencies {
+  api 'commons-io:commons-io:1.4'
+}

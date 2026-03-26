@@ -1,11 +1,32 @@
 package expo.modules.nativeutils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
+import android.net.Uri
 import expo.modules.kotlin.exception.Exceptions
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.IOException
+import java.io.OutputStream
 import java.net.URL
+import java.util.regex.Pattern
+import org.apache.commons.io.IOUtils
+
+fun slashifyFilePath(path: String?): String? {
+  return if (path == null) {
+    null
+  } else if (path.startsWith("file:///")) {
+    path
+  } else {
+    // Ensure leading schema with a triple slash
+    Pattern.compile("^file:/*").matcher(path).replaceAll("file:///")
+  }
+}
 
 class NativeUtilsModule : Module() {
   private val context: Context?
@@ -43,5 +64,44 @@ class NativeUtilsModule : Module() {
         }
       }
     }
+
+    // Based on:
+    //  - https://github.com/expo/expo/blob/sdk-55/packages/expo-file-system/android/src/main/java/expo/modules/filesystem/legacy/FileSystemLegacyModule.kt#L294-L353
+    AsyncFunction("saveBundledAssetToURI") { assetName: String, toUri: String ->
+      val fromUri = Uri.parse(assetName)
+      val toUri = Uri.parse(toUri)
+
+      if (fromUri.scheme == null) {
+        // this is probably an asset embedded by the packager in resources
+        val inputStream = openResourceInputStream(assetName)
+        val out: OutputStream = FileOutputStream(toUri.toFile())
+        IOUtils.copy(inputStream, out)
+      }
+    }
   }
+
+  //#region `saveBundledAssetToURI` Utils
+  // extension functions of Uri class
+  private fun Uri.toFile() = if (this.path != null) {
+    File(this.path!!)
+  } else {
+    throw IOException("Invalid Uri: $this")
+  }
+
+  @SuppressLint("DiscouragedApi")
+  @Throws(IOException::class)
+  private fun openResourceInputStream(resourceName: String?): InputStream {
+    val currentContext = context
+    if (currentContext == null) throw Exception("React Context is currently undefined.")
+    var resourceId = currentContext.resources.getIdentifier(resourceName, "raw", currentContext.packageName)
+    if (resourceId == 0) {
+      // this resource doesn't exist in the raw folder, so try drawable
+      resourceId = currentContext.resources.getIdentifier(resourceName, "drawable", currentContext.packageName)
+      if (resourceId == 0) {
+        throw FileNotFoundException("No resource found with the name '$resourceName'")
+      }
+    }
+    return currentContext.resources.openRawResource(resourceId)
+  }
+  //#endregion
 }

@@ -20,7 +20,6 @@ export function AddAlbumSheet(props: {
         onFilterData={(query, data) => containSorter(data, query, "name")}
         renderItem={({ item }) => (
           <SearchResult
-            button
             type="album"
             title={item.name}
             description={item.artistName}

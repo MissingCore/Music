@@ -37,7 +37,7 @@ export const linking: LinkingOptions<ParamListBase> = {
     // Handle any incoming deep links while the app has been opened.
     const subscription = Linking.addEventListener("url", async ({ url }) => {
       if (
-        url === "trackplayer://notification.click" ||
+        url === "audiobrowser://notification" ||
         (await handleContentURL(url))
       ) {
         listener("music://now-playing");

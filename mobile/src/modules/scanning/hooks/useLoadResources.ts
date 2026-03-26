@@ -28,7 +28,7 @@ export function useLoadResources() {
       try {
         const stopwatch = new Stopwatch();
 
-        createImageDirectory();
+        await createImageDirectory();
 
         // Fix database entries if we make any "breaking" changes.
         await checkForMigrations();

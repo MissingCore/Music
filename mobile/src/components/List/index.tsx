@@ -14,16 +14,16 @@ export type ListItemProps = ListItemContentProps &
     style?: StyleProp<ViewStyle>;
     /** Used internally to set the default pressed & disabled styles. */
     _psuedoClassName?: string;
-    /** If the wrapping container should be a `View` instead of a `Pressable`. */
-    _asView?: boolean;
   };
 
 export const ListItem = memo(function StandardListItem({
   _psuedoClassName = "active:bg-surfaceContainerLowest/50",
-  _asView = false,
   ...props
 }: ListItemProps) {
-  const Wrapper = useMemo(() => (_asView ? View : Pressable), [_asView]);
+  const Wrapper = useMemo(
+    () => (!props.onPress ? View : Pressable),
+    [props.onPress],
+  );
   return (
     <Wrapper
       {...props}

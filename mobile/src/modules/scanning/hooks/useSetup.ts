@@ -1,15 +1,12 @@
 import { GlyphToy } from "@missingcore/music-glyph-toys";
 import { useEffect, useState } from "react";
-import TrackPlayer, { RepeatMode } from "react-native-track-player";
+import AudioBrowser from "react-native-audio-browser";
 
 import { addPlayedMediaList } from "~/data/recent/api";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 
-import {
-  getTrackPlayerOptions,
-  onAppStartUpInit,
-} from "~/lib/react-native-track-player";
+import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
 
@@ -17,8 +14,8 @@ type SetupState = "idle" | "pending" | "ready";
 
 /**
  * Ensure our Zustand stores are hydrated before we do anything, making
- * sure those that rely on RNTP to be initialized are hydrated after
- * RNTP is initialized.
+ * sure those that rely on AudioBrowser to be initialized are hydrated
+ * after AudioBrowser is initialized.
  */
 export function useSetup() {
   const [setupState, setSetupState] = useState<SetupState>("idle");
@@ -33,9 +30,6 @@ export function useSetup() {
     (async () => {
       setSetupState("pending");
       GlyphToy.connect();
-      await onAppStartUpInit;
-
-      await TrackPlayer.registerEvents();
 
       // Ensure widget has up-to-date data as the Playback store isn't
       // immediately hydrated.
@@ -48,12 +42,12 @@ export function useSetup() {
         playbackStore.setState({ _restoredTrackKey: activeKey });
       } else playbackStore.setState({ _hasRestoredPosition: true });
 
-      // Ensure correct RNTP settings.
-      await TrackPlayer.updateOptions(
-        getTrackPlayerOptions({ continuePlaybackOnDismiss }),
+      // Ensure correct AudioBrowser settings.
+      AudioBrowser.updateOptions(
+        getAudioBrowserOptions({ continuePlaybackOnDismiss }),
       );
       if (repeat === RepeatModes.REPEAT_ONE) {
-        await TrackPlayer.setRepeatMode(RepeatMode.Track);
+        AudioBrowser.setRepeatMode("track");
       }
 
       // Ensure the current list is at the top of recently played lists.

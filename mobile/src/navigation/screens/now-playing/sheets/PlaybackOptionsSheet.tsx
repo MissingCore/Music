@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { useCallback, useState } from "react";
-import TrackPlayer from "react-native-track-player";
+import AudioBrowser from "react-native-audio-browser";
 
 import { ActivityZone } from "~/resources/icons/ActivityZone";
 import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
@@ -152,9 +152,9 @@ const VolumeSliderOptions = {
   max: 1,
   step: 0.01,
   height: 48,
-  onChange: async (volume: number) => {
+  onChange: (volume: number) => {
     sessionStore.setState({ volume });
-    await TrackPlayer.setVolume(volume).catch();
+    AudioBrowser.setVolume(volume);
   },
   overlay: {
     accessibilityLabelKey: "feat.playback.extra.volume" as const,

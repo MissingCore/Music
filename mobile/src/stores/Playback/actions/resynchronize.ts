@@ -1,5 +1,5 @@
 import { GlyphToy } from "@missingcore/music-glyph-toys";
-import TrackPlayer from "react-native-track-player";
+import AudioBrowser from "react-native-audio-browser";
 
 import {
   removePlayedMediaList,
@@ -28,12 +28,9 @@ export async function onActiveTrack(args: {
     playbackStore.setState({ activeTrack: updatedTrackData });
 
     // Update media notification with updated metadata.
-    const rntpTrack = await TrackPlayer.getActiveTrack();
-    if (!rntpTrack) return;
-    await TrackPlayer.updateMetadataForTrack(
-      0,
-      formatTrackforPlayer(updatedTrackData),
-    );
+    const rnabTrack = AudioBrowser.getActiveTrack();
+    if (!rnabTrack) return;
+    AudioBrowser.updateNowPlaying(formatTrackforPlayer(updatedTrackData));
 
     GlyphToy.setMatrixArtwork(updatedTrackData.artwork);
   } catch {}

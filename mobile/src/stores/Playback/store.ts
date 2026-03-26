@@ -1,7 +1,5 @@
 import { inArray } from "drizzle-orm";
-import TrackPlayer, {
-  isPlaying as rntpIsPlaying,
-} from "react-native-track-player";
+import AudioBrowser from "react-native-audio-browser";
 import { useStore } from "zustand";
 
 import { db } from "~/db";
@@ -28,7 +26,7 @@ export const playbackStore = createPersistedStore<PlaybackStore>(
       // Ensure `isPlaying` is correct when we rehydrate the store.
       let upToDateIsPlaying = false;
       try {
-        upToDateIsPlaying = (await rntpIsPlaying()).playing ?? false;
+        upToDateIsPlaying = AudioBrowser.getPlayingState().playing;
       } catch {}
       set({ _hasHydrated: true, isPlaying: upToDateIsPlaying, activeTrack });
     },
@@ -62,7 +60,7 @@ export const playbackStore = createPersistedStore<PlaybackStore>(
         queuePosition: 0,
         numQueuedNext: 0,
       });
-      await TrackPlayer.reset();
+      AudioBrowser.reset();
       await resetWidgets();
     },
     resetOnCrash: async () => {

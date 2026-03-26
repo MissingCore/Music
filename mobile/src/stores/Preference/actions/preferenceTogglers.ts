@@ -1,5 +1,5 @@
 import { I18nManager } from "react-native";
-import TrackPlayer from "react-native-track-player";
+import AudioBrowser from "react-native-audio-browser";
 
 import i18next from "~/modules/i18n";
 
@@ -7,7 +7,7 @@ import { preferenceStore } from "../store";
 import { playbackStore } from "../../Playback/store";
 import { findAndSetCachedWaveform } from "../../Session/actions";
 
-import { getTrackPlayerOptions } from "~/lib/react-native-track-player";
+import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 
 export function toggleCheckForUpdates() {
   preferenceStore.setState((prev) => ({
@@ -18,8 +18,8 @@ export function toggleCheckForUpdates() {
 export async function toggleContinuePlaybackOnDismiss() {
   const nextState = !preferenceStore.getState().continuePlaybackOnDismiss;
   preferenceStore.setState({ continuePlaybackOnDismiss: nextState });
-  await TrackPlayer.updateOptions(
-    getTrackPlayerOptions({ continuePlaybackOnDismiss: nextState }),
+  AudioBrowser.updateOptions(
+    getAudioBrowserOptions({ continuePlaybackOnDismiss: nextState }),
   );
 }
 export function toggleDragClearPlayback() {
