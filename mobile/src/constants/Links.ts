@@ -10,6 +10,6 @@ export const PLAYSTORE =
 export const PRIVACY_POLICY =
   "https://missingcore.vercel.app/music/privacy-policy";
 
-export const TRANSLATIONS = `${GITHUB}/blob/dev/docs/translations.md`;
+export const TRANSLATIONS = `https://crowdin.com/project/missingcore-music`;
 
 export const VERSION_CHANGELOG = `${GITHUB}/releases/tag/${APP_VERSION}`;
