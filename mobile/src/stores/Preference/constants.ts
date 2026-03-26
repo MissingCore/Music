@@ -96,11 +96,6 @@ export interface PreferenceStore {
 
   //! Experimental Features
   /**
-   * Have smooth transitions that was removed with the Playback store
-   * rewrite. The plan is to eventually make this stable.
-   */
-  smoothPlaybackTransition: boolean;
-  /**
    * Tracks added via "Play Next" will attempt to added after the previous
    * added track. Tracking resets after app session ends.
    */

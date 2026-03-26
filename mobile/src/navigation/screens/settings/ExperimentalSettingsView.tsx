@@ -15,20 +15,10 @@ import { Switch } from "~/components/UI/Switch";
 
 export default function ExperimentalSettings() {
   const { t } = useTranslation();
-  const smoothPlaybackTransition = usePreferenceStore(
-    (s) => s.smoothPlaybackTransition,
-  );
   const queueAwareNext = usePreferenceStore((s) => s.queueAwareNext);
 
   return (
     <ListLayout>
-      <SegmentedList.Item
-        labelText="Smooth Playback Transition"
-        supportingText="Restores smooth playback transitions seen pre-v2.7.0. This will eventually become stable. You should disable this if you encounter issues."
-        onPress={PreferenceTogglers.toggleSmoothPlaybackTransition}
-        RightElement={<Switch enabled={smoothPlaybackTransition} />}
-      />
-
       <SegmentedList.Item
         labelTextKey="feat.queue.extra.queueAwareNext"
         supportingText={t("feat.queue.extra.queueAwareNextBrief")}

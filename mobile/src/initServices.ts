@@ -99,8 +99,7 @@ export async function initServices() {
     playbackStore.setState({ lastPosition: e.position });
 
     const { repeat } = playbackStore.getState();
-    const { playbackDelay, smoothPlaybackTransition } =
-      preferenceStore.getState();
+    const { playbackDelay } = preferenceStore.getState();
 
     // Taking the playback speed into account when optimally loading the next track.
     const loadingFrame = 5 * Math.max(1, sessionStore.getState().playbackSpeed);
@@ -109,7 +108,6 @@ export async function initServices() {
       repeat === RepeatModes.REPEAT_ONE ||
       //? "Natural Playback Delay" & "Smooth Playback Transition" are mutually exclusive features.
       playbackDelay > 0 ||
-      !smoothPlaybackTransition ||
       //? Prevent recomputation.
       gaplessPlaybackContext.buffering ||
       //? Prevent early computation (when we're not near the end of the track).
@@ -141,13 +139,8 @@ export async function initServices() {
     const activeTrackUri = e.track.src;
 
     //* 🧪 Smooth Playback Transition
-    const { smoothPlaybackTransition } = preferenceStore.getState();
     try {
-      if (
-        smoothPlaybackTransition &&
-        e.index !== 0 &&
-        gaplessPlaybackContext.nextSnapshot
-      ) {
+      if (e.index !== 0 && gaplessPlaybackContext.nextSnapshot) {
         playbackStore.setState(gaplessPlaybackContext.nextSnapshot);
         // Ensure the AudioBrowser Queue stores a single track.
         AudioBrowser.remove([...new Array(e.index).keys()]);

@@ -78,12 +78,6 @@ export function toggleRestoreLastPosition() {
   }));
 }
 
-export function toggleSmoothPlaybackTransition() {
-  preferenceStore.setState((prev) => ({
-    smoothPlaybackTransition: !prev.smoothPlaybackTransition,
-  }));
-}
-
 export async function toggleWaveformSlider() {
   const nextState = !preferenceStore.getState().waveformSlider;
   preferenceStore.setState({ waveformSlider: nextState });
