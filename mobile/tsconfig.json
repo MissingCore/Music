@@ -2,11 +2,10 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
-    "baseUrl": ".",
     "paths": {
-      "@missingcore/native-utils": ["modules/native-utils"],
-      "@missingcore/toast": ["modules/toast"],
-      "~/*": ["src/*"]
+      "@missingcore/native-utils": ["./modules/native-utils"],
+      "@missingcore/toast": ["./modules/toast"],
+      "~/*": ["./src/*"]
     },
     "noUncheckedIndexedAccess": true
   },
