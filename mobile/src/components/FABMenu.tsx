@@ -29,7 +29,6 @@ export function FABMenu({
         <Animated.View
           entering={FadeInDown}
           exiting={FadeOutDown}
-          pointerEvents="box-none"
           style={menuStyle}
           className={cn(menuClassName, "absolute right-0 bottom-full")}
         >
