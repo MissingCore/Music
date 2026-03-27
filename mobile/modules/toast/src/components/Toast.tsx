@@ -45,7 +45,7 @@ export function Toast({ toast, exiting, theme }: Props) {
           panAmount.value = Math.min(0, translationY);
         })
         .onEnd(({ velocityY }) => {
-          const metThreshold = velocityY < -1000;
+          const metThreshold = velocityY < -500;
           panAmount.value = withSpring(
             metThreshold ? -(topOffset + toastHeight.value + 256) : 0,
             undefined,

@@ -79,7 +79,7 @@ export function MiniPlayer() {
         })
         .onEnd(({ velocityY }) => {
           //? Resetting the playback store is based off pan velocity.
-          const metThreshold = velocityY > 1000;
+          const metThreshold = velocityY > 500;
           panAmount.value = withSpring(metThreshold ? insets.bottom + 256 : 0);
         }),
     [panAmount, insets, dragClearPlayback],
