@@ -1,10 +1,10 @@
 import type { StaticScreenProps } from "@react-navigation/native";
-import { openBrowserAsync } from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 
 import { OpenInNew } from "~/resources/icons/OpenInNew";
 import LicensesList from "~/resources/licenses.json";
 
+import { openLink } from "~/lib/web-browser";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { SegmentedList } from "~/components/List/Segmented";
 import { AccentText } from "~/components/Typography/AccentText";
@@ -31,7 +31,7 @@ export default function PackageLicense({
             accessibilityLabel={t("template.entrySeeMore", {
               name: licenseInfo.name,
             })}
-            onPress={() => openBrowserAsync(licenseInfo.source)}
+            onPress={() => openLink(licenseInfo.source)}
           />
         )}
       />

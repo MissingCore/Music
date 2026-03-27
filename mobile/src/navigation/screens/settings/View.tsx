@@ -1,5 +1,4 @@
 import { useNavigation } from "@react-navigation/native";
-import { openBrowserAsync } from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 
 import { Archive } from "~/resources/icons/Archive";
@@ -21,7 +20,7 @@ import { BackupSheet } from "./sheets/BackupSheet";
 import { LanguageSheet } from "./sheets/LanguageSheet";
 
 import { APP_VERSION } from "~/constants/Config";
-import * as LINKS from "~/constants/Links";
+import { Links, openLink } from "~/lib/web-browser";
 import { Divider } from "~/components/Divider";
 import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
@@ -113,17 +112,17 @@ export default function Settings() {
           <SegmentedList.Item
             labelTextKey="feat.code.title"
             supportingText={t("feat.code.brief")}
-            onPress={() => openBrowserAsync(LINKS.GITHUB)}
+            onPress={() => openLink(Links.GitHub)}
             RightElement={<OpenInNew />}
           />
           <SegmentedList.Item
             labelTextKey="feat.license.title"
-            onPress={() => openBrowserAsync(LINKS.LICENSE)}
+            onPress={() => openLink(Links.License)}
             RightElement={<OpenInNew />}
           />
           <SegmentedList.Item
             labelTextKey="feat.privacy.title"
-            onPress={() => openBrowserAsync(LINKS.PRIVACY_POLICY)}
+            onPress={() => openLink(Links.PrivacyPolicy)}
             RightElement={<OpenInNew />}
           />
           <SegmentedList.Item
@@ -137,7 +136,7 @@ export default function Settings() {
           <SegmentedList.Item
             labelTextKey="feat.appUpdate.extra.version"
             supportingText={APP_VERSION}
-            onPress={() => openBrowserAsync(LINKS.VERSION_CHANGELOG)}
+            onPress={() => openLink(Links.CurrentRelease)}
             RightElement={<OpenInNew />}
             className="rounded-none"
           />

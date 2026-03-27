@@ -1,4 +1,3 @@
-import { openBrowserAsync } from "expo-web-browser";
 import { useMemo } from "react";
 import { Text, View } from "react-native";
 import Markdown from "react-native-markdown-renderer";
@@ -12,9 +11,9 @@ import { useTheme } from "~/hooks/useTheme";
 import { useHasNewUpdate } from "~/navigation/hooks/useHasNewUpdate";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 
-import * as LINKS from "~/constants/Links";
 import { FontSize } from "~/constants/Styles";
 import { getFont } from "~/lib/style";
+import { Links, openLink } from "~/lib/web-browser";
 import { SegmentedList } from "~/components/List/Segmented";
 import { AccentText } from "~/components/Typography/AccentText";
 
@@ -106,7 +105,7 @@ export default function AppUpdate() {
               <Text
                 key={node.key}
                 style={styles.link as any}
-                onPress={() => openBrowserAsync(node.attributes.href!)}
+                onPress={() => openLink(node.attributes.href!)}
               >
                 {children}
               </Text>
@@ -120,16 +119,14 @@ export default function AppUpdate() {
       <SegmentedList>
         <SegmentedList.Item
           labelTextKey="feat.appUpdate.extra.downloadAPK"
-          onPress={() =>
-            openBrowserAsync(`${LINKS.GITHUB}/releases/tag/${release.version}`)
-          }
+          onPress={() => openLink(Links.SpecificRelease(release.version))}
           LeftElement={<LogoGitHub />}
           className="gap-4"
         />
         {!isRC ? (
           <SegmentedList.Item
             labelTextKey="feat.appUpdate.extra.updateGoogle"
-            onPress={() => openBrowserAsync(LINKS.PLAYSTORE)}
+            onPress={() => openLink(Links.PlayStore)}
             LeftElement={<LogoPlayStore />}
             className="gap-4"
           />

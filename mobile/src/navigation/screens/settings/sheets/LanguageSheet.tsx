@@ -1,4 +1,3 @@
-import { openBrowserAsync } from "expo-web-browser";
 import { View } from "react-native";
 
 import { KeyboardArrowDown } from "~/resources/icons/KeyboardArrowDown";
@@ -9,8 +8,8 @@ import {
   PreferenceTogglers,
 } from "~/stores/Preference/actions";
 
-import { TRANSLATIONS } from "~/constants/Links";
 import { OnRTL } from "~/lib/react";
+import { Links, openLink } from "~/lib/web-browser";
 import { FlatList } from "~/components/Base/List";
 import { Pressable } from "~/components/Base/Pressable";
 import { ExtendedTButton } from "~/components/Form/Button";
@@ -66,7 +65,7 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
 
         <ExtendedTButton
           textKey="feat.language.extra.contribute"
-          onPress={() => openBrowserAsync(TRANSLATIONS)}
+          onPress={() => openLink(Links.Translations)}
           RightElement={<OpenInNew size={20} />}
           className="rounded-full"
         />

@@ -1,4 +1,3 @@
-import { openBrowserAsync } from "expo-web-browser";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -10,8 +9,8 @@ import { useFloatingContent } from "../hooks/useFloatingContent";
 import { ListLayout } from "../layouts/ListLayout";
 import { AppProvider } from "../providers/AppProvider";
 
-import { GITHUB } from "~/constants/Links";
 import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
+import { Links, openLink } from "~/lib/web-browser";
 import { Button } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
@@ -85,7 +84,7 @@ function ErrorLayout({ error }: { error: Error }) {
         </ListLayout>
         <View {...floatingContentProps}>
           <Button
-            onPress={() => openBrowserAsync(`${GITHUB}/issues`)}
+            onPress={() => openLink(Links.Issues)}
             className="w-full bg-error active:bg-errorDim"
           >
             <TStyledText
