@@ -82,6 +82,7 @@ export async function getAlbumTracks<
             duration: tracks.duration,
             disc: tracks.disc,
             track: tracks.track,
+            uri: tracks.uri,
             /** We need to unencode these fields. */
             artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
           },

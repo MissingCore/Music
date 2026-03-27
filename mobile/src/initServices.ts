@@ -15,6 +15,7 @@ import AudioBrowser from "react-native-audio-browser";
 import { db } from "~/db";
 
 import i18next from "~/modules/i18n";
+import { getAlbum, getAlbumsSummary } from "~/data/album/api";
 import { getArtistsString } from "~/data/artist/utils";
 import { getPlaylist, getPlaylistsSummary } from "~/data/playlist/api";
 import { addPlayedTrack } from "~/data/recent/api";
@@ -247,6 +248,36 @@ export async function initServices() {
   //#endregion
 
   //#region Android Auto
+  async function fetchAlbums(): Promise<ResolvedTrack> {
+    const allAlbums = await getAlbumsSummary(true);
+    return {
+      url: "/album",
+      title: "Albums",
+      children: allAlbums.map((album) => ({
+        title: album.name,
+        url: `/album/${album.id}`,
+        artwork: album.artwork || PlaceholderImageFile,
+        style: "grid" as const,
+      })),
+    };
+  }
+
+  async function fetchAlbum(id: string): Promise<ResolvedTrack> {
+    const album = await getAlbum(id);
+    return {
+      url: `/album/${id}`,
+      title: album.name,
+      artwork: album.artwork || PlaceholderImageFile,
+      children: album.tracks.map((track) => ({
+        src: getSafeUri(track.uri),
+        title: track.name,
+        artist: getArtistsString(track.artists),
+        artwork: album.artwork || PlaceholderImageFile,
+        duration: track.duration,
+      })),
+    };
+  }
+
   async function fetchPlaylists(): Promise<ResolvedTrack> {
     const allPlaylists = await getPlaylistsSummary(true);
     return {
@@ -283,7 +314,9 @@ export async function initServices() {
     };
   }
 
-  const playlistRoutes: Record<string, BrowserSource> = {
+  const listRoutes: Record<string, BrowserSource> = {
+    "/album": () => fetchAlbums(),
+    "/album/{id}": ({ routeParams }) => fetchAlbum(routeParams!.id!),
     "/playlist": () => fetchPlaylists(),
     "/playlist/{id}": ({ routeParams }) => fetchPlaylist(routeParams!.id!),
   };
@@ -296,11 +329,15 @@ export async function initServices() {
       },
     ],
     routes: {
-      ...playlistRoutes,
+      ...listRoutes,
       "/library": {
         url: "/library",
         title: "Your Library",
         children: [
+          {
+            url: "/album",
+            title: "Albums",
+          },
           {
             url: "/playlist",
             title: "Playlists",
