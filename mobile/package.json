@@ -112,7 +112,8 @@
   "reanimated": {
     "staticFeatureFlags": {
       "ANDROID_SYNCHRONOUSLY_UPDATE_UI_PROPS": false,
-      "DISABLE_COMMIT_PAUSING_MECHANISM": false
+      "DISABLE_COMMIT_PAUSING_MECHANISM": false,
+      "EXPERIMENTAL_CSS_ANIMATIONS_FOR_SVG_COMPONENTS": true
     }
   },
   "pnpm": {
