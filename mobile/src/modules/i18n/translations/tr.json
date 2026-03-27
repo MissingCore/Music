@@ -7,8 +7,8 @@
     "artists": "Sanatçılar",
     "folder": "Klasör",
     "folders": "Klasörler",
-    "genre": null,
-    "genres": null,
+    "genre": "Tür",
+    "genres": "Türler",
     "playlist": "Çalma Listesi",
     "playlists": "Çalma Listeleri",
     "track": "Parça",
@@ -17,10 +17,10 @@
     "pause": "Duraklat",
     "prev": "Önceki",
     "next": "Sonraki",
-    "shuffle": "Karıştır",
+    "shuffle": "Karışık",
     "repeat": "Tekrarla",
-    "repeatOne": "Tek Parçayı Tekrarla",
-    "favorite": "Favorilere Ekle",
+    "repeatOne": "Tekini Tekrarla",
+    "favorite": "Favori",
     "favorites": "Favoriler",
     "unFavorite": "Favorilerden Çıkar",
     "favoriteTracks": "Favori Parçalar",
@@ -29,27 +29,27 @@
     "home": "Ana Sayfa",
     "settings": "Ayarlar",
     "upcoming": "Sıradaki",
-    "playingFrom": "Şuradan Oynatılıyor",
+    "playingFrom": "Şuradan Oynatılıyor:",
     "disc": "Disk {{count}}"
   },
   "template": {
-    "entryAdd": null,
+    "entryAdd": "`{{- name}}` ekle.",
     "entryAdded": "`{{- name}}` eklendi.",
-    "entryRemove": "`{{- name}}` adlı öğeyi kaldır.",
+    "entryRemove": "`{{- name}}` öğesini kaldır.",
     "entryRemoved": "`{{- name}}` kaldırıldı.",
-    "entryManage": null,
-    "entrySeeMore": "`{{- name}}` hakkında daha fazlasını gör.",
-    "notFound": "`{{- name}}` bulunamadı.",
-    "entryMove": null,
-    "entryShow": "`{{- name}}` göster",
-    "entryHide": "`{{- name}}` gizle",
-    "entryEnable": "`{{- name}}` etkinleştir",
-    "entryDisable": "`{{- name}}` devre dışı bırak",
-    "noContentFound": null
+    "entryManage": "{{- name}} Yönet",
+    "entrySeeMore": "`{{- name}}` hakkında daha fazla bilgi edin.",
+    "notFound": "`{{- name}}` mevcut değil.",
+    "entryMove": "`{{- name}}` öğesini taşı",
+    "entryShow": "`{{- name}}` öğesini göster",
+    "entryHide": "`{{- name}}` öğesini gizle",
+    "entryEnable": "`{{- name}}` öğesini etkinleştir",
+    "entryDisable": "`{{- name}}` öğesini devre dışı bırak",
+    "noContentFound": "Hiçbir {{- name}} bulunamadı."
   },
   "plural": {
-    "entry_one": "{{count}} giriş",
-    "entry_other": "{{count}} giriş",
+    "entry_one": "{{count}} öğe",
+    "entry_other": "{{count}} öğe",
     "second_one": "{{count}} saniye",
     "second_other": "{{count}} saniye",
     "track_one": "{{count}} $t(term.track)",
@@ -63,9 +63,9 @@
     "unsaved": "Kaydedilmemiş değişiklikleriniz olabilir.",
     "stay": "Kal",
     "leave": "Ayrıl",
-    "create": null,
-    "delete": null,
-    "edit": null,
+    "create": "Oluştur",
+    "delete": "Sil",
+    "edit": "Düzenle",
     "clear": "Temizle",
     "reset": "Sıfırla",
     "validation": {
@@ -75,8 +75,8 @@
   "err": {
     "flow": {
       "generic": {
-        "title": "Bir Şeyler Ters Gitti",
-        "brief": "Beklenmedik bir hatayla karşılaştınız."
+        "title": "Bir Şeyler Yanlış Gitti",
+        "brief": "Beklenmeyen bir hatayla karşılaştınız."
       },
       "report": {
         "title": "Sorun Bildir",
@@ -84,20 +84,20 @@
       }
     },
     "msg": {
-      "actionCancel": "İşlem iptal edildi.",
+      "actionCancel": "Eylem iptal edildi.",
       "invalidStructure": "Geçersiz yapı.",
       "noSelect": "Hiçbir şey seçilmedi.",
-      "usedName": "Bu isim kullanılamaz.",
+      "usedName": "Bu ad kullanılamaz.",
       "noContent": "İçerik bulunamadı.",
       "noErrors": "Hata bulunamadı.",
       "noResults": "Sonuç bulunamadı.",
       "noAlbums": "Albüm bulunamadı.",
       "noArtists": "Sanatçı bulunamadı.",
-      "noGenres": null,
+      "noGenres": "Tür bulunamadı.",
       "noPlaylists": "Çalma listesi bulunamadı.",
       "noTracks": "Parça bulunamadı.",
       "noHiddenTracks": "Gizli parça bulunamadı.",
-      "noLyrics": null
+      "noLyrics": "Şarkı sözü bulunamadı."
     }
   },
   "feat": {
@@ -105,11 +105,11 @@
       "title": "Uygulama Güncellemesi",
       "brief": "Yeni bir güncelleme mevcut!",
       "extra": {
-        "downloadAPK": "En son APK'yi indir",
+        "downloadAPK": "En son APK'yı indir",
         "updateGoogle": "Play Store üzerinden güncelle",
         "version": "Sürüm",
-        "checkUpdates": null,
-        "rcNotification": "Ön Sürüm Bildirimi"
+        "checkUpdates": "Güncellemeleri Denetle",
+        "rcNotification": "Ön Sürüm (Pre-Release) Bildirimi"
       }
     },
     "appearance": {
@@ -118,7 +118,7 @@
     "font": {
       "extra": {
         "accent": "Vurgu Yazı Tipi",
-        "primary": "Ana Yazı Tipi"
+        "primary": "Birincil Yazı Tipi"
       }
     },
     "theme": {
@@ -130,43 +130,43 @@
       }
     },
     "tabsOrder": {
-      "title": "Sekme Sırası",
+      "title": "Sekme Düzeni",
       "brief": "Sekmelerin sırasını ve görünürlüğünü özelleştirin.",
       "extra": {
         "setHomeTab": "Uygulama başlatıldığında {{- name}} sekmesini aç."
       }
     },
     "minAlbumLength": {
-      "title": "Albüm Süresi Filtresi"
+      "title": "Minimum Albüm Uzunluğu"
     },
     "miniplayerGestures": {
       "title": "Mini Oynatıcı Hareketleri",
       "extra": {
-        "dragClearPlayback": null
+        "dragClearPlayback": "Oynatmayı Temizlemek için Mini Oynatıcıyı Aşağı Sürükle"
       }
     },
     "nowPlayingDesign": {
       "extra": {
-        "plain": "Sade",
+        "plain": "Düz",
         "vinyl": "Plak",
         "vinylOld": "Plak (Eski)"
       }
     },
     "quickScroll": {
       "title": "Hızlı Kaydırma",
-      "brief": "Desteklenen ekranlarda Nothing tarzı kaydırma çubuğu göster."
+      "brief": "Desteklenen ekranlarda Nothing stili kaydırma çubuğunu göster."
     },
     "language": {
       "title": "Dil",
       "extra": {
         "contribute": "Çevirilere Katkıda Bulun",
-        "useLTR": "RTL bir dil ile LTR düzenini kullan. Yeniden başlatma gereklidir.",
-        "translators": null
+        "useLTR": "Soldan sağa (LTR) düzenini kullan. Yeniden başlatma gerektirir.",
+        "translators": "Çevirmenler"
       }
     },
     "backup": {
       "title": "Yedekleme",
-      "description": "Bu uygulamadaki verileri, bir `music_backup.json` dosyası aracılığıyla cihazlar arasında aktarın.",
+      "description": "`music_backup.json` dosyası aracılığıyla bu uygulamadaki verileri cihazlar arasında aktarın.",
       "extra": {
         "export": "Dışa Aktar",
         "exportSuccess": "Dışa aktarma başarıyla tamamlandı.",
@@ -203,7 +203,7 @@
     "playback": {
       "title": "Oynatma",
       "extra": {
-        "delay": "Doğal Oynatma Gecikmesi",
+        "delay": "Oynatma Gecikmesi",
         "options": "Oynatma Seçenekleri",
         "speed": "Oynatma Hızı",
         "volume": "Uygulama Sesi"
@@ -211,55 +211,55 @@
     },
     "continuePlaybackOnDismiss": {
       "title": "Kapatıldığında Oynatmaya Devam Et",
-      "description": "Uygulamayı son görevlerden kapattığınızda müzik çalmaya devam etsin. Çalmayı durdurmak için uygulamayı zorla durdurun."
+      "description": "Uygulamayı son kullanılanlardan kapattığınızda müzik çalmaya devam etsin. Oynatmayı tamamen durdurmak için uygulamayı durmaya zorlayın."
     },
     "repeatOnSkip": {
-      "title": "Parça Atlandığında Tekrarlama Modunu Koru",
-      "brief": "Parça atlandığında modu \"Tek Parçayı Tekrarla\" konumundan \"Tekrarla\" konumuna değiştirmeyin."
+      "title": "Atlarken Tekrar Modunu Koru",
+      "brief": "Atlama sırasında modu \"Tekini Tekrarla\" durumundan \"Tekrarla\" durumuna geçirme."
     },
     "restoreLastPosition": {
-      "title": "Son Çalınan Konumdan Geri Yükle"
+      "title": "Son Çalınan Konumdan Devam Et"
     },
     "lyrics": {
-      "title": null
+      "title": "Şarkı Sözleri"
     },
     "scanning": {
       "title": "Tarama"
     },
     "rescan": {
       "title": "Yeniden Tara",
-      "brief": "Yeni medya dosyalarını arayın.",
+      "brief": "Yeni medyaları arayın.",
       "extra": {
         "start": "Kütüphane yeniden taranıyor...",
-        "success": "Kütüphane yeniden tarama işlemi bitti.",
-        "fail": "Kütüphane yeniden taranamadı."
+        "success": "Kütüphane yeniden taraması tamamlandı.",
+        "fail": "Kütüphane yeniden taranırken başarısız oldu."
       }
     },
     "deepRescan": {
-      "title": "Derin Tarama",
+      "title": "Derinlemesine Yeniden Tara",
       "brief": "Normal yeniden tarama özelliğini hızlandıran atlama önlemlerini yoksayar."
     },
     "rescanOnLaunch": {
-      "title": "Başlatıldığında Yeniden Tara",
-      "brief": "Devre dışı bırakılırsa, yeni, güncellenmiş ve kaldırılmış parçaları tespit etmek için Yeniden Tara özelliğini kullanın."
+      "title": "Başlangıçta Yeniden Tara",
+      "brief": "Devre dışı bırakılırsa, yeni, güncellenmiş ve kaldırılmış parçaları algılamak için Yeniden Tara özelliğini kullanın."
     },
     "listAllow": {
       "title": "İzin Listesi",
-      "description": null
+      "description": "Parçaların nerede bulunabileceğini belirtin. Boş bırakılırsa, her yerde aranır."
     },
     "listBlock": {
       "title": "Engelleme Listesi",
-      "description": "İzin listesindeki girdilere göre daha yüksek önceliğe sahiptir."
+      "description": "İzin listesindeki öğelere göre daha yüksek önceliğe sahiptir."
     },
     "minTrackDuration": {
-      "title": "Kısa Sesleri Yoksay",
-      "description": "Kaydetmek istemediğimiz seslerin saniye cinsinden süresi."
+      "title": "Minimum Parça Süresi",
+      "description": "Bir parçanın kaydedilmesi için gereken saniye cinsinden minimum süre."
     },
     "separators": {
-      "title": null,
+      "title": "Çok Değerli Ayırıcılar",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Yeni parçalara uygulanır. Mevcut parçaları güncellemek için Derinlemesine Yeniden Tara özelliğini kullanın.",
+        "line2": "Uyarı: Bu durum, bazı etiketlerin birden fazla değere sahip olarak yanlış tanımlanmasına neden olabilir. Manuel olarak değiştirdiğiniz parçalara uygulanmaz."
       }
     },
     "experimental": {
@@ -267,21 +267,21 @@
     },
     "ignoreInterrupt": {
       "title": "Kesintileri Yoksay",
-      "brief": "Bildirim veya arama gibi bir kesinti olduğunda sesi çalmaya devam edin. Bu durumlarda müziği manuel olarak duraklatıp devam ettirmeniz gerekecektir."
+      "brief": "Bildirim veya çağrı gibi bir kesinti meydana geldiğinde sesi çalmaya devam et. Bu durumlarda müziği manuel olarak duraklatmanız ve devam ettirmeniz gerekecektir."
     },
     "sleepTimer": {
       "title": "Uyku Zamanlayıcısı",
-      "description": "Belirtilen dakika süresi geçtikten sonra ses çalmayı durdur.",
+      "description": "Belirtilen dakika sayısından sonra ses çalmayı durdur.",
       "extra": {
         "start": "Başlat",
-        "stopTime": "Ses {{- time}}'de çalmayı durduracak.",
+        "stopTime": "Ses çalma işleminin durdurulacağı saat: {{- time}}",
         "extend": "Zamanlayıcıyı parça bitene kadar uzat."
       }
     },
     "waveformSlider": {
-      "title": "Dalga Formu Kaydırıcısı",
+      "title": "Ses Dalga Formu Kaydırıcısı",
       "extra": {
-        "purgeCache": "Önbelleğe Alınan Dalga Formlarını Temizle",
+        "purgeCache": "Önbelleğe Alınmış Dalga Formlarını Temizle",
         "purgeCacheBrief": "Çalınan parçaların dalga formlarını yeniden hesaplamak için depolama alanında yer açar.",
         "purgeCacheToast": "Dalga formu önbelleği temizlendi."
       }
@@ -298,32 +298,32 @@
     },
     "thirdParty": {
       "title": "Üçüncü Taraf Yazılımlar",
-      "brief": "Bu uygulamayı mümkün kılanlar."
+      "brief": "Bu uygulamayı mümkün kılan bileşenler."
     },
     "onboarding": {
       "extra": {
-        "configureSettings": null,
-        "startScan": null,
+        "configureSettings": "Ayarları Yapılandır",
+        "startScan": "Parçaları Taramayı Başlat",
         "saveTracks": "Parçalar Kaydediliyor",
         "saveImages": "Görseller Kaydediliyor"
       }
     },
     "playedRecent": {
-      "title": "Son Çalınanlar",
+      "title": "Yakın Zamanda Çalınanlar",
       "extra": {
-        "notFound": "Son {{amount}} günde hiçbir şey çalınmadı."
+        "notFound": "Son {{amount}} gün içinde hiçbir şey çalınmadı."
       }
     },
     "search": {
       "title": "Ara",
       "extra": {
-        "searchMedia": "Medyada Ara"
+        "searchMedia": "Medya Ara"
       }
     },
     "artwork": {
       "extra": {
-        "change": "Albüm Kapağını Değiştir",
-        "remove": "Albüm Kapağını Kaldır"
+        "change": "Kapak Görselini Değiştir",
+        "remove": "Kapak Görselini Kaldır"
       }
     },
     "directory": {
@@ -334,19 +334,19 @@
     },
     "playlist": {
       "extra": {
-        "m3uImport": "M3U Çalma Listesini İçe Aktar",
+        "m3uImport": "M3U Çalma Listesi İçe Aktar",
         "m3uExport": "M3U Olarak Dışa Aktar",
-        "absolute": "Mutlak",
-        "relative": "Göreceli"
+        "absolute": "Mutlak (Absolute)",
+        "relative": "Göreceli (Relative)"
       }
     },
     "trackMetadata": {
       "description": {
         "line1": "Parçanın bu uygulamada nasıl görüneceğini düzenleyin. Bu, dosyanın kendisini değiştirmez.",
-        "line2": "Not: Bu dosya değişirse yaptığınız değişiklikler sıfırlanabilir."
+        "line2": "Not: Eğer bu dosya değişirse yaptığınız değişiklikler sıfırlanabilir."
       },
       "extra": {
-        "albumArtists": "Albüm Sanatçısı",
+        "albumArtists": "Albüm Sanatçıları",
         "disc": "Disk",
         "name": "Ad",
         "trackNumber": "Parça Numarası",
@@ -354,18 +354,18 @@
       }
     },
     "modalViewPreference": {
-      "title": null,
+      "title": "Ekran Seçenekleri",
       "extra": {
-        "layout": null,
-        "list": null,
-        "grid": null,
-        "compactGrid": null,
+        "layout": "Düzen",
+        "list": "Liste",
+        "grid": "Izgara",
+        "compactGrid": "Kompakt Izgara",
         "sort": "Sıralama Düzeni",
-        "asc": "Artan Sıralama",
-        "discover": "Keşif Zamanı",
-        "duration": null,
+        "asc": "Artan Düzen",
+        "discover": "Keşfedilme Zamanı",
+        "duration": "Süre",
         "modified": "Son Değiştirilme",
-        "trackCount": null
+        "trackCount": "Parça Sayısı"
       }
     },
     "modalTrack": {
@@ -379,13 +379,13 @@
     },
     "queue": {
       "extra": {
-        "add": "Sıraya Ekle",
-        "playNext": "Sıradakini Çal",
-        "playLast": "Sonuncuyu Çal",
-        "toast": "`{{- name}}` sıraya eklendi.",
-        "quickAdd": null,
-        "queueAwareNext": "Sıraya Duyarlı Sıradakini Çal",
-        "queueAwareNextBrief": "Son \"Sıradakini Çal\" parçasından sonra parça ekleme denemeleri."
+        "add": "Kuyruğa Ekle",
+        "playNext": "Sonraki Çal",
+        "playLast": "En Son Çal",
+        "toast": "`{{- name}}` kuyruğa eklendi.",
+        "quickAdd": "Kuyruğa Hızlı Ekle",
+        "queueAwareNext": "Kuyruk Uyumlu Sonraki Çal",
+        "queueAwareNextBrief": "Parçayı son \"Sonraki Çal\" öğesinden sonraki sıraya eklemeyi dener."
       }
     }
   }
