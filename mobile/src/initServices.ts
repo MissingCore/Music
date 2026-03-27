@@ -5,11 +5,18 @@ import {
   MatrixAction,
 } from "@missingcore/music-glyph-toys";
 import { toast } from "@missingcore/toast";
+import type {
+  BrowserConfiguration,
+  BrowserSource,
+  ResolvedTrack,
+} from "react-native-audio-browser";
 import AudioBrowser from "react-native-audio-browser";
 
 import { db } from "~/db";
 
 import i18next from "~/modules/i18n";
+import { getArtistsString } from "~/data/artist/utils";
+import { getPlaylist, getPlaylistsSummary } from "~/data/playlist/api";
 import { addPlayedTrack } from "~/data/recent/api";
 import { deleteTracks } from "~/data/track/api";
 import { formatTrackforPlayer } from "~/data/track/utils";
@@ -20,9 +27,11 @@ import { sessionStore } from "~/stores/Session/store";
 import { AppCleanUp } from "~/modules/scanning/helpers/cleanup";
 import { router } from "~/navigation/utils/router";
 
+import { PlaceholderImageFile } from "~/lib/file-system";
 import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 import { clearAllQueries } from "~/lib/react-query";
 import { bgWait } from "~/utils/promise";
+import { getSafeUri } from "~/utils/string";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
 
@@ -235,5 +244,72 @@ export async function initServices() {
       await playbackStore.getState().reset();
     }
   });
+  //#endregion
+
+  //#region Android Auto
+  async function fetchPlaylists(): Promise<ResolvedTrack> {
+    const allPlaylists = await getPlaylistsSummary(true);
+    return {
+      url: "/playlist",
+      title: "Playlists",
+      children: allPlaylists.map((playlist) => ({
+        title: playlist.name,
+        url: `/playlist/${playlist.id}`,
+        artwork:
+          (Array.isArray(playlist.artwork)
+            ? playlist.artwork[0]
+            : playlist.artwork) || PlaceholderImageFile,
+        style: "grid" as const,
+      })),
+    };
+  }
+
+  async function fetchPlaylist(id: string): Promise<ResolvedTrack> {
+    const playlist = await getPlaylist(id);
+    return {
+      url: `/playlist/${id}`,
+      title: playlist.name,
+      artwork:
+        (Array.isArray(playlist.artwork)
+          ? playlist.artwork[0]
+          : playlist.artwork) || PlaceholderImageFile,
+      children: playlist.tracks.map((track) => ({
+        src: getSafeUri(track.uri),
+        title: track.name,
+        artist: getArtistsString(track.artists),
+        artwork: track.artwork || PlaceholderImageFile,
+        duration: track.duration,
+      })),
+    };
+  }
+
+  const playlistRoutes: Record<string, BrowserSource> = {
+    "/playlist": () => fetchPlaylists(),
+    "/playlist/{id}": ({ routeParams }) => fetchPlaylist(routeParams!.id!),
+  };
+
+  const configuration: BrowserConfiguration = {
+    tabs: [
+      {
+        title: "Your Library",
+        url: "/library",
+      },
+    ],
+    routes: {
+      ...playlistRoutes,
+      "/library": {
+        url: "/library",
+        title: "Your Library",
+        children: [
+          {
+            url: "/playlist",
+            title: "Playlists",
+          },
+        ],
+      },
+    },
+  };
+
+  AudioBrowser.configureBrowser(configuration);
   //#endregion
 }
