@@ -35,6 +35,8 @@ import { bgWait } from "~/utils/promise";
 import { getSafeUri } from "~/utils/string";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
+import type { PlayFromSource } from "~/stores/Playback/types";
+import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
 
 //#region "Smooth Playback Transition" Constants
 type PlaybackStoreFrame = Awaited<
@@ -147,6 +149,31 @@ export async function initServices() {
   AudioBrowser.onActiveTrackChanged.addListener(async (e) => {
     if (e.index === undefined || e.track === undefined) return;
     const activeTrackUri = e.track.src;
+
+    //* 🧪 Android Auto
+    const androidAutoURL = e.track.url; // ie: `/album/srzxiew5ihjsxe6u706siqfq?__trackId=......`
+    if (androidAutoURL !== undefined) {
+      const parentListSrc = androidAutoURL.split("?__trackId")[0];
+      const [_, listType, listId] = parentListSrc!.split("/");
+      if (listType && listId) {
+        const androidAutoSource = {
+          type: listType,
+          id: listId,
+        } as PlayFromSource;
+        const { playingFrom } = playbackStore.getState();
+        if (!arePlaybackSourceEqual(playingFrom, androidAutoSource)) {
+          const activeTrack = await db.query.tracks.findFirst({
+            where: (fields, { eq }) => eq(fields.uri, activeTrackUri!),
+          });
+          //? Simplist way of updating the playback store when we change
+          //? lists via Android Auto.
+          await PlaybackControls.playFromList({
+            source: androidAutoSource,
+            trackId: activeTrack?.id,
+          });
+        }
+      }
+    }
 
     //* 🧪 Smooth Playback Transition
     try {
