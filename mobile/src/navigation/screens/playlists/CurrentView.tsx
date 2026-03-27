@@ -98,7 +98,7 @@ export default function Playlist({
                   onPress={() =>
                     mutateGuard(favoritePlaylist, !data.isFavorite)
                   }
-                  filled={isToggled}
+                  alternative={isToggled}
                 />
               ) : null}
               <CurrentListMenu

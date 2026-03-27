@@ -57,7 +57,7 @@ function HomeActions() {
           Icon={AnimatedMenuIcon}
           accessibilityLabel={t("term.more")}
           onPress={() => setVisible((prev) => !prev)}
-          filled={visible}
+          alternative={visible}
           size="lg"
           className="size-14"
         />

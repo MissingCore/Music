@@ -23,8 +23,8 @@ type IconButtonProps = PressProps & {
   accessibilityLabel: string;
   /** Defaults to `md`. */
   size?: ButtonSize;
-  /** Use the `filled` variant on the icon if available. */
-  filled?: boolean;
+  /** Use the `alternative` variant on the icon if available. */
+  alternative?: boolean;
   className?: string;
   _iconColor?: ColorRole;
 };
@@ -33,7 +33,7 @@ type IconButtonProps = PressProps & {
 export const IconButton = memo(function IconButton({
   Icon,
   size = "sm",
-  filled,
+  alternative,
   _iconColor,
   ...props
 }: IconButtonProps) {
@@ -54,7 +54,7 @@ export const IconButton = memo(function IconButton({
           style={[pressed && { backgroundColor: `${surfaceContainerHigh}80` }]}
           className="rounded-full p-1.5"
         >
-          <Icon size={iconSize} color={_iconColor} filled={filled} />
+          <Icon size={iconSize} color={_iconColor} alternative={alternative} />
         </View>
       )}
     </Pressable>
@@ -66,7 +66,7 @@ export const IconButton = memo(function IconButton({
 export const FilledIconButton = memo(function FilledIconButton({
   Icon,
   size = "sm",
-  filled,
+  alternative,
   _iconColor,
   ...props
 }: IconButtonProps) {
@@ -80,7 +80,7 @@ export const FilledIconButton = memo(function FilledIconButton({
         props.className,
       )}
     >
-      <Icon size={iconSize} color={_iconColor} filled={filled} />
+      <Icon size={iconSize} color={_iconColor} alternative={alternative} />
     </Pressable>
   );
 });

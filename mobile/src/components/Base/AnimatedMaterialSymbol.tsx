@@ -7,8 +7,8 @@ import { useColor } from "~/hooks/useTheme";
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
 /**
- * Create an Icon where setting the `filled` prop will animate the SVG
- * via Reanimated's CSS SVG Animations.
+ * Create an Icon where setting the `alternative` prop will animate the
+ * SVG via Reanimated's CSS SVG Animations.
  * - **Only support a single `d` path.**
  */
 export function createAnimatedMaterialSymbol(
@@ -18,7 +18,7 @@ export function createAnimatedMaterialSymbol(
   return function AnimatedMaterialSymbol({
     size = 24,
     color,
-    filled = false,
+    alternative = false,
   }: Icon) {
     const usedColor = useColor(color, "onSurface");
     return (
@@ -28,8 +28,8 @@ export function createAnimatedMaterialSymbol(
             animationDuration: "150ms",
             animationFillMode: "forwards",
             animationName: {
-              from: { d: filled ? initDPath : toDPath },
-              to: { d: filled ? toDPath : initDPath },
+              from: { d: alternative ? initDPath : toDPath },
+              to: { d: alternative ? toDPath : initDPath },
             },
             animationTimingFunction: "linear",
           }}

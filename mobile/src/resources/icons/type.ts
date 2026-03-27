@@ -6,8 +6,8 @@ export type Icon = {
   /** Defaults to theme's `onSurface` color. */
   color?: AppColor;
   /**
-   * Use the `filled` variant on the icon if available.
+   * Use the alternative version of the icon if available (ie: filled, animated).
    * Defaults to `false`.
    */
-  filled?: boolean;
+  alternative?: boolean;
 };

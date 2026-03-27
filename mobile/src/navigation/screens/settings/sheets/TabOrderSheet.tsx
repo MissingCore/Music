@@ -77,7 +77,7 @@ const RenderItem = memo(
           })}
           onPress={() => Tabs.setHome(item)}
           disabled={info.isDragging || !isVisible || isHomeTab}
-          filled={isHomeTab}
+          alternative={isHomeTab}
           className={cn({
             "disabled:opacity-100": !info.isDragging && isHomeTab,
           })}

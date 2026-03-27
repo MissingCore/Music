@@ -127,7 +127,7 @@ function FavoriteButton(props: { trackId: string }) {
       Icon={Favorite}
       accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
       onPress={() => mutateGuard(toggleInPlaylist, FavoritesPlaylistKey)}
-      filled={isFav}
+      alternative={isFav}
       size="lg"
     />
   );
