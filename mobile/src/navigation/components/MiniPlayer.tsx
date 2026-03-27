@@ -151,7 +151,8 @@ export function MiniPlayer() {
             </Marquee>
           </TextWrapper>
 
-          <View
+          <Animated.View
+            layout={LinearTransition}
             style={{ flexDirection: OnRTL.decide("row-reverse", "row") }}
             className="items-center"
           >
@@ -164,7 +165,7 @@ export function MiniPlayer() {
               _iconColor="primary"
             />
             {!gestureUI ? <NextButton /> : null}
-          </View>
+          </Animated.View>
         </Pressable>
         <TrackProgress duration={track.duration} />
       </Animated.View>
@@ -178,7 +179,8 @@ function TrackProgress({ duration }: { duration: number }) {
 
   return (
     <View className="absolute right-2 bottom-0 left-2 h-0.5 bg-surfaceContainerHigh">
-      <View
+      <Animated.View
+        layout={LinearTransition}
         style={{ width: progressPercent }}
         className="h-full rounded-full bg-primary"
       />

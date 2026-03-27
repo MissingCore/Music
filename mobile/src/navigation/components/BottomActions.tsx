@@ -2,7 +2,11 @@ import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import Animated, { SlideInRight, SlideOutRight } from "react-native-reanimated";
+import Animated, {
+  FadeIn,
+  SlideInRight,
+  SlideOutRight,
+} from "react-native-reanimated";
 
 import { Search } from "~/resources/icons/Search";
 import { Settings } from "~/resources/icons/Settings";
@@ -53,14 +57,22 @@ function HomeActions() {
       exiting={SlideOutRight}
       visible={visible}
       anchor={
-        <FilledIconButton
-          Icon={AnimatedMenuIcon}
-          accessibilityLabel={t("term.more")}
-          onPress={() => setVisible((prev) => !prev)}
-          alternative={visible}
-          size="lg"
-          className="size-14"
-        />
+        <View className="relative">
+          <FilledIconButton
+            Icon={AnimatedMenuIcon}
+            accessibilityLabel={t("term.more")}
+            onPress={() => setVisible((prev) => !prev)}
+            alternative={visible}
+            size="lg"
+            className="size-14"
+          />
+          {!visible && hasNewUpdate && (
+            <Animated.View
+              entering={FadeIn}
+              className="absolute top-3 right-3 size-2 rounded-full bg-primary"
+            />
+          )}
+        </View>
       }
       menuClassName="mb-2 flex-row items-center gap-2"
     >
