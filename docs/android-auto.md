@@ -6,6 +6,8 @@
 Android Auto support will stay as an experimental feature for the foreseeable future. As such, there are some caveats you need to be aware of:
 
 1. Artwork will not get rendered (Android Auto doesn't work with embedded artwork).
+2. Search & voice commands aren't implemented.
+3. Shuffle & Repeat state can only be controlled via the app.
 
 > [!NOTE]
 > This app should work with Android Auto without any additional configurations. If it doesn't show up, you may need to [enable Developer Mode and allow "Unknown Sources"](https://developer.android.com/training/cars/testing#developer-mode).
