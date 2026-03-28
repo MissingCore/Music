@@ -249,6 +249,8 @@ export async function initServices() {
   //#endregion
 
   //#region Android Auto
+  const experimentalLabel = "🧪 This is an Experimental Feature. 🧪";
+
   /** Generate route containing all lists of a given category. */
   async function getMediaCategoryRoute(
     category: MediaType,
@@ -321,10 +323,12 @@ export async function initServices() {
           {
             url: "/album",
             title: "Albums",
+            groupTitle: experimentalLabel,
           },
           {
             url: "/playlist",
             title: "Playlists",
+            groupTitle: experimentalLabel,
           },
         ],
       },
