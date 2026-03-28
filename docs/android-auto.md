@@ -5,6 +5,7 @@
 
 Android Auto support will stay as an experimental feature for the foreseeable future. As such, there are some caveats you need to be aware of:
 
+0. Only "structured" lists are supported (Albums & Playlists).
 1. Artwork will not get rendered (Android Auto doesn't work with embedded artwork).
 2. Search & voice commands aren't implemented.
 3. Shuffle & Repeat state can only be controlled via the app.
