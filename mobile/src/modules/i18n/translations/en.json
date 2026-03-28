@@ -286,6 +286,9 @@
     "experimental": {
       "title": "Experimental Features"
     },
+    "androidAuto": {
+      "title": "Android Auto"
+    },
     "ignoreInterrupt": {
       "title": "Ignore Interruptions",
       "brief": "Continue playing audio when an interruption such as a notification or a call occurs. You will need to manually pause and unpause the music during these situations."

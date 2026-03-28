@@ -4,12 +4,14 @@ import { useTranslation } from "react-i18next";
 import { db } from "~/db";
 import { waveformSamples } from "~/db/schema";
 
+import { OpenInNew } from "~/resources/icons/OpenInNew";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { sessionStore } from "~/stores/Session/store";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 
+import { Links, openLink } from "~/lib/web-browser";
 import { SegmentedList } from "~/components/List/Segmented";
 import { Switch } from "~/components/UI/Switch";
 
@@ -30,6 +32,12 @@ export default function ExperimentalSettings() {
         labelTextKey="feat.waveformSlider.extra.purgeCache"
         supportingText={t("feat.waveformSlider.extra.purgeCacheBrief")}
         onPress={purgeWaveformCache}
+      />
+
+      <SegmentedList.Item
+        labelTextKey="feat.androidAuto.title"
+        onPress={() => openLink(Links.AndroidAuto)}
+        RightElement={<OpenInNew />}
       />
     </ListLayout>
   );
