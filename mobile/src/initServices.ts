@@ -32,10 +32,10 @@ import { PlaceholderImageFile } from "~/lib/file-system";
 import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 import { clearAllQueries } from "~/lib/react-query";
 import { bgWait } from "~/utils/promise";
-import { getSafeUri } from "~/utils/string";
+import { capitalize, getSafeUri } from "~/utils/string";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
-import type { PlayFromSource } from "~/stores/Playback/types";
+import type { MediaType, PlayFromSource } from "~/stores/Playback/types";
 
 //#region "Smooth Playback Transition" Constants
 type PlaybackStoreFrame = Awaited<
@@ -249,77 +249,60 @@ export async function initServices() {
   //#endregion
 
   //#region Android Auto
-  async function fetchAlbums(): Promise<ResolvedTrack> {
-    const allAlbums = await getAlbumsSummary(true);
+  /** Generate route containing all lists of a given category. */
+  async function getMediaCategoryRoute(
+    category: MediaType,
+    loader: () => Promise<Array<{ name: string; id: string }>>,
+  ): Promise<ResolvedTrack> {
+    const data = await loader();
     return {
-      url: "/album",
-      title: "Albums",
-      children: allAlbums.map((album) => ({
-        title: album.name,
-        url: `/album/${album.id}`,
-        artwork: album.artwork || PlaceholderImageFile,
-        style: "grid" as const,
+      url: `/${category}`,
+      title: `${capitalize(category)}s`,
+      children: data.map((item) => ({
+        title: item.name,
+        url: `/${category}/${item.id}`,
       })),
     };
   }
 
-  async function fetchAlbum(id: string): Promise<ResolvedTrack> {
-    const album = await getAlbum(id);
-    return {
-      url: `/album/${id}`,
-      title: album.name,
-      artwork: album.artwork || PlaceholderImageFile,
-      children: album.tracks.map((track) => ({
-        src: getSafeUri(track.uri),
-        title: track.name,
-        artist: getArtistsString(track.artists),
-        artwork: album.artwork || PlaceholderImageFile,
-        duration: track.duration,
-      })),
+  /** Generate route for list in a given category. */
+  function getMediaCategoryEntryRoute(
+    category: MediaType,
+    loader: (id: string) => Promise<{
+      name: string;
+      artwork: string | null | Array<string | null>;
+      tracks: Array<Record<string, any>>;
+    }>,
+    useListArtwork = false,
+  ): BrowserSource {
+    return async ({ routeParams }): Promise<ResolvedTrack> => {
+      const id = routeParams!.id!;
+      const data = await loader(id);
+      const listArtwork = Array.isArray(data.artwork)
+        ? data.artwork[0]
+        : data.artwork;
+
+      return {
+        url: `/${category}/${id}`,
+        title: data.name,
+        children: data.tracks.map((track) => ({
+          src: getSafeUri(track.uri),
+          title: track.name,
+          artist: getArtistsString(track.artists),
+          artwork:
+            (useListArtwork ? listArtwork : track.artwork) ||
+            PlaceholderImageFile,
+          duration: track.duration,
+        })),
+      };
     };
   }
 
-  async function fetchPlaylists(): Promise<ResolvedTrack> {
-    const allPlaylists = await getPlaylistsSummary(true);
-    return {
-      url: "/playlist",
-      title: "Playlists",
-      children: allPlaylists.map((playlist) => ({
-        title: playlist.name,
-        url: `/playlist/${playlist.id}`,
-        artwork:
-          (Array.isArray(playlist.artwork)
-            ? playlist.artwork[0]
-            : playlist.artwork) || PlaceholderImageFile,
-        style: "grid" as const,
-      })),
-    };
-  }
-
-  async function fetchPlaylist(id: string): Promise<ResolvedTrack> {
-    const playlist = await getPlaylist(id);
-    return {
-      url: `/playlist/${id}`,
-      title: playlist.name,
-      artwork:
-        (Array.isArray(playlist.artwork)
-          ? playlist.artwork[0]
-          : playlist.artwork) || PlaceholderImageFile,
-      children: playlist.tracks.map((track) => ({
-        src: getSafeUri(track.uri),
-        title: track.name,
-        artist: getArtistsString(track.artists),
-        artwork: track.artwork || PlaceholderImageFile,
-        duration: track.duration,
-      })),
-    };
-  }
-
-  const listRoutes: Record<string, BrowserSource> = {
-    "/album": () => fetchAlbums(),
-    "/album/{id}": ({ routeParams }) => fetchAlbum(routeParams!.id!),
-    "/playlist": () => fetchPlaylists(),
-    "/playlist/{id}": ({ routeParams }) => fetchPlaylist(routeParams!.id!),
+  const mediaListRoutes: Record<string, BrowserSource> = {
+    "/album": () => getMediaCategoryRoute("album", getAlbumsSummary),
+    "/album/{id}": getMediaCategoryEntryRoute("album", getAlbum, true),
+    "/playlist": () => getMediaCategoryRoute("playlist", getPlaylistsSummary),
+    "/playlist/{id}": getMediaCategoryEntryRoute("playlist", getPlaylist),
   };
 
   const configuration: BrowserConfiguration = {
@@ -330,7 +313,7 @@ export async function initServices() {
       },
     ],
     routes: {
-      ...listRoutes,
+      ...mediaListRoutes,
       "/library": {
         url: "/library",
         title: "Your Library",
