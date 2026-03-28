@@ -143,14 +143,14 @@ export default function Settings() {
           <Divider className="mx-4" />
           <SegmentedList.Item
             labelTextKey="feat.appUpdate.extra.checkUpdates"
-            onPress={PreferenceTogglers.toggleCheckForUpdates}
+            onPress={PreferenceTogglers.toggleKey("checkForUpdates")}
             RightElement={<Switch enabled={checkForUpdates} />}
             className="rounded-none"
           />
           <Divider className="mx-4" />
           <SegmentedList.Item
             labelTextKey="feat.appUpdate.extra.rcNotification"
-            onPress={PreferenceTogglers.toggleRCNotification}
+            onPress={PreferenceTogglers.toggleKey("rcNotification")}
             disabled={!checkForUpdates}
             RightElement={<Switch enabled={showRCNotification} />}
             className="rounded-none"

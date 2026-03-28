@@ -58,7 +58,7 @@ export default function AppearanceSettings() {
         <SegmentedList.Item
           labelTextKey="feat.quickScroll.title"
           supportingText={t("feat.quickScroll.brief")}
-          onPress={PreferenceTogglers.toggleQuickScroll}
+          onPress={PreferenceTogglers.toggleKey("quickScroll")}
           RightElement={<Switch enabled={quickScroll} />}
         />
       </ListLayout>

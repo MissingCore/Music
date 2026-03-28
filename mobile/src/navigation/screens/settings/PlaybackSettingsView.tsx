@@ -30,7 +30,7 @@ export default function PlaybackSettings() {
         />
         <SegmentedList.Item
           labelTextKey="feat.restoreLastPosition.title"
-          onPress={PreferenceTogglers.toggleRestoreLastPosition}
+          onPress={PreferenceTogglers.toggleKey("restoreLastPosition")}
           RightElement={<Switch enabled={restoreLastPosition} />}
         />
       </SegmentedList>
@@ -38,24 +38,24 @@ export default function PlaybackSettings() {
       <SegmentedList.Item
         labelTextKey="feat.repeatOnSkip.title"
         supportingText={t("feat.repeatOnSkip.brief")}
-        onPress={PreferenceTogglers.toggleRepeatOnSkip}
+        onPress={PreferenceTogglers.toggleKey("repeatOnSkip")}
         RightElement={<Switch enabled={repeatOnSkip} />}
       />
 
       <SegmentedList>
         <SegmentedList.Item
           labelTextKey="feat.miniplayerGestures.title"
-          onPress={PreferenceTogglers.toggleMiniplayerGestures}
+          onPress={PreferenceTogglers.toggleKey("miniplayerGestures")}
           RightElement={<Switch enabled={miniplayerGestures} />}
         />
         <SegmentedList.Item
           labelTextKey="feat.miniplayerGestures.extra.dragClearPlayback"
-          onPress={PreferenceTogglers.toggleDragClearPlayback}
+          onPress={PreferenceTogglers.toggleKey("dragClearPlayback")}
           RightElement={<Switch enabled={dragClearPlayback} />}
         />
         <SegmentedList.Item
           labelTextKey="feat.queue.extra.quickAdd"
-          onPress={PreferenceTogglers.toggleQuickAddQueue}
+          onPress={PreferenceTogglers.toggleKey("quickAddQueue")}
           RightElement={<Switch enabled={quickAddQueue} />}
         />
       </SegmentedList>

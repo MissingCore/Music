@@ -44,7 +44,7 @@ export default function ScanningSettings() {
         <SegmentedList.Item
           labelTextKey="feat.rescanOnLaunch.title"
           supportingText={t("feat.rescanOnLaunch.brief")}
-          onPress={PreferenceTogglers.toggleRescanOnLaunch}
+          onPress={PreferenceTogglers.toggleKey("rescanOnLaunch")}
           RightElement={<Switch enabled={rescanOnLaunch} />}
         />
 

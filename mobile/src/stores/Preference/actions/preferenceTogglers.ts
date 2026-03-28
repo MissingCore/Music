@@ -9,10 +9,21 @@ import { findAndSetCachedWaveform } from "../../Session/actions";
 
 import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 
-export function toggleCheckForUpdates() {
-  preferenceStore.setState((prev) => ({
-    checkForUpdates: !prev.checkForUpdates,
-  }));
+type ToggleableKey =
+  | "checkForUpdates"
+  | "dragClearPlayback"
+  | "quickAddQueue"
+  | "quickScroll"
+  | "miniplayerGestures"
+  | "rcNotification"
+  | "rescanOnLaunch"
+  | "repeatOnSkip"
+  | "restoreLastPosition";
+
+export function toggleKey(key: ToggleableKey) {
+  return () => {
+    preferenceStore.setState((prev) => ({ [key]: !prev[key] }));
+  };
 }
 
 export async function toggleContinuePlaybackOnDismiss() {
@@ -22,19 +33,6 @@ export async function toggleContinuePlaybackOnDismiss() {
     getAudioBrowserOptions({ continuePlaybackOnDismiss: nextState }),
   );
 }
-export function toggleDragClearPlayback() {
-  preferenceStore.setState((prev) => ({
-    dragClearPlayback: !prev.dragClearPlayback,
-  }));
-}
-
-export function toggleQuickAddQueue() {
-  preferenceStore.setState((prev) => ({ quickAddQueue: !prev.quickAddQueue }));
-}
-
-export function toggleQuickScroll() {
-  preferenceStore.setState((prev) => ({ quickScroll: !prev.quickScroll }));
-}
 
 export function toggleForceLTR() {
   const nextState = !preferenceStore.getState().forceLTR;
@@ -43,39 +41,11 @@ export function toggleForceLTR() {
   I18nManager.forceRTL(nextState ? false : i18next.dir() === "rtl");
 }
 
-export function toggleMiniplayerGestures() {
-  preferenceStore.setState((prev) => ({
-    miniplayerGestures: !prev.miniplayerGestures,
-  }));
-}
-
 export function toggleQueueAwareNext() {
   preferenceStore.setState((prev) => ({
     queueAwareNext: !prev.queueAwareNext,
   }));
   playbackStore.setState({ numQueuedNext: 0 });
-}
-
-export function toggleRCNotification() {
-  preferenceStore.setState((prev) => ({
-    rcNotification: !prev.rcNotification,
-  }));
-}
-
-export function toggleRescanOnLaunch() {
-  preferenceStore.setState((prev) => ({
-    rescanOnLaunch: !prev.rescanOnLaunch,
-  }));
-}
-
-export function toggleRepeatOnSkip() {
-  preferenceStore.setState((prev) => ({ repeatOnSkip: !prev.repeatOnSkip }));
-}
-
-export function toggleRestoreLastPosition() {
-  preferenceStore.setState((prev) => ({
-    restoreLastPosition: !prev.restoreLastPosition,
-  }));
 }
 
 export async function toggleWaveformSlider() {

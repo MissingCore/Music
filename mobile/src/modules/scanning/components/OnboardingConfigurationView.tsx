@@ -58,12 +58,12 @@ function AppUpdateConfigurations() {
     <SegmentedList>
       <SegmentedList.Item
         labelTextKey="feat.appUpdate.extra.checkUpdates"
-        onPress={PreferenceTogglers.toggleCheckForUpdates}
+        onPress={PreferenceTogglers.toggleKey("checkForUpdates")}
         RightElement={<Switch enabled={checkForUpdates} />}
       />
       <SegmentedList.Item
         labelTextKey="feat.appUpdate.extra.rcNotification"
-        onPress={PreferenceTogglers.toggleRCNotification}
+        onPress={PreferenceTogglers.toggleKey("rcNotification")}
         disabled={!checkForUpdates}
         RightElement={<Switch enabled={showRCNotification} />}
       />
