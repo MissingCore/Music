@@ -94,5 +94,8 @@
 
     <!-- Disable Sentry's ANR feature. -->
     <meta-data android:name="io.sentry.anr.enable" android:value="false" />
+
+    <!-- Add Android Auto support. -->
+    <meta-data android:name="com.google.android.gms.car.application" android:resource="@xml/automotive_app_desc" />
   </application>
 </manifest>

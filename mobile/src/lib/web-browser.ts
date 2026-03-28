@@ -19,6 +19,7 @@ export const Links = {
   License: `${GITHUB}?tab=readme-ov-file#legal`,
   PrivacyPolicy: "https://missingcore.vercel.app/music/privacy-policy",
   Translations: "https://crowdin.com/project/missingcore-music",
+  AndroidAuto: `${GITHUB}/blob/blob/dev/docs/android-auto.md`,
 };
 //#endregion
 

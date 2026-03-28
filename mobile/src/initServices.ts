@@ -5,11 +5,19 @@ import {
   MatrixAction,
 } from "@missingcore/music-glyph-toys";
 import { toast } from "@missingcore/toast";
+import type {
+  BrowserConfiguration,
+  BrowserSource,
+  ResolvedTrack,
+} from "react-native-audio-browser";
 import AudioBrowser from "react-native-audio-browser";
 
 import { db } from "~/db";
 
 import i18next from "~/modules/i18n";
+import { getAlbum, getAlbumsSummary } from "~/data/album/api";
+import { getArtistsString } from "~/data/artist/utils";
+import { getPlaylist, getPlaylistsSummary } from "~/data/playlist/api";
 import { addPlayedTrack } from "~/data/recent/api";
 import { deleteTracks } from "~/data/track/api";
 import { formatTrackforPlayer } from "~/data/track/utils";
@@ -20,11 +28,14 @@ import { sessionStore } from "~/stores/Session/store";
 import { AppCleanUp } from "~/modules/scanning/helpers/cleanup";
 import { router } from "~/navigation/utils/router";
 
+import { PlaceholderImageFile } from "~/lib/file-system";
 import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 import { clearAllQueries } from "~/lib/react-query";
 import { bgWait } from "~/utils/promise";
+import { capitalize, getSafeUri } from "~/utils/string";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
+import type { MediaType, PlayFromSource } from "~/stores/Playback/types";
 
 //#region "Smooth Playback Transition" Constants
 type PlaybackStoreFrame = Awaited<
@@ -235,5 +246,140 @@ export async function initServices() {
       await playbackStore.getState().reset();
     }
   });
+  //#endregion
+
+  //#region Android Auto
+  const experimentalLabel = "🧪 This is an Experimental Feature. 🧪";
+
+  /** Generate route containing all lists of a given category. */
+  async function getMediaCategoryRoute(
+    category: MediaType,
+    loader: () => Promise<
+      Array<{
+        name: string;
+        id: string;
+        artistName?: string;
+        trackCount: number;
+      }>
+    >,
+  ): Promise<ResolvedTrack> {
+    const data = await loader();
+    return {
+      url: `/${category}`,
+      title: `${capitalize(category)}s`,
+      children: data.map((item) => ({
+        url: `/${category}/${item.id}`,
+        title: item.name,
+        description:
+          item.artistName ||
+          i18next.t("plural.track", { count: item.trackCount }),
+      })),
+    };
+  }
+
+  /** Generate route for list in a given category. */
+  function getMediaCategoryEntryRoute(
+    category: MediaType,
+    loader: (id: string) => Promise<{
+      name: string;
+      artwork: string | null | Array<string | null>;
+      tracks: Array<Record<string, any>>;
+    }>,
+    useListArtwork = false,
+  ): BrowserSource {
+    return async ({ routeParams }): Promise<ResolvedTrack> => {
+      const id = routeParams!.id!;
+      const data = await loader(id);
+      const listArtwork = Array.isArray(data.artwork)
+        ? data.artwork[0]
+        : data.artwork;
+
+      // Only available for tracks in "Album" entry.
+      const hasDiscLabel = data.tracks.at(-1)?.disc > 1;
+
+      return {
+        url: `/${category}/${id}`,
+        title: data.name,
+        children: data.tracks.map((track) => ({
+          src: getSafeUri(track.uri),
+          title: track.name,
+          artist: getArtistsString(track.artists),
+          artwork:
+            (useListArtwork ? listArtwork : track.artwork) ||
+            PlaceholderImageFile,
+          duration: track.duration,
+          groupTitle:
+            hasDiscLabel && typeof track.disc === "number"
+              ? `Disc ${track.disc}`
+              : undefined,
+        })),
+      };
+    };
+  }
+
+  const mediaListRoutes: Record<string, BrowserSource> = {
+    "/album": () => getMediaCategoryRoute("album", getAlbumsSummary),
+    "/album/{id}": getMediaCategoryEntryRoute("album", getAlbum, true),
+    "/playlist": () => getMediaCategoryRoute("playlist", getPlaylistsSummary),
+    "/playlist/{id}": getMediaCategoryEntryRoute("playlist", getPlaylist),
+  };
+
+  const configuration: BrowserConfiguration = {
+    tabs: [
+      {
+        title: "Your Library",
+        url: "/library",
+      },
+    ],
+    routes: {
+      ...mediaListRoutes,
+      "/library": {
+        url: "/library",
+        title: "Your Library",
+        children: [
+          {
+            url: "/album",
+            title: "Albums",
+            groupTitle: experimentalLabel,
+          },
+          {
+            url: "/playlist",
+            title: "Playlists",
+            groupTitle: experimentalLabel,
+          },
+        ],
+      },
+    },
+    //* Only load a single track to be consistent with our playback strategy.
+    singleTrack: true,
+    //* Triggered when we select a track in Android Auto.
+    handleTrackLoad: async (e) => {
+      const trackUri = e.track.src;
+      const androidAutoURL = e.track.url; // ie: `/album/srzxiew5ihjsxe6u706siqfq?__trackId=......`
+
+      //? Fallback to playing the track in the Playback store if we don't
+      //? have context on the selected track & list.
+      if (!trackUri || !androidAutoURL) return PlaybackControls.play();
+
+      //? Derive the `PlayFromSource` from the url.
+      const [_, lType, lId] = androidAutoURL.split("?__trackId")[0]!.split("/");
+      if (!lType || !lId) return PlaybackControls.play();
+      const listSource = { type: lType, id: lId } as PlayFromSource;
+
+      //? Get the id of the selected track since we can't pass it down.
+      const activeTrack = await db.query.tracks.findFirst({
+        where: (fields, { eq }) => eq(fields.uri, trackUri),
+      });
+
+      //? Simplist way of updating the Playback store when we change
+      //? lists via Android Auto.
+      return PlaybackControls.playFromList({
+        source: listSource,
+        trackId: activeTrack?.id,
+      });
+    },
+  };
+
+  AudioBrowser.configureBrowser(configuration);
   //#endregion
 }
