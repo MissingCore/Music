@@ -66,6 +66,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
 
     quickAddQueue: false,
     quickScroll: true,
+    squareArtwork: true,
 
     playbackDelay: 0,
 

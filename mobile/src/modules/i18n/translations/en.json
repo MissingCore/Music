@@ -350,7 +350,8 @@
     "artwork": {
       "extra": {
         "change": "Change Artwork",
-        "remove": "Remove Artwork"
+        "remove": "Remove Artwork",
+        "square": "Square Artwork"
       }
     },
     "directory": {

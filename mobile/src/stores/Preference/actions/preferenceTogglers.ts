@@ -18,7 +18,8 @@ type ToggleableKey =
   | "rcNotification"
   | "rescanOnLaunch"
   | "repeatOnSkip"
-  | "restoreLastPosition";
+  | "restoreLastPosition"
+  | "squareArtwork";
 
 export function toggleKey(key: ToggleableKey) {
   return () => {

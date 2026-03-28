@@ -18,6 +18,7 @@ export default function AppearanceSettings() {
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
   const theme = usePreferenceStore((s) => s.theme);
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
+  const squareArtwork = usePreferenceStore((s) => s.squareArtwork);
   const accentFontSheetRef = useSheetRef();
   const primaryFontSheetRef = useSheetRef();
   const themeSheetRef = useSheetRef();
@@ -55,12 +56,19 @@ export default function AppearanceSettings() {
           onPress={() => tabOrderSheetRef.current?.present()}
         />
 
-        <SegmentedList.Item
-          labelTextKey="feat.quickScroll.title"
-          supportingText={t("feat.quickScroll.brief")}
-          onPress={PreferenceTogglers.toggleKey("quickScroll")}
-          RightElement={<Switch enabled={quickScroll} />}
-        />
+        <SegmentedList>
+          <SegmentedList.Item
+            labelTextKey="feat.quickScroll.title"
+            supportingText={t("feat.quickScroll.brief")}
+            onPress={PreferenceTogglers.toggleKey("quickScroll")}
+            RightElement={<Switch enabled={quickScroll} />}
+          />
+          <SegmentedList.Item
+            labelTextKey="feat.artwork.extra.square"
+            onPress={PreferenceTogglers.toggleKey("squareArtwork")}
+            RightElement={<Switch enabled={squareArtwork} />}
+          />
+        </SegmentedList>
       </ListLayout>
     </>
   );

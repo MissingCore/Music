@@ -66,6 +66,8 @@ export interface PreferenceStore {
   quickAddQueue: boolean;
   /** Show functional Nothing-styled scrollbar on supported screens. */
   quickScroll: boolean;
+  /** If we use `contentFit="cover"` for artwork. */
+  squareArtwork: boolean;
 
   /** Delay before next track is naturally played. */
   playbackDelay: number;

@@ -4,6 +4,7 @@ import { View } from "react-native";
 import { withUniwind } from "uniwind";
 
 import { Folder } from "~/resources/icons/Folder";
+import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { cn } from "~/lib/style";
 import type { MediaType } from "~/stores/Playback/types";
@@ -38,6 +39,7 @@ export function MediaImage({
   className,
   noPlaceholder,
 }: MediaImage.Props) {
+  const squareArtwork = usePreferenceStore((s) => s.squareArtwork);
   const usedClasses = cn("rounded-lg bg-surfaceContainerHigh", className);
 
   const [RenderedEl, additionalProps] = useMemo(() => {
@@ -69,6 +71,7 @@ export function MediaImage({
   return (
     <RenderedEl
       {...additionalProps}
+      contentFit={squareArtwork ? "cover" : "contain"}
       placeholderContentFit="cover"
       style={{ width: size, height: size }}
       className={cn(usedClasses, { "rounded-full": type === "artist" })}
