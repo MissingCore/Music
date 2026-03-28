@@ -254,15 +254,25 @@ export async function initServices() {
   /** Generate route containing all lists of a given category. */
   async function getMediaCategoryRoute(
     category: MediaType,
-    loader: () => Promise<Array<{ name: string; id: string }>>,
+    loader: () => Promise<
+      Array<{
+        name: string;
+        id: string;
+        artistName?: string;
+        trackCount: number;
+      }>
+    >,
   ): Promise<ResolvedTrack> {
     const data = await loader();
     return {
       url: `/${category}`,
       title: `${capitalize(category)}s`,
       children: data.map((item) => ({
-        title: item.name,
         url: `/${category}/${item.id}`,
+        title: item.name,
+        description:
+          item.artistName ||
+          i18next.t("plural.track", { count: item.trackCount }),
       })),
     };
   }
@@ -284,6 +294,9 @@ export async function initServices() {
         ? data.artwork[0]
         : data.artwork;
 
+      // Only available for tracks in "Album" entry.
+      const hasDiscLabel = data.tracks.at(-1)?.disc > 1;
+
       return {
         url: `/${category}/${id}`,
         title: data.name,
@@ -295,6 +308,10 @@ export async function initServices() {
             (useListArtwork ? listArtwork : track.artwork) ||
             PlaceholderImageFile,
           duration: track.duration,
+          groupTitle:
+            hasDiscLabel && typeof track.disc === "number"
+              ? `Disc ${track.disc}`
+              : undefined,
         })),
       };
     };
