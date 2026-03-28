@@ -61,7 +61,7 @@
     "react-i18next": "16.6.6",
     "react-native": "0.83.4",
     "react-native-android-widget": "0.20.1",
-    "react-native-audio-browser": "github:MissingCore/react-native-audio-browser#b48be198efbf1b31ad556b0d6b742ecde480e9bf",
+    "react-native-audio-browser": "github:MissingCore/react-native-audio-browser#df7cbc9abace2a4c0e8c4de3c8cb4a9e3e7fac2b",
     "react-native-bootsplash": "7.1.0",
     "react-native-gesture-handler": "2.30.0",
     "react-native-keyboard-controller": "1.21.2",
