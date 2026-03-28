@@ -36,7 +36,6 @@ import { getSafeUri } from "~/utils/string";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
 import type { PlayFromSource } from "~/stores/Playback/types";
-import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
 
 //#region "Smooth Playback Transition" Constants
 type PlaybackStoreFrame = Awaited<
@@ -149,31 +148,6 @@ export async function initServices() {
   AudioBrowser.onActiveTrackChanged.addListener(async (e) => {
     if (e.index === undefined || e.track === undefined) return;
     const activeTrackUri = e.track.src;
-
-    //* 🧪 Android Auto
-    const androidAutoURL = e.track.url; // ie: `/album/srzxiew5ihjsxe6u706siqfq?__trackId=......`
-    if (androidAutoURL !== undefined) {
-      const parentListSrc = androidAutoURL.split("?__trackId")[0];
-      const [_, listType, listId] = parentListSrc!.split("/");
-      if (listType && listId) {
-        const androidAutoSource = {
-          type: listType,
-          id: listId,
-        } as PlayFromSource;
-        const { playingFrom } = playbackStore.getState();
-        if (!arePlaybackSourceEqual(playingFrom, androidAutoSource)) {
-          const activeTrack = await db.query.tracks.findFirst({
-            where: (fields, { eq }) => eq(fields.uri, activeTrackUri!),
-          });
-          //? Simplist way of updating the playback store when we change
-          //? lists via Android Auto.
-          await PlaybackControls.playFromList({
-            source: androidAutoSource,
-            trackId: activeTrack?.id,
-          });
-        }
-      }
-    }
 
     //* 🧪 Smooth Playback Transition
     try {
@@ -371,6 +345,34 @@ export async function initServices() {
           },
         ],
       },
+    },
+    //* Only load a single track to be consistent with our playback strategy.
+    singleTrack: true,
+    //* Triggered when we select a track in Android Auto.
+    handleTrackLoad: async (e) => {
+      const trackUri = e.track.src;
+      const androidAutoURL = e.track.url; // ie: `/album/srzxiew5ihjsxe6u706siqfq?__trackId=......`
+
+      //? Fallback to playing the track in the Playback store if we don't
+      //? have context on the selected track & list.
+      if (!trackUri || !androidAutoURL) return PlaybackControls.play();
+
+      //? Derive the `PlayFromSource` from the url.
+      const [_, lType, lId] = androidAutoURL.split("?__trackId")[0]!.split("/");
+      if (!lType || !lId) return PlaybackControls.play();
+      const listSource = { type: lType, id: lId } as PlayFromSource;
+
+      //? Get the id of the selected track since we can't pass it down.
+      const activeTrack = await db.query.tracks.findFirst({
+        where: (fields, { eq }) => eq(fields.uri, trackUri),
+      });
+
+      //? Simplist way of updating the Playback store when we change
+      //? lists via Android Auto.
+      return PlaybackControls.playFromList({
+        source: listSource,
+        trackId: activeTrack?.id,
+      });
     },
   };
 
