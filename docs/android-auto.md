@@ -6,8 +6,6 @@
 Android Auto support will stay as an experimental feature for the foreseeable future. As such, there are some caveats you need to be aware of:
 
 1. Artwork will not get rendered (Android Auto doesn't work with embedded artwork).
-2. The "Queue" feature is "useless".
-   - This is due to our strategy of keeping only a single item in the queue to allow for flexibility. This probably won't change.
 
 > [!NOTE]
 > This app should work with Android Auto without any additional configurations. If it doesn't show up, you may need to [enable Developer Mode and allow "Unknown Sources"](https://developer.android.com/training/cars/testing#developer-mode).
