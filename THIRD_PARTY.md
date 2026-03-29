@@ -46,6 +46,7 @@
 | react-native-audio-browser | MIT | https://github.com/radio-garden/react-native-audio-browser |
 | react-native-bootsplash | MIT | https://github.com/zoontek/react-native-bootsplash |
 | react-native-gesture-handler | MIT | https://github.com/software-mansion/react-native-gesture-handler |
+| react-native-gifted-charts | MIT | https://github.com/Abhinandan-Kushwaha/react-native-gifted-charts |
 | react-native-keyboard-controller | MIT | https://github.com/kirillzyusko/react-native-keyboard-controller |
 | react-native-markdown-renderer | MIT | https://github.com/mientjan/react-native-markdown-renderer |
 | react-native-nitro-modules | MIT | https://github.com/mrousavy/nitro |
