@@ -37,7 +37,6 @@
     "@react-navigation/native": "7.2.1",
     "@react-navigation/native-stack": "7.14.9",
     "@sentry/react-native": "8.5.0",
-    "@shopify/react-native-skia": "2.5.4",
     "@tanstack/react-query": "5.95.2",
     "@zoontek/react-native-navigation-bar": "1.1.0",
     "clsx": "2.1.1",
@@ -121,7 +120,6 @@
     "onlyBuiltDependencies": [
       "@missingcore/music-glyph-toys",
       "@sentry/cli",
-      "@shopify/react-native-skia",
       "react-native-audio-browser",
       "sharp"
     ],
