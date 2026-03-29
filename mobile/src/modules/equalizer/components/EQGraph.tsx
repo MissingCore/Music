@@ -1,4 +1,10 @@
-import { Canvas, Circle, Path, Skia } from "@shopify/react-native-skia";
+import {
+  Canvas,
+  Circle,
+  LinearGradient,
+  Path,
+  Skia,
+} from "@shopify/react-native-skia";
 import { useMemo } from "react";
 import { View, useWindowDimensions } from "react-native";
 
@@ -39,7 +45,12 @@ export function EQGraph() {
 //#region Dynamic Components
 function EQLine() {
   const width = useGraphWidth();
-  const { surfaceContainerHighest } = useTheme();
+  const {
+    onSurfaceVariant,
+    surfaceContainerHighest,
+    surfaceContainerHigh,
+    surfaceContainerLow,
+  } = useTheme();
 
   const points = useMemo(
     () =>
@@ -51,25 +62,30 @@ function EQLine() {
   );
 
   const path = useMemo(() => {
-    const line = Skia.Path.Make();
-    line.moveTo(0, XAxisYPos);
+    const line = Skia.Path.Make().moveTo(0, XAxisYPos);
     points.forEach(([x, y]) => line.lineTo(x, y));
-    line.lineTo(width, XAxisYPos);
-    line.close();
+    line.lineTo(width, XAxisYPos).close();
     return line;
   }, [width, points]);
 
+  const minY = useMemo(() => Math.min(...points.map(([_, y]) => y)), [points]);
+  const maxY = useMemo(() => Math.max(...points.map(([_, y]) => y)), [points]);
+
   return (
     <>
-      <Path path={path} color={surfaceContainerHighest} style="stroke" />
-      {points.map(([x, y], index) => (
-        <Circle
-          key={index}
-          cx={x}
-          cy={y}
-          r={2}
-          color={surfaceContainerHighest}
+      <Path path={path} color={surfaceContainerHighest} style="fill">
+        <LinearGradient
+          start={{ x: width / 2, y: minY }}
+          end={{ x: width / 2, y: maxY }}
+          colors={[
+            surfaceContainerHigh,
+            surfaceContainerLow,
+            surfaceContainerHigh,
+          ]}
         />
+      </Path>
+      {points.map(([x, y], index) => (
+        <Circle key={index} cx={x} cy={y} r={2} color={onSurfaceVariant} />
       ))}
     </>
   );
