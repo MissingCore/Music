@@ -21,7 +21,7 @@ const data = [
 ];
 
 const VerticalBuffer = 16;
-const HeightRange = 80; // Height above & below x-axis.
+const HeightRange = 72; // Height above & below x-axis.
 const BufferedHeightRange = HeightRange - VerticalBuffer;
 const GraphHeight = HeightRange * 2 + 1;
 const XAxisYPos = HeightRange + 1;
@@ -142,7 +142,7 @@ const DisplayedFrequencies = [
   { value: 1000000, label: "1K", percentage: 0.56 },
   { value: 5000000, label: "5K", percentage: 0.76 },
   { value: 10000000, label: "10K", percentage: 0.85 },
-  { value: 20000000, label: "200K", percentage: 0.95 },
+  { value: 20000000, label: "20K", percentage: 0.95 },
 ];
 
 function FixedFrequencyLabelPaths() {
