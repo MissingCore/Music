@@ -12,21 +12,15 @@ import { useTheme } from "~/hooks/useTheme";
 
 import { Em } from "~/components/Typography/StyledText";
 
-const data = [
-  { x: 60000, y: 300 },
-  { x: 230000, y: 0 },
-  { x: 910000, y: -300 },
-  { x: 3600000, y: 0 },
-  { x: 14000000, y: 300 },
-];
-
 const VerticalBuffer = 16;
 const HeightRange = 72; // Height above & below x-axis.
 const BufferedHeightRange = HeightRange - VerticalBuffer;
 const GraphHeight = HeightRange * 2 + 1;
 const XAxisYPos = HeightRange + 1;
 
-export function EQGraph() {
+interface EQGraphProps extends EQLineProps {}
+
+export function EQGraph(props: EQGraphProps) {
   return (
     <View
       style={{ height: GraphHeight }}
@@ -35,7 +29,7 @@ export function EQGraph() {
       <Canvas style={{ height: "100%", width: "100%" }}>
         <XAxisPath />
         <FixedFrequencyLabelPaths />
-        <EQLine />
+        <EQLine bound={props.bound} points={props.points} />
       </Canvas>
       <FixedFrequencyLabels />
     </View>
@@ -43,7 +37,12 @@ export function EQGraph() {
 }
 
 //#region Dynamic Components
-function EQLine() {
+interface EQLineProps {
+  bound: number;
+  points: Array<{ x: number; y: number }>;
+}
+
+function EQLine(props: EQLineProps) {
   const width = useGraphWidth();
   const {
     onSurfaceVariant,
@@ -54,11 +53,14 @@ function EQLine() {
 
   const points = useMemo(
     () =>
-      data.map(
+      props.points.map(
         ({ x, y }) =>
-          [guessXPercentage(x) * width, guessYCoordinate(y, 1500)] as const,
+          [
+            guessXPercentage(x) * width,
+            guessYCoordinate(y, props.bound),
+          ] as const,
       ),
-    [width],
+    [width, props.points, props.bound],
   );
 
   const path = useMemo(() => {
