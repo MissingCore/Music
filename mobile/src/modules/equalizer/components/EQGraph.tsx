@@ -44,12 +44,7 @@ interface EQLineProps {
 
 function EQLine(props: EQLineProps) {
   const width = useGraphWidth();
-  const {
-    onSurfaceVariant,
-    surfaceContainerHighest,
-    surfaceContainerHigh,
-    surfaceContainerLow,
-  } = useTheme();
+  const { onSurfaceVariant, surfaceContainerHighest } = useTheme();
 
   const points = useMemo(
     () =>
@@ -75,17 +70,24 @@ function EQLine(props: EQLineProps) {
 
   return (
     <>
-      <Path path={path} color={surfaceContainerHighest} style="fill">
-        <LinearGradient
-          start={{ x: width / 2, y: minY }}
-          end={{ x: width / 2, y: maxY }}
-          colors={[
-            surfaceContainerHigh,
-            surfaceContainerLow,
-            surfaceContainerHigh,
-          ]}
-        />
-      </Path>
+      {minY < XAxisYPos ? (
+        <Path path={path} color={surfaceContainerHighest} style="fill">
+          <LinearGradient
+            start={{ x: width / 2, y: minY }}
+            end={{ x: width / 2, y: XAxisYPos }}
+            colors={[surfaceContainerHighest, `${surfaceContainerHighest}0D`]}
+          />
+        </Path>
+      ) : null}
+      {maxY > XAxisYPos ? (
+        <Path path={path} color={surfaceContainerHighest} style="fill">
+          <LinearGradient
+            start={{ x: width / 2, y: XAxisYPos }}
+            end={{ x: width / 2, y: maxY }}
+            colors={[`${surfaceContainerHighest}0D`, surfaceContainerHighest]}
+          />
+        </Path>
+      ) : null}
       {points.map(([x, y], index) => (
         <Circle key={index} cx={x} cy={y} r={2} color={onSurfaceVariant} />
       ))}
