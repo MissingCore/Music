@@ -14,6 +14,7 @@
 | @react-navigation/native | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native |
 | @react-navigation/native-stack | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native-stack |
 | @sentry/react-native | MIT | https://github.com/getsentry/sentry-react-native |
+| @shopify/react-native-skia | MIT | https://github.com/Shopify/react-native-skia |
 | @tanstack/react-query | MIT | https://github.com/TanStack/query |
 | @zoontek/react-native-navigation-bar | MIT | https://github.com/zoontek/react-native-navigation-bar |
 | clsx | MIT | https://github.com/lukeed/clsx |
@@ -46,7 +47,6 @@
 | react-native-audio-browser | MIT | https://github.com/radio-garden/react-native-audio-browser |
 | react-native-bootsplash | MIT | https://github.com/zoontek/react-native-bootsplash |
 | react-native-gesture-handler | MIT | https://github.com/software-mansion/react-native-gesture-handler |
-| react-native-gifted-charts | MIT | https://github.com/Abhinandan-Kushwaha/react-native-gifted-charts |
 | react-native-keyboard-controller | MIT | https://github.com/kirillzyusko/react-native-keyboard-controller |
 | react-native-markdown-renderer | MIT | https://github.com/mientjan/react-native-markdown-renderer |
 | react-native-nitro-modules | MIT | https://github.com/mrousavy/nitro |
