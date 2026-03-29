@@ -1,4 +1,4 @@
-import { Canvas, Path, Skia } from "@shopify/react-native-skia";
+import { Canvas, Circle, Path, Skia } from "@shopify/react-native-skia";
 import { useMemo } from "react";
 import { View, useWindowDimensions } from "react-native";
 
@@ -6,7 +6,17 @@ import { useTheme } from "~/hooks/useTheme";
 
 import { Em } from "~/components/Typography/StyledText";
 
+const data = [
+  { x: 60000, y: 300 },
+  { x: 230000, y: 0 },
+  { x: 910000, y: -300 },
+  { x: 3600000, y: 0 },
+  { x: 14000000, y: 300 },
+];
+
+const VerticalBuffer = 16;
 const HeightRange = 80; // Height above & below x-axis.
+const BufferedHeightRange = HeightRange - VerticalBuffer;
 const GraphHeight = HeightRange * 2 + 1;
 const XAxisYPos = HeightRange + 1;
 
@@ -19,11 +29,80 @@ export function EQGraph() {
       <Canvas style={{ height: "100%", width: "100%" }}>
         <XAxisPath />
         <FixedFrequencyLabelPaths />
+        <EQLine />
       </Canvas>
       <FixedFrequencyLabels />
     </View>
   );
 }
+
+//#region Dynamic Components
+function EQLine() {
+  const width = useGraphWidth();
+  const { surfaceContainerHighest } = useTheme();
+
+  const points = useMemo(
+    () =>
+      data.map(
+        ({ x, y }) =>
+          [guessXPercentage(x) * width, guessYCoordinate(y, 1500)] as const,
+      ),
+    [width],
+  );
+
+  const path = useMemo(() => {
+    const line = Skia.Path.Make();
+    line.moveTo(0, XAxisYPos);
+    points.forEach(([x, y]) => line.lineTo(x, y));
+    line.lineTo(width, XAxisYPos);
+    line.close();
+    return line;
+  }, [width, points]);
+
+  return (
+    <>
+      <Path path={path} color={surfaceContainerHighest} style="stroke" />
+      {points.map(([x, y], index) => (
+        <Circle
+          key={index}
+          cx={x}
+          cy={y}
+          r={2}
+          color={surfaceContainerHighest}
+        />
+      ))}
+    </>
+  );
+}
+
+/**
+ * Guess how far from the left the point should be positioned, relative
+ * to the fixed frequency bands.
+ */
+function guessXPercentage(x: number): number {
+  const upperBoundIdx = DisplayedFrequencies.findIndex((f) => x < f.value);
+  if (upperBoundIdx === -1) throw new Error("Frequency Band not supported.");
+  const lowerBound =
+    upperBoundIdx === 0
+      ? { value: 0, label: "0", percentage: 0 }
+      : DisplayedFrequencies[upperBoundIdx - 1]!;
+  const upperBound = DisplayedFrequencies[upperBoundIdx]!;
+
+  const workingPercentageArea = upperBound.percentage - lowerBound.percentage;
+  const xPercentageInRange =
+    (x - lowerBound.value) / (upperBound.value - lowerBound.value);
+
+  return lowerBound.percentage + workingPercentageArea * xPercentageInRange;
+}
+
+function guessYCoordinate(y: number, bound: number): number {
+  if (y === 0) return XAxisYPos;
+  else if (y > 0) {
+    return ((bound - y) / bound) * BufferedHeightRange + VerticalBuffer;
+  }
+  return Math.abs(y / bound) * BufferedHeightRange + XAxisYPos;
+}
+//#endregion
 
 //#region "Fixed" Components
 function XAxisPath() {
