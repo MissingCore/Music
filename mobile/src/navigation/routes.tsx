@@ -37,6 +37,7 @@ import ModifyPlaylist from "./screens/playlists/ModifyView";
 import Playlists from "./screens/playlists/View";
 import AppearanceSettings from "./screens/settings/AppearanceSettingsView";
 import AppUpdate from "./screens/settings/AppUpdateView";
+import EqualizerSettings from "./screens/settings/EqualizerSettingsView";
 import ExperimentalSettings from "./screens/settings/ExperimentalSettingsView";
 import HiddenTracks from "./screens/settings/HiddenTracksView";
 import Insights from "./screens/settings/InsightsView";
@@ -329,6 +330,10 @@ export const RootStack = createNativeStackNavigator({
         AppearanceSettings: {
           screen: AppearanceSettings,
           options: { title: "feat.appearance.title" },
+        },
+        EqualizerSettings: {
+          screen: EqualizerSettings,
+          options: { title: "feat.equalizer.title" },
         },
         Insights: {
           screen: Insights,
