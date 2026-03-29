@@ -19,9 +19,8 @@ const ClampedOrdinate = Ordinate - YPadding;
 const GraphHeight = Ordinate * 2 + 1;
 const XAxisYPos = Ordinate + 1;
 
-interface EQGraphProps extends EQLineProps {}
-
-export function EQGraph(props: EQGraphProps) {
+/** Graph displaying Equalizer configuration based on the Nothing X design. */
+export function EQGraph(props: EQLineProps) {
   return (
     <View
       style={{ height: GraphHeight }}
@@ -45,7 +44,7 @@ interface EQLineProps {
 
 function EQLine(props: EQLineProps) {
   const width = useGraphWidth();
-  const { scheme, onSurfaceVariant, surfaceContainerHighest } = useTheme();
+  const { scheme, onSurfaceVariant, surfaceContainerHigh } = useTheme();
 
   const points = useMemo(
     () =>
@@ -70,25 +69,17 @@ function EQLine(props: EQLineProps) {
     <>
       <Defs>
         <LinearGradient id="eq-grad" x1={0} y1={0} x2={0} y2={1}>
-          <Stop
-            offset={0}
-            stopColor={surfaceContainerHighest}
-            stopOpacity={1}
-          />
+          <Stop offset={0} stopColor={surfaceContainerHigh} stopOpacity={1} />
           <Stop
             offset={(XAxisYPos - minY) / (Math.max(maxY, XAxisYPos) - minY)}
-            stopColor={surfaceContainerHighest}
+            stopColor={surfaceContainerHigh}
             stopOpacity={scheme === "dark" ? 0.25 : 0.15}
           />
-          <Stop
-            offset={1}
-            stopColor={surfaceContainerHighest}
-            stopOpacity={1}
-          />
+          <Stop offset={1} stopColor={surfaceContainerHigh} stopOpacity={1} />
         </LinearGradient>
       </Defs>
 
-      <Path d={path} stroke={surfaceContainerHighest} fill="url(#eq-grad)" />
+      <Path d={path} stroke={surfaceContainerHigh} fill="url(#eq-grad)" />
       {points.map(({ x, y }, index) => (
         <Circle key={index} cx={x} cy={y} r={2} fill={onSurfaceVariant} />
       ))}
@@ -126,22 +117,22 @@ const DisplayedFrequencies = [
   { label: "50", value: 50000, xPosPercent: 0.18 },
   { label: "100", value: 100000, xPosPercent: 0.26 },
   { label: "500", value: 500000, xPosPercent: 0.47 },
-  { label: "1K", value: 1000000, xPosPercent: 0.56 },
-  { label: "5K", value: 5000000, xPosPercent: 0.76 },
-  { label: "10K", value: 10000000, xPosPercent: 0.85 },
-  { label: "20K", value: 20000000, xPosPercent: 0.95 },
+  { label: "1k", value: 1000000, xPosPercent: 0.56 },
+  { label: "5k", value: 5000000, xPosPercent: 0.76 },
+  { label: "10k", value: 10000000, xPosPercent: 0.85 },
+  { label: "20k", value: 20000000, xPosPercent: 0.95 },
 ];
 
 /** Draws x-axis and tick marks + labels for certain frequencies. */
 function GraphAnnotations() {
   const width = useGraphWidth();
-  const { surfaceContainerHighest } = useTheme();
+  const { surfaceContainer } = useTheme();
   return (
     <>
       {/* X-axis */}
       <Path
         d={`M ${0} ${XAxisYPos} L ${width} ${XAxisYPos}`}
-        stroke={surfaceContainerHighest}
+        stroke={surfaceContainer}
       />
       {/* Frequency Tick Marks + Labels */}
       {DisplayedFrequencies.map(({ label, xPosPercent }) => {
@@ -150,7 +141,7 @@ function GraphAnnotations() {
           <Fragment key={label}>
             <Path
               d={`M ${xPos} ${0} L ${xPos} ${GraphHeight}`}
-              stroke={surfaceContainerHighest}
+              stroke={surfaceContainer}
             />
             <Em
               style={{ left: xPos, fontSize: 8 }}
