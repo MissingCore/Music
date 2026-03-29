@@ -1,8 +1,12 @@
 import { useMemo } from "react";
-import { useEqualizerSettings } from "react-native-audio-browser";
+import { View } from "react-native";
+import AudioBrowser, { useEqualizerSettings } from "react-native-audio-browser";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 
+import { cn } from "~/lib/style";
+import { Button } from "~/components/Form/Button";
+import { StyledText } from "~/components/Typography/StyledText";
 import { EQGraph } from "~/modules/equalizer/components/EQGraph";
 
 export default function EqualizerSettings() {
@@ -27,6 +31,18 @@ export default function EqualizerSettings() {
   return (
     <ListLayout>
       <EQGraph bound={eqRange} points={dataPoints} />
+
+      <View className="flex-row flex-wrap gap-2">
+        {eqSettings?.presets.map((preset) => (
+          <Button
+            key={preset}
+            onPress={() => AudioBrowser.setEqualizerPreset(preset)}
+            className={cn({ "bg-primary": eqSettings.activePreset === preset })}
+          >
+            <StyledText>{preset}</StyledText>
+          </Button>
+        ))}
+      </View>
     </ListLayout>
   );
 }
