@@ -1,17 +1,23 @@
-import { Circle, LinearGradient, Path, Skia } from "@shopify/react-native-skia";
 import { Fragment, useMemo } from "react";
 import { View, useWindowDimensions } from "react-native";
-import { Svg, Path as SPath } from "react-native-svg";
+import {
+  Circle,
+  Defs,
+  LinearGradient,
+  Path,
+  Stop,
+  Svg,
+} from "react-native-svg";
 
 import { useTheme } from "~/hooks/useTheme";
 
 import { Em } from "~/components/Typography/StyledText";
 
-const VerticalBuffer = 16;
-const HeightRange = 72; // Height above & below x-axis.
-const BufferedHeightRange = HeightRange - VerticalBuffer;
-const GraphHeight = HeightRange * 2 + 1;
-const XAxisYPos = HeightRange + 1;
+const YPadding = 16;
+const Ordinate = 72; // Distance from x-axis.
+const ClampedOrdinate = Ordinate - YPadding;
+const GraphHeight = Ordinate * 2 + 1;
+const XAxisYPos = Ordinate + 1;
 
 interface EQGraphProps extends EQLineProps {}
 
@@ -23,102 +29,96 @@ export function EQGraph(props: EQGraphProps) {
     >
       <Svg style={{ height: "100%", width: "100%" }}>
         <GraphAnnotations />
-      </Svg>
-
-      {/* <Canvas style={{ height: "100%", width: "100%" }}>
         <EQLine bound={props.bound} points={props.points} />
-      </Canvas> */}
+      </Svg>
     </View>
   );
 }
 
-// //#region Dynamic Components
-// interface EQLineProps {
-//   bound: number;
-//   points: Array<{ x: number; y: number }>;
-// }
+//#region EQ Line
+interface EQLineProps {
+  /** Largest absolute value from 0. */
+  bound: number;
+  /** Array of frequency (x) to their band level (y). */
+  points: Array<{ x: number; y: number }>;
+}
 
-// function EQLine(props: EQLineProps) {
-//   const width = useGraphWidth();
-//   const { onSurfaceVariant, surfaceContainerHighest } = useTheme();
+function EQLine(props: EQLineProps) {
+  const width = useGraphWidth();
+  const { scheme, onSurfaceVariant, surfaceContainerHighest } = useTheme();
 
-//   const points = useMemo(
-//     () =>
-//       props.points.map(
-//         ({ x, y }) =>
-//           [
-//             guessXPercentage(x) * width,
-//             guessYCoordinate(y, props.bound),
-//           ] as const,
-//       ),
-//     [width, props.points, props.bound],
-//   );
+  const points = useMemo(
+    () =>
+      props.points.map(({ x, y }) => ({
+        x: guessXPercentage(x) * width,
+        y: guessYCoordinate(y, props.bound),
+      })),
+    [width, props.points, props.bound],
+  );
 
-//   const path = useMemo(() => {
-//     const line = Skia.Path.Make().moveTo(0, XAxisYPos);
-//     points.forEach(([x, y]) => line.lineTo(x, y));
-//     line.lineTo(width, XAxisYPos).close();
-//     return line;
-//   }, [width, points]);
+  const path = useMemo(() => {
+    const linePoints = [`M ${0} ${XAxisYPos}`];
+    points.forEach((point) => linePoints.push(`L ${point.x} ${point.y}`));
+    linePoints.push(`L ${width} ${XAxisYPos}`);
+    return linePoints.join(" ");
+  }, [width, points]);
 
-//   const minY = useMemo(() => Math.min(...points.map(([_, y]) => y)), [points]);
-//   const maxY = useMemo(() => Math.max(...points.map(([_, y]) => y)), [points]);
+  const minY = useMemo(() => Math.min(...points.map(({ y }) => y)), [points]);
+  const maxY = useMemo(() => Math.max(...points.map(({ y }) => y)), [points]);
 
-//   return (
-//     <>
-//       {minY < XAxisYPos ? (
-//         <Path path={path} color={surfaceContainerHighest} style="fill">
-//           <LinearGradient
-//             start={{ x: width / 2, y: minY }}
-//             end={{ x: width / 2, y: XAxisYPos }}
-//             colors={[surfaceContainerHighest, `${surfaceContainerHighest}0D`]}
-//           />
-//         </Path>
-//       ) : null}
-//       {maxY > XAxisYPos ? (
-//         <Path path={path} color={surfaceContainerHighest} style="fill">
-//           <LinearGradient
-//             start={{ x: width / 2, y: XAxisYPos }}
-//             end={{ x: width / 2, y: maxY }}
-//             colors={[`${surfaceContainerHighest}0D`, surfaceContainerHighest]}
-//           />
-//         </Path>
-//       ) : null}
-//       {points.map(([x, y], index) => (
-//         <Circle key={index} cx={x} cy={y} r={2} color={onSurfaceVariant} />
-//       ))}
-//     </>
-//   );
-// }
+  return (
+    <>
+      <Defs>
+        <LinearGradient id="eq-grad" x1={0} y1={0} x2={0} y2={1}>
+          <Stop
+            offset={0}
+            stopColor={surfaceContainerHighest}
+            stopOpacity={1}
+          />
+          <Stop
+            offset={(XAxisYPos - minY) / (Math.max(maxY, XAxisYPos) - minY)}
+            stopColor={surfaceContainerHighest}
+            stopOpacity={scheme === "dark" ? 0.25 : 0.15}
+          />
+          <Stop
+            offset={1}
+            stopColor={surfaceContainerHighest}
+            stopOpacity={1}
+          />
+        </LinearGradient>
+      </Defs>
 
-// /**
-//  * Guess how far from the left the point should be positioned, relative
-//  * to the fixed frequency bands.
-//  */
-// function guessXPercentage(x: number): number {
-//   const upperBoundIdx = DisplayedFrequencies.findIndex((f) => x < f.value);
-//   if (upperBoundIdx === -1) throw new Error("Frequency Band not supported.");
-//   const lowerBound =
-//     upperBoundIdx === 0
-//       ? { value: 0, label: "0", percentage: 0 }
-//       : DisplayedFrequencies[upperBoundIdx - 1]!;
-//   const upperBound = DisplayedFrequencies[upperBoundIdx]!;
+      <Path d={path} stroke={surfaceContainerHighest} fill="url(#eq-grad)" />
+      {points.map(({ x, y }, index) => (
+        <Circle key={index} cx={x} cy={y} r={2} fill={onSurfaceVariant} />
+      ))}
+    </>
+  );
+}
 
-//   const workingPercentageArea = upperBound.percentage - lowerBound.percentage;
-//   const xPercentageInRange =
-//     (x - lowerBound.value) / (upperBound.value - lowerBound.value);
+/**
+ * Guess how far from the left the point should be positioned, relative
+ * to the fixed frequencies.
+ */
+function guessXPercentage(x: number): number {
+  const upperBoundIdx = DisplayedFrequencies.findIndex((f) => x < f.value);
+  if (upperBoundIdx <= 0) throw new Error("Frequency Band not supported.");
 
-//   return lowerBound.percentage + workingPercentageArea * xPercentageInRange;
-// }
+  const lower = DisplayedFrequencies[upperBoundIdx - 1]!; // `upperBoundIdx` can't be `0`.
+  const upper = DisplayedFrequencies[upperBoundIdx]!;
 
-// function guessYCoordinate(y: number, bound: number): number {
-//   if (y === 0) return XAxisYPos;
-//   else if (y > 0) {
-//     return ((bound - y) / bound) * BufferedHeightRange + VerticalBuffer;
-//   }
-//   return Math.abs(y / bound) * BufferedHeightRange + XAxisYPos;
-// }
-// //#endregion
+  const additionalPercentFactor = upper.xPosPercent - lower.xPosPercent;
+  const percentInBound = (x - lower.value) / (upper.value - lower.value);
+
+  return lower.xPosPercent + additionalPercentFactor * percentInBound;
+}
+
+function guessYCoordinate(y: number, bound: number): number {
+  if (y === 0) return XAxisYPos;
+  else if (y > 0) return YPadding + ((bound - y) / bound) * ClampedOrdinate;
+  return XAxisYPos + Math.abs(y / bound) * ClampedOrdinate;
+}
+//#endregion
 
 //#region Graph Annotations
 const DisplayedFrequencies = [
@@ -139,7 +139,7 @@ function GraphAnnotations() {
   return (
     <>
       {/* X-axis */}
-      <SPath
+      <Path
         d={`M ${0} ${XAxisYPos} L ${width} ${XAxisYPos}`}
         stroke={surfaceContainerHighest}
       />
@@ -148,7 +148,7 @@ function GraphAnnotations() {
         const xPos = width * xPosPercent;
         return (
           <Fragment key={label}>
-            <SPath
+            <Path
               d={`M ${xPos} ${0} L ${xPos} ${GraphHeight}`}
               stroke={surfaceContainerHighest}
             />
