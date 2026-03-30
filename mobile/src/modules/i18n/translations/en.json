@@ -292,6 +292,7 @@
     "equalizer": {
       "title": "Equalizer",
       "extra": {
+        "custom": "Custom",
         "Normal": "Normal",
         "Classical": "Classical",
         "Dance": "Dance",

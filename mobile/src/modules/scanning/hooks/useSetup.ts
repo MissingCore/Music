@@ -5,6 +5,10 @@ import AudioBrowser from "react-native-audio-browser";
 import { addPlayedMediaList } from "~/data/recent/api";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
+import {
+  equalizerStore,
+  useEqualizerStore,
+} from "~/modules/equalizer/core/store";
 
 import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 import { revalidateWidgets } from "~/modules/widget/utils";
@@ -21,9 +25,15 @@ export function useSetup() {
   const [setupState, setSetupState] = useState<SetupState>("idle");
   const playbackHydrated = usePlaybackStore((s) => s._hasHydrated);
   const preferenceHydrated = usePreferenceStore((s) => s._hasHydrated);
+  const equalizerHydrated = useEqualizerStore((s) => s._hasHydrated);
 
   useEffect(() => {
-    if (!playbackHydrated || !preferenceHydrated || setupState !== "idle") {
+    if (
+      !playbackHydrated ||
+      !preferenceHydrated ||
+      !equalizerHydrated ||
+      setupState !== "idle"
+    ) {
       return;
     }
 
@@ -50,12 +60,20 @@ export function useSetup() {
         AudioBrowser.setRepeatMode("track");
       }
 
+      // Ensure equalizer settings are loaded.
+      const { enabled, preset, customBands } = equalizerStore.getState();
+      if (enabled) {
+        AudioBrowser.setEqualizerEnabled(true);
+        if (preset === "Custom") AudioBrowser.setEqualizerLevels(customBands);
+        else AudioBrowser.setEqualizerPreset(preset);
+      }
+
       // Ensure the current list is at the top of recently played lists.
       if (playingFrom) await addPlayedMediaList(playingFrom);
 
       setSetupState("ready");
     })();
-  }, [playbackHydrated, preferenceHydrated, setupState]);
+  }, [playbackHydrated, preferenceHydrated, equalizerHydrated, setupState]);
 
   return setupState === "ready";
 }
