@@ -12,6 +12,7 @@ import {
 import { useTheme } from "~/hooks/useTheme";
 import { useEqualizerStore } from "../core/store";
 
+import { OnRTL } from "~/lib/react";
 import { Em } from "~/components/Typography/StyledText";
 
 const YPadding = 16;
@@ -159,8 +160,11 @@ function GraphLabels() {
   return DisplayedFrequencies.map(({ label, xPosPercent }) => (
     <Em
       key={label}
-      style={{ left: width * xPosPercent, fontSize: 8 }}
-      className="absolute top-full left-0 -translate-x-1/2 translate-y-0.5"
+      style={{
+        [OnRTL.decide("right", "left")]: width * xPosPercent,
+        fontSize: 8,
+      }}
+      className="absolute top-full -translate-x-1/2 translate-y-0.5"
     >
       {label}
     </Em>
