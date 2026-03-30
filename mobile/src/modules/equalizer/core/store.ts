@@ -19,8 +19,14 @@ export const equalizerStore = createPersistedStore<EqualizerStore>(
       const defaultPresets = (eqSettings?.presets ?? []) as EQPreset[];
       if (defaultPresets.length > 0) defaultPresets.push("Custom");
 
-      const minBandLevel = eqSettings?.lowerBandLevelLimit ?? 0;
-      const maxBandLevel = eqSettings?.upperBandLevelLimit ?? 0;
+      const minBandLevel = Math.min(
+        (eqSettings?.lowerBandLevelLimit ?? 0) + 500,
+        0,
+      );
+      const maxBandLevel = Math.max(
+        (eqSettings?.upperBandLevelLimit ?? 0) - 500,
+        0,
+      );
 
       set({
         _hasHydrated: true,
