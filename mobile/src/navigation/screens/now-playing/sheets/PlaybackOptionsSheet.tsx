@@ -168,7 +168,7 @@ const VolumeSliderOptions = {
   min: 0,
   max: 1,
   step: 0.01,
-  height: 48,
+  thickness: 48,
   onChange: (volume: number) => {
     sessionStore.setState({ volume });
     AudioBrowser.setVolume(volume);

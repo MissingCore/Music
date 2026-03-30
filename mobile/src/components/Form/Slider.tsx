@@ -46,7 +46,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
   step?: number;
   /** Invert appearance & functionality given `I18nManager` is enabled.  */
   inverted?: boolean;
-  height?: number;
+  thickness?: number;
   /** Vertical hitslop. Will change the component's height. */
   vHitSlop?: number;
   /** If the slider should be transparent. */
@@ -92,16 +92,16 @@ export const CachedSlider = memo(function CachedSlider(props: {
   //#endregion
 
   //#region Layout Context
-  const sliderWidth = useSharedValue(0);
+  const sliderLength = useSharedValue(0);
   const onLayout = useCallback(
     (e: LayoutChangeEvent) => {
-      sliderWidth.value = e.nativeEvent.layout.width;
+      sliderLength.value = e.nativeEvent.layout.width;
     },
-    [sliderWidth],
+    [sliderLength],
   );
 
   const containerRatio = useDerivedValue(
-    () => sliderWidth.value / moveableDistance,
+    () => sliderLength.value / moveableDistance,
   );
   //#endregion
 
@@ -136,17 +136,17 @@ export const CachedSlider = memo(function CachedSlider(props: {
   }, []);
 
   const calculateNextValue = useCallback(
-    (x: number) => {
+    (l: number) => {
       "worklet";
-      const i18nAdjustedX =
-        I18nManager.isRTL && !props.inverted ? sliderWidth.value - x : x;
-      const clampedValue = clamp(0, i18nAdjustedX, sliderWidth.value);
-      const progressPrecent = clampedValue / sliderWidth.value;
+      const i18nAdjustedL =
+        I18nManager.isRTL && !props.inverted ? sliderLength.value - l : l;
+      const clampedValue = clamp(0, i18nAdjustedL, sliderLength.value);
+      const progressPrecent = clampedValue / sliderLength.value;
       const rawVal = progressPrecent * moveableDistance + props.min;
       // Round based on the step.
       return roundToStep(rawVal, step.current);
     },
-    [sliderWidth, moveableDistance, props.min, props.inverted],
+    [sliderLength, moveableDistance, props.min, props.inverted],
   );
   //#endregion
 
@@ -216,9 +216,9 @@ export const CachedSlider = memo(function CachedSlider(props: {
   const sliderWrapperStyle: ViewStyle = useMemo(
     () => ({
       backgroundColor: props.transparent ? Colors.transparent : trackColor,
-      height: props.height ?? 12,
+      height: props.thickness ?? 12,
     }),
-    [trackColor, props.height, props.transparent],
+    [trackColor, props.thickness, props.transparent],
   );
 
   const leftProgressWrapperStyle = useAnimatedStyle(() => ({

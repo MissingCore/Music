@@ -74,7 +74,7 @@ const PlaybackSpeedSliderOptions = {
   min: 0.25,
   max: 2,
   step: 0.05,
-  height: 48,
+  thickness: 48,
   onChange: setPlaybackSpeed,
   overlay: {
     accessibilityLabelKey: "feat.playback.extra.speed" as const,

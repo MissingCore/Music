@@ -57,7 +57,7 @@ export function SeekBar(props: SeekBarProps) {
           />
           <CachedSlider
             {...sharedSliderOptions}
-            height={40}
+            thickness={40}
             transparent
             _className="absolute top-0 left-0 w-full"
           />
