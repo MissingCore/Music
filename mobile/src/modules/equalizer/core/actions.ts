@@ -14,3 +14,13 @@ export function setEQPreset(preset: EQPreset) {
   if (preset !== "Custom") AudioBrowser.setEqualizerPreset(preset);
   else AudioBrowser.setEqualizerLevels(equalizerStore.getState().customBands);
 }
+
+export function setEQBandLevel(bandIndex: number, bandLevel: number) {
+  const prevBandLevels = equalizerStore.getState().customBands;
+  const newBandLevels = prevBandLevels.map((level, index) =>
+    index !== bandIndex ? level : bandLevel,
+  );
+
+  equalizerStore.setState({ customBands: newBandLevels });
+  AudioBrowser.setEqualizerLevels(newBandLevels);
+}
