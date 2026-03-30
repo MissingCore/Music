@@ -3,6 +3,7 @@ import { useCallback, useState } from "react";
 import AudioBrowser from "react-native-audio-browser";
 
 import { ActivityZone } from "~/resources/icons/ActivityZone";
+import { Equalizer } from "~/resources/icons/Equalizer";
 import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
 import { VolumeUp } from "~/resources/icons/VolumeUp";
 import { usePlaybackStore } from "~/stores/Playback/store";
@@ -24,6 +25,7 @@ import { CachedSlider } from "~/components/Form/Slider";
 import { SegmentedList } from "~/components/List/Segmented";
 import { DetachedSheet } from "~/components/Sheet";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
+import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { Switch } from "~/components/UI/Switch";
@@ -43,6 +45,7 @@ export function PlaybackOptionsSheet(props: {
   const volume = useSessionStore((s) => s.volume);
   const appearanceSheetRef = useSheetRef();
   const playbackSpeedRef = useSheetRef();
+  const sheetListHandlers = useEnableSheetScroll(true);
 
   const navigateToList = useCallback(async () => {
     if (!playingSource) return;
@@ -52,6 +55,11 @@ export function PlaybackOptionsSheet(props: {
     navigation.goBack();
     navigation.navigate(...getMediaLinkContext(playingSource));
   }, [navigation, props.ref, playingSource]);
+
+  const navigateToEQSettings = useCallback(async () => {
+    await props.ref.current?.dismiss();
+    navigation.navigate("EqualizerSettings");
+  }, [navigation, props.ref]);
 
   //#region Sheet Presenters
   const presentAppearanceSheet = useCallback(async () => {
@@ -75,7 +83,10 @@ export function PlaybackOptionsSheet(props: {
         draggable={!stopDrag}
         contentContainerClassName="pb-0"
       >
-        <ScrollView contentContainerClassName="gap-6 pb-4">
+        <ScrollView
+          {...sheetListHandlers}
+          contentContainerClassName="gap-6 pb-4"
+        >
           <SegmentedList.Item
             labelTextKey="term.playingFrom"
             supportingText={sourceName || "—"}
@@ -131,6 +142,12 @@ export function PlaybackOptionsSheet(props: {
               labelTextKey="feat.appearance.title"
               onPress={presentAppearanceSheet}
               LeftElement={<ActivityZone />}
+              className="gap-4"
+            />
+            <SegmentedList.Item
+              labelTextKey="feat.equalizer.title"
+              onPress={navigateToEQSettings}
+              LeftElement={<Equalizer />}
               className="gap-4"
             />
             <SegmentedList.Item
