@@ -64,7 +64,10 @@ function EQLine(props: EQLineProps) {
     return linePoints.join(" ");
   }, [width, points]);
 
-  const minY = useMemo(() => Math.min(...points.map(({ y }) => y)), [points]);
+  const minY = useMemo(
+    () => Math.min(...points.map(({ y }) => y), XAxisYPos),
+    [points],
+  );
   const maxY = useMemo(() => Math.max(...points.map(({ y }) => y)), [points]);
 
   return (

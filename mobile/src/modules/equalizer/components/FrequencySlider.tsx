@@ -27,7 +27,7 @@ export const FrequencySlider = memo(function FrequencySlider(props: Props) {
   );
 
   return (
-    <View className="w-8 items-center gap-2">
+    <View className="items-center gap-2">
       <CachedSliderVertical
         initValue={bandValue}
         liveValue={liveBandValue}
@@ -36,7 +36,7 @@ export const FrequencySlider = memo(function FrequencySlider(props: Props) {
         step={100}
         onChange={(newLevel) => setEQBandLevel(props.bandIndex, newLevel)}
         disabled={props.disabled}
-        thickness={16}
+        hHitSlop={10}
         anchorAt={0}
         roundedEndStop
         _debounceMultiplier={1}

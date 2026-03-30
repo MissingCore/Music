@@ -51,7 +51,7 @@ export default function EqualizerSettings() {
 
         <View
           style={{ flexDirection: OnRTL.decide("row-reverse", "row") }}
-          className="justify-evenly"
+          className="justify-evenly gap-2"
         >
           {currEQ?.bandLevels.map((level, index) => (
             <FrequencySlider
