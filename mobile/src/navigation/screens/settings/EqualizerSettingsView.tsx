@@ -1,3 +1,4 @@
+import type { ParseKeys } from "i18next";
 import { useMemo } from "react";
 import { View } from "react-native";
 import AudioBrowser, { useEqualizerSettings } from "react-native-audio-browser";
@@ -6,7 +7,7 @@ import { ListLayout } from "~/navigation/layouts/ListLayout";
 
 import { cn } from "~/lib/style";
 import { Button } from "~/components/Form/Button";
-import { StyledText } from "~/components/Typography/StyledText";
+import { TStyledText } from "~/components/Typography/StyledText";
 import { EQGraph } from "~/modules/equalizer/components/EQGraph";
 
 export default function EqualizerSettings() {
@@ -33,15 +34,23 @@ export default function EqualizerSettings() {
       <EQGraph bound={eqRange} points={dataPoints} />
 
       <View className="flex-row flex-wrap gap-2">
-        {eqSettings?.presets.map((preset) => (
-          <Button
-            key={preset}
-            onPress={() => AudioBrowser.setEqualizerPreset(preset)}
-            className={cn({ "bg-primary": eqSettings.activePreset === preset })}
-          >
-            <StyledText>{preset}</StyledText>
-          </Button>
-        ))}
+        {eqSettings?.presets.map((preset) => {
+          const isActive = eqSettings.activePreset === preset;
+          return (
+            <Button
+              key={preset}
+              onPress={() => AudioBrowser.setEqualizerPreset(preset)}
+              className={cn("min-h-auto rounded-full py-2", {
+                "bg-primary active:bg-primaryDim": isActive,
+              })}
+            >
+              <TStyledText
+                textKey={`feat.equalizer.extra.${preset}` as ParseKeys}
+                className={cn("text-xs", { "text-onPrimary": isActive })}
+              />
+            </Button>
+          );
+        })}
       </View>
     </ListLayout>
   );
