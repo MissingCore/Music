@@ -12,16 +12,23 @@ export const equalizerStore = createPersistedStore<EqualizerStore>(
       const eqSettings = AudioBrowser.getEqualizerSettings();
 
       // Set `customBands` if EQ is supported and hasn't been initialized.
-      let customBands = state.customBands;
-      if (eqSettings && customBands.length === 0) {
-        customBands = eqSettings.bandLevels;
+      if (eqSettings && state.customBands.length === 0) {
+        set({ customBands: eqSettings.bandLevels });
       }
+
+      const defaultPresets = (eqSettings?.presets ?? []) as EQPreset[];
+      if (defaultPresets.length > 0) defaultPresets.push("Custom");
+
+      const minBandLevel = eqSettings?.lowerBandLevelLimit ?? 0;
+      const maxBandLevel = eqSettings?.upperBandLevelLimit ?? 0;
 
       set({
         _hasHydrated: true,
-        defaultPresets: (eqSettings?.presets ?? []) as EQPreset[],
-        minBandLevel: eqSettings?.lowerBandLevelLimit ?? 0,
-        maxBandLevel: eqSettings?.upperBandLevelLimit ?? 0,
+        defaultFrequencies: eqSettings?.centerBandFrequencies ?? [],
+        defaultPresets,
+        minBandLevel,
+        maxBandLevel,
+        bandOrdinate: Math.max(Math.abs(minBandLevel), maxBandLevel),
       });
     },
 
@@ -29,9 +36,11 @@ export const equalizerStore = createPersistedStore<EqualizerStore>(
     preset: "Normal",
     customBands: [],
 
+    defaultFrequencies: [],
     defaultPresets: [],
     minBandLevel: 0,
     maxBandLevel: 0,
+    bandOrdinate: 0,
   }),
   {
     name: "music::equalizer",

@@ -1,7 +1,10 @@
 import type { ParseKeys } from "i18next";
 import { useMemo } from "react";
 import { View } from "react-native";
-import AudioBrowser, { useEqualizerSettings } from "react-native-audio-browser";
+import { useEqualizerSettings } from "react-native-audio-browser";
+
+import { useEqualizerStore } from "~/modules/equalizer/core/store";
+import { toggleEQ, setEQPreset } from "~/modules/equalizer/core/actions";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
@@ -14,48 +17,43 @@ import { Switch } from "~/components/UI/Switch";
 import { EQGraph } from "~/modules/equalizer/components/EQGraph";
 
 export default function EqualizerSettings() {
-  const eqSettings = useEqualizerSettings();
+  const eqFreqs = useEqualizerStore((s) => s.defaultFrequencies);
+  const eqPresets = useEqualizerStore((s) => s.defaultPresets);
+  const activePreset = useEqualizerStore((s) => s.preset);
 
-  const dataPoints = useMemo(() => {
-    if (!eqSettings?.centerBandFrequencies) return [];
-    return eqSettings.centerBandFrequencies.map((freq, index) => ({
-      x: freq,
-      y: eqSettings.bandLevels[index]!,
-    }));
-  }, [eqSettings?.bandLevels, eqSettings?.centerBandFrequencies]);
+  const currEQ = useEqualizerSettings();
 
-  const eqRange = useMemo(() => {
-    if (!eqSettings?.lowerBandLevelLimit) return 0;
-    return Math.max(
-      Math.abs(eqSettings.lowerBandLevelLimit),
-      eqSettings.upperBandLevelLimit,
-    );
-  }, [eqSettings?.lowerBandLevelLimit, eqSettings?.upperBandLevelLimit]);
+  const eqDataPoints = useMemo(
+    () =>
+      eqFreqs.map((freq, index) => ({
+        x: freq,
+        y: currEQ?.bandLevels[index] ?? 0,
+      })),
+    [eqFreqs, currEQ?.bandLevels],
+  );
 
   return (
     <>
       <ScreenOptions
         headerRight={() => (
           <Pressable
-            onPress={() =>
-              AudioBrowser.setEqualizerEnabled(!eqSettings?.enabled)
-            }
+            onPress={toggleEQ}
             className="size-10 items-center justify-center"
           >
-            <Switch enabled={Boolean(eqSettings?.enabled)} />
+            <Switch enabled={Boolean(currEQ?.enabled)} />
           </Pressable>
         )}
       />
       <ListLayout>
-        <EQGraph bound={eqRange} points={dataPoints} />
+        <EQGraph points={eqDataPoints} />
 
         <View className="flex-row flex-wrap gap-2">
-          {eqSettings?.presets.map((preset) => {
-            const isActive = eqSettings.activePreset === preset;
+          {eqPresets.map((preset) => {
+            const isActive = activePreset === preset;
             return (
               <Button
                 key={preset}
-                onPress={() => AudioBrowser.setEqualizerPreset(preset)}
+                onPress={() => setEQPreset(preset)}
                 className={cn("min-h-auto rounded-full py-2", {
                   "bg-primary active:bg-primaryDim": isActive,
                 })}

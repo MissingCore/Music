@@ -24,16 +24,21 @@ export interface EqualizerStore {
   /** Bands for "Custom" eq preset. */
   customBands: number[];
 
+  defaultFrequencies: number[];
   defaultPresets: EQPreset[];
   minBandLevel: number;
   maxBandLevel: number;
+  /** The max absolute value between `minBandLevel` & `maxBandLevel`. */
+  bandOrdinate: number;
 }
 
 export const OmittedFields: string[] = [
   "_hasHydrated",
   "_init",
+  "defaultFrequencies",
   "defaultPresets",
   "minBandLevel",
   "maxBandLevel",
+  "bandOrdinate",
 ] satisfies Array<keyof EqualizerStore>;
 //#endregion

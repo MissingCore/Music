@@ -9,6 +9,7 @@ import {
   equalizerStore,
   useEqualizerStore,
 } from "~/modules/equalizer/core/store";
+import { setEQPreset } from "~/modules/equalizer/core/actions";
 
 import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 import { revalidateWidgets } from "~/modules/widget/utils";
@@ -61,11 +62,10 @@ export function useSetup() {
       }
 
       // Ensure equalizer settings are loaded.
-      const { enabled, preset, customBands } = equalizerStore.getState();
+      const { enabled, preset } = equalizerStore.getState();
       if (enabled) {
         AudioBrowser.setEqualizerEnabled(true);
-        if (preset === "Custom") AudioBrowser.setEqualizerLevels(customBands);
-        else AudioBrowser.setEqualizerPreset(preset);
+        setEQPreset(preset);
       }
 
       // Ensure the current list is at the top of recently played lists.

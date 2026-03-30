@@ -10,6 +10,7 @@ import {
 } from "react-native-svg";
 
 import { useTheme } from "~/hooks/useTheme";
+import { useEqualizerStore } from "../core/store";
 
 import { Em } from "~/components/Typography/StyledText";
 
@@ -28,7 +29,7 @@ export function EQGraph(props: EQLineProps) {
     >
       <Svg style={{ height: "100%", width: "100%" }}>
         <GraphAnnotations />
-        <EQLine bound={props.bound} points={props.points} />
+        <EQLine points={props.points} />
       </Svg>
     </View>
   );
@@ -36,23 +37,22 @@ export function EQGraph(props: EQLineProps) {
 
 //#region EQ Line
 interface EQLineProps {
-  /** Largest absolute value from 0. */
-  bound: number;
   /** Array of frequency (x) to their band level (y). */
   points: Array<{ x: number; y: number }>;
 }
 
 function EQLine(props: EQLineProps) {
-  const width = useGraphWidth();
   const { scheme, onSurfaceVariant, surfaceContainerHigh } = useTheme();
+  const width = useGraphWidth();
+  const eqBandOrdinate = useEqualizerStore((s) => s.bandOrdinate);
 
   const points = useMemo(
     () =>
       props.points.map(({ x, y }) => ({
         x: guessXPercentage(x) * width,
-        y: guessYCoordinate(y, props.bound),
+        y: guessYCoordinate(y, eqBandOrdinate),
       })),
-    [width, props.points, props.bound],
+    [width, eqBandOrdinate, props.points],
   );
 
   const path = useMemo(() => {
