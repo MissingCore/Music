@@ -12,7 +12,7 @@ export const equalizerStore = createPersistedStore<EqualizerStore>(
       const eqSettings = AudioBrowser.getEqualizerSettings();
 
       // Set `customBands` if EQ is supported and hasn't been initialized.
-      if (eqSettings && state.customBands.length === 0) {
+      if (eqSettings && state.customBands.length !== eqSettings.bandCount) {
         set({ customBands: eqSettings.bandLevels });
       }
 
