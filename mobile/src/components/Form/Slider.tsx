@@ -19,6 +19,7 @@ import type { Icon } from "~/resources/icons/type";
 import { useColor } from "~/hooks/useTheme";
 
 import { Colors } from "~/constants/Styles";
+import { OnRTL } from "~/lib/react";
 import type { AppColor } from "~/lib/style";
 import { cn } from "~/lib/style";
 import { Em } from "../Typography/StyledText";
@@ -32,6 +33,8 @@ export const CachedSlider = memo(function CachedSlider(props: {
   liveValue?: SharedValue<number>;
   min: number;
   max: number;
+  /** Value where the progress bar moves from. Defaults to `min`. */
+  anchorAt?: number;
   disabled?: boolean;
   /** Notify the parent if the slider recognized interactions. */
   getInteractionStatus?: Dispatch<SetStateAction<boolean>>;
@@ -67,6 +70,8 @@ export const CachedSlider = memo(function CachedSlider(props: {
   const step = useRef(props.step ?? 1);
   const debounceMultiplier = useRef(props._debounceMultiplier ?? 5);
 
+  const anchorPoint = props.anchorAt ?? props.min;
+
   //#region Synchronization
   const setCurrVal = useCallback(
     (val: number) => {
@@ -93,6 +98,10 @@ export const CachedSlider = memo(function CachedSlider(props: {
       sliderWidth.value = e.nativeEvent.layout.width;
     },
     [sliderWidth],
+  );
+
+  const containerRatio = useDerivedValue(
+    () => sliderWidth.value / moveableDistance,
   );
   //#endregion
 
@@ -212,9 +221,24 @@ export const CachedSlider = memo(function CachedSlider(props: {
     [trackColor, props.height, props.transparent],
   );
 
-  const progressStyle = useAnimatedStyle(() => ({
+  const leftProgressWrapperStyle = useAnimatedStyle(() => ({
+    width: (anchorPoint - props.min) * containerRatio.value,
+  }));
+
+  const leftProgressStyle = useAnimatedStyle(() => ({
     backgroundColor: props.transparent ? Colors.transparent : progressColor,
-    width: ((currVal.value - props.min) / moveableDistance) * sliderWidth.value,
+    width: (anchorPoint - currVal.value) * containerRatio.value,
+    opacity: currVal.value > anchorPoint ? 0 : 1,
+  }));
+
+  const rightProgressWrapperStyle = useAnimatedStyle(() => ({
+    width: (props.max - anchorPoint) * containerRatio.value,
+  }));
+
+  const rightProgressStyle = useAnimatedStyle(() => ({
+    backgroundColor: props.transparent ? Colors.transparent : progressColor,
+    width: (currVal.value - anchorPoint) * containerRatio.value,
+    opacity: currVal.value < anchorPoint ? 0 : 1,
   }));
   //#endregion
 
@@ -224,9 +248,10 @@ export const CachedSlider = memo(function CachedSlider(props: {
         <View
           onLayout={onLayout}
           style={sliderWrapperStyle}
-          className={cn("relative w-full overflow-hidden rounded-full", {
-            "flex-row-reverse": shouldInvertStyle,
-          })}
+          className={cn(
+            "relative w-full flex-row overflow-hidden rounded-full",
+            { "flex-row-reverse": shouldInvertStyle },
+          )}
         >
           {props.overlay ? (
             <SliderOverlay
@@ -235,10 +260,38 @@ export const CachedSlider = memo(function CachedSlider(props: {
               inverted={shouldInvertStyle}
             />
           ) : null}
-          <Animated.View
-            style={progressStyle}
-            className={cn("h-full", { "rounded-r-full": props.roundedEndStop })}
-          />
+
+          <Animated.View style={leftProgressWrapperStyle} className="items-end">
+            <Animated.View
+              style={leftProgressStyle}
+              className={cn("h-full", {
+                "rounded-l-full": props.roundedEndStop,
+              })}
+            />
+          </Animated.View>
+          <Animated.View style={rightProgressWrapperStyle}>
+            <Animated.View
+              style={rightProgressStyle}
+              className={cn("h-full", {
+                "rounded-r-full": props.roundedEndStop,
+              })}
+            />
+          </Animated.View>
+
+          {anchorPoint !== props.min && (
+            <View
+              style={{
+                left: `${((anchorPoint - props.min) / moveableDistance) * 100}%`,
+                backgroundColor: props.transparent
+                  ? Colors.transparent
+                  : progressColor,
+              }}
+              className={cn(
+                "absolute aspect-square h-full rounded-full",
+                OnRTL.decide("translate-x-1/2", "-translate-x-1/2"),
+              )}
+            />
+          )}
         </View>
       </View>
     </GestureDetector>
