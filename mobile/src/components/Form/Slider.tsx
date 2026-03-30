@@ -71,6 +71,8 @@ export const CachedSlider = memo(function CachedSlider(props: {
   const debounceMultiplier = useRef(props._debounceMultiplier ?? 5);
 
   const anchorPoint = props.anchorAt ?? props.min;
+  const anchorDistFromMin = anchorPoint - props.min;
+  const anchorDistFromMax = props.max - anchorPoint;
 
   //#region Synchronization
   const setCurrVal = useCallback(
@@ -222,7 +224,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
   );
 
   const leftProgressWrapperStyle = useAnimatedStyle(() => ({
-    width: (anchorPoint - props.min) * containerRatio.value,
+    width: anchorDistFromMin * containerRatio.value,
   }));
 
   const leftProgressStyle = useAnimatedStyle(() => ({
@@ -232,7 +234,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
   }));
 
   const rightProgressWrapperStyle = useAnimatedStyle(() => ({
-    width: (props.max - anchorPoint) * containerRatio.value,
+    width: anchorDistFromMax * containerRatio.value,
   }));
 
   const rightProgressStyle = useAnimatedStyle(() => ({
@@ -261,19 +263,29 @@ export const CachedSlider = memo(function CachedSlider(props: {
             />
           ) : null}
 
-          <Animated.View style={leftProgressWrapperStyle} className="items-end">
+          <Animated.View
+            style={leftProgressWrapperStyle}
+            className={cn("items-end justify-end", {
+              "flex-row-reverse": shouldInvertStyle,
+            })}
+          >
             <Animated.View
               style={leftProgressStyle}
               className={cn("h-full", {
-                "rounded-l-full": props.roundedEndStop,
+                [shouldInvertStyle ? "rounded-r-full" : "rounded-l-full"]:
+                  props.roundedEndStop,
               })}
             />
           </Animated.View>
-          <Animated.View style={rightProgressWrapperStyle}>
+          <Animated.View
+            style={rightProgressWrapperStyle}
+            className={cn({ "flex-row-reverse": shouldInvertStyle })}
+          >
             <Animated.View
               style={rightProgressStyle}
               className={cn("h-full", {
-                "rounded-r-full": props.roundedEndStop,
+                [shouldInvertStyle ? "rounded-l-full" : "rounded-r-full"]:
+                  props.roundedEndStop,
               })}
             />
           </Animated.View>
@@ -281,7 +293,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
           {anchorPoint !== props.min && (
             <View
               style={{
-                left: `${((anchorPoint - props.min) / moveableDistance) * 100}%`,
+                left: `${((shouldInvertStyle ? anchorDistFromMax : anchorDistFromMin) / moveableDistance) * 100}%`,
                 backgroundColor: props.transparent
                   ? Colors.transparent
                   : progressColor,
