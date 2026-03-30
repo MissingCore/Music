@@ -1,4 +1,4 @@
-import { Fragment, useMemo } from "react";
+import { useMemo } from "react";
 import { View, useWindowDimensions } from "react-native";
 import {
   Circle,
@@ -31,6 +31,7 @@ export function EQGraph(props: EQLineProps) {
         <GraphAnnotations />
         <EQLine points={props.points} />
       </Svg>
+      <GraphLabels />
     </View>
   );
 }
@@ -123,7 +124,7 @@ const DisplayedFrequencies = [
   { label: "20k", value: 20000000, xPosPercent: 0.95 },
 ];
 
-/** Draws x-axis and tick marks + labels for certain frequencies. */
+/** Draws x-axis and tick marks for certain frequencies. */
 function GraphAnnotations() {
   const width = useGraphWidth();
   const { surfaceContainer } = useTheme();
@@ -138,22 +139,32 @@ function GraphAnnotations() {
       {DisplayedFrequencies.map(({ label, xPosPercent }) => {
         const xPos = width * xPosPercent;
         return (
-          <Fragment key={label}>
-            <Path
-              d={`M ${xPos} ${0} L ${xPos} ${GraphHeight}`}
-              stroke={surfaceContainer}
-            />
-            <Em
-              style={{ left: xPos, fontSize: 8 }}
-              className="absolute top-full left-0 -translate-x-1/2 translate-y-0.5"
-            >
-              {label}
-            </Em>
-          </Fragment>
+          <Path
+            key={label}
+            d={`M ${xPos} ${0} L ${xPos} ${GraphHeight}`}
+            stroke={surfaceContainer}
+          />
         );
       })}
     </>
   );
+}
+
+/**
+ * Displays the tick labels separately as they would disappear when
+ * navigating back when in `<GraphAnnotations />`.
+ */
+function GraphLabels() {
+  const width = useGraphWidth();
+  return DisplayedFrequencies.map(({ label, xPosPercent }) => (
+    <Em
+      key={label}
+      style={{ left: width * xPosPercent, fontSize: 8 }}
+      className="absolute top-full left-0 -translate-x-1/2 translate-y-0.5"
+    >
+      {label}
+    </Em>
+  ));
 }
 //#endregion
 
