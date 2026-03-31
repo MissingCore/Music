@@ -65,7 +65,7 @@ export function SeekBar(props: SeekBarProps) {
       ) : (
         <CachedSlider
           {...sharedSliderOptions}
-          vHitSlop={8}
+          hitSlop={8}
           trackColor="surfaceContainerHigh"
           roundedEndStop
         />

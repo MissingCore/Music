@@ -6,7 +6,7 @@ import { scheduleOnRN } from "react-native-worklets";
 import { useEqualizerStore } from "../core/store";
 import { setEQBandLevel } from "../core/actions";
 
-import { CachedSliderVertical } from "~/components/Form/SliderVertical";
+import { CachedSlider } from "~/components/Form/Slider";
 import { Em } from "~/components/Typography/StyledText";
 
 type Props = {
@@ -28,7 +28,7 @@ export const FrequencySlider = memo(function FrequencySlider(props: Props) {
 
   return (
     <View className="items-center gap-2">
-      <CachedSliderVertical
+      <CachedSlider
         initValue={bandValue}
         liveValue={liveBandValue}
         min={minBand}
@@ -36,9 +36,10 @@ export const FrequencySlider = memo(function FrequencySlider(props: Props) {
         step={100}
         onChange={(newLevel) => setEQBandLevel(props.bandIndex, newLevel)}
         disabled={props.disabled}
-        hHitSlop={10}
+        hitSlop={10}
         anchorAt={0}
         roundedEndStop
+        vertical
         _debounceMultiplier={1}
         _className="h-48"
       />
