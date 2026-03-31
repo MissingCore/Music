@@ -142,7 +142,7 @@
     "miniplayerGestures": {
       "title": "Swipe-styring i miniplayer",
       "extra": {
-        "dragClearPlayback": null
+        "dragClearPlayback": "Træk miniplayer ned for at stoppe afspilning"
       }
     },
     "nowPlayingDesign": {
@@ -169,9 +169,9 @@
       "description": "Overfør data fra denne app til andre enheder via en \"music_backup.json\" fil.",
       "extra": {
         "export": "Eksportér",
-        "exportSuccess": null,
+        "exportSuccess": "Eksport gennemført.",
         "import": "Importér",
-        "importSuccess": null
+        "importSuccess": "Import gennemført."
       }
     },
     "insights": {
@@ -266,22 +266,22 @@
       "title": "Eksperimentelle Funktioner"
     },
     "androidAuto": {
-      "title": null
+      "title": "Android Auto"
     },
     "equalizer": {
-      "title": null,
+      "title": "Equalizer",
       "extra": {
-        "Custom": null,
-        "Normal": null,
-        "Classical": null,
-        "Dance": null,
-        "Flat": null,
-        "Folk": null,
-        "Heavy Metal": null,
-        "Hip Hop": null,
-        "Jazz": null,
-        "Pop": null,
-        "Rock": null
+        "Custom": "Tilpasset",
+        "Normal": "Normal",
+        "Classical": "Klassisk",
+        "Dance": "Dance",
+        "Flat": "Flad",
+        "Folk": "Folk",
+        "Heavy Metal": "Heavy Metal",
+        "Hip Hop": "Hip Hop",
+        "Jazz": "Jazz",
+        "Pop": "Pop",
+        "Rock": "Rock"
       }
     },
     "ignoreInterrupt": {
@@ -343,7 +343,7 @@
       "extra": {
         "change": "Skift billede",
         "remove": "Fjern billede",
-        "square": null
+        "square": "Kvadratisk albumcover"
       }
     },
     "directory": {
@@ -403,7 +403,7 @@
         "playNext": "Afspil som næste",
         "playLast": "Afspil sidst",
         "toast": "\"{{- name}}\" tilføjet til kø.",
-        "quickAdd": null,
+        "quickAdd": "Vis \"Tilføj til kø\" knap ved hver sang",
         "queueAwareNext": "Kø-bevidst \"Afspil som næste\"",
         "queueAwareNextBrief": "Forsøger at tilføje sang efter den sidste \"Afspil som næste\"-sang i køen."
       }

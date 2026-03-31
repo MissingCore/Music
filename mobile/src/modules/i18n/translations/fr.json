@@ -266,22 +266,22 @@
       "title": "Fonctionnalités Expérimentales"
     },
     "androidAuto": {
-      "title": null
+      "title": "Android Auto"
     },
     "equalizer": {
-      "title": null,
+      "title": "Égaliseur",
       "extra": {
-        "Custom": null,
-        "Normal": null,
-        "Classical": null,
-        "Dance": null,
-        "Flat": null,
-        "Folk": null,
-        "Heavy Metal": null,
-        "Hip Hop": null,
-        "Jazz": null,
-        "Pop": null,
-        "Rock": null
+        "Custom": "Personnalisé",
+        "Normal": "Normal",
+        "Classical": "Classique",
+        "Dance": "Dance",
+        "Flat": "Plat",
+        "Folk": "Folk",
+        "Heavy Metal": "Heavy Metal",
+        "Hip Hop": "Hip-Hop",
+        "Jazz": "Jazz",
+        "Pop": "Pop",
+        "Rock": "Rock"
       }
     },
     "ignoreInterrupt": {
@@ -343,7 +343,7 @@
       "extra": {
         "change": "Modifier l'illustration",
         "remove": "Supprimer l'illustration",
-        "square": null
+        "square": "Œuvre d'art carrée"
       }
     },
     "directory": {

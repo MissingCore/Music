@@ -266,22 +266,22 @@
       "title": "Deneysel Özellikler"
     },
     "androidAuto": {
-      "title": null
+      "title": "Android Auto"
     },
     "equalizer": {
-      "title": null,
+      "title": "Ekolayzer",
       "extra": {
-        "Custom": null,
-        "Normal": null,
-        "Classical": null,
-        "Dance": null,
-        "Flat": null,
-        "Folk": null,
-        "Heavy Metal": null,
-        "Hip Hop": null,
-        "Jazz": null,
-        "Pop": null,
-        "Rock": null
+        "Custom": "Özel",
+        "Normal": "Normal",
+        "Classical": "Klasik",
+        "Dance": "Dans",
+        "Flat": "Düz",
+        "Folk": "Folk",
+        "Heavy Metal": "Heavy Metal",
+        "Hip Hop": "Hip Hop",
+        "Jazz": "Caz",
+        "Pop": "Pop",
+        "Rock": "Rock"
       }
     },
     "ignoreInterrupt": {
@@ -343,7 +343,7 @@
       "extra": {
         "change": "Kapak Görselini Değiştir",
         "remove": "Kapak Görselini Kaldır",
-        "square": null
+        "square": "Kare Kapak Resmi"
       }
     },
     "directory": {
