@@ -89,9 +89,11 @@ export const CachedSlider = memo(function CachedSlider(props: {
   const step = useRef(props.step ?? 1);
   const debounceMultiplier = useRef(props._debounceMultiplier ?? 5);
 
-  const anchorPoint = props.anchorAt ?? onVertical(props.max, props.min);
-  const anchorDistFromMin = anchorPoint - props.min;
-  const anchorDistFromMax = props.max - anchorPoint;
+  const anchorPoint = props.anchorAt ?? props.min;
+  const distFromMin = anchorPoint - props.min;
+  const distFromMax = props.max - anchorPoint;
+  const anchorDistFromMin = onVertical(distFromMax, distFromMin);
+  const anchorDistFromMax = onVertical(distFromMin, distFromMax);
 
   //#region Synchronization
   const setCurrVal = useCallback(
@@ -276,7 +278,6 @@ export const CachedSlider = memo(function CachedSlider(props: {
   // Section that goes to min.
   const toMinProgressWrapperStyle = useAnimatedStyle(() => ({
     [StyleKey.longSide]: anchorDistFromMin * containerRatio.value,
-    transform: [{ scaleY: -1 }], //? Gets progress to grow from "anchor".
   }));
 
   const toMinProgressStyle = useAnimatedStyle(() => ({
@@ -288,7 +289,6 @@ export const CachedSlider = memo(function CachedSlider(props: {
   // Section that goes to max.
   const toMaxProgressWrapperStyle = useAnimatedStyle(() => ({
     [StyleKey.longSide]: anchorDistFromMax * containerRatio.value,
-    transform: [{ scaleY: -1 }], //? Gets progress to grow from "anchor".
   }));
 
   const toMaxProgressStyle = useAnimatedStyle(() => ({
@@ -306,7 +306,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
           style={sliderWrapperStyle}
           className={cn(
             "relative overflow-hidden rounded-full",
-            onVertical("h-full flex-col-reverse", "w-full flex-row"),
+            onVertical("h-full flex-col", "w-full flex-row"),
             { "flex-row-reverse": shouldInvertStyle },
           )}
         >
@@ -326,7 +326,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
             })}
           >
             <Animated.View
-              style={toMinProgressStyle}
+              style={onVertical(toMaxProgressStyle, toMinProgressStyle)}
               className={cn("h-full", {
                 [StyleKey.minEndCap]: props.roundedEndStop,
               })}
@@ -337,18 +337,18 @@ export const CachedSlider = memo(function CachedSlider(props: {
             className={cn({ "flex-row-reverse": shouldInvertStyle })}
           >
             <Animated.View
-              style={toMaxProgressStyle}
+              style={onVertical(toMinProgressStyle, toMaxProgressStyle)}
               className={cn("h-full", {
                 [StyleKey.maxEndCap]: props.roundedEndStop,
               })}
             />
           </Animated.View>
 
-          {anchorPoint !== onVertical(props.max, props.min) && (
+          {anchorPoint !== props.min && (
             <View
               style={{
                 [onVertical("top", "left")]:
-                  `${((shouldInvertStyle || props.vertical ? anchorDistFromMax : anchorDistFromMin) / moveableDistance) * 100}%`,
+                  `${((shouldInvertStyle ? anchorDistFromMax : anchorDistFromMin) / moveableDistance) * 100}%`,
                 backgroundColor: props.transparent
                   ? Colors.transparent
                   : progressColor,
