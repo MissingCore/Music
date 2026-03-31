@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
 
 /**
@@ -6,16 +6,27 @@ import type { LayoutChangeEvent } from "react-native";
  *
  * Ref: https://sheet.lodev09.com/troubleshooting#unable-to-drag-on-android
  */
-export function useEnableSheetScroll() {
+export function useEnableSheetScroll(scrollView?: boolean) {
+  const minHeightRef = useRef(0);
   const [minHeight, setMinHeight] = useState(0);
+  const [nestedScrollEnabled, setNestedScrollEnabled] = useState(!scrollView);
+
   return useMemo(
     () => ({
       onLayout: (e: LayoutChangeEvent) => {
-        if (minHeight === 0) setMinHeight(e.nativeEvent.layout.height + 1);
+        if (minHeight === 0) {
+          minHeightRef.current = e.nativeEvent.layout.height;
+          setMinHeight(e.nativeEvent.layout.height + (scrollView ? 0 : 1));
+        }
       },
-      nestedScrollEnabled: true,
+      onContentSizeChange: (_: number, contentHeight: number) => {
+        // Need a `ref` for instant acces to `minHeight` value.
+        if (contentHeight !== minHeightRef.current)
+          setNestedScrollEnabled(true);
+      },
+      nestedScrollEnabled: nestedScrollEnabled,
       contentContainerStyle: { minHeight },
     }),
-    [minHeight],
+    [scrollView, minHeight, nestedScrollEnabled],
   );
 }

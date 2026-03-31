@@ -289,6 +289,22 @@
     "androidAuto": {
       "title": "Android Auto"
     },
+    "equalizer": {
+      "title": "Equalizer",
+      "extra": {
+        "Custom": "Custom",
+        "Normal": "Normal",
+        "Classical": "Classical",
+        "Dance": "Dance",
+        "Flat": "Flat",
+        "Folk": "Folk",
+        "Heavy Metal": "Heavy Metal",
+        "Hip Hop": "Hip Hop",
+        "Jazz": "Jazz",
+        "Pop": "Pop",
+        "Rock": "Rock"
+      }
+    },
     "ignoreInterrupt": {
       "title": "Ignore Interruptions",
       "brief": "Continue playing audio when an interruption such as a notification or a call occurs. You will need to manually pause and unpause the music during these situations."

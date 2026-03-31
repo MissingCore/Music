@@ -19,6 +19,7 @@ import type { Icon } from "~/resources/icons/type";
 import { useColor } from "~/hooks/useTheme";
 
 import { Colors } from "~/constants/Styles";
+import { OnRTL } from "~/lib/react";
 import type { AppColor } from "~/lib/style";
 import { cn } from "~/lib/style";
 import { Em } from "../Typography/StyledText";
@@ -32,6 +33,8 @@ export const CachedSlider = memo(function CachedSlider(props: {
   liveValue?: SharedValue<number>;
   min: number;
   max: number;
+  /** Value where the progress bar moves from. Defaults to `min`. */
+  anchorAt?: number;
   disabled?: boolean;
   /** Notify the parent if the slider recognized interactions. */
   getInteractionStatus?: Dispatch<SetStateAction<boolean>>;
@@ -41,11 +44,15 @@ export const CachedSlider = memo(function CachedSlider(props: {
   onComplete?: (value: number) => void | Promise<void>;
   /** Defaults to `1`. */
   step?: number;
+  vertical?: boolean;
   /** Invert appearance & functionality given `I18nManager` is enabled.  */
   inverted?: boolean;
-  height?: number;
-  /** Vertical hitslop. Will change the component's height. */
-  vHitSlop?: number;
+  thickness?: number;
+  /**
+   * Hitslop applied to sides where `thickness` applies. Will change the
+   * component's height (width if `vertical = true`).
+   */
+  hitSlop?: number;
   /** If the slider should be transparent. */
   transparent?: boolean;
   trackColor?: AppColor;
@@ -62,10 +69,29 @@ export const CachedSlider = memo(function CachedSlider(props: {
   /** Add additional styles to the slider wrapper. */
   _className?: string;
 }) {
+  const onVertical = useMemo(
+    () =>
+      <T, U>(valIfTrue: T, valIfFalse: U) =>
+        props.vertical ? valIfTrue : valIfFalse,
+    [props.vertical],
+  );
+  const onVerticalWorklet = useMemo(
+    () =>
+      <T, U>(valIfTrue: T, valIfFalse: U) => {
+        "worklet";
+        return props.vertical ? valIfTrue : valIfFalse;
+      },
+    [props.vertical],
+  );
+
   const currVal = useSharedValue(props.initValue);
   const moveableDistance = props.max - props.min;
   const step = useRef(props.step ?? 1);
   const debounceMultiplier = useRef(props._debounceMultiplier ?? 5);
+
+  const anchorPoint = props.anchorAt ?? onVertical(props.max, props.min);
+  const anchorDistFromMin = anchorPoint - props.min;
+  const anchorDistFromMax = props.max - anchorPoint;
 
   //#region Synchronization
   const setCurrVal = useCallback(
@@ -87,12 +113,16 @@ export const CachedSlider = memo(function CachedSlider(props: {
   //#endregion
 
   //#region Layout Context
-  const sliderWidth = useSharedValue(0);
+  const sliderLength = useSharedValue(0);
   const onLayout = useCallback(
     (e: LayoutChangeEvent) => {
-      sliderWidth.value = e.nativeEvent.layout.width;
+      sliderLength.value = e.nativeEvent.layout[onVertical("height", "width")];
     },
-    [sliderWidth],
+    [onVertical, sliderLength],
+  );
+
+  const containerRatio = useDerivedValue(
+    () => sliderLength.value / moveableDistance,
   );
   //#endregion
 
@@ -127,17 +157,20 @@ export const CachedSlider = memo(function CachedSlider(props: {
   }, []);
 
   const calculateNextValue = useCallback(
-    (x: number) => {
+    (l: number) => {
       "worklet";
-      const i18nAdjustedX =
-        I18nManager.isRTL && !props.inverted ? sliderWidth.value - x : x;
-      const clampedValue = clamp(0, i18nAdjustedX, sliderWidth.value);
-      const progressPrecent = clampedValue / sliderWidth.value;
+      const i18nAdjustedL =
+        I18nManager.isRTL && !props.inverted && !props.vertical
+          ? sliderLength.value - l
+          : l;
+      const clampedValue = clamp(0, i18nAdjustedL, sliderLength.value);
+      let progressPrecent = clampedValue / sliderLength.value;
+      if (props.vertical) progressPrecent = 1 - progressPrecent;
       const rawVal = progressPrecent * moveableDistance + props.min;
       // Round based on the step.
       return roundToStep(rawVal, step.current);
     },
-    [sliderWidth, moveableDistance, props.min, props.inverted],
+    [sliderLength, moveableDistance, props.min, props.vertical, props.inverted],
   );
   //#endregion
 
@@ -147,14 +180,20 @@ export const CachedSlider = memo(function CachedSlider(props: {
       Gesture.Tap()
         .enabled(!props.disabled)
         .onBegin(() => setIsInteracting(true))
-        .onEnd(({ x }) => {
-          const finalizedValue = calculateNextValue(x);
+        .onEnd(({ x, y }) => {
+          const finalizedValue = calculateNextValue(onVerticalWorklet(y, x));
           setCurrVal(finalizedValue);
           setIsInteracting(false);
           if (onCompleteRef.current)
             scheduleOnRN(onCompleteRef.current, finalizedValue);
         }),
-    [calculateNextValue, setIsInteracting, setCurrVal, props.disabled],
+    [
+      onVerticalWorklet,
+      calculateNextValue,
+      setIsInteracting,
+      setCurrVal,
+      props.disabled,
+    ],
   );
 
   const panGesture = useMemo(
@@ -162,22 +201,23 @@ export const CachedSlider = memo(function CachedSlider(props: {
       Gesture.Pan()
         .enabled(!props.disabled)
         .onBegin(() => setIsInteracting(true))
-        .onStart(({ x }) => {
-          debounceFrom.value = x;
+        .onStart(({ x, y }) => {
+          debounceFrom.value = onVerticalWorklet(y, x);
         })
-        .onUpdate(({ x, velocityX }) => {
-          const nextValue = calculateNextValue(x);
+        .onUpdate(({ x, y, velocityX, velocityY }) => {
+          const nextValue = calculateNextValue(onVerticalWorklet(y, x));
           setCurrVal(nextValue);
-          debouncedOnChange(nextValue, velocityX);
+          debouncedOnChange(nextValue, onVerticalWorklet(velocityY, velocityX));
         })
-        .onEnd(({ x }) => {
-          const finalizedValue = calculateNextValue(x);
+        .onEnd(({ x, y }) => {
+          const finalizedValue = calculateNextValue(onVerticalWorklet(y, x));
           setCurrVal(finalizedValue);
           if (onCompleteRef.current)
             scheduleOnRN(onCompleteRef.current, finalizedValue);
         })
         .onFinalize(() => setIsInteracting(false)),
     [
+      onVerticalWorklet,
       calculateNextValue,
       setIsInteracting,
       setCurrVal,
@@ -194,27 +234,67 @@ export const CachedSlider = memo(function CachedSlider(props: {
   //#endregion
 
   //#region Styling
+  const shouldInvertStyle =
+    I18nManager.isRTL && props.inverted && !props.vertical;
+
+  const StyleKey = useMemo(
+    () =>
+      ({
+        strecth: onVertical("h-full", "w-full"),
+        shortSide: onVertical("width", "height"),
+        longSide: onVertical("height", "width"),
+        // Apply padding against the "long" sides.
+        paddingBlock: onVertical("paddingHorizontal", "paddingVertical"),
+        minEndCap: onVertical(
+          "rounded-t-full",
+          shouldInvertStyle ? "rounded-r-full" : "rounded-l-full",
+        ),
+        maxEndCap: onVertical(
+          "rounded-b-full",
+          shouldInvertStyle ? "rounded-l-full" : "rounded-r-full",
+        ),
+      }) as const,
+    [onVertical, shouldInvertStyle],
+  );
+
   const progressColor = useColor(props.progressColor, "primary");
   const trackColor = useColor(props.trackColor, "surfaceContainerLowest");
 
-  const shouldInvertStyle = I18nManager.isRTL && props.inverted;
-
   const hitSlopViewStyle: ViewStyle = useMemo(
-    () => ({ paddingVertical: props.vHitSlop ?? 0 }),
-    [props.vHitSlop],
+    () => ({ [StyleKey.paddingBlock]: props.hitSlop ?? 0 }),
+    [StyleKey, props.hitSlop],
   );
 
   const sliderWrapperStyle: ViewStyle = useMemo(
     () => ({
       backgroundColor: props.transparent ? Colors.transparent : trackColor,
-      height: props.height ?? 12,
+      [StyleKey.shortSide]: props.thickness ?? 12,
     }),
-    [trackColor, props.height, props.transparent],
+    [StyleKey, trackColor, props.thickness, props.transparent],
   );
 
-  const progressStyle = useAnimatedStyle(() => ({
+  // Section that goes to min.
+  const toMinProgressWrapperStyle = useAnimatedStyle(() => ({
+    [StyleKey.longSide]: anchorDistFromMin * containerRatio.value,
+    transform: [{ scaleY: -1 }], //? Gets progress to grow from "anchor".
+  }));
+
+  const toMinProgressStyle = useAnimatedStyle(() => ({
     backgroundColor: props.transparent ? Colors.transparent : progressColor,
-    width: ((currVal.value - props.min) / moveableDistance) * sliderWidth.value,
+    [StyleKey.longSide]: (anchorPoint - currVal.value) * containerRatio.value,
+    opacity: currVal.value > anchorPoint ? 0 : 1,
+  }));
+
+  // Section that goes to max.
+  const toMaxProgressWrapperStyle = useAnimatedStyle(() => ({
+    [StyleKey.longSide]: anchorDistFromMax * containerRatio.value,
+    transform: [{ scaleY: -1 }], //? Gets progress to grow from "anchor".
+  }));
+
+  const toMaxProgressStyle = useAnimatedStyle(() => ({
+    backgroundColor: props.transparent ? Colors.transparent : progressColor,
+    [StyleKey.longSide]: (currVal.value - anchorPoint) * containerRatio.value,
+    opacity: currVal.value < anchorPoint ? 0 : 1,
   }));
   //#endregion
 
@@ -224,21 +304,67 @@ export const CachedSlider = memo(function CachedSlider(props: {
         <View
           onLayout={onLayout}
           style={sliderWrapperStyle}
-          className={cn("relative w-full overflow-hidden rounded-full", {
-            "flex-row-reverse": shouldInvertStyle,
-          })}
+          className={cn(
+            "relative overflow-hidden rounded-full",
+            onVertical("h-full flex-col-reverse", "w-full flex-row"),
+            { "flex-row-reverse": shouldInvertStyle },
+          )}
         >
-          {props.overlay ? (
+          {props.overlay && !props.vertical ? (
             <SliderOverlay
               {...props.overlay}
               value={currVal}
               inverted={shouldInvertStyle}
             />
           ) : null}
+
           <Animated.View
-            style={progressStyle}
-            className={cn("h-full", { "rounded-r-full": props.roundedEndStop })}
-          />
+            style={toMinProgressWrapperStyle}
+            className={cn("justify-end", {
+              "items-end": !props.vertical,
+              "flex-row-reverse": shouldInvertStyle,
+            })}
+          >
+            <Animated.View
+              style={toMinProgressStyle}
+              className={cn("h-full", {
+                [StyleKey.minEndCap]: props.roundedEndStop,
+              })}
+            />
+          </Animated.View>
+          <Animated.View
+            style={toMaxProgressWrapperStyle}
+            className={cn({ "flex-row-reverse": shouldInvertStyle })}
+          >
+            <Animated.View
+              style={toMaxProgressStyle}
+              className={cn("h-full", {
+                [StyleKey.maxEndCap]: props.roundedEndStop,
+              })}
+            />
+          </Animated.View>
+
+          {anchorPoint !== onVertical(props.max, props.min) && (
+            <View
+              style={{
+                [onVertical("top", "left")]:
+                  `${((shouldInvertStyle || props.vertical ? anchorDistFromMax : anchorDistFromMin) / moveableDistance) * 100}%`,
+                backgroundColor: props.transparent
+                  ? Colors.transparent
+                  : progressColor,
+                transform: [
+                  onVertical(
+                    { translateY: "-50%" },
+                    { translateX: OnRTL.decide("50%", "-50%") },
+                  ),
+                ],
+              }}
+              className={cn(
+                "absolute aspect-square rounded-full",
+                onVertical("w-full", "h-full"),
+              )}
+            />
+          )}
         </View>
       </View>
     </GestureDetector>

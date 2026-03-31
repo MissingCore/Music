@@ -1,9 +1,11 @@
 import { toast } from "@missingcore/toast";
+import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
 import { db } from "~/db";
 import { waveformSamples } from "~/db/schema";
 
+import { Equalizer } from "~/resources/icons/Equalizer";
 import { OpenInNew } from "~/resources/icons/OpenInNew";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
@@ -17,6 +19,7 @@ import { Switch } from "~/components/UI/Switch";
 
 export default function ExperimentalSettings() {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const queueAwareNext = usePreferenceStore((s) => s.queueAwareNext);
 
   return (
@@ -38,6 +41,12 @@ export default function ExperimentalSettings() {
         labelTextKey="feat.androidAuto.title"
         onPress={() => openLink(Links.AndroidAuto)}
         RightElement={<OpenInNew />}
+      />
+      <SegmentedList.Item
+        labelTextKey="feat.equalizer.title"
+        onPress={() => navigation.navigate("EqualizerSettings")}
+        LeftElement={<Equalizer />}
+        className="gap-4"
       />
     </ListLayout>
   );
