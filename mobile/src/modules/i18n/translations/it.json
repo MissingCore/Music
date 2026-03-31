@@ -265,6 +265,25 @@
     "experimental": {
       "title": null
     },
+    "androidAuto": {
+      "title": null
+    },
+    "equalizer": {
+      "title": null,
+      "extra": {
+        "Custom": null,
+        "Normal": null,
+        "Classical": null,
+        "Dance": null,
+        "Flat": null,
+        "Folk": null,
+        "Heavy Metal": null,
+        "Hip Hop": null,
+        "Jazz": null,
+        "Pop": null,
+        "Rock": null
+      }
+    },
     "ignoreInterrupt": {
       "title": "Ignora interruzioni",
       "brief": "Continua a riprodurre quando si verifica un'interruzione come una notifica o una chiamata. In questi casi dovrai mettere in pausa o far ricominciare la riproduzione manualmente."
@@ -323,7 +342,8 @@
     "artwork": {
       "extra": {
         "change": "Cambia copertina",
-        "remove": "Rimuovi copertina"
+        "remove": "Rimuovi copertina",
+        "square": null
       }
     },
     "directory": {

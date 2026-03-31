@@ -265,6 +265,25 @@
     "experimental": {
       "title": "Funciones experimentales"
     },
+    "androidAuto": {
+      "title": null
+    },
+    "equalizer": {
+      "title": null,
+      "extra": {
+        "Custom": null,
+        "Normal": null,
+        "Classical": null,
+        "Dance": null,
+        "Flat": null,
+        "Folk": null,
+        "Heavy Metal": null,
+        "Hip Hop": null,
+        "Jazz": null,
+        "Pop": null,
+        "Rock": null
+      }
+    },
     "ignoreInterrupt": {
       "title": "Ignorar interrupciones",
       "brief": "Seguir reproduciendo audio cuando se produce una interrupción como una notificación o una llamada. Tendrá que pausar y reanudar manualmente la música durante estas situaciones."
@@ -323,7 +342,8 @@
     "artwork": {
       "extra": {
         "change": "Cambiar carátula",
-        "remove": "Eliminar carátula"
+        "remove": "Eliminar carátula",
+        "square": null
       }
     },
     "directory": {

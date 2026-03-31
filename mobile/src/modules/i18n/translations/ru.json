@@ -265,6 +265,25 @@
     "experimental": {
       "title": "Экспериментальные функции"
     },
+    "androidAuto": {
+      "title": null
+    },
+    "equalizer": {
+      "title": null,
+      "extra": {
+        "Custom": null,
+        "Normal": null,
+        "Classical": null,
+        "Dance": null,
+        "Flat": null,
+        "Folk": null,
+        "Heavy Metal": null,
+        "Hip Hop": null,
+        "Jazz": null,
+        "Pop": null,
+        "Rock": null
+      }
+    },
     "ignoreInterrupt": {
       "title": "Игнорировать прерывания",
       "brief": "Продолжить воспроизведение аудио когда происходит прерывание, например уведомление или звонок. Вам нужно будет ставить музыку на паузу вручную в таких ситуациях."
@@ -323,7 +342,8 @@
     "artwork": {
       "extra": {
         "change": "Изменить обложку",
-        "remove": "Удалить обложку"
+        "remove": "Удалить обложку",
+        "square": null
       }
     },
     "directory": {
