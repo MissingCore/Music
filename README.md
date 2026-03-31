@@ -43,6 +43,8 @@ A Nothing inspired **local** music player.
 - **`[🧪 Experimental]`** Sleep timer support
 - **`[🧪 Experimental]`** Importing/Exporting playlists from/as M3U files
 - **`[🧪 Experimental]`** [3 widget variants](./docs/widgets.md)
+- **`[🧪 Experimental]`** [Android Auto support](./docs/android-auto.md)
+- **`[🧪 Experimental]`** 5-band Equalizer support
 
 > [!NOTE]  
 > This app is designed to work best on "phone" layouts and isn't tested for larger screens (i.e., foldables/tablets). We may improve the layout for larger screens in the future.

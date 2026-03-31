@@ -17,23 +17,6 @@ First of all, adding support for these music providers will add a lot of complex
 
 In addition, there's also the legal stuff and whether the app will comply with their TOS which I don't want to deal with.
 
-### Lyrics
-
-Lyrics was something that I wanted to add to the app on its conceptualization. The more I went through the process of building this app and learning about the Google Play policy, the more I don't see this feature being possible.
-
-The main issue pertains to Intellectual Property (IP for short). As some may know, music cover art and lyrics are both copyrighted material. The reason why services such as Genius and Spotify can display lyrics is due to having a license to do so:
-
-- [Genius](https://genius.com/static/licensing)
-- [Spotify](https://support.spotify.com/us/artists/article/lyrics/)
-
-#### User-Provided Lyrics
-
-I considered adding support for user-provided lyrics, but it's a bit complex to implement along with requiring those lyrics to conform to a certain format and file type.
-
-### Tag Editor
-
-Editing tags on a file is a more complex thing that it may seem. Figuring out how to implement one will probably take my sanity and will probably be half-baked. Tag editing should be done with dedicated apps.
-
 ### Other Things
 
 You can refer to [this article by OxygenCobalt who made Auxio, an open-source media player](https://github.com/OxygenCobalt/Auxio/wiki/Why-Are-These-Features-Missing%3F) explaining why some features are missing from his app.
