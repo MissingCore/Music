@@ -46,7 +46,7 @@ export default function EqualizerSettings() {
           </Pressable>
         )}
       />
-      <ListLayout>
+      <ListLayout className={cn({ "opacity-50": !currEQ?.enabled })}>
         <EQGraph points={eqDataPoints} />
 
         <View
@@ -58,7 +58,7 @@ export default function EqualizerSettings() {
               key={`${currEQ.activePreset}_${index}`}
               bandIndex={index}
               value={level}
-              disabled={activePreset !== "Custom"}
+              disabled={activePreset !== "Custom" || !currEQ.enabled}
             />
           ))}
         </View>
@@ -70,9 +70,11 @@ export default function EqualizerSettings() {
               <Button
                 key={preset}
                 onPress={() => setEQPreset(preset)}
-                className={cn("min-h-auto rounded-full py-2", {
-                  "bg-primary active:bg-primaryDim": isActive,
-                })}
+                disabled={!currEQ?.enabled}
+                className={cn(
+                  "min-h-auto rounded-full py-2 disabled:opacity-100",
+                  { "bg-primary active:bg-primaryDim": isActive },
+                )}
               >
                 <TStyledText
                   textKey={`feat.equalizer.extra.${preset}` as ParseKeys}
