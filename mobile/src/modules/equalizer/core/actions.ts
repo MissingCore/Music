@@ -7,7 +7,7 @@ export function toggleEQ() {
   const { enabled, preset } = equalizerStore.getState();
   AudioBrowser.setEqualizerEnabled(!enabled);
   equalizerStore.setState({ enabled: !enabled });
-  setEQPreset(preset);
+  if (!enabled) setEQPreset(preset);
 }
 
 export function setEQPreset(preset: EQPreset) {
