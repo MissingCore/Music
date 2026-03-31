@@ -4,9 +4,10 @@ import { equalizerStore } from "./store";
 import type { EQPreset } from "./constants";
 
 export function toggleEQ() {
-  const wasEnabled = equalizerStore.getState().enabled;
-  AudioBrowser.setEqualizerEnabled(!wasEnabled);
-  equalizerStore.setState({ enabled: !wasEnabled });
+  const { enabled, preset } = equalizerStore.getState();
+  AudioBrowser.setEqualizerEnabled(!enabled);
+  equalizerStore.setState({ enabled: !enabled });
+  setEQPreset(preset);
 }
 
 export function setEQPreset(preset: EQPreset) {
