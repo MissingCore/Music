@@ -4,7 +4,9 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import Animated, {
   FadeIn,
+  SlideInLeft,
   SlideInRight,
+  SlideOutLeft,
   SlideOutRight,
 } from "react-native-reanimated";
 
@@ -13,6 +15,7 @@ import { Settings } from "~/resources/icons/Settings";
 import { useRenderBottomActions } from "../hooks/useBottomActions";
 import { useHasNewUpdate } from "../hooks/useHasNewUpdate";
 
+import { OnRTL } from "~/lib/react";
 import { createAnimatedMaterialSymbol } from "~/components/Base/AnimatedMaterialSymbol";
 import { FABMenu } from "~/components/FABMenu";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
@@ -53,8 +56,8 @@ function HomeActions() {
 
   return (
     <FABMenu
-      entering={SlideInRight}
-      exiting={SlideOutRight}
+      entering={OnRTL.decide(SlideInLeft, SlideInRight)}
+      exiting={OnRTL.decide(SlideOutLeft, SlideOutRight)}
       visible={visible}
       anchor={
         <View className="relative">

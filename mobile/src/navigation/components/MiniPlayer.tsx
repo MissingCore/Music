@@ -7,7 +7,9 @@ import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   LinearTransition,
   SlideInLeft,
+  SlideInRight,
   SlideOutLeft,
+  SlideOutRight,
   useAnimatedReaction,
   useAnimatedStyle,
   useSharedValue,
@@ -108,8 +110,8 @@ export function MiniPlayer() {
     <GestureDetector gesture={panGesture}>
       <Animated.View
         layout={LinearTransition}
-        entering={SlideInLeft}
-        exiting={SlideOutLeft}
+        entering={OnRTL.decide(SlideInRight, SlideInLeft)}
+        exiting={OnRTL.decide(SlideOutRight, SlideOutLeft)}
         style={animatedStyles}
         className={cn(
           "relative z-10 shrink grow overflow-hidden rounded-full bg-surfaceContainerLowest",
