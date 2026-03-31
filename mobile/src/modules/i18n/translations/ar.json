@@ -265,6 +265,25 @@
     "experimental": {
       "title": "ميزات تجريبية"
     },
+    "androidAuto": {
+      "title": null
+    },
+    "equalizer": {
+      "title": null,
+      "extra": {
+        "Custom": null,
+        "Normal": null,
+        "Classical": null,
+        "Dance": null,
+        "Flat": null,
+        "Folk": null,
+        "Heavy Metal": null,
+        "Hip Hop": null,
+        "Jazz": null,
+        "Pop": null,
+        "Rock": null
+      }
+    },
     "ignoreInterrupt": {
       "title": "تجاهل المقاطعات",
       "brief": "متابعة تشغيل الصوت عند حدوث مقاطعة مثل إشعار أو مكالمة. ستحتاج إلى إيقاف الموسيقى مؤقتاً يدوياً وإعادة تشغيلها أثناء هذه الحالات."
@@ -323,7 +342,8 @@
     "artwork": {
       "extra": {
         "change": "تغيير العمل الفني",
-        "remove": "إزالة العمل الفني"
+        "remove": "إزالة العمل الفني",
+        "square": null
       }
     },
     "directory": {

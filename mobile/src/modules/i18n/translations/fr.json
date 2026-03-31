@@ -265,6 +265,25 @@
     "experimental": {
       "title": "Fonctionnalités Expérimentales"
     },
+    "androidAuto": {
+      "title": null
+    },
+    "equalizer": {
+      "title": null,
+      "extra": {
+        "Custom": null,
+        "Normal": null,
+        "Classical": null,
+        "Dance": null,
+        "Flat": null,
+        "Folk": null,
+        "Heavy Metal": null,
+        "Hip Hop": null,
+        "Jazz": null,
+        "Pop": null,
+        "Rock": null
+      }
+    },
     "ignoreInterrupt": {
       "title": "Ignorer les interruptions",
       "brief": "Continuer à lire l'audio quand une interruption comme une notification ou un appel se produit. Vous devrez mettre manuellement la musique en pause et la remettre en pause pendant ces situations."
@@ -323,7 +342,8 @@
     "artwork": {
       "extra": {
         "change": "Modifier l'illustration",
-        "remove": "Supprimer l'illustration"
+        "remove": "Supprimer l'illustration",
+        "square": null
       }
     },
     "directory": {

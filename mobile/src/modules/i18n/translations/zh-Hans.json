@@ -265,6 +265,25 @@
     "experimental": {
       "title": null
     },
+    "androidAuto": {
+      "title": null
+    },
+    "equalizer": {
+      "title": null,
+      "extra": {
+        "Custom": null,
+        "Normal": null,
+        "Classical": null,
+        "Dance": null,
+        "Flat": null,
+        "Folk": null,
+        "Heavy Metal": null,
+        "Hip Hop": null,
+        "Jazz": null,
+        "Pop": null,
+        "Rock": null
+      }
+    },
     "ignoreInterrupt": {
       "title": "忽略中断",
       "brief": "当出现通知或呼叫等中断时继续播放音频。 在这些情况下，您需要手动暂停和取消暂停音乐。"
@@ -323,7 +342,8 @@
     "artwork": {
       "extra": {
         "change": "更改封面",
-        "remove": "移除封面"
+        "remove": "移除封面",
+        "square": null
       }
     },
     "directory": {

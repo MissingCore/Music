@@ -265,6 +265,25 @@
     "experimental": {
       "title": "ویژگی های آزمایشی"
     },
+    "androidAuto": {
+      "title": null
+    },
+    "equalizer": {
+      "title": null,
+      "extra": {
+        "Custom": null,
+        "Normal": null,
+        "Classical": null,
+        "Dance": null,
+        "Flat": null,
+        "Folk": null,
+        "Heavy Metal": null,
+        "Hip Hop": null,
+        "Jazz": null,
+        "Pop": null,
+        "Rock": null
+      }
+    },
     "ignoreInterrupt": {
       "title": "نادیده گرفتن وقفه ها",
       "brief": "ادامه پخش صدا هنگام وقفه هایی مانند اعلان یا تماس. شما باید به صورت دستی موسیقی را در این شرایط متوقف و راه اندازی کنید."
@@ -323,7 +342,8 @@
     "artwork": {
       "extra": {
         "change": "تغییر تصویر جلد",
-        "remove": "حذف تصویر جلد"
+        "remove": "حذف تصویر جلد",
+        "square": null
       }
     },
     "directory": {

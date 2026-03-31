@@ -265,6 +265,25 @@
     "experimental": {
       "title": "Eksperimentelle Funktioner"
     },
+    "androidAuto": {
+      "title": null
+    },
+    "equalizer": {
+      "title": null,
+      "extra": {
+        "Custom": null,
+        "Normal": null,
+        "Classical": null,
+        "Dance": null,
+        "Flat": null,
+        "Folk": null,
+        "Heavy Metal": null,
+        "Hip Hop": null,
+        "Jazz": null,
+        "Pop": null,
+        "Rock": null
+      }
+    },
     "ignoreInterrupt": {
       "title": "Ignorér afbrydelser",
       "brief": "Fortsæt med at afspille sange, når du får et opkald eller en notifikation. Du bliver nødt til manuelt at pause/afspille musikken i disse situationer."
@@ -323,7 +342,8 @@
     "artwork": {
       "extra": {
         "change": "Skift billede",
-        "remove": "Fjern billede"
+        "remove": "Fjern billede",
+        "square": null
       }
     },
     "directory": {
