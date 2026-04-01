@@ -14,6 +14,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useSafeAreaHeight } from "~/hooks/useSafeAreaHeight";
 
+import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { Pressable } from "./Base/Pressable";
 
@@ -73,8 +74,8 @@ export function Menu({
       const newMenuPos: MenuPosition = {
         top: pageY + height + menuGap,
         bottom: safeHeight + top + bottom + menuGap - pageY,
-        left: pageX,
-        right: screenWidth - width - pageX,
+        [OnRTL.decide("right", "left")]: pageX,
+        [OnRTL.decide("left", "right")]: screenWidth - width - pageX,
       };
 
       delete newMenuPos[anchorEdge === "left" ? "right" : "left"];

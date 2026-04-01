@@ -7,6 +7,7 @@ import Animated, {
 
 import type { Icon } from "~/resources/icons/type";
 
+import { OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { Pressable } from "../Base/Pressable";
 import { Em } from "../Typography/StyledText";
@@ -33,7 +34,8 @@ export function SegmentedPicker({
     transform: [
       {
         translateX: withTiming(
-          selectedIndex * (pickerWidth.value / options.length),
+          OnRTLWorklet.decide(-selectedIndex, selectedIndex) *
+            (pickerWidth.value / options.length),
           { duration: 250 },
         ),
       },
