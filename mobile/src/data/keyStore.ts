@@ -109,18 +109,18 @@ export const queries = createQueryKeyStore({
       queryKey: [trackId],
       queryFn: () => getTrack(trackId),
       contextQueries: {
+        // eslint-disable-next-line @tanstack/query/exhaustive-deps
         isFavorite: {
-          // eslint-disable-next-line @tanstack/query/exhaustive-deps
           queryKey: null,
           queryFn: () => getTrackFavoriteStatus(trackId),
         },
+        // eslint-disable-next-line @tanstack/query/exhaustive-deps
         genres: {
-          // eslint-disable-next-line @tanstack/query/exhaustive-deps
           queryKey: null,
           queryFn: () => getTrackGenres(trackId),
         },
+        // eslint-disable-next-line @tanstack/query/exhaustive-deps
         playlists: {
-          // eslint-disable-next-line @tanstack/query/exhaustive-deps
           queryKey: null,
           queryFn: () => getTrackPlaylists(trackId),
         },
