@@ -17,8 +17,8 @@ import { useHasNewUpdate } from "../hooks/useHasNewUpdate";
 
 import { OnRTL } from "~/lib/react";
 import { createAnimatedMaterialSymbol } from "~/components/Base/AnimatedMaterialSymbol";
-import { FABMenu } from "~/components/FABMenu";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
+import { Menu } from "~/components/Menu";
 import { MiniPlayer } from "./MiniPlayer";
 
 //#region Bottom Actions
@@ -55,7 +55,7 @@ function HomeActions() {
   const { hasNewUpdate } = useHasNewUpdate();
 
   return (
-    <FABMenu
+    <Menu
       entering={OnRTL.decide(SlideInLeft, SlideInRight)}
       exiting={OnRTL.decide(SlideOutLeft, SlideOutRight)}
       visible={visible}
@@ -77,7 +77,8 @@ function HomeActions() {
           )}
         </View>
       }
-      menuClassName="mb-2 flex-row items-center gap-2"
+      anchorPosition="top"
+      menuClassName="flex-row items-center gap-2"
     >
       <FilledIconButton
         Icon={Search}
@@ -98,7 +99,7 @@ function HomeActions() {
           <View className="absolute top-3 right-3 size-2 rounded-full bg-primary" />
         )}
       </View>
-    </FABMenu>
+    </Menu>
   );
 }
 //#endregion

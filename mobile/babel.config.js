@@ -3,7 +3,7 @@ module.exports = function (api) {
   return {
     env: {
       production: {
-        plugins: ["react-native-paper/babel", "transform-remove-console"],
+        plugins: ["transform-remove-console"],
       },
     },
     presets: ["babel-preset-expo"],

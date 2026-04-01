@@ -12,6 +12,7 @@ import {
   useNavigation,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { PortalHost } from "@rn-primitives/portal";
 import { useCallback, useMemo, useRef } from "react";
 import { BackHandler } from "react-native";
 
@@ -232,6 +233,7 @@ export const RootStack = createNativeStackNavigator({
       <BottomActions />
       <TrackSheet />
       <ArtistsSheet />
+      <PortalHost />
     </>
   ),
   screenLayout: ({ children }) => <DeferredRender>{children}</DeferredRender>,

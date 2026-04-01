@@ -1,73 +1,124 @@
-import type { ParseKeys } from "i18next";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Menu as PaperMenu } from "react-native-paper";
+import { Portal } from "@rn-primitives/portal";
+import { useEffect, useLayoutEffect, useRef } from "react";
+import type { ViewStyle } from "react-native";
+import { BackHandler, useWindowDimensions } from "react-native";
+import type { AnimatedProps } from "react-native-reanimated";
+import Animated, {
+  FadeInDown,
+  FadeInUp,
+  FadeOutDown,
+  FadeOutUp,
+  useAnimatedRef,
+} from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import type { Icon } from "~/resources/icons/type";
-import { MoreHoriz } from "~/resources/icons/MoreHoriz";
-import { usePreferenceStore } from "~/stores/Preference/store";
-import { useTheme } from "~/hooks/useTheme";
+import { useSafeAreaHeight } from "~/hooks/useSafeAreaHeight";
 
-import { BorderRadius, FontSize } from "~/constants/Styles";
-import { getFont } from "~/lib/style";
-import { IconButton } from "./Form/Button/Icon";
+import { cn } from "~/lib/style";
+import { Pressable } from "./Base/Pressable";
 
-export type MenuAction = {
-  Icon?: (props: Icon) => React.ReactNode;
-  labelKey: ParseKeys;
-  onPress: VoidFunction;
+interface MenuProps extends AnimatedProps<typeof Animated.View> {
+  visible: boolean;
+  anchor: React.ReactNode;
+  /** If menu appears above or below the anchor. Defaults to `bottom`. */
+  anchorPosition?: "top" | "bottom";
+  /** If menu expands left or right of the anchor. Defaults to `right`. */
+  anchorEdge?: "left" | "right";
+  /** If pressing outside the menu will close the menu. */
+  dismissHandling?: boolean;
+  /**
+   * Handler that get called when menu is closed when `dismissHandling = true`.
+   * This should set `visible = false`.
+   */
+  onDismiss?: VoidFunction;
+  /** Gap between rendered menu & anchor. */
+  menuGap?: number;
+  /** Styles container wrapping menu items. */
+  menuStyle?: ViewStyle;
+  /** Styles container wrapping menu items. */
+  menuClassName?: string;
+  /** Items rendered inside the menu. */
+  children: React.ReactNode;
+}
+
+type MenuPosition = {
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
 };
 
-export function Menu(props: {
-  triggerLabel?: ParseKeys;
-  actions: MenuAction[];
-}) {
-  const { t } = useTranslation();
-  const theme = useTheme();
-  const [visible, setVisible] = useState(false);
-  const primaryFont = usePreferenceStore((s) => s.primaryFont);
+export function Menu({
+  visible,
+  anchor,
+  anchorPosition = "bottom",
+  anchorEdge = "right",
+  dismissHandling = false,
+  onDismiss,
+  menuGap = 8,
+  menuStyle,
+  menuClassName,
+  children,
+  ...props
+}: MenuProps) {
+  const { top, bottom } = useSafeAreaInsets();
+  const { width: screenWidth } = useWindowDimensions();
+  const safeHeight = useSafeAreaHeight();
+  const animatedRef = useAnimatedRef();
+  const menuPosRef = useRef<MenuPosition>({});
+
+  //* Determine where the menu will be positioned on the screen.
+  useLayoutEffect(() => {
+    animatedRef.current?.measure((_x, _y, width, height, pageX, pageY) => {
+      const newMenuPos: MenuPosition = {
+        top: pageY + height + menuGap,
+        bottom: safeHeight + top + bottom + menuGap - pageY,
+        left: pageX,
+        right: screenWidth - width - pageX,
+      };
+
+      delete newMenuPos[anchorEdge === "left" ? "right" : "left"];
+      delete newMenuPos[anchorPosition === "top" ? "top" : "bottom"];
+
+      menuPosRef.current = newMenuPos;
+    });
+  });
+
+  //* Back gesture will close the menu.
+  useEffect(() => {
+    if (!dismissHandling || !onDismiss) return;
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (!visible) return false;
+        onDismiss();
+        return true;
+      },
+    );
+    return () => subscription.remove();
+  }, [visible, dismissHandling, onDismiss]);
 
   return (
-    <PaperMenu
-      //! Menu only opens once in RN 0.81. This is a hack to enable it to be opened multiple times.
-      //! - https://github.com/callstack/react-native-paper/issues/4807
-      key={String(visible)}
-      visible={visible}
-      onDismiss={() => setVisible(false)}
-      anchor={
-        <IconButton
-          Icon={MoreHoriz}
-          accessibilityLabel={t(props.triggerLabel ?? "term.more")}
-          onPress={() => setVisible(true)}
-        />
-      }
-      anchorPosition="bottom"
-      mode="flat"
-      contentStyle={{
-        overflow: "hidden",
-        paddingVertical: 0,
-        backgroundColor: theme.surfaceContainerLowest,
-        borderRadius: BorderRadius.md,
-      }}
-    >
-      {props.actions.map(({ Icon, labelKey, onPress }) => (
-        <PaperMenu.Item
-          key={labelKey}
-          title={t(labelKey)}
-          // Icon size in menu is by default `24`.
-          leadingIcon={() => (Icon ? <Icon /> : undefined)}
-          onPress={() => {
-            onPress();
-            setVisible(false);
-          }}
-          background={{ color: theme.surfaceContainerHigh, foreground: true }}
-          titleStyle={{
-            color: theme.onSurface,
-            fontFamily: getFont(primaryFont),
-            fontSize: FontSize.sm,
-          }}
-        />
-      ))}
-    </PaperMenu>
+    <>
+      <Animated.View ref={animatedRef} {...props}>
+        {anchor}
+      </Animated.View>
+
+      {visible ? (
+        <Portal name="menu-portal">
+          {dismissHandling ? (
+            <Pressable onPress={onDismiss} className="absolute inset-0" />
+          ) : null}
+          <Animated.View
+            entering={anchorPosition === "top" ? FadeInDown : FadeInUp}
+            exiting={anchorPosition === "top" ? FadeOutDown : FadeOutUp}
+            style={[menuStyle, menuPosRef.current]}
+            className={cn(menuClassName, "absolute")}
+          >
+            {children}
+          </Animated.View>
+        </Portal>
+      ) : null}
+    </>
   );
 }

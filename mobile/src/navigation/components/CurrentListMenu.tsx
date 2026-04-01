@@ -1,12 +1,23 @@
-import { useMemo } from "react";
+import type { ParseKeys } from "i18next";
+import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
+import type { Icon } from "~/resources/icons/type";
 import { Image } from "~/resources/icons/Image";
 import { LowPriority } from "~/resources/icons/LowPriority";
+import { MoreHoriz } from "~/resources/icons/MoreHoriz";
 import { QueueMusic } from "~/resources/icons/QueueMusic";
 import { Queue } from "~/stores/Playback/actions";
 
-import type { MenuAction } from "~/components/Menu";
+import { IconButton } from "~/components/Form/Button/Icon";
+import { ListItem } from "~/components/List";
 import { Menu } from "~/components/Menu";
+
+export type MenuAction = {
+  Icon?: (props: Icon) => React.ReactNode;
+  labelKey: ParseKeys;
+  onPress: VoidFunction;
+};
 
 /** Icon button that opens a menu with some pre-defined options. */
 export function CurrentListMenu(props: {
@@ -15,6 +26,9 @@ export function CurrentListMenu(props: {
   actions?: MenuAction[];
   presentArtworkSheet?: VoidFunction;
 }) {
+  const { t } = useTranslation();
+  const [visible, setVisible] = useState(false);
+
   const queueActions = useMemo<MenuAction[]>(
     () => [
       {
@@ -45,5 +59,34 @@ export function CurrentListMenu(props: {
     return actions.concat(props.actions ?? []).concat(queueActions);
   }, [props.actions, props.presentArtworkSheet, queueActions]);
 
-  return <Menu actions={menuActions} />;
+  return (
+    <Menu
+      visible={visible}
+      anchor={
+        <IconButton
+          Icon={MoreHoriz}
+          accessibilityLabel={t("term.more")}
+          onPress={() => setVisible((prev) => !prev)}
+        />
+      }
+      dismissHandling
+      onDismiss={() => setVisible(false)}
+      menuClassName="overflow-hidden rounded-md bg-surfaceContainerLowest"
+    >
+      {menuActions.map((item) => (
+        <ListItem
+          key={item.labelKey}
+          labelTextKey={item.labelKey}
+          onPress={() => {
+            item.onPress();
+            setVisible(false);
+          }}
+          LeftElement={item.Icon ? <item.Icon /> : null}
+          className="px-3"
+          _labelTextClassName="text-sm"
+          _psuedoClassName="active:bg-surfaceContainer/50"
+        />
+      ))}
+    </Menu>
+  );
 }

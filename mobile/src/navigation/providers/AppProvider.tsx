@@ -4,7 +4,6 @@ import { NavigationBar } from "@zoontek/react-native-navigation-bar";
 import { useTranslation } from "react-i18next";
 import { StatusBar, View } from "react-native";
 import { KeyboardProvider } from "react-native-keyboard-controller";
-import { Provider as PaperProvider } from "react-native-paper";
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
@@ -23,16 +22,14 @@ export function AppProvider(props: { children: React.ReactNode }) {
   return (
     <SafeAreaProvider>
       <KeyboardProvider>
-        <PaperProvider>
-          <GestureHandlerRootView>
-            <QueryClientProvider client={queryClient}>
-              <SystemBars />
-              <ListenerStateStoreProvider />
-              <ChildrenWrapper {...props} />
-              <ToastProvider />
-            </QueryClientProvider>
-          </GestureHandlerRootView>
-        </PaperProvider>
+        <GestureHandlerRootView>
+          <QueryClientProvider client={queryClient}>
+            <SystemBars />
+            <ListenerStateStoreProvider />
+            <ChildrenWrapper {...props} />
+            <ToastProvider />
+          </QueryClientProvider>
+        </GestureHandlerRootView>
       </KeyboardProvider>
     </SafeAreaProvider>
   );

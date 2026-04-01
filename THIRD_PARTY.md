@@ -13,6 +13,7 @@
 | @react-navigation/material-top-tabs | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/material-top-tabs |
 | @react-navigation/native | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native |
 | @react-navigation/native-stack | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native-stack |
+| @rn-primitives/portal | MIT | https://github.com/roninoss/rn-primitives/tree/main/packages/portal |
 | @sentry/react-native | MIT | https://github.com/getsentry/sentry-react-native |
 | @tanstack/react-query | MIT | https://github.com/TanStack/query |
 | @zoontek/react-native-navigation-bar | MIT | https://github.com/zoontek/react-native-navigation-bar |
@@ -50,7 +51,6 @@
 | react-native-markdown-renderer | MIT | https://github.com/mientjan/react-native-markdown-renderer |
 | react-native-nitro-modules | MIT | https://github.com/mrousavy/nitro |
 | react-native-pager-view | MIT | https://github.com/callstack/react-native-pager-view |
-| react-native-paper | MIT | https://github.com/callstack/react-native-paper |
 | react-native-reanimated | MIT | https://github.com/software-mansion/react-native-reanimated |
 | react-native-reorderable-list | MIT | https://github.com/omahili/react-native-reorderable-list |
 | react-native-safe-area-context | MIT | https://github.com/AppAndFlow/react-native-safe-area-context |
