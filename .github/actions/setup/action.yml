@@ -14,6 +14,11 @@ runs:
         cache: pnpm
         cache-dependency-path: mobile/pnpm-lock.yaml
         node-version-file: mobile/.nvmrc
+    - name: Change global yarn version
+      run: |
+        corepack enable
+        corepack prepare yarn@4.13.0 --activate
+      shell: bash
 
     # Seems like setting a default `working-directory` in a workflow that
     # uses this composite doesn't apply it to this file.
