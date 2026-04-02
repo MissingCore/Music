@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "@boterop/react-native-background-timer": "2.6.0",
-    "@kaannn/react-native-waveform": "0.1.4",
     "@legendapp/list": "2.0.19",
     "@lodev09/react-native-true-sheet": "3.4.2",
     "@lukemorales/query-key-factory": "1.3.4",
@@ -125,7 +124,6 @@
     ],
     "patchedDependencies": {
       "react-native-android-widget": "patches/react-native-android-widget.patch",
-      "@kaannn/react-native-waveform": "patches/@kaannn__react-native-waveform.patch",
       "@lodev09/react-native-true-sheet": "patches/@lodev09__react-native-true-sheet.patch",
       "react-native": "patches/react-native.patch"
     }

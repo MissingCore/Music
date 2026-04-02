@@ -1,7 +1,6 @@
 | Name | License | Source |
 | ---- | ------- | ------ |
 | @boterop/react-native-background-timer | MIT | https://github.com/boterop/react-native-background-timer |
-| @kaannn/react-native-waveform | MIT | https://github.com/kagantemizkan/react-native-audio-wave |
 | @legendapp/list | MIT | https://github.com/LegendApp/legend-list |
 | @lodev09/react-native-true-sheet | MIT | https://github.com/lodev09/react-native-true-sheet |
 | @lukemorales/query-key-factory | MIT | https://github.com/lukemorales/query-key-factory |

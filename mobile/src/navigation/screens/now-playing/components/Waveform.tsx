@@ -1,7 +1,7 @@
 import { computeAmplitude } from "@missingcore/react-native-audio-analyzer";
-import AudioWaveView from "@kaannn/react-native-waveform";
-import { useCallback, useMemo, useRef } from "react";
-import { useWindowDimensions } from "react-native";
+import { useCallback, useMemo, useRef, useState } from "react";
+import { View, useWindowDimensions } from "react-native";
+import { Defs, G, LinearGradient, Rect, Stop, Svg } from "react-native-svg";
 
 import { db } from "~/db";
 import { waveformSamples } from "~/db/schema";
@@ -26,19 +26,59 @@ const BAR_GAP = 1.75;
 
 export function Waveform(props: WaveformProps) {
   const { primary, surfaceContainerHigh } = useTheme();
+  const [width, setWidth] = useState(0);
+
+  const bars = useMemo(() => {
+    //? We store enough data to have the waveform work in landscape. If in
+    //? portrait mode, we need to downscale the number of bars.
+    const maxBars = 1 + Math.floor((width - BAR_WIDTH) / (BAR_WIDTH + BAR_GAP));
+    const downSampledBars: number[] = [];
+    const scaleRatio = props.amplitudes.length / maxBars;
+    for (let i = 0; i < maxBars; i++) {
+      const idx = Math.floor(i * scaleRatio);
+      downSampledBars.push(props.amplitudes[idx] ?? 0);
+    }
+
+    return downSampledBars.map((amplitude, index) => {
+      const barHeight = Math.max(MIN_BAR_HEIGHT, props.height * amplitude);
+      const x = (BAR_WIDTH + BAR_GAP) * index;
+      const y = (props.height - barHeight) / 2;
+      return (
+        <Rect
+          key={index}
+          rx={1}
+          x={x}
+          y={y}
+          height={barHeight}
+          width={BAR_WIDTH}
+        />
+      );
+    });
+  }, [props.amplitudes, props.height, width]);
+
   return (
-    <AudioWaveView
-      samples={props.amplitudes.map((s) => s * props.height)}
-      progress={props.progress}
-      maxProgress={props.maxProgress}
-      waveMinHeight={MIN_BAR_HEIGHT * 2}
-      waveWidth={BAR_WIDTH * 3}
-      waveGap={4}
-      waveCornerRadius={8}
-      waveBackgroundColor={surfaceContainerHigh}
-      waveProgressColor={primary}
-      style={{ width: "100%", height: "100%" }}
-    />
+    <View
+      onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
+      style={{ height: props.height, width: "100%" }}
+    >
+      <Svg style={{ height: "100%", width: "100%" }}>
+        <Defs>
+          <LinearGradient id="progress-grad" gradientUnits="userSpaceOnUse">
+            <Stop
+              offset={props.progress / props.maxProgress}
+              stopColor={primary}
+              stopOpacity={1}
+            />
+            <Stop
+              offset={props.progress / props.maxProgress}
+              stopColor={surfaceContainerHigh}
+              stopOpacity={1}
+            />
+          </LinearGradient>
+        </Defs>
+        <G fill="url(#progress-grad)">{bars}</G>
+      </Svg>
+    </View>
   );
 }
 //#endregion
