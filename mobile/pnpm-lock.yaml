@@ -135,13 +135,13 @@ importers:
         version: 0.20.1(patch_hash=700a44715e685edefbbcca4d1c8a1a80c90ea32f567b124241138d01b981b064)(expo@55.0.9)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-audio-browser:
         specifier: github:MissingCore/react-native-audio-browser#df7cbc9abace2a4c0e8c4de3c8cb4a9e3e7fac2b
-        version: https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/df7cbc9abace2a4c0e8c4de3c8cb4a9e3e7fac2b(react-native-nitro-modules@0.35.2(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
+        version: https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/df7cbc9abace2a4c0e8c4de3c8cb4a9e3e7fac2b(react-native-nitro-modules@0.35.3(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-bootsplash:
         specifier: 7.2.0
         version: 7.2.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-gesture-handler:
-        specifier: 2.30.1
-        version: 2.30.1(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
+        specifier: 2.31.0
+        version: 2.31.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-keyboard-controller:
         specifier: 1.21.3
         version: 1.21.3(react-native-reanimated@4.3.0(react-native-worklets@0.8.1(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
@@ -149,8 +149,8 @@ importers:
         specifier: 4.1.1
         version: 4.1.1(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-nitro-modules:
-        specifier: 0.35.2
-        version: 0.35.2(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
+        specifier: 0.35.3
+        version: 0.35.3(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-pager-view:
         specifier: 8.0.0
         version: 8.0.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
@@ -159,7 +159,7 @@ importers:
         version: 4.3.0(react-native-worklets@0.8.1(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-reorderable-list:
         specifier: 0.18.0
-        version: 0.18.0(ea48f5056b9557c7b7f8b76b61ff11b0)
+        version: 0.18.0(24d10dc9b591a41ea7b98997e0a4b651)
       react-native-safe-area-context:
         specifier: 5.7.0
         version: 5.7.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
@@ -2148,6 +2148,9 @@ packages:
 
   '@types/node@25.5.0':
     resolution: {integrity: sha512-jp2P3tQMSxWugkCUKLRPVUpGaL5MVFwF8RDuSRztfwgN1wmqJeMSbKlnEtQqU8UrhTmzEmZdu2I6v2dpp7XIxw==}
+
+  '@types/react-test-renderer@19.1.0':
+    resolution: {integrity: sha512-XD0WZrHqjNrxA/MaR9O22w/RNidWR9YZmBdRGI7wcnWGrv/3dA8wKCJ8m63Sn+tLJhcjmuhOi629N66W6kgWzQ==}
 
   '@types/react@19.2.14':
     resolution: {integrity: sha512-ilcTH/UniCkMdtexkoCN0bI7pMcJDvmQFPvuPvmEaYA/NSfFTAgdUSLAoVjaRJm7+6PvcM+q1zYOwS4wTYMF9w==}
@@ -4917,8 +4920,8 @@ packages:
       react: '*'
       react-native: '*'
 
-  react-native-gesture-handler@2.30.1:
-    resolution: {integrity: sha512-xIUBDo5ktmJs++0fZlavQNvDEE4PsihWhSeJsJtoz4Q6p0MiTM9TgrTgfEgzRR36qGPytFoeq+ShLrVwGdpUdA==}
+  react-native-gesture-handler@2.31.0:
+    resolution: {integrity: sha512-wmMs24UaRCIvIU/Nm7cSIV0FEWFsMrNBXxtpo5+9i8iCeOFFuyi8v8Dgfo7JKspcqPMUin0DBzi9DiG3vsDq5A==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -4942,8 +4945,8 @@ packages:
       react: '>=18.0.0'
       react-native: '>=0.73.0'
 
-  react-native-nitro-modules@0.35.2:
-    resolution: {integrity: sha512-97cZcCh3ZAuWAfutel2Q3qLfc45XXh7F9Ei5tEjahP0kV3q8hQelwLIulKXmjN+f0JI5Zf/wCsfwwdVWYU2tKA==}
+  react-native-nitro-modules@0.35.3:
+    resolution: {integrity: sha512-pfPfFtGeMfFpLo4HidTFs5zsAs1wRh9qaWGSiF5UeI2YQaAgRHPlson0UNxw25pTCLV9NBrKgSDaMVfPEXXbNw==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -7792,6 +7795,10 @@ snapshots:
   '@types/node@25.5.0':
     dependencies:
       undici-types: 7.18.2
+
+  '@types/react-test-renderer@19.1.0':
+    dependencies:
+      '@types/react': 19.2.14
 
   '@types/react@19.2.14':
     dependencies:
@@ -10872,11 +10879,11 @@ snapshots:
     optionalDependencies:
       expo: 55.0.9(@babel/core@7.29.0)(@expo/dom-webview@55.0.3)(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)(typescript@6.0.2)
 
-  react-native-audio-browser@https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/df7cbc9abace2a4c0e8c4de3c8cb4a9e3e7fac2b(react-native-nitro-modules@0.35.2(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
+  react-native-audio-browser@https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/df7cbc9abace2a4c0e8c4de3c8cb4a9e3e7fac2b(react-native-nitro-modules@0.35.3(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
     dependencies:
       react: 19.2.0
       react-native: 0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0)
-      react-native-nitro-modules: 0.35.2(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
+      react-native-nitro-modules: 0.35.3(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
 
   react-native-bootsplash@7.2.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
     dependencies:
@@ -10896,9 +10903,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  react-native-gesture-handler@2.30.1(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
+  react-native-gesture-handler@2.31.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
     dependencies:
       '@egjs/hammerjs': 2.0.17
+      '@types/react-test-renderer': 19.1.0
       hoist-non-react-statics: 3.3.2
       invariant: 2.2.4
       react: 19.2.0
@@ -10922,7 +10930,7 @@ snapshots:
       react: 19.2.0
       react-native: 0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0)
 
-  react-native-nitro-modules@0.35.2(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
+  react-native-nitro-modules@0.35.3(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
     dependencies:
       react: 19.2.0
       react-native: 0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0)
@@ -10940,11 +10948,11 @@ snapshots:
       react-native-worklets: 0.8.1(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       semver: 7.7.4
 
-  react-native-reorderable-list@0.18.0(ea48f5056b9557c7b7f8b76b61ff11b0):
+  react-native-reorderable-list@0.18.0(24d10dc9b591a41ea7b98997e0a4b651):
     dependencies:
       react: 19.2.0
       react-native: 0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0)
-      react-native-gesture-handler: 2.30.1(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
+      react-native-gesture-handler: 2.31.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-reanimated: 4.3.0(react-native-worklets@0.8.1(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
 
   react-native-safe-area-context@5.7.0(react-native@0.83.4(patch_hash=c87b321d226be5b76bb1dbbbba9de0e0d51d09f2b72a14368c1eb4a1c5f71bec)(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0):
