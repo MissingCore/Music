@@ -2,6 +2,20 @@
 
 Most experimental features require you to enable it in the "Experimental Features" screen (`Settings > Experimental Features`).
 
+## Android Auto
+
+See the [dedicated `Android Auto` documentation for more information](./android-auto.md).
+
+## Equalizer
+
+We support the default 5-band equalizer with 10 provided presets and the option to set a custom preset.
+
+- Frequencies: 60Hz, 230Hz, 910Hz, 3.6kHz, and 14kHz
+- Band Range: ± 10dB
+
+> [!NOTE]
+> Having this feature enabled may cause the app to feel slower (ie: slower navigation, slower opening of sheets).
+
 ## Glyph Toy
 
 [Documentation can be found in the dedicated `music-glyph-toys` repository](https://github.com/MissingCore/music-glyph-toys?tab=readme-ov-file#toy-design--usage), with notes on the interaction support we added to simulate media controls via the Glyph Button.

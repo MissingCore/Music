@@ -10,6 +10,8 @@ Android Auto support will stay as an experimental feature for the foreseeable fu
 1. Artwork will not get rendered (Android Auto doesn't work with embedded artwork).
 2. Search & voice commands aren't implemented.
 3. Shuffle & Repeat state can only be controlled via the Android app.
+4. Changes made to any lists via the Android app may not immediately be reflected on the Android Auto interface. Relaunching the app will resynchronize the data.
+   - This shouldn't necessarily be a problem as you shouldn't be changing any lists while driving.
 
 > [!NOTE]
 > This app should work with Android Auto without any additional configurations. If it doesn't show up, you may need to [enable Developer Mode and allow "Unknown Sources"](https://developer.android.com/training/cars/testing#developer-mode).

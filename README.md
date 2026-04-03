@@ -6,7 +6,7 @@
 [![Release][Release]][Release-url]
 [![Pre-release][Pre-release]][Pre-release-url]
 [![License][License]][License-url]
-![GitHub-Downloads][GitHub-Downloads]
+<!-- ![GitHub-Downloads][GitHub-Downloads] -->
 
 A Nothing inspired **local** music player.
 
@@ -80,11 +80,75 @@ Install the app directly from the Play Store.
 
 This (hopefully) lists all permissions required by Music based on those requested in the code and defined in the [App Manifest](./mobile/android/app/src/main/AndroidManifest.xml).
 
-|          | Permissions                                                                                                                                                                                                                                                                                                                                                                                 |
-| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Popups   | - Music and Audio ([Android 13+](https://developer.android.com/reference/android/Manifest.permission#READ_MEDIA_AUDIO))<br/>- Files & Media (Android <13)                                                                                                                                                                                                                                   |
-| Implicit | - Read External Storage; for reading Music & Audio Files ([unused in Android 13+](https://developer.android.com/reference/android/Manifest.permission#READ_EXTERNAL_STORAGE))<br/>- Write to External Storage ([unused in Android 11+](https://developer.android.com/reference/android/Manifest.permission#WRITE_EXTERNAL_STORAGE))<br/>- Internet (only used for checking for new updates) |
-| Other    | - `POST_NOTIFICATIONS` to enable toggling notification settings ([Android 13+](https://developer.android.com/develop/ui/views/notifications/notification-permission#exemptions-media-sessions)); **may require you to manually open up the settings to turn it on (though nothing should break when having it off by default)**                                                             |
+<table>
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Permission</th>
+      <th>Constraint</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Storage Permissions -->
+    <tr>
+      <td rowspan="3">Storage</td>
+      <td><code>READ_MEDIA_AUDIO</code></td>
+      <td>
+        <a href="https://developer.android.com/reference/android/Manifest.permission#READ_MEDIA_AUDIO">Android 13+</a>
+      </td>
+      <td rowspan="2">To read & play your music files.</td>
+    </tr>
+    <tr>
+      <td><code>READ_EXTERNAL_STORAGE</code></td>
+      <td>
+        <a href="https://developer.android.com/reference/android/Manifest.permission#READ_EXTERNAL_STORAGE">Before Android 13</a>
+      </td>
+    </tr>
+    <tr>
+      <td><code>WRITE_EXTERNAL_STORAGE</code></td>
+      <td>
+        <a href="https://developer.android.com/reference/android/Manifest.permission#WRITE_EXTERNAL_STORAGE">Before Android 11</a>
+      </td>
+      <td>To write files to other directories (ie: backup, M3U).</td>
+    </tr>
+    <!-- Services Permissions -->
+    <tr>
+      <td rowspan="4">Services</td>
+      <td><code>FOREGROUND_SERVICE</code></td>
+      <td rowspan="4">—</td>
+      <td rowspan="3">Enables media playback while the app is in the background.</td>
+    </tr>
+    <tr>
+      <td><code>FOREGROUND_SERVICE_MEDIA_PLAYBACK</code></td>
+    </tr>
+    <tr>
+      <td><code>WAKE_LOCK</code></td>
+    </tr>
+    <tr>
+      <td><code>com.nothing.ketchum.permission.ENABLE</code></td>
+      <td>Enables experimental Glyph Toys support.</td>
+    </tr>
+    <!-- Other Permissions -->
+    <tr>
+      <td rowspan="3">Other</td>
+      <td><code>ACCESS_NETWORK_STATE</code></td>
+      <td rowspan="2">—</td>
+      <td>Work around for ExoPlayer requiring network permissions.</td>
+    </tr>
+    <tr>
+      <td><code>INTERNET</code></td>
+      <td>Used to check and notify you if a new update is available. Update checks can be disabled.</td>
+    </tr>
+    <tr>
+      <td><code>POST_NOTIFICATIONS</code></td>
+      <td>
+        <a href="https://developer.android.com/develop/ui/views/notifications/notification-permission#exemptions-media-sessions">Android 13+</a>
+      </td>
+      <td>Enables the notification settings in "App Info" screen.</td>
+    </tr>
+  </tbody>
+</table>
 
 # Documentation
 
