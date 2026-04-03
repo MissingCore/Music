@@ -40,7 +40,7 @@ export function getStructuredTracksView() {
         ),
       /** We need to unencode these fields. */
       artists:
-        sql<string>`json_group_array(${orderedTrackArtists.artistName})`.as(
+        sql<string>`NULLIF(json_group_array(${orderedTrackArtists.artistName}), '[null]')`.as(
           "derived_artists",
         ),
     })
