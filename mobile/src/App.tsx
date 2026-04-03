@@ -1,7 +1,5 @@
-import { GlyphToy } from "@missingcore/music-glyph-toys";
 import { useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
-import AudioBrowser from "react-native-audio-browser";
 import Bootsplash from "react-native-bootsplash";
 import Animated, {
   useAnimatedStyle,
@@ -88,14 +86,6 @@ function handleAppLifeCycle() {
   // "autohide" behavior doesn't work as expected).
   //  - Delay to prevent flicker from change in how onboarding screen is shown.
   bgWait(1).then(() => Bootsplash.hide());
-
-  // Ensure the AudioBrowser service gets destroyed on app close.
-  return () => {
-    if (!preferenceStore.getState().continuePlaybackOnDismiss) {
-      GlyphToy.disconnect();
-      AudioBrowser.reset();
-    }
-  };
 }
 
 //#region Layout Transition

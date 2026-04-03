@@ -86,9 +86,14 @@ export async function initServices() {
   //#endregion
 
   //#region Media Events
-  AudioBrowser.handleBeforeServiceKilled(async () => {
-    if (!preferenceStore.getState().continuePlaybackOnDismiss)
-      await revalidateWidgets({ openApp: true });
+  // This event gets called when `appKilledPlaybackBehavior = "stop-playback-and-remove-notification"`.
+  AudioBrowser.handleBeforeServiceKilled(async (permanent) => {
+    await revalidateWidgets({ openApp: true });
+    if (permanent) {
+      console.warn("[handleBeforeServiceKilled] Running aggressive cleanup...");
+      GlyphToy.disconnect();
+      AudioBrowser.reset();
+    }
   });
 
   AudioBrowser.handleRemotePlay(PlaybackControls.play);
