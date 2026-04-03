@@ -68,6 +68,7 @@ export default function AppUpdate() {
             },
             hr: { backgroundColor: outlineVariant },
             list: { marginBottom: 0 },
+            listItem: { flexWrap: "no-wrap" },
             listOrderedItem: { marginTop: 0 },
             listOrderedItemIcon: { lineHeight: undefined },
             listOrderedItemText: { lineHeight: undefined },
