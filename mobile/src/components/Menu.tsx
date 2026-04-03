@@ -1,5 +1,5 @@
 import { Portal } from "@rn-primitives/portal";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { ViewStyle } from "react-native";
 import { BackHandler, useWindowDimensions } from "react-native";
 import type { AnimatedProps } from "react-native-reanimated";
@@ -67,9 +67,11 @@ export function Menu({
   const safeHeight = useSafeAreaHeight();
   const animatedRef = useAnimatedRef();
   const menuPosRef = useRef<MenuPosition>({});
+  const prevVisible = useRef(false);
+  const [rendered, setRendered] = useState(false);
 
   //* Determine where the menu will be positioned on the screen.
-  useLayoutEffect(() => {
+  const measurePosition = useCallback(() => {
     animatedRef.current?.measure((_x, _y, width, height, pageX, pageY) => {
       const newMenuPos: MenuPosition = {
         top: pageY + height + menuGap,
@@ -83,7 +85,25 @@ export function Menu({
 
       menuPosRef.current = newMenuPos;
     });
-  });
+  }, [
+    animatedRef,
+    anchorEdge,
+    anchorPosition,
+    menuGap,
+    bottom,
+    top,
+    safeHeight,
+    screenWidth,
+  ]);
+
+  //* Figure out where the menu should be rendered before presenting.
+  useEffect(() => {
+    if (prevVisible.current !== visible) {
+      prevVisible.current = visible;
+      measurePosition();
+      setRendered(visible);
+    }
+  }, [measurePosition, visible]);
 
   //* Back gesture will close the menu.
   useEffect(() => {
@@ -105,7 +125,7 @@ export function Menu({
         {anchor}
       </Animated.View>
 
-      {visible ? (
+      {rendered ? (
         <Portal name="menu-portal">
           {dismissHandling ? (
             <Pressable onPress={onDismiss} className="absolute inset-0" />
