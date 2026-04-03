@@ -42,6 +42,12 @@ export function useSetup() {
       setSetupState("pending");
       GlyphToy.connect();
 
+      // Prevent Android Auto from reading stale cached data on app launch
+      // if it's reusing a prior session.
+      //  - This should be enough as you shouldn't be changing anything
+      //  in the current Android Auto session as should be driving.
+      AudioBrowser.revalidateBrowser();
+
       // Ensure widget has up-to-date data as the Playback store isn't
       // immediately hydrated.
       await revalidateWidgets({ openApp: !playbackStore.getState().isPlaying });
