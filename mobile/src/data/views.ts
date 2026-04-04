@@ -3,7 +3,8 @@ import { eq, getTableColumns, sql } from "drizzle-orm";
 import { db } from "~/db";
 import { albums, tracks, tracksToArtists } from "~/db/schema";
 
-import { iAsc } from "~/lib/drizzle";
+import { getSubqueryFields, iAsc } from "~/lib/drizzle";
+import { pickKeys } from "~/utils/object";
 
 /**
  * Order the `tracksToArtists` table by artist names. Used for ensuring
@@ -34,15 +35,17 @@ export function getStructuredTracksView() {
       >`coalesce(${tracks.artwork}, ${albums.artwork})`.as("derived_artwork"),
       albumName: albums.name,
       albumArtistsKey: albums.artistsKey,
-      artistsName:
-        sql<string>`GROUP_CONCAT(${orderedTrackArtists.artistName}, ', ')`.as(
-          "joined_artists_name",
-        ),
+      artistsName: sql<
+        string | null
+      >`GROUP_CONCAT(${orderedTrackArtists.artistName}, ', ')`.as(
+        "joined_artists_name",
+      ),
       /** We need to unencode these fields. */
-      artists:
-        sql<string>`NULLIF(json_group_array(${orderedTrackArtists.artistName}), '[null]')`.as(
-          "derived_artists",
-        ),
+      artists: sql<
+        string | null
+      >`NULLIF(json_group_array(${orderedTrackArtists.artistName}), '[null]')`.as(
+        "derived_artists",
+      ),
     })
     .from(tracks)
     .leftJoin(albums, eq(tracks.albumId, albums.id))
@@ -50,3 +53,8 @@ export function getStructuredTracksView() {
     .groupBy(tracks.id)
     .as("structured_tracks_view");
 }
+
+export const commonTrackColumns = pickKeys(
+  getSubqueryFields(getStructuredTracksView()),
+  ["id", "name", "artwork", "artists", "albumName", "uri", "duration"],
+);
