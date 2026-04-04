@@ -24,17 +24,14 @@ export function fromJSONArrayString(rawJSONString: string | null | unknown) {
   return results.length > 0 ? results : null;
 }
 
-export function unencodeJSONArtworkArray(
-  rawJSONString: string,
-  isEmpty: boolean,
-) {
+export function unencodeJSONArtworkArray(rawJSONString: string | null) {
   let results: Array<string | null> = [];
-  try {
-    // `rawJSONString` can be `[null]` or `string[]`.
-    const asArr: Array<string | null> = JSON.parse(rawJSONString);
-    results = asArr.slice(0, 4);
-  } catch {}
-  //? `rawJSONString` will default to `[null]` if the array is supposed to be empty.
-  if (isEmpty && results.length === 1 && results[0] === null) return null;
+  // `rawJSONString` returns `string[]` or `null` as we use `NULLIF` to
+  // prevent returning `[null]`.
+  if (typeof rawJSONString === "string") {
+    try {
+      results = JSON.parse(rawJSONString).slice(0, 4);
+    } catch {}
+  }
   return results.length > 0 ? results : null;
 }

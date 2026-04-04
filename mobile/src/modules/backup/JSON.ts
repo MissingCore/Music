@@ -127,7 +127,7 @@ async function exportBackup() {
         tracks: tracks.map((t) => ({
           name: t.name,
           artistName: t.rawArtistName,
-          albumName: t.album,
+          albumName: t.albumName,
         })),
       })),
     }),

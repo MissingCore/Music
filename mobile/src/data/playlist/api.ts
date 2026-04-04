@@ -1,22 +1,18 @@
 import { and, count, eq, getTableColumns, sql, sum } from "drizzle-orm";
 
 import { db } from "~/db";
-import { albums, playlists, tracks, tracksToPlaylists } from "~/db/schema";
+import { playlists, tracks, tracksToPlaylists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { formatSeconds } from "~/utils/number";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
-import type {
-  PlaylistSummary,
-  PlaylistSummaryTrack,
-  PlaylistTrack,
-} from "./types";
+import type { PlaylistSummary, PlaylistSummaryTrack } from "./types";
 import { sanitizePlaylistName } from "./utils";
-import type { DrizzleFilter } from "../types";
-import { unencodeJSONArray, unencodeJSONArtworkArray } from "../utils";
-import { getOrderedTrackArtistsView } from "../views";
+import type { CommonTrack, DrizzleFilter } from "../types";
+import { commonTracksOrIds, unencodeJSONArtworkArray } from "../utils";
+import { commonTrackColumns, structuredTracksView } from "../views";
 
 type InsertedPlaylist = typeof playlists.$inferInsert;
 
@@ -65,51 +61,46 @@ export async function getPlaylistDetails(id: string) {
 export async function getPlaylistTracks<
   TOnlyIds extends boolean | undefined = false,
 >(id: string, onlyIds?: TOnlyIds, limit?: number) {
-  const orderedTrackArtists = getOrderedTrackArtistsView();
-
   const query = db
-    .select(
-      onlyIds
-        ? { id: tracks.id }
-        : {
-            id: tracks.id,
-            name: tracks.name,
-            artwork: sql<
-              string | null
-            >`coalesce(${tracks.artwork}, ${albums.artwork})`.as(
-              "derived_artwork",
-            ),
-            duration: tracks.duration,
-            uri: tracks.uri,
-            /** We need to unencode these fields. */
-            artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
-          },
-    )
+    .select(onlyIds ? { id: structuredTracksView.id } : commonTrackColumns)
     .from(tracksToPlaylists)
     .where(eq(tracksToPlaylists.playlistName, id))
-    .innerJoin(tracks, eq(tracksToPlaylists.trackId, tracks.id))
-    .leftJoin(albums, eq(tracks.albumId, albums.id))
-    .leftJoin(orderedTrackArtists, eq(tracks.id, orderedTrackArtists.trackId))
-    .groupBy(tracksToPlaylists.trackId)
+    .innerJoin(
+      structuredTracksView,
+      eq(tracksToPlaylists.trackId, structuredTracksView.id),
+    )
     .orderBy(iAsc(tracksToPlaylists.position));
 
   const results = await (limit !== undefined ? query.limit(limit) : query);
 
-  return (
-    onlyIds
-      ? results
-      : results.map(({ artists, ...rest }) => ({
-          ...rest,
-          artists: unencodeJSONArray(artists as string),
-        }))
-  ) as TOnlyIds extends true ? Array<{ id: string }> : PlaylistTrack[];
+  return commonTracksOrIds<CommonTrack, TOnlyIds>(results, onlyIds);
 }
 
 /** Get information summarizing each playlist (sorted by names). */
 export async function getPlaylistsSummary<
   TWithTracks extends boolean | undefined = false,
 >(withTracks?: TWithTracks, conditions?: DrizzleFilter) {
-  const orderedPlaylistTracks = getOrderedPlaylistTracksView();
+  const orderedPlaylistTracks = db
+    .select({
+      playlistName: tracksToPlaylists.playlistName,
+      position: tracksToPlaylists.position, //? To preserve order.
+      id: structuredTracksView.id,
+      name: structuredTracksView.name,
+      rawArtistName: structuredTracksView.rawArtistName,
+      albumName: structuredTracksView.albumName,
+      duration: structuredTracksView.duration,
+      artwork: structuredTracksView.artwork,
+    })
+    .from(tracksToPlaylists)
+    .innerJoin(
+      structuredTracksView,
+      eq(tracksToPlaylists.trackId, structuredTracksView.id),
+    )
+    .orderBy(
+      iAsc(tracksToPlaylists.playlistName),
+      iAsc(tracksToPlaylists.position),
+    )
+    .as("ordered_playlist_tracks_view");
 
   const results = await db
     .select({
@@ -117,7 +108,9 @@ export async function getPlaylistsSummary<
       duration: sum(orderedPlaylistTracks.duration),
       trackCount: count(orderedPlaylistTracks.id),
       /** We need to unencode these strings. */
-      collageArtwork: sql<string>`json_group_array(${orderedPlaylistTracks.derivedArtwork})`,
+      collageArtwork: sql<
+        string | null
+      >`NULLIF(json_group_array(${orderedPlaylistTracks.artwork}), '[null]')`,
       //! This field is "hacked" in, with the main use for the "JSON Backup" feature.
       ...(withTracks
         ? {
@@ -127,7 +120,7 @@ export async function getPlaylistsSummary<
                   'id', ${orderedPlaylistTracks.id},
                   'name', ${orderedPlaylistTracks.name},
                   'rawArtistName', ${orderedPlaylistTracks.rawArtistName},
-                  'album', ${orderedPlaylistTracks.album}
+                  'albumName', ${orderedPlaylistTracks.albumName}
                 )
               )`.as("grouped_tracks"),
           }
@@ -148,9 +141,7 @@ export async function getPlaylistsSummary<
       ...playlist,
       id: name,
       name: parsePlaylistName(name),
-      artwork:
-        playlist.artwork ??
-        unencodeJSONArtworkArray(collageArtwork, playlist.trackCount === 0),
+      artwork: playlist.artwork ?? unencodeJSONArtworkArray(collageArtwork),
       duration: Number(playlist.duration) || 0,
       ...(withTracks ? { tracks: parsePlaylistTracks(tracks) } : {}),
     }))
@@ -237,31 +228,6 @@ export async function deletePlaylist(id: string) {
 //#endregion
 
 //#region Internal Utils
-function getOrderedPlaylistTracksView() {
-  return db
-    .select({
-      playlistName: tracksToPlaylists.playlistName,
-      position: tracksToPlaylists.position, //? To preserve order.
-      id: tracks.id,
-      name: tracks.name,
-      rawArtistName: tracks.rawArtistName,
-      //? For some weird reason, using `albums.name` directly returns `tracks.name`.
-      album: sql<string | null>`${albums.name}`.as("album"),
-      duration: tracks.duration,
-      derivedArtwork: sql<
-        string | null
-      >`coalesce(${tracks.artwork}, ${albums.artwork})`.as("derived_artwork"),
-    })
-    .from(tracksToPlaylists)
-    .innerJoin(tracks, eq(tracksToPlaylists.trackId, tracks.id))
-    .leftJoin(albums, eq(tracks.albumId, albums.id))
-    .orderBy(
-      iAsc(tracksToPlaylists.playlistName),
-      iAsc(tracksToPlaylists.position),
-    )
-    .as("ordered_playlist_tracks_view");
-}
-
 /** Checks to see if the playlist name needs to be translated for `FavoritesPlaylistKey`. */
 function parsePlaylistName(name: string) {
   return name === FavoritesPlaylistKey
@@ -274,9 +240,7 @@ function parsePlaylistTracks(tracks?: string) {
   let results: PlaylistSummaryTrack[] = [];
   try {
     const asArray: any[] = JSON.parse(tracks);
-    results = asArray.filter(
-      (i) => i.name !== null || i.rawArtistName !== null || i.album !== null,
-    );
+    results = asArray.filter((i) => i.name !== null);
   } catch {}
   return results;
 }
