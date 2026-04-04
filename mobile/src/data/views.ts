@@ -35,7 +35,8 @@ export const structuredTracksView = db
     artwork: sql<
       string | null
     >`coalesce(${tracks.artwork}, ${albums.artwork})`.as("derived_artwork"),
-    albumName: albums.name,
+    //? For some weird reason, using `albums.name` directly returns `tracks.name`.
+    albumName: sql<string | null>`${albums.name}`.as("album_name"),
     albumArtistsKey: albums.artistsKey,
     artistsName: sql<
       string | null
