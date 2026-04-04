@@ -52,7 +52,7 @@ export async function getGenreTracks<
   TOnlyIds extends boolean | undefined = false,
 >(id: string, onlyIds?: TOnlyIds) {
   const results = await db
-    .select(onlyIds ? { id: tracks.id } : commonTrackColumns)
+    .select(onlyIds ? { id: structuredTracksView.id } : commonTrackColumns)
     .from(tracksToGenres)
     .where(eq(tracksToGenres.genreName, id))
     .innerJoin(
