@@ -83,7 +83,7 @@ export default function ModifyTrack({
         uri: trackQuery.data.uri,
         name: trackQuery.data.name,
         artists: trackQuery.data.artists ?? [],
-        album: trackQuery.data.album ?? null,
+        album: trackQuery.data.albumName ?? null,
         albumArtists: trackQuery.data.albumArtistsKey
           ? AlbumArtistsKey.deconstruct(trackQuery.data.albumArtistsKey)
           : [],

@@ -9,18 +9,12 @@ import { pickKeys } from "~/utils/object";
 /**
  * Order the `tracksToArtists` table by artist names. Used for ensuring
  * artist name order when generating the `artists` field on tracks.
- *
- * @deprecated Use `orderedTrackArtistsView`.
  */
-export function getOrderedTrackArtistsView() {
-  return db
-    .select()
-    .from(tracksToArtists)
-    .orderBy(iAsc(tracksToArtists.artistName))
-    .as("ordered_track_artists_view");
-}
-
-export const orderedTrackArtistsView = getOrderedTrackArtistsView();
+export const orderedTrackArtistsView = db
+  .select()
+  .from(tracksToArtists)
+  .orderBy(iAsc(tracksToArtists.artistName))
+  .as("ordered_track_artists_view");
 
 const { artwork: _, ...trackColumns } = getTableColumns(tracks);
 

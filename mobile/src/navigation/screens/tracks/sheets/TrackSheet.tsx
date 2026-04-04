@@ -100,7 +100,7 @@ function TrackIntro({ data }: { data: Track }) {
           popStrategy={onNowPlaying ? "popScreen" : undefined}
           marqueeShadowColor="surfaceBright"
         />
-        {data.album ? (
+        {data.albumName ? (
           <Marquee color="surfaceBright">
             <Pressable
               onPress={sheetAction(() => {
@@ -108,7 +108,7 @@ function TrackIntro({ data }: { data: Track }) {
                 navigation.navigate("Album", { id: data.albumId! });
               })}
             >
-              <StyledText dim>{data.album}</StyledText>
+              <StyledText dim>{data.albumName}</StyledText>
             </Pressable>
           </Marquee>
         ) : null}

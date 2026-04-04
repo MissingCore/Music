@@ -26,7 +26,7 @@ export function formatTrackforPlayer(track: Track) {
     artwork: track.artwork || PlaceholderImageFile,
     title: track.name,
     artist: getArtistsString(track.artists, "No Artist"),
-    album: track.album || undefined,
+    album: track.albumName || undefined,
     duration: track.duration,
   } satisfies AddTrack;
 }

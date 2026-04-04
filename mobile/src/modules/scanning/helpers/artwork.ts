@@ -10,6 +10,7 @@ import { albums, tracks } from "~/db/schema";
 
 import { getAlbumsSummary, updateAlbum } from "~/data/album/api";
 import { getTracks, updateTrack } from "~/data/track/api";
+import { structuredTracksView } from "~/data/views";
 import { scanningProgressStore } from "../ScanningProgress";
 
 import { ImageDirectory } from "~/lib/file-system";
@@ -39,7 +40,9 @@ export async function findAndSaveArtwork() {
       or(inArray(tracks.albumId, idsWithCover), isNotNull(tracks.artwork)),
     );
 
-  const uncheckedTracks = await getTracks([eq(tracks.fetchedArt, false)]);
+  const uncheckedTracks = await getTracks([
+    eq(structuredTracksView.fetchedArt, false),
+  ]);
   // Sort tracks to optimize SQL queries.
   const singles: PartialTrack[] = [];
   const albumTracks: Record<string, PartialTrack[]> = {};

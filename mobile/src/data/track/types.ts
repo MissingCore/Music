@@ -10,7 +10,7 @@ type TRACK_INTERNAL = Omit<
 
 export type Track = Prettify<
   TRACK_INTERNAL & {
-    album: string | null;
+    albumName: string | null;
     albumArtistsKey: string | null;
     artists: string[] | null;
   }
@@ -29,9 +29,8 @@ export type SortedTrack = {
 };
 
 export type BulkQueriedTrack = CommonTrack & {
+  /** @deprecated */
   rawArtistName: string | null;
   albumId: string | null;
-  album: string | null;
-  uri: string;
   parentFolder: string | null;
 };

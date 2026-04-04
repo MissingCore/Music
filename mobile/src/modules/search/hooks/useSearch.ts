@@ -68,12 +68,12 @@ export function useSearch<TScope extends SearchCategories>(
             );
           } else if (mediaType === "track") {
             results = data[mediaType].filter(
-              ({ name, artists, album }) =>
+              ({ name, artists, albumName }) =>
                 lowerHas(name, q) ||
                 // One of track's artist names starts with the query.
                 artists?.some((i) => lowerStart(i, q)) ||
                 // Track's album starts with the query.
-                lowerStart(album || undefined, q),
+                lowerStart(albumName || undefined, q),
             );
           } else {
             results = data[mediaType].filter((i) => lowerHas(i.name, q));

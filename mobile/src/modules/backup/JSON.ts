@@ -85,7 +85,7 @@ async function findExistingTracksFactory() {
           (t) =>
             t.name === entry.name &&
             t.rawArtistName === entry.artistName &&
-            t.album === (entry.albumName || null),
+            t.albumName === (entry.albumName || null),
         ),
       )
       .filter((entry) => entry !== undefined);
