@@ -13,7 +13,7 @@ import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { formatSeconds } from "~/utils/number";
 import type { ArtistAlbum } from "./types";
 import type { CommonTrack } from "../types";
-import { fromJSONArrayString } from "../utils";
+import { commonTracksOrIds } from "../utils";
 import { commonTrackColumns, structuredTracksView } from "../views";
 
 type InsertedArtist = typeof artists.$inferInsert;
@@ -89,7 +89,7 @@ export async function getArtistAlbums(id: string): Promise<ArtistAlbum[]> {
 export async function getArtistTracks<
   TOnlyIds extends boolean | undefined = false,
 >(id: string, onlyIds?: TOnlyIds) {
-  const results: Array<Record<string, unknown>> = await db
+  const results = await db
     .select(onlyIds ? { id: structuredTracksView.id } : commonTrackColumns)
     .from(tracksToArtists)
     .where(eq(tracksToArtists.artistName, id))
@@ -99,14 +99,7 @@ export async function getArtistTracks<
     )
     .orderBy(iAsc(structuredTracksView.name));
 
-  return (
-    onlyIds
-      ? results
-      : results.map(({ artists, ...rest }) => ({
-          ...rest,
-          artists: fromJSONArrayString(artists),
-        }))
-  ) as TOnlyIds extends true ? Array<{ id: string }> : CommonTrack[];
+  return commonTracksOrIds<CommonTrack, TOnlyIds>(results, onlyIds);
 }
 
 /** Get information summarizing each artist (sorted by names). */

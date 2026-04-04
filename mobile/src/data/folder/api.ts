@@ -8,7 +8,7 @@ import { iAsc } from "~/lib/drizzle";
 import { addTrailingSlash } from "~/utils/string";
 import type { Maybe } from "~/utils/types";
 import type { CommonTrack } from "../types";
-import { fromJSONArrayString } from "../utils";
+import { commonTracksOrIds } from "../utils";
 import { commonTrackColumns, structuredTracksView } from "../views";
 
 //#region GET Methods
@@ -73,7 +73,7 @@ export async function getFolderTracks<
       : CommonTrack[];
   }
 
-  const results: Array<Record<string, unknown>> = await db
+  const results = await db
     .select(onlyIds ? { id: structuredTracksView.id } : commonTrackColumns)
     .from(structuredTracksView)
     .where(
@@ -84,14 +84,7 @@ export async function getFolderTracks<
     )
     .orderBy(iAsc(structuredTracksView.name));
 
-  return (
-    onlyIds
-      ? results
-      : results.map(({ artists, ...rest }) => ({
-          ...rest,
-          artists: fromJSONArrayString(artists as string),
-        }))
-  ) as TOnlyIds extends true ? Array<{ id: string }> : CommonTrack[];
+  return commonTracksOrIds<CommonTrack, TOnlyIds>(results, onlyIds);
 }
 //#endregion
 

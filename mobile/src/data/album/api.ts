@@ -19,7 +19,7 @@ import { omitKeys } from "~/utils/object";
 import type { AlbumSummary, AlbumTrack } from "./types";
 import { AlbumArtistsKey } from "./utils";
 import type { CommonTrack, DrizzleFilter } from "../types";
-import { fromJSONArrayString } from "../utils";
+import { commonTracksOrIds, fromJSONArrayString } from "../utils";
 import { commonTrackColumns, structuredTracksView } from "../views";
 
 type InsertedAlbum = typeof albums.$inferInsert;
@@ -70,7 +70,7 @@ export async function getAlbumDetails(id: string) {
 export async function getAlbumTracks<
   TOnlyIds extends boolean | undefined = false,
 >(id: string, onlyIds?: TOnlyIds) {
-  const results: Array<Record<string, unknown>> = await db
+  const results = await db
     .select(
       onlyIds
         ? { id: structuredTracksView.id }
@@ -84,14 +84,7 @@ export async function getAlbumTracks<
     .where(eq(structuredTracksView.albumId, id))
     .orderBy(iAsc(structuredTracksView.disc), iAsc(structuredTracksView.track));
 
-  return (
-    onlyIds
-      ? results
-      : results.map(({ artists, ...rest }) => ({
-          ...rest,
-          artists: fromJSONArrayString(artists),
-        }))
-  ) as TOnlyIds extends true ? Array<{ id: string }> : AlbumTrack[];
+  return commonTracksOrIds<AlbumTrack, TOnlyIds>(results, onlyIds);
 }
 
 /** Get information summarizing each album (sorted by names). */
@@ -141,9 +134,7 @@ export async function getAlbumsSummary<
       artistsKey,
       artistName: AlbumArtistsKey.toString(artistsKey),
       duration: Number(album.duration) || 0,
-      ...(withTracks
-        ? { tracks: parseAlbumTracks(album.artwork, tracks) }
-        : {}),
+      ...(withTracks ? { tracks: parseAlbumTracks(tracks) } : {}),
     }))
     .sort((a, b) => a.name.localeCompare(b.name)) as TWithTracks extends true
     ? Array<AlbumSummary & { tracks: CommonTrack[] }>
@@ -199,18 +190,14 @@ export function upsertAlbums(entries: InsertedAlbum[]) {
 //#endregion
 
 //#region Internal Utils
-function parseAlbumTracks(albumArtwork: string | null, tracks?: string) {
+function parseAlbumTracks(tracks?: string) {
   if (!tracks) return [];
   let results: CommonTrack[] = [];
   try {
     const asArray: any[] = JSON.parse(tracks);
     results = asArray
       .filter((i) => i.id !== null)
-      .map((i) => ({
-        ...i,
-        artwork: i.artwork ?? albumArtwork,
-        artists: fromJSONArrayString(i.artists),
-      }));
+      .map((i) => ({ ...i, artists: fromJSONArrayString(i.artists) }));
   } catch {}
   return results;
 }
