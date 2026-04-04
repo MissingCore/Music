@@ -24,7 +24,7 @@ export function useArtistForScreen(artistName: string) {
       tracks: tracks.map((track) => ({
         id: track.id,
         title: track.name,
-        description: track.album ?? "—",
+        description: track.albumName ?? "—",
         imageSource: track.artwork,
       })),
     }),
