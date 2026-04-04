@@ -20,7 +20,7 @@ import type { AlbumSummary, AlbumTrack } from "./types";
 import { AlbumArtistsKey } from "./utils";
 import type { CommonTrack, DrizzleFilter } from "../types";
 import { fromJSONArrayString } from "../utils";
-import { commonTrackColumns, getStructuredTracksView } from "../views";
+import { commonTrackColumns, structuredTracksView } from "../views";
 
 type InsertedAlbum = typeof albums.$inferInsert;
 
@@ -70,21 +70,19 @@ export async function getAlbumDetails(id: string) {
 export async function getAlbumTracks<
   TOnlyIds extends boolean | undefined = false,
 >(id: string, onlyIds?: TOnlyIds) {
-  const structuredTracks = getStructuredTracksView();
-
   const results: Array<Record<string, unknown>> = await db
     .select(
       onlyIds
-        ? { id: structuredTracks.id }
+        ? { id: structuredTracksView.id }
         : {
             ...commonTrackColumns,
-            disc: structuredTracks.disc,
-            track: structuredTracks.track,
+            disc: structuredTracksView.disc,
+            track: structuredTracksView.track,
           },
     )
-    .from(structuredTracks)
-    .where(eq(structuredTracks.albumId, id))
-    .orderBy(iAsc(structuredTracks.disc), iAsc(structuredTracks.track));
+    .from(structuredTracksView)
+    .where(eq(structuredTracksView.albumId, id))
+    .orderBy(iAsc(structuredTracksView.disc), iAsc(structuredTracksView.track));
 
   return (
     onlyIds
@@ -100,12 +98,11 @@ export async function getAlbumTracks<
 export async function getAlbumsSummary<
   TWithTracks extends boolean | undefined = false,
 >(withTracks?: TWithTracks, conditions?: DrizzleFilter) {
-  const structuredTracks = getStructuredTracksView();
   const orderedAlbumTracks = db
     .select()
-    .from(structuredTracks)
-    .where(isNotNull(structuredTracks.albumId))
-    .orderBy(iAsc(structuredTracks.disc), iAsc(structuredTracks.track))
+    .from(structuredTracksView)
+    .where(isNotNull(structuredTracksView.albumId))
+    .orderBy(iAsc(structuredTracksView.disc), iAsc(structuredTracksView.track))
     .as("ordered_album_tracks_view");
 
   const results = await db
