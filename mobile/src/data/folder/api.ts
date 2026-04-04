@@ -2,14 +2,14 @@ import { and, eq, exists, isNull, like, sql } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { FileNode } from "~/db/schema";
-import { albums, fileNodes, tracks } from "~/db/schema";
+import { fileNodes, tracks } from "~/db/schema";
 
 import { iAsc } from "~/lib/drizzle";
 import { addTrailingSlash } from "~/utils/string";
 import type { Maybe } from "~/utils/types";
 import type { CommonTrack } from "../types";
-import { unencodeJSONArray } from "../utils";
-import { getOrderedTrackArtistsView } from "../views";
+import { fromJSONArrayString } from "../utils";
+import { commonTrackColumns, structuredTracksView } from "../views";
 
 //#region GET Methods
 /** Get all data associated with a folder. `path` doesn't include `file:///`. */
@@ -73,37 +73,23 @@ export async function getFolderTracks<
       : CommonTrack[];
   }
 
-  const orderedTrackArtists = getOrderedTrackArtistsView();
-
-  const results = await db
-    .select(
-      onlyIds
-        ? { id: tracks.id }
-        : {
-            id: tracks.id,
-            name: tracks.name,
-            artwork: sql<
-              string | null
-            >`coalesce(${tracks.artwork}, ${albums.artwork})`.as(
-              "derived_artwork",
-            ),
-            /** We need to unencode these fields. */
-            artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
-          },
+  const results: Array<Record<string, unknown>> = await db
+    .select(onlyIds ? { id: structuredTracksView.id } : commonTrackColumns)
+    .from(structuredTracksView)
+    .where(
+      eq(
+        structuredTracksView.parentFolder,
+        `file:///${addTrailingSlash(path)}`,
+      ),
     )
-    .from(tracks)
-    .where(eq(tracks.parentFolder, `file:///${addTrailingSlash(path)}`))
-    .leftJoin(albums, eq(tracks.albumId, albums.id))
-    .leftJoin(orderedTrackArtists, eq(tracks.id, orderedTrackArtists.trackId))
-    .groupBy(tracks.id)
-    .orderBy(iAsc(tracks.name));
+    .orderBy(iAsc(structuredTracksView.name));
 
   return (
     onlyIds
       ? results
       : results.map(({ artists, ...rest }) => ({
           ...rest,
-          artists: unencodeJSONArray(artists as string),
+          artists: fromJSONArrayString(artists as string),
         }))
   ) as TOnlyIds extends true ? Array<{ id: string }> : CommonTrack[];
 }
