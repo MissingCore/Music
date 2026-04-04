@@ -21,6 +21,7 @@ import { getPlaylist, getPlaylistsSummary } from "~/data/playlist/api";
 import { addPlayedTrack } from "~/data/recent/api";
 import { deleteTracks } from "~/data/track/api";
 import { formatTrackforPlayer } from "~/data/track/utils";
+import type { CommonTrack } from "~/data/types";
 import { playbackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { preferenceStore } from "~/stores/Preference/store";
@@ -287,20 +288,14 @@ export async function initServices() {
     category: MediaType,
     loader: (id: string) => Promise<{
       name: string;
-      artwork: string | null | Array<string | null>;
-      tracks: Array<Record<string, any>>;
+      tracks: Array<CommonTrack & { disc?: number | null }>;
     }>,
-    useListArtwork = false,
   ): BrowserSource {
     return async ({ routeParams }): Promise<ResolvedTrack> => {
       const id = routeParams!.id!;
       const data = await loader(id);
-      const listArtwork = Array.isArray(data.artwork)
-        ? data.artwork[0]
-        : data.artwork;
-
       // Only available for tracks in "Album" entry.
-      const hasDiscLabel = data.tracks.at(-1)?.disc > 1;
+      const hasDiscLabel = (data.tracks.at(-1)?.disc || -1) > 1;
 
       return {
         url: `/${category}/${id}`,
@@ -309,9 +304,7 @@ export async function initServices() {
           src: getSafeUri(track.uri),
           title: track.name,
           artist: getArtistsString(track.artists),
-          artwork:
-            (useListArtwork ? listArtwork : track.artwork) ||
-            PlaceholderImageFile,
+          artwork: track.artwork || PlaceholderImageFile,
           duration: track.duration,
           groupTitle:
             hasDiscLabel && typeof track.disc === "number"
@@ -324,7 +317,7 @@ export async function initServices() {
 
   const mediaListRoutes: Record<string, BrowserSource> = {
     "/album": () => getMediaCategoryRoute("album", getAlbumsSummary),
-    "/album/{id}": getMediaCategoryEntryRoute("album", getAlbum, true),
+    "/album/{id}": getMediaCategoryEntryRoute("album", getAlbum),
     "/playlist": () => getMediaCategoryRoute("playlist", getPlaylistsSummary),
     "/playlist/{id}": getMediaCategoryEntryRoute("playlist", getPlaylist),
   };

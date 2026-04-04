@@ -31,13 +31,14 @@ export function useAlbumForScreen(albumId: string) {
             tracks.reduce((total, curr) => total + curr.duration, 0),
           ),
         ],
-        tracks: tracks.map(({ name: title, duration, artists, ...rest }) => {
+        tracks: tracks.map(({ name: title, duration, artists, ...other }) => {
           let description = formatSeconds(duration);
           if (Array.isArray(artists)) {
             const diff = artists.filter((name) => !albumArtists.includes(name));
             if (diff.length > 0) description += ` • ${diff.join(", ")}`;
           }
 
+          const { artwork: _, albumName: _1, ...rest } = other;
           return { ...rest, title, description, imageSource: null };
         }),
 

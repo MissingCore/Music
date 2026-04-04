@@ -1,10 +1,12 @@
-export function unencodeJSONArray(rawJSONString: string) {
+export function fromJSONArrayString(rawJSONString: string | null | unknown) {
   let results: string[] = [];
-  try {
-    // `rawJSONString` can be `[null]` or `string[]`.
-    const asArr: Array<string | null> = JSON.parse(rawJSONString);
-    results = asArr.filter((name) => name !== null);
-  } catch {}
+  // `rawJSONString` returns `string[]` or `null` as we use `NULLIF` to
+  // prevent returning `[null]`.
+  if (typeof rawJSONString === "string") {
+    try {
+      results = JSON.parse(rawJSONString);
+    } catch {}
+  }
   return results.length > 0 ? results : null;
 }
 
