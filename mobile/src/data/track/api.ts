@@ -1,20 +1,15 @@
-import { and, eq, getTableColumns, inArray, sql } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { InvalidTrack } from "~/db/schema";
-import {
-  albums,
-  invalidTracks,
-  tracks,
-  tracksToArtists,
-  tracksToPlaylists,
-} from "~/db/schema";
+import { invalidTracks, tracks, tracksToPlaylists } from "~/db/schema";
 
 import { viewPreferenceStore } from "~/stores/ViewPreference/store";
 import type { ScreenSortOptions } from "~/stores/ViewPreference/constants";
 
 import {
   getExcludedColumns,
+  getSubqueryFields,
   iAsc,
   iDesc,
   throwIfNoResults,
@@ -24,46 +19,28 @@ import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { TrackRelationTables } from "./constants";
 import type { BulkQueriedTrack, SortedTrack, Track } from "./types";
 import type { DrizzleFilter } from "../types";
-import { unencodeJSONArray } from "../utils";
-import { getOrderedTrackArtistsView } from "../views";
+import { commonTracksOrIds, fromJSONArrayString } from "../utils";
+import { commonTrackColumns, structuredTracksView } from "../views";
 
 type InsertedTrack = typeof tracks.$inferInsert;
 type InsertedTrackPlaylistRelation = typeof tracksToPlaylists.$inferInsert;
 
-const trackFields = omitKeys(getTableColumns(tracks), [
+const trackFields = omitKeys(getSubqueryFields(structuredTracksView), [
   "rawArtistName",
   "isFavorite",
   "hiddenAt",
-  "artwork",
 ]);
 
 //#region GET Methods
 export async function getTrack(id: string): Promise<Track> {
-  const orderedTrackArtists = getOrderedTrackArtistsView();
-
   const [result] = await throwIfNoResults(
     db
-      .select({
-        ...trackFields,
-        artwork: sql<
-          string | null
-        >`coalesce(${tracks.artwork}, ${albums.artwork})`.as("derived_artwork"),
-        album: sql<string | null>`${albums.name}`.as("album"),
-        albumArtistsKey: sql<string | null>`${albums.artistsKey}`.as(
-          "album_artists_key",
-        ),
-        /** We need to unencode these fields. */
-        artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
-      })
-      .from(tracks)
-      .where(eq(tracks.id, id))
-      .leftJoin(albums, eq(tracks.albumId, albums.id))
-      .leftJoin(orderedTrackArtists, eq(tracks.id, orderedTrackArtists.trackId))
-      .groupBy(tracks.id),
+      .select(trackFields)
+      .from(structuredTracksView)
+      .where(eq(structuredTracksView.id, id)),
     "err.msg.noTracks",
   );
-
-  return { ...result!, artists: unencodeJSONArray(result!.artists) };
+  return { ...result!, artists: fromJSONArrayString(result!.artists) };
 }
 
 //#region Get Relations
@@ -115,48 +92,28 @@ export async function getSortedTracks<
   const isAsc = sortOptions?.isAsc ?? trackIsAsc;
   const order = sortOptions?.order ?? trackOrder;
 
-  //? Subquery to order the track artists before we use `GROUP_CONCAT` on them.
-  const orderedTrackArtists = db
-    .select({
-      trackId: tracksToArtists.trackId,
-      artistName:
-        sql<string>`GROUP_CONCAT(${tracksToArtists.artistName}, ', ')`.as(
-          "joined_artistname",
-        ),
-    })
-    .from(tracksToArtists)
-    .orderBy(iAsc(tracksToArtists.trackId), iAsc(tracksToArtists.artistName))
-    .groupBy(tracksToArtists.trackId)
-    .as("ordered_track_artists");
   //? Determine field we'll sort by.
   const sortField =
-    order === "albumName"
-      ? albums.name
-      : order === "artistName"
-        ? orderedTrackArtists.artistName
-        : tracks[order];
+    order === "artistName"
+      ? structuredTracksView.artistsName
+      : structuredTracksView[order];
 
   const results = await db
     .select(
       onlyIds
-        ? { id: tracks.id }
+        ? { id: structuredTracksView.id }
         : {
-            id: tracks.id,
-            name: tracks.name,
-            artistName: orderedTrackArtists.artistName,
-            albumName: albums.name,
-            duration: tracks.duration,
-            discoverTime: tracks.discoverTime,
-            modificationTime: tracks.modificationTime,
-            artwork: sql<
-              string | null
-            >`coalesce(${tracks.artwork}, ${albums.artwork})`,
+            id: structuredTracksView.id,
+            name: structuredTracksView.name,
+            artistName: structuredTracksView.artistsName,
+            albumName: structuredTracksView.albumName,
+            duration: structuredTracksView.duration,
+            discoverTime: structuredTracksView.discoverTime,
+            modificationTime: structuredTracksView.modificationTime,
+            artwork: structuredTracksView.artwork,
           },
     )
-    .from(tracks)
-    .leftJoin(orderedTrackArtists, eq(tracks.id, orderedTrackArtists.trackId))
-    .leftJoin(albums, eq(tracks.albumId, albums.id))
-    .groupBy(tracks.id)
+    .from(structuredTracksView)
     .orderBy(isAsc ? iAsc(sortField) : iDesc(sortField));
 
   return results as TOnlyIds extends true
@@ -164,37 +121,19 @@ export async function getSortedTracks<
     : SortedTrack[];
 }
 
-export async function getTracks(
-  conditions?: DrizzleFilter,
-): Promise<BulkQueriedTrack[]> {
-  const orderedTrackArtists = getOrderedTrackArtistsView();
-
+export async function getTracks(conditions?: DrizzleFilter) {
   const results = await db
     .select({
-      id: tracks.id,
-      name: tracks.name,
-      rawArtistName: tracks.rawArtistName,
-      artwork: sql<
-        string | null
-      >`coalesce(${tracks.artwork}, ${albums.artwork})`.as("derived_artwork"),
-      albumId: tracks.albumId,
-      album: sql<string | null>`${albums.name}`.as("album"),
-      uri: tracks.uri,
-      parentFolder: tracks.parentFolder,
-      /** We need to unencode these fields. */
-      artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
+      ...commonTrackColumns,
+      rawArtistName: structuredTracksView.rawArtistName,
+      albumId: structuredTracksView.albumId,
+      parentFolder: structuredTracksView.parentFolder,
     })
-    .from(tracks)
+    .from(structuredTracksView)
     .where(and(...(conditions ?? [])))
-    .leftJoin(albums, eq(tracks.albumId, albums.id))
-    .leftJoin(orderedTrackArtists, eq(tracks.id, orderedTrackArtists.trackId))
-    .groupBy(tracks.id)
-    .orderBy(iAsc(tracks.name));
+    .orderBy(iAsc(structuredTracksView.name));
 
-  return results.map(({ artists, ...track }) => ({
-    ...track,
-    artists: unencodeJSONArray(artists),
-  }));
+  return commonTracksOrIds<BulkQueriedTrack, false>(results, false);
 }
 //#endregion
 

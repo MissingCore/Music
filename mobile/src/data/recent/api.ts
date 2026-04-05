@@ -2,7 +2,7 @@ import { and, eq, gt, sql } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { PlayedMediaList } from "~/db/schema";
-import { albums, playedMediaLists, tracks } from "~/db/schema";
+import { playedMediaLists, tracks } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 import type { PlayFromSource } from "~/stores/Playback/types";
@@ -17,8 +17,8 @@ import { getPlaylist } from "../playlist/api";
 import { iDesc } from "~/lib/drizzle";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
-import { unencodeJSONArray } from "../utils";
-import { getOrderedTrackArtistsView } from "../views";
+import { fromJSONArrayString } from "../utils";
+import { commonTrackColumns, structuredTracksView } from "../views";
 
 export const RECENT_DAY_RANGE = 7;
 export const RECENT_RANGE_MS = RECENT_DAY_RANGE * 24 * 60 * 60 * 1000;
@@ -55,29 +55,16 @@ export async function getRecentLists() {
 }
 
 export async function getRecentTracks() {
-  const orderedTrackArtists = getOrderedTrackArtistsView();
-
   const results = await db
-    .select({
-      id: tracks.id,
-      name: tracks.name,
-      artwork: sql<
-        string | null
-      >`coalesce(${tracks.artwork}, ${albums.artwork})`.as("derived_artwork"),
-      /** We need to unencode these fields. */
-      artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
-    })
-    .from(tracks)
-    .where(gt(tracks.lastPlayedAt, Date.now() - RECENT_RANGE_MS))
-    .leftJoin(albums, eq(tracks.albumId, albums.id))
-    .leftJoin(orderedTrackArtists, eq(tracks.id, orderedTrackArtists.trackId))
-    .groupBy(tracks.id)
-    .orderBy(iDesc(tracks.lastPlayedAt));
+    .select(commonTrackColumns)
+    .from(structuredTracksView)
+    .where(gt(structuredTracksView.lastPlayedAt, Date.now() - RECENT_RANGE_MS))
+    .orderBy(iDesc(structuredTracksView.lastPlayedAt));
 
   return results.map((track) => ({
     id: track.id,
     title: track.name,
-    description: getArtistsString(unencodeJSONArray(track.artists as string)),
+    description: getArtistsString(fromJSONArrayString(track.artists)),
     imageSource: track.artwork,
   }));
 }

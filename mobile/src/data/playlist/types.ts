@@ -1,11 +1,3 @@
-import type { CommonTrack } from "../types";
-
-export type PlaylistTrack = CommonTrack & {
-  //? Used by "Export M3U" feature:
-  duration: number;
-  uri: string;
-};
-
 export type PlaylistSummary = {
   /** The raw `name` field stored in the `Playlists` schema. */
   id: string;
@@ -22,5 +14,5 @@ export type PlaylistSummaryTrack = {
   name: string;
   /** @deprecated */
   rawArtistName: string | null;
-  album: string | null;
+  albumName: string | null;
 };

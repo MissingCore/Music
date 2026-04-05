@@ -3,12 +3,11 @@ import { inArray } from "drizzle-orm";
 import { Paths } from "expo-file-system";
 
 import { db } from "~/db";
-import { tracks } from "~/db/schema";
-
-import { getPlaylist } from "~/data/playlist/api";
-import { getTracks } from "~/data/track/api";
 
 import i18next from "~/modules/i18n";
+import { getPlaylist } from "~/data/playlist/api";
+import { getTracks } from "~/data/track/api";
+import { structuredTracksView } from "~/data/views";
 
 import { joinPaths, pickDirectory, pickFile } from "~/lib/file-system";
 
@@ -58,7 +57,9 @@ export async function readM3UPlaylist() {
         ? trackPaths.map((path) => joinPaths(fileDirectory, path))
         : trackPaths;
 
-  const playlistTracks = await getTracks([inArray(tracks.uri, trackUris)]);
+  const playlistTracks = await getTracks([
+    inArray(structuredTracksView.uri, trackUris),
+  ]);
 
   // Ensure found values are in order.
   const playlistTrackMap = Object.fromEntries(

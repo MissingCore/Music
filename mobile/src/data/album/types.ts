@@ -1,11 +1,8 @@
-export type AlbumTrack = {
-  id: string;
-  name: string;
-  duration: number;
+import type { CommonTrack } from "../types";
+
+export type AlbumTrack = CommonTrack & {
   disc: number | null;
   track: number | null;
-  uri: string;
-  artists: string[] | null;
 };
 
 export type AlbumSummary = {

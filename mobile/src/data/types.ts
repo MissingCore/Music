@@ -9,4 +9,7 @@ export type CommonTrack = {
   name: string;
   artwork: string | null;
   artists: string[] | null;
+  albumName: string | null;
+  uri: string;
+  duration: number;
 };

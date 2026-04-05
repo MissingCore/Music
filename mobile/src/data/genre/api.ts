@@ -1,13 +1,13 @@
-import { count, eq, getTableColumns, sql, sum } from "drizzle-orm";
+import { count, eq, getTableColumns, sum } from "drizzle-orm";
 
 import { db } from "~/db";
-import { albums, genres, tracks, tracksToGenres } from "~/db/schema";
+import { genres, tracks, tracksToGenres } from "~/db/schema";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { formatSeconds } from "~/utils/number";
 import type { CommonTrack } from "../types";
-import { unencodeJSONArray } from "../utils";
-import { getOrderedTrackArtistsView } from "../views";
+import { commonTracksOrIds } from "../utils";
+import { commonTrackColumns, structuredTracksView } from "../views";
 
 type InsertedGenre = typeof genres.$inferInsert;
 
@@ -51,40 +51,17 @@ export async function getGenreDetails(id: string) {
 export async function getGenreTracks<
   TOnlyIds extends boolean | undefined = false,
 >(id: string, onlyIds?: TOnlyIds) {
-  const orderedTrackArtists = getOrderedTrackArtistsView();
-
   const results = await db
-    .select(
-      onlyIds
-        ? { id: tracks.id }
-        : {
-            id: tracks.id,
-            name: tracks.name,
-            artwork: sql<
-              string | null
-            >`coalesce(${tracks.artwork}, ${albums.artwork})`.as(
-              "derived_artwork",
-            ),
-            /** We need to unencode these fields. */
-            artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
-          },
-    )
+    .select(onlyIds ? { id: structuredTracksView.id } : commonTrackColumns)
     .from(tracksToGenres)
     .where(eq(tracksToGenres.genreName, id))
-    .innerJoin(tracks, eq(tracksToGenres.trackId, tracks.id))
-    .leftJoin(albums, eq(tracks.albumId, albums.id))
-    .leftJoin(orderedTrackArtists, eq(tracks.id, orderedTrackArtists.trackId))
-    .groupBy(tracksToGenres.trackId)
-    .orderBy(iAsc(tracks.name));
+    .innerJoin(
+      structuredTracksView,
+      eq(tracksToGenres.trackId, structuredTracksView.id),
+    )
+    .orderBy(iAsc(structuredTracksView.name));
 
-  return (
-    onlyIds
-      ? results
-      : results.map(({ artists, ...rest }) => ({
-          ...rest,
-          artists: unencodeJSONArray(artists as string),
-        }))
-  ) as TOnlyIds extends true ? Array<{ id: string }> : CommonTrack[];
+  return commonTracksOrIds<CommonTrack, TOnlyIds>(results, onlyIds);
 }
 
 /** Get information summarizing each genre (sorted by names). */

@@ -81,7 +81,7 @@ export default function Lyric({
           </SegmentedList.CustomItem>
           {data.tracks.length > 0 ? (
             <SegmentedList.CustomItem>
-              {data.tracks.map(({ id, name, album, artists }, index) => (
+              {data.tracks.map(({ id, name, albumName, artists }, index) => (
                 <Fragment key={id}>
                   {index > 0 ? <Divider className="mx-4" /> : null}
                   <View className="flex-row gap-2 p-4 pr-2">
@@ -92,7 +92,9 @@ export default function Lyric({
                           {getArtistsString(artists)}
                         </StyledText>
                       ) : null}
-                      {album ? <StyledText dim>{album}</StyledText> : null}
+                      {albumName ? (
+                        <StyledText dim>{albumName}</StyledText>
+                      ) : null}
                     </View>
                     <IconButton
                       Icon={LinkOff}

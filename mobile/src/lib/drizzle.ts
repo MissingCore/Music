@@ -1,7 +1,12 @@
-import type { SQLWrapper } from "drizzle-orm";
+import type { ColumnsSelection, SQLWrapper } from "drizzle-orm";
 import { sql } from "drizzle-orm";
 import { toSnakeCase } from "drizzle-orm/casing";
-import type { AnySQLiteColumn, SQLiteColumn } from "drizzle-orm/sqlite-core";
+import type {
+  AnySQLiteColumn,
+  SQLiteColumn,
+  SubqueryWithSelection,
+  WithSubqueryWithSelection,
+} from "drizzle-orm/sqlite-core";
 import type { ParseKeys } from "i18next";
 
 import i18next from "~/modules/i18n";
@@ -42,4 +47,17 @@ export async function throwIfNoResults<TData>(
     throw new Error(i18next.t(errMsg));
   }
   return result;
+}
+
+/**
+ * Get columns on subquery.
+ *  - Ref: https://github.com/drizzle-team/drizzle-orm/issues/1459
+ *
+ * Shouldn't be needed in v1 of Drizzle based on:
+ *  - https://github.com/drizzle-team/drizzle-orm/pull/1789
+ */
+export function getSubqueryFields<S extends ColumnsSelection, A extends string>(
+  query: WithSubqueryWithSelection<S, A> | SubqueryWithSelection<S, A>,
+) {
+  return query._.selectedFields;
 }

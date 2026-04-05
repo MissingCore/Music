@@ -3,12 +3,11 @@ import { inArray } from "drizzle-orm";
 import { memo, useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { tracks } from "~/db/schema";
-
 import { Cached } from "~/resources/icons/Cached";
 import { DragHandle } from "~/resources/icons/DragHandle";
 import { getArtistsString } from "~/data/artist/utils";
 import { getTracks } from "~/data/track/api";
+import { structuredTracksView } from "~/data/views";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 
@@ -203,7 +202,9 @@ async function getQueueTracks() {
   // Since there's potentially duplicate tracks.
   const queueTrackIds = queue.map(extractTrackId);
   const queueSet = new Set(queueTrackIds);
-  const unorderedTracks = await getTracks([inArray(tracks.id, [...queueSet])]);
+  const unorderedTracks = await getTracks([
+    inArray(structuredTracksView.id, [...queueSet]),
+  ]);
 
   // Structure as a map for faster searching.
   const trackMap = Object.fromEntries(

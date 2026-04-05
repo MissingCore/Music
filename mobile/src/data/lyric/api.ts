@@ -1,11 +1,12 @@
-import { count, eq, getTableColumns, sql } from "drizzle-orm";
+import { count, eq, getTableColumns } from "drizzle-orm";
 
 import { db } from "~/db";
-import { albums, lyrics, tracks, tracksToLyrics } from "~/db/schema";
+import { lyrics, tracks, tracksToLyrics } from "~/db/schema";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
-import { unencodeJSONArray } from "../utils";
-import { getOrderedTrackArtistsView } from "../views";
+import type { CommonTrack } from "../types";
+import { commonTracksOrIds } from "../utils";
+import { commonTrackColumns, structuredTracksView } from "../views";
 
 type InsertedLyric = typeof lyrics.$inferInsert;
 
@@ -25,28 +26,17 @@ export async function getLyric(id: string) {
  * the lyric exists.
  */
 export async function getLyricTracks(id: string) {
-  const orderedTrackArtists = getOrderedTrackArtistsView();
-
   const results = await db
-    .select({
-      id: tracks.id,
-      name: tracks.name,
-      album: albums.name,
-      /** We need to unencode these fields. */
-      artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
-    })
+    .select(commonTrackColumns)
     .from(tracksToLyrics)
     .where(eq(tracksToLyrics.lyricId, id))
-    .innerJoin(tracks, eq(tracksToLyrics.trackId, tracks.id))
-    .leftJoin(albums, eq(tracks.albumId, albums.id))
-    .leftJoin(orderedTrackArtists, eq(tracks.id, orderedTrackArtists.trackId))
-    .groupBy(tracksToLyrics.trackId)
-    .orderBy(iAsc(tracks.name));
+    .innerJoin(
+      structuredTracksView,
+      eq(tracksToLyrics.trackId, structuredTracksView.id),
+    )
+    .orderBy(iAsc(structuredTracksView.name));
 
-  return results.map(({ artists, ...rest }) => ({
-    ...rest,
-    artists: unencodeJSONArray(artists as string),
-  }));
+  return commonTracksOrIds<CommonTrack>(results, false);
 }
 
 /** Get information summarizing each lyric (sorted by names). */

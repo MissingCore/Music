@@ -19,8 +19,8 @@ import { omitKeys } from "~/utils/object";
 import type { AlbumSummary, AlbumTrack } from "./types";
 import { AlbumArtistsKey } from "./utils";
 import type { CommonTrack, DrizzleFilter } from "../types";
-import { unencodeJSONArray } from "../utils";
-import { getOrderedTrackArtistsView } from "../views";
+import { commonTracksOrIds, fromJSONArrayString } from "../utils";
+import { commonTrackColumns, structuredTracksView } from "../views";
 
 type InsertedAlbum = typeof albums.$inferInsert;
 
@@ -70,44 +70,33 @@ export async function getAlbumDetails(id: string) {
 export async function getAlbumTracks<
   TOnlyIds extends boolean | undefined = false,
 >(id: string, onlyIds?: TOnlyIds) {
-  const orderedTrackArtists = getOrderedTrackArtistsView();
-
   const results = await db
     .select(
       onlyIds
-        ? { id: tracks.id }
+        ? { id: structuredTracksView.id }
         : {
-            id: tracks.id,
-            name: tracks.name,
-            duration: tracks.duration,
-            disc: tracks.disc,
-            track: tracks.track,
-            uri: tracks.uri,
-            /** We need to unencode these fields. */
-            artists: sql<string>`json_group_array(${orderedTrackArtists.artistName})`,
+            ...commonTrackColumns,
+            disc: structuredTracksView.disc,
+            track: structuredTracksView.track,
           },
     )
-    .from(tracks)
-    .where(eq(tracks.albumId, id))
-    .leftJoin(orderedTrackArtists, eq(tracks.id, orderedTrackArtists.trackId))
-    .groupBy(tracks.id)
-    .orderBy(iAsc(tracks.disc), iAsc(tracks.track));
+    .from(structuredTracksView)
+    .where(eq(structuredTracksView.albumId, id))
+    .orderBy(iAsc(structuredTracksView.disc), iAsc(structuredTracksView.track));
 
-  return (
-    onlyIds
-      ? results
-      : results.map(({ artists, ...rest }) => ({
-          ...rest,
-          artists: unencodeJSONArray(artists as string),
-        }))
-  ) as TOnlyIds extends true ? Array<{ id: string }> : AlbumTrack[];
+  return commonTracksOrIds<AlbumTrack, TOnlyIds>(results, onlyIds);
 }
 
 /** Get information summarizing each album (sorted by names). */
 export async function getAlbumsSummary<
   TWithTracks extends boolean | undefined = false,
 >(withTracks?: TWithTracks, conditions?: DrizzleFilter) {
-  const orderedAlbumTracks = getOrderedAlbumTracksView();
+  const orderedAlbumTracks = db
+    .select()
+    .from(structuredTracksView)
+    .where(isNotNull(structuredTracksView.albumId))
+    .orderBy(iAsc(structuredTracksView.disc), iAsc(structuredTracksView.track))
+    .as("ordered_album_tracks_view");
 
   const results = await db
     .select({
@@ -124,7 +113,10 @@ export async function getAlbumsSummary<
                   'id', ${orderedAlbumTracks.id},
                   'name', ${orderedAlbumTracks.name},
                   'artwork', ${orderedAlbumTracks.artwork},
-                  'artists', ${orderedAlbumTracks.artists}
+                  'artists', ${orderedAlbumTracks.artists},
+                  'albumName', ${orderedAlbumTracks.albumName},
+                  'uri', ${orderedAlbumTracks.uri},
+                  'duration', ${orderedAlbumTracks.duration}
                 )
               )`.as("grouped_tracks"),
           }
@@ -142,9 +134,7 @@ export async function getAlbumsSummary<
       artistsKey,
       artistName: AlbumArtistsKey.toString(artistsKey),
       duration: Number(album.duration) || 0,
-      ...(withTracks
-        ? { tracks: parseAlbumTracks(album.artwork, tracks) }
-        : {}),
+      ...(withTracks ? { tracks: parseAlbumTracks(tracks) } : {}),
     }))
     .sort((a, b) => a.name.localeCompare(b.name)) as TWithTracks extends true
     ? Array<AlbumSummary & { tracks: CommonTrack[] }>
@@ -200,45 +190,14 @@ export function upsertAlbums(entries: InsertedAlbum[]) {
 //#endregion
 
 //#region Internal Utils
-function getOrderedAlbumTracksView() {
-  const orderedTrackArtists = getOrderedTrackArtistsView();
-
-  return db
-    .select({
-      id: tracks.id,
-      name: tracks.name,
-      albumId: tracks.albumId,
-      disc: tracks.disc,
-      track: tracks.track,
-      duration: tracks.duration,
-      artwork: tracks.artwork,
-      year: tracks.year,
-      /** We need to unencode these fields. */
-      artists:
-        sql<string>`json_group_array(${orderedTrackArtists.artistName})`.as(
-          "grouped_artists",
-        ),
-    })
-    .from(tracks)
-    .where(isNotNull(tracks.albumId))
-    .leftJoin(orderedTrackArtists, eq(tracks.id, orderedTrackArtists.trackId))
-    .groupBy(tracks.id)
-    .orderBy(iAsc(tracks.disc), iAsc(tracks.track))
-    .as("ordered_album_tracks_view");
-}
-
-function parseAlbumTracks(albumArtwork: string | null, tracks?: string) {
+function parseAlbumTracks(tracks?: string) {
   if (!tracks) return [];
   let results: CommonTrack[] = [];
   try {
     const asArray: any[] = JSON.parse(tracks);
     results = asArray
       .filter((i) => i.id !== null)
-      .map((i) => ({
-        ...i,
-        artwork: i.artwork ?? albumArtwork,
-        artists: unencodeJSONArray(i.artists),
-      }));
+      .map((i) => ({ ...i, artists: fromJSONArrayString(i.artists) }));
   } catch {}
   return results;
 }

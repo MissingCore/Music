@@ -85,7 +85,7 @@ async function findExistingTracksFactory() {
           (t) =>
             t.name === entry.name &&
             t.rawArtistName === entry.artistName &&
-            t.album === (entry.albumName || null),
+            t.albumName === (entry.albumName || null),
         ),
       )
       .filter((entry) => entry !== undefined);
@@ -127,7 +127,7 @@ async function exportBackup() {
         tracks: tracks.map((t) => ({
           name: t.name,
           artistName: t.rawArtistName,
-          albumName: t.album,
+          albumName: t.albumName,
         })),
       })),
     }),

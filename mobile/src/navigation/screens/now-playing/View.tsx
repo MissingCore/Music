@@ -78,13 +78,13 @@ function Metadata({ track }: { track: Track }) {
           popStrategy="popScreen"
           className="text-sm/[1.125]"
         />
-        {track.album ? (
+        {track.albumName ? (
           <Marquee>
             <Pressable
               onPress={() => navigation.popTo("Album", { id: track.albumId })}
             >
               <StyledText dim className="text-sm/[1.125]">
-                {track.album}
+                {track.albumName}
               </StyledText>
             </Pressable>
           </Marquee>
