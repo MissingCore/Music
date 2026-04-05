@@ -266,22 +266,22 @@
       "title": "Funciones experimentales"
     },
     "androidAuto": {
-      "title": null
+      "title": "Android Auto"
     },
     "equalizer": {
-      "title": null,
+      "title": "Ecualizador",
       "extra": {
-        "Custom": null,
-        "Normal": null,
-        "Classical": null,
-        "Dance": null,
-        "Flat": null,
-        "Folk": null,
-        "Heavy Metal": null,
-        "Hip Hop": null,
-        "Jazz": null,
-        "Pop": null,
-        "Rock": null
+        "Custom": "Personalizado",
+        "Normal": "Normal",
+        "Classical": "Clásica",
+        "Dance": "Dance",
+        "Flat": "Plano",
+        "Folk": "Folclórica",
+        "Heavy Metal": "Heavy Metal",
+        "Hip Hop": "Hip Hop",
+        "Jazz": "Jazz",
+        "Pop": "Pop",
+        "Rock": "Rock"
       }
     },
     "ignoreInterrupt": {
@@ -343,7 +343,7 @@
       "extra": {
         "change": "Cambiar carátula",
         "remove": "Eliminar carátula",
-        "square": null
+        "square": "Carátula cuadrada"
       }
     },
     "directory": {
