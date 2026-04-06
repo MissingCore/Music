@@ -1,3 +1,5 @@
+import { getLyric } from "@missingcore/react-native-metadata-retriever";
+import { toast } from "@missingcore/toast";
 import { useNavigation } from "@react-navigation/native";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -5,16 +7,24 @@ import { Text, View } from "react-native";
 import { usePolledProgress } from "react-native-audio-browser";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { DocumentSearch } from "~/resources/icons/DocumentSearch";
+import { queries as q } from "~/data/keyStore";
+import { getArtistsString } from "~/data/artist/utils";
+import { createLyric } from "~/data/lyric/api";
 import { useLyricForTrack } from "~/data/lyric/queries";
+import { playbackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
 
+import { queryClient } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import type { FlatListProps, FlatListRef } from "~/components/Base/List";
 import { FlatList, useFlatListRef } from "~/components/Base/List";
 import { Button } from "~/components/Form/Button";
+import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
 import { Em, TEm } from "~/components/Typography/StyledText";
+import { linkTrackToLyric } from "../../lyrics/helpers/linkTrackToLyric";
 
 const SCROLL_OFFSET = 64;
 const LINE_GAP = 16;
@@ -54,8 +64,6 @@ export function LyricsOverlay(props: { size: number; trackId: string }) {
 }
 
 function LyricsContent(props: { trackId: string; offset: number }) {
-  const { t } = useTranslation();
-  const navigation = useNavigation();
   const { isPending, data, error } = useLyricForTrack(props.trackId);
 
   const lyricsLines = useMemo(() => {
@@ -73,24 +81,7 @@ function LyricsContent(props: { trackId: string; offset: number }) {
 
   if (isPending) return null;
   else if (error || !data) {
-    return (
-      <View
-        style={{ paddingTop: props.offset }}
-        className="items-center gap-8 pb-4"
-      >
-        <TEm textKey="err.msg.noLyrics" className="text-lg" />
-        <Button
-          onPress={() =>
-            navigation.navigate("Lyrics", { linkTo: props.trackId })
-          }
-          className="rounded-full bg-primary px-8 active:bg-primaryDim"
-        >
-          <Em className="text-center text-sm text-onPrimary">
-            {t("template.entryManage", { name: t("feat.lyrics.title") })}
-          </Em>
-        </Button>
-      </View>
-    );
+    return <LyricsNotFound {...props} />;
   } else if (isSynchronized) {
     return (
       <SynchronizedLyrics
@@ -113,6 +104,75 @@ function LyricsContent(props: { trackId: string; offset: number }) {
     />
   );
 }
+
+//#region Not Found
+function LyricsNotFound(props: { trackId: string; offset: number }) {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+  const [checkingEmbeddedLyrics, setCheckingEmbeddedLyrics] = useState(false);
+
+  const checkForLyrics = async () => {
+    setCheckingEmbeddedLyrics(true);
+    await fetchEmbeddedLyrics();
+    setCheckingEmbeddedLyrics(false);
+  };
+
+  return (
+    <View
+      style={{ paddingTop: props.offset }}
+      className="items-center gap-8 pb-4"
+    >
+      <TEm textKey="err.msg.noLyrics" className="text-lg" />
+      <View className="flex-row items-center gap-4">
+        <FilledIconButton
+          Icon={DocumentSearch}
+          accessibilityLabel={t("feat.rescan.title")}
+          onPress={checkForLyrics}
+          disabled={checkingEmbeddedLyrics}
+          size="md"
+          className="bg-secondary active:bg-secondaryDim"
+          _iconColor="onSecondary"
+        />
+        <Button
+          onPress={() =>
+            navigation.navigate("Lyrics", { linkTo: props.trackId })
+          }
+          disabled={checkingEmbeddedLyrics}
+          className="rounded-full bg-primary px-6 active:bg-primaryDim"
+        >
+          <Em className="text-center text-sm text-onPrimary">
+            {t("template.entryManage", { name: t("feat.lyrics.title") })}
+          </Em>
+        </Button>
+      </View>
+    </View>
+  );
+}
+
+async function fetchEmbeddedLyrics() {
+  const { activeTrack } = playbackStore.getState();
+  if (!activeTrack) return;
+  try {
+    const embeddedLyrics = await getLyric(activeTrack.uri);
+    if (!embeddedLyrics) return toast.tError("err.msg.noLyrics");
+
+    const newLyric = await createLyric({
+      name: `${activeTrack.name} - ${getArtistsString(activeTrack.artists)}`,
+      lyrics: embeddedLyrics,
+    });
+    if (!newLyric) throw new Error("Lyric not returned after insertion.");
+    await linkTrackToLyric({
+      name: activeTrack.name,
+      trackId: activeTrack.id,
+      lyricId: newLyric.id,
+    });
+
+    queryClient.invalidateQueries({ queryKey: q.lyrics._def });
+  } catch {
+    toast.tError("err.flow.generic.title");
+  }
+}
+//#endregion
 
 //#region Synchronized Lyrics
 function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
