@@ -9,7 +9,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 
-import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { useLoadResources } from "~/modules/scanning/hooks/useLoadResources";
 import { useScanning } from "~/modules/scanning/hooks/useScanning";
 

@@ -8,6 +8,7 @@ import { usePolledProgress } from "react-native-audio-browser";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { DocumentSearch } from "~/resources/icons/DocumentSearch";
+import { Edit } from "~/resources/icons/Edit";
 import { queries as q } from "~/data/keyStore";
 import { getArtistsString } from "~/data/artist/utils";
 import { createLyric } from "~/data/lyric/api";
@@ -21,7 +22,7 @@ import { cn } from "~/lib/style";
 import type { FlatListProps, FlatListRef } from "~/components/Base/List";
 import { FlatList, useFlatListRef } from "~/components/Base/List";
 import { Button } from "~/components/Form/Button";
-import { FilledIconButton } from "~/components/Form/Button/Icon";
+import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
 import { Em, TEm } from "~/components/Typography/StyledText";
 import { linkTrackToLyric } from "../../lyrics/helpers/linkTrackToLyric";
@@ -64,6 +65,8 @@ export function LyricsOverlay(props: { size: number; trackId: string }) {
 }
 
 function LyricsContent(props: { trackId: string; offset: number }) {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
   const { isPending, data, error } = useLyricForTrack(props.trackId);
 
   const lyricsLines = useMemo(() => {
@@ -80,28 +83,37 @@ function LyricsContent(props: { trackId: string; offset: number }) {
   );
 
   if (isPending) return null;
-  else if (error || !data) {
-    return <LyricsNotFound {...props} />;
-  } else if (isSynchronized) {
-    return (
-      <SynchronizedLyrics
-        key={props.trackId}
-        lines={lyricsLines}
-        offset={props.offset}
-      />
-    );
-  }
+  else if (error || !data) return <LyricsNotFound {...props} />;
+
   return (
-    <FlatList
-      data={lyricsLines}
-      keyExtractor={(_, index) => `${index}`}
-      renderItem={({ item }) => <Em className="text-xl">{item}</Em>}
-      contentContainerStyle={{
-        paddingTop: props.offset,
-        paddingBottom: SCROLL_OFFSET,
-        gap: LINE_GAP,
-      }}
-    />
+    <>
+      {isSynchronized ? (
+        <SynchronizedLyrics
+          key={props.trackId}
+          lines={lyricsLines}
+          offset={props.offset}
+        />
+      ) : (
+        <FlatList
+          data={lyricsLines}
+          keyExtractor={(_, index) => `${index}`}
+          renderItem={({ item }) => <Em className="text-xl">{item}</Em>}
+          contentContainerStyle={{
+            paddingTop: props.offset,
+            paddingBottom: SCROLL_OFFSET,
+            gap: LINE_GAP,
+          }}
+        />
+      )}
+
+      <IconButton
+        Icon={Edit}
+        accessibilityLabel={t("form.edit")}
+        onPress={() => navigation.navigate("ModifyLyric", { id: data.id })}
+        className="absolute right-0 bottom-0 z-100"
+        size="xs"
+      />
+    </>
   );
 }
 

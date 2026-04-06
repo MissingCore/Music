@@ -151,7 +151,6 @@ export function TextareaImpl<TData extends Record<string, any>>() {
             setField((prev) => ({ ...prev, [props.field]: text }))
           }
           multiline
-          numberOfLines={16}
           textAlignVertical="top"
           className="min-h-64 w-full rounded-sm border border-outline px-2 py-3"
         />
