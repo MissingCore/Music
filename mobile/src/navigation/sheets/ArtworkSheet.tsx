@@ -128,6 +128,11 @@ function BaseArtworkSheetContent(props: {
   const { height, width } = useWindowDimensions();
   const [disabled, setDisabled] = useState(false);
 
+  const imageSize = Math.min(
+    384,
+    width - 96 > height - 256 ? height - 256 : width - 96,
+  );
+
   const onSubmit = async (artwork: Promise<string> | null) => {
     setDisabled(true);
     try {
@@ -144,7 +149,7 @@ function BaseArtworkSheetContent(props: {
       <MediaImage
         type={props.type}
         source={props.imageSource ?? null}
-        size={width - 96 > height - 256 ? height - 256 : width - 96}
+        size={imageSize}
         className="mx-4"
       />
       <SheetButtonGroup
