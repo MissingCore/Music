@@ -103,22 +103,16 @@ export async function getSortedTracks<
       onlyIds
         ? { id: structuredTracksView.id }
         : {
-            id: structuredTracksView.id,
-            name: structuredTracksView.name,
+            ...commonTrackColumns,
             artistName: structuredTracksView.artistsName,
-            albumName: structuredTracksView.albumName,
-            duration: structuredTracksView.duration,
             discoverTime: structuredTracksView.discoverTime,
             modificationTime: structuredTracksView.modificationTime,
-            artwork: structuredTracksView.artwork,
           },
     )
     .from(structuredTracksView)
     .orderBy(isAsc ? iAsc(sortField) : iDesc(sortField));
 
-  return results as TOnlyIds extends true
-    ? Array<{ id: string }>
-    : SortedTrack[];
+  return commonTracksOrIds<SortedTrack, TOnlyIds>(results, onlyIds);
 }
 
 export async function getTracks(conditions?: DrizzleFilter) {

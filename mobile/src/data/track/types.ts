@@ -16,16 +16,11 @@ export type Track = Prettify<
   }
 >;
 
-export type SortedTrack = {
-  id: string;
-  name: string;
+export type SortedTrack = CommonTrack & {
   /** Used for home screen sorting. */
   artistName: string | null;
-  albumName: string | null;
-  duration: number;
   discoverTime: number;
   modificationTime: number;
-  artwork: string | null;
 };
 
 export type BulkQueriedTrack = CommonTrack & {

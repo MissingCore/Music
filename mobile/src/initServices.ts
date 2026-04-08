@@ -16,10 +16,12 @@ import { db } from "~/db";
 
 import i18next from "~/modules/i18n";
 import { getAlbum, getAlbumsSummary } from "~/data/album/api";
+import { getArtist, getArtistsSummary } from "~/data/artist/api";
 import { getArtistsString } from "~/data/artist/utils";
+import { getGenre, getGenresSummary } from "~/data/genre/api";
 import { getPlaylist, getPlaylistsSummary } from "~/data/playlist/api";
 import { addPlayedTrack } from "~/data/recent/api";
-import { deleteTracks } from "~/data/track/api";
+import { deleteTracks, getSortedTracks } from "~/data/track/api";
 import { formatTrackforPlayer } from "~/data/track/utils";
 import type { CommonTrack } from "~/data/types";
 import { playbackStore } from "~/stores/Playback/store";
@@ -34,6 +36,7 @@ import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 import { clearAllQueries } from "~/lib/react-query";
 import { bgWait } from "~/utils/promise";
 import { capitalize, getSafeUri } from "~/utils/string";
+import { ReservedPlaylists } from "~/modules/media/constants";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
 import type { MediaType, PlayFromSource } from "~/stores/Playback/types";
@@ -263,7 +266,7 @@ export async function initServices() {
     loader: () => Promise<
       Array<{
         name: string;
-        id: string;
+        id?: string;
         artistName?: string;
         trackCount: number;
       }>
@@ -274,7 +277,7 @@ export async function initServices() {
       url: `/${category}`,
       title: `${capitalize(category)}s`,
       children: data.map((item) => ({
-        url: `/${category}/${item.id}`,
+        url: `/${category}/${item.id ?? item.name}`,
         title: item.name,
         description:
           item.artistName ||
@@ -298,7 +301,7 @@ export async function initServices() {
       const hasDiscLabel = (data.tracks.at(-1)?.disc || -1) > 1;
 
       return {
-        url: `/${category}/${id}`,
+        url: category === "track" ? "/track" : `/${category}/${id}`,
         title: data.name,
         children: data.tracks.map((track) => ({
           src: getSafeUri(track.uri),
@@ -318,8 +321,15 @@ export async function initServices() {
   const mediaListRoutes: Record<string, BrowserSource> = {
     "/album": () => getMediaCategoryRoute("album", getAlbumsSummary),
     "/album/{id}": getMediaCategoryEntryRoute("album", getAlbum),
+    "/artist": () => getMediaCategoryRoute("artist", getArtistsSummary),
+    "/artist/{id}": getMediaCategoryEntryRoute("artist", getArtist),
+    "/genre": () => getMediaCategoryRoute("genre", getGenresSummary),
+    "/genre/{id}": getMediaCategoryEntryRoute("genre", getGenre),
     "/playlist": () => getMediaCategoryRoute("playlist", getPlaylistsSummary),
     "/playlist/{id}": getMediaCategoryEntryRoute("playlist", getPlaylist),
+    "/track": getMediaCategoryEntryRoute("track", async () => {
+      return { name: "Tracks", tracks: await getSortedTracks() };
+    }),
   };
 
   const configuration: BrowserConfiguration = {
@@ -334,18 +344,13 @@ export async function initServices() {
       "/library": {
         url: "/library",
         title: "Your Library",
-        children: [
-          {
-            url: "/album",
-            title: "Albums",
+        children: ["Album", "Artist", "Genre", "Playlist", "Track"].map(
+          (category) => ({
+            url: `/${category.toLowerCase()}`,
+            title: `${category}s`,
             groupTitle: experimentalLabel,
-          },
-          {
-            url: "/playlist",
-            title: "Playlists",
-            groupTitle: experimentalLabel,
-          },
-        ],
+          }),
+        ),
       },
     },
     //* Only load a single track to be consistent with our playback strategy.
@@ -361,8 +366,13 @@ export async function initServices() {
 
       //? Derive the `PlayFromSource` from the url.
       const [_, lType, lId] = androidAutoURL.split("?__trackId")[0]!.split("/");
-      if (!lType || !lId) return PlaybackControls.play();
-      const listSource = { type: lType, id: lId } as PlayFromSource;
+      let listSource = { type: lType, id: lId } as PlayFromSource;
+      //* We need to pay attention to the special case of playing from the "Tracks" list.
+      if (lType === "track") {
+        listSource = { type: "playlist", id: ReservedPlaylists.tracks };
+      } else if (!lType || !lId) {
+        return;
+      }
 
       //? Get the id of the selected track since we can't pass it down.
       const activeTrack = await db.query.tracks.findFirst({

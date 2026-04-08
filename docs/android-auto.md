@@ -5,8 +5,7 @@
 
 Android Auto support will stay as an experimental feature for the foreseeable future. As such, there are some caveats you need to be aware of:
 
-0. Currently, only "structured" lists (Albums & Playlists) can be played directly from the Android Auto interface.
-   - Though, you can still play from other lists via the Android app and go through the tracks via the media controls on Android Auto.
+0. **Android Auto may not display all tracks (probably for safety to limit driver distraction)**.
 1. Artwork will not get rendered (Android Auto doesn't work with embedded artwork).
 2. Search & voice commands aren't implemented.
 3. Shuffle & Repeat state can only be controlled via the Android app.
