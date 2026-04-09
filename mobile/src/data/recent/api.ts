@@ -10,7 +10,7 @@ import { getAlbumDetails } from "../album/api";
 import { AlbumArtistsKey } from "../album/utils";
 import { getArtist } from "../artist/api";
 import { getArtistsString } from "../artist/utils";
-import { getFolderTracks } from "../folder/api";
+import { getSortedFolderTracks } from "../folder/api";
 import { getGenre } from "../genre/api";
 import { getPlaylist } from "../playlist/api";
 
@@ -147,7 +147,7 @@ async function getRecentListEntry(source: PlayFromSource) {
         count: data.tracks.length,
       });
     } else if (source.type === "folder") {
-      const numTracks = (await getFolderTracks(source.id, true)).length;
+      const numTracks = (await getSortedFolderTracks(source.id, true)).length;
       if (numTracks === 0) throw new Error("Folder is empty.");
       entry.title = source.id.split("/").at(-2) ?? source.id;
       entry.description = i18next.t("plural.track", { count: numTracks });

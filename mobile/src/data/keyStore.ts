@@ -56,9 +56,13 @@ export const queries = createQueryKeyStore({
   },
   /** Query keys used in `useQuery` for folders. */
   folders: {
-    detail: (folderPath?: string) => ({
-      queryKey: [folderPath],
-      queryFn: () => getFolder(folderPath),
+    detail: (
+      order: ScreenSortOptions<"track">,
+      isAsc: boolean,
+      folderPath?: string,
+    ) => ({
+      queryKey: [order, isAsc, folderPath],
+      queryFn: () => getFolder(folderPath, { order, isAsc }),
     }),
   },
   /** Query keys used in `useQuery` for genres. */

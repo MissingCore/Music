@@ -21,6 +21,7 @@ import type { FileNode } from "~/db/schema";
 import { useFolderContent } from "~/data/folder/queries";
 
 import { NScrollListLayout } from "~/navigation/layouts/NScrollLayout";
+import { FoldersViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { OnRTL, OnRTLWorklet } from "~/lib/react";
@@ -127,6 +128,7 @@ export default function Folders({
       renderItem={renderItem}
       ListEmptyComponent={<ContentPlaceholder isPending={isPending} />}
       scrollEnabled={!isPending}
+      OptionsSheet={FoldersViewOptionsSheet}
       Subheader={
         <Breadcrumbs
           dirSegments={dirSegments}

@@ -13,6 +13,7 @@ export type LayoutItem = {
 export type MutableViewOrder =
   | "album"
   | "artist"
+  | "folder"
   | "genre"
   | "playlist"
   | "track";

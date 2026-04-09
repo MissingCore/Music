@@ -4,19 +4,25 @@ import { db } from "~/db";
 import type { FileNode } from "~/db/schema";
 import { fileNodes, tracks } from "~/db/schema";
 
-import { iAsc } from "~/lib/drizzle";
+import { viewPreferenceStore } from "~/stores/ViewPreference/store";
+import type { ScreenSortOptions } from "~/stores/ViewPreference/constants";
+import type { SortedTrack } from "../track/types";
+
+import { iAsc, iDesc } from "~/lib/drizzle";
 import { addTrailingSlash } from "~/utils/string";
 import type { Maybe } from "~/utils/types";
-import type { CommonTrack } from "../types";
 import { commonTracksOrIds } from "../utils";
 import { commonTrackColumns, structuredTracksView } from "../views";
 
 //#region GET Methods
 /** Get all data associated with a folder. `path` doesn't include `file:///`. */
-export async function getFolder(path: Maybe<string>) {
+export async function getFolder(
+  path: Maybe<string>,
+  sortOptions?: { isAsc: boolean; order: ScreenSortOptions<"folder"> },
+) {
   const [folderDirectories, folderTracks] = await Promise.all([
     getFolderDirectories(path),
-    getFolderTracks(path),
+    getSortedFolderTracks(path, false, sortOptions),
   ]);
 
   return { directories: folderDirectories, tracks: folderTracks };
@@ -61,20 +67,44 @@ export async function getFolderDirectories(path: Maybe<string>) {
 }
 
 /**
- * Return the tracks associated with a folder. It's not guaranteed that
- * the folder exists.
+ * Return the tracks associated with a folder in the specified sort order.
+ * It's not guaranteed that the folder exists.
  */
-export async function getFolderTracks<
+export async function getSortedFolderTracks<
   TOnlyIds extends boolean | undefined = false,
->(path: Maybe<string>, onlyIds?: TOnlyIds) {
+>(
+  path: Maybe<string>,
+  onlyIds?: TOnlyIds,
+  sortOptions?: { isAsc: boolean; order: ScreenSortOptions<"folder"> },
+) {
   if (!path) {
     return [] as unknown as TOnlyIds extends true
       ? Array<{ id: string }>
-      : CommonTrack[];
+      : SortedTrack[];
   }
 
+  const { folderIsAsc, folderOrder } = viewPreferenceStore.getState();
+
+  const isAsc = sortOptions?.isAsc ?? folderIsAsc;
+  const order = sortOptions?.order ?? folderOrder;
+
+  //? Determine field we'll sort by.
+  const sortField =
+    order === "artistName"
+      ? structuredTracksView.artistsName
+      : structuredTracksView[order];
+
   const results = await db
-    .select(onlyIds ? { id: structuredTracksView.id } : commonTrackColumns)
+    .select(
+      onlyIds
+        ? { id: structuredTracksView.id }
+        : {
+            ...commonTrackColumns,
+            artistName: structuredTracksView.artistsName,
+            discoverTime: structuredTracksView.discoverTime,
+            modificationTime: structuredTracksView.modificationTime,
+          },
+    )
     .from(structuredTracksView)
     .where(
       eq(
@@ -82,9 +112,9 @@ export async function getFolderTracks<
         `file:///${addTrailingSlash(path)}`,
       ),
     )
-    .orderBy(iAsc(structuredTracksView.name));
+    .orderBy(isAsc ? iAsc(sortField) : iDesc(sortField));
 
-  return commonTracksOrIds<CommonTrack, TOnlyIds>(results, onlyIds);
+  return commonTracksOrIds<SortedTrack, TOnlyIds>(results, onlyIds);
 }
 //#endregion
 
