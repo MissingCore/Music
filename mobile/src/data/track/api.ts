@@ -4,8 +4,6 @@ import { db } from "~/db";
 import type { InvalidTrack } from "~/db/schema";
 import { invalidTracks, tracks, tracksToPlaylists } from "~/db/schema";
 
-import { viewPreferenceStore } from "~/stores/ViewPreference/store";
-
 import {
   getExcludedColumns,
   getSubqueryFields,
@@ -18,7 +16,11 @@ import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { TrackRelationTables } from "./constants";
 import type { BulkQueriedTrack, SortedTrack, Track } from "./types";
 import type { DrizzleFilter, TracksSortOptions } from "../types";
-import { commonTracksOrIds, fromJSONArrayString } from "../utils";
+import {
+  commonTracksOrIds,
+  fromJSONArrayString,
+  getTracksOrderedBy,
+} from "../utils";
 import { commonTrackColumns, structuredTracksView } from "../views";
 
 type InsertedTrack = typeof tracks.$inferInsert;
@@ -83,17 +85,6 @@ export async function getTrackPlaylists(id: string) {
 export async function getSortedTracks<
   TOnlyIds extends boolean | undefined = false,
 >(onlyIds?: TOnlyIds, sortOptions?: TracksSortOptions<"track">) {
-  const { trackIsAsc, trackOrder } = viewPreferenceStore.getState();
-
-  const isAsc = sortOptions?.isAsc ?? trackIsAsc;
-  const order = sortOptions?.order ?? trackOrder;
-
-  //? Determine field we'll sort by.
-  const sortField =
-    order === "artistName"
-      ? structuredTracksView.artistsName
-      : structuredTracksView[order];
-
   const results = await db
     .select(
       onlyIds
@@ -106,7 +97,7 @@ export async function getSortedTracks<
           },
     )
     .from(structuredTracksView)
-    .orderBy(isAsc ? iAsc(sortField) : iDesc(sortField));
+    .orderBy(getTracksOrderedBy("track", sortOptions));
 
   return commonTracksOrIds<SortedTrack, TOnlyIds>(results, onlyIds);
 }

@@ -9,13 +9,17 @@ export type LayoutItem = {
   imageSource: string | null | Array<string | null>;
 };
 
-/** Screens where the order of the content can be change. */
-export type MutableViewOrder =
-  | "album"
-  | "artist"
+/** Options where the sort order will be applied to the tracks. */
+export type MutableTrackOrder =
   | "artistTracks"
   | "folder"
-  | "genre"
   | "genreTracks"
-  | "playlist"
   | "track";
+
+/** Screens where the order of the content can be change. */
+export type MutableViewOrder =
+  | MutableTrackOrder
+  | "album"
+  | "artist"
+  | "genre"
+  | "playlist";

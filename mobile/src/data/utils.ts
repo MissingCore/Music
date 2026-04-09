@@ -1,3 +1,10 @@
+import { viewPreferenceStore } from "~/stores/ViewPreference/store";
+import type { MutableTrackOrder } from "~/stores/ViewPreference/types";
+
+import { iAsc, iDesc } from "~/lib/drizzle";
+import type { TracksSortOptions } from "./types";
+import { structuredTracksView } from "./views";
+
 export function commonTracksOrIds<
   TResult extends Record<string, any>,
   TOnlyIds extends boolean | undefined = false,
@@ -10,6 +17,25 @@ export function commonTracksOrIds<
           artists: fromJSONArrayString(artists as string),
         }))
   ) as TOnlyIds extends true ? Array<{ id: string }> : TResult[];
+}
+
+export function getTracksOrderedBy<TScreen extends MutableTrackOrder>(
+  screen: TScreen,
+  sortOptions?: TracksSortOptions<TScreen>,
+) {
+  const isAsc =
+    sortOptions?.isAsc ?? viewPreferenceStore.getState()[`${screen}IsAsc`];
+  const order =
+    sortOptions?.order ?? viewPreferenceStore.getState()[`${screen}Order`];
+
+  //? Determine field we'll sort by.
+  const sortField =
+    order === "artistName"
+      ? structuredTracksView.artistsName
+      : // @ts-expect-error - Order key exists in `structuredTracksView`.
+        structuredTracksView[order];
+
+  return isAsc ? iAsc(sortField) : iDesc(sortField);
 }
 
 export function fromJSONArrayString(rawJSONString: string | null | unknown) {

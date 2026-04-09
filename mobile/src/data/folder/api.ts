@@ -4,14 +4,13 @@ import { db } from "~/db";
 import type { FileNode } from "~/db/schema";
 import { fileNodes, tracks } from "~/db/schema";
 
-import { viewPreferenceStore } from "~/stores/ViewPreference/store";
 import type { SortedTrack } from "../track/types";
 
-import { iAsc, iDesc } from "~/lib/drizzle";
+import { iAsc } from "~/lib/drizzle";
 import { addTrailingSlash } from "~/utils/string";
 import type { Maybe } from "~/utils/types";
 import type { TracksSortOptions } from "../types";
-import { commonTracksOrIds } from "../utils";
+import { commonTracksOrIds, getTracksOrderedBy } from "../utils";
 import { commonTrackColumns, structuredTracksView } from "../views";
 
 //#region GET Methods
@@ -83,17 +82,6 @@ export async function getSortedFolderTracks<
       : SortedTrack[];
   }
 
-  const { folderIsAsc, folderOrder } = viewPreferenceStore.getState();
-
-  const isAsc = sortOptions?.isAsc ?? folderIsAsc;
-  const order = sortOptions?.order ?? folderOrder;
-
-  //? Determine field we'll sort by.
-  const sortField =
-    order === "artistName"
-      ? structuredTracksView.artistsName
-      : structuredTracksView[order];
-
   const results = await db
     .select(
       onlyIds
@@ -112,7 +100,7 @@ export async function getSortedFolderTracks<
         `file:///${addTrailingSlash(path)}`,
       ),
     )
-    .orderBy(isAsc ? iAsc(sortField) : iDesc(sortField));
+    .orderBy(getTracksOrderedBy("folder", sortOptions));
 
   return commonTracksOrIds<SortedTrack, TOnlyIds>(results, onlyIds);
 }

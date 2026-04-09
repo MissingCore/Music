@@ -3,12 +3,10 @@ import { count, eq, getTableColumns, sum } from "drizzle-orm";
 import { db } from "~/db";
 import { genres, tracks, tracksToGenres } from "~/db/schema";
 
-import { viewPreferenceStore } from "~/stores/ViewPreference/store";
-
-import { iAsc, iDesc, throwIfNoResults } from "~/lib/drizzle";
+import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { formatSeconds } from "~/utils/number";
 import type { CommonTrack, TracksSortOptions } from "../types";
-import { commonTracksOrIds } from "../utils";
+import { commonTracksOrIds, getTracksOrderedBy } from "../utils";
 import { commonTrackColumns, structuredTracksView } from "../views";
 
 type InsertedGenre = typeof genres.$inferInsert;
@@ -58,17 +56,6 @@ export async function getGenreTracks<
   onlyIds?: TOnlyIds,
   sortOptions?: TracksSortOptions<"genreTracks">,
 ) {
-  const { genreTracksIsAsc, genreTracksOrder } = viewPreferenceStore.getState();
-
-  const isAsc = sortOptions?.isAsc ?? genreTracksIsAsc;
-  const order = sortOptions?.order ?? genreTracksOrder;
-
-  //? Determine field we'll sort by.
-  const sortField =
-    order === "artistName"
-      ? structuredTracksView.artistsName
-      : structuredTracksView[order];
-
   const results = await db
     .select(onlyIds ? { id: structuredTracksView.id } : commonTrackColumns)
     .from(tracksToGenres)
@@ -77,7 +64,7 @@ export async function getGenreTracks<
       structuredTracksView,
       eq(tracksToGenres.trackId, structuredTracksView.id),
     )
-    .orderBy(isAsc ? iAsc(sortField) : iDesc(sortField));
+    .orderBy(getTracksOrderedBy("genreTracks", sortOptions));
 
   return commonTracksOrIds<CommonTrack, TOnlyIds>(results, onlyIds);
 }
