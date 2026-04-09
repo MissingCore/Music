@@ -5,12 +5,12 @@ import type { FileNode } from "~/db/schema";
 import { fileNodes, tracks } from "~/db/schema";
 
 import { viewPreferenceStore } from "~/stores/ViewPreference/store";
-import type { ScreenSortOptions } from "~/stores/ViewPreference/constants";
 import type { SortedTrack } from "../track/types";
 
 import { iAsc, iDesc } from "~/lib/drizzle";
 import { addTrailingSlash } from "~/utils/string";
 import type { Maybe } from "~/utils/types";
+import type { TracksSortOptions } from "../types";
 import { commonTracksOrIds } from "../utils";
 import { commonTrackColumns, structuredTracksView } from "../views";
 
@@ -18,7 +18,7 @@ import { commonTrackColumns, structuredTracksView } from "../views";
 /** Get all data associated with a folder. `path` doesn't include `file:///`. */
 export async function getFolder(
   path: Maybe<string>,
-  sortOptions?: { isAsc: boolean; order: ScreenSortOptions<"folder"> },
+  sortOptions?: TracksSortOptions<"folder">,
 ) {
   const [folderDirectories, folderTracks] = await Promise.all([
     getFolderDirectories(path),
@@ -75,7 +75,7 @@ export async function getSortedFolderTracks<
 >(
   path: Maybe<string>,
   onlyIds?: TOnlyIds,
-  sortOptions?: { isAsc: boolean; order: ScreenSortOptions<"folder"> },
+  sortOptions?: TracksSortOptions<"folder">,
 ) {
   if (!path) {
     return [] as unknown as TOnlyIds extends true

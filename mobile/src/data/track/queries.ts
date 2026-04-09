@@ -32,10 +32,10 @@ export function useTrackPlaylists(trackId: string) {
 //#endregion
 
 export function useSortedTracks(isReady = true) {
-  const trackIsAsc = useViewPreferenceStore((s) => s.trackIsAsc);
-  const trackOrder = useViewPreferenceStore((s) => s.trackOrder);
+  const isAsc = useViewPreferenceStore((s) => s.trackIsAsc);
+  const order = useViewPreferenceStore((s) => s.trackOrder);
   return useQuery({
-    ...q.tracks.sorted(trackOrder, trackIsAsc),
+    ...q.tracks.sorted({ isAsc, order }),
     enabled: isReady,
   });
 }

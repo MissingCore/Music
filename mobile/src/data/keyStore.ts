@@ -19,9 +19,9 @@ import {
   getTrackLyrics,
   getTrackPlaylists,
 } from "./track/api";
+import type { TracksSortOptions } from "./types";
 
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
-import type { ScreenSortOptions } from "~/stores/ViewPreference/constants";
 
 /** All of the reusuable query keys. */
 export const queries = createQueryKeyStore({
@@ -57,12 +57,11 @@ export const queries = createQueryKeyStore({
   /** Query keys used in `useQuery` for folders. */
   folders: {
     detail: (
-      order: ScreenSortOptions<"track">,
-      isAsc: boolean,
+      sortOptions: TracksSortOptions<"folder">,
       folderPath?: string,
     ) => ({
-      queryKey: [order, isAsc, folderPath],
-      queryFn: () => getFolder(folderPath, { order, isAsc }),
+      queryKey: [sortOptions, folderPath],
+      queryFn: () => getFolder(folderPath, sortOptions),
     }),
   },
   /** Query keys used in `useQuery` for genres. */
@@ -105,9 +104,9 @@ export const queries = createQueryKeyStore({
   },
   /** Query keys used in `useQuery` for tracks. */
   tracks: {
-    sorted: (order: ScreenSortOptions<"track">, isAsc: boolean) => ({
-      queryKey: [order, isAsc],
-      queryFn: () => getSortedTracks(false, { order, isAsc }),
+    sorted: (sortOptions: TracksSortOptions<"track">) => ({
+      queryKey: [sortOptions],
+      queryFn: () => getSortedTracks(false, sortOptions),
     }),
     detail: (trackId: string) => ({
       queryKey: [trackId],

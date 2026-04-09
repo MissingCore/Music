@@ -129,10 +129,9 @@ export async function getAlbumsSummary<
     .orderBy(iAsc(albums.name), iAsc(albums.artistsKey));
 
   return results
-    .map(({ artistsKey, tracks, ...album }) => ({
+    .map(({ tracks, ...album }) => ({
       ...album,
-      artistsKey,
-      artistName: AlbumArtistsKey.toString(artistsKey),
+      artistName: AlbumArtistsKey.toString(album.artistsKey),
       duration: Number(album.duration) || 0,
       ...(withTracks ? { tracks: parseAlbumTracks(tracks) } : {}),
     }))

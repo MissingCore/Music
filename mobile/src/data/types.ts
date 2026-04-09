@@ -1,5 +1,8 @@
 import type { SQLWrapper } from "drizzle-orm";
 
+import type { ScreenSortOptions } from "~/stores/ViewPreference/constants";
+import type { MutableViewOrder } from "~/stores/ViewPreference/types";
+
 /** Operations passed to `where` clause. */
 export type DrizzleFilter = Array<SQLWrapper | undefined>;
 
@@ -12,4 +15,9 @@ export type CommonTrack = {
   albumName: string | null;
   uri: string;
   duration: number;
+};
+
+export type TracksSortOptions<TScreen extends MutableViewOrder> = {
+  isAsc: boolean;
+  order: ScreenSortOptions<TScreen>;
 };

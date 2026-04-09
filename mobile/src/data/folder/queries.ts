@@ -5,10 +5,10 @@ import { queries as q } from "../keyStore";
 
 //#region Queries
 export function useFolderContent(folderPath?: string) {
-  const folderIsAsc = useViewPreferenceStore((s) => s.folderIsAsc);
-  const folderOrder = useViewPreferenceStore((s) => s.folderOrder);
+  const isAsc = useViewPreferenceStore((s) => s.folderIsAsc);
+  const order = useViewPreferenceStore((s) => s.folderOrder);
   return useQuery({
-    ...q.folders.detail(folderOrder, folderIsAsc, folderPath),
+    ...q.folders.detail({ isAsc, order }, folderPath),
     select: ({ directories, tracks }) => ({
       directories,
       tracks: tracks.map((track) => ({

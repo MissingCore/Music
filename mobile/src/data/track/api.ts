@@ -5,7 +5,6 @@ import type { InvalidTrack } from "~/db/schema";
 import { invalidTracks, tracks, tracksToPlaylists } from "~/db/schema";
 
 import { viewPreferenceStore } from "~/stores/ViewPreference/store";
-import type { ScreenSortOptions } from "~/stores/ViewPreference/constants";
 
 import {
   getExcludedColumns,
@@ -18,7 +17,7 @@ import { omitKeys } from "~/utils/object";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { TrackRelationTables } from "./constants";
 import type { BulkQueriedTrack, SortedTrack, Track } from "./types";
-import type { DrizzleFilter } from "../types";
+import type { DrizzleFilter, TracksSortOptions } from "../types";
 import { commonTracksOrIds, fromJSONArrayString } from "../utils";
 import { commonTrackColumns, structuredTracksView } from "../views";
 
@@ -83,10 +82,7 @@ export async function getTrackPlaylists(id: string) {
 /** Return the tracks sorted by the View Preferences. */
 export async function getSortedTracks<
   TOnlyIds extends boolean | undefined = false,
->(
-  onlyIds?: TOnlyIds,
-  sortOptions?: { isAsc: boolean; order: ScreenSortOptions<"track"> },
-) {
+>(onlyIds?: TOnlyIds, sortOptions?: TracksSortOptions<"track">) {
   const { trackIsAsc, trackOrder } = viewPreferenceStore.getState();
 
   const isAsc = sortOptions?.isAsc ?? trackIsAsc;
