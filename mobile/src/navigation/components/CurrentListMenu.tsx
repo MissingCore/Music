@@ -7,6 +7,7 @@ import { Image } from "~/resources/icons/Image";
 import { LowPriority } from "~/resources/icons/LowPriority";
 import { MoreHoriz } from "~/resources/icons/MoreHoriz";
 import { QueueMusic } from "~/resources/icons/QueueMusic";
+import { Sort } from "~/resources/icons/Sort";
 import { Queue } from "~/stores/Playback/actions";
 
 import { IconButton } from "~/components/Form/Button/Icon";
@@ -25,6 +26,7 @@ export function CurrentListMenu(props: {
   trackIds: string[];
   actions?: MenuAction[];
   presentArtworkSheet?: VoidFunction;
+  presentSortOptionsSheet?: VoidFunction;
 }) {
   const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
@@ -56,8 +58,21 @@ export function CurrentListMenu(props: {
       });
     }
 
+    if (props.presentSortOptionsSheet) {
+      actions.push({
+        Icon: Sort,
+        labelKey: "feat.modalViewPreference.extra.sort",
+        onPress: props.presentSortOptionsSheet,
+      });
+    }
+
     return actions.concat(props.actions ?? []).concat(queueActions);
-  }, [props.actions, props.presentArtworkSheet, queueActions]);
+  }, [
+    props.actions,
+    props.presentArtworkSheet,
+    props.presentSortOptionsSheet,
+    queueActions,
+  ]);
 
   return (
     <Menu

@@ -9,10 +9,12 @@ import {
   tracksToArtists,
 } from "~/db/schema";
 
-import { iAsc, throwIfNoResults } from "~/lib/drizzle";
+import { viewPreferenceStore } from "~/stores/ViewPreference/store";
+
+import { iAsc, iDesc, throwIfNoResults } from "~/lib/drizzle";
 import { formatSeconds } from "~/utils/number";
 import type { ArtistAlbum } from "./types";
-import type { CommonTrack } from "../types";
+import type { CommonTrack, TracksSortOptions } from "../types";
 import { commonTracksOrIds } from "../utils";
 import { commonTrackColumns, structuredTracksView } from "../views";
 
@@ -23,11 +25,12 @@ type InsertedArtist = typeof artists.$inferInsert;
 export async function getArtist<TOnlyIds extends boolean | undefined = false>(
   id: string,
   onlyIds?: TOnlyIds,
+  sortOptions?: TracksSortOptions<"artistTracks">,
 ) {
   const [artistDetails, artistAlbums, artistTracks] = await Promise.all([
     getArtistDetails(id),
     getArtistAlbums(id),
-    getArtistTracks(id, onlyIds),
+    getArtistTracks(id, onlyIds, sortOptions),
   ]);
 
   return { ...artistDetails, albums: artistAlbums, tracks: artistTracks };
@@ -88,7 +91,20 @@ export async function getArtistAlbums(id: string): Promise<ArtistAlbum[]> {
  */
 export async function getArtistTracks<
   TOnlyIds extends boolean | undefined = false,
->(id: string, onlyIds?: TOnlyIds) {
+>(
+  id: string,
+  onlyIds?: TOnlyIds,
+  sortOptions?: TracksSortOptions<"artistTracks">,
+) {
+  const { artistTracksIsAsc, artistTracksOrder } =
+    viewPreferenceStore.getState();
+
+  const isAsc = sortOptions?.isAsc ?? artistTracksIsAsc;
+  const order = sortOptions?.order ?? artistTracksOrder;
+
+  //? Determine field we'll sort by.
+  const sortField = structuredTracksView[order];
+
   const results = await db
     .select(onlyIds ? { id: structuredTracksView.id } : commonTrackColumns)
     .from(tracksToArtists)
@@ -97,7 +113,7 @@ export async function getArtistTracks<
       structuredTracksView,
       eq(tracksToArtists.trackId, structuredTracksView.id),
     )
-    .orderBy(iAsc(structuredTracksView.name));
+    .orderBy(isAsc ? iAsc(sortField) : iDesc(sortField));
 
   return commonTracksOrIds<CommonTrack, TOnlyIds>(results, onlyIds);
 }

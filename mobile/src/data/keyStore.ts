@@ -42,9 +42,12 @@ export const queries = createQueryKeyStore({
       queryKey: null,
       queryFn: getArtistsSummary,
     },
-    detail: (artistName: string) => ({
-      queryKey: [artistName],
-      queryFn: () => getArtist(artistName),
+    detail: (
+      artistName: string,
+      sortOptions?: TracksSortOptions<"artistTracks">,
+    ) => ({
+      queryKey: [artistName, sortOptions],
+      queryFn: () => getArtist(artistName, false, sortOptions),
     }),
   },
   /** Query keys used in `useQuery` for favorite media. */
@@ -70,9 +73,12 @@ export const queries = createQueryKeyStore({
       queryKey: null,
       queryFn: getGenresSummary,
     },
-    detail: (genreName: string) => ({
-      queryKey: [genreName],
-      queryFn: () => getGenre(genreName),
+    detail: (
+      genreName: string,
+      sortOptions?: TracksSortOptions<"genreTracks">,
+    ) => ({
+      queryKey: [genreName, sortOptions],
+      queryFn: () => getGenre(genreName, false, sortOptions),
     }),
   },
   /** Query keys used in `useQuery` for lyrics. */

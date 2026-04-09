@@ -9,6 +9,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { useBottomActionsOffset } from "~/navigation/hooks/useBottomActions";
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
 import { ArtistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
+import { SortSheet } from "~/navigation/sheets/SortSheet";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
@@ -29,42 +30,46 @@ export default function Artist({
   const bottomOffset = useBottomActionsOffset(16);
   const { isPending, error, data } = useArtistForScreen(artistName);
   const artworkSheetRef = useSheetRef();
+  const tracksSortOptionsSheetRef = useSheetRef();
 
   const trackSource = { type: "artist", id: artistName } as const;
   const presets = useTrackListPreset({ data: data?.tracks, trackSource });
 
-  if (isPending || error) {
-    return (
-      <SafeContainer additionalTopOffset={56} className="flex-1">
-        <PagePlaceholder isPending={isPending} />
-      </SafeContainer>
-    );
-  }
-
   return (
     <>
       <ArtistArtworkSheet ref={artworkSheetRef} id={artistName} />
+      <SortSheet ref={tracksSortOptionsSheetRef} screen="artistTracks" />
 
-      <CurrentListLayout
-        // List Header Props
-        listInfo={{
-          title: data.name,
-          metadata: data.metadata,
-          Actions: (
-            <CurrentListMenu
-              name={data.name}
-              trackIds={data.tracks.map(({ id }) => id)}
-              presentArtworkSheet={() => artworkSheetRef.current?.present()}
-            />
-          ),
-        }}
-        listSource={trackSource}
-        imageSource={data.imageSource}
-        SubHeader={<ArtistAlbums albums={data.albums} />}
-        // FlatList Props
-        {...presets}
-        contentContainerStyle={{ paddingBottom: bottomOffset }}
-      />
+      {/* Note: Render via ternary as app will crash due to re-rendering the opened sheet when changing the sort order. */}
+      {isPending || error ? (
+        <SafeContainer additionalTopOffset={56} className="flex-1">
+          <PagePlaceholder isPending={isPending} />
+        </SafeContainer>
+      ) : (
+        <CurrentListLayout
+          // List Header Props
+          listInfo={{
+            title: data.name,
+            metadata: data.metadata,
+            Actions: (
+              <CurrentListMenu
+                name={data.name}
+                trackIds={data.tracks.map(({ id }) => id)}
+                presentArtworkSheet={() => artworkSheetRef.current?.present()}
+                presentSortOptionsSheet={() =>
+                  tracksSortOptionsSheetRef.current?.present()
+                }
+              />
+            ),
+          }}
+          listSource={trackSource}
+          imageSource={data.imageSource}
+          SubHeader={<ArtistAlbums albums={data.albums} />}
+          // FlatList Props
+          {...presets}
+          contentContainerStyle={{ paddingBottom: bottomOffset }}
+        />
+      )}
     </>
   );
 }

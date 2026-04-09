@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
+import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { queries as q } from "../keyStore";
 
 //#region Queries
@@ -10,8 +11,11 @@ export function useArtist(artistName: string) {
 
 export function useArtistForScreen(artistName: string) {
   const { t } = useTranslation();
+  const isAsc = useViewPreferenceStore((s) => s.artistTracksIsAsc);
+  const order = useViewPreferenceStore((s) => s.artistTracksOrder);
+
   return useQuery({
-    ...q.artists.detail(artistName),
+    ...q.artists.detail(artistName, { isAsc, order }),
     select: ({ name, artwork, albums, tracks, duration }) => ({
       name,
       imageSource: artwork,

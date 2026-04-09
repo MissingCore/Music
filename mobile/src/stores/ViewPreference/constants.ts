@@ -21,6 +21,7 @@ type SortOption =
 export const SortOptions = {
   album: ["name", "artistName", "duration", "trackCount"],
   artist: ["name", "duration", "trackCount"],
+  artistTracks: ["name", "albumName", "duration"],
   folder: [
     "name",
     "artistName",
@@ -30,6 +31,7 @@ export const SortOptions = {
     "modificationTime",
   ],
   genre: ["name", "duration", "trackCount"],
+  genreTracks: ["name", "artistName", "albumName", "duration"],
   playlist: ["name", "duration", "trackCount"],
   track: [
     "name",
@@ -80,12 +82,18 @@ export interface ViewPreferenceStore {
   artistIsAsc: boolean;
   artistOrder: ScreenSortOptions<"artist">;
 
+  artistTracksIsAsc: boolean;
+  artistTracksOrder: ScreenSortOptions<"artistTracks">;
+
   folderIsAsc: boolean;
   folderOrder: ScreenSortOptions<"folder">;
 
   genreLayout: LayoutOption;
   genreIsAsc: boolean;
   genreOrder: ScreenSortOptions<"genre">;
+
+  genreTracksIsAsc: boolean;
+  genreTracksOrder: ScreenSortOptions<"genreTracks">;
 
   playlistLayout: LayoutOption;
   playlistIsAsc: boolean;
