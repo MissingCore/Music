@@ -20,7 +20,7 @@ export async function getGenre<TOnlyIds extends boolean | undefined = false>(
 ) {
   const [genreDetails, genreTracks] = await Promise.all([
     getGenreDetails(id),
-    getGenreTracks(id, onlyIds, sortOptions),
+    getSortedGenreTracks(id, onlyIds, sortOptions),
   ]);
 
   return { ...genreDetails, tracks: genreTracks };
@@ -46,10 +46,10 @@ export async function getGenreDetails(id: string) {
 }
 
 /**
- * Return the tracks associated with a genre. It's not guaranteed that
- * the genre exists.
+ * Return the tracks associated with a genre in the specified sort order.
+ * It's not guaranteed that the genre exists.
  */
-export async function getGenreTracks<
+export async function getSortedGenreTracks<
   TOnlyIds extends boolean | undefined = false,
 >(
   id: string,

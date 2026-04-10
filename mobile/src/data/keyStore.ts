@@ -4,10 +4,14 @@ import { ne } from "drizzle-orm";
 import { playlists } from "~/db/schema";
 
 import { getAlbum, getAlbumsSummary } from "./album/api";
-import { getArtist, getArtistsSummary } from "./artist/api";
+import {
+  getArtist,
+  getArtistsSummary,
+  getSortedArtistTracks,
+} from "./artist/api";
 import { getFavoriteLists } from "./favorite/api";
 import { getFolder } from "./folder/api";
-import { getGenre, getGenresSummary } from "./genre/api";
+import { getGenre, getGenresSummary, getSortedGenreTracks } from "./genre/api";
 import { getLyric, getLyricsSummary } from "./lyric/api";
 import { getPlaylist, getPlaylistsSummary } from "./playlist/api";
 import { getRecentMedia } from "./recent/api";
@@ -42,12 +46,16 @@ export const queries = createQueryKeyStore({
       queryKey: null,
       queryFn: getArtistsSummary,
     },
-    detail: (
-      artistName: string,
-      sortOptions?: TracksSortOptions<"artistTracks">,
-    ) => ({
-      queryKey: [artistName, sortOptions],
-      queryFn: () => getArtist(artistName, false, sortOptions),
+    detail: (artistName: string) => ({
+      queryKey: [artistName],
+      queryFn: () => getArtist(artistName, true),
+      contextQueries: {
+        // eslint-disable-next-line @tanstack/query/exhaustive-deps
+        tracks: (sortOptions?: TracksSortOptions<"artistTracks">) => ({
+          queryKey: [sortOptions],
+          queryFn: () => getSortedArtistTracks(artistName, false, sortOptions),
+        }),
+      },
     }),
   },
   /** Query keys used in `useQuery` for favorite media. */
@@ -73,12 +81,16 @@ export const queries = createQueryKeyStore({
       queryKey: null,
       queryFn: getGenresSummary,
     },
-    detail: (
-      genreName: string,
-      sortOptions?: TracksSortOptions<"genreTracks">,
-    ) => ({
-      queryKey: [genreName, sortOptions],
-      queryFn: () => getGenre(genreName, false, sortOptions),
+    detail: (genreName: string) => ({
+      queryKey: [genreName],
+      queryFn: () => getGenre(genreName, true),
+      contextQueries: {
+        // eslint-disable-next-line @tanstack/query/exhaustive-deps
+        tracks: (sortOptions?: TracksSortOptions<"genreTracks">) => ({
+          queryKey: [sortOptions],
+          queryFn: () => getSortedGenreTracks(genreName, false, sortOptions),
+        }),
+      },
     }),
   },
   /** Query keys used in `useQuery` for lyrics. */

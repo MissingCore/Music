@@ -1,8 +1,8 @@
 import i18next from "~/modules/i18n";
 import { getAlbumDetails, getAlbumTracks } from "~/data/album/api";
-import { getArtistTracks } from "~/data/artist/api";
+import { getSortedArtistTracks } from "~/data/artist/api";
 import { getSortedFolderTracks } from "~/data/folder/api";
-import { getGenreTracks } from "~/data/genre/api";
+import { getSortedGenreTracks } from "~/data/genre/api";
 import { getPlaylistTracks } from "~/data/playlist/api";
 import { getSortedTracks } from "~/data/track/api";
 import type { PlayFromSource } from "./types";
@@ -57,10 +57,11 @@ export async function getTrackIdsList({ type, id }: PlayFromSource) {
 
   try {
     if (type === "album") trackIds = await getAlbumTracks(id, true);
-    else if (type === "artist") trackIds = await getArtistTracks(id, true);
+    else if (type === "artist")
+      trackIds = await getSortedArtistTracks(id, true);
     else if (type === "folder")
       trackIds = await getSortedFolderTracks(id, true);
-    else if (type === "genre") trackIds = await getGenreTracks(id, true);
+    else if (type === "genre") trackIds = await getSortedGenreTracks(id, true);
     else if (ReservedNames.has(id)) trackIds = await getSortedTracks(true);
     else trackIds = await getPlaylistTracks(id, true);
   } catch {}

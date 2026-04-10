@@ -5,17 +5,10 @@ import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { queries as q } from "../keyStore";
 
 //#region Queries
-export function useArtist(artistName: string) {
-  return useQuery({ ...q.artists.detail(artistName) });
-}
-
-export function useArtistForScreen(artistName: string) {
+export function useArtistDetails(artistName: string) {
   const { t } = useTranslation();
-  const isAsc = useViewPreferenceStore((s) => s.artistTracksIsAsc);
-  const order = useViewPreferenceStore((s) => s.artistTracksOrder);
-
   return useQuery({
-    ...q.artists.detail(artistName, { isAsc, order }),
+    ...q.artists.detail(artistName),
     select: ({ name, artwork, albums, tracks, duration }) => ({
       name,
       imageSource: artwork,
@@ -25,13 +18,22 @@ export function useArtistForScreen(artistName: string) {
         duration,
       ],
       albums: albums.length > 0 ? albums : null,
-      tracks: tracks.map((track) => ({
+    }),
+  });
+}
+
+export function useArtistTracks(artistName: string) {
+  const isAsc = useViewPreferenceStore((s) => s.artistTracksIsAsc);
+  const order = useViewPreferenceStore((s) => s.artistTracksOrder);
+  return useQuery({
+    ...q.artists.detail(artistName)._ctx.tracks({ isAsc, order }),
+    select: (tracks) =>
+      tracks.map((track) => ({
         id: track.id,
         title: track.name,
         description: track.albumName ?? "—",
         imageSource: track.artwork,
       })),
-    }),
   });
 }
 

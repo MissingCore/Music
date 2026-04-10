@@ -1,6 +1,6 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 
-import { useGenreForScreen } from "~/data/genre/queries";
+import { useGenreDetails, useGenreTracks } from "~/data/genre/queries";
 
 import { useBottomActionsOffset } from "~/navigation/hooks/useBottomActions";
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
@@ -21,47 +21,52 @@ export default function Genre({
   },
 }: Props) {
   const bottomOffset = useBottomActionsOffset(16);
-  const { isPending, error, data } = useGenreForScreen(id);
+  const genreDetailsQuery = useGenreDetails(id);
+  const genreTracksQuery = useGenreTracks(id);
   const artworkSheetRef = useSheetRef();
   const tracksSortOptionsSheetRef = useSheetRef();
 
   const trackSource = { type: "genre", id } as const;
-  const presets = useTrackListPreset({ data: data?.tracks, trackSource });
+  const presets = useTrackListPreset({
+    data: genreTracksQuery.data,
+    trackSource,
+  });
+
+  if (genreDetailsQuery.isPending || genreDetailsQuery.error) {
+    return (
+      <SafeContainer additionalTopOffset={56} className="flex-1">
+        <PagePlaceholder isPending={genreDetailsQuery.isPending} />
+      </SafeContainer>
+    );
+  }
 
   return (
     <>
       <GenreArtworkSheet ref={artworkSheetRef} id={id} />
       <SortSheet ref={tracksSortOptionsSheetRef} screen="genreTracks" />
 
-      {/* Note: Render via ternary as app will crash due to re-rendering the opened sheet when changing the sort order. */}
-      {isPending || error ? (
-        <SafeContainer additionalTopOffset={56} className="flex-1">
-          <PagePlaceholder isPending={isPending} />
-        </SafeContainer>
-      ) : (
-        <CurrentListLayout
-          // List Header Props
-          listInfo={{
-            title: data.name,
-            metadata: data.metadata,
-            Actions: (
-              <CurrentListMenu
-                name={data.name}
-                trackIds={data.tracks.map(({ id }) => id)}
-                presentArtworkSheet={() => artworkSheetRef.current?.present()}
-                presentSortOptionsSheet={() =>
-                  tracksSortOptionsSheetRef.current?.present()
-                }
-              />
-            ),
-          }}
-          listSource={trackSource}
-          imageSource={data.imageSource}
-          // FlatList Props
-          {...presets}
-          contentContainerStyle={{ paddingBottom: bottomOffset }}
-        />
-      )}
+      <CurrentListLayout
+        // List Header Props
+        listInfo={{
+          title: genreDetailsQuery.data.name,
+          metadata: genreDetailsQuery.data.metadata,
+          Actions: (
+            <CurrentListMenu
+              name={genreDetailsQuery.data.name}
+              trackIds={genreTracksQuery.data?.map(({ id }) => id) ?? []}
+              presentArtworkSheet={() => artworkSheetRef.current?.present()}
+              presentSortOptionsSheet={() =>
+                tracksSortOptionsSheetRef.current?.present()
+              }
+            />
+          ),
+        }}
+        listSource={trackSource}
+        imageSource={genreDetailsQuery.data.imageSource}
+        // FlatList Props
+        {...presets}
+        contentContainerStyle={{ paddingBottom: bottomOffset }}
+      />
     </>
   );
 }

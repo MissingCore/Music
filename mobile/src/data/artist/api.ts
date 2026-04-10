@@ -28,7 +28,7 @@ export async function getArtist<TOnlyIds extends boolean | undefined = false>(
   const [artistDetails, artistAlbums, artistTracks] = await Promise.all([
     getArtistDetails(id),
     getArtistAlbums(id),
-    getArtistTracks(id, onlyIds, sortOptions),
+    getSortedArtistTracks(id, onlyIds, sortOptions),
   ]);
 
   return { ...artistDetails, albums: artistAlbums, tracks: artistTracks };
@@ -84,10 +84,10 @@ export async function getArtistAlbums(id: string): Promise<ArtistAlbum[]> {
 }
 
 /**
- * Return the tracks associated with an artist. It's not guaranteed that
- * the artist exists.
+ * Return the tracks associated with an artist in the specified sort order.
+ * It's not guaranteed that the artist exists.
  */
-export async function getArtistTracks<
+export async function getSortedArtistTracks<
   TOnlyIds extends boolean | undefined = false,
 >(
   id: string,

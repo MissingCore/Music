@@ -117,6 +117,7 @@ export function CurrentListLayout<TData>({
         data={data}
         getItemType={getItemType}
         onScroll={scrollHandler}
+        maintainVisibleContentPosition={false}
         ListHeaderComponent={
           <View>
             <View

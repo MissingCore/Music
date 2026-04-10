@@ -1,7 +1,7 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 
-import { useArtistForScreen } from "~/data/artist/queries";
+import { useArtistDetails, useArtistTracks } from "~/data/artist/queries";
 import type { ArtistAlbum } from "~/data/artist/types";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -28,48 +28,53 @@ export default function Artist({
   },
 }: Props) {
   const bottomOffset = useBottomActionsOffset(16);
-  const { isPending, error, data } = useArtistForScreen(artistName);
+  const artistDetailsQuery = useArtistDetails(artistName);
+  const artistTracksQuery = useArtistTracks(artistName);
   const artworkSheetRef = useSheetRef();
   const tracksSortOptionsSheetRef = useSheetRef();
 
   const trackSource = { type: "artist", id: artistName } as const;
-  const presets = useTrackListPreset({ data: data?.tracks, trackSource });
+  const presets = useTrackListPreset({
+    data: artistTracksQuery.data,
+    trackSource,
+  });
+
+  if (artistDetailsQuery.isPending || artistDetailsQuery.error) {
+    return (
+      <SafeContainer additionalTopOffset={56} className="flex-1">
+        <PagePlaceholder isPending={artistDetailsQuery.isPending} />
+      </SafeContainer>
+    );
+  }
 
   return (
     <>
       <ArtistArtworkSheet ref={artworkSheetRef} id={artistName} />
       <SortSheet ref={tracksSortOptionsSheetRef} screen="artistTracks" />
 
-      {/* Note: Render via ternary as app will crash due to re-rendering the opened sheet when changing the sort order. */}
-      {isPending || error ? (
-        <SafeContainer additionalTopOffset={56} className="flex-1">
-          <PagePlaceholder isPending={isPending} />
-        </SafeContainer>
-      ) : (
-        <CurrentListLayout
-          // List Header Props
-          listInfo={{
-            title: data.name,
-            metadata: data.metadata,
-            Actions: (
-              <CurrentListMenu
-                name={data.name}
-                trackIds={data.tracks.map(({ id }) => id)}
-                presentArtworkSheet={() => artworkSheetRef.current?.present()}
-                presentSortOptionsSheet={() =>
-                  tracksSortOptionsSheetRef.current?.present()
-                }
-              />
-            ),
-          }}
-          listSource={trackSource}
-          imageSource={data.imageSource}
-          SubHeader={<ArtistAlbums albums={data.albums} />}
-          // FlatList Props
-          {...presets}
-          contentContainerStyle={{ paddingBottom: bottomOffset }}
-        />
-      )}
+      <CurrentListLayout
+        // List Header Props
+        listInfo={{
+          title: artistDetailsQuery.data.name,
+          metadata: artistDetailsQuery.data.metadata,
+          Actions: (
+            <CurrentListMenu
+              name={artistDetailsQuery.data.name}
+              trackIds={artistTracksQuery.data?.map(({ id }) => id) ?? []}
+              presentArtworkSheet={() => artworkSheetRef.current?.present()}
+              presentSortOptionsSheet={() =>
+                tracksSortOptionsSheetRef.current?.present()
+              }
+            />
+          ),
+        }}
+        listSource={trackSource}
+        imageSource={artistDetailsQuery.data.imageSource}
+        SubHeader={<ArtistAlbums albums={artistDetailsQuery.data.albums} />}
+        // FlatList Props
+        {...presets}
+        contentContainerStyle={{ paddingBottom: bottomOffset }}
+      />
     </>
   );
 }
