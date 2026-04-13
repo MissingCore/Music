@@ -5,7 +5,9 @@ import { openDatabaseSync } from "expo-sqlite";
 import * as schema from "./schema";
 import migrations from "./drizzle/migrations";
 
-export const expoSQLiteDB = openDatabaseSync("db.db");
+export const expoSQLiteDB = openDatabaseSync("db.db", {
+  useNewConnection: true,
+});
 export const db = drizzle(expoSQLiteDB, { schema, casing: "snake_case" });
 
 // Run migration on app start.
