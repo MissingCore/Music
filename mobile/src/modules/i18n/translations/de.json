@@ -221,7 +221,10 @@
       "title": "Zuletzt gespielte Position speichern"
     },
     "lyrics": {
-      "title": null
+      "title": null,
+      "extra": {
+        "useEmbedded": null
+      }
     },
     "scanning": {
       "title": "Scannen"

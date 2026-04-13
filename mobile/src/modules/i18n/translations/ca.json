@@ -221,7 +221,10 @@
       "title": "Guardar l'última posició reproduïda"
     },
     "lyrics": {
-      "title": null
+      "title": null,
+      "extra": {
+        "useEmbedded": null
+      }
     },
     "scanning": {
       "title": "Escanejant"

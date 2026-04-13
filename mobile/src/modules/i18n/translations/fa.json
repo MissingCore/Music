@@ -221,7 +221,10 @@
       "title": "ذخیره آخرین موقعیت پخش"
     },
     "lyrics": {
-      "title": null
+      "title": null,
+      "extra": {
+        "useEmbedded": null
+      }
     },
     "scanning": {
       "title": "اسکن موسیقی"

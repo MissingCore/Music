@@ -221,7 +221,10 @@
       "title": "Przywróć ostatnio odtwarzaną pozycję"
     },
     "lyrics": {
-      "title": "Teksty"
+      "title": "Teksty",
+      "extra": {
+        "useEmbedded": null
+      }
     },
     "scanning": {
       "title": "Skanowanie"
