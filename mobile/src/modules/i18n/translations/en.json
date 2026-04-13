@@ -242,7 +242,10 @@
       "title": "Restore From Last Played Position"
     },
     "lyrics": {
-      "title": "Lyrics"
+      "title": "Lyrics",
+      "extra": {
+        "useEmbedded": "Use Embedded"
+      }
     },
     "scanning": {
       "title": "Scanning"

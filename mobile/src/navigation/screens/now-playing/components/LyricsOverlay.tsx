@@ -7,7 +7,6 @@ import { Text, View } from "react-native";
 import { usePolledProgress } from "react-native-audio-browser";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { DocumentSearch } from "~/resources/icons/DocumentSearch";
 import { Edit } from "~/resources/icons/Edit";
 import { queries as q } from "~/data/keyStore";
 import { getArtistsString } from "~/data/artist/utils";
@@ -21,8 +20,8 @@ import { queryClient } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import type { FlatListProps, FlatListRef } from "~/components/Base/List";
 import { FlatList, useFlatListRef } from "~/components/Base/List";
-import { Button } from "~/components/Form/Button";
-import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
+import { ExtendedTButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
 import { Em, TEm } from "~/components/Typography/StyledText";
 import { linkTrackToLyric } from "../../lyrics/helpers/linkTrackToLyric";
@@ -132,30 +131,27 @@ function LyricsNotFound(props: { trackId: string; offset: number }) {
   return (
     <View
       style={{ paddingTop: props.offset }}
-      className="items-center gap-8 pb-4"
+      className="items-center gap-6 pb-4"
     >
-      <TEm textKey="err.msg.noLyrics" className="text-lg" />
-      <View className="flex-row items-center gap-4">
-        <FilledIconButton
-          Icon={DocumentSearch}
-          accessibilityLabel={t("feat.rescan.title")}
+      <TEm textKey="err.msg.noLyrics" className="text-xl" />
+      <View className="w-full max-w-48 gap-0.75">
+        <ExtendedTButton
+          textKey="feat.lyrics.extra.useEmbedded"
           onPress={checkForLyrics}
           disabled={checkingEmbeddedLyrics}
-          size="md"
-          className="bg-secondary active:bg-secondaryDim"
-          _iconColor="onSecondary"
+          className="min-h-auto rounded-b-xs"
+          textClassName="text-xs"
         />
-        <Button
+        <ExtendedTButton
+          // @ts-expect-error - Will display text if key doesn't exist.
+          textKey={t("template.entryManage", { name: t("feat.lyrics.title") })}
           onPress={() =>
             navigation.navigate("Lyrics", { linkTo: props.trackId })
           }
           disabled={checkingEmbeddedLyrics}
-          className="rounded-full bg-primary px-6 active:bg-primaryDim"
-        >
-          <Em className="text-center text-sm text-onPrimary">
-            {t("template.entryManage", { name: t("feat.lyrics.title") })}
-          </Em>
-        </Button>
+          className="min-h-auto rounded-t-xs"
+          textClassName="text-xs"
+        />
       </View>
     </View>
   );
