@@ -195,7 +195,7 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
 
   //#region Auto Scroll
   const autoScrollResumeTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
-  const [autoScroll, setAutoScroll] = useState(true);
+  const [autoScroll, setAutoScroll] = useState(false);
 
   const onPauseAutoScroll = useCallback(() => {
     if (autoScrollResumeTimerRef.current)
@@ -214,6 +214,12 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
     };
   }, []);
   //#endregion
+
+  //? Delay scroll to active line on mount because sometimes it doesn't work due to
+  //? timings, which is noticeable due to our `scrollToIndex` spam-prevention logic.
+  useEffect(() => {
+    debouncedResumeAutoScroll();
+  }, [debouncedResumeAutoScroll]);
 
   useEffect(() => {
     // Calculate active index.
