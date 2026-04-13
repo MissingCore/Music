@@ -221,7 +221,10 @@
       "title": "अंतिम प्ले किए गए स्थान से पुनर्स्थापित करें"
     },
     "lyrics": {
-      "title": "गीत के बोल"
+      "title": "गीत के बोल",
+      "extra": {
+        "useEmbedded": null
+      }
     },
     "scanning": {
       "title": "स्कैनिंग"

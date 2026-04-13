@@ -221,7 +221,10 @@
       "title": "حفظ آخر موضع تشغيل"
     },
     "lyrics": {
-      "title": null
+      "title": null,
+      "extra": {
+        "useEmbedded": null
+      }
     },
     "scanning": {
       "title": "المسح"

@@ -221,7 +221,10 @@
       "title": "Restaurer à partir de la dernière position jouée"
     },
     "lyrics": {
-      "title": "Paroles"
+      "title": "Paroles",
+      "extra": {
+        "useEmbedded": null
+      }
     },
     "scanning": {
       "title": "Recherche de musique"

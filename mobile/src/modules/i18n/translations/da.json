@@ -221,7 +221,10 @@
       "title": "Fortsæt samme sted, når du åbner appen igen"
     },
     "lyrics": {
-      "title": "Sangtekster"
+      "title": "Sangtekster",
+      "extra": {
+        "useEmbedded": null
+      }
     },
     "scanning": {
       "title": "Scanning"

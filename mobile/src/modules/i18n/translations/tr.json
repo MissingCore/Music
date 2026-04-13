@@ -221,7 +221,10 @@
       "title": "Son Çalınan Konumdan Devam Et"
     },
     "lyrics": {
-      "title": "Şarkı Sözleri"
+      "title": "Şarkı Sözleri",
+      "extra": {
+        "useEmbedded": null
+      }
     },
     "scanning": {
       "title": "Tarama"

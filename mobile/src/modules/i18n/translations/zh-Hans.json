@@ -221,7 +221,10 @@
       "title": null
     },
     "lyrics": {
-      "title": null
+      "title": null,
+      "extra": {
+        "useEmbedded": null
+      }
     },
     "scanning": {
       "title": "扫描"

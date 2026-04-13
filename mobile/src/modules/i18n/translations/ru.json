@@ -221,7 +221,10 @@
       "title": "Сохранить на последнем остановившемся моменте"
     },
     "lyrics": {
-      "title": null
+      "title": null,
+      "extra": {
+        "useEmbedded": null
+      }
     },
     "scanning": {
       "title": "Сканирование"

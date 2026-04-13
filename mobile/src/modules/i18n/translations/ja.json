@@ -221,7 +221,10 @@
       "title": "最後に再生した位置を復元"
     },
     "lyrics": {
-      "title": null
+      "title": null,
+      "extra": {
+        "useEmbedded": null
+      }
     },
     "scanning": {
       "title": "音楽のスキャン"
