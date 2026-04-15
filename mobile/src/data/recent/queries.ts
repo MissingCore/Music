@@ -1,9 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { queries as q } from "../keyStore";
+import { getRecentMedia } from "./api";
 
 //#region Queries
 export function useRecentlyPlayedMedia() {
-  return useQuery({ ...q.recent.all, gcTime: 0, staleTime: 0 });
+  return useQuery({
+    queryKey: ["recent", "all"],
+    queryFn: getRecentMedia,
+    gcTime: 0,
+    staleTime: 0,
+  });
 }
 //#endregion
