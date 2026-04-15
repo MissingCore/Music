@@ -1,4 +1,4 @@
-import { createQueryKeyStore } from "@lukemorales/query-key-factory";
+import { queryOptions } from "@tanstack/react-query";
 import { ne } from "drizzle-orm";
 
 import { playlists } from "~/db/schema";
@@ -27,133 +27,168 @@ import type { TracksSortOptions } from "./types";
 
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
-/** All of the reusuable query keys. */
-export const queries = createQueryKeyStore({
+/** All of the reusable query keys. */
+export const queries = {
   /** Query keys used in `useQuery` for albums. */
   albums: {
-    all: {
-      queryKey: null,
+    _def: ["albums"] as const,
+    all: queryOptions({
+      queryKey: ["albums", "all"] as const,
       queryFn: () => getAlbumsSummary(),
-    },
-    detail: (albumId: string) => ({
-      queryKey: [albumId],
-      queryFn: () => getAlbum(albumId),
     }),
+    detail: (albumId: string) =>
+      queryOptions({
+        queryKey: ["albums", "detail", albumId] as const,
+        queryFn: () => getAlbum(albumId),
+      }),
   },
+
   /** Query keys used in `useQuery` for artists. */
   artists: {
-    all: {
-      queryKey: null,
+    _def: ["artists"] as const,
+    all: queryOptions({
+      queryKey: ["artists", "all"] as const,
       queryFn: getArtistsSummary,
-    },
+    }),
     detail: (artistName: string) => ({
-      queryKey: [artistName],
-      queryFn: () => getArtist(artistName, true),
-      contextQueries: {
-        // eslint-disable-next-line @tanstack/query/exhaustive-deps
-        tracks: (sortOptions?: TracksSortOptions<"artistTracks">) => ({
-          queryKey: [sortOptions],
-          queryFn: () => getSortedArtistTracks(artistName, false, sortOptions),
-        }),
+      ...queryOptions({
+        queryKey: ["artists", "detail", artistName] as const,
+        queryFn: () => getArtist(artistName, true),
+      }),
+      _ctx: {
+        tracks: (sortOptions?: TracksSortOptions<"artistTracks">) =>
+          queryOptions({
+            queryKey: [
+              "artists",
+              "detail",
+              artistName,
+              "tracks",
+              sortOptions,
+            ] as const,
+            queryFn: () =>
+              getSortedArtistTracks(artistName, false, sortOptions),
+          }),
       },
     }),
   },
+
   /** Query keys used in `useQuery` for favorite media. */
   favorites: {
-    lists: {
-      queryKey: null,
+    _def: ["favorites"] as const,
+    lists: queryOptions({
+      queryKey: ["favorites", "lists"] as const,
       queryFn: getFavoriteLists,
-    },
-  },
-  /** Query keys used in `useQuery` for folders. */
-  folders: {
-    detail: (
-      sortOptions: TracksSortOptions<"folder">,
-      folderPath?: string,
-    ) => ({
-      queryKey: [sortOptions, folderPath],
-      queryFn: () => getFolder(folderPath, sortOptions),
     }),
   },
+
+  /** Query keys used in `useQuery` for folders. */
+  folders: {
+    _def: ["folders"] as const,
+    detail: (sortOptions: TracksSortOptions<"folder">, folderPath?: string) =>
+      queryOptions({
+        queryKey: ["folders", "detail", folderPath, sortOptions] as const,
+        queryFn: () => getFolder(folderPath, sortOptions),
+      }),
+  },
+
   /** Query keys used in `useQuery` for genres. */
   genres: {
-    all: {
-      queryKey: null,
+    _def: ["genres"] as const,
+    all: queryOptions({
+      queryKey: ["genres", "all"] as const,
       queryFn: getGenresSummary,
-    },
+    }),
     detail: (genreName: string) => ({
-      queryKey: [genreName],
-      queryFn: () => getGenre(genreName, true),
-      contextQueries: {
-        // eslint-disable-next-line @tanstack/query/exhaustive-deps
-        tracks: (sortOptions?: TracksSortOptions<"genreTracks">) => ({
-          queryKey: [sortOptions],
-          queryFn: () => getSortedGenreTracks(genreName, false, sortOptions),
-        }),
+      ...queryOptions({
+        queryKey: ["genres", "detail", genreName] as const,
+        queryFn: () => getGenre(genreName, true),
+      }),
+      _ctx: {
+        tracks: (sortOptions?: TracksSortOptions<"genreTracks">) =>
+          queryOptions({
+            queryKey: [
+              "genres",
+              "detail",
+              genreName,
+              "tracks",
+              sortOptions,
+            ] as const,
+            queryFn: () => getSortedGenreTracks(genreName, false, sortOptions),
+          }),
       },
     }),
   },
+
   /** Query keys used in `useQuery` for lyrics. */
   lyrics: {
-    all: {
-      queryKey: null,
+    _def: ["lyrics"] as const,
+    all: queryOptions({
+      queryKey: ["lyrics", "all"] as const,
       queryFn: getLyricsSummary,
-    },
-    detail: (lyricId: string) => ({
-      queryKey: [lyricId],
-      queryFn: () => getLyric(lyricId),
     }),
-    forTrack: (trackId: string) => ({
-      queryKey: [trackId],
-      queryFn: () => getTrackLyrics(trackId),
-    }),
+    detail: (lyricId: string) =>
+      queryOptions({
+        queryKey: ["lyrics", "detail", lyricId] as const,
+        queryFn: () => getLyric(lyricId),
+      }),
+    forTrack: (trackId: string) =>
+      queryOptions({
+        queryKey: ["lyrics", "forTrack", trackId] as const,
+        queryFn: () => getTrackLyrics(trackId),
+      }),
   },
+
   /** Query keys used in `useQuery` for playlists. */
   playlists: {
-    all: {
-      queryKey: null,
+    _def: ["playlists"] as const,
+    all: queryOptions({
+      queryKey: ["playlists", "all"] as const,
       queryFn: () =>
         getPlaylistsSummary(false, [ne(playlists.name, FavoritesPlaylistKey)]),
-    },
-    detail: (playlistName: string) => ({
-      queryKey: [playlistName],
-      queryFn: () => getPlaylist(playlistName),
     }),
+    detail: (playlistName: string) =>
+      queryOptions({
+        queryKey: ["playlists", "detail", playlistName] as const,
+        queryFn: () => getPlaylist(playlistName),
+      }),
   },
+
   /** Query keys used in `useQuery` for tracks. */
   tracks: {
-    sorted: (sortOptions: TracksSortOptions<"track">) => ({
-      queryKey: [sortOptions],
-      queryFn: () => getSortedTracks(false, sortOptions),
-    }),
+    _def: ["tracks"] as const,
+    sorted: (sortOptions: TracksSortOptions<"track">) =>
+      queryOptions({
+        queryKey: ["tracks", "sorted", sortOptions] as const,
+        queryFn: () => getSortedTracks(false, sortOptions),
+      }),
     detail: (trackId: string) => ({
-      queryKey: [trackId],
-      queryFn: () => getTrack(trackId),
-      contextQueries: {
-        // eslint-disable-next-line @tanstack/query/exhaustive-deps
-        isFavorite: {
-          queryKey: null,
+      ...queryOptions({
+        queryKey: ["tracks", "detail", trackId] as const,
+        queryFn: () => getTrack(trackId),
+      }),
+      _ctx: {
+        isFavorite: queryOptions({
+          queryKey: ["tracks", "detail", trackId, "isFavorite"] as const,
           queryFn: () => getTrackFavoriteStatus(trackId),
-        },
-        // eslint-disable-next-line @tanstack/query/exhaustive-deps
-        genres: {
-          queryKey: null,
+        }),
+        genres: queryOptions({
+          queryKey: ["tracks", "detail", trackId, "genres"] as const,
           queryFn: () => getTrackGenres(trackId),
-        },
-        // eslint-disable-next-line @tanstack/query/exhaustive-deps
-        playlists: {
-          queryKey: null,
+        }),
+        playlists: queryOptions({
+          queryKey: ["tracks", "detail", trackId, "playlists"] as const,
           queryFn: () => getTrackPlaylists(trackId),
-        },
+        }),
       },
     }),
   },
 
   /** Query keys used in `useQuery` for recently played media. */
   recent: {
-    all: {
-      queryKey: null,
+    _def: ["recent"] as const,
+    all: queryOptions({
+      queryKey: ["recent", "all"] as const,
       queryFn: getRecentMedia,
-    },
+    }),
   },
-});
+};
