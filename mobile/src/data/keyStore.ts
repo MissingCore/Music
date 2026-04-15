@@ -31,28 +31,33 @@ import { FavoritesPlaylistKey } from "~/modules/media/constants";
 export const queries = {
   /** Query keys used in `useQuery` for albums. */
   albums: {
-    _def: ["albums"],
-    all: queryOptions({
-      queryKey: ["albums", "all"],
-      queryFn: () => getAlbumsSummary(),
-    }),
-    detail: (albumId: string) =>
-      queryOptions({
-        queryKey: ["albums", "detail", albumId],
+    _def: ["albums"] as const,
+    get all() {
+      return queryOptions({
+        queryKey: [...this._def, "all"],
+        queryFn: () => getAlbumsSummary(),
+      });
+    },
+    detail(albumId: string) {
+      return queryOptions({
+        queryKey: [...this._def, "detail", albumId],
         queryFn: () => getAlbum(albumId),
-      }),
+      });
+    },
   },
 
   /** Query keys used in `useQuery` for artists. */
   artists: {
-    _def: ["artists"],
-    all: queryOptions({
-      queryKey: ["artists", "all"],
-      queryFn: getArtistsSummary,
-    }),
-    detail: (artistName: string) => {
+    _def: ["artists"] as const,
+    get all() {
+      return queryOptions({
+        queryKey: [...this._def, "all"],
+        queryFn: getArtistsSummary,
+      });
+    },
+    detail(artistName: string) {
       const detail = queryOptions({
-        queryKey: ["artists", "detail", artistName],
+        queryKey: [...this._def, "detail", artistName],
         queryFn: () => getArtist(artistName, true),
       });
       return {
@@ -72,33 +77,38 @@ export const queries = {
 
   /** Query keys used in `useQuery` for favorite media. */
   favorites: {
-    _def: ["favorites"],
-    lists: queryOptions({
-      queryKey: ["favorites", "lists"],
-      queryFn: getFavoriteLists,
-    }),
+    _def: ["favorites"] as const,
+    get lists() {
+      return queryOptions({
+        queryKey: [...this._def, "lists"],
+        queryFn: getFavoriteLists,
+      });
+    },
   },
 
   /** Query keys used in `useQuery` for folders. */
   folders: {
-    _def: ["folders"],
-    detail: (sortOptions: TracksSortOptions<"folder">, folderPath?: string) =>
-      queryOptions({
-        queryKey: ["folders", "detail", folderPath, sortOptions],
+    _def: ["folders"] as const,
+    detail(sortOptions: TracksSortOptions<"folder">, folderPath?: string) {
+      return queryOptions({
+        queryKey: [...this._def, "detail", folderPath, sortOptions],
         queryFn: () => getFolder(folderPath, sortOptions),
-      }),
+      });
+    },
   },
 
   /** Query keys used in `useQuery` for genres. */
   genres: {
-    _def: ["genres"],
-    all: queryOptions({
-      queryKey: ["genres", "all"],
-      queryFn: getGenresSummary,
-    }),
-    detail: (genreName: string) => {
+    _def: ["genres"] as const,
+    get all() {
+      return queryOptions({
+        queryKey: [...this._def, "all"],
+        queryFn: getGenresSummary,
+      });
+    },
+    detail(genreName: string) {
       const detail = queryOptions({
-        queryKey: ["genres", "detail", genreName],
+        queryKey: [...this._def, "detail", genreName],
         queryFn: () => getGenre(genreName, true),
       });
       return {
@@ -118,49 +128,59 @@ export const queries = {
 
   /** Query keys used in `useQuery` for lyrics. */
   lyrics: {
-    _def: ["lyrics"],
-    all: queryOptions({
-      queryKey: ["lyrics", "all"],
-      queryFn: getLyricsSummary,
-    }),
-    detail: (lyricId: string) =>
-      queryOptions({
-        queryKey: ["lyrics", "detail", lyricId],
+    _def: ["lyrics"] as const,
+    get all() {
+      return queryOptions({
+        queryKey: [...this._def, "all"],
+        queryFn: getLyricsSummary,
+      });
+    },
+    detail(lyricId: string) {
+      return queryOptions({
+        queryKey: [...this._def, "detail", lyricId],
         queryFn: () => getLyric(lyricId),
-      }),
-    forTrack: (trackId: string) =>
-      queryOptions({
-        queryKey: ["lyrics", "forTrack", trackId],
+      });
+    },
+    forTrack(trackId: string) {
+      return queryOptions({
+        queryKey: [...this._def, "forTrack", trackId],
         queryFn: () => getTrackLyrics(trackId),
-      }),
+      });
+    },
   },
 
   /** Query keys used in `useQuery` for playlists. */
   playlists: {
-    _def: ["playlists"],
-    all: queryOptions({
-      queryKey: ["playlists", "all"],
-      queryFn: () =>
-        getPlaylistsSummary(false, [ne(playlists.name, FavoritesPlaylistKey)]),
-    }),
-    detail: (playlistName: string) =>
-      queryOptions({
-        queryKey: ["playlists", "detail", playlistName],
+    _def: ["playlists"] as const,
+    get all() {
+      return queryOptions({
+        queryKey: [...this._def, "all"],
+        queryFn: () =>
+          getPlaylistsSummary(false, [
+            ne(playlists.name, FavoritesPlaylistKey),
+          ]),
+      });
+    },
+    detail(playlistName: string) {
+      return queryOptions({
+        queryKey: [...this._def, "detail", playlistName],
         queryFn: () => getPlaylist(playlistName),
-      }),
+      });
+    },
   },
 
   /** Query keys used in `useQuery` for tracks. */
   tracks: {
-    _def: ["tracks"],
-    sorted: (sortOptions: TracksSortOptions<"track">) =>
-      queryOptions({
-        queryKey: ["tracks", "sorted", sortOptions],
+    _def: ["tracks"] as const,
+    sorted(sortOptions: TracksSortOptions<"track">) {
+      return queryOptions({
+        queryKey: [...this._def, "sorted", sortOptions],
         queryFn: () => getSortedTracks(false, sortOptions),
-      }),
-    detail: (trackId: string) => {
+      });
+    },
+    detail(trackId: string) {
       const detail = queryOptions({
-        queryKey: ["tracks", "detail", trackId],
+        queryKey: [...this._def, "detail", trackId],
         queryFn: () => getTrack(trackId),
       });
       return {
@@ -188,10 +208,12 @@ export const queries = {
 
   /** Query keys used in `useQuery` for recently played media. */
   recent: {
-    _def: ["recent"],
-    all: queryOptions({
-      queryKey: ["recent", "all"],
-      queryFn: getRecentMedia,
-    }),
+    _def: ["recent"] as const,
+    get all() {
+      return queryOptions({
+        queryKey: [...this._def, "all"],
+        queryFn: getRecentMedia,
+      });
+    },
   },
 };
