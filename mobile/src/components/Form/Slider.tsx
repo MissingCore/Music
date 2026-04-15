@@ -242,7 +242,6 @@ export const CachedSlider = memo(function CachedSlider(props: {
   const StyleKey = useMemo(
     () =>
       ({
-        strecth: onVertical("h-full", "w-full"),
         shortSide: onVertical("width", "height"),
         longSide: onVertical("height", "width"),
         // Apply padding against the "long" sides.

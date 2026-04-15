@@ -21,7 +21,7 @@ const { artwork: _, ...trackColumns } = getTableColumns(tracks);
 /**
  * Join main relations (album & artists) onto `tracks` table.
  *  - `artwork` contains the appropriate artwork (from track or album).
- *  - `artists` contains a JSON-stringified array (`string[]` or `[null]`).
+ *  - `artists` contains a JSON-stringified array (`string[]`) or `null`.
  */
 export const structuredTracksView = db
   .select({

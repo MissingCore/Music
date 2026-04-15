@@ -28,6 +28,7 @@ type InsertedTrackPlaylistRelation = typeof tracksToPlaylists.$inferInsert;
 
 const trackFields = omitKeys(getSubqueryFields(structuredTracksView), [
   "rawArtistName",
+  "artistsName",
   "isFavorite",
   "hiddenAt",
 ]);

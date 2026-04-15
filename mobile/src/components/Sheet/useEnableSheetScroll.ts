@@ -20,7 +20,7 @@ export function useEnableSheetScroll(scrollView?: boolean) {
         }
       },
       onContentSizeChange: (_: number, contentHeight: number) => {
-        // Need a `ref` for instant acces to `minHeight` value.
+        // Need a `ref` for instant access to `minHeight` value.
         if (contentHeight !== minHeightRef.current)
           setNestedScrollEnabled(true);
       },

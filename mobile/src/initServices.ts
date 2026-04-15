@@ -298,7 +298,7 @@ export async function initServices() {
       const id = routeParams!.id!;
       const data = await loader(id);
       // Only available for tracks in "Album" entry.
-      const hasDiscLabel = (data.tracks.at(-1)?.disc || -1) > 1;
+      const hasDiscLabel = (data.tracks.at(-1)?.disc ?? -1) > 1;
 
       return {
         url: category === "track" ? "/track" : `/${category}/${id}`,
@@ -379,7 +379,7 @@ export async function initServices() {
         where: (fields, { eq }) => eq(fields.uri, trackUri),
       });
 
-      //? Simplist way of updating the Playback store when we change
+      //? Simplest way of updating the Playback store when we change
       //? lists via Android Auto.
       return PlaybackControls.playFromList({
         source: listSource,
