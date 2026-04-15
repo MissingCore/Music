@@ -10,11 +10,9 @@ import {
   getSortedArtistTracks,
 } from "./artist/api";
 import { getFavoriteLists } from "./favorite/api";
-import { getFolder } from "./folder/api";
 import { getGenre, getGenresSummary, getSortedGenreTracks } from "./genre/api";
 import { getLyric, getLyricsSummary } from "./lyric/api";
 import { getPlaylist, getPlaylistsSummary } from "./playlist/api";
-import { getRecentMedia } from "./recent/api";
 import {
   getSortedTracks,
   getTrack,
@@ -82,17 +80,6 @@ export const queries = {
       return queryOptions({
         queryKey: [...this._def, "lists"],
         queryFn: getFavoriteLists,
-      });
-    },
-  },
-
-  /** Query keys used in `useQuery` for folders. */
-  folders: {
-    _def: ["folders"] as const,
-    detail(sortOptions: TracksSortOptions<"folder">, folderPath?: string) {
-      return queryOptions({
-        queryKey: [...this._def, "detail", folderPath, sortOptions],
-        queryFn: () => getFolder(folderPath, sortOptions),
       });
     },
   },
@@ -203,17 +190,6 @@ export const queries = {
           }),
         },
       };
-    },
-  },
-
-  /** Query keys used in `useQuery` for recently played media. */
-  recent: {
-    _def: ["recent"] as const,
-    get all() {
-      return queryOptions({
-        queryKey: [...this._def, "all"],
-        queryFn: getRecentMedia,
-      });
     },
   },
 };
