@@ -197,7 +197,7 @@ function ListInfo(props: ListInfoProps) {
 type ListArtworkProps = {
   size: number;
   listSource: MediaListSource;
-  imageSource: MediaImage.ImageSource | MediaImage.ImageSource[];
+  imageSource: MediaImage.ImageSource;
 };
 
 function DeferredArtwork(props: ListArtworkProps) {
@@ -217,7 +217,7 @@ function DeferredArtwork(props: ListArtworkProps) {
       ) : null}
       <MediaImage
         type={props.listSource.type}
-        source={props.imageSource as string | null}
+        source={props.imageSource}
         size={props.size}
       />
     </Animated.View>

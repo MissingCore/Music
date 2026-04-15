@@ -167,7 +167,7 @@ async function getRecentListEntry(source: PlayFromSource) {
       } else {
         const data = await getPlaylist(source.id, true);
         entry.title = data.name;
-        entry.source = data.artwork as string | null;
+        entry.source = data.artwork;
         entry.description = i18next.t("plural.track", {
           count: data.tracks.length,
         });

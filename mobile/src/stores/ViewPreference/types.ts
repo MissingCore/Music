@@ -1,3 +1,5 @@
+import type { MediaImage } from "~/modules/media/components/MediaImage";
+
 /** Screens where the layout of the content can be change. */
 export type MutableViewLayout = "album" | "artist" | "genre" | "playlist";
 
@@ -6,7 +8,7 @@ export type LayoutItem = {
   id: string;
   title: string;
   description: string;
-  imageSource: string | null | Array<string | null>;
+  imageSource: MediaImage.ImageSource;
 };
 
 /** Options where the sort order will be applied to the tracks. */

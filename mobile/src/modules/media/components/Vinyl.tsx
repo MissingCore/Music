@@ -25,7 +25,7 @@ const GROOVES = {
 export function Vinyl(props: {
   onPress?: () => Promise<void> | void;
   size: number;
-  source: MediaImage.ImageSource | MediaImage.ImageSource[];
+  source: MediaImage.ImageSource;
 }) {
   const { surface } = useTheme();
 

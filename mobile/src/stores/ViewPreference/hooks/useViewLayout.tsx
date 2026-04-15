@@ -76,9 +76,7 @@ export function useViewLayout<TData extends Record<string, any>>(
         <MediaCard
           type={screen}
           {...item}
-          //? Simplest way of solving the type issue (we'll only pass an
-          //? array if `screen = "playlist"`).
-          source={item.imageSource as string}
+          source={item.imageSource}
           size={gridOpts.width}
           onPress={() =>
             navigation.navigate(

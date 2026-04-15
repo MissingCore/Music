@@ -1,9 +1,11 @@
+import type { MediaImage } from "~/modules/media/components/MediaImage";
+
 export type PlaylistSummary = {
   /** The raw `name` field stored in the `Playlists` schema. */
   id: string;
   /** Parsed `name` field to translate `FavoritesPlaylistKey`. */
   name: string;
-  artwork: string | Array<string | null> | null;
+  artwork: MediaImage.ImageSource;
   duration: number;
   trackCount: number;
   isFavorite: boolean;

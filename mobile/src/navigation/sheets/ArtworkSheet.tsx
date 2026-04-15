@@ -120,7 +120,7 @@ export function TrackArtworkSheet({ id, ref }: ArtworkSheetProps) {
 /** Reusable sheet for changing the artwork of some media. */
 function BaseArtworkSheetContent(props: {
   type: MediaType;
-  imageSource: MediaImage.ImageSource | MediaImage.ImageSource[];
+  imageSource: MediaImage.ImageSource;
   onUpdateArtwork: (artwork: string | null) => Promise<unknown>;
   onSuccess: () => Promise<void> | void;
   disabled?: boolean;
@@ -145,10 +145,9 @@ function BaseArtworkSheetContent(props: {
 
   return (
     <>
-      {/* @ts-expect-error Things should be fine with proper usage. */}
       <MediaImage
         type={props.type}
-        source={props.imageSource ?? null}
+        source={props.imageSource}
         size={imageSize}
         className="mx-4"
       />

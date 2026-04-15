@@ -16,11 +16,9 @@ const MusicGlyph = require("~/resources/images/music-glyph.png");
 const FaceGlyph = require("~/resources/images/face-glyph.png");
 
 export namespace MediaImage {
-  export type ImageSource = string | null;
+  export type ImageSource = string | null | Array<string | null>;
 
-  export type ImageContent =
-    | { type: "playlist"; source: ImageSource | ImageSource[] }
-    | { type: Omit<MediaType, "playlist">; source: ImageSource };
+  export type ImageContent = { type: MediaType; source: ImageSource };
 
   export type ImageConfig = {
     size: number;
@@ -51,7 +49,8 @@ export function MediaImage({
     return [Image, { source: imgSource, placeholder }];
   }, [source, type, noPlaceholder]);
 
-  if (type === "playlist" && Array.isArray(source) && source.length > 0) {
+  //? We shouldn't ever recieve an empty array due to our API function handling this case for us.
+  if (type === "playlist" && Array.isArray(source)) {
     return (
       <CollageImage
         sources={source}
@@ -81,8 +80,8 @@ export function MediaImage({
 
 /** Helper to return the correct image displayed in `<MediaImage />`. */
 export function getUsedImage(args: {
-  source: MediaImage.ImageSource | MediaImage.ImageSource[];
-  type: Omit<MediaType, "playlist">;
+  source: MediaImage.ImageSource;
+  type: MediaType;
   noPlaceholder?: boolean;
 }) {
   if (
@@ -103,7 +102,9 @@ function CollageImage({
   sources,
   className,
   noPlaceholder,
-}: { sources: MediaImage.ImageSource[] } & MediaImage.ImageConfig) {
+}: {
+  sources: Exclude<MediaImage.ImageSource, string | null>;
+} & MediaImage.ImageConfig) {
   return (
     <View
       style={{ width: size, height: size }}

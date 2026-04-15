@@ -8,7 +8,7 @@ export namespace SearchResult {
     title: string;
     description?: string;
     type: MediaType;
-    imageSource?: MediaImage.ImageSource | MediaImage.ImageSource[];
+    imageSource?: MediaImage.ImageSource;
     /** Renders this instead of the image if provided. */
     LeftElement?: React.JSX.Element;
     className?: string;
@@ -33,7 +33,6 @@ export function SearchResult(props: SearchResult.Props) {
         props.LeftElement ? (
           props.LeftElement
         ) : (
-          /* @ts-expect-error Things should be fine with proper usage. */
           <MediaImage
             type={props.type}
             size={48}
