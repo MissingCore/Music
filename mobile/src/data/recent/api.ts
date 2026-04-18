@@ -99,8 +99,7 @@ export async function addPlayedMediaList(entry: PlayFromSource) {
     });
 }
 
-export async function addPlayedTrack(uri: string | undefined) {
-  if (!uri) return;
+export async function addPlayedTrack(uri: string) {
   return db
     .update(tracks)
     .set({

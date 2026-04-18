@@ -156,8 +156,8 @@ export async function initServices() {
   });
 
   AudioBrowser.onActiveTrackChanged.addListener(async (e) => {
-    if (e.index === undefined || e.track === undefined) return;
-    const activeTrackUri = e.track.src;
+    if (e.index === undefined || e.track?.src === undefined) return;
+    const activeTrackUri = decodeURIComponent(e.track.src);
 
     //* 🧪 Smooth Playback Transition
     try {
@@ -206,12 +206,13 @@ export async function initServices() {
     const erroredTrack = (queuedTrack || activeTrack) as AudioBrowser.Track;
 
     if (erroredTrack.src) {
+      const erroredTrackUri = decodeURIComponent(erroredTrack.src);
       //! For some weird reason, `PlaybackError` may fire twice for a given track.
-      if (erroredTrackUris.has(erroredTrack.src)) return;
-      erroredTrackUris.add(erroredTrack.src);
+      if (erroredTrackUris.has(erroredTrackUri)) return;
+      erroredTrackUris.add(erroredTrackUri);
 
       const erroredTrackObj = await db.query.tracks.findFirst({
-        where: (fields, { eq }) => eq(fields.uri, erroredTrack.src!),
+        where: (fields, { eq }) => eq(fields.uri, erroredTrackUri),
       });
       // Reset if the track doesn't exist in the database.
       if (!erroredTrackObj) return await playbackStore.getState().reset();
@@ -363,9 +364,9 @@ export async function initServices() {
     //* Only load a single track to be consistent with our playback strategy.
     singleTrack: true,
     //* Triggered when we select a track in Android Auto.
-    handleTrackLoad: async (e) => {
-      const trackUri = e.track.src;
-      const androidAutoURL = e.track.url; // ie: `/album/srzxiew5ihjsxe6u706siqfq?__trackId=......`
+    handleTrackLoad: async ({ track }) => {
+      const trackUri = track.src ? decodeURIComponent(track.src) : undefined;
+      const androidAutoURL = track.url; // ie: `/album/srzxiew5ihjsxe6u706siqfq?__trackId=......`
 
       //? Fallback to playing the track in the Playback store if we don't
       //? have context on the selected track & list.
