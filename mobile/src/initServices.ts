@@ -37,6 +37,7 @@ import { clearAllQueries } from "~/lib/react-query";
 import { bgWait } from "~/utils/promise";
 import { capitalize, getSafeUri } from "~/utils/string";
 import { ReservedPlaylists } from "~/modules/media/constants";
+import type { MediaImage } from "~/modules/media/components/MediaImage";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
 import type { MediaType, PlayFromSource } from "~/stores/Playback/types";
@@ -269,6 +270,7 @@ export async function initServices() {
         id?: string;
         artistName?: string;
         trackCount: number;
+        artwork: MediaImage.ImageSource;
       }>
     >,
   ): Promise<ResolvedTrack> {
@@ -276,13 +278,18 @@ export async function initServices() {
     return {
       url: `/${category}`,
       title: `${capitalize(category)}s`,
-      children: data.map((item) => ({
-        url: `/${category}/${item.id ?? item.name}`,
-        title: item.name,
-        description:
-          item.artistName ||
-          i18next.t("plural.track", { count: item.trackCount }),
-      })),
+      children: data.map(({ artwork, ...item }) => {
+        return {
+          url: `/${category}/${item.id ?? item.name}`,
+          title: item.name,
+          description:
+            item.artistName ||
+            i18next.t("plural.track", { count: item.trackCount }),
+          artwork:
+            (Array.isArray(artwork) ? artwork[0] : artwork) ||
+            PlaceholderImageFile,
+        };
+      }),
     };
   }
 
