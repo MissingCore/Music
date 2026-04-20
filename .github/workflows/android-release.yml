@@ -52,11 +52,8 @@ jobs:
           echo "${{ secrets.RELEASE_CRED }}" >> android/gradle.properties
 
       - name: Build upload keystore `.jks` file
-        uses: timheuer/base64-to-file@v1.2
-        with:
-          fileName: keystore.jks
-          fileDir: mobile/android/app
-          encodedString: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/keystore.jks
 
       - name: Clean generated builds
         run: rm -rf android/app/build/generated/
@@ -65,7 +62,7 @@ jobs:
         run: cd android && chmod +x gradlew && ./gradlew assembleRelease
 
       - name: Create GitHub Release draft with APKs
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           name: ${{ env.COMMIT_TAG }}
           tag_name: ${{ env.COMMIT_TAG }}
@@ -115,11 +112,8 @@ jobs:
           echo "${{ secrets.RELEASE_CRED }}" >> android/gradle.properties
 
       - name: Build upload keystore `.jks` file
-        uses: timheuer/base64-to-file@v1.2
-        with:
-          fileName: keystore.jks
-          fileDir: mobile/android/app
-          encodedString: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/keystore.jks
 
       - name: Clean generated builds
         run: rm -rf android/app/build/generated/
