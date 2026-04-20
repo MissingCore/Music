@@ -223,7 +223,7 @@
     "lyrics": {
       "title": "Paroles",
       "extra": {
-        "useEmbedded": null
+        "useEmbedded": "Utiliser l'intégration"
       }
     },
     "scanning": {

@@ -223,7 +223,7 @@
     "lyrics": {
       "title": "Şarkı Sözleri",
       "extra": {
-        "useEmbedded": null
+        "useEmbedded": "Gömülü Olanı Kullan"
       }
     },
     "scanning": {
