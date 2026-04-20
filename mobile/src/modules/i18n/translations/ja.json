@@ -7,8 +7,8 @@
     "artists": "アーティスト",
     "folder": "フォルダ",
     "folders": "フォルダ",
-    "genre": null,
-    "genres": null,
+    "genre": "ジャンル",
+    "genres": "ジャンル",
     "playlist": "プレイリスト",
     "playlists": "プレイリスト",
     "track": "トラック",
@@ -33,19 +33,19 @@
     "disc": "ディスク {{count}}"
   },
   "template": {
-    "entryAdd": null,
+    "entryAdd": "「{{- name}}」を追加する",
     "entryAdded": "｢{{- name}}｣を追加しました。",
     "entryRemove": "｢{{- name}}｣を削除します。",
     "entryRemoved": "｢{{- name}}｣を削除しました。",
-    "entryManage": null,
+    "entryManage": "「{{- name}}」を管理",
     "entrySeeMore": "｢{{- name}}｣の詳細を確認します。",
     "notFound": "｢{{- name}}｣は存在しません。",
-    "entryMove": null,
+    "entryMove": "「{{- name}}」を移動",
     "entryShow": "｢{{- name}}｣を表示",
     "entryHide": "｢{{- name}}｣を非表示",
     "entryEnable": "「{{- name}}」を有効化",
     "entryDisable": "「{{- name}}」を無効化",
-    "noContentFound": null
+    "noContentFound": "「{{- name}}」が見つかりません"
   },
   "plural": {
     "entry_one": "{{count}} 件のエントリ",
@@ -63,9 +63,9 @@
     "unsaved": "変更が保存されていません。",
     "stay": "留まる",
     "leave": "離れる",
-    "create": null,
-    "delete": null,
-    "edit": null,
+    "create": "作成",
+    "delete": "削除",
+    "edit": "編集",
     "clear": "消去",
     "reset": "リセット",
     "validation": {
@@ -93,11 +93,11 @@
       "noResults": "結果が見つかりませんでした。",
       "noAlbums": "アルバムが見つかりません。",
       "noArtists": "アーティストが見つかりません。",
-      "noGenres": null,
+      "noGenres": "ジャンルが見つかりません。",
       "noPlaylists": "プレイリストが見つかりません。",
       "noTracks": "トラックが見つかりません。",
       "noHiddenTracks": "非表示のトラックは見つかりません。",
-      "noLyrics": null
+      "noLyrics": "歌詞が見つかりません。"
     }
   },
   "feat": {
@@ -108,7 +108,7 @@
         "downloadAPK": "最新の APK をダウンロード",
         "updateGoogle": "Play ストアで更新",
         "version": "バージョン",
-        "checkUpdates": null,
+        "checkUpdates": "更新を確認する",
         "rcNotification": "プレリリースの通知"
       }
     },
@@ -130,7 +130,7 @@
       }
     },
     "tabsOrder": {
-      "title": "ホームタブの順序",
+      "title": "タブの順序",
       "brief": "タブの順序と表示をカスタマイズします。",
       "extra": {
         "setHomeTab": "アプリの起動時に「{{- name}}」のタブを開きます。"
@@ -142,7 +142,7 @@
     "miniplayerGestures": {
       "title": "ミニプレーヤージェスチャー",
       "extra": {
-        "dragClearPlayback": null
+        "dragClearPlayback": "ミニプレーヤーを下にドラッグで再生を消去"
       }
     },
     "nowPlayingDesign": {
@@ -161,7 +161,7 @@
       "extra": {
         "contribute": "翻訳に貢献する",
         "useLTR": "RTL 言語で LTR レイアウトを使用します。アプリの再起動が必要です。",
-        "translators": null
+        "translators": "翻訳者"
       }
     },
     "backup": {
@@ -203,7 +203,7 @@
     "playback": {
       "title": "再生中",
       "extra": {
-        "delay": "自然な再生遅延",
+        "delay": "再生遅延",
         "options": "再生オプション",
         "speed": "再生速度",
         "volume": "アプリの音量"
@@ -221,9 +221,9 @@
       "title": "最後に再生した位置を復元"
     },
     "lyrics": {
-      "title": null,
+      "title": "歌詞",
       "extra": {
-        "useEmbedded": null
+        "useEmbedded": "埋め込みを使用する"
       }
     },
     "scanning": {
@@ -248,7 +248,7 @@
     },
     "listAllow": {
       "title": "許可リスト",
-      "description": null
+      "description": "トラックを検出する場所を指定してください。指定がない場合は、すべての場所を検索します。"
     },
     "listBlock": {
       "title": "ブロックリスト",
@@ -259,32 +259,32 @@
       "description": "保存をしない音楽の再生時間 (秒数)。"
     },
     "separators": {
-      "title": null,
+      "title": "複数値で分離する",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "新しいトラックに適用されます。既存のトラックを更新するには、ディープで再スキャンの機能を使用してください。",
+        "line2": "警告: これによって一部のタグが複数の値を持つものとして誤って識別される可能性があります。手動で変更したトラックには適用されません。"
       }
     },
     "experimental": {
       "title": "試験的な機能"
     },
     "androidAuto": {
-      "title": null
+      "title": "Android Auto"
     },
     "equalizer": {
-      "title": null,
+      "title": "イコライザー",
       "extra": {
-        "Custom": null,
-        "Normal": null,
-        "Classical": null,
-        "Dance": null,
-        "Flat": null,
-        "Folk": null,
-        "Heavy Metal": null,
-        "Hip Hop": null,
-        "Jazz": null,
-        "Pop": null,
-        "Rock": null
+        "Custom": "カスタム",
+        "Normal": "通常",
+        "Classical": "クラシック",
+        "Dance": "ダンス",
+        "Flat": "フラット",
+        "Folk": "フォーク",
+        "Heavy Metal": "ヘビーメタル",
+        "Hip Hop": "ヒップホップ",
+        "Jazz": "ジャズ",
+        "Pop": "ポップ",
+        "Rock": "ロック"
       }
     },
     "ignoreInterrupt": {
@@ -324,8 +324,8 @@
     },
     "onboarding": {
       "extra": {
-        "configureSettings": null,
-        "startScan": null,
+        "configureSettings": "構成を設定",
+        "startScan": "トラックのスキャンを開始",
         "saveTracks": "トラックを保存",
         "saveImages": "画像を保存"
       }
@@ -346,7 +346,7 @@
       "extra": {
         "change": "アートワークを変更",
         "remove": "アートワークを削除",
-        "square": null
+        "square": "四角いアートワーク"
       }
     },
     "directory": {
@@ -377,18 +377,18 @@
       }
     },
     "modalViewPreference": {
-      "title": null,
+      "title": "画面のオプション",
       "extra": {
-        "layout": null,
-        "list": null,
-        "grid": null,
-        "compactGrid": null,
+        "layout": "レイアウト",
+        "list": "リスト",
+        "grid": "グリッド",
+        "compactGrid": "コンパクトなグリッド",
         "sort": "並べ替え順",
         "asc": "昇順",
         "discover": "時間を見つける",
-        "duration": null,
+        "duration": "再生時間",
         "modified": "最終更新",
-        "trackCount": null
+        "trackCount": "トラック数"
       }
     },
     "modalTrack": {
@@ -406,7 +406,7 @@
         "playNext": "次に再生",
         "playLast": "最後に再生",
         "toast": "｢{{- name}}｣がキューに追加されました。",
-        "quickAdd": null,
+        "quickAdd": "クイックでキューに追加",
         "queueAwareNext": "キューの認識による次の再生",
         "queueAwareNextBrief": "最後の「次に再生」するトラックの後にトラックを追加します。"
       }
