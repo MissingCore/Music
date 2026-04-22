@@ -203,9 +203,9 @@ export async function initServices() {
     //? We don't know exactly what track caused the error, but we can
     //? infer based on the state of the queue.
     const [activeTrack, queuedTrack] = AudioBrowser.getQueue();
-    const erroredTrack = (queuedTrack || activeTrack) as AudioBrowser.Track;
+    const erroredTrack = queuedTrack || activeTrack;
 
-    if (erroredTrack.src) {
+    if (erroredTrack?.src) {
       const erroredTrackUri = decodeURIComponent(erroredTrack.src);
       //! For some weird reason, `PlaybackError` may fire twice for a given track.
       if (erroredTrackUris.has(erroredTrackUri)) return;
