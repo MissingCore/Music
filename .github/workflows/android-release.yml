@@ -136,4 +136,4 @@ jobs:
           releaseFiles: mobile/android/app/build/outputs/bundle/release/app-release.aab
           # No need for `changesNotSentForReview: true` as internal track shouldn't
           # get reviewed.
-          track: internal
+          tracks: internal
