@@ -35,7 +35,7 @@ export function getSafeUri(uri: string) {
     .replaceAll("]", "%5D");
 }
 
-/** Recursively split string by specified separators. */
+/** Recursively split string by specified separators. Removes any duplicates. */
 export function splitOn(str: string, separators: string[]) {
   const usedSeparators = separators.filter((separator) =>
     str.includes(separator),
@@ -51,7 +51,7 @@ export function splitOn(str: string, separators: string[]) {
         updatedSplittedStr.push(segment.trim());
       }
     }
-    splittedStr = updatedSplittedStr;
+    splittedStr = Array.from(new Set(updatedSplittedStr));
   }
 
   return splittedStr.filter((part) => part.length > 0);

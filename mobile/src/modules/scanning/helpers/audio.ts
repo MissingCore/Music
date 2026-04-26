@@ -298,11 +298,13 @@ async function getTrackMetadata(
   const trimmedGenre = t.genre?.trim() || null;
 
   let newAlbum;
-  if (!!t.albumTitle?.trim() && !!t.albumArtist?.trim()) {
-    const albumArtists = splitOn(t.albumArtist.trim(), delimiters);
+  const trimmedAlbumTitle = t.albumTitle?.trim() || null;
+  const trimmedAlbumArtist = t.albumArtist?.trim() || null;
+  if (trimmedAlbumTitle && trimmedAlbumArtist) {
+    const albumArtists = splitOn(trimmedAlbumArtist, delimiters);
     const artistsKey = AlbumArtistsKey.from(albumArtists);
     if (artistsKey) {
-      newAlbum = { name: t.albumTitle.trim(), artistsKey, albumArtists };
+      newAlbum = { name: trimmedAlbumTitle, artistsKey, albumArtists };
     }
   }
 
