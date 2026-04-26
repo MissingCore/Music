@@ -23,7 +23,8 @@
   --font-geistMono: "GeistMono-Regular";
   --font-geistMonoMedium: "GeistMono-Medium";
   --font-ndot: "Ndot-77_JP_Extended";
-  --font-ntype: "NType82-Headline";
+  --font-ntype: "NType82-Regular";
+  --font-ntypeHeadline: "NType82-Headline";
 
   /** Border Radius */
   --radius-xs: 0.25rem;

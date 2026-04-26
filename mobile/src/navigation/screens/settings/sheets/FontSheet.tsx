@@ -41,6 +41,7 @@ function FontSheet(props: {
   selectedFont: Font;
   updateFont: (newFont: Font) => void;
 }) {
+  const headline = props.kind === "Accent";
   return (
     <DetachedSheet
       ref={props.ref}
@@ -52,7 +53,7 @@ function FontSheet(props: {
         onPress={(font) => props.updateFont(font)}
         renderPreview={(font) => (
           <Text
-            style={{ fontFamily: getFont(font) }}
+            style={{ fontFamily: getFont(font, { headline }) }}
             className="text-center text-5xl text-onSurface"
           >
             Aa
@@ -60,7 +61,7 @@ function FontSheet(props: {
         )}
         renderLabel={(font) => (
           <Text
-            style={{ fontFamily: getFont(font) }}
+            style={{ fontFamily: getFont(font, { headline }) }}
             className="text-center text-xs leading-tight text-onSurface"
           >
             {font}

@@ -68,10 +68,15 @@ export function isHexColor(color?: string): color is HexColor {
  * Returns the correct font used from the codes used to determine the
  * accent & primary font used.
  */
-export function getFont(font: Font, bold = false) {
+export function getFont(
+  font: Font,
+  options?: { bold?: boolean; headline?: boolean },
+) {
   const fontCode = font === "Geist Mono" ? "geistMono" : toLowerCase(font);
-  if (
-    bold &&
+  if ((options?.headline || options?.bold) && fontCode === "ntype") {
+    return FontFamily.ntypeHeadline;
+  } else if (
+    options?.bold &&
     (fontCode === "geistMono" || fontCode === "roboto" || fontCode === "inter")
   ) {
     return FontFamily[`${fontCode}Medium`];

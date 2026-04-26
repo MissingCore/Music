@@ -51,7 +51,10 @@ export function NumericInput({
         className,
       )}
       style={[
-        { fontFamily: getFont(accentFont), fontSize: FontSize["5xl"] },
+        {
+          fontFamily: getFont(accentFont, { headline: true }),
+          fontSize: FontSize["5xl"],
+        },
         style,
       ]}
       {...props}

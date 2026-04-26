@@ -90,6 +90,7 @@ export default (): ExpoConfig => {
             "assets/fonts/GeistMono-Regular.ttf",
             "assets/fonts/GeistMono-Medium.ttf",
             "assets/fonts/Ndot-77_JP_Extended.ttf",
+            "assets/fonts/NType82-Regular.otf",
             "assets/fonts/NType82-Headline.otf",
           ],
         },

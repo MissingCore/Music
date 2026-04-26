@@ -57,7 +57,7 @@ export default function AppUpdate() {
             headingContainer: { marginTop: 0, marginBottom: 0 },
             heading2: {
               color: onSurface,
-              fontFamily: getFont(accentFont),
+              fontFamily: getFont(accentFont, { headline: true }),
               fontSize: FontSize.base,
             },
             heading2Container: { paddingBottom: 0, borderBottomWidth: 0 },

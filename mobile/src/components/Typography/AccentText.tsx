@@ -24,7 +24,7 @@ export function AccentText({
         className,
         "leading-tight",
       )}
-      style={[{ fontFamily: getFont(accentFont) }, style]}
+      style={[{ fontFamily: getFont(accentFont, { headline: true }) }, style]}
       {...props}
     />
   );
