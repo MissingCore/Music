@@ -1,15 +1,22 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
+import { Favorite } from "~/resources/icons/Favorite";
 import { MoreVert } from "~/resources/icons/MoreVert";
 import { QueueMusic } from "~/resources/icons/QueueMusic";
+import {
+  useTrackFavoriteStatus,
+  useToggleTrackInPlaylist,
+} from "~/data/track/queries";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
 
+import { mutateGuard } from "~/lib/react-query";
 import type { LegendListProps } from "~/components/Base/LegendList";
 import { Pressable } from "~/components/Base/Pressable";
+import type { ButtonSize } from "~/components/Form/Button/Icon";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
@@ -17,6 +24,7 @@ import type { PlayFromSource } from "~/stores/Playback/types";
 import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
 import { PlayingIndicator } from "./AnimatedBars";
 import type { TrackContent, TrackProps } from "./Track.type";
+import { FavoritesPlaylistKey } from "../constants";
 
 //#region Track
 /**
@@ -30,9 +38,6 @@ export function Track({
   LeftElement,
   ...props
 }: TrackProps) {
-  const { t } = useTranslation();
-  const quickAddQueue = usePreferenceStore((s) => s.quickAddQueue);
-
   const overriddenLeftElement = useMemo(
     () => (showIndicator ? <PlayingIndicator /> : LeftElement),
     [LeftElement, showIndicator],
@@ -45,26 +50,56 @@ export function Track({
         PlaybackControls.playFromList({ trackId: id, source: trackSource })
       }
       LeftElement={overriddenLeftElement}
-      RightElement={
-        <Pressable className="h-full flex-row items-center gap-1">
-          {quickAddQueue ? (
-            <IconButton
-              Icon={QueueMusic}
-              accessibilityLabel={t("feat.queue.extra.playNext")}
-              onPress={() => Queue.add({ id, name: props.title })}
-            />
-          ) : null}
-          <IconButton
-            Icon={MoreVert}
-            accessibilityLabel={t("template.entrySeeMore", {
-              name: props.title,
-            })}
-            onPress={() => presentTrackSheet(id)}
-          />
-        </Pressable>
-      }
+      RightElement={<TrackAction id={id} title={props.title} />}
       poppyLabel={showIndicator}
       {...props}
+    />
+  );
+}
+//#endregion
+
+//#region Track Actions
+export function TrackAction(props: { id: string; title: string }) {
+  const { t } = useTranslation();
+  const quickAddQueue = usePreferenceStore((s) => s.quickAddQueue);
+  const quickFavorite = usePreferenceStore((s) => s.quickFavorite);
+
+  //? Outer pressable is to prevent touch propagation to parent pressable due to
+  //? the icons not taking up the full height.
+  return (
+    <Pressable className="h-full flex-row items-center gap-1">
+      {quickFavorite ? <FavoriteButton id={props.id} /> : null}
+      {quickAddQueue ? (
+        <IconButton
+          Icon={QueueMusic}
+          accessibilityLabel={t("feat.queue.extra.playNext")}
+          onPress={() => Queue.add({ id: props.id, name: props.title })}
+        />
+      ) : null}
+      <IconButton
+        Icon={MoreVert}
+        accessibilityLabel={t("template.entrySeeMore", { name: props.title })}
+        onPress={() => presentTrackSheet(props.id)}
+      />
+    </Pressable>
+  );
+}
+
+export function FavoriteButton(props: { id: string; size?: ButtonSize }) {
+  const { t } = useTranslation();
+  const { data: favoriteStatus } = useTrackFavoriteStatus(props.id);
+  const toggleInPlaylist = useToggleTrackInPlaylist(props.id);
+
+  const favStatus = favoriteStatus ?? false;
+  const isFav = toggleInPlaylist.isPending ? !favStatus : favStatus;
+
+  return (
+    <IconButton
+      Icon={Favorite}
+      accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
+      onPress={() => mutateGuard(toggleInPlaylist, FavoritesPlaylistKey)}
+      alternative={isFav}
+      size={props.size}
     />
   );
 }

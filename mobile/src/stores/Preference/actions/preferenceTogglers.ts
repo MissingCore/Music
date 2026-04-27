@@ -13,6 +13,7 @@ type ToggleableKey =
   | "checkForUpdates"
   | "dragClearPlayback"
   | "quickAddQueue"
+  | "quickFavorite"
   | "quickScroll"
   | "miniplayerGestures"
   | "rcNotification"

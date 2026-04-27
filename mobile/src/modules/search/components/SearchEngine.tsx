@@ -2,22 +2,15 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { MoreVert } from "~/resources/icons/MoreVert";
-import { QueueMusic } from "~/resources/icons/QueueMusic";
 import { AlbumArtistsKey } from "~/data/album/utils";
 import { getArtistsString } from "~/data/artist/utils";
 import type { CommonTrack } from "~/data/types";
-import { Queue } from "~/stores/Playback/actions";
-import { usePreferenceStore } from "~/stores/Preference/store";
-import { presentTrackSheet } from "~/stores/Session/actions";
 
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
 import { isString } from "~/utils/validation";
 import { FlatList, useFlatListRef } from "~/components/Base/List";
-import { Pressable } from "~/components/Base/Pressable";
 import { Button } from "~/components/Form/Button";
-import { IconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
 import { TEm } from "~/components/Typography/StyledText";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
@@ -29,6 +22,7 @@ import type {
   SearchCategories,
   SearchResults,
 } from "../types";
+import { TrackAction } from "../../media/components/Track";
 
 type SearchTab = SearchCategories[number] | "all";
 
@@ -64,9 +58,7 @@ type SearchResultsListProps<TScope extends SearchCategories> = {
 function SearchResultsList<TScope extends SearchCategories>(
   props: SearchResultsListProps<TScope> & { query: string },
 ) {
-  const { t } = useTranslation();
   const results = useSearch(props.searchScope, props.query);
-  const quickAddQueue = usePreferenceStore((s) => s.quickAddQueue);
   const [selectedTab, setSelectedTab] = useState<TScope[number] | "all">("all");
   const [filterHeight, setFilterHeight] = useState(53); // Height will be ~53px
   const listRef = useFlatListRef();
@@ -125,29 +117,10 @@ function SearchResultsList<TScope extends SearchCategories>(
               onPress={() => props.callbacks[item.type](item.entry)}
               RightElement={
                 props.withTrackActions && item.type === "track" ? (
-                  <Pressable className="h-full flex-row items-center gap-1">
-                    {quickAddQueue ? (
-                      <IconButton
-                        Icon={QueueMusic}
-                        accessibilityLabel={t("feat.queue.extra.playNext")}
-                        onPress={() =>
-                          Queue.add({
-                            id: (item.entry as CommonTrack).id,
-                            name: item.title,
-                          })
-                        }
-                      />
-                    ) : null}
-                    <IconButton
-                      Icon={MoreVert}
-                      accessibilityLabel={t("template.entrySeeMore", {
-                        name: item.title,
-                      })}
-                      onPress={() =>
-                        presentTrackSheet((item.entry as CommonTrack).id)
-                      }
-                    />
-                  </Pressable>
+                  <TrackAction
+                    id={(item.entry as CommonTrack).id}
+                    title={item.title}
+                  />
                 ) : undefined
               }
               className={cn("mb-2", {

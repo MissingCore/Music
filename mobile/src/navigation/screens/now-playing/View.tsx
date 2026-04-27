@@ -3,16 +3,11 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Favorite } from "~/resources/icons/Favorite";
 import { KeyboardArrowDown } from "~/resources/icons/KeyboardArrowDown";
 import { MoreHoriz } from "~/resources/icons/MoreHoriz";
 import { MoreVert } from "~/resources/icons/MoreVert";
 import { Timer } from "~/resources/icons/Timer";
 import { ViewAgenda } from "~/resources/icons/ViewAgenda";
-import {
-  useToggleTrackInPlaylist,
-  useTrackFavoriteStatus,
-} from "~/data/track/queries";
 import type { Track } from "~/data/track/types";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -27,14 +22,12 @@ import { SleepTimerSheet } from "./sheets/SleepTimerSheet";
 import { useSleepTimerStore } from "./sheets/SleepTimerSheet/store";
 
 import { OnRTL } from "~/lib/react";
-import { mutateGuard } from "~/lib/react-query";
 import { Pressable } from "~/components/Base/Pressable";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { Marquee } from "~/components/Marquee";
 import { SafeContainer } from "~/components/SafeContainer";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
-import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
 import {
   NextButton,
@@ -43,6 +36,7 @@ import {
   RepeatButton,
   ShuffleButton,
 } from "~/modules/media/components/MediaControls";
+import { FavoriteButton } from "~/modules/media/components/Track";
 
 export default function NowPlaying() {
   const track = usePlaybackStore((s) => s.activeTrack);
@@ -91,7 +85,7 @@ function Metadata({ track }: { track: Track }) {
         ) : null}
       </View>
       <View className="flex-row items-center gap-1">
-        <FavoriteButton trackId={track.id} />
+        <FavoriteButton id={track.id} size="lg" />
         <IconButton
           Icon={MoreVert}
           accessibilityLabel={t("template.entrySeeMore", { name: track.name })}
@@ -110,26 +104,6 @@ function Metadata({ track }: { track: Track }) {
         <StyledText className="text-sm/[1.125]"> </StyledText>
       </View>
     </View>
-  );
-}
-
-/** Quick action to favorite/unfavorite a track. */
-function FavoriteButton(props: { trackId: string }) {
-  const { t } = useTranslation();
-  const { data: favoriteStatus } = useTrackFavoriteStatus(props.trackId); // Since we don't revalidate the Zustand store.
-  const toggleInPlaylist = useToggleTrackInPlaylist(props.trackId);
-
-  const favStatus = favoriteStatus ?? false;
-  const isFav = toggleInPlaylist.isPending ? !favStatus : favStatus;
-
-  return (
-    <IconButton
-      Icon={Favorite}
-      accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
-      onPress={() => mutateGuard(toggleInPlaylist, FavoritesPlaylistKey)}
-      alternative={isFav}
-      size="lg"
-    />
   );
 }
 //#endregion

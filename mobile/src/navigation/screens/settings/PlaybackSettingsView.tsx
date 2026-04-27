@@ -6,6 +6,7 @@ import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 
 import { SegmentedList } from "~/components/List/Segmented";
+import { TEm } from "~/components/Typography/StyledText";
 import { Switch } from "~/components/UI/Switch";
 
 export default function PlaybackSettings() {
@@ -16,6 +17,7 @@ export default function PlaybackSettings() {
   const dragClearPlayback = usePreferenceStore((s) => s.dragClearPlayback);
   const miniplayerGestures = usePreferenceStore((s) => s.miniplayerGestures);
   const quickAddQueue = usePreferenceStore((s) => s.quickAddQueue);
+  const quickFavorite = usePreferenceStore((s) => s.quickFavorite);
   const repeatOnSkip = usePreferenceStore((s) => s.repeatOnSkip);
   const restoreLastPosition = usePreferenceStore((s) => s.restoreLastPosition);
 
@@ -53,8 +55,20 @@ export default function PlaybackSettings() {
           onPress={PreferenceTogglers.toggleKey("dragClearPlayback")}
           RightElement={<Switch enabled={dragClearPlayback} />}
         />
+      </SegmentedList>
+
+      <TEm
+        textKey="feat.modalTrack.extra.trackQuickActions"
+        className="-mb-4"
+      />
+      <SegmentedList>
         <SegmentedList.Item
-          labelTextKey="feat.queue.extra.quickAdd"
+          labelTextKey="term.favorite"
+          onPress={PreferenceTogglers.toggleKey("quickFavorite")}
+          RightElement={<Switch enabled={quickFavorite} />}
+        />
+        <SegmentedList.Item
+          labelTextKey="feat.queue.extra.add"
           onPress={PreferenceTogglers.toggleKey("quickAddQueue")}
           RightElement={<Switch enabled={quickAddQueue} />}
         />

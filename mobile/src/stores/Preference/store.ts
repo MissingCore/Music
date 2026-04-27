@@ -64,7 +64,6 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     dragClearPlayback: false,
     nowPlayingDesign: "vinyl",
 
-    quickAddQueue: false,
     quickScroll: true,
     squareArtwork: true,
 
@@ -73,6 +72,8 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     continuePlaybackOnDismiss: false,
     repeatOnSkip: false,
     restoreLastPosition: true,
+    quickAddQueue: false,
+    quickFavorite: false,
 
     rescanOnLaunch: true,
 

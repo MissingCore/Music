@@ -62,8 +62,6 @@ export interface PreferenceStore {
   /** Design used for the Now Playing screen. */
   nowPlayingDesign: NowPlayingDesign;
 
-  /** Shows button to add track to queue on `<Track />` item. */
-  quickAddQueue: boolean;
   /** Show functional Nothing-styled scrollbar on supported screens. */
   quickScroll: boolean;
   /** If we use `contentFit="cover"` for artwork. */
@@ -78,6 +76,10 @@ export interface PreferenceStore {
   repeatOnSkip: boolean;
   /** Whether we'll restore the track to the last played position. */
   restoreLastPosition: boolean;
+  /** Shows button to add track to queue on `<Track />` item. */
+  quickAddQueue: boolean;
+  /** Shows button to add track to "Favorite Tracks" playlist on `<Track />` item. */
+  quickFavorite: boolean;
 
   /** If we should rescan the library on app launch. */
   rescanOnLaunch: boolean;
