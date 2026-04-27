@@ -191,17 +191,16 @@ function SleepTimerButton(props: { present: VoidFunction }) {
   const { t } = useTranslation();
   const sleepTimerActive = useSleepTimerStore((s) => s.endAt) !== null;
   return (
-    <View className="relative">
-      <FilledIconButton
-        Icon={Timer}
-        accessibilityLabel={t("feat.sleepTimer.title")}
-        onPress={props.present}
-        size="lg"
-      />
-      {sleepTimerActive && (
-        <View className="absolute top-2 right-2 size-2 rounded-full bg-primary" />
-      )}
-    </View>
+    <FilledIconButton
+      Icon={Timer}
+      accessibilityLabel={t("feat.sleepTimer.title")}
+      onPress={props.present}
+      className={
+        sleepTimerActive ? "bg-secondary active:bg-secondaryDim" : undefined
+      }
+      size="lg"
+      _iconColor={sleepTimerActive ? "onSecondary" : undefined}
+    />
   );
 }
 
