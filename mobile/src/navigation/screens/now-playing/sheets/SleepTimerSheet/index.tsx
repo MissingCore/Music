@@ -1,7 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard } from "react-native";
 
+import { useInForeground } from "~/stores/ListenerState";
 import { useSleepTimerStore } from "./store";
 
 import { wait } from "~/utils/promise";
@@ -10,6 +11,7 @@ import { ClickwrapCheckbox } from "~/components/Form/Checkbox";
 import { NumericInput } from "~/components/Form/Input";
 import { DetachedSheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
+import { AccentText } from "~/components/Typography/AccentText";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 export function SleepTimerSheet(props: { ref: TrueSheetRef }) {
@@ -54,14 +56,17 @@ export function SleepTimerSheet(props: { ref: TrueSheetRef }) {
         dim
         className="text-sm"
       />
-      <NumericInput
-        pointerEvents={hasTimer ? "none" : "auto"}
-        defaultValue={`${sleepTimerLength}`}
-        editable={!hasTimer}
-        onChangeText={(text) => setMinutes(text)}
-        className="mx-auto w-full max-w-1/2 border-b border-outline text-center"
-        forSheet
-      />
+      {hasTimer ? (
+        <CountdownTimer endAt={endAt} />
+      ) : (
+        <NumericInput
+          defaultValue={`${sleepTimerLength}`}
+          onChangeText={(text) => setMinutes(text)}
+          maxLength={3} // Max out at 999 minutes (~16.5 hours).
+          className="mx-auto w-full max-w-1/2 border-b border-outline text-center"
+          forSheet
+        />
+      )}
       <StyledText dim>
         {t("feat.sleepTimer.extra.stopTime", { time: endString })}
       </StyledText>
@@ -77,5 +82,35 @@ export function SleepTimerSheet(props: { ref: TrueSheetRef }) {
         className="rounded-full"
       />
     </DetachedSheet>
+  );
+}
+
+function CountdownTimer({ endAt }: { endAt: number }) {
+  const inForeground = useInForeground();
+
+  const getInitialTimerState = useMemo(() => {
+    return () => {
+      let second = Math.max(0, Math.floor((endAt - Date.now()) / 1000));
+      const hour = Math.floor(second / 3600);
+      second -= hour * 3600;
+      const minute = Math.floor(second / 60);
+      second -= minute * 60;
+      return { hour, minute, second };
+    };
+  }, [endAt]);
+
+  const [timer, setTimer] = useState(getInitialTimerState);
+
+  useEffect(() => {
+    if (!inForeground) return;
+    const interval = setInterval(() => setTimer(getInitialTimerState()), 1000);
+    return () => clearInterval(interval);
+  }, [inForeground, getInitialTimerState]);
+
+  return (
+    <AccentText
+      style={{ fontVariant: ["tabular-nums"] }}
+      className="text-center text-5xl"
+    >{`${String(timer.hour).padStart(2, "0")} : ${String(timer.minute).padStart(2, "0")} : ${String(timer.second).padStart(2, "0")}`}</AccentText>
   );
 }

@@ -49,6 +49,7 @@ export const sleepTimerStore = createStore<SleepTimerStore>()((set, get) => ({
           PlaybackControls.stop();
           clearSleepTimer();
         }, extensionMS);
+        set({ endAt: (get().endAt || Date.now()) + extensionMS });
       }
     }, durationMS);
 
