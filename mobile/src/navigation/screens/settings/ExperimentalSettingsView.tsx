@@ -38,7 +38,7 @@ export default function ExperimentalSettings() {
       />
 
       <SegmentedList.Item
-        labelTextKey="feat.androidAuto.title"
+        labelText="Android Auto"
         onPress={() => openLink(Links.AndroidAuto)}
         RightElement={<OpenInNew />}
       />

@@ -289,9 +289,6 @@
     "experimental": {
       "title": "Experimental Features"
     },
-    "androidAuto": {
-      "title": "Android Auto"
-    },
     "equalizer": {
       "title": "Equalizer",
       "extra": {
