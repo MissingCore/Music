@@ -42,10 +42,15 @@ export function getAudioBrowserOptions(
   };
 }
 
+const UNLOADED_STATES = ["none", "stopped"];
+
 /** Checks to see if the AudioBrowser service is set up. */
 export async function isAudioBrowserSetUp() {
   //? Since AudioBrowser can be set up headlessly, we need a new method
-  //? to determine if it's interactable. We do this by checking if the
-  //? current state isn't `none`.
-  return AudioBrowser.getPlayback().state !== "none";
+  //? to determine if it's interactable.
+  try {
+    return !UNLOADED_STATES.includes(AudioBrowser.getPlayback().state);
+  } catch {
+    return false;
+  }
 }

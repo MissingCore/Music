@@ -15,6 +15,7 @@ import {
   getUpdatedLists,
 } from "../utils";
 
+import { isAudioBrowserSetUp } from "~/lib/react-native-audio-browser";
 import { revalidateWidgets } from "~/modules/widget/utils";
 
 //#region Loaders
@@ -40,7 +41,7 @@ export async function loadCurrentTrack() {
 
 /** Initialize the AudioBrowser queue. */
 export async function preloadCurrentTrack() {
-  if (await isLoaded()) return;
+  if (await isAudioBrowserSetUp()) return;
   console.log(
     "[AudioBrowser] Queue is empty, preloading AudioBrowser Queue...",
   );
@@ -71,8 +72,13 @@ export async function pause(opts?: PlayPauseOptions) {
 
 /** Stop & unload the current playing track (stops loading/buffering). */
 export async function stop() {
-  playbackStore.setState({ isPlaying: false });
-  AudioBrowser.stop();
+  playbackStore.setState({
+    isPlaying: false,
+    //? Without this, if we click "Play", we'll start at the beginning of the track.
+    _hasRestoredPosition: false,
+    _restoredTrackKey: playbackStore.getState().activeKey,
+  });
+  AudioBrowser.reset();
   revalidateWidgets({ openApp: true });
 }
 
@@ -96,7 +102,7 @@ export async function prev() {
 
   // If the AudioBrowser queue isn't loaded or if we played <=10s of the track,
   // simply update the `currPlayingIdx` & `currPlayingId`
-  if (lastPosition <= 10 || !(await isLoaded())) {
+  if (lastPosition <= 10 || !(await isAudioBrowserSetUp())) {
     playbackStore.setState({
       lastPosition: 0,
       activeKey: prevTrackKey,
@@ -237,7 +243,7 @@ export async function playFromList({
   });
 
   // 6. Play this new media list.
-  if (isDiffTrack || !(await isLoaded())) await loadCurrentTrack();
+  if (isDiffTrack || !(await isAudioBrowserSetUp())) await loadCurrentTrack();
   AudioBrowser.play();
 
   // 7. Add media list to recent lists.
@@ -281,14 +287,5 @@ export async function getNextTrack() {
     //? Decrement `numQueuedNext` when the next track is played.
     numQueuedNext: nextIndex === 0 ? 0 : Math.max(0, numQueuedNext - 1),
   };
-}
-
-/** Determine if any tracks are loaded in AudioBrowser on launch. */
-async function isLoaded() {
-  try {
-    return AudioBrowser.getPlayback().state !== "none";
-  } catch {
-    return false;
-  }
 }
 //#endregion
