@@ -78,6 +78,15 @@ function ErrorLayout({ error }: { error: Error }) {
           <View className="rounded-md bg-surfaceContainerLowest p-4">
             <StyledText>{error.message}</StyledText>
           </View>
+          {hasMissingMigrations(error.message) ? (
+            <View className="rounded-md bg-secondary p-4">
+              <StyledText bold className="text-onSecondary">
+                {
+                  "❗Detected error caused by migrations never applied from versions between then and now, which have since been removed.❗\n\nThis error can only be resolved by clearing this app's storage, which results in data loss, requiring you to re-create your playlists & favorites."
+                }
+              </StyledText>
+            </View>
+          ) : null}
           <StyledText dim className="text-sm">
             {error.stack}
           </StyledText>
@@ -99,5 +108,16 @@ function ErrorLayout({ error }: { error: Error }) {
         </View>
       </View>
     </>
+  );
+}
+
+/**
+ * Determines if the user is upgrading from a very old version of the app
+ * where some critical migrations weren't applied.
+ */
+function hasMissingMigrations(message: string) {
+  return (
+    message.includes("Failed to run the query") &&
+    message.includes("CREATE UNIQUE INDEX")
   );
 }
