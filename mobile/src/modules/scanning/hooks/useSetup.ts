@@ -3,13 +3,14 @@ import { useEffect, useState } from "react";
 import AudioBrowser from "react-native-audio-browser";
 
 import { addPlayedMediaList } from "~/data/recent/api";
+import { onAppStartUpInit } from "~/initServices";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import {
   equalizerStore,
   useEqualizerStore,
 } from "~/modules/equalizer/core/store";
-import { setEQPreset } from "~/modules/equalizer/core/actions";
+import { _initEQStore, setEQPreset } from "~/modules/equalizer/core/actions";
 
 import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 import { revalidateWidgets } from "~/modules/widget/utils";
@@ -41,6 +42,11 @@ export function useSetup() {
     (async () => {
       setSetupState("pending");
       GlyphToy.connect();
+      await onAppStartUpInit;
+
+      // Initial Equalizer store values after we ensure AudioBrowser is initialized.
+      // Otherwise we get startup crashes from calling `AudioBrowser.getEqualizerSettings()`.
+      _initEQStore();
 
       // Prevent Android Auto from reading stale cached data on app launch
       // if it's reusing a prior session.

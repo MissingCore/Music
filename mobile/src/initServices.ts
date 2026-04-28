@@ -74,7 +74,8 @@ const erroredTrackUris = new Set<string>();
  * Register services in the `index.ts` file. Doesn't get called on next
  * app launch if "Continue Playback on Dismiss" is enabled.
  */
-export async function initServices() {
+async function initServices() {
+  console.warn("[InitServices] Initializing services...");
   GlyphToy.connect();
 
   //? Seems like we can setup the playback service in the background/headlessly.
@@ -399,3 +400,6 @@ export async function initServices() {
   AudioBrowser.configureBrowser(configuration);
   //#endregion
 }
+
+/** Promise to setup AudioBrowser. */
+export const onAppStartUpInit = initServices();

@@ -32,13 +32,9 @@ export interface EqualizerStore {
   bandOrdinate: number;
 }
 
-export const OmittedFields: string[] = [
-  "_hasHydrated",
-  "_init",
-  "defaultFrequencies",
-  "defaultPresets",
-  "minBandLevel",
-  "maxBandLevel",
-  "bandOrdinate",
+export const PersistedFields: string[] = [
+  "enabled",
+  "preset",
+  "customBands",
 ] satisfies Array<keyof EqualizerStore>;
 //#endregion
