@@ -268,9 +268,6 @@
     "experimental": {
       "title": "ویژگی های آزمایشی"
     },
-    "androidAuto": {
-      "title": null
-    },
     "equalizer": {
       "title": null,
       "extra": {
@@ -397,6 +394,7 @@
         "filePath": "مسیر فایل",
         "sampleRate": "نرخ نمونه برداری",
         "size": "اندازه",
+        "trackQuickActions": null,
         "addToPlaylist": "اضافه به لیست پخش"
       }
     },
@@ -406,7 +404,6 @@
         "playNext": null,
         "playLast": null,
         "toast": "`{{- name}}` به صف اضافه شد.",
-        "quickAdd": null,
         "queueAwareNext": null,
         "queueAwareNextBrief": null
       }

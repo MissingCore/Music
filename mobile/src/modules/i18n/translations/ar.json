@@ -268,9 +268,6 @@
     "experimental": {
       "title": "ميزات تجريبية"
     },
-    "androidAuto": {
-      "title": null
-    },
     "equalizer": {
       "title": null,
       "extra": {
@@ -397,6 +394,7 @@
         "filePath": "مسار الملف",
         "sampleRate": "معدل العينة",
         "size": "الحجم",
+        "trackQuickActions": null,
         "addToPlaylist": "إضافة إلى قائمة التشغيل"
       }
     },
@@ -406,7 +404,6 @@
         "playNext": null,
         "playLast": null,
         "toast": "تمت إضافة `{{- name}}` إلى قائمة الانتظار.",
-        "quickAdd": null,
         "queueAwareNext": null,
         "queueAwareNextBrief": null
       }

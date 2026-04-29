@@ -268,9 +268,6 @@
     "experimental": {
       "title": "Eksperimentelle Funktioner"
     },
-    "androidAuto": {
-      "title": "Android Auto"
-    },
     "equalizer": {
       "title": "Equalizer",
       "extra": {
@@ -397,6 +394,7 @@
         "filePath": "Filens sti",
         "sampleRate": "Samplingfrekvens",
         "size": "Størrelse",
+        "trackQuickActions": null,
         "addToPlaylist": "Tilføj til playliste"
       }
     },
@@ -406,7 +404,6 @@
         "playNext": "Afspil som næste",
         "playLast": "Afspil sidst",
         "toast": "\"{{- name}}\" tilføjet til kø.",
-        "quickAdd": "Vis \"Tilføj til kø\" knap ved hver sang",
         "queueAwareNext": "Kø-bevidst \"Afspil som næste\"",
         "queueAwareNextBrief": "Forsøger at tilføje sang efter den sidste \"Afspil som næste\"-sang i køen."
       }

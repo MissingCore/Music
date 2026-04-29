@@ -268,9 +268,6 @@
     "experimental": {
       "title": null
     },
-    "androidAuto": {
-      "title": null
-    },
     "equalizer": {
       "title": null,
       "extra": {
@@ -397,6 +394,7 @@
         "filePath": "Percorso file",
         "sampleRate": "Frequenza di campionamento",
         "size": "Dimensioni",
+        "trackQuickActions": null,
         "addToPlaylist": "Aggiungi ad una $t(term.playlist)"
       }
     },
@@ -406,7 +404,6 @@
         "playNext": null,
         "playLast": null,
         "toast": "`{{- name}}` aggiunto alla coda.",
-        "quickAdd": null,
         "queueAwareNext": null,
         "queueAwareNextBrief": null
       }
