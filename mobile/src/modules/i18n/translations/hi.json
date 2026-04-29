@@ -268,9 +268,6 @@
     "experimental": {
       "title": "प्रयोगात्मक फीचर"
     },
-    "androidAuto": {
-      "title": null
-    },
     "equalizer": {
       "title": null,
       "extra": {
@@ -397,6 +394,7 @@
         "filePath": "फ़ाइल पथ",
         "sampleRate": "सैंपल रेट",
         "size": "आकार",
+        "trackQuickActions": null,
         "addToPlaylist": "प्लेलिस्ट में जोड़ें"
       }
     },
@@ -406,7 +404,6 @@
         "playNext": "अगला चलाएँ",
         "playLast": "अंतिम चलाएँ",
         "toast": "`{{- name}}` कतार में जोड़ा गया।",
-        "quickAdd": null,
         "queueAwareNext": "क्यू-सजग अगला चलाएँ",
         "queueAwareNextBrief": "अंतिम \"अगला चलाएँ\" ट्रैक के बाद ट्रैक जोड़ने का प्रयास करता है।"
       }

@@ -268,9 +268,6 @@
     "experimental": {
       "title": "Экспериментальные функции"
     },
-    "androidAuto": {
-      "title": null
-    },
     "equalizer": {
       "title": null,
       "extra": {
@@ -397,6 +394,7 @@
         "filePath": "Путь к файлу",
         "sampleRate": "Частота",
         "size": "Размер",
+        "trackQuickActions": null,
         "addToPlaylist": "Добавить в плейлист"
       }
     },
@@ -406,7 +404,6 @@
         "playNext": null,
         "playLast": null,
         "toast": "`{{- name}}` добавлен в очередь.",
-        "quickAdd": null,
         "queueAwareNext": null,
         "queueAwareNextBrief": null
       }

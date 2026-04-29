@@ -268,9 +268,6 @@
     "experimental": {
       "title": "Deneysel Özellikler"
     },
-    "androidAuto": {
-      "title": "Android Auto"
-    },
     "equalizer": {
       "title": "Ekolayzer",
       "extra": {
@@ -397,6 +394,7 @@
         "filePath": "Dosya Yolu",
         "sampleRate": "Örnekleme Hızı",
         "size": "Boyut",
+        "trackQuickActions": null,
         "addToPlaylist": "Çalma Listesine Ekle"
       }
     },
@@ -406,7 +404,6 @@
         "playNext": "Sonraki Çal",
         "playLast": "En Son Çal",
         "toast": "`{{- name}}` kuyruğa eklendi.",
-        "quickAdd": "Kuyruğa Hızlı Ekle",
         "queueAwareNext": "Kuyruk Uyumlu Sonraki Çal",
         "queueAwareNextBrief": "Parçayı son \"Sonraki Çal\" öğesinden sonraki sıraya eklemeyi dener."
       }

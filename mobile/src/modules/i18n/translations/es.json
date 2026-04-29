@@ -223,7 +223,7 @@
     "lyrics": {
       "title": "Letras",
       "extra": {
-        "useEmbedded": null
+        "useEmbedded": "Usar letra integrada"
       }
     },
     "scanning": {
@@ -267,9 +267,6 @@
     },
     "experimental": {
       "title": "Funciones experimentales"
-    },
-    "androidAuto": {
-      "title": "Android Auto"
     },
     "equalizer": {
       "title": "Ecualizador",
@@ -397,6 +394,7 @@
         "filePath": "Ruta del archivo",
         "sampleRate": "Frecuencia de muestreo",
         "size": "Tamaño",
+        "trackQuickActions": "Acciones rápidas de la canción",
         "addToPlaylist": "Añadir a lista de reproducción"
       }
     },
@@ -406,7 +404,6 @@
         "playNext": "Reproducir a continuación",
         "playLast": "Reproducir al final",
         "toast": "`{{- name}}` añadida a la cola.",
-        "quickAdd": "Añadir rápidamente a la cola",
         "queueAwareNext": "Insertar como siguiente",
         "queueAwareNextBrief": "Intenta colocar la canción después de la última marcada como \"Reproducir a continuación\"."
       }

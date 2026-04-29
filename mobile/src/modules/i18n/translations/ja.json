@@ -268,9 +268,6 @@
     "experimental": {
       "title": "試験的な機能"
     },
-    "androidAuto": {
-      "title": "Android Auto"
-    },
     "equalizer": {
       "title": "イコライザー",
       "extra": {
@@ -397,6 +394,7 @@
         "filePath": "ファイルのパス",
         "sampleRate": "サンプルレート",
         "size": "サイズ",
+        "trackQuickActions": null,
         "addToPlaylist": "プレイリストに追加"
       }
     },
@@ -406,7 +404,6 @@
         "playNext": "次に再生",
         "playLast": "最後に再生",
         "toast": "｢{{- name}}｣がキューに追加されました。",
-        "quickAdd": "クイックでキューに追加",
         "queueAwareNext": "キューの認識による次の再生",
         "queueAwareNextBrief": "最後の「次に再生」するトラックの後にトラックを追加します。"
       }
