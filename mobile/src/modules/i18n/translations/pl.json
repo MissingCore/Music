@@ -142,7 +142,7 @@
     "miniplayerGestures": {
       "title": "Gesty w miniodtwarzaczu",
       "extra": {
-        "dragClearPlayback": null
+        "dragClearPlayback": "Przeciągnięcie Miniodtwarzacza w dół resetuje odtwarzanie"
       }
     },
     "nowPlayingDesign": {
@@ -223,7 +223,7 @@
     "lyrics": {
       "title": "Teksty",
       "extra": {
-        "useEmbedded": null
+        "useEmbedded": "Użyj osadzonych"
       }
     },
     "scanning": {
@@ -269,19 +269,19 @@
       "title": "Funkcje eksperymentalne"
     },
     "equalizer": {
-      "title": null,
+      "title": "Equalizer",
       "extra": {
-        "Custom": null,
-        "Normal": null,
-        "Classical": null,
-        "Dance": null,
-        "Flat": null,
-        "Folk": null,
-        "Heavy Metal": null,
-        "Hip Hop": null,
-        "Jazz": null,
-        "Pop": null,
-        "Rock": null
+        "Custom": "Własny",
+        "Normal": "Normalny",
+        "Classical": "Klasyczna",
+        "Dance": "Taneczna",
+        "Flat": "Płaska",
+        "Folk": "Folk",
+        "Heavy Metal": "Heavy Metal",
+        "Hip Hop": "Hip Hop",
+        "Jazz": "Jazz",
+        "Pop": "Pop",
+        "Rock": "Rock"
       }
     },
     "ignoreInterrupt": {
@@ -343,7 +343,7 @@
       "extra": {
         "change": "Zmień okładkę",
         "remove": "Usuń okładkę",
-        "square": null
+        "square": "Kwadratowe okładki"
       }
     },
     "directory": {
@@ -394,7 +394,7 @@
         "filePath": "Ścieżka do pliku",
         "sampleRate": "Częstotliwość próbkowania",
         "size": "Rozmiar",
-        "trackQuickActions": null,
+        "trackQuickActions": "Szybkie akcje utworu",
         "addToPlaylist": "Dodaj do playlisty"
       }
     },
