@@ -76,7 +76,7 @@ function LyricsContent(props: { trackId: string; offset: number }) {
   const isSynchronized = useMemo(
     () =>
       lyricsLines.every((line) =>
-        !line ? true : LRC_LINE_START_TIMESTAMP.test(line),
+        !line ? true : LRC_LINE_SYNC_TAG.test(line),
       ),
     [lyricsLines],
   );
@@ -339,6 +339,7 @@ const MemoLyricList = memo(
 //#endregion
 
 //#region Lyric Parsing
+const LRC_LINE_SYNC_TAG = /^\[.+:.+?\]/;
 const LRC_LINE_START_TIMESTAMP = /^\[[0-9]+:[0-9]+(?:\.[0-9]+)?\]/;
 /** Supports both square & angle bracket format. */
 const LRC_WORD_TIMESTAMP = /(?:\[|<)[0-9]+:[0-9]+(?:\.[0-9]+)?(?:\]|>)/g;
