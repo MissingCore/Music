@@ -1,6 +1,6 @@
 import Svg, { Path } from "react-native-svg";
 
-import { useColor } from "~/modules/theme/useTheme";
+import { useColor } from "~/modules/theme/hooks";
 import type { Icon } from "./type";
 
 export function FormatPaint({ size = 24, color }: Icon) {

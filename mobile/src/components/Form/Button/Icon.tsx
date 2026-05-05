@@ -5,7 +5,7 @@ import type { Icon } from "~/resources/icons/type";
 
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
-import { useTheme } from "~/modules/theme/useTheme";
+import { useTheme } from "~/modules/theme/hooks";
 import type { PressProps } from "./types";
 import { Pressable } from "../../Base/Pressable";
 

@@ -3,7 +3,7 @@ import { DefaultTheme } from "@react-navigation/native";
 import { useMemo } from "react";
 
 import { Colors } from "~/constants/Styles";
-import { useCurrentTheme } from "~/modules/theme/useTheme";
+import { useCurrentTheme } from "~/modules/theme/hooks";
 
 /** Light theme for React Navigation components. */
 const LightNavTheme = {

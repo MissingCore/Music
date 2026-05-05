@@ -24,7 +24,7 @@ import { abbreviateSize, formatSeconds } from "~/utils/number";
 import { SegmentedList } from "~/components/List/Segmented";
 import { Legend } from "~/components/UI/Legend";
 import { ProgressBar } from "~/components/UI/ProgressBar";
-import { useTheme } from "~/modules/theme/useTheme";
+import { useTheme } from "~/modules/theme/hooks";
 
 export default function Insights() {
   const { t } = useTranslation();

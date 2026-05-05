@@ -23,7 +23,7 @@ import { ExtendedTButton } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
 import { Em, TEm } from "~/components/Typography/StyledText";
-import { useTheme } from "~/modules/theme/useTheme";
+import { useTheme } from "~/modules/theme/hooks";
 import { linkTrackToLyric } from "../../lyrics/helpers/linkTrackToLyric";
 
 const SCROLL_OFFSET = 64;

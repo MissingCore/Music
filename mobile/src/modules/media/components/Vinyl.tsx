@@ -4,7 +4,7 @@ import type { CircleProps } from "react-native-svg";
 import Svg, { Circle, Defs, Mask, Rect } from "react-native-svg";
 
 import { Colors } from "~/constants/Styles";
-import { useTheme } from "~/modules/theme/useTheme";
+import { useTheme } from "~/modules/theme/hooks";
 import { MediaImage, getUsedImage } from "./MediaImage";
 
 const CENTER = { cx: 384, cy: 384 };

@@ -4,7 +4,7 @@ import { View } from "react-native";
 
 import { cn } from "~/lib/style";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
-import { useTheme } from "~/modules/theme/useTheme";
+import { useTheme } from "~/modules/theme/hooks";
 
 type ErrorMsgProps = {
   /** Key to error messaeg in translations. */

@@ -21,7 +21,7 @@ import { Colors } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
 import type { AppColor } from "~/lib/style";
 import { cn } from "~/lib/style";
-import { useColor } from "~/modules/theme/useTheme";
+import { useColor } from "~/modules/theme/hooks";
 import { Em } from "../Typography/StyledText";
 
 /**

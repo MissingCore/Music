@@ -15,7 +15,7 @@ import { getFont } from "~/lib/style";
 import { Links, openLink } from "~/lib/web-browser";
 import { SegmentedList } from "~/components/List/Segmented";
 import { AccentText } from "~/components/Typography/AccentText";
-import { useTheme } from "~/modules/theme/useTheme";
+import { useTheme } from "~/modules/theme/hooks";
 
 export default function AppUpdate() {
   const { release, isRC } = useHasNewUpdate();

@@ -3,7 +3,7 @@ import { useMemo } from "react";
 
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
-import { useColor } from "~/modules/theme/useTheme";
+import { useColor } from "~/modules/theme/hooks";
 
 /** Gradient where the darkest portion is on the top. */
 export function TopDownGradient(props: {

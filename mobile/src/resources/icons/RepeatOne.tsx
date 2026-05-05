@@ -1,6 +1,6 @@
 import Svg, { Path } from "react-native-svg";
 
-import { useColor } from "~/modules/theme/useTheme";
+import { useColor } from "~/modules/theme/hooks";
 import type { Icon } from "./type";
 
 // Custom icon based on ionicons' "Repeat" and "Calendar Number".
