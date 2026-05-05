@@ -8,7 +8,7 @@ import { DetachedSheet } from "~/components/Sheet";
 import { HorizontalRadioList } from "~/components/Sheet/HorizontalRadioList";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";
-import { Themes, SystemTheme } from "~/modules/theme/useTheme";
+import { Themes, SystemTheme } from "~/modules/theme/constants";
 import { ThemeOptions } from "~/stores/Preference/constants";
 
 const ThemePreviewColor = {
