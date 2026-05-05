@@ -2,19 +2,6 @@
 @import "uniwind";
 
 @theme {
-  /** "Fixed" Color Scheme */
-  --color-primary: hsl(357 79% 47%);
-  --color-onPrimary: hsl(0 0% 100%);
-  --color-onPrimaryVariant: hsl(0 0% 89%);
-
-  --color-secondary: hsl(47 100% 50%);
-  --color-onSecondary: hsl(0 0% 0%);
-  --color-onSecondaryVariant: hsl(0 0% 28%);
-
-  --color-error: hsl(350 85% 42%);
-  --color-onError: hsl(0 0% 100%);
-  --color-onErrorVariant: hsl(0 0% 89%);
-
   /** Font Family */
   --font-roboto: "Roboto-Regular";
   --font-robotoMedium: "Roboto-Medium";
@@ -48,9 +35,20 @@
   /** Themes */
   :root {
     @variant light {
+      --color-primary: hsl(357 79% 47%);
       --color-primaryDim: hsl(357 79% 43%);
+      --color-onPrimary: hsl(0 0% 100%);
+      --color-onPrimaryVariant: hsl(0 0% 89%);
+
+      --color-secondary: hsl(47 100% 50%);
       --color-secondaryDim: hsl(47 100% 47%);
+      --color-onSecondary: hsl(0 0% 0%);
+      --color-onSecondaryVariant: hsl(0 0% 28%);
+
+      --color-error: hsl(350 85% 42%);
       --color-errorDim: hsl(350 85% 39%);
+      --color-onError: hsl(0 0% 100%);
+      --color-onErrorVariant: hsl(0 0% 89%);
 
       --color-surfaceDim: hsl(0 0% 78%);
       --color-surface: hsl(0 0% 95%);
@@ -72,9 +70,20 @@
     }
 
     @variant dark {
+      --color-primary: hsl(357 79% 47%);
       --color-primaryDim: hsl(357 79% 38%);
+      --color-onPrimary: hsl(0 0% 100%);
+      --color-onPrimaryVariant: hsl(0 0% 89%);
+
+      --color-secondary: hsl(47 100% 50%);
       --color-secondaryDim: hsl(47 100% 45%);
+      --color-onSecondary: hsl(0 0% 0%);
+      --color-onSecondaryVariant: hsl(0 0% 28%);
+
+      --color-error: hsl(350 85% 42%);
       --color-errorDim: hsl(350 85% 37%);
+      --color-onError: hsl(0 0% 100%);
+      --color-onErrorVariant: hsl(0 0% 89%);
 
       --color-surfaceDim: hsl(0 0% 0%);
       --color-surface: hsl(0 0% 0%);
@@ -93,6 +102,41 @@
 
       --color-inverseSurface: hsl(0 0% 100%);
       --color-inverseOnSurface: hsl(0 0% 0%);
+    }
+
+    @variant custom {
+      --color-primary: hsl(357 79% 47%);
+      --color-primaryDim: hsl(357 79% 43%);
+      --color-onPrimary: hsl(0 0% 100%);
+      --color-onPrimaryVariant: hsl(0 0% 89%);
+
+      --color-secondary: hsl(47 100% 50%);
+      --color-secondaryDim: hsl(47 100% 47%);
+      --color-onSecondary: hsl(0 0% 0%);
+      --color-onSecondaryVariant: hsl(0 0% 28%);
+
+      --color-error: hsl(350 85% 42%);
+      --color-errorDim: hsl(350 85% 39%);
+      --color-onError: hsl(0 0% 100%);
+      --color-onErrorVariant: hsl(0 0% 89%);
+
+      --color-surfaceDim: hsl(0 0% 78%);
+      --color-surface: hsl(0 0% 95%);
+      --color-surfaceBright: hsl(0 0% 95%);
+
+      --color-surfaceContainerLowest: hsl(0 0% 100%);
+      --color-surfaceContainerLow: hsl(0 0% 98%);
+      --color-surfaceContainer: hsl(0 0% 92%);
+      --color-surfaceContainerHigh: hsl(0 0% 85%);
+      --color-surfaceContainerHighest: hsl(0 0% 82%);
+
+      --color-onSurface: hsl(0 0% 0%);
+      --color-onSurfaceVariant: hsl(0 0% 38%);
+      --color-outline: hsl(0 0% 68%);
+      --color-outlineVariant: hsl(0 0% 85%);
+
+      --color-inverseSurface: hsl(0 0% 0%);
+      --color-inverseOnSurface: hsl(0 0% 100%);
     }
   }
 }
