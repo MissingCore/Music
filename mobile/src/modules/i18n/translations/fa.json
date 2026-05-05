@@ -7,8 +7,8 @@
     "artists": "خوانندگان",
     "folder": "پوشه",
     "folders": "پوشه ها",
-    "genre": null,
-    "genres": null,
+    "genre": "ژانر",
+    "genres": "ژانر ها",
     "playlist": "لیست پخش",
     "playlists": "لیست های پخش",
     "track": "آهنگ",
@@ -33,19 +33,19 @@
     "disc": "دیسک {{count}}"
   },
   "template": {
-    "entryAdd": null,
+    "entryAdd": "`{{- name}}` اضافه شد.",
     "entryAdded": "`{{- name}}` اضافه شد.",
     "entryRemove": "حذف `{{- name}}`.",
     "entryRemoved": "`{{- name}}` حذف شد.",
-    "entryManage": null,
+    "entryManage": "مدیریت `{{- name}}`",
     "entrySeeMore": "اطلاعات بیشتر درباره `{{- name}}`.",
     "notFound": "`{{- name}}` وجود ندارد.",
-    "entryMove": null,
+    "entryMove": "`{{- name}}` جا به جا کردن",
     "entryShow": "نمایش `{{- name}}`",
     "entryHide": "مخفی کردن `{{- name}}`",
     "entryEnable": "فعال کردن `{{- name}}`",
     "entryDisable": "غیرفعال کردن `{{- name}}`",
-    "noContentFound": null
+    "noContentFound": "محتوا یافت نشد"
   },
   "plural": {
     "entry_one": "{{count}} مورد",
@@ -63,9 +63,9 @@
     "unsaved": "ممکن است تغییرات ذخیره نشده‌ای داشته باشید.",
     "stay": "ماندن",
     "leave": "خروج",
-    "create": null,
-    "delete": null,
-    "edit": null,
+    "create": "ایجاد",
+    "delete": "حذف",
+    "edit": "ویرایش",
     "clear": "پاک کردن",
     "reset": "بازنشانی",
     "validation": {
@@ -93,11 +93,11 @@
       "noResults": "هیچ نتیجه‌ای یافت نشد.",
       "noAlbums": "هیچ آلبومی یافت نشد.",
       "noArtists": "هیچ خواننده‌ای یافت نشد.",
-      "noGenres": null,
+      "noGenres": "هیچ ژانری یافت نشد.",
       "noPlaylists": "هیچ لیست پخشی یافت نشد.",
       "noTracks": "هیچ آهنگی یافت نشد.",
       "noHiddenTracks": "هیچ آهنگ مخفی یافت نشد.",
-      "noLyrics": null
+      "noLyrics": "هیچ متنی یافت نشد."
     }
   },
   "feat": {
@@ -108,7 +108,7 @@
         "downloadAPK": "دانلود APK جدید",
         "updateGoogle": "به‌روزرسانی از طریق پلی استور",
         "version": "نسخه",
-        "checkUpdates": null,
+        "checkUpdates": "بررسی بروزرسانی ها",
         "rcNotification": "اعلان پیش انتشار"
       }
     },
@@ -142,7 +142,7 @@
     "miniplayerGestures": {
       "title": "انیمیشن های مینی پلیر",
       "extra": {
-        "dragClearPlayback": null
+        "dragClearPlayback": "برای حذف پخش ، مینی پلیر را به پایین بکشید"
       }
     },
     "nowPlayingDesign": {
@@ -161,7 +161,7 @@
       "extra": {
         "contribute": "کمک به ترجمه",
         "useLTR": "استفاده از چیدمان چپ به راست با زبان راست به چپ. نیاز به راه‌اندازی مجدد.",
-        "translators": null
+        "translators": "مترجمان"
       }
     },
     "backup": {
@@ -221,9 +221,9 @@
       "title": "ذخیره آخرین موقعیت پخش"
     },
     "lyrics": {
-      "title": null,
+      "title": "متن آهنگ",
       "extra": {
-        "useEmbedded": null
+        "useEmbedded": "استفاده از متن پیوست"
       }
     },
     "scanning": {
@@ -248,7 +248,7 @@
     },
     "listAllow": {
       "title": "لیست مجاز",
-      "description": null
+      "description": "توضیحات"
     },
     "listBlock": {
       "title": "لیست مسدود",
@@ -259,29 +259,29 @@
       "description": "مدت زمان به ثانیه صدایی که نمی خواهیم ذخیره کنیم."
     },
     "separators": {
-      "title": null,
+      "title": "جدا ساز چند مقداری",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "به قطعه موسیقی های جدید اعمال میشود . برای بروزرسانی موسیقی های فعلی از اسکن عمیق استفاده کنید.",
+        "line2": "اخطار : این ممکن است باعث شود بعضی از تگ ها به صورت اشتباه به عنوان چند مقداری تعریف شوند. به ترک هایی که دستی ویرایش کردید اعمال نمیشود."
       }
     },
     "experimental": {
       "title": "ویژگی های آزمایشی"
     },
     "equalizer": {
-      "title": null,
+      "title": "عنوان",
       "extra": {
-        "Custom": null,
-        "Normal": null,
-        "Classical": null,
-        "Dance": null,
-        "Flat": null,
-        "Folk": null,
-        "Heavy Metal": null,
-        "Hip Hop": null,
-        "Jazz": null,
-        "Pop": null,
-        "Rock": null
+        "Custom": "شخصی سازی",
+        "Normal": "عمومی",
+        "Classical": "کلاسیک",
+        "Dance": "رقص",
+        "Flat": "فلت",
+        "Folk": "فالک",
+        "Heavy Metal": "متال",
+        "Hip Hop": "هیپ هاپ",
+        "Jazz": "جاز",
+        "Pop": "پاپ",
+        "Rock": "راک"
       }
     },
     "ignoreInterrupt": {
@@ -294,15 +294,15 @@
       "extra": {
         "start": "شروع",
         "stopTime": "صدا در {{- time}} متوقف خواهد شد.",
-        "extend": null
+        "extend": "تا پایان پخش موسیقی زمان را افزایش بده."
       }
     },
     "waveformSlider": {
       "title": "اسلایدر شکل موج",
       "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
+        "purgeCache": "حذف کش شکل موج",
+        "purgeCacheBrief": "برای محاسبه مجدد شکل موج ها ، حافظه را خالی میکند",
+        "purgeCacheToast": "کش شکل موج تخلیه شد"
       }
     },
     "code": {
@@ -321,8 +321,8 @@
     },
     "onboarding": {
       "extra": {
-        "configureSettings": null,
-        "startScan": null,
+        "configureSettings": "تنظیمات پیکربندی",
+        "startScan": "شروع اسکن موسیقی",
         "saveTracks": "ذخیره آهنگ ها",
         "saveImages": "ذخیره تصاویر"
       }
@@ -343,7 +343,7 @@
       "extra": {
         "change": "تغییر تصویر جلد",
         "remove": "حذف تصویر جلد",
-        "square": null
+        "square": "تصویر جلد مربع"
       }
     },
     "directory": {
@@ -374,18 +374,18 @@
       }
     },
     "modalViewPreference": {
-      "title": null,
+      "title": "گزینه های نمایش",
       "extra": {
-        "layout": null,
-        "list": null,
-        "grid": null,
-        "compactGrid": null,
+        "layout": "لایه",
+        "list": "لیست",
+        "grid": "جدولی",
+        "compactGrid": "جدول فشرده",
         "sort": "ترتیب مرتب سازی",
         "asc": "ترتیب صعودی",
         "discover": "زمان پیداشدن",
-        "duration": null,
+        "duration": "مدت زمان",
         "modified": "آخرین تغییر",
-        "trackCount": null
+        "trackCount": "تعداد موسیقی"
       }
     },
     "modalTrack": {
@@ -394,18 +394,18 @@
         "filePath": "مسیر فایل",
         "sampleRate": "نرخ نمونه برداری",
         "size": "اندازه",
-        "trackQuickActions": null,
+        "trackQuickActions": "اعمال سریع قطعه موسیقی",
         "addToPlaylist": "اضافه به لیست پخش"
       }
     },
     "queue": {
       "extra": {
         "add": "اضافه به صف",
-        "playNext": null,
-        "playLast": null,
+        "playNext": "پخش بعدی",
+        "playLast": "پخش اخرین",
         "toast": "`{{- name}}` به صف اضافه شد.",
-        "queueAwareNext": null,
-        "queueAwareNextBrief": null
+        "queueAwareNext": "پخش بعدی - آگاه از صف",
+        "queueAwareNextBrief": "بعد از آخرین پخش بعدی به صف اضافه می شود."
       }
     }
   }
