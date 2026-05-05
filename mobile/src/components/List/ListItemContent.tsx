@@ -3,10 +3,9 @@ import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { useTheme } from "~/hooks/useTheme";
-
 import type { VariantColor } from "~/lib/style";
 import { cn } from "~/lib/style";
+import { useTheme } from "~/modules/theme/useTheme";
 import { StyledText } from "../Typography/StyledText";
 
 export type ListItemContentProps = (

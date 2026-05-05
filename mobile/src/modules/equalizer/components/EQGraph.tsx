@@ -9,11 +9,11 @@ import {
   Svg,
 } from "react-native-svg";
 
-import { useTheme } from "~/hooks/useTheme";
 import { useEqualizerStore } from "../core/store";
 
 import { OnRTL } from "~/lib/react";
 import { Em } from "~/components/Typography/StyledText";
+import { useTheme } from "~/modules/theme/useTheme";
 
 const YPadding = 16;
 const Ordinate = 72; // Distance from x-axis.

@@ -2,9 +2,8 @@ import type { Theme } from "@react-navigation/native";
 import { DefaultTheme } from "@react-navigation/native";
 import { useMemo } from "react";
 
-import { useCurrentTheme } from "~/hooks/useTheme";
-
 import { Colors } from "~/constants/Styles";
+import { useCurrentTheme } from "~/modules/theme/useTheme";
 
 /** Light theme for React Navigation components. */
 const LightNavTheme = {

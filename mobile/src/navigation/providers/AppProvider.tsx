@@ -12,10 +12,10 @@ import {
 import "../../global.css";
 import { ListenerStateStoreProvider } from "~/stores/ListenerState";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { useCurrentTheme, useTheme } from "~/hooks/useTheme";
 
 import { queryClient } from "~/lib/react-query";
 import { GestureHandlerRootView } from "~/components/Base/GestureHandlerRootView";
+import { useCurrentTheme, useTheme } from "~/modules/theme/useTheme";
 
 /** All providers used by the app. */
 export function AppProvider(props: { children: React.ReactNode }) {

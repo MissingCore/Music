@@ -1,10 +1,9 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useMemo } from "react";
 
-import { useColor } from "~/hooks/useTheme";
-
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
+import { useColor } from "~/modules/theme/useTheme";
 
 /** Gradient where the darkest portion is on the top. */
 export function TopDownGradient(props: {

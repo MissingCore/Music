@@ -6,7 +6,6 @@ import { Info } from "~/resources/icons/Info";
 import { LogoGitHub } from "~/resources/icons/LogoGitHub";
 import { LogoPlayStore } from "~/resources/icons/LogoPlayStore";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { useTheme } from "~/hooks/useTheme";
 
 import { useHasNewUpdate } from "~/navigation/hooks/useHasNewUpdate";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
@@ -16,6 +15,7 @@ import { getFont } from "~/lib/style";
 import { Links, openLink } from "~/lib/web-browser";
 import { SegmentedList } from "~/components/List/Segmented";
 import { AccentText } from "~/components/Typography/AccentText";
+import { useTheme } from "~/modules/theme/useTheme";
 
 export default function AppUpdate() {
   const { release, isRC } = useHasNewUpdate();

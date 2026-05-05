@@ -11,11 +11,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Save } from "~/resources/icons/Save";
 import { Warning } from "~/resources/icons/Warning";
-import { SystemTheme } from "~/hooks/useTheme";
 import { useScanningProgressStore } from "../ScanningProgress";
 
 import { CachedSlider } from "~/components/Form/Slider";
 import { Em, TEm } from "~/components/Typography/StyledText";
+import { SystemTheme } from "~/modules/theme/useTheme";
 
 export function ScanningProgress() {
   const { container, logo } = BootSplash.useHideAnimation({

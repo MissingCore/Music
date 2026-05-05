@@ -2,10 +2,10 @@ import { memo } from "react";
 import { View } from "react-native";
 
 import type { Icon } from "~/resources/icons/type";
-import { useTheme } from "~/hooks/useTheme";
 
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
+import { useTheme } from "~/modules/theme/useTheme";
 import type { PressProps } from "./types";
 import { Pressable } from "../../Base/Pressable";
 

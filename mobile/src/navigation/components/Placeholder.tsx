@@ -2,10 +2,9 @@ import type { ParseKeys } from "i18next";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 
-import { useTheme } from "~/hooks/useTheme";
-
 import { cn } from "~/lib/style";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import { useTheme } from "~/modules/theme/useTheme";
 
 type ErrorMsgProps = {
   /** Key to error messaeg in translations. */
