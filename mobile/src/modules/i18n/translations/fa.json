@@ -248,7 +248,7 @@
     },
     "listAllow": {
       "title": "لیست مجاز",
-      "description": "توضیحات"
+      "description": "محل پیدا کردن فایل صوتی را مشخص کنید ، در صورت خالی بودن همه جا پایش میشود."
     },
     "listBlock": {
       "title": "لیست مسدود",
@@ -269,7 +269,7 @@
       "title": "ویژگی های آزمایشی"
     },
     "equalizer": {
-      "title": "عنوان",
+      "title": "اکولایزر",
       "extra": {
         "Custom": "شخصی سازی",
         "Normal": "عمومی",
@@ -376,7 +376,7 @@
     "modalViewPreference": {
       "title": "گزینه های نمایش",
       "extra": {
-        "layout": "لایه",
+        "layout": "قالب‌ بندی",
         "list": "لیست",
         "grid": "جدولی",
         "compactGrid": "جدول فشرده",
