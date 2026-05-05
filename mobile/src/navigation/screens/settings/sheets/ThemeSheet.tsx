@@ -8,8 +8,11 @@ import { DetachedSheet } from "~/components/Sheet";
 import { HorizontalRadioList } from "~/components/Sheet/HorizontalRadioList";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";
-import { Themes, SystemTheme } from "~/modules/theme/constants";
-import { ThemeOptions } from "~/stores/Preference/constants";
+import {
+  DefaultThemeOptions,
+  Themes,
+  SystemTheme,
+} from "~/modules/theme/constants";
 
 const ThemePreviewColor = {
   light: Themes.light.surfaceContainerLowest,
@@ -22,7 +25,7 @@ export function ThemeSheet(props: { ref: TrueSheetRef }) {
   return (
     <DetachedSheet ref={props.ref} titleKey="feat.theme.title">
       <HorizontalRadioList
-        data={ThemeOptions}
+        data={DefaultThemeOptions}
         selected={selectedTheme}
         onPress={(theme) => {
           Uniwind.setTheme(theme);

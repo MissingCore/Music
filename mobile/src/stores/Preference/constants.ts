@@ -1,10 +1,5 @@
+import type { DefaultTheme } from "~/modules/theme/constants";
 import type { Tab } from "./types";
-
-//#region Theme
-export const ThemeOptions = ["light", "dark", "system"] as const;
-
-export type Theme = (typeof ThemeOptions)[number];
-//endregion
 
 //#region Font
 export const FontOptions = [
@@ -40,7 +35,7 @@ export interface PreferenceStore {
   /** If we should use LTR layout with a RTL language. */
   forceLTR: boolean;
 
-  theme: Theme;
+  theme: DefaultTheme;
   /** Font used for some accent text (ie: major headings). */
   accentFont: Font;
   /** Font used for text. */

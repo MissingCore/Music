@@ -1,5 +1,5 @@
 import { preferenceStore } from "../store";
-import type { Font, NowPlayingDesign, Theme } from "../constants";
+import type { Font, NowPlayingDesign } from "../constants";
 import {
   clampMinAlbumLength,
   clampPlaybackDelay,
@@ -9,6 +9,7 @@ import { playbackStore } from "../../Playback/store";
 import { getSourceName } from "../../Playback/utils";
 
 import { clearAllQueries } from "~/lib/react-query";
+import type { DefaultTheme } from "~/modules/theme/constants";
 
 export function setAccentFont(accentFont: Font) {
   preferenceStore.setState({ accentFont });
@@ -44,7 +45,7 @@ export function setPrimaryFont(primaryFont: Font) {
   preferenceStore.setState({ primaryFont });
 }
 
-export function setTheme(theme: Theme) {
+export function setTheme(theme: DefaultTheme) {
   preferenceStore.setState({ theme });
 }
 

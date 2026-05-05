@@ -2,8 +2,18 @@ import { isSystemDarkMode } from "@missingcore/native-utils";
 
 import { Colors } from "~/constants/Styles";
 
-//#region Default Theme
-export const FixedTheme = {
+//#region Color Scheme
+export const ColorSchemeOptions = ["light", "dark"] as const;
+
+export type ColorScheme = (typeof ColorSchemeOptions)[number];
+//#endregion
+
+//#region Default Themes
+export const DefaultThemeOptions = ["light", "dark", "system"] as const;
+
+export type DefaultTheme = (typeof DefaultThemeOptions)[number];
+
+const FixedTheme = {
   primary: Colors.nRed50,
   onPrimary: Colors.neutral100,
   onPrimaryVariant: Colors.neutral90,
