@@ -110,5 +110,6 @@ export interface PreferenceStore {
 export const OmittedFields: string[] = [
   "_hasHydrated",
   "_init",
+  "activeCustomTheme",
 ] satisfies Array<keyof PreferenceStore>;
 //#endregion

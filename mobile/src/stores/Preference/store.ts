@@ -3,10 +3,14 @@ import { Appearance } from "react-native";
 import { Uniwind } from "uniwind";
 import { useStore } from "zustand";
 
+import { db } from "~/db";
+
 import i18next from "~/modules/i18n";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
+import { throwIfNoResults } from "~/lib/drizzle";
 import { createPersistedStore } from "~/lib/zustand";
+import type { CustomTheme } from "~/modules/theme/constants";
 import type { PreferenceStore } from "./constants";
 import { OmittedFields } from "./constants";
 import { resolveLanguageConfigs } from "./utils";
@@ -16,9 +20,25 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     _hasHydrated: false,
     _init: async (state) => {
       // Set app theme on initialization.
-      Uniwind.setTheme(state.activeCustomThemeId ? "custom" : state.theme);
-      if (state.activeCustomTheme) {
-        Appearance.setColorScheme(state.activeCustomTheme.scheme);
+      try {
+        if (state.activeCustomThemeId) {
+          const activeCustomTheme = (await throwIfNoResults(
+            db.query.customThemes.findFirst({
+              where: (fields, { eq }) =>
+                eq(fields.id, state.activeCustomThemeId!),
+            }),
+          )) as unknown as CustomTheme;
+
+          Uniwind.setTheme("custom");
+          Appearance.setColorScheme(activeCustomTheme.scheme);
+          set({ activeCustomTheme });
+        } else {
+          Uniwind.setTheme(state.theme);
+        }
+      } catch {
+        // Reset custom theme if it no longer exists in the database.
+        Uniwind.setTheme(state.theme);
+        set({ activeCustomThemeId: null, activeCustomTheme: null });
       }
 
       // Try to use device language if no language is specified.
