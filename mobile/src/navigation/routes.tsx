@@ -16,7 +16,6 @@ import { PortalHost } from "@rn-primitives/portal";
 import { useCallback, useMemo, useRef } from "react";
 import { BackHandler } from "react-native";
 
-import Themes from "~/modules/theme/screens/View";
 import Home from "./screens/HomeView";
 import RecentlyPlayed from "./screens/RecentlyPlayedView";
 import Search from "./screens/SearchView";
@@ -54,6 +53,8 @@ import ModifyTrack from "./screens/tracks/ModifyView";
 import Tracks from "./screens/tracks/View";
 import { TrackSheet } from "./screens/tracks/sheets/TrackSheet";
 import { ArtistsSheet } from "./sheets/ArtistsSheet";
+import CreateTheme from "~/modules/theme/screens/CreateView";
+import Themes from "~/modules/theme/screens/View";
 
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { useTabsByVisibility } from "~/stores/Preference/hooks";
@@ -334,10 +335,6 @@ export const RootStack = createNativeStackNavigator({
           screen: AppearanceSettings,
           options: { title: "feat.appearance.title" },
         },
-        Themes: {
-          screen: Themes,
-          options: { title: "feat.theme.title" },
-        },
         EqualizerSettings: {
           screen: EqualizerSettings,
           options: { title: "feat.equalizer.title" },
@@ -375,6 +372,21 @@ export const RootStack = createNativeStackNavigator({
           options: { title: "feat.thirdParty.title" },
         },
         PackageLicense,
+      },
+    },
+    Theme: {
+      screenOptions: {
+        animation: "fade",
+      },
+      screens: {
+        Themes: {
+          screen: Themes,
+          options: { title: "feat.theme.title" },
+        },
+        CreateTheme: {
+          screen: CreateTheme,
+          options: { title: "form.create" },
+        },
       },
     },
   },
