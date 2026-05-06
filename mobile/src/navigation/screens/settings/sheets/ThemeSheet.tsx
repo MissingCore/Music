@@ -1,5 +1,4 @@
 import { View } from "react-native";
-import { Uniwind } from "uniwind";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
@@ -27,10 +26,7 @@ export function ThemeSheet(props: { ref: TrueSheetRef }) {
       <HorizontalRadioList
         data={DefaultThemeOptions}
         selected={selectedTheme}
-        onPress={(theme) => {
-          Uniwind.setTheme(theme);
-          PreferenceSetters.setTheme(theme);
-        }}
+        onPress={PreferenceSetters.setTheme}
         renderPreview={(theme) => (
           <View
             style={{ backgroundColor: ThemePreviewColor[theme] }}

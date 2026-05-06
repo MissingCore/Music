@@ -8,12 +8,53 @@ export const ColorSchemeOptions = ["light", "dark"] as const;
 export type ColorScheme = (typeof ColorSchemeOptions)[number];
 //#endregion
 
+//#region Theme Roles
+export const ThemeRoleOptions = [
+  "primary",
+  "onPrimary",
+  "onPrimaryVariant",
+  "secondary",
+  "onSecondary",
+  "onSecondaryVariant",
+  "error",
+  "onError",
+  "onErrorVariant",
+  "primaryDim",
+  "secondaryDim",
+  "errorDim",
+  "surfaceDim",
+  "surface",
+  "surfaceBright",
+  "surfaceContainerLowest",
+  "surfaceContainerLow",
+  "surfaceContainer",
+  "surfaceContainerHigh",
+  "surfaceContainerHighest",
+  "onSurface",
+  "onSurfaceVariant",
+  "outline",
+  "outlineVariant",
+  "inverseSurface",
+  "inverseOnSurface",
+] as const;
+
+export type ThemeRole = (typeof ThemeRoleOptions)[number];
+export type ThemeColors = Record<ThemeRole, `#${string}`>; //? Don't import `HexColor` to prevent circular dependency.
+//#endregion
+
 //#region Default Themes
 export const DefaultThemeOptions = ["light", "dark", "system"] as const;
 
 export type DefaultTheme = (typeof DefaultThemeOptions)[number];
+export type ResolvedTheme = ThemeColors & { scheme: ColorScheme };
+export type CustomTheme = {
+  id: string;
+  name: string;
+  scheme: ColorScheme;
+  colors: ThemeColors;
+};
 
-const FixedTheme = {
+const DefaultThemeBase = {
   primary: Colors.nRed50,
   onPrimary: Colors.neutral100,
   onPrimaryVariant: Colors.neutral90,
@@ -30,7 +71,7 @@ const FixedTheme = {
 export const Themes = {
   light: {
     scheme: "light",
-    ...FixedTheme,
+    ...DefaultThemeBase,
     primaryDim: Colors.nRed45,
     secondaryDim: Colors.yellow47,
     errorDim: Colors.red37,
@@ -55,7 +96,7 @@ export const Themes = {
   },
   dark: {
     scheme: "dark",
-    ...FixedTheme,
+    ...DefaultThemeBase,
     primaryDim: Colors.nRed40,
     secondaryDim: Colors.yellow45,
     errorDim: Colors.red35,
@@ -78,7 +119,7 @@ export const Themes = {
     inverseSurface: Colors.neutral100,
     inverseOnSurface: Colors.neutral0,
   },
-} as const;
+} as const satisfies Record<ColorScheme, ResolvedTheme>;
 
 /** Returns theme colors based on the system theme on app launch. */
 export const SystemTheme = Themes[isSystemDarkMode ? "dark" : "light"];

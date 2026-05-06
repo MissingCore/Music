@@ -1,3 +1,5 @@
+import { Uniwind } from "uniwind";
+
 import { preferenceStore } from "../store";
 import type { Font, NowPlayingDesign } from "../constants";
 import {
@@ -46,7 +48,8 @@ export function setPrimaryFont(primaryFont: Font) {
 }
 
 export function setTheme(theme: DefaultTheme) {
-  preferenceStore.setState({ theme });
+  preferenceStore.setState({ theme, activeCustomThemeId: null });
+  Uniwind.setTheme(theme);
 }
 
 export function updateMinAlbumLengthByDelta(delta: number) {

@@ -1,4 +1,5 @@
 import { getLocales } from "expo-localization";
+import { Appearance } from "react-native";
 import { Uniwind } from "uniwind";
 import { useStore } from "zustand";
 
@@ -15,7 +16,11 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     _hasHydrated: false,
     _init: async (state) => {
       // Set app theme on initialization.
-      Uniwind.setTheme(state.theme);
+      Uniwind.setTheme(state.activeCustomThemeId ? "custom" : state.theme);
+      if (state.activeCustomTheme) {
+        Appearance.setColorScheme(state.activeCustomTheme.scheme);
+      }
+
       // Try to use device language if no language is specified.
       await resolveLanguageConfigs(
         state.language || getLocales()[0]?.languageTag || "en",
@@ -36,6 +41,8 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     forceLTR: false,
 
     theme: "system",
+    activeCustomThemeId: null,
+    activeCustomTheme: null,
     accentFont: "NType",
     primaryFont: "Roboto",
 

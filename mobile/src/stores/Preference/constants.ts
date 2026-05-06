@@ -1,4 +1,4 @@
-import type { DefaultTheme } from "~/modules/theme/constants";
+import type { CustomTheme, DefaultTheme } from "~/modules/theme/constants";
 import type { Tab } from "./types";
 
 //#region Font
@@ -36,6 +36,10 @@ export interface PreferenceStore {
   forceLTR: boolean;
 
   theme: DefaultTheme;
+  /** Id of active custom theme. Has higher priority than `theme`. */
+  activeCustomThemeId: string | null;
+  /** Values of active custom theme. */
+  activeCustomTheme: CustomTheme | null;
   /** Font used for some accent text (ie: major headings). */
   accentFont: Font;
   /** Font used for text. */
