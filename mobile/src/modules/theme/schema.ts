@@ -11,18 +11,19 @@ export const customThemes = sqliteTable("custom_themes", {
   scheme: text().$type<ColorScheme>().notNull().default("light"),
 
   primary: text().notNull(),
+  primaryDim: text().notNull(),
   onPrimary: text().notNull(),
   onPrimaryVariant: text().notNull(),
+
   secondary: text().notNull(),
+  secondaryDim: text().notNull(),
   onSecondary: text().notNull(),
   onSecondaryVariant: text().notNull(),
+
   error: text().notNull(),
+  errorDim: text().notNull(),
   onError: text().notNull(),
   onErrorVariant: text().notNull(),
-
-  primaryDim: text().notNull(),
-  secondaryDim: text().notNull(),
-  errorDim: text().notNull(),
 
   surfaceDim: text().notNull(),
   surface: text().notNull(),

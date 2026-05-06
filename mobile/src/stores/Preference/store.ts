@@ -22,13 +22,13 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
       // Set app theme on initialization.
       try {
         if (state.activeCustomThemeId) {
-          const activeCustomTheme = (await throwIfNoResults(
+          const { id, name, scheme, ...colors } = await throwIfNoResults(
             db.query.customThemes.findFirst({
               where: (fields, { eq }) =>
                 eq(fields.id, state.activeCustomThemeId!),
             }),
-          )) as unknown as CustomTheme;
-
+          );
+          const activeCustomTheme = { id, name, scheme, colors } as CustomTheme;
           resolveCustomTheme(activeCustomTheme);
           set({ activeCustomTheme });
         } else {
