@@ -17,6 +17,7 @@ export default function AppearanceSettings() {
   const accentFont = usePreferenceStore((s) => s.accentFont);
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
   const theme = usePreferenceStore((s) => s.theme);
+  const activeCustomTheme = usePreferenceStore((s) => s.activeCustomTheme);
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const squareArtwork = usePreferenceStore((s) => s.squareArtwork);
   const accentFontSheetRef = useSheetRef();
@@ -45,7 +46,9 @@ export default function AppearanceSettings() {
           />
           <SegmentedList.Item
             labelTextKey="feat.theme.title"
-            supportingText={t(`feat.theme.extra.${theme}`)}
+            supportingText={
+              activeCustomTheme?.name ?? t(`feat.theme.extra.${theme}`)
+            }
             onPress={() => themeSheetRef.current?.present()}
           />
         </SegmentedList>
