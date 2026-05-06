@@ -15,7 +15,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { queryClient } from "~/lib/react-query";
 import { GestureHandlerRootView } from "~/components/Base/GestureHandlerRootView";
-import { useCurrentTheme, useTheme } from "~/modules/theme/hooks";
+import { useCurrentScheme, useTheme } from "~/modules/theme/hooks";
 
 /** All providers used by the app. */
 export function AppProvider(props: { children: React.ReactNode }) {
@@ -37,7 +37,7 @@ export function AppProvider(props: { children: React.ReactNode }) {
 
 //#region Edge-To-Edge
 function SystemBars() {
-  const currentTheme = useCurrentTheme();
+  const currentTheme = useCurrentScheme();
   const iconColor = currentTheme === "light" ? "dark" : "light";
   return (
     <>

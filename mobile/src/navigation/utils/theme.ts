@@ -2,6 +2,8 @@ import type { Theme } from "@react-navigation/native";
 import { DefaultTheme } from "@react-navigation/native";
 import { useMemo } from "react";
 
+import { usePreferenceStore } from "~/stores/Preference/store";
+
 import { Colors } from "~/constants/Styles";
 import { useCurrentTheme } from "~/modules/theme/hooks";
 
@@ -36,8 +38,32 @@ const DarkNavTheme = {
 /** Returns the theme used by React Navigation. */
 export function useNavigationTheme() {
   const currentTheme = useCurrentTheme();
+  const customTheme = usePreferenceStore((s) => s.activeCustomTheme);
+
+  const CustomNavTheme = useMemo(() => {
+    if (!customTheme) return null;
+    const { colors, scheme } = customTheme;
+    return {
+      dark: scheme === "dark",
+      colors: {
+        primary: colors.primary,
+        background: colors.surface,
+        card: colors.surface,
+        text: colors.onSurface,
+        border: colors.surface,
+        notification: colors.primary,
+      },
+      fonts: DefaultTheme.fonts,
+    };
+  }, [customTheme]);
+
   return useMemo(
-    () => (currentTheme === "light" ? LightNavTheme : DarkNavTheme),
-    [currentTheme],
+    () =>
+      currentTheme === "custom" && CustomNavTheme
+        ? CustomNavTheme
+        : currentTheme === "light"
+          ? LightNavTheme
+          : DarkNavTheme,
+    [CustomNavTheme, currentTheme],
   );
 }
