@@ -1,5 +1,4 @@
 import { getLocales } from "expo-localization";
-import { Appearance } from "react-native";
 import { Uniwind } from "uniwind";
 import { useStore } from "zustand";
 
@@ -11,6 +10,7 @@ import { LANGUAGES } from "~/modules/i18n/constants";
 import { throwIfNoResults } from "~/lib/drizzle";
 import { createPersistedStore } from "~/lib/zustand";
 import type { CustomTheme } from "~/modules/theme/constants";
+import { resolveCustomTheme } from "~/modules/theme/utils";
 import type { PreferenceStore } from "./constants";
 import { OmittedFields } from "./constants";
 import { resolveLanguageConfigs } from "./utils";
@@ -29,8 +29,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
             }),
           )) as unknown as CustomTheme;
 
-          Uniwind.setTheme("custom");
-          Appearance.setColorScheme(activeCustomTheme.scheme);
+          resolveCustomTheme(activeCustomTheme);
           set({ activeCustomTheme });
         } else {
           Uniwind.setTheme(state.theme);
