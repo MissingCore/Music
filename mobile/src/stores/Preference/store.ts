@@ -2,15 +2,12 @@ import { getLocales } from "expo-localization";
 import { Uniwind } from "uniwind";
 import { useStore } from "zustand";
 
-import { db } from "~/db";
-
 import i18next from "~/modules/i18n";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
 import { throwIfNoResults } from "~/lib/drizzle";
 import { createPersistedStore } from "~/lib/zustand";
-import type { CustomTheme } from "~/modules/theme/constants";
-import { resolveCustomTheme } from "~/modules/theme/utils";
+import { getCustomTheme, resolveCustomTheme } from "~/modules/theme/utils";
 import type { PreferenceStore } from "./constants";
 import { OmittedFields } from "./constants";
 import { resolveLanguageConfigs } from "./utils";
@@ -22,13 +19,9 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
       // Set app theme on initialization.
       try {
         if (state.activeCustomThemeId) {
-          const { id, name, scheme, ...colors } = await throwIfNoResults(
-            db.query.customThemes.findFirst({
-              where: (fields, { eq }) =>
-                eq(fields.id, state.activeCustomThemeId!),
-            }),
+          const activeCustomTheme = await throwIfNoResults(
+            getCustomTheme(state.activeCustomThemeId),
           );
-          const activeCustomTheme = { id, name, scheme, colors } as CustomTheme;
           resolveCustomTheme(activeCustomTheme);
           set({ activeCustomTheme });
         } else {

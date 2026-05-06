@@ -12,6 +12,11 @@ import { getSourceName } from "../../Playback/utils";
 
 import { clearAllQueries } from "~/lib/react-query";
 import type { DefaultTheme } from "~/modules/theme/constants";
+import {
+  getCustomTheme,
+  isDefaultTheme,
+  resolveCustomTheme,
+} from "~/modules/theme/utils";
 
 export function setAccentFont(accentFont: Font) {
   preferenceStore.setState({ accentFont });
@@ -47,9 +52,24 @@ export function setPrimaryFont(primaryFont: Font) {
   preferenceStore.setState({ primaryFont });
 }
 
-export function setTheme(theme: DefaultTheme) {
-  preferenceStore.setState({ theme, activeCustomThemeId: null });
-  Uniwind.setTheme(theme);
+export async function setTheme(theme: DefaultTheme | (string & {})) {
+  if (isDefaultTheme(theme)) {
+    Uniwind.setTheme(theme);
+    preferenceStore.setState({
+      theme,
+      activeCustomThemeId: null,
+      activeCustomTheme: null,
+    });
+  } else {
+    const customTheme = await getCustomTheme(theme);
+    if (!customTheme) return;
+    resolveCustomTheme(customTheme);
+    preferenceStore.setState({
+      theme: customTheme.scheme,
+      activeCustomThemeId: customTheme.id,
+      activeCustomTheme: customTheme,
+    });
+  }
 }
 
 export function updateMinAlbumLengthByDelta(delta: number) {
