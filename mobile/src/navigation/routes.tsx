@@ -16,6 +16,7 @@ import { PortalHost } from "@rn-primitives/portal";
 import { useCallback, useMemo, useRef } from "react";
 import { BackHandler } from "react-native";
 
+import Themes from "~/modules/theme/screens/View";
 import Home from "./screens/HomeView";
 import RecentlyPlayed from "./screens/RecentlyPlayedView";
 import Search from "./screens/SearchView";
@@ -332,6 +333,10 @@ export const RootStack = createNativeStackNavigator({
         AppearanceSettings: {
           screen: AppearanceSettings,
           options: { title: "feat.appearance.title" },
+        },
+        Themes: {
+          screen: Themes,
+          options: { title: "feat.theme.title" },
         },
         EqualizerSettings: {
           screen: EqualizerSettings,
