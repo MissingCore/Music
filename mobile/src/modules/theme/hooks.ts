@@ -46,7 +46,10 @@ export function useTheme() {
   }, [customTheme]);
 
   return useMemo(
-    () => (currentTheme === "custom" ? CustomTheme! : Themes[currentTheme]),
+    () =>
+      currentTheme !== "custom"
+        ? Themes[currentTheme]
+        : (CustomTheme ?? Themes.light),
     [CustomTheme, currentTheme],
   );
 }

@@ -61,9 +61,9 @@ export function useNavigationTheme() {
     () =>
       currentTheme === "custom" && CustomNavTheme
         ? CustomNavTheme
-        : currentTheme === "light"
-          ? LightNavTheme
-          : DarkNavTheme,
+        : currentTheme === "dark"
+          ? DarkNavTheme
+          : LightNavTheme,
     [CustomNavTheme, currentTheme],
   );
 }
