@@ -3,8 +3,8 @@ import { View } from "react-native";
 
 import type { Icon } from "~/resources/icons/type";
 
-import type { AppColor } from "~/lib/style";
 import { cn } from "~/lib/style";
+import type { AppColor } from "~/modules/theme/constants";
 import { useColor } from "~/modules/theme/hooks";
 import type { PressProps } from "./types";
 import { Pressable } from "../../Base/Pressable";

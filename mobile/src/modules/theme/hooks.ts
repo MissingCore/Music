@@ -3,9 +3,9 @@ import { useColorScheme } from "react-native";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
-import type { AppColor } from "~/lib/style";
-import { isHexColor } from "~/lib/style";
+import type { AppColor } from "./constants";
 import { Themes } from "./constants";
+import { isHexColor } from "./utils";
 
 //#region Hooks
 /** Returns if we're using light or dark scheme. */

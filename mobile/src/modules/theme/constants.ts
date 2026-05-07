@@ -8,8 +8,8 @@ export const ColorSchemeOptions = ["light", "dark"] as const;
 export type ColorScheme = (typeof ColorSchemeOptions)[number];
 //#endregion
 
-//#region Theme Roles
-export const ThemeRoleOptions = [
+//#region Color Roles
+export const ColorRoleOptions = [
   "primary",
   "primaryDim",
   "onPrimary",
@@ -38,8 +38,16 @@ export const ThemeRoleOptions = [
   "inverseOnSurface",
 ] as const;
 
-export type ThemeRole = (typeof ThemeRoleOptions)[number];
-export type ThemeColors = Record<ThemeRole, `#${string}`>; //? Don't import `HexColor` to prevent circular dependency.
+export type ColorRole = (typeof ColorRoleOptions)[number];
+export type HexColor = `#${string}`;
+export type AppColor = ColorRole | HexColor;
+/** List of colors which also has a `Variant` color. */
+export type VariantColor =
+  Extract<ColorRole, `${string}Variant`> extends `${infer Prefix}Variant`
+    ? Prefix
+    : never;
+
+export type ThemeColors = Record<ColorRole, HexColor>;
 //#endregion
 
 //#region Default Themes

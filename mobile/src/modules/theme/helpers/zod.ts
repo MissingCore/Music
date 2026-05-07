@@ -1,8 +1,8 @@
 import { z } from "zod/mini";
 
 import { ZSchema } from "~/modules/form/utils";
-import type { ThemeRole } from "../constants";
-import { ThemeRoleOptions } from "../constants";
+import type { ColorRole } from "../constants";
+import { ColorRoleOptions } from "../constants";
 import { normalizeHexColor } from "../helpers/color";
 
 export const HexColorSchema = z.pipe(
@@ -22,8 +22,8 @@ export const HexColorSchema = z.pipe(
 );
 
 const ColorRolesSchema = Object.fromEntries(
-  ThemeRoleOptions.map((role) => [role, HexColorSchema]),
-) as Record<ThemeRole, typeof HexColorSchema>;
+  ColorRoleOptions.map((role) => [role, HexColorSchema]),
+) as Record<ColorRole, typeof HexColorSchema>;
 
 //#region Form Schema
 export const ThemeEntrySchema = z.object({

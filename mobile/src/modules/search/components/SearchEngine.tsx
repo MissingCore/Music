@@ -6,14 +6,15 @@ import { AlbumArtistsKey } from "~/data/album/utils";
 import { getArtistsString } from "~/data/artist/utils";
 import type { CommonTrack } from "~/data/types";
 
-import type { ColorRole } from "~/lib/style";
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+
 import { cn } from "~/lib/style";
 import { isString } from "~/utils/validation";
 import { FlatList, useFlatListRef } from "~/components/Base/List";
 import { Button } from "~/components/Form/Button";
 import { TopDownGradient } from "~/components/Gradient";
 import { TEm } from "~/components/Typography/StyledText";
-import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+import type { ColorRole } from "~/modules/theme/constants";
 import { SearchBar } from "./SearchBar";
 import { SearchResult } from "./SearchResult";
 import { useSearch } from "../hooks/useSearch";

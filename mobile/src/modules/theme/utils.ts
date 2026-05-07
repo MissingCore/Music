@@ -4,7 +4,7 @@ import { Appearance } from "react-native";
 import { db } from "~/db";
 import type { customThemes } from "./schema";
 
-import type { CustomTheme, DefaultTheme } from "./constants";
+import type { CustomTheme, DefaultTheme, HexColor } from "./constants";
 import { DefaultThemeOptions } from "./constants";
 
 export function formatAsCustomTheme(
@@ -27,6 +27,10 @@ export function isDefaultTheme(
   theme: DefaultTheme | (string & {}),
 ): theme is DefaultTheme {
   return DefaultThemeOptions.includes(theme as DefaultTheme);
+}
+
+export function isHexColor(color?: string): color is HexColor {
+  return color !== undefined && color.startsWith("#");
 }
 
 export function resolveCustomTheme(theme: CustomTheme) {

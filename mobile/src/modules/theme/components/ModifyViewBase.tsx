@@ -10,7 +10,6 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 
 import { BorderRadius } from "~/constants/Styles";
-import type { HexColor } from "~/lib/style";
 import { wait } from "~/utils/promise";
 import { Pressable } from "~/components/Base/Pressable";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
@@ -25,8 +24,8 @@ import {
   useFormStateContext,
 } from "~/modules/form/FormState";
 import { FormInputImpl } from "~/modules/form/FormState/FormInput";
-import type { ThemeRole } from "../constants";
-import { ThemeRoleOptions, Themes } from "../constants";
+import type { ColorRole, HexColor } from "../constants";
+import { ColorRoleOptions, Themes } from "../constants";
 import { readThemeFile } from "../helpers/backup";
 import { normalizeHexColor } from "../helpers/color";
 import type { ThemeEntry } from "../helpers/zod";
@@ -48,11 +47,11 @@ export function ModifyThemeBase(props: {
       name: props.initialData?.name ?? "",
       scheme: props.initialData?.scheme ?? "light",
       ...(Object.fromEntries(
-        ThemeRoleOptions.map((role) => [
+        ColorRoleOptions.map((role) => [
           role,
           props.initialData?.[role] ?? Themes.light[role],
         ]),
-      ) as Record<ThemeRole, HexColor>),
+      ) as Record<ColorRole, HexColor>),
     }),
     [props.initialData],
   );
@@ -106,7 +105,7 @@ function ThemeForm({ bottomOffset }: { bottomOffset: number }) {
       />
 
       <View className="gap-2">
-        {ThemeRoleOptions.map((role) => (
+        {ColorRoleOptions.map((role) => (
           <HexColorPicker key={`${role}_${data._importGen}`} field={role} />
         ))}
       </View>
@@ -116,7 +115,7 @@ function ThemeForm({ bottomOffset }: { bottomOffset: number }) {
 //#endregion
 
 //#region Color Picker
-function HexColorPicker({ field }: { field: ThemeRole }) {
+function HexColorPicker({ field }: { field: ColorRole }) {
   const { data, setFields, isSubmitting } = useFormState();
   const [draftValue, setDraftValue] = useState<string>(data[field]);
   const [showPicker, setShowPicker] = useState(false);
