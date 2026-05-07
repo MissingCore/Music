@@ -1,11 +1,8 @@
 import { toast } from "@missingcore/toast";
 import { useNavigation } from "@react-navigation/native";
-import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-
-import { db } from "~/db";
 
 import { Add } from "~/resources/icons/Add";
 import { Check } from "~/resources/icons/Check";
@@ -30,7 +27,8 @@ import {
   Themes as DefaultThemes,
   SystemTheme,
 } from "../constants";
-import { isDefaultTheme } from "../utils";
+import { useCustomThemes } from "../queries";
+import { formatAsCustomTheme, isDefaultTheme } from "../utils";
 
 const ThemeMap = {
   light: DefaultThemes.light,
@@ -124,12 +122,9 @@ export default function Themes() {
                   <IconButton
                     Icon={FileSave}
                     accessibilityLabel={t("feat.backup.extra.export")}
-                    onPress={() => {
-                      const { id, name, scheme, ...colors } =
-                        themeMap[themeId]!;
-                      const asTheme = { id, name, scheme, colors };
-                      onExportTheme(asTheme as CustomTheme);
-                    }}
+                    onPress={() =>
+                      onExportTheme(formatAsCustomTheme(themeMap[themeId]!))
+                    }
                     _iconColor={themeColors.onSurface as HexColor}
                     _rippleColor={themeColors.surfaceContainerHigh as HexColor}
                   />
@@ -144,19 +139,7 @@ export default function Themes() {
   );
 }
 
-//#region Query
-const queryKey = ["custom-themes"];
-
-async function getAllCustomThemes() {
-  return db.query.customThemes.findMany({
-    orderBy: (fields, { asc }) => asc(fields.name),
-  });
-}
-
-export function useCustomThemes() {
-  return useQuery({ queryKey, queryFn: getAllCustomThemes });
-}
-
+//#region Helpers
 async function onExportTheme(theme: CustomTheme) {
   try {
     await exportTheme(theme);

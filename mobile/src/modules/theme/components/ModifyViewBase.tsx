@@ -1,14 +1,9 @@
 import { toast } from "@missingcore/toast";
 import { useNavigation } from "@react-navigation/native";
-import { useQueryClient } from "@tanstack/react-query";
-import { eq } from "drizzle-orm";
 import { Fragment, useMemo, useState } from "react";
 import { View } from "react-native";
 import type { ColorFormatsObject } from "reanimated-color-picker";
 import ColorPicker, { HueSlider, Panel1 } from "reanimated-color-picker";
-
-import { db } from "~/db";
-import { customThemes } from "../schema";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
@@ -36,6 +31,7 @@ import { readThemeFile } from "../helpers/backup";
 import { normalizeHexColor } from "../helpers/color";
 import type { ThemeEntry } from "../helpers/zod";
 import { ThemeEntrySchema } from "../helpers/zod";
+import { deleteCustomTheme, revalidateCustomThemes } from "../queries";
 
 export function ModifyThemeBase(props: {
   onSubmit: (data: ThemeEntry) => void | Promise<void>;
@@ -211,7 +207,7 @@ function ImportWorkflow({
       const { name, scheme, colors } = await readThemeFile();
       toast.t("feat.backup.extra.importSuccess");
       await wait(100);
-      setFields({ name, scheme, ...colors });
+      setFields({ name, scheme, ...colors, _importGen: Date.now() });
     } catch (err) {
       toast.error((err as Error).message);
     } finally {
@@ -238,7 +234,6 @@ function DeleteWorkflow({
   floatingContentProps,
 }: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
   const navigation = useNavigation();
-  const queryClient = useQueryClient();
   const [lastChance, setLastChance] = useState(false);
   const { data, isSubmitting, setIsSubmitting } = useFormState();
 
@@ -248,8 +243,8 @@ function DeleteWorkflow({
     setIsSubmitting(true);
     await wait(1);
     try {
-      await db.delete(customThemes).where(eq(customThemes.id, data._id));
-      queryClient.invalidateQueries({ queryKey: ["custom-themes"] });
+      await deleteCustomTheme(data._id);
+      revalidateCustomThemes();
       navigation.goBack();
     } catch {
       setLastChance(true);

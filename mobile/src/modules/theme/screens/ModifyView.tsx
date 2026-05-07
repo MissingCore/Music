@@ -1,20 +1,18 @@
 import { toast } from "@missingcore/toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { eq } from "drizzle-orm";
-
-import { db } from "~/db";
-import { customThemes } from "../schema";
-
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
-import { throwIfNoResults } from "~/lib/drizzle";
-import type { ThemeEntry } from "../helpers/zod";
 import { ModifyThemeBase } from "../components/ModifyViewBase";
+import type { ThemeEntry } from "../helpers/zod";
+import {
+  revalidateCustomThemes,
+  updateCustomTheme,
+  useCustomTheme,
+} from "../queries";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -24,7 +22,6 @@ export default function ModifyTheme({
   },
 }: Props) {
   const navigation = useNavigation();
-  const queryClient = useQueryClient();
   const { isPending, error, data } = useCustomTheme(themeId);
   const activeCustomThemeId = usePreferenceStore((s) => s.activeCustomThemeId);
 
@@ -42,12 +39,8 @@ export default function ModifyTheme({
       initialData={initData}
       onSubmit={async ({ _id, _importGen, ...entry }) => {
         try {
-          await db
-            .update(customThemes)
-            .set(entry)
-            .where(eq(customThemes.id, themeId));
-
-          queryClient.resetQueries({ queryKey: ["custom-themes"] });
+          await updateCustomTheme(themeId, entry);
+          revalidateCustomThemes();
           if (isActiveTheme) PreferenceSetters.setTheme(themeId);
           navigation.goBack();
         } catch {
@@ -57,20 +50,3 @@ export default function ModifyTheme({
     />
   );
 }
-
-//#region Query
-async function getCustomTheme(themeId: string) {
-  return throwIfNoResults(
-    db.query.customThemes.findFirst({
-      where: (fields, { eq }) => eq(fields.id, themeId),
-    }),
-  );
-}
-
-export function useCustomTheme(themeId: string) {
-  return useQuery({
-    queryKey: ["custom-themes", themeId],
-    queryFn: () => getCustomTheme(themeId),
-  });
-}
-//#endregion
