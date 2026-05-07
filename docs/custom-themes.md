@@ -1,4 +1,4 @@
-# Theme
+# Custom Themes
 
 As of `v3.1.0`, MissingCore Music supports custom themes. These themes can be imported & exported so that you can share it with others.
 
