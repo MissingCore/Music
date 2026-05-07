@@ -105,38 +105,38 @@
     }
 
     @variant custom {
-      --color-primary: hsl(357 79% 47%);
-      --color-primaryDim: hsl(357 79% 43%);
+      --color-primary: hsl(31 100% 35%);
+      --color-primaryDim: hsl(31 100% 28%);
       --color-onPrimary: hsl(0 0% 100%);
-      --color-onPrimaryVariant: hsl(0 0% 89%);
+      --color-onPrimaryVariant: hsl(37 100% 94%);
 
-      --color-secondary: hsl(47 100% 50%);
-      --color-secondaryDim: hsl(47 100% 47%);
-      --color-onSecondary: hsl(0 0% 0%);
-      --color-onSecondaryVariant: hsl(0 0% 28%);
+      --color-secondary: hsl(107 100% 24%);
+      --color-secondaryDim: hsl(108 100% 19%);
+      --color-onSecondary: hsl(0 0% 100%);
+      --color-onSecondaryVariant: hsl(120 100% 97%);
 
-      --color-error: hsl(350 85% 42%);
-      --color-errorDim: hsl(350 85% 39%);
+      --color-error: hsl(349 100% 35%);
+      --color-errorDim: hsl(350 100% 28%);
       --color-onError: hsl(0 0% 100%);
-      --color-onErrorVariant: hsl(0 0% 89%);
+      --color-onErrorVariant: hsl(0 100% 97%);
 
-      --color-surfaceDim: hsl(0 0% 78%);
-      --color-surface: hsl(0 0% 95%);
-      --color-surfaceBright: hsl(0 0% 95%);
+      --color-surfaceDim: hsl(42 37% 64%);
+      --color-surface: hsl(44 67% 88%);
+      --color-surfaceBright: hsl(46 100% 94%);
 
-      --color-surfaceContainerLowest: hsl(0 0% 100%);
-      --color-surfaceContainerLow: hsl(0 0% 98%);
-      --color-surfaceContainer: hsl(0 0% 92%);
-      --color-surfaceContainerHigh: hsl(0 0% 85%);
-      --color-surfaceContainerHighest: hsl(0 0% 82%);
+      --color-surfaceContainerLowest: hsl(45 60% 83%);
+      --color-surfaceContainerLow: hsl(47 54% 78%);
+      --color-surfaceContainer: hsl(47 49% 72%);
+      --color-surfaceContainerHigh: hsl(48 45% 66%);
+      --color-surfaceContainerHighest: hsl(48 43% 60%);
 
-      --color-onSurface: hsl(0 0% 0%);
-      --color-onSurfaceVariant: hsl(0 0% 38%);
-      --color-outline: hsl(0 0% 68%);
-      --color-outlineVariant: hsl(0 0% 85%);
+      --color-onSurface: hsl(41 100% 9%);
+      --color-onSurfaceVariant: hsl(44 100% 18%);
+      --color-outline: hsl(41 53% 35%);
+      --color-outlineVariant: hsl(42 47% 56%);
 
-      --color-inverseSurface: hsl(0 0% 0%);
-      --color-inverseOnSurface: hsl(0 0% 100%);
+      --color-inverseSurface: hsl(41 100% 9%);
+      --color-inverseOnSurface: hsl(46 100% 94%);
     }
   }
 }
