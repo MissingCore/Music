@@ -1,5 +1,7 @@
+import { toast } from "@missingcore/toast";
 import { Uniwind } from "uniwind";
 
+import i18next from "~/modules/i18n";
 import { preferenceStore } from "../store";
 import type { Font, NowPlayingDesign } from "../constants";
 import {
@@ -62,7 +64,12 @@ export async function setTheme(theme: DefaultTheme | (string & {})) {
     });
   } else {
     const customTheme = await getCustomTheme(theme);
-    if (!customTheme) return;
+    if (!customTheme) {
+      toast.error(
+        i18next.t("template.notFound", { name: i18next.t("feat.theme.title") }),
+      );
+      return;
+    }
     resolveCustomTheme(customTheme);
     preferenceStore.setState({
       theme: customTheme.scheme,
