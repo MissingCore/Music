@@ -1,3 +1,4 @@
+import { toast } from "@missingcore/toast";
 import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
@@ -9,6 +10,7 @@ import { db } from "~/db";
 import { Add } from "~/resources/icons/Add";
 import { Check } from "~/resources/icons/Check";
 import { Edit } from "~/resources/icons/Edit";
+import { FileSave } from "~/resources/icons/FileSave";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
 
@@ -21,12 +23,14 @@ import { FlatList } from "~/components/Base/List";
 import { Pressable } from "~/components/Base/Pressable";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { StyledText } from "~/components/Typography/StyledText";
+import { exportTheme } from "../helpers/backup";
+import type { CustomTheme } from "../constants";
 import {
   DefaultThemeOptions,
   Themes as DefaultThemes,
   SystemTheme,
-} from "~/modules/theme/constants";
-import { isDefaultTheme } from "~/modules/theme/utils";
+} from "../constants";
+import { isDefaultTheme } from "../utils";
 
 const ThemeMap = {
   light: DefaultThemes.light,
@@ -107,13 +111,25 @@ export default function Themes() {
                   : themeMap[themeId]!.name}
               </StyledText>
               {!isDefaultTheme(themeId) ? (
-                <View className="ml-auto">
+                <View className="ml-auto flex-row items-center">
                   <IconButton
                     Icon={Edit}
                     accessibilityLabel={t("form.edit")}
                     onPress={() =>
                       navigation.navigate("ModifyTheme", { id: themeId })
                     }
+                    _iconColor={themeColors.onSurface as HexColor}
+                    _rippleColor={themeColors.surfaceContainerHigh as HexColor}
+                  />
+                  <IconButton
+                    Icon={FileSave}
+                    accessibilityLabel={t("feat.backup.extra.export")}
+                    onPress={() => {
+                      const { id, name, scheme, ...colors } =
+                        themeMap[themeId]!;
+                      const asTheme = { id, name, scheme, colors };
+                      onExportTheme(asTheme as CustomTheme);
+                    }}
                     _iconColor={themeColors.onSurface as HexColor}
                     _rippleColor={themeColors.surfaceContainerHigh as HexColor}
                   />
@@ -139,5 +155,14 @@ async function getAllCustomThemes() {
 
 export function useCustomThemes() {
   return useQuery({ queryKey, queryFn: getAllCustomThemes });
+}
+
+async function onExportTheme(theme: CustomTheme) {
+  try {
+    await exportTheme(theme);
+    toast.t("feat.backup.extra.exportSuccess");
+  } catch (err) {
+    toast.error((err as Error).message);
+  }
 }
 //#endregion

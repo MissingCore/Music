@@ -1,11 +1,11 @@
+import { toast } from "@missingcore/toast";
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { eq } from "drizzle-orm";
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { View } from "react-native";
 import type { ColorFormatsObject } from "reanimated-color-picker";
 import ColorPicker, { HueSlider, Panel1 } from "reanimated-color-picker";
-import { z } from "zod/mini";
 
 import { db } from "~/db";
 import { customThemes } from "../schema";
@@ -29,10 +29,13 @@ import {
   FormStateProvider,
   useFormStateContext,
 } from "~/modules/form/FormState";
-import { ZSchema } from "~/modules/form/utils";
 import { FormInputImpl } from "~/modules/form/FormState/FormInput";
 import type { ThemeRole } from "../constants";
 import { ThemeRoleOptions, Themes } from "../constants";
+import { readThemeFile } from "../helpers/backup";
+import { normalizeHexColor } from "../helpers/color";
+import type { ThemeEntry } from "../helpers/zod";
+import { ThemeEntrySchema } from "../helpers/zod";
 
 export function ModifyThemeBase(props: {
   onSubmit: (data: ThemeEntry) => void | Promise<void>;
@@ -44,7 +47,8 @@ export function ModifyThemeBase(props: {
 
   const initData = useMemo(
     () => ({
-      id: props.initialData?.id ?? null,
+      _id: props.initialData?._id ?? null,
+      _importGen: null,
       name: props.initialData?.name ?? "",
       scheme: props.initialData?.scheme ?? "light",
       ...(Object.fromEntries(
@@ -57,6 +61,14 @@ export function ModifyThemeBase(props: {
     [props.initialData],
   );
 
+  const RenderedWorkflow = useMemo(() => {
+    if (props.mode === "edit") {
+      if (activeCustomThemeId === props.initialData?._id) return Fragment;
+      return DeleteWorkflow;
+    }
+    return ImportWorkflow;
+  }, [props.mode, activeCustomThemeId, props.initialData?._id]);
+
   return (
     <FormStateProvider
       schema={ThemeEntrySchema}
@@ -64,10 +76,7 @@ export function ModifyThemeBase(props: {
       onSubmit={props.onSubmit}
     >
       <ThemeForm bottomOffset={offset} />
-      {props.mode === "edit" &&
-      activeCustomThemeId !== props.initialData?.id ? (
-        <DeleteWorkflow floatingContentProps={floatingContentProps} />
-      ) : null}
+      <RenderedWorkflow floatingContentProps={floatingContentProps} />
     </FormStateProvider>
   );
 }
@@ -102,7 +111,7 @@ function ThemeForm({ bottomOffset }: { bottomOffset: number }) {
 
       <View className="gap-2">
         {ThemeRoleOptions.map((role) => (
-          <HexColorPicker key={role} field={role} />
+          <HexColorPicker key={`${role}_${data._importGen}`} field={role} />
         ))}
       </View>
     </KeyboardAwareScrollView>
@@ -190,6 +199,40 @@ function HexColorPicker({ field }: { field: ThemeRole }) {
 }
 //#endregion
 
+//#region Import Workflow
+function ImportWorkflow({
+  floatingContentProps,
+}: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
+  const { setFields, isSubmitting, setIsSubmitting } = useFormState();
+
+  const onImport = async () => {
+    setIsSubmitting(true);
+    try {
+      const { name, scheme, colors } = await readThemeFile();
+      toast.t("feat.backup.extra.importSuccess");
+      await wait(100);
+      setFields({ name, scheme, ...colors });
+    } catch (err) {
+      toast.error((err as Error).message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <View {...floatingContentProps}>
+      <ExtendedTButton
+        textKey="feat.backup.extra.import"
+        onPress={onImport}
+        disabled={isSubmitting}
+        className="bg-secondary active:bg-secondaryDim"
+        textClassName="text-onSecondary"
+      />
+    </View>
+  );
+}
+//#endregion
+
 //#region Delete Workflow
 function DeleteWorkflow({
   floatingContentProps,
@@ -200,12 +243,12 @@ function DeleteWorkflow({
   const { data, isSubmitting, setIsSubmitting } = useFormState();
 
   const onDeletePressed = async () => {
-    if (!data.id) return;
+    if (!data._id) return;
     setLastChance(false);
     setIsSubmitting(true);
     await wait(1);
     try {
-      await db.delete(customThemes).where(eq(customThemes.id, data.id));
+      await db.delete(customThemes).where(eq(customThemes.id, data._id));
       queryClient.invalidateQueries({ queryKey: ["custom-themes"] });
       navigation.goBack();
     } catch {
@@ -242,54 +285,6 @@ function DeleteWorkflow({
 }
 //#endregion
 
-//#region Schema
-const HexColorSchema = z.pipe(
-  ZSchema.NonEmptyString,
-  z.transform((str, ctx) => {
-    const normalized = normalizeHexColor(str);
-    if (normalized) return normalized;
-
-    ctx.issues.push({
-      code: "invalid_value",
-      input: str,
-      values: [str],
-      message: "Expected a valid hex color.",
-    });
-    return z.NEVER;
-  }),
-);
-
-const ColorRolesSchema = Object.fromEntries(
-  ThemeRoleOptions.map((role) => [role, HexColorSchema]),
-) as Record<ThemeRole, typeof HexColorSchema>;
-
-const ThemeEntrySchema = z.object({
-  // Additional context:
-  id: z.nullable(z.string()),
-  // Actual form fields:
-  name: ZSchema.NonEmptyString,
-  scheme: z.enum(["light", "dark"]),
-  ...ColorRolesSchema,
-});
-
-export type ThemeEntry = z.infer<typeof ThemeEntrySchema>;
-
 function useFormState() {
   return useFormStateContext<ThemeEntry>();
 }
-//#endregion
-
-//#region Utils
-/** Normalizes `#RGB` and `#RRGGBB` strings to uppercase `#RRGGBB`. */
-function normalizeHexColor(value: string) {
-  const raw = value.trim();
-  const shortMatch = /^#([\da-fA-F]{3})$/.exec(raw);
-  if (shortMatch) {
-    const [r, g, b] = shortMatch[1]!.split("");
-    return `#${r}${r}${g}${g}${b}${b}`.toUpperCase() as HexColor;
-  }
-
-  if (!/^#([\da-fA-F]{6})$/.test(raw)) return null;
-  return raw.toUpperCase() as HexColor;
-}
-//#endregion

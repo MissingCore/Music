@@ -13,7 +13,7 @@ import { PreferenceSetters } from "~/stores/Preference/actions";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
 import { throwIfNoResults } from "~/lib/drizzle";
-import type { ThemeEntry } from "../components/ModifyViewBase";
+import type { ThemeEntry } from "../helpers/zod";
 import { ModifyThemeBase } from "../components/ModifyViewBase";
 
 type Props = StaticScreenProps<{ id: string }>;
@@ -33,11 +33,14 @@ export default function ModifyTheme({
 
   const isActiveTheme = activeCustomThemeId === themeId;
 
+  const { id, ...rest } = data;
+  const initData = { _id: id, ...rest } as Partial<ThemeEntry>;
+
   return (
     <ModifyThemeBase
       mode="edit"
-      initialData={data as ThemeEntry}
-      onSubmit={async ({ id: _, ...entry }) => {
+      initialData={initData}
+      onSubmit={async ({ _id, _importGen, ...entry }) => {
         try {
           await db
             .update(customThemes)

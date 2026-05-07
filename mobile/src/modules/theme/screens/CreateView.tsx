@@ -13,7 +13,7 @@ export default function CreateTheme() {
 
   return (
     <ModifyThemeBase
-      onSubmit={async ({ id: _, ...entry }) => {
+      onSubmit={async ({ _id, _importGen, ...entry }) => {
         try {
           await db.insert(customThemes).values(entry);
           await queryClient.invalidateQueries({ queryKey: ["custom-themes"] });
