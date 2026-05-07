@@ -32,6 +32,10 @@ import type { ThemeEntry } from "../helpers/zod";
 import { ThemeEntrySchema } from "../helpers/zod";
 import { deleteCustomTheme, revalidateCustomThemes } from "../queries";
 
+function useFormState() {
+  return useFormStateContext<ThemeEntry>();
+}
+
 export function ModifyThemeBase(props: {
   onSubmit: (data: ThemeEntry) => void | Promise<void>;
   mode?: "create" | "edit";
@@ -278,7 +282,3 @@ function DeleteWorkflow({
   );
 }
 //#endregion
-
-function useFormState() {
-  return useFormStateContext<ThemeEntry>();
-}

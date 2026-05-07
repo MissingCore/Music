@@ -21,17 +21,9 @@ export function useCurrentScheme() {
 
 /** Returns if we're using light, dark, or custom theme. */
 export function useCurrentTheme() {
-  const deviceTheme = useColorScheme();
-  const savedTheme = usePreferenceStore((s) => s.theme);
+  const scheme = useCurrentScheme();
   const customTheme = usePreferenceStore((s) => s.activeCustomThemeId);
-
-  //? Restore the old behavior where we got `null` instead of `unspecified`.
-  const rawTheme = deviceTheme === "unspecified" ? null : deviceTheme;
-  return customTheme
-    ? "custom"
-    : savedTheme === "system"
-      ? (rawTheme ?? "light")
-      : savedTheme;
+  return customTheme ? "custom" : scheme;
 }
 
 /** Returns the dynamic colors determined by the current theme. */

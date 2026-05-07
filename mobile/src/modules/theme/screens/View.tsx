@@ -29,7 +29,7 @@ import {
 import { useCustomThemes } from "../queries";
 import { formatAsCustomTheme, isDefaultTheme } from "../utils";
 
-const ThemeMap = {
+const DefaultThemeMap = {
   light: DefaultThemes.light,
   dark: DefaultThemes.dark,
   system: SystemTheme,
@@ -72,7 +72,7 @@ export default function Themes() {
         renderItem={({ item: themeId, index }) => {
           const selected = selectedTheme === themeId;
           const themeColors = isDefaultTheme(themeId)
-            ? ThemeMap[themeId]
+            ? DefaultThemeMap[themeId]
             : themeMap[themeId]!;
 
           return (
