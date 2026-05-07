@@ -8,16 +8,18 @@ import { db } from "~/db";
 
 import { Add } from "~/resources/icons/Add";
 import { Check } from "~/resources/icons/Check";
+import { Edit } from "~/resources/icons/Edit";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
+import type { HexColor } from "~/lib/style";
 import { cn } from "~/lib/style";
 import { FlatList } from "~/components/Base/List";
 import { Pressable } from "~/components/Base/Pressable";
-import { FilledIconButton } from "~/components/Form/Button/Icon";
+import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { StyledText } from "~/components/Typography/StyledText";
 import {
   DefaultThemeOptions,
@@ -76,17 +78,16 @@ export default function Themes() {
             <Pressable
               onPress={() => PreferenceSetters.setTheme(themeId)}
               className={cn(
-                "min-h-12 flex-row items-center gap-2 rounded-md p-4",
+                "min-h-14 flex-row items-center gap-2 rounded-md p-2 pl-4",
                 {
                   "mt-0.75 rounded-t-xs": index > 0,
                   "rounded-b-xs": index < themeOptions.length - 1,
                 },
               )}
-              style={({ pressed }) => ({
-                backgroundColor: pressed
-                  ? themeColors.surfaceContainerLow
-                  : themeColors.surfaceContainerLowest,
-              })}
+              style={({ pressed }) => [
+                { backgroundColor: themeColors.surfaceContainerLowest },
+                pressed && { opacity: 0.75 },
+              ]}
             >
               <View
                 className={cn(
@@ -105,6 +106,19 @@ export default function Themes() {
                   ? t(`feat.theme.extra.${themeId}`)
                   : themeMap[themeId]!.name}
               </StyledText>
+              {!isDefaultTheme(themeId) ? (
+                <View className="ml-auto">
+                  <IconButton
+                    Icon={Edit}
+                    accessibilityLabel={t("form.edit")}
+                    onPress={() =>
+                      navigation.navigate("ModifyTheme", { id: themeId })
+                    }
+                    _iconColor={themeColors.onSurface as HexColor}
+                    _rippleColor={themeColors.surfaceContainerHigh as HexColor}
+                  />
+                </View>
+              ) : null}
             </Pressable>
           );
         }}

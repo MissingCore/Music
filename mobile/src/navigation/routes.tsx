@@ -54,6 +54,7 @@ import Tracks from "./screens/tracks/View";
 import { TrackSheet } from "./screens/tracks/sheets/TrackSheet";
 import { ArtistsSheet } from "./sheets/ArtistsSheet";
 import CreateTheme from "~/modules/theme/screens/CreateView";
+import ModifyTheme from "~/modules/theme/screens/ModifyView";
 import Themes from "~/modules/theme/screens/View";
 
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
@@ -386,6 +387,10 @@ export const RootStack = createNativeStackNavigator({
         CreateTheme: {
           screen: CreateTheme,
           options: { title: "form.create" },
+        },
+        ModifyTheme: {
+          screen: ModifyTheme,
+          options: { title: "form.edit" },
         },
       },
     },

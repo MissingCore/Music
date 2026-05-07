@@ -1,16 +1,27 @@
+import { useNavigation } from "@react-navigation/native";
+import { useQueryClient } from "@tanstack/react-query";
+import { eq } from "drizzle-orm";
 import { useMemo, useState } from "react";
 import { View } from "react-native";
 import type { ColorFormatsObject } from "reanimated-color-picker";
 import ColorPicker, { HueSlider, Panel1 } from "reanimated-color-picker";
 import { z } from "zod/mini";
 
+import { db } from "~/db";
+import { customThemes } from "../schema";
+
+import { usePreferenceStore } from "~/stores/Preference/store";
+
+import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
+
 import { BorderRadius } from "~/constants/Styles";
 import type { HexColor } from "~/lib/style";
+import { wait } from "~/utils/promise";
 import { Pressable } from "~/components/Base/Pressable";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
-import { Modal } from "~/components/Modal";
+import { Modal, ModalTemplate } from "~/components/Modal";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import { Switch } from "~/components/UI/Switch";
@@ -28,6 +39,9 @@ export function ModifyThemeBase(props: {
   mode?: "create" | "edit";
   initialData?: Partial<ThemeEntry>;
 }) {
+  const { offset, floatingContentProps } = useFloatingContent();
+  const activeCustomThemeId = usePreferenceStore((s) => s.activeCustomThemeId);
+
   const initData = useMemo(
     () => ({
       id: props.initialData?.id ?? null,
@@ -49,7 +63,11 @@ export function ModifyThemeBase(props: {
       initData={initData}
       onSubmit={props.onSubmit}
     >
-      <ThemeForm />
+      <ThemeForm bottomOffset={offset} />
+      {props.mode === "edit" &&
+      activeCustomThemeId !== props.initialData?.id ? (
+        <DeleteWorkflow floatingContentProps={floatingContentProps} />
+      ) : null}
     </FormStateProvider>
   );
 }
@@ -57,10 +75,13 @@ export function ModifyThemeBase(props: {
 //#region Theme Form
 const FormInput = FormInputImpl<ThemeEntry>();
 
-function ThemeForm() {
-  const { data, setFields } = useFormState();
+function ThemeForm({ bottomOffset }: { bottomOffset: number }) {
+  const { data, setFields, isSubmitting } = useFormState();
   return (
-    <KeyboardAwareScrollView contentContainerClassName="gap-6 p-4">
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ paddingBottom: bottomOffset }}
+      contentContainerClassName="gap-6 p-4"
+    >
       <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
       <SheetLabelAction
         labelKey="feat.theme.extra.dark"
@@ -71,6 +92,7 @@ function ThemeForm() {
                 scheme: prev.scheme === "dark" ? "light" : "dark",
               }))
             }
+            disabled={isSubmitting}
             className="h-8 justify-center"
           >
             <Switch enabled={data.scheme === "dark"} />
@@ -168,6 +190,58 @@ function HexColorPicker({ field }: { field: ThemeRole }) {
 }
 //#endregion
 
+//#region Delete Workflow
+function DeleteWorkflow({
+  floatingContentProps,
+}: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
+  const navigation = useNavigation();
+  const queryClient = useQueryClient();
+  const [lastChance, setLastChance] = useState(false);
+  const { data, isSubmitting, setIsSubmitting } = useFormState();
+
+  const onDeletePressed = async () => {
+    if (!data.id) return;
+    setLastChance(false);
+    setIsSubmitting(true);
+    await wait(1);
+    try {
+      await db.delete(customThemes).where(eq(customThemes.id, data.id));
+      queryClient.invalidateQueries({ queryKey: ["custom-themes"] });
+      navigation.goBack();
+    } catch {
+      setLastChance(true);
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <>
+      <View {...floatingContentProps}>
+        <ExtendedTButton
+          textKey="form.delete"
+          onPress={() => setLastChance(true)}
+          disabled={lastChance || isSubmitting}
+          className="bg-error active:bg-errorDim"
+          textClassName="text-onError"
+        />
+      </View>
+      <ModalTemplate
+        visible={lastChance}
+        titleKey="form.delete"
+        topAction={{
+          textKey: "form.confirm",
+          onPress: onDeletePressed,
+        }}
+        bottomAction={{
+          textKey: "form.cancel",
+          onPress: () => setLastChance(false),
+        }}
+      />
+    </>
+  );
+}
+//#endregion
+
 //#region Schema
 const HexColorSchema = z.pipe(
   ZSchema.NonEmptyString,
@@ -198,7 +272,7 @@ const ThemeEntrySchema = z.object({
   ...ColorRolesSchema,
 });
 
-type ThemeEntry = z.infer<typeof ThemeEntrySchema>;
+export type ThemeEntry = z.infer<typeof ThemeEntrySchema>;
 
 function useFormState() {
   return useFormStateContext<ThemeEntry>();
