@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { View } from "react-native";
 import type { ColorFormatsObject } from "reanimated-color-picker";
 import ColorPicker, { HueSlider, Panel1 } from "reanimated-color-picker";
 import { z } from "zod/mini";
 
+import { BorderRadius } from "~/constants/Styles";
 import type { HexColor } from "~/lib/style";
 import { Pressable } from "~/components/Base/Pressable";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
@@ -57,8 +58,7 @@ export function ModifyThemeBase(props: {
 const FormInput = FormInputImpl<ThemeEntry>();
 
 function ThemeForm() {
-  const { data, setFields, isSubmitting } = useFormState();
-
+  const { data, setFields } = useFormState();
   return (
     <KeyboardAwareScrollView contentContainerClassName="gap-6 p-4">
       <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
@@ -78,15 +78,9 @@ function ThemeForm() {
         }
       />
 
-      <View className="gap-3">
+      <View className="gap-2">
         {ThemeRoleOptions.map((role) => (
-          <HexColorPicker
-            key={role}
-            label={role}
-            value={data[role]}
-            onChange={(value) => setFields({ [role]: value })}
-            disabled={isSubmitting}
-          />
+          <HexColorPicker key={role} field={role} />
         ))}
       </View>
     </KeyboardAwareScrollView>
@@ -95,94 +89,77 @@ function ThemeForm() {
 //#endregion
 
 //#region Color Picker
-type HexColorPickerProps = {
-  label: string;
-  value: HexColor;
-  onChange: (value: HexColor) => void;
-  disabled?: boolean;
-};
-
-export function HexColorPicker({
-  label,
-  value,
-  onChange,
-  disabled,
-}: HexColorPickerProps) {
-  const [draftHex, setDraftHex] = useState<string>(value);
+function HexColorPicker({ field }: { field: ThemeRole }) {
+  const { data, setFields, isSubmitting } = useFormState();
+  const [draftValue, setDraftValue] = useState<string>(data[field]);
   const [showPicker, setShowPicker] = useState(false);
 
-  useEffect(() => {
-    setDraftHex(value);
-  }, [value]);
+  const savedValue = data[field];
 
-  const onChangeHex = (text: string) => {
-    setDraftHex(text.toUpperCase());
+  const onChange = (text: string) => {
+    setDraftValue(text.toUpperCase());
     const normalized = normalizeHexColor(text);
     if (!normalized) return;
-    onChange(normalized);
+    setFields({ [field]: normalized });
   };
 
   const onPickerComplete = (colors: ColorFormatsObject) => {
     const normalized = normalizeHexColor(colors.hex);
     if (!normalized) return;
-    setDraftHex(normalized);
     onChange(normalized);
   };
 
   return (
-    <View className="gap-2 rounded-sm border border-outline p-3">
-      <View className="flex-row items-center justify-between gap-2">
-        <Em>{label}</Em>
-        <View className="flex-row items-center gap-2">
-          <Pressable
-            onPress={() => setShowPicker(true)}
-            disabled={disabled}
-            accessibilityRole="button"
-            accessibilityLabel={`Pick ${label} color`}
-          >
-            <View
-              className="size-6 rounded-xs border border-outline"
-              style={{ backgroundColor: value }}
-            />
-          </Pressable>
-          <StyledText className="text-xs text-onSurfaceVariant">
-            {value}
+    <View className="flex-1">
+      <Pressable
+        accessibilityLabel={`Pick ${field} color`}
+        onPress={() => setShowPicker(true)}
+        disabled={isSubmitting}
+        className="min-h-14 flex-row items-center overflow-hidden rounded-sm border border-outline active:opacity-50"
+      >
+        <View
+          className="aspect-square h-full"
+          style={{ backgroundColor: savedValue }}
+        />
+        <View className="p-2">
+          <Em>{field}</Em>
+          <StyledText className="text-sm text-onSurfaceVariant">
+            {savedValue}
           </StyledText>
         </View>
-      </View>
-
-      <TextInput
-        editable={!disabled}
-        value={draftHex}
-        onChangeText={onChangeHex}
-        autoCapitalize="characters"
-        autoCorrect={false}
-        maxLength={7}
-        className="w-full rounded-sm border border-outline px-2"
-      />
+      </Pressable>
 
       <Modal visible={showPicker}>
         <View className="gap-4">
           <View className="flex-row items-center justify-between gap-2">
-            <Em>{label}</Em>
-            <StyledText className="text-xs text-onSurfaceVariant">
-              {value}
-            </StyledText>
+            <Em>{field}</Em>
+            <TextInput
+              value={draftValue}
+              onChangeText={onChange}
+              autoCapitalize="characters"
+              autoCorrect={false}
+              maxLength={7}
+              className="h-6 min-h-0 w-15 rounded-xs border border-outline p-1 text-xs text-onSurfaceVariant"
+              style={{ fontFamily: "GeistMono-Regular" }}
+            />
           </View>
 
           <ColorPicker
-            value={value}
+            value={savedValue}
             onCompleteJS={onPickerComplete}
             thumbSize={20}
+            sliderThickness={26}
             boundedThumb
+            style={{ gap: 12 }}
           >
-            <Panel1 style={{ borderRadius: 8, minHeight: 180 }} />
-            <HueSlider style={{ marginTop: 10, borderRadius: 999 }} />
+            <Panel1 style={{ borderRadius: BorderRadius.md }} />
+            <HueSlider style={{ borderRadius: BorderRadius.full }} />
           </ColorPicker>
 
           <ExtendedTButton
-            textKey="form.cancel"
+            textKey="form.close"
             onPress={() => setShowPicker(false)}
+            className="bg-surfaceContainer active:bg-surfaceContainerHigh"
           />
         </View>
       </Modal>
@@ -230,7 +207,7 @@ function useFormState() {
 
 //#region Utils
 /** Normalizes `#RGB` and `#RRGGBB` strings to uppercase `#RRGGBB`. */
-export function normalizeHexColor(value: string) {
+function normalizeHexColor(value: string) {
   const raw = value.trim();
   const shortMatch = /^#([\da-fA-F]{3})$/.exec(raw);
   if (shortMatch) {
