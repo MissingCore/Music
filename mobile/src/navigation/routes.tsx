@@ -53,9 +53,7 @@ import ModifyTrack from "./screens/tracks/ModifyView";
 import Tracks from "./screens/tracks/View";
 import { TrackSheet } from "./screens/tracks/sheets/TrackSheet";
 import { ArtistsSheet } from "./sheets/ArtistsSheet";
-import CreateTheme from "~/modules/theme/screens/CreateView";
-import ModifyTheme from "~/modules/theme/screens/ModifyView";
-import Themes from "~/modules/theme/screens/View";
+import ThemeScreens from "~/modules/theme/screens";
 
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { useTabsByVisibility } from "~/stores/Preference/hooks";
@@ -375,25 +373,7 @@ export const RootStack = createNativeStackNavigator({
         PackageLicense,
       },
     },
-    Theme: {
-      screenOptions: {
-        animation: "fade",
-      },
-      screens: {
-        Themes: {
-          screen: Themes,
-          options: { title: "feat.theme.title" },
-        },
-        CreateTheme: {
-          screen: CreateTheme,
-          options: { title: "form.create" },
-        },
-        ModifyTheme: {
-          screen: ModifyTheme,
-          options: { title: "form.edit" },
-        },
-      },
-    },
+    Theme: ThemeScreens,
   },
 });
 
