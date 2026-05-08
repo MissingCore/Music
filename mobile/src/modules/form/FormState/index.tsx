@@ -164,7 +164,7 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
 export type FABWorkflowConfig<TData extends Record<string, any>> = {
   label: ParseKeys;
   action: (
-    context: Pick<FormState<TData>, "data" | "setFields">,
+    context: Pick<FormState<TData>, "setFields">,
   ) => void | Promise<void>;
   /** If the action that will be done is dangerous/destructive. Will require confirmation to fire `action`. */
   danger?: boolean;
@@ -176,13 +176,12 @@ export function FABWorkflow(
     Omit<ReturnType<typeof useFloatingContent>, "offset">,
 ) {
   const [lastChance, setLastChance] = useState(false);
-  const { data, setFields, isSubmitting, setIsSubmitting } =
-    useFormStateContext();
+  const { setFields, isSubmitting, setIsSubmitting } = useFormStateContext();
 
   const triggerAction = async () => {
     if (props.danger) setLastChance(false);
     setIsSubmitting(true);
-    await props.action({ data, setFields });
+    await props.action({ setFields });
     setIsSubmitting(false);
   };
 
