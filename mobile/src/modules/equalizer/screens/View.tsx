@@ -3,8 +3,8 @@ import { useMemo } from "react";
 import { View } from "react-native";
 import { useEqualizerSettings } from "react-native-audio-browser";
 
-import { useEqualizerStore } from "~/modules/equalizer/core/store";
-import { toggleEQ, setEQPreset } from "~/modules/equalizer/core/actions";
+import { useEqualizerStore } from "../core/store";
+import { toggleEQ, setEQPreset } from "../core/actions";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
@@ -15,8 +15,8 @@ import { Pressable } from "~/components/Base/Pressable";
 import { Button } from "~/components/Form/Button";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { Switch } from "~/components/UI/Switch";
-import { EQGraph } from "~/modules/equalizer/components/EQGraph";
-import { FrequencySlider } from "~/modules/equalizer/components/FrequencySlider";
+import { EQGraph } from "../components/EQGraph";
+import { FrequencySlider } from "../components/FrequencySlider";
 
 export default function EqualizerSettings() {
   const eqFreqs = useEqualizerStore((s) => s.defaultFrequencies);
