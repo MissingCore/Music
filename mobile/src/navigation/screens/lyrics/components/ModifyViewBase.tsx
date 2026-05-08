@@ -55,7 +55,6 @@ function LyricForm({ bottomOffset }: { bottomOffset: number }) {
 
 //#region Schema
 const LyricEntrySchema = z.object({
-  // Actual form fields:
   name: ZSchema.NonEmptyString,
   lyrics: ZSchema.NonEmptyString,
 });

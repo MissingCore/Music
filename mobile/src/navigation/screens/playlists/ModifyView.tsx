@@ -76,7 +76,6 @@ export default function ModifyPlaylist({
                 } catch {}
               },
               danger: true,
-              requireConfirmation: true,
             }
       }
       onSubmit={async ({ name: playlistName, trackIds }) => {

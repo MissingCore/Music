@@ -166,10 +166,8 @@ export type FABWorkflowConfig<TData extends Record<string, any>> = {
   action: (
     context: Pick<FormState<TData>, "data" | "setFields">,
   ) => void | Promise<void>;
-  /** If the action that will be done is dangerous/destructive. */
+  /** If the action that will be done is dangerous/destructive. Will require confirmation to fire `action`. */
   danger?: boolean;
-  /** If the action requires user confirmation before proceeding. */
-  requireConfirmation?: boolean;
 };
 
 /** Additional action that can be displayed in the form. */
@@ -182,7 +180,7 @@ export function FABWorkflow(
     useFormStateContext();
 
   const triggerAction = async () => {
-    if (props.requireConfirmation) setLastChance(false);
+    if (props.danger) setLastChance(false);
     setIsSubmitting(true);
     await props.action({ data, setFields });
     setIsSubmitting(false);
@@ -193,9 +191,7 @@ export function FABWorkflow(
       <View {...props.floatingContentProps}>
         <ExtendedTButton
           textKey={props.label}
-          onPress={() =>
-            props.requireConfirmation ? setLastChance(true) : triggerAction()
-          }
+          onPress={() => (props.danger ? setLastChance(true) : triggerAction())}
           disabled={lastChance || isSubmitting}
           className={
             props.danger
@@ -205,7 +201,7 @@ export function FABWorkflow(
           textClassName={props.danger ? "text-onError" : "text-onSecondary"}
         />
       </View>
-      {props.requireConfirmation ? (
+      {props.danger ? (
         <ModalTemplate
           visible={lastChance}
           titleKey={props.label}

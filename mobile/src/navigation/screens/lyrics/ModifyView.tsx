@@ -43,7 +43,6 @@ export default function ModifyLyric({
           } catch {}
         },
         danger: true,
-        requireConfirmation: true,
       }}
       onSubmit={async (entry) => {
         try {

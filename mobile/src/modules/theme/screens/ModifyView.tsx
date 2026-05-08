@@ -51,7 +51,6 @@ export default function ModifyTheme({
                 } catch {}
               },
               danger: true,
-              requireConfirmation: true,
             }
       }
       onSubmit={async ({ _importGen, ...entry }) => {
