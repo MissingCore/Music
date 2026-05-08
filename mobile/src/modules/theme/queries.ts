@@ -19,7 +19,6 @@ async function getCustomTheme(id: string) {
       where: (fields, { eq }) => eq(fields.id, id),
     }),
   );
-
   return result as ResolvedTheme & { id: string; name: string };
 }
 
@@ -30,18 +29,18 @@ async function getCustomThemes() {
 }
 
 export async function createCustomTheme(entry: Omit<CustomThemeEntry, "id">) {
-  await db.insert(customThemes).values(entry);
+  return db.insert(customThemes).values(entry);
 }
 
 export async function updateCustomTheme(
   id: string,
   values: Partial<Omit<CustomThemeEntry, "id">>,
 ) {
-  await db.update(customThemes).set(values).where(eq(customThemes.id, id));
+  return db.update(customThemes).set(values).where(eq(customThemes.id, id));
 }
 
 export async function deleteCustomTheme(id: string) {
-  await db.delete(customThemes).where(eq(customThemes.id, id));
+  return db.delete(customThemes).where(eq(customThemes.id, id));
 }
 //#endregion
 

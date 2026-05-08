@@ -24,14 +24,12 @@ export function ColorPickerInput(props: {
   const onChange = (text: string) => {
     setDraftValue(text.toUpperCase());
     const normalized = normalizeHexColor(text);
-    if (!normalized) return;
-    props.onUpdateValue(normalized);
+    if (normalized) props.onUpdateValue(normalized);
   };
 
   const onPickerComplete = (colors: ColorFormatsObject) => {
     const normalized = normalizeHexColor(colors.hex);
-    if (!normalized) return;
-    onChange(normalized);
+    if (normalized) props.onUpdateValue(normalized);
   };
 
   return (

@@ -79,26 +79,20 @@ export default function Themes() {
             <Pressable
               onPress={() => PreferenceSetters.setTheme(themeId)}
               className={cn(
-                "min-h-14 flex-row items-center gap-2 rounded-md p-2 pl-4",
+                "min-h-14 flex-row items-center gap-2 rounded-md p-2 pl-4 active:opacity-75",
                 {
                   "mt-0.75 rounded-t-xs": index > 0,
                   "rounded-b-xs": index < themeOptions.length - 1,
                 },
               )}
-              style={({ pressed }) => [
-                { backgroundColor: themeColors.surfaceContainerLowest },
-                pressed && { opacity: 0.75 },
-              ]}
+              style={{ backgroundColor: themeColors.surfaceContainerLowest }}
             >
               <View
                 className={cn(
-                  "size-5 items-center justify-center rounded-full border border-onSurface",
+                  "size-5 items-center justify-center rounded-full border",
                   { "border-0 bg-onSurface": selected },
                 )}
-                style={[
-                  { borderColor: themeColors.onSurface },
-                  selected && { backgroundColor: themeColors.onSurface },
-                ]}
+                style={{ borderColor: themeColors.onSurface }}
               >
                 {selected ? <Check size={18} color="surface" /> : null}
               </View>

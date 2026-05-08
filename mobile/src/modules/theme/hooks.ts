@@ -31,19 +31,13 @@ export function useTheme() {
   const currentTheme = useCurrentTheme();
   const customTheme = usePreferenceStore((s) => s.activeCustomTheme);
 
-  const CustomTheme = useMemo(() => {
-    if (!customTheme) return null;
+  return useMemo(() => {
+    if (currentTheme !== "custom" || !customTheme) {
+      return Themes[currentTheme === "custom" ? "light" : currentTheme];
+    }
     const { scheme, colors } = customTheme;
     return { scheme, ...colors };
-  }, [customTheme]);
-
-  return useMemo(
-    () =>
-      currentTheme !== "custom"
-        ? Themes[currentTheme]
-        : (CustomTheme ?? Themes.light),
-    [CustomTheme, currentTheme],
-  );
+  }, [currentTheme, customTheme]);
 }
 
 /** Returns a singular color. */
