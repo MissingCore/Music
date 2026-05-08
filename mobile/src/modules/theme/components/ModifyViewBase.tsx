@@ -2,22 +2,17 @@ import { toast } from "@missingcore/toast";
 import { useNavigation } from "@react-navigation/native";
 import { Fragment, useMemo, useState } from "react";
 import { View } from "react-native";
-import type { ColorFormatsObject } from "reanimated-color-picker";
-import ColorPicker, { HueSlider, Panel1 } from "reanimated-color-picker";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 
-import { BorderRadius } from "~/constants/Styles";
 import { wait } from "~/utils/promise";
 import { Pressable } from "~/components/Base/Pressable";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { ExtendedTButton } from "~/components/Form/Button";
-import { TextInput } from "~/components/Form/Input";
-import { Modal, ModalTemplate } from "~/components/Modal";
+import { ModalTemplate } from "~/components/Modal";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
-import { Em, StyledText } from "~/components/Typography/StyledText";
 import { Switch } from "~/components/UI/Switch";
 import {
   FormStateProvider,
@@ -27,10 +22,10 @@ import { FormInputImpl } from "~/modules/form/FormState/FormInput";
 import type { ColorRole, HexColor } from "../constants";
 import { ColorRoleOptions, Themes } from "../constants";
 import { readThemeFile } from "../helpers/backup";
-import { normalizeHexColor } from "../helpers/color";
 import type { ThemeEntry } from "../helpers/zod";
 import { ThemeEntrySchema } from "../helpers/zod";
 import { deleteCustomTheme, revalidateCustomThemes } from "../queries";
+import { ColorPickerInput } from "./ColorPickerInput";
 
 function useFormState() {
   return useFormStateContext<ThemeEntry>();
@@ -110,90 +105,16 @@ function ThemeForm({ bottomOffset }: { bottomOffset: number }) {
 
       <View className="gap-2">
         {ColorRoleOptions.map((role) => (
-          <HexColorPicker key={`${role}_${data._importGen}`} field={role} />
+          <ColorPickerInput
+            key={`${role}_${data._importGen}`}
+            label={role}
+            value={data[role]}
+            onUpdateValue={(color) => setFields({ [role]: color })}
+            disabled={isSubmitting}
+          />
         ))}
       </View>
     </KeyboardAwareScrollView>
-  );
-}
-//#endregion
-
-//#region Color Picker
-function HexColorPicker({ field }: { field: ColorRole }) {
-  const { data, setFields, isSubmitting } = useFormState();
-  const [draftValue, setDraftValue] = useState<string>(data[field]);
-  const [showPicker, setShowPicker] = useState(false);
-
-  const savedValue = data[field];
-
-  const onChange = (text: string) => {
-    setDraftValue(text.toUpperCase());
-    const normalized = normalizeHexColor(text);
-    if (!normalized) return;
-    setFields({ [field]: normalized });
-  };
-
-  const onPickerComplete = (colors: ColorFormatsObject) => {
-    const normalized = normalizeHexColor(colors.hex);
-    if (!normalized) return;
-    onChange(normalized);
-  };
-
-  return (
-    <View className="flex-1">
-      <Pressable
-        accessibilityLabel={`Pick ${field} color`}
-        onPress={() => setShowPicker(true)}
-        disabled={isSubmitting}
-        className="min-h-14 flex-row items-center overflow-hidden rounded-sm border border-outline active:opacity-50"
-      >
-        <View
-          className="aspect-square h-full"
-          style={{ backgroundColor: savedValue }}
-        />
-        <View className="p-2">
-          <Em>{field}</Em>
-          <StyledText className="text-sm text-onSurfaceVariant">
-            {savedValue}
-          </StyledText>
-        </View>
-      </Pressable>
-
-      <Modal visible={showPicker}>
-        <View className="gap-4">
-          <View className="flex-row items-center justify-between gap-2">
-            <Em>{field}</Em>
-            <TextInput
-              value={draftValue}
-              onChangeText={onChange}
-              autoCapitalize="characters"
-              autoCorrect={false}
-              maxLength={7}
-              className="h-6 min-h-0 w-15 rounded-xs border border-outline p-1 text-xs text-onSurfaceVariant"
-              style={{ fontFamily: "GeistMono-Regular" }}
-            />
-          </View>
-
-          <ColorPicker
-            value={savedValue}
-            onCompleteJS={onPickerComplete}
-            thumbSize={20}
-            sliderThickness={26}
-            boundedThumb
-            style={{ gap: 12 }}
-          >
-            <Panel1 style={{ borderRadius: BorderRadius.md }} />
-            <HueSlider style={{ borderRadius: BorderRadius.full }} />
-          </ColorPicker>
-
-          <ExtendedTButton
-            textKey="form.close"
-            onPress={() => setShowPicker(false)}
-            className="bg-surfaceContainer active:bg-surfaceContainerHigh"
-          />
-        </View>
-      </Modal>
-    </View>
   );
 }
 //#endregion
