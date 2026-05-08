@@ -35,13 +35,13 @@ import { AddAlbumSheet } from "./sheets/AddAlbumSheet";
 import { clearAllQueries } from "~/lib/react-query";
 import { splitOn } from "~/utils/string";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
-import { ExtendedTButton } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
 import { ZSchema } from "~/modules/form/utils";
 import {
+  FABWorkflow,
   FormStateProvider,
   useFormStateContext,
 } from "~/modules/form/FormState";
@@ -60,6 +60,7 @@ export default function ModifyTrack({
 }: Props) {
   const trackQuery = useTrack(id);
   const trackGenresQuery = useTrackGenres(id);
+  const delimiters = usePreferenceStore((s) => s.separators);
   const { offset, floatingContentProps } = useFloatingContent();
 
   if (
@@ -102,9 +103,35 @@ export default function ModifyTrack({
       }
     >
       <MetadataForm bottomOffset={offset} />
-      <ResetWorkflow
+      <FABWorkflow
+        label="form.reset"
+        action={async ({ setFields }) => {
+          try {
+            const trackMetadata = await getMetadata(trackQuery.data.uri, [
+              ...MetadataPresets.standard,
+              "discNumber",
+              "genre",
+            ]);
+            setFields({
+              name: trackMetadata.title ?? "",
+              artists: trackMetadata.artist
+                ? splitOn(trackMetadata.artist, delimiters)
+                : [],
+              album: trackMetadata.albumTitle,
+              albumArtists: trackMetadata.albumArtist
+                ? splitOn(trackMetadata.albumArtist, delimiters)
+                : [],
+              year: trackMetadata.year,
+              disc: trackMetadata.discNumber,
+              track: trackMetadata.trackNumber,
+              genres: trackMetadata.genre
+                ? splitOn(trackMetadata.genre, delimiters)
+                : [],
+            });
+          } catch {}
+        }}
+        danger
         floatingContentProps={floatingContentProps}
-        uri={trackQuery.data.uri}
       />
     </FormStateProvider>
   );
@@ -195,58 +222,6 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
         <ArrayFormInput labelKey="term.genres" field="genres" />
       </KeyboardAwareScrollView>
     </>
-  );
-}
-//#endregion
-
-//#region Reset Workflow
-/** Logic to set the form fields to the embedded metadata from the track. */
-function ResetWorkflow(
-  props: Omit<ReturnType<typeof useFloatingContent>, "offset"> & {
-    uri: string;
-  },
-) {
-  const delimiters = usePreferenceStore((s) => s.separators);
-  const { setFields, isSubmitting, setIsSubmitting } = useFormState();
-
-  const onReset = async () => {
-    setIsSubmitting(true);
-    try {
-      const trackMetadata = await getMetadata(props.uri, [
-        ...MetadataPresets.standard,
-        "discNumber",
-        "genre",
-      ]);
-      setFields({
-        name: trackMetadata.title ?? "",
-        artists: trackMetadata.artist
-          ? splitOn(trackMetadata.artist, delimiters)
-          : [],
-        album: trackMetadata.albumTitle,
-        albumArtists: trackMetadata.albumArtist
-          ? splitOn(trackMetadata.albumArtist, delimiters)
-          : [],
-        year: trackMetadata.year,
-        disc: trackMetadata.discNumber,
-        track: trackMetadata.trackNumber,
-        genres: trackMetadata.genre
-          ? splitOn(trackMetadata.genre, delimiters)
-          : [],
-      });
-    } catch {}
-    setIsSubmitting(false);
-  };
-
-  return (
-    <View {...props.floatingContentProps}>
-      <ExtendedTButton
-        textKey="form.reset"
-        onPress={onReset}
-        disabled={isSubmitting}
-        className="bg-error active:bg-errorDim"
-        textClassName="text-onError"
-      />
-    </View>
   );
 }
 //#endregion
