@@ -6,11 +6,11 @@ import {
 } from "~/stores/Session/actions";
 import { getArtistsString } from "~/data/artist/utils";
 
-import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
 import { Pressable } from "~/components/Base/Pressable";
 import { Marquee } from "~/components/Marquee";
 import { StyledText } from "~/components/Typography/StyledText";
+import type { ColorRole } from "~/modules/theme/constants";
 import type { PopStrategy } from "~/stores/Session/types";
 
 /** Renders display string for artists, with different onPress actions based on the number of artists. */

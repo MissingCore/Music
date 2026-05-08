@@ -6,11 +6,11 @@ import { View } from "react-native";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
-import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
 import type { FlatListProps, ListRenderItemInfo } from "~/components/Base/List";
 import { FlatList } from "~/components/Base/List";
 import { TopDownGradient } from "~/components/Gradient";
+import type { ColorRole } from "~/modules/theme/constants";
 import { SearchBar } from "./SearchBar";
 
 const DEFAULT_GAP = 24;

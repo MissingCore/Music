@@ -1,10 +1,5 @@
+import type { CustomTheme, DefaultTheme } from "~/modules/theme/constants";
 import type { Tab } from "./types";
-
-//#region Theme
-export const ThemeOptions = ["light", "dark", "system"] as const;
-
-export type Theme = (typeof ThemeOptions)[number];
-//endregion
 
 //#region Font
 export const FontOptions = [
@@ -40,7 +35,12 @@ export interface PreferenceStore {
   /** If we should use LTR layout with a RTL language. */
   forceLTR: boolean;
 
-  theme: Theme;
+  /** Acts as current scheme if `activeCustomThemeId` is defined. */
+  theme: DefaultTheme;
+  /** Id of active custom theme. Has higher priority than `theme`. */
+  activeCustomThemeId: string | null;
+  /** Values of active custom theme. */
+  activeCustomTheme: CustomTheme | null;
   /** Font used for some accent text (ie: major headings). */
   accentFont: Font;
   /** Font used for text. */
@@ -111,5 +111,6 @@ export interface PreferenceStore {
 export const OmittedFields: string[] = [
   "_hasHydrated",
   "_init",
+  "activeCustomTheme",
 ] satisfies Array<keyof PreferenceStore>;
 //#endregion

@@ -18,4 +18,5 @@ config.resolver.sourceExts.push("sql");
 
 module.exports = withUniwindConfig(config, {
   cssEntryFile: "./src/global.css",
+  extraThemes: ["custom"],
 });

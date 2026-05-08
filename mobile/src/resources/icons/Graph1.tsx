@@ -1,6 +1,6 @@
 import Svg, { Path } from "react-native-svg";
 
-import { useColor } from "~/hooks/useTheme";
+import { useColor } from "~/modules/theme/hooks";
 import type { Icon } from "./type";
 
 export function Graph1({ size = 24, color }: Icon) {

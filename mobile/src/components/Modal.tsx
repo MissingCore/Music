@@ -17,7 +17,7 @@ export function Modal(props: { visible: boolean; children: React.ReactNode }) {
       transparent
     >
       <GestureHandlerRootView className="flex-1 items-center justify-center bg-black/50 px-4">
-        <View className="w-full gap-8 rounded-xl bg-surfaceContainerLowest p-4 pt-6">
+        <View className="w-full max-w-xl gap-8 rounded-xl bg-surfaceContainerLowest p-4 pt-6">
           {props.children}
         </View>
       </GestureHandlerRootView>
