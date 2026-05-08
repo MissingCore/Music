@@ -35,6 +35,7 @@ export interface PreferenceStore {
   /** If we should use LTR layout with a RTL language. */
   forceLTR: boolean;
 
+  /** Acts as current scheme if `activeCustomThemeId` is defined. */
   theme: DefaultTheme;
   /** Id of active custom theme. Has higher priority than `theme`. */
   activeCustomThemeId: string | null;
