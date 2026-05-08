@@ -102,13 +102,16 @@ export default function Themes() {
               >
                 {selected ? <Check size={18} color="surface" /> : null}
               </View>
-              <StyledText style={{ color: themeColors.onSurface }}>
+              <StyledText
+                style={{ color: themeColors.onSurface }}
+                className="shrink grow"
+              >
                 {isDefaultTheme(themeId)
                   ? t(`feat.theme.extra.${themeId}`)
                   : themeMap[themeId]!.name}
               </StyledText>
               {!isDefaultTheme(themeId) ? (
-                <View className="ml-auto flex-row items-center">
+                <View className="flex-row items-center">
                   <IconButton
                     Icon={Edit}
                     accessibilityLabel={t("form.edit")}
