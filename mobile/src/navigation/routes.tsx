@@ -53,7 +53,7 @@ import ModifyTrack from "./screens/tracks/ModifyView";
 import Tracks from "./screens/tracks/View";
 import { TrackSheet } from "./screens/tracks/sheets/TrackSheet";
 import { ArtistsSheet } from "./sheets/ArtistsSheet";
-import ThemeScreens from "~/modules/theme/screens";
+import ThemeScreenGroup from "~/modules/theme/screens";
 
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { useTabsByVisibility } from "~/stores/Preference/hooks";
@@ -373,7 +373,7 @@ export const RootStack = createNativeStackNavigator({
         PackageLicense,
       },
     },
-    Theme: ThemeScreens,
+    Theme: ThemeScreenGroup,
   },
 });
 

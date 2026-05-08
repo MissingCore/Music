@@ -2,7 +2,7 @@ import CreateTheme from "./CreateView";
 import ModifyTheme from "./ModifyView";
 import Themes from "./View";
 
-const ThemeScreens = {
+const ThemeScreenGroup = {
   screenOptions: {
     animation: "fade",
   },
@@ -22,4 +22,4 @@ const ThemeScreens = {
   },
 } as const;
 
-export default ThemeScreens;
+export default ThemeScreenGroup;
