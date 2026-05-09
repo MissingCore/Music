@@ -63,7 +63,9 @@ export function useSetup() {
         preferenceStore.getState();
       if (restoreLastPosition) {
         playbackStore.setState({ _restoredTrackKey: activeKey });
-      } else playbackStore.setState({ _hasRestoredPosition: true });
+      } else {
+        playbackStore.setState({ _hasRestoredPosition: true, lastPosition: 0 });
+      }
 
       // Ensure correct AudioBrowser settings.
       AudioBrowser.updateOptions(
