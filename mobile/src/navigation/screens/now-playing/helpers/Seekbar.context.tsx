@@ -17,6 +17,9 @@ export const animatedPositionAtom = atom(makeMutable(0));
 export const isSeekingAtom = atom(false);
 export const renderedPositionAtom = atom(0);
 
+export const remainingSecondsAtom = atom(0);
+export const fromPosAtom = atom(0);
+
 /** Lift shared logic for tracking the current playback progress in a shared value. */
 export function SeekbarContext(props: { children: React.ReactNode }) {
   const inForeground = useInForeground();
@@ -29,11 +32,16 @@ export function SeekbarContext(props: { children: React.ReactNode }) {
   const setRenderedPos = useSetAtom(renderedPositionAtom);
   const pausedPositionRef = useRef(-1);
 
+  const setRemainingSeconds = useSetAtom(remainingSecondsAtom);
+  const setFromPos = useSetAtom(fromPosAtom);
+
   /** Helper to smoothly animate `animatedPosition`. */
   const animateSlider = useCallback(
     (fromPos: number) => {
       if (!activeTrack) return;
       const remainingSeconds = activeTrack.duration - fromPos;
+      setFromPos(fromPos);
+      setRemainingSeconds(remainingSeconds);
       const estimatedAnimationDuration =
         (remainingSeconds * 1000) / playbackSpeed;
 
@@ -42,7 +50,13 @@ export function SeekbarContext(props: { children: React.ReactNode }) {
         easing: Easing.linear,
       });
     },
-    [animatedPosition, playbackSpeed, activeTrack],
+    [
+      animatedPosition,
+      playbackSpeed,
+      activeTrack,
+      setRemainingSeconds,
+      setFromPos,
+    ],
   );
 
   // Initialize `animatedPosition`.

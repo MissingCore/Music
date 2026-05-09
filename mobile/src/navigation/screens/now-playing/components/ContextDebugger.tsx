@@ -6,7 +6,9 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { useSessionStore } from "~/stores/Session/store";
 
 import {
+  fromPosAtom,
   isSeekingAtom,
+  remainingSecondsAtom,
   renderedPositionAtom,
 } from "../helpers/Seekbar.context";
 
@@ -19,6 +21,8 @@ export function ContextDebugger() {
   const isSeeking = useAtomValue(isSeekingAtom);
   const renderedPos = useAtomValue(renderedPositionAtom);
   const [lastPositionOnMount, setLastPositionOnMount] = useState(0);
+  const remainingSeconds = useAtomValue(remainingSecondsAtom);
+  const fromPos = useAtomValue(fromPosAtom);
 
   useEffect(() => {
     setLastPositionOnMount(lastPosition);
@@ -33,6 +37,8 @@ export function ContextDebugger() {
       <StyledText>{`lastPosition: ${lastPosition}`}</StyledText>
       <StyledText>{`renderedPos: ${renderedPos}`}</StyledText>
       <StyledText>{`playbackSpeed: ${playbackSpeed}`}</StyledText>
+      <StyledText>{`fromPos: ${fromPos}`}</StyledText>
+      <StyledText>{`remainingSeconds: ${remainingSeconds}`}</StyledText>
     </View>
   );
 }
