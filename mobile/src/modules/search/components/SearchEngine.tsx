@@ -14,6 +14,7 @@ import { FlatList, useFlatListRef } from "~/components/Base/List";
 import { Button } from "~/components/Form/Button";
 import { TopDownGradient } from "~/components/Gradient";
 import { TEm } from "~/components/Typography/StyledText";
+import { TrackAction } from "~/modules/media/components/Track";
 import type { ColorRole } from "~/modules/theme/constants";
 import { SearchBar } from "./SearchBar";
 import { SearchResult } from "./SearchResult";
@@ -23,7 +24,6 @@ import type {
   SearchCategories,
   SearchResults,
 } from "../types";
-import { TrackAction } from "../../media/components/Track";
 
 type SearchTab = SearchCategories[number] | "all";
 

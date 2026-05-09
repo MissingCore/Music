@@ -7,8 +7,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { queries as q } from "~/data/keyStore";
 import { createLyric } from "~/data/lyric/api";
 
+import { wait } from "~/utils/promise";
 import { ModifyLyricBase } from "./components/ModifyViewBase";
 import { linkTrackToLyric } from "./helpers/linkTrackToLyric";
+import { readLyricFile } from "./helpers/readLyricFile";
 
 type Props = StaticScreenProps<{ linkTo?: string }>;
 
@@ -22,7 +24,20 @@ export default function CreateLyric({
 
   return (
     <ModifyLyricBase
-      onSubmit={async ({ id: _, ...entry }) => {
+      actionConfig={{
+        label: "feat.backup.extra.import",
+        action: async ({ setFields }) => {
+          try {
+            const { name, contents } = await readLyricFile();
+            await wait(100);
+            toast.t("feat.backup.extra.importSuccess");
+            setFields({ name, lyrics: contents });
+          } catch (err) {
+            toast.error((err as Error).message);
+          }
+        },
+      }}
+      onSubmit={async (entry) => {
         try {
           const newLyric = await createLyric(entry);
           if (!newLyric) throw new Error("Lyric not returned after insertion.");

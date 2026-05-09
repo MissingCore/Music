@@ -21,8 +21,8 @@ import { mergeTracks } from "~/data/track/utils";
 
 import { pickDirectory } from "~/lib/file-system";
 import { clearAllQueries } from "~/lib/react-query";
-import { ZSchema } from "../form/utils";
-import { FavoritesPlaylistKey } from "../media/constants";
+import { ZSchema } from "~/modules/form/utils";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 //#region Schemas
 const NullableNonEmptyStringSchema = z.nullish(ZSchema.NonEmptyString);

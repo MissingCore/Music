@@ -5,11 +5,14 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { queries as q } from "~/data/keyStore";
-import { updatePlaylist } from "~/data/playlist/api";
+import { deletePlaylist, updatePlaylist } from "~/data/playlist/api";
 import { usePlaylist } from "~/data/playlist/queries";
 import { Resynchronize } from "~/stores/Playback/actions";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
+
+import { wait } from "~/utils/promise";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import {
   ModifyPlaylistBase,
   usePreloadReferenceData,
@@ -41,6 +44,7 @@ export default function ModifyPlaylist({
     );
   }
 
+  const isFavoritesList = id === FavoritesPlaylistKey;
   const initData = {
     name: id,
     trackIds: playlistQuery.data.tracks.map((t) => t.id),
@@ -48,9 +52,34 @@ export default function ModifyPlaylist({
 
   return (
     <ModifyPlaylistBase
-      mode="edit"
       referenceData={preloadFormDataQuery.data}
       initialData={initData}
+      actionConfig={
+        isFavoritesList
+          ? undefined
+          : {
+              label: "form.delete",
+              action: async () => {
+                await wait(1);
+                try {
+                  await deletePlaylist(id);
+
+                  queryClient.invalidateQueries({ queryKey: q.playlists._def });
+                  queryClient.invalidateQueries({ queryKey: q.tracks._def });
+                  queryClient.invalidateQueries({
+                    queryKey: q.favorites.lists.queryKey,
+                  });
+                  queryClient.invalidateQueries({ queryKey: ["search"] });
+
+                  navigation.goBack();
+                  navigation.goBack();
+                } catch {
+                  toast.tError("err.flow.generic.title");
+                }
+              },
+              danger: true,
+            }
+      }
       onSubmit={async ({ name: playlistName, trackIds }) => {
         // Don't update playlist name if it hasn't changed.
         const newName = id === playlistName ? undefined : playlistName;

@@ -7,9 +7,11 @@ import { PreferenceSetters } from "~/stores/Preference/actions";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
+import { wait } from "~/utils/promise";
 import { ModifyThemeBase } from "../components/ModifyViewBase";
 import type { ThemeEntry } from "../helpers/zod";
 import {
+  deleteCustomTheme,
   revalidateCustomThemes,
   updateCustomTheme,
   useCustomTheme,
@@ -30,15 +32,30 @@ export default function ModifyTheme({
     return <PagePlaceholder isPending={isPending} />;
 
   const isActiveTheme = activeCustomThemeId === themeId;
-
-  const { id, ...rest } = data;
-  const initData = { _id: id, ...rest } as Partial<ThemeEntry>;
+  const { id: _, ...initData } = data;
 
   return (
     <ModifyThemeBase
-      mode="edit"
-      initialData={initData}
-      onSubmit={async ({ _id, _importGen, ...entry }) => {
+      initialData={initData as Partial<ThemeEntry>}
+      actionConfig={
+        isActiveTheme
+          ? undefined
+          : {
+              label: "form.delete",
+              action: async () => {
+                await wait(1);
+                try {
+                  await deleteCustomTheme(themeId);
+                  revalidateCustomThemes();
+                  navigation.goBack();
+                } catch {
+                  toast.tError("err.flow.generic.title");
+                }
+              },
+              danger: true,
+            }
+      }
+      onSubmit={async ({ _importGen, ...entry }) => {
         try {
           await updateCustomTheme(themeId, entry);
           revalidateCustomThemes();

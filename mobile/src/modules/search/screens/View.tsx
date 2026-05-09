@@ -8,8 +8,8 @@ import { PlaybackControls } from "~/stores/Playback/actions";
 
 import { AccentText } from "~/components/Typography/AccentText";
 import { ReservedPlaylists } from "~/modules/media/constants";
-import { SearchEngine } from "~/modules/search/components/SearchEngine";
-import type { SearchCallbacks } from "~/modules/search/types";
+import { SearchEngine } from "../components/SearchEngine";
+import type { SearchCallbacks } from "../types";
 
 /** List of media we want to appear in the search. */
 const searchScope = ["album", "artist", "folder", "playlist", "track"] as const;

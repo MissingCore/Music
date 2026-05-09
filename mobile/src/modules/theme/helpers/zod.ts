@@ -28,7 +28,6 @@ const ColorRolesSchema = Object.fromEntries(
 //#region Form Schema
 export const ThemeEntrySchema = z.object({
   // Additional context:
-  _id: z.nullable(z.string()),
   _importGen: z.nullable(z.number()),
   // Actual form fields:
   name: ZSchema.NonEmptyString,

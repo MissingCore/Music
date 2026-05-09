@@ -1,14 +1,5 @@
 import { toast } from "@missingcore/toast";
-import { useNavigation } from "@react-navigation/native";
-import { useQueryClient } from "@tanstack/react-query";
-import {
-  createContext,
-  memo,
-  use,
-  useCallback,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, memo, use, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { z } from "zod/mini";
@@ -17,9 +8,7 @@ import { Add } from "~/resources/icons/Add";
 import { Cancel } from "~/resources/icons/Cancel";
 import { CheckCircle } from "~/resources/icons/CheckCircle";
 import { DragHandle } from "~/resources/icons/DragHandle";
-import { queries as q } from "~/data/keyStore";
 import { getArtistsString } from "~/data/artist/utils";
-import { deletePlaylist } from "~/data/playlist/api";
 import { usePlaylistsNames } from "~/data/playlist/queries";
 import { sanitizePlaylistName } from "~/data/playlist/utils";
 import type { CommonTrack } from "~/data/types";
@@ -30,23 +19,21 @@ import { AddMusicSheet } from "../sheets/AddMusicSheet";
 
 import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
-import { wait } from "~/utils/promise";
 import {
   DragList,
   useDragListState,
   useInitDrag,
 } from "~/components/Base/DragList";
 import type { ListRenderItemInfo } from "~/components/Base/List";
-import { ExtendedTButton } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { RemovableItem } from "~/components/List/RemovableItem";
-import { ModalTemplate } from "~/components/Modal";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";
-import { readM3UPlaylist } from "~/modules/backup/M3U";
 import { ZSchema } from "~/modules/form/utils";
+import type { FABWorkflowConfig } from "~/modules/form/FormState";
 import {
+  FABWorkflow,
   FormStateProvider,
   useFormStateContext,
 } from "~/modules/form/FormState";
@@ -58,18 +45,11 @@ import type { SearchCallbacks } from "~/modules/search/types";
 
 export function ModifyPlaylistBase(props: {
   onSubmit: (data: PlaylistEntry) => void | Promise<void>;
-  mode?: "create" | "edit";
-  initialData?: Omit<PlaylistEntry, "isFavoritesList">;
+  initialData?: PlaylistEntry;
   referenceData: ReturnType<typeof usePreloadReferenceData>["data"];
+  actionConfig?: FABWorkflowConfig<PlaylistEntry>;
 }) {
   const { offset, floatingContentProps } = useFloatingContent();
-
-  const isFavoritesList = props.initialData?.name === FavoritesPlaylistKey;
-
-  const RenderedWorkflow = useMemo(
-    () => (props.mode === "edit" ? DeleteWorkflow : ImportM3UWorkflow),
-    [props.mode],
-  );
 
   // Exclude `FavoritesPlaylistKey` as we don't return it when fetching all
   // playlists & don't check it in `sanitizePlaylistName`.
@@ -89,11 +69,9 @@ export function ModifyPlaylistBase(props: {
       <FormStateProvider
         schema={PlaylistEntrySchema}
         initData={{
-          isFavoritesList,
           name: props.initialData?.name ?? "",
           trackIds: props.initialData?.trackIds ?? [],
         }}
-        omittedFields={["isFavoritesList"]}
         onSubmit={props.onSubmit}
         onConstraints={({ name }) => {
           // Checks to see if playlist name is unique.
@@ -107,9 +85,17 @@ export function ModifyPlaylistBase(props: {
           return isUnique;
         }}
       >
-        <PlaylistForm bottomOffset={offset} />
-        {!isFavoritesList ? (
-          <RenderedWorkflow floatingContentProps={floatingContentProps} />
+        <PlaylistForm
+          bottomOffset={offset}
+          //? `actionConfig` being undefined implies that this is the Favorites
+          //? playlist as we don't want users to delete it.
+          isFavoritesList={props.actionConfig === undefined}
+        />
+        {props.actionConfig ? (
+          <FABWorkflow
+            {...props.actionConfig}
+            floatingContentProps={floatingContentProps}
+          />
         ) : null}
       </FormStateProvider>
     </CachedTracksContext>
@@ -119,7 +105,10 @@ export function ModifyPlaylistBase(props: {
 //#region Playlist Form
 const FormInput = FormInputImpl<PlaylistEntry>();
 
-function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
+function PlaylistForm(props: {
+  bottomOffset: number;
+  isFavoritesList?: boolean;
+}) {
   const {
     data: { trackIds },
     setFields,
@@ -169,11 +158,12 @@ function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
         onReorder={reorderTrack}
         ListHeaderComponent={
           <ListHeaderComponent
+            isFavoritesList={props.isFavoritesList}
             showSheet={() => addTracksSheetRef.current?.present()}
           />
         }
         ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noTracks" />}
-        contentContainerStyle={{ paddingBottom: bottomOffset }}
+        contentContainerStyle={{ paddingBottom: props.bottomOffset }}
         contentContainerClassName="px-4"
       />
     </>
@@ -223,11 +213,8 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
 //#endregion
 
 //#region Playlist Name Field
-function PlaylistNameField() {
-  const {
-    data: { isFavoritesList },
-    passedConstraints,
-  } = useFormState();
+function PlaylistNameField({ isFavoritesList }: { isFavoritesList?: boolean }) {
+  const { passedConstraints } = useFormState();
 
   const ConstraintIcon = useMemo(
     () => (passedConstraints ? CheckCircle : Cancel),
@@ -260,13 +247,16 @@ function PlaylistNameField() {
 //#endregion
 
 //#region Pre-DragList Fields
-function ListHeaderComponent(props: { showSheet: VoidFunction }) {
+function ListHeaderComponent(props: {
+  isFavoritesList?: boolean;
+  showSheet: VoidFunction;
+}) {
   const { t } = useTranslation();
   const { isSubmitting } = useFormState();
 
   return (
     <View className="gap-6">
-      <PlaylistNameField />
+      <PlaylistNameField isFavoritesList={props.isFavoritesList} />
       <InputLabel
         labelKey="term.tracks"
         RightElement={
@@ -345,102 +335,6 @@ const RenderItem = memo(
 //#endregion
 //#endregion
 
-//#region Import M3U Workflow
-function ImportM3UWorkflow({
-  floatingContentProps,
-}: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
-  const { data, setFields, isSubmitting, setIsSubmitting } = useFormState();
-
-  const onImport = async () => {
-    setIsSubmitting(true);
-    try {
-      const { name, tracks: playlistTracks } = await readM3UPlaylist();
-      toast.t("feat.backup.extra.importSuccess");
-      await wait(100);
-      const updatedFields: Partial<PlaylistEntry> = {
-        trackIds: playlistTracks.map((t) => t.id),
-      };
-      if (!data.name && !!name) updatedFields.name = name;
-      setFields(updatedFields);
-    } catch (err) {
-      toast.error((err as Error).message);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  return (
-    <View {...floatingContentProps}>
-      <ExtendedTButton
-        textKey="feat.playlist.extra.m3uImport"
-        onPress={onImport}
-        disabled={isSubmitting}
-        className="bg-secondary active:bg-secondaryDim"
-        textClassName="text-onSecondary"
-      />
-    </View>
-  );
-}
-//#endregion
-
-//#region Delete Workflow
-function DeleteWorkflow({
-  floatingContentProps,
-}: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
-  const navigation = useNavigation();
-  const queryClient = useQueryClient();
-  const [lastChance, setLastChance] = useState(false);
-  const { data, isSubmitting, setIsSubmitting } = useFormState();
-
-  const onDelete = async () => {
-    setLastChance(false);
-    setIsSubmitting(true);
-    // Slight buffer before running mutation.
-    await wait(1);
-    try {
-      await deletePlaylist(data.name);
-
-      queryClient.invalidateQueries({ queryKey: q.playlists._def });
-      queryClient.invalidateQueries({ queryKey: q.tracks._def });
-      queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
-      queryClient.invalidateQueries({ queryKey: ["search"] });
-
-      navigation.goBack();
-      navigation.goBack();
-    } catch {
-      setLastChance(true);
-      setIsSubmitting(false);
-    }
-  };
-
-  return (
-    <>
-      <View {...floatingContentProps}>
-        <ExtendedTButton
-          textKey="form.delete"
-          onPress={() => setLastChance(true)}
-          disabled={lastChance || isSubmitting}
-          className="bg-error active:bg-errorDim"
-          textClassName="text-onError"
-        />
-      </View>
-      <ModalTemplate
-        visible={lastChance}
-        titleKey="form.delete"
-        topAction={{
-          textKey: "form.confirm",
-          onPress: onDelete,
-        }}
-        bottomAction={{
-          textKey: "form.cancel",
-          onPress: () => setLastChance(false),
-        }}
-      />
-    </>
-  );
-}
-//#endregion
-
 //#region Schema
 const PlaylistNameSchema = z.pipe(
   ZSchema.NonEmptyString,
@@ -460,9 +354,6 @@ const PlaylistNameSchema = z.pipe(
 );
 
 const PlaylistEntrySchema = z.object({
-  // Additional context:
-  isFavoritesList: z.boolean(),
-  // Actual form fields:
   name: PlaylistNameSchema,
   trackIds: z.array(ZSchema.NonEmptyString),
 });
