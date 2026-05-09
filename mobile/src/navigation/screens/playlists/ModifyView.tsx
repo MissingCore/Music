@@ -73,7 +73,9 @@ export default function ModifyPlaylist({
 
                   navigation.goBack();
                   navigation.goBack();
-                } catch {}
+                } catch {
+                  toast.tError("err.flow.generic.title");
+                }
               },
               danger: true,
             }

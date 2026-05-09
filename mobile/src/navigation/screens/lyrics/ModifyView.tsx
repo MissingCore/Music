@@ -26,7 +26,7 @@ export default function ModifyLyric({
   if (isPending || error || !data)
     return <PagePlaceholder isPending={isPending} />;
 
-  const initData = { id: lyricId, name: data.name, lyrics: data.lyrics };
+  const initData = { name: data.name, lyrics: data.lyrics };
 
   return (
     <ModifyLyricBase
@@ -40,7 +40,9 @@ export default function ModifyLyric({
             queryClient.invalidateQueries({ queryKey: q.lyrics._def });
             navigation.goBack();
             navigation.goBack();
-          } catch {}
+          } catch {
+            toast.tError("err.flow.generic.title");
+          }
         },
         danger: true,
       }}

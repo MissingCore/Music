@@ -48,7 +48,9 @@ export default function ModifyTheme({
                   await deleteCustomTheme(themeId);
                   revalidateCustomThemes();
                   navigation.goBack();
-                } catch {}
+                } catch {
+                  toast.tError("err.flow.generic.title");
+                }
               },
               danger: true,
             }
