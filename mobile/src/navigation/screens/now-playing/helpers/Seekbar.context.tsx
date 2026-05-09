@@ -55,21 +55,21 @@ export function SeekbarContext(props: { children: React.ReactNode }) {
   // Synchronize with `lastPosition`.
   useEffect(() => {
     if (isSeeking) return;
-    const priorPos = Number(String(animatedPosition.value));
+    // const priorPos = Number(String(animatedPosition.value));
     animatedPosition.value = lastPosition;
-    // Prevent slight rubberbanding when pausing as `animatedPosition` will be
-    // ahead of whatever is reported by the `PlaybackProgressUpdated` event.
-    if (!isPlaying && priorPos !== 0 && lastPosition !== 0) {
-      //! Prevents an infinite loop caused by `animatedPosition.value` for some
-      //! reason not equaling `priorPos` after setting it in this block.
-      if (lastPosition === pausedPositionRef.current) {
-        animatedPosition.value = pausedPositionRef.current;
-        return;
-      }
-      pausedPositionRef.current = priorPos;
-      setLastPosition(priorPos);
-      return;
-    }
+    // // Prevent slight rubberbanding when pausing as `animatedPosition` will be
+    // // ahead of whatever is reported by the `PlaybackProgressUpdated` event.
+    // if (!isPlaying && priorPos !== 0 && lastPosition !== 0) {
+    //   //! Prevents an infinite loop caused by `animatedPosition.value` for some
+    //   //! reason not equaling `priorPos` after setting it in this block.
+    //   if (lastPosition === pausedPositionRef.current) {
+    //     animatedPosition.value = pausedPositionRef.current;
+    //     return;
+    //   }
+    //   pausedPositionRef.current = priorPos;
+    //   setLastPosition(priorPos);
+    //   return;
+    // }
     // Don't animate slider as it'll cause the app to freeze on return due
     // to pending timers?
     if (!isPlaying || AppState.currentState !== "active") return;
