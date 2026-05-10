@@ -35,29 +35,29 @@ export function SeekbarContext(props: { children: React.ReactNode }) {
   const setRemainingSeconds = useSetAtom(remainingSecondsAtom);
   const setFromPos = useSetAtom(fromPosAtom);
 
-  /** Helper to smoothly animate `animatedPosition`. */
-  const animateSlider = useCallback(
-    (fromPos: number) => {
-      if (!activeTrack) return;
-      const remainingSeconds = activeTrack.duration - fromPos;
-      setFromPos(fromPos);
-      setRemainingSeconds(remainingSeconds);
-      const estimatedAnimationDuration =
-        (remainingSeconds * 1000) / playbackSpeed;
+  // /** Helper to smoothly animate `animatedPosition`. */
+  // const animateSlider = useCallback(
+  //   (fromPos: number) => {
+  //     if (!activeTrack) return;
+  //     const remainingSeconds = activeTrack.duration - fromPos;
+  //     setFromPos(fromPos);
+  //     setRemainingSeconds(remainingSeconds);
+  //     const estimatedAnimationDuration =
+  //       (remainingSeconds * 1000) / playbackSpeed;
 
-      animatedPosition.value = withTiming(activeTrack.duration, {
-        duration: estimatedAnimationDuration,
-        easing: Easing.linear,
-      });
-    },
-    [
-      animatedPosition,
-      playbackSpeed,
-      activeTrack,
-      setRemainingSeconds,
-      setFromPos,
-    ],
-  );
+  //     animatedPosition.value = withTiming(activeTrack.duration, {
+  //       duration: estimatedAnimationDuration,
+  //       easing: Easing.linear,
+  //     });
+  //   },
+  //   [
+  //     animatedPosition,
+  //     playbackSpeed,
+  //     activeTrack,
+  //     setRemainingSeconds,
+  //     setFromPos,
+  //   ],
+  // );
 
   // Initialize `animatedPosition`.
   useEffect(() => {
@@ -87,8 +87,8 @@ export function SeekbarContext(props: { children: React.ReactNode }) {
     // Don't animate slider as it'll cause the app to freeze on return due
     // to pending timers?
     if (!isPlaying || AppState.currentState !== "active") return;
-    animateSlider(lastPosition);
-  }, [animateSlider, animatedPosition, isPlaying, isSeeking, lastPosition]);
+    // animateSlider(lastPosition);
+  }, [animatedPosition, isPlaying, isSeeking, lastPosition]);
 
   // Synchronize JS state with shared value.
   useAnimatedReaction(
