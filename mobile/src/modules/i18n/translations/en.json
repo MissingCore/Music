@@ -155,7 +155,8 @@
       "title": "Tab Order",
       "brief": "Customize the order and visibility of the tabs.",
       "extra": {
-        "setHomeTab": "Open {{- name}} tab on app launch."
+        "setHomeTab": "Open {{- name}} tab on app launch.",
+        "showNavbar": "Show Navbar"
       }
     },
     "minAlbumLength": {

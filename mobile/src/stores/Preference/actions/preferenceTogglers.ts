@@ -20,6 +20,7 @@ type ToggleableKey =
   | "rescanOnLaunch"
   | "repeatOnSkip"
   | "restoreLastPosition"
+  | "showNavbar"
   | "squareArtwork";
 
 export function toggleKey(key: ToggleableKey) {

@@ -19,6 +19,7 @@ export default function AppearanceSettings() {
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
   const theme = usePreferenceStore((s) => s.theme);
   const activeCustomTheme = usePreferenceStore((s) => s.activeCustomTheme);
+  const showNavbar = usePreferenceStore((s) => s.showNavbar);
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const squareArtwork = usePreferenceStore((s) => s.squareArtwork);
   const accentFontSheetRef = useSheetRef();
@@ -52,11 +53,18 @@ export default function AppearanceSettings() {
           />
         </SegmentedList>
 
-        <SegmentedList.Item
-          labelTextKey="feat.tabsOrder.title"
-          supportingText={t("feat.tabsOrder.brief")}
-          onPress={() => tabOrderSheetRef.current?.present()}
-        />
+        <SegmentedList>
+          <SegmentedList.Item
+            labelTextKey="feat.tabsOrder.extra.showNavbar"
+            onPress={PreferenceTogglers.toggleKey("showNavbar")}
+            RightElement={<Switch enabled={showNavbar} />}
+          />
+          <SegmentedList.Item
+            labelTextKey="feat.tabsOrder.title"
+            supportingText={t("feat.tabsOrder.brief")}
+            onPress={() => tabOrderSheetRef.current?.present()}
+          />
+        </SegmentedList>
 
         <SegmentedList>
           <SegmentedList.Item
