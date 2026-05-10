@@ -52,12 +52,13 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     language: "",
     forceLTR: false,
 
+    accentFont: "NType",
+    primaryFont: "Roboto",
     theme: "system",
     activeCustomThemeId: null,
     activeCustomTheme: null,
-    accentFont: "NType",
-    primaryFont: "Roboto",
 
+    showNavbar: true,
     homeTab: "home",
     tabsOrder: [
       "home",
