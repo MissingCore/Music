@@ -1,4 +1,4 @@
-import { useAtomValue, useSetAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { Gesture } from "react-native-gesture-handler";
 import type Animated from "react-native-reanimated";
@@ -8,7 +8,7 @@ import { scheduleOnRN } from "react-native-worklets";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 
-import { animatedPositionAtom, isSeekingAtom } from "./Seekbar.context";
+import { isSeekingAtom, useAnimatedPosition } from "./Seekbar.context";
 
 type Position = { absoluteX: number; absoluteY: number };
 
@@ -16,7 +16,7 @@ export function useVinylSeekbar() {
   const activeTrack = usePlaybackStore((s) => s.activeTrack);
   const duration = activeTrack?.duration ?? 0;
 
-  const timedPosition = useAtomValue(animatedPositionAtom);
+  const timedPosition = useAnimatedPosition();
   const setIsSeeking = useSetAtom(isSeekingAtom);
 
   //#region Layout Calculation + Vinyl Styling

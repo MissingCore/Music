@@ -31,6 +31,7 @@ export function ContextDebugger() {
 
   return (
     <View className="flex-1 justify-center p-8">
+      <StyledText className="mb-4">useSharedValue</StyledText>
       <StyledText>{`isSeeking: ${isSeeking}`}</StyledText>
       <StyledText>{`trackDuration: ${activeTrack?.duration}`}</StyledText>
       <StyledText>{`lastPositionOnMount: ${lastPositionOnMount}`}</StyledText>

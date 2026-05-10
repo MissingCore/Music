@@ -7,9 +7,9 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { Waveform, useWaveformSamples } from "./Waveform";
 import {
-  animatedPositionAtom,
   isSeekingAtom,
   renderedPositionAtom,
+  useAnimatedPosition,
 } from "../helpers/Seekbar.context";
 
 import { OnRTL } from "~/lib/react";
@@ -26,7 +26,7 @@ interface SeekBarProps {
 export function SeekBar(props: SeekBarProps) {
   const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
   const samples = useWaveformSamples(props.id, props.uri);
-  const timedPosition = useAtomValue(animatedPositionAtom);
+  const timedPosition = useAnimatedPosition();
   const setIsSeeking = useSetAtom(isSeekingAtom);
   const renderedPos = useAtomValue(renderedPositionAtom);
 
