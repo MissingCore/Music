@@ -16,12 +16,12 @@ import Animated, {
 import { scheduleOnRN } from "react-native-worklets";
 
 import type { Icon } from "~/resources/icons/type";
-import { useColor } from "~/hooks/useTheme";
 
 import { Colors } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
-import type { AppColor } from "~/lib/style";
 import { cn } from "~/lib/style";
+import type { AppColor } from "~/modules/theme/constants";
+import { useColor } from "~/modules/theme/hooks";
 import { Em } from "../Typography/StyledText";
 
 /**

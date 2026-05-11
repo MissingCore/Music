@@ -18,7 +18,6 @@ import { BackHandler } from "react-native";
 
 import Home from "./screens/HomeView";
 import RecentlyPlayed from "./screens/RecentlyPlayedView";
-import Search from "./screens/SearchView";
 import Album from "./screens/albums/CurrentView";
 import Albums from "./screens/albums/View";
 import Artist from "./screens/artists/CurrentView";
@@ -38,7 +37,6 @@ import ModifyPlaylist from "./screens/playlists/ModifyView";
 import Playlists from "./screens/playlists/View";
 import AppearanceSettings from "./screens/settings/AppearanceSettingsView";
 import AppUpdate from "./screens/settings/AppUpdateView";
-import EqualizerSettings from "./screens/settings/EqualizerSettingsView";
 import ExperimentalSettings from "./screens/settings/ExperimentalSettingsView";
 import HiddenTracks from "./screens/settings/HiddenTracksView";
 import Insights from "./screens/settings/InsightsView";
@@ -53,6 +51,9 @@ import ModifyTrack from "./screens/tracks/ModifyView";
 import Tracks from "./screens/tracks/View";
 import { TrackSheet } from "./screens/tracks/sheets/TrackSheet";
 import { ArtistsSheet } from "./sheets/ArtistsSheet";
+import EqualizerSettings from "~/modules/equalizer/screens/View";
+import Search from "~/modules/search/screens/View";
+import ThemeScreenGroup from "~/modules/theme/screens";
 
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { useTabsByVisibility } from "~/stores/Preference/hooks";
@@ -372,6 +373,7 @@ export const RootStack = createNativeStackNavigator({
         PackageLicense,
       },
     },
+    Theme: ThemeScreenGroup,
   },
 });
 

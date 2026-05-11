@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -12,8 +12,10 @@ import { SeparatorsSheet } from "./sheets/SeparatorsSheet";
 
 import { mutateGuard } from "~/lib/react-query";
 import { SegmentedList } from "~/components/List/Segmented";
+import { Modal, ModalActions } from "~/components/Modal";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import { TStyledText } from "~/components/Typography/StyledText";
 import { Switch } from "~/components/UI/Switch";
 
 export default function ScanningSettings() {
@@ -41,18 +43,67 @@ export default function ScanningSettings() {
           />
         </SegmentedList>
 
-        <SegmentedList.Item
-          labelTextKey="feat.rescanOnLaunch.title"
-          supportingText={t("feat.rescanOnLaunch.brief")}
-          onPress={PreferenceTogglers.toggleKey("rescanOnLaunch")}
-          RightElement={<Switch enabled={rescanOnLaunch} />}
-        />
+        <SegmentedList>
+          <SegmentedList.Item
+            labelTextKey="feat.rescanOnLaunch.title"
+            supportingText={t("feat.rescanOnLaunch.brief")}
+            onPress={PreferenceTogglers.toggleKey("rescanOnLaunch")}
+            RightElement={<Switch enabled={rescanOnLaunch} />}
+          />
+          <OptimizedImageSavingSetting />
+        </SegmentedList>
 
         <ScanningConfigurations.Settings {...sheetRefs} />
       </ListLayout>
     </>
   );
 }
+
+//#region Optimized Image Saving
+export function OptimizedImageSavingSetting() {
+  const { t } = useTranslation();
+  const optimizedImageSave = usePreferenceStore((s) => s.optimizedImageSave);
+  const [visible, setVisible] = useState(false);
+
+  return (
+    <>
+      <SegmentedList.Item
+        labelTextKey="feat.optimizedImageSave.title"
+        supportingText={t("feat.optimizedImageSave.brief")}
+        onPress={
+          optimizedImageSave
+            ? () => setVisible(true)
+            : PreferenceTogglers.toggleKey("optimizedImageSave")
+        }
+        RightElement={<Switch enabled={optimizedImageSave} />}
+      />
+      <Modal visible={visible}>
+        <TStyledText
+          textKey="feat.optimizedImageSave.description.line1"
+          style={{ fontSize: 18 }}
+        />
+        <TStyledText
+          textKey="feat.optimizedImageSave.description.line2"
+          style={{ fontSize: 18 }}
+        />
+        <ModalActions
+          topAction={{
+            textKey: "form.confirm",
+            onPress: () => {
+              PreferenceTogglers.toggleKey("optimizedImageSave")();
+              setVisible(false);
+            },
+          }}
+          bottomAction={{
+            textKey: "form.cancel",
+            onPress: () => setVisible(false),
+          }}
+        />
+      </Modal>
+    </>
+  );
+}
+//#endregion
 
 //#region Scanning Configurations
 type ScanningSheetRefs = {

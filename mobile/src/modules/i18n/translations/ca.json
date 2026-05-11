@@ -7,8 +7,8 @@
     "artists": "Artistes",
     "folder": "Carpeta",
     "folders": "Carpetes",
-    "genre": null,
-    "genres": null,
+    "genre": "Gènere",
+    "genres": "Gèneres",
     "playlist": "Llista de reproducció",
     "playlists": "Llistes de reproducció",
     "track": "Pista",
@@ -25,7 +25,7 @@
     "unFavorite": "Treu de preferides",
     "favoriteTracks": "Pistes preferides",
     "all": "Tot",
-    "more": null,
+    "more": "Més",
     "home": "Inici",
     "settings": "Ajusts",
     "upcoming": "Pròxima",
@@ -33,19 +33,19 @@
     "disc": "Disc {{count}}"
   },
   "template": {
-    "entryAdd": null,
+    "entryAdd": "Afegir {{- name}}.",
     "entryAdded": "`{{- name}}` afegit.",
     "entryRemove": "Suprimeix `{{- name}}`.",
     "entryRemoved": "`{{- name}}` suprimit.",
-    "entryManage": null,
+    "entryManage": "Gestionar {{- name}}",
     "entrySeeMore": "Veure més sobre `{{- name}}`.",
     "notFound": "`{{- name}}` no existeix.",
-    "entryMove": null,
+    "entryMove": "Moure {{- name}}",
     "entryShow": "Mostra `{{- name}}`",
     "entryHide": "Amaga `{{- name}}`",
     "entryEnable": "Activar `{{- name}}`",
     "entryDisable": "Desactivar `{{- name}}`",
-    "noContentFound": null
+    "noContentFound": "No s'ha trobat {{- name}}."
   },
   "plural": {
     "entry_one": "{{count}} entrada",
@@ -63,11 +63,11 @@
     "unsaved": "Poder tens canvis sense desar.",
     "stay": "Queda't",
     "leave": "Eixir",
-    "create": null,
-    "delete": null,
-    "edit": null,
+    "create": "Crear",
+    "delete": "Eliminar",
+    "edit": "Editar",
     "clear": "Netejar",
-    "reset": null,
+    "reset": "Reiniciar",
     "validation": {
       "unique": "Únic"
     }
@@ -93,11 +93,11 @@
       "noResults": "Cap resultat trobat.",
       "noAlbums": "No s'ha trobat cap àlbum.",
       "noArtists": "No s'ha trobat cap artista.",
-      "noGenres": null,
+      "noGenres": "No s'han trobat gèneres.",
       "noPlaylists": "No s'ha trobat cap llista.",
       "noTracks": "No s'han trobat pistes.",
-      "noHiddenTracks": null,
-      "noLyrics": null
+      "noHiddenTracks": "No s'han trobat cançons ocultes.",
+      "noLyrics": "No s'han trobat lletres."
     }
   },
   "feat": {
@@ -108,8 +108,8 @@
         "downloadAPK": "Descarrega l'última APK",
         "updateGoogle": "Actualitza vía Play Store",
         "version": "Versió",
-        "checkUpdates": null,
-        "rcNotification": null
+        "checkUpdates": "Buscar actualitzacions",
+        "rcNotification": "Notificació de versió preliminar"
       }
     },
     "appearance": {
@@ -133,16 +133,16 @@
       "title": "Ordre de les pestanyes",
       "brief": "Personalitza l'ordre i visibilitat de les pestanyes.",
       "extra": {
-        "setHomeTab": null
+        "setHomeTab": "Obrir la pestanya {{- name}} a l'inici."
       }
     },
     "minAlbumLength": {
-      "title": null
+      "title": "Filtrar per mida d'àlbum"
     },
     "miniplayerGestures": {
-      "title": null,
+      "title": "Gestos del mini reproductor",
       "extra": {
-        "dragClearPlayback": null
+        "dragClearPlayback": "Lliscar cap a baix per detenir la reproducció"
       }
     },
     "nowPlayingDesign": {
@@ -153,8 +153,8 @@
       }
     },
     "quickScroll": {
-      "title": null,
-      "brief": null
+      "title": "Desplaçament ràpid",
+      "brief": "Mostra una barra de desplaçament estil Nothing quan sigui compatible."
     },
     "language": {
       "title": "Llengua",

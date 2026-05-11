@@ -7,6 +7,9 @@ import { queries as q } from "~/data/keyStore";
 import { createPlaylist } from "~/data/playlist/api";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
+
+import { wait } from "~/utils/promise";
+import { readM3UPlaylist } from "~/modules/backup/M3U";
 import {
   ModifyPlaylistBase,
   usePreloadReferenceData,
@@ -21,6 +24,22 @@ export default function CreatePlaylist() {
   return (
     <ModifyPlaylistBase
       referenceData={data}
+      actionConfig={{
+        label: "feat.playlist.extra.m3uImport",
+        action: async ({ setFields }) => {
+          try {
+            const { name, tracks: playlistTracks } = await readM3UPlaylist();
+            await wait(100);
+            toast.t("feat.backup.extra.importSuccess");
+            setFields((prev) => ({
+              name: name || prev.name,
+              trackIds: playlistTracks.map((t) => t.id),
+            }));
+          } catch (err) {
+            toast.error((err as Error).message);
+          }
+        },
+      }}
       onSubmit={async ({ name, trackIds }) => {
         try {
           await createPlaylist({

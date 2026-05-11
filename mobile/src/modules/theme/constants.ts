@@ -1,15 +1,68 @@
 import { isSystemDarkMode } from "@missingcore/native-utils";
-import { useMemo } from "react";
-import { useColorScheme } from "react-native";
-
-import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { Colors } from "~/constants/Styles";
-import type { AppColor } from "~/lib/style";
-import { isHexColor } from "~/lib/style";
 
-//#region Theme
-export const FixedTheme = {
+//#region Color Scheme
+export const ColorSchemeOptions = ["light", "dark"] as const;
+
+export type ColorScheme = (typeof ColorSchemeOptions)[number];
+//#endregion
+
+//#region Color Roles
+export const ColorRoleOptions = [
+  "primary",
+  "primaryDim",
+  "onPrimary",
+  "onPrimaryVariant",
+  "secondary",
+  "secondaryDim",
+  "onSecondary",
+  "onSecondaryVariant",
+  "error",
+  "errorDim",
+  "onError",
+  "onErrorVariant",
+  "surfaceDim",
+  "surface",
+  "surfaceBright",
+  "surfaceContainerLowest",
+  "surfaceContainerLow",
+  "surfaceContainer",
+  "surfaceContainerHigh",
+  "surfaceContainerHighest",
+  "onSurface",
+  "onSurfaceVariant",
+  "outline",
+  "outlineVariant",
+  "inverseSurface",
+  "inverseOnSurface",
+] as const;
+
+export type ColorRole = (typeof ColorRoleOptions)[number];
+export type HexColor = `#${string}`;
+export type AppColor = ColorRole | HexColor;
+/** List of colors which also has a `Variant` color. */
+export type VariantColor =
+  Extract<ColorRole, `${string}Variant`> extends `${infer Prefix}Variant`
+    ? Prefix
+    : never;
+
+export type ThemeColors = Record<ColorRole, HexColor>;
+//#endregion
+
+//#region Default Themes
+export const DefaultThemeOptions = ["light", "dark", "system"] as const;
+
+export type DefaultTheme = (typeof DefaultThemeOptions)[number];
+export type ResolvedTheme = ThemeColors & { scheme: ColorScheme };
+export type CustomTheme = {
+  id: string;
+  name: string;
+  scheme: ColorScheme;
+  colors: ThemeColors;
+};
+
+const DefaultThemeBase = {
   primary: Colors.nRed50,
   onPrimary: Colors.neutral100,
   onPrimaryVariant: Colors.neutral90,
@@ -26,7 +79,7 @@ export const FixedTheme = {
 export const Themes = {
   light: {
     scheme: "light",
-    ...FixedTheme,
+    ...DefaultThemeBase,
     primaryDim: Colors.nRed45,
     secondaryDim: Colors.yellow47,
     errorDim: Colors.red37,
@@ -51,7 +104,7 @@ export const Themes = {
   },
   dark: {
     scheme: "dark",
-    ...FixedTheme,
+    ...DefaultThemeBase,
     primaryDim: Colors.nRed40,
     secondaryDim: Colors.yellow45,
     errorDim: Colors.red35,
@@ -74,39 +127,8 @@ export const Themes = {
     inverseSurface: Colors.neutral100,
     inverseOnSurface: Colors.neutral0,
   },
-} as const;
+} as const satisfies Record<ColorScheme, ResolvedTheme>;
 
 /** Returns theme colors based on the system theme on app launch. */
 export const SystemTheme = Themes[isSystemDarkMode ? "dark" : "light"];
-//#endregion
-
-//#region Hooks
-/** Returns if we're using light or dark theme. */
-export function useCurrentTheme() {
-  const deviceTheme = useColorScheme();
-  const savedTheme = usePreferenceStore((s) => s.theme);
-
-  //? Restore the old behavior where we got `null` instead of `unspecified`.
-  const rawTheme = deviceTheme === "unspecified" ? null : deviceTheme;
-  return savedTheme === "system" ? (rawTheme ?? "light") : savedTheme;
-}
-
-/** Returns the dynamic colors determined by the current theme. */
-export function useTheme() {
-  const currentTheme = useCurrentTheme();
-  return useMemo(() => Themes[currentTheme], [currentTheme]);
-}
-
-/** Returns a singular color. */
-export function useColor(
-  wantedColor: AppColor | undefined,
-  fallback: AppColor,
-) {
-  const theme = useTheme();
-
-  let color = isHexColor(fallback) ? fallback : theme[fallback];
-  if (wantedColor)
-    color = isHexColor(wantedColor) ? wantedColor : theme[wantedColor];
-  return color;
-}
 //#endregion

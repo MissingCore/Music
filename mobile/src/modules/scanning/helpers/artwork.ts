@@ -11,6 +11,7 @@ import { albums, tracks } from "~/db/schema";
 import { getAlbumsSummary, updateAlbum } from "~/data/album/api";
 import { getTracks, updateTrack } from "~/data/track/api";
 import { structuredTracksView } from "~/data/views";
+import { preferenceStore } from "~/stores/Preference/store";
 import { scanningProgressStore } from "../ScanningProgress";
 
 import { ImageDirectory } from "~/lib/file-system";
@@ -26,19 +27,22 @@ type PartialTrack = {
 
 /** Save artwork for albums & tracks. */
 export async function findAndSaveArtwork() {
+  const { optimizedImageSave } = preferenceStore.getState();
   const stopwatch = new Stopwatch();
 
   // Ensure we don't unnecessarily search for artwork.
-  const albumsWithCovers = await getAlbumsSummary(false, [
-    isNotNull(albums.artwork),
-  ]);
-  const idsWithCover = albumsWithCovers.map(({ id }) => id);
-  await db
-    .update(tracks)
-    .set({ fetchedArt: true })
-    .where(
-      or(inArray(tracks.albumId, idsWithCover), isNotNull(tracks.artwork)),
-    );
+  if (optimizedImageSave) {
+    const albumsWithCovers = await getAlbumsSummary(false, [
+      isNotNull(albums.artwork),
+    ]);
+    const idsWithCover = albumsWithCovers.map(({ id }) => id);
+    await db
+      .update(tracks)
+      .set({ fetchedArt: true })
+      .where(
+        or(inArray(tracks.albumId, idsWithCover), isNotNull(tracks.artwork)),
+      );
+  }
 
   const uncheckedTracks = await getTracks([
     eq(structuredTracksView.fetchedArt, false),
@@ -67,11 +71,13 @@ export async function findAndSaveArtwork() {
   for (const [albumId, values] of Object.entries(albumTracks)) {
     await saveSinglesArtwork(
       values,
-      async ({ artworkUri }) => {
-        await updateAlbum(albumId, { embeddedArtwork: artworkUri });
+      async ({ trackId, artworkUri }) => {
+        const data = { embeddedArtwork: artworkUri };
+        await updateAlbum(albumId, data);
+        if (!optimizedImageSave) await updateTrack(trackId, data);
         newArtworkCount++;
       },
-      { endEarly: true },
+      { endEarly: optimizedImageSave },
     );
     // Prevent excessive `setState` on Zustand store which may cause an
     // "Warning: Maximum update depth exceeded.".

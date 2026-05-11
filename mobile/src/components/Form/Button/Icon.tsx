@@ -2,10 +2,10 @@ import { memo } from "react";
 import { View } from "react-native";
 
 import type { Icon } from "~/resources/icons/type";
-import { useTheme } from "~/hooks/useTheme";
 
-import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
+import type { AppColor } from "~/modules/theme/constants";
+import { useColor } from "~/modules/theme/hooks";
 import type { PressProps } from "./types";
 import { Pressable } from "../../Base/Pressable";
 
@@ -26,7 +26,8 @@ type IconButtonProps = PressProps & {
   /** Use the `alternative` variant on the icon if available. */
   alternative?: boolean;
   className?: string;
-  _iconColor?: ColorRole;
+  _iconColor?: AppColor;
+  _rippleColor?: AppColor;
 };
 
 //#region Default
@@ -35,9 +36,10 @@ export const IconButton = memo(function IconButton({
   size = "sm",
   alternative,
   _iconColor,
+  _rippleColor,
   ...props
 }: IconButtonProps) {
-  const { surfaceContainerHigh } = useTheme();
+  const rippleColor = useColor(_rippleColor, "surfaceContainerHigh");
   const { buttonSize, iconSize } = ButtonConfig[size];
   return (
     <Pressable
@@ -51,7 +53,7 @@ export const IconButton = memo(function IconButton({
       {({ pressed }) => (
         <View
           collapsable={false} // Prevents view flattening.
-          style={[pressed && { backgroundColor: `${surfaceContainerHigh}80` }]}
+          style={[pressed && { backgroundColor: `${rippleColor}80` }]}
           className="rounded-full p-1.5"
         >
           <Icon size={iconSize} color={_iconColor} alternative={alternative} />

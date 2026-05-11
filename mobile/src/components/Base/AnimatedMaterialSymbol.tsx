@@ -2,7 +2,8 @@ import Animated from "react-native-reanimated";
 import { Path, Svg } from "react-native-svg";
 
 import type { Icon } from "~/resources/icons/type";
-import { useColor } from "~/hooks/useTheme";
+
+import { useColor } from "~/modules/theme/hooks";
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 

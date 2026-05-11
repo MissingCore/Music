@@ -4,11 +4,12 @@ import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { queries as q } from "~/data/keyStore";
-import { updateLyric } from "~/data/lyric/api";
+import { deleteLyric, updateLyric } from "~/data/lyric/api";
 import { useLyric } from "~/data/lyric/queries";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
+import { wait } from "~/utils/promise";
 import { ModifyLyricBase } from "./components/ModifyViewBase";
 
 type Props = StaticScreenProps<{ id: string }>;
@@ -25,16 +26,29 @@ export default function ModifyLyric({
   if (isPending || error || !data)
     return <PagePlaceholder isPending={isPending} />;
 
-  const initData = { id: lyricId, name: data.name, lyrics: data.lyrics };
+  const initData = { name: data.name, lyrics: data.lyrics };
 
   return (
     <ModifyLyricBase
-      mode="edit"
       initialData={initData}
-      onSubmit={async ({ id: _, ...entry }) => {
+      actionConfig={{
+        label: "form.delete",
+        action: async () => {
+          await wait(1);
+          try {
+            await deleteLyric(lyricId);
+            queryClient.invalidateQueries({ queryKey: q.lyrics._def });
+            navigation.goBack();
+            navigation.goBack();
+          } catch {
+            toast.tError("err.flow.generic.title");
+          }
+        },
+        danger: true,
+      }}
+      onSubmit={async (entry) => {
         try {
           await updateLyric(lyricId, entry);
-
           queryClient.resetQueries({ queryKey: q.lyrics._def });
           navigation.goBack();
         } catch {

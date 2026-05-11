@@ -12,11 +12,11 @@ import { useEffect, useState } from "react";
 import { View } from "react-native";
 
 import { useInForeground } from "~/stores/ListenerState";
-import { useColor } from "~/hooks/useTheme";
 
 import { OnRTLWorklet } from "~/lib/react";
-import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
+import type { ColorRole } from "~/modules/theme/constants";
+import { useColor } from "~/modules/theme/hooks";
 import { ScrollView } from "./Base/ScrollView";
 
 /** Used to progressively display long content. */

@@ -5,7 +5,9 @@ import { useStore } from "zustand";
 import i18next from "~/modules/i18n";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
+import { throwIfNoResults } from "~/lib/drizzle";
 import { createPersistedStore } from "~/lib/zustand";
+import { getCustomTheme, resolveCustomTheme } from "~/modules/theme/utils";
 import type { PreferenceStore } from "./constants";
 import { OmittedFields } from "./constants";
 import { resolveLanguageConfigs } from "./utils";
@@ -15,7 +17,22 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     _hasHydrated: false,
     _init: async (state) => {
       // Set app theme on initialization.
-      Uniwind.setTheme(state.theme);
+      try {
+        if (state.activeCustomThemeId) {
+          const activeCustomTheme = await throwIfNoResults(
+            getCustomTheme(state.activeCustomThemeId),
+          );
+          resolveCustomTheme(activeCustomTheme);
+          set({ activeCustomTheme });
+        } else {
+          Uniwind.setTheme(state.theme);
+        }
+      } catch {
+        // Reset custom theme if it no longer exists in the database.
+        Uniwind.setTheme(state.theme);
+        set({ activeCustomThemeId: null, activeCustomTheme: null });
+      }
+
       // Try to use device language if no language is specified.
       await resolveLanguageConfigs(
         state.language || getLocales()[0]?.languageTag || "en",
@@ -35,10 +52,13 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     language: "",
     forceLTR: false,
 
-    theme: "system",
     accentFont: "NType",
     primaryFont: "Roboto",
+    theme: "system",
+    activeCustomThemeId: null,
+    activeCustomTheme: null,
 
+    showNavbar: true,
     homeTab: "home",
     tabsOrder: [
       "home",
@@ -76,6 +96,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     quickFavorite: false,
 
     rescanOnLaunch: true,
+    optimizedImageSave: true,
 
     listAllow: [],
     listBlock: [],

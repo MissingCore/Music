@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import type { ParseKeys } from "i18next";
 import type { Dispatch, SetStateAction } from "react";
 import {
   createContext,
@@ -10,16 +11,18 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { BackHandler } from "react-native";
+import { BackHandler, View } from "react-native";
 import type { ZodMiniObject } from "zod/mini";
 import { z } from "zod/mini";
 
 import { Check } from "~/resources/icons/Check";
 
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
+import type { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 
 import { wait } from "~/utils/promise";
 import { isNumber, isString } from "~/utils/validation";
+import { ExtendedTButton } from "~/components/Form/Button";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { ModalTemplate } from "~/components/Modal";
 
@@ -153,6 +156,65 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
       {props.children}
       <UnsavedChangesPrompt />
     </FormStateContext>
+  );
+}
+//#endregion
+
+//#region FAB Workflow
+export type FABWorkflowConfig<TData extends Record<string, any>> = {
+  label: ParseKeys;
+  action: (
+    context: Pick<FormState<TData>, "setFields">,
+  ) => void | Promise<void>;
+  /** If the action that will be done is dangerous/destructive. Will require confirmation to fire `action`. */
+  danger?: boolean;
+};
+
+/** Additional action that can be displayed in the form. */
+export function FABWorkflow(
+  props: FABWorkflowConfig<any> &
+    Omit<ReturnType<typeof useFloatingContent>, "offset">,
+) {
+  const [lastChance, setLastChance] = useState(false);
+  const { setFields, isSubmitting, setIsSubmitting } = useFormStateContext();
+
+  const triggerAction = async () => {
+    if (props.danger) setLastChance(false);
+    setIsSubmitting(true);
+    await props.action({ setFields });
+    setIsSubmitting(false);
+  };
+
+  return (
+    <>
+      <View {...props.floatingContentProps}>
+        <ExtendedTButton
+          textKey={props.label}
+          onPress={() => (props.danger ? setLastChance(true) : triggerAction())}
+          disabled={lastChance || isSubmitting}
+          className={
+            props.danger
+              ? "bg-error active:bg-errorDim"
+              : "bg-secondary active:bg-secondaryDim"
+          }
+          textClassName={props.danger ? "text-onError" : "text-onSecondary"}
+        />
+      </View>
+      {props.danger ? (
+        <ModalTemplate
+          visible={lastChance}
+          titleKey={props.label}
+          topAction={{
+            textKey: "form.confirm",
+            onPress: triggerAction,
+          }}
+          bottomAction={{
+            textKey: "form.cancel",
+            onPress: () => setLastChance(false),
+          }}
+        />
+      ) : null}
+    </>
   );
 }
 //#endregion

@@ -16,10 +16,12 @@ type ToggleableKey =
   | "quickFavorite"
   | "quickScroll"
   | "miniplayerGestures"
+  | "optimizedImageSave"
   | "rcNotification"
   | "rescanOnLaunch"
   | "repeatOnSkip"
   | "restoreLastPosition"
+  | "showNavbar"
   | "squareArtwork";
 
 export function toggleKey(key: ToggleableKey) {

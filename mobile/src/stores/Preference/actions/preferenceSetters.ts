@@ -1,5 +1,9 @@
+import { toast } from "@missingcore/toast";
+import { Uniwind } from "uniwind";
+
+import i18next from "~/modules/i18n";
 import { preferenceStore } from "../store";
-import type { Font, NowPlayingDesign, Theme } from "../constants";
+import type { Font, NowPlayingDesign } from "../constants";
 import {
   clampMinAlbumLength,
   clampPlaybackDelay,
@@ -9,6 +13,12 @@ import { playbackStore } from "../../Playback/store";
 import { getSourceName } from "../../Playback/utils";
 
 import { clearAllQueries } from "~/lib/react-query";
+import type { DefaultTheme } from "~/modules/theme/constants";
+import {
+  getCustomTheme,
+  isDefaultTheme,
+  resolveCustomTheme,
+} from "~/modules/theme/utils";
 
 export function setAccentFont(accentFont: Font) {
   preferenceStore.setState({ accentFont });
@@ -44,8 +54,29 @@ export function setPrimaryFont(primaryFont: Font) {
   preferenceStore.setState({ primaryFont });
 }
 
-export function setTheme(theme: Theme) {
-  preferenceStore.setState({ theme });
+export async function setTheme(theme: DefaultTheme | (string & {})) {
+  if (isDefaultTheme(theme)) {
+    Uniwind.setTheme(theme);
+    preferenceStore.setState({
+      theme,
+      activeCustomThemeId: null,
+      activeCustomTheme: null,
+    });
+  } else {
+    const customTheme = await getCustomTheme(theme);
+    if (!customTheme) {
+      toast.error(
+        i18next.t("template.notFound", { name: i18next.t("feat.theme.title") }),
+      );
+      return;
+    }
+    resolveCustomTheme(customTheme);
+    preferenceStore.setState({
+      theme: customTheme.scheme,
+      activeCustomThemeId: customTheme.id,
+      activeCustomTheme: customTheme,
+    });
+  }
 }
 
 export function updateMinAlbumLengthByDelta(delta: number) {

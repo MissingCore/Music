@@ -75,6 +75,7 @@
     "unsaved": "You may have unsaved changes.",
     "stay": "Stay",
     "leave": "Leave",
+    "close": "Close",
 
     "create": "Create",
     "delete": "Delete",
@@ -154,7 +155,8 @@
       "title": "Tab Order",
       "brief": "Customize the order and visibility of the tabs.",
       "extra": {
-        "setHomeTab": "Open {{- name}} tab on app launch."
+        "setHomeTab": "Open {{- name}} tab on app launch.",
+        "showNavbar": "Show Navbar"
       }
     },
     "minAlbumLength": {
@@ -262,6 +264,14 @@
     "deepRescan": {
       "title": "Deep Rescan",
       "brief": "Ignores any skip measures that speeds up the normal rescan feature."
+    },
+    "optimizedImageSave": {
+      "title": "Optimized Image Saving",
+      "brief": "Tracks share the same artwork as their album.",
+      "description": {
+        "line1": "Disabling this feature will cause the app to use substantially more storage and may slow down scanning, as artwork is saved locally.",
+        "line2": "Requires using the Deep Rescan feature to apply changes."
+      }
     },
     "rescanOnLaunch": {
       "title": "Rescan on Launch",

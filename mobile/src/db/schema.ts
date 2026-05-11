@@ -13,6 +13,9 @@ import {
 import type { Prettify } from "~/utils/types";
 import type { PlayFromSource } from "~/stores/Playback/types";
 
+//? Need to export all schemas from a single file.
+export * from "~/modules/theme/schema";
+
 //#region Artist
 export const artists = sqliteTable("artists", {
   name: text().primaryKey(),
@@ -100,7 +103,7 @@ export const tracks = sqliteTable("tracks", {
   bitrate: integer(),
   sampleRate: integer(),
   size: integer().notNull(),
-  uri: text().notNull(),
+  uri: text().notNull().unique(),
   modificationTime: integer().notNull(),
   discoverTime: integer().notNull().default(-1),
   // Artwork

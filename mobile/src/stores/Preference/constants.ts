@@ -1,10 +1,5 @@
+import type { CustomTheme, DefaultTheme } from "~/modules/theme/constants";
 import type { Tab } from "./types";
-
-//#region Theme
-export const ThemeOptions = ["light", "dark", "system"] as const;
-
-export type Theme = (typeof ThemeOptions)[number];
-//endregion
 
 //#region Font
 export const FontOptions = [
@@ -40,12 +35,19 @@ export interface PreferenceStore {
   /** If we should use LTR layout with a RTL language. */
   forceLTR: boolean;
 
-  theme: Theme;
   /** Font used for some accent text (ie: major headings). */
   accentFont: Font;
   /** Font used for text. */
   primaryFont: Font;
+  /** Acts as current scheme if `activeCustomThemeId` is defined. */
+  theme: DefaultTheme;
+  /** Id of active custom theme. Has higher priority than `theme`. */
+  activeCustomThemeId: string | null;
+  /** Values of active custom theme. */
+  activeCustomTheme: CustomTheme | null;
 
+  /** If the navbar will be displayed after clicking the hamburger menu. */
+  showNavbar: boolean;
   /** Tab that we open up to on app launch. */
   homeTab: Tab;
   /** Order of tabs on the Home screen. */
@@ -83,6 +85,8 @@ export interface PreferenceStore {
 
   /** If we should rescan the library on app launch. */
   rescanOnLaunch: boolean;
+  /** If tracks use the artwork from their album. */
+  optimizedImageSave: boolean;
 
   /** Directories we'll limit to when looking for tracks. */
   listAllow: string[];
@@ -111,5 +115,6 @@ export interface PreferenceStore {
 export const OmittedFields: string[] = [
   "_hasHydrated",
   "_init",
+  "activeCustomTheme",
 ] satisfies Array<keyof PreferenceStore>;
 //#endregion

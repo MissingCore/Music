@@ -12,10 +12,10 @@ import {
 import "../../global.css";
 import { ListenerStateStoreProvider } from "~/stores/ListenerState";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { useCurrentTheme, useTheme } from "~/hooks/useTheme";
 
 import { queryClient } from "~/lib/react-query";
 import { GestureHandlerRootView } from "~/components/Base/GestureHandlerRootView";
+import { useCurrentScheme, useTheme } from "~/modules/theme/hooks";
 
 /** All providers used by the app. */
 export function AppProvider(props: { children: React.ReactNode }) {
@@ -37,7 +37,7 @@ export function AppProvider(props: { children: React.ReactNode }) {
 
 //#region Edge-To-Edge
 function SystemBars() {
-  const currentTheme = useCurrentTheme();
+  const currentTheme = useCurrentScheme();
   const iconColor = currentTheme === "light" ? "dark" : "light";
   return (
     <>
