@@ -52,6 +52,7 @@
 ## [Català] Catalan
 
 - [@T-K-Y-M](https://www.github.com/T-K-Y-M)
+- [@MiquelRoca08](https://github.com/MiquelRoca08)
 
 ## [हिंदी] Hindi
 
