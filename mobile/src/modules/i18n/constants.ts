@@ -18,7 +18,10 @@ export const LANGUAGES = [
   {
     code: "ca",
     name: "Català",
-    translators: [{ display: "JPQ", link: "https://www.github.com/T-K-Y-M" }],
+    translators: [
+      { display: "JPQ", link: "https://www.github.com/T-K-Y-M" },
+      { display: "Miquel Roca", link: "https://github.com/MiquelRoca08" },
+    ],
   },
   {
     code: "da",

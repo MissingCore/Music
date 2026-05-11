@@ -33,7 +33,7 @@
     "disc": "دیسک {{count}}"
   },
   "template": {
-    "entryAdd": "`{{- name}}` اضافه شد.",
+    "entryAdd": "`{{- name}}` اضافه کردن.",
     "entryAdded": "`{{- name}}` اضافه شد.",
     "entryRemove": "حذف `{{- name}}`.",
     "entryRemoved": "`{{- name}}` حذف شد.",
@@ -45,7 +45,7 @@
     "entryHide": "مخفی کردن `{{- name}}`",
     "entryEnable": "فعال کردن `{{- name}}`",
     "entryDisable": "غیرفعال کردن `{{- name}}`",
-    "noContentFound": "محتوا یافت نشد"
+    "noContentFound": "{{- name}} یافت نشد."
   },
   "plural": {
     "entry_one": "{{count}} مورد",
