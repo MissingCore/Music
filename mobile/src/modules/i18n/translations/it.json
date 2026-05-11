@@ -63,6 +63,7 @@
     "unsaved": "Potresti avere delle modifiche non salvate.",
     "stay": "Aspetta",
     "leave": "Esci",
+    "close": null,
     "create": null,
     "delete": null,
     "edit": null,
@@ -133,7 +134,8 @@
       "title": "Ordine schede $t(term.home)",
       "brief": "Personalizza l'ordine e la visibilità delle schede.",
       "extra": {
-        "setHomeTab": null
+        "setHomeTab": null,
+        "showNavbar": null
       }
     },
     "minAlbumLength": {
@@ -241,6 +243,14 @@
     "deepRescan": {
       "title": "Scansione profonda",
       "brief": "Ignora qualsiasi funzionalità che rende più veloce le scansioni successive alla prima."
+    },
+    "optimizedImageSave": {
+      "title": null,
+      "brief": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
     },
     "rescanOnLaunch": {
       "title": null,

@@ -63,6 +63,7 @@
     "unsaved": "Möglicherweise hast du noch nicht gespeicherte Änderungen.",
     "stay": "Bleiben",
     "leave": "Verlassen",
+    "close": null,
     "create": "Erstellen",
     "delete": "Löschen",
     "edit": "Bearbeiten",
@@ -133,7 +134,8 @@
       "title": "Tab Reihenfolge",
       "brief": "Reihenfolge und Sichtbarkeit der Tabs ändern.",
       "extra": {
-        "setHomeTab": "{{- name}} Tab beim Start öffnen."
+        "setHomeTab": "{{- name}} Tab beim Start öffnen.",
+        "showNavbar": null
       }
     },
     "minAlbumLength": {
@@ -241,6 +243,14 @@
     "deepRescan": {
       "title": "Tiefenscan",
       "brief": "Ignoriert alle Überspringungsmaßnahmen, die die normale Rescan Funktion beschleunigen."
+    },
+    "optimizedImageSave": {
+      "title": null,
+      "brief": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
     },
     "rescanOnLaunch": {
       "title": "Beim Start erneut scannen",

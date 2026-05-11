@@ -63,6 +63,7 @@
     "unsaved": "Masz niezapisane zmiany.",
     "stay": "Zostań",
     "leave": "Wyjdź",
+    "close": null,
     "create": "Utwórz",
     "delete": "Usuń",
     "edit": "Edytuj",
@@ -133,7 +134,8 @@
       "title": "Kolejność zakładek",
       "brief": "Spersonalizuj kolejność i widoczność zakładek.",
       "extra": {
-        "setHomeTab": "Otwórz zakładkę {{- name}} przy uruchomieniu aplikacji."
+        "setHomeTab": "Otwórz zakładkę {{- name}} przy uruchomieniu aplikacji.",
+        "showNavbar": null
       }
     },
     "minAlbumLength": {
@@ -241,6 +243,14 @@
     "deepRescan": {
       "title": "Głębokie skanowanie",
       "brief": "Ignoruje wszystkie reguły pomijania, które przyspieszają standardowe szukanie."
+    },
+    "optimizedImageSave": {
+      "title": null,
+      "brief": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
     },
     "rescanOnLaunch": {
       "title": "Skanowanie przy uruchomieniu",

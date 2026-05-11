@@ -63,6 +63,7 @@
     "unsaved": "Kaydedilmemiş değişiklikleriniz olabilir.",
     "stay": "Kal",
     "leave": "Ayrıl",
+    "close": null,
     "create": "Oluştur",
     "delete": "Sil",
     "edit": "Düzenle",
@@ -133,7 +134,8 @@
       "title": "Sekme Düzeni",
       "brief": "Sekmelerin sırasını ve görünürlüğünü özelleştirin.",
       "extra": {
-        "setHomeTab": "Uygulama başlatıldığında {{- name}} sekmesini aç."
+        "setHomeTab": "Uygulama başlatıldığında {{- name}} sekmesini aç.",
+        "showNavbar": null
       }
     },
     "minAlbumLength": {
@@ -241,6 +243,14 @@
     "deepRescan": {
       "title": "Derinlemesine Yeniden Tara",
       "brief": "Normal yeniden tarama özelliğini hızlandıran atlama önlemlerini yoksayar."
+    },
+    "optimizedImageSave": {
+      "title": null,
+      "brief": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
     },
     "rescanOnLaunch": {
       "title": "Başlangıçta Yeniden Tara",

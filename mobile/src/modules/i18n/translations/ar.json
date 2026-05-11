@@ -63,6 +63,7 @@
     "unsaved": "قد تكون لديك تغييرات غير محفوظة.",
     "stay": "البقاء",
     "leave": "مغادرة",
+    "close": null,
     "create": null,
     "delete": null,
     "edit": null,
@@ -133,7 +134,8 @@
       "title": "ترتيب علامات تبويب الرئيسية",
       "brief": "تخصيص ترتيب ووضوح علامات التبويب.",
       "extra": {
-        "setHomeTab": "فتح علامة تبويب {{- name}} عند تشغيل التطبيق."
+        "setHomeTab": "فتح علامة تبويب {{- name}} عند تشغيل التطبيق.",
+        "showNavbar": null
       }
     },
     "minAlbumLength": {
@@ -241,6 +243,14 @@
     "deepRescan": {
       "title": "إعادة المسح العميق",
       "brief": "يتجاهل أي إجراءات تخطي تسرّع ميزة إعادة المسح العادية."
+    },
+    "optimizedImageSave": {
+      "title": null,
+      "brief": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
     },
     "rescanOnLaunch": {
       "title": null,
