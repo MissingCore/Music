@@ -63,6 +63,7 @@
     "unsaved": "ممکن است تغییرات ذخیره نشده‌ای داشته باشید.",
     "stay": "ماندن",
     "leave": "خروج",
+    "close": null,
     "create": "ایجاد",
     "delete": "حذف",
     "edit": "ویرایش",
@@ -133,7 +134,8 @@
       "title": "ترتیب تب‌ها",
       "brief": "ترتیب و نمایش تب‌ها را شخصی کنید.",
       "extra": {
-        "setHomeTab": "باز کردن تب {{- name}} هنگام اجرای برنامه."
+        "setHomeTab": "باز کردن تب {{- name}} هنگام اجرای برنامه.",
+        "showNavbar": null
       }
     },
     "minAlbumLength": {
@@ -241,6 +243,14 @@
     "deepRescan": {
       "title": "اسکن عمیق",
       "brief": "هر گونه اقدام رد کردنی که اسکن عادی را سریع تر می کند را نادیده می گیرد."
+    },
+    "optimizedImageSave": {
+      "title": null,
+      "brief": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
     },
     "rescanOnLaunch": {
       "title": "اسکن مجدد هنگام راه‌اندازی",

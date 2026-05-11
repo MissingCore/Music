@@ -63,6 +63,7 @@
     "unsaved": "Du har muligvis ugemte ændringer.",
     "stay": "Bliv her",
     "leave": "Luk",
+    "close": null,
     "create": "Opret",
     "delete": "Slet",
     "edit": "Redigér",
@@ -133,7 +134,8 @@
       "title": "Rækkefølge af faner",
       "brief": "Tilpas rækkefølgen og synligheden af fanerne.",
       "extra": {
-        "setHomeTab": "Åbn {{- name}}-fanen, når appen åbnes."
+        "setHomeTab": "Åbn {{- name}}-fanen, når appen åbnes.",
+        "showNavbar": null
       }
     },
     "minAlbumLength": {
@@ -241,6 +243,14 @@
     "deepRescan": {
       "title": "Grundig scanning",
       "brief": "Scanner alle filer på enheden. Kan tage længere tid end den normale scanning."
+    },
+    "optimizedImageSave": {
+      "title": null,
+      "brief": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
     },
     "rescanOnLaunch": {
       "title": "Scan efter sange hver gang, du åbner appen",

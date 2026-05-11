@@ -63,6 +63,7 @@
     "unsaved": "Poder tens canvis sense desar.",
     "stay": "Queda't",
     "leave": "Eixir",
+    "close": null,
     "create": "Crear",
     "delete": "Eliminar",
     "edit": "Editar",
@@ -133,7 +134,8 @@
       "title": "Ordre de les pestanyes",
       "brief": "Personalitza l'ordre i visibilitat de les pestanyes.",
       "extra": {
-        "setHomeTab": "Obrir la pestanya {{- name}} a l'inici."
+        "setHomeTab": "Obrir la pestanya {{- name}} a l'inici.",
+        "showNavbar": null
       }
     },
     "minAlbumLength": {
@@ -241,6 +243,14 @@
     "deepRescan": {
       "title": "Escanejar a fons",
       "brief": "Ignora qualsevol ordre d'omissió que acceleren els reescanejos normals."
+    },
+    "optimizedImageSave": {
+      "title": null,
+      "brief": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
     },
     "rescanOnLaunch": {
       "title": null,

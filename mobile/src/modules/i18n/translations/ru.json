@@ -63,6 +63,7 @@
     "unsaved": "У вас могут быть несохраненные изменения.",
     "stay": "Остаться",
     "leave": "Выйти",
+    "close": null,
     "create": null,
     "delete": null,
     "edit": null,
@@ -133,7 +134,8 @@
       "title": "Порядок вкладок домашней страницы",
       "brief": "Настроить порядок и видимость вкладок.",
       "extra": {
-        "setHomeTab": "Откройте вкладку {{- name}} при запуске."
+        "setHomeTab": "Откройте вкладку {{- name}} при запуске.",
+        "showNavbar": null
       }
     },
     "minAlbumLength": {
@@ -241,6 +243,14 @@
     "deepRescan": {
       "title": "Глубокое пересканирование",
       "brief": "Игнорирует любые средства пропуска, которые ускоряют нормальный процесс сканирования."
+    },
+    "optimizedImageSave": {
+      "title": null,
+      "brief": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
     },
     "rescanOnLaunch": {
       "title": null,

@@ -63,6 +63,7 @@
     "unsaved": "変更が保存されていません。",
     "stay": "留まる",
     "leave": "離れる",
+    "close": null,
     "create": "作成",
     "delete": "削除",
     "edit": "編集",
@@ -133,7 +134,8 @@
       "title": "タブの順序",
       "brief": "タブの順序と表示をカスタマイズします。",
       "extra": {
-        "setHomeTab": "アプリの起動時に「{{- name}}」のタブを開きます。"
+        "setHomeTab": "アプリの起動時に「{{- name}}」のタブを開きます。",
+        "showNavbar": null
       }
     },
     "minAlbumLength": {
@@ -241,6 +243,14 @@
     "deepRescan": {
       "title": "ディープで再スキャン",
       "brief": "通常の再スキャンのスキップ機能による高速化を無視します。"
+    },
+    "optimizedImageSave": {
+      "title": null,
+      "brief": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
     },
     "rescanOnLaunch": {
       "title": "起動時に再スキャン",

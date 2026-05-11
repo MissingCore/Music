@@ -63,6 +63,7 @@
     "unsaved": "Anda masih memiliki perubahan yang belum disimpan.",
     "stay": "Tetap disini",
     "leave": "Keluar",
+    "close": null,
     "create": null,
     "delete": null,
     "edit": null,
@@ -133,7 +134,8 @@
       "title": "Urutan Tab Beranda",
       "brief": "Kustomisasikan urutan dan visibilitas tab.",
       "extra": {
-        "setHomeTab": null
+        "setHomeTab": null,
+        "showNavbar": null
       }
     },
     "minAlbumLength": {
@@ -241,6 +243,14 @@
     "deepRescan": {
       "title": "Deep Rescan",
       "brief": "Mengabaikan tindakan apa pun yang mempercepat fitur pemindaian ulang normal."
+    },
+    "optimizedImageSave": {
+      "title": null,
+      "brief": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
     },
     "rescanOnLaunch": {
       "title": null,
