@@ -52,8 +52,8 @@
     "entry_other": "{{count}} إدخالات",
     "second_one": "{{count}} ثانية",
     "second_other": "{{count}} ثوان",
-    "track_one": null,
-    "track_other": null
+    "track_one": "{{count}} $t(term.track)",
+    "track_other": "{{count}} $t(term.tracks)"
   },
   "form": {
     "apply": "تطبيق التغييرات",
