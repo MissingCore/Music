@@ -96,6 +96,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     quickFavorite: false,
 
     rescanOnLaunch: true,
+    optimizedImageSave: true,
 
     listAllow: [],
     listBlock: [],
