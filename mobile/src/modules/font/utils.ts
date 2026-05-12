@@ -10,7 +10,7 @@ export function isBundledFont(
 }
 
 export function getFontDisplayName(font: Font) {
-  return isBundledFont(font) ? font : font.displayName;
+  return isBundledFont(font) ? font : font.name;
 }
 
 function getBundledFontFamily(

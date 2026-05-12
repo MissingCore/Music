@@ -5,7 +5,7 @@ export const customFonts = sqliteTable("custom_fonts", {
   id: text()
     .primaryKey()
     .$defaultFn(() => createId()),
-  displayName: text().notNull(),
+  name: text().notNull(),
   uri: text().notNull(),
 });
 

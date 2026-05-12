@@ -16,6 +16,7 @@ import m0011 from "./0011_awesome_gateway.sql";
 import m0012 from "./0012_typical_jack_murdock.sql";
 import m0013 from "./0013_wealthy_sally_floyd.sql";
 import m0014 from "./0014_dark_mandarin.sql";
+import m0015 from "./0015_chemical_prima.sql";
 
 export default {
   journal,
@@ -35,5 +36,6 @@ export default {
     m0012,
     m0013,
     m0014,
+    m0015,
   },
 };
