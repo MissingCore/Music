@@ -1,4 +1,3 @@
-import { getActualPath } from "@missingcore/react-native-actual-path";
 import { toast } from "@missingcore/toast";
 import { getDocumentAsync } from "expo-document-picker";
 import { useCallback } from "react";
@@ -33,7 +32,7 @@ export default function CreateFont() {
   return (
     <FormStateProvider
       schema={FontEntrySchema}
-      initData={{ cachedUri: "", name: "", uri: "" }}
+      initData={{ name: "", uri: "" }}
       onSubmit={onCreateFont}
     >
       <FontForm />
@@ -56,13 +55,9 @@ function FontForm() {
       if (canceled) throw new Error(t("err.msg.actionCancel"));
       if (!assets[0]) throw new Error(t("err.msg.noSelect"));
 
-      const cachedUri = assets[0].uri;
-      const fileLocation = await getActualPath(cachedUri);
-      if (!fileLocation) throw new Error(t("err.flow.generic.title"));
-
       await wait(100);
       toast.t("feat.backup.extra.importSuccess");
-      setFields({ cachedUri, uri: `file://${fileLocation}` });
+      setFields({ uri: assets[0].uri });
     } catch (err) {
       toast.error((err as Error).message);
     }
@@ -91,7 +86,7 @@ function FontForm() {
           <IconButton
             Icon={Close}
             accessibilityLabel={t("template.entryRemove", { name: data.uri })}
-            onPress={() => setFields({ cachedUri: "", uri: "" })}
+            onPress={() => setFields({ uri: "" })}
             disabled={isSubmitting}
           />
         </View>
@@ -103,11 +98,6 @@ function FontForm() {
 
 //#region Schema
 const FontEntrySchema = z.object({
-  // Additional context:
-  //! FIXME: We want to change this to `contentUri`, but copying via `File` API
-  //! isn't currently supported.
-  cachedUri: ZSchema.NonEmptyString,
-  // Actual form fields:
   name: ZSchema.NonEmptyString,
   uri: ZSchema.NonEmptyString,
 });
@@ -116,9 +106,9 @@ type FontEntry = z.infer<typeof FontEntrySchema>;
 //#endregion
 
 //#region Submit Handler
-async function onCreateFont({ cachedUri, name }: FontEntry) {
+async function onCreateFont({ name, uri }: FontEntry) {
   try {
-    const savedUri = await saveFont(cachedUri);
+    const savedUri = await saveFont(uri);
 
     await createCustomFont({ name, uri: savedUri });
     await loadCustomFonts([{ uri: savedUri }]);
