@@ -59,7 +59,7 @@ export function isBundledFont(
   return typeof value === "string";
 }
 
-export function loadCustomFonts(fonts: CustomFont[]) {
+export function loadCustomFonts(fonts: Array<{ uri: string }>) {
   const customFontEntries = fonts
     .map((font) => {
       const fileName = font.uri.split("/").at(-1);

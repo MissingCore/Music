@@ -1,3 +1,4 @@
+import CreateFont from "./CreateView";
 import { AccentFonts, PrimaryFonts } from "./View";
 
 const FontScreenGroup = {
@@ -12,6 +13,10 @@ const FontScreenGroup = {
     PrimaryFonts: {
       screen: PrimaryFonts,
       options: { title: "feat.font.extra.primary" },
+    },
+    CreateFont: {
+      screen: CreateFont,
+      options: { title: "form.create" },
     },
   },
 } as const;
