@@ -1,4 +1,6 @@
-import { toLowerCase } from "~/utils/string";
+import { loadAsync as loadFontsAsync } from "expo-font";
+
+import { toLowerCase, removeFileExtension } from "~/utils/string";
 import type { CustomFont } from "./schema";
 import type { BundledFont, Font } from "./constants";
 import { FontFamily } from "./constants";
@@ -38,7 +40,7 @@ export function getFont(
 ) {
   if (!isBundledFont(font)) {
     const fileName = font.uri.split("/").at(-1);
-    if (fileName) return fileName.split(".").slice(0, -1).join(".");
+    if (fileName) return removeFileExtension(fileName);
     return getBundledFontFamily(
       options?.headline ? "NType" : "Roboto",
       options,
@@ -55,4 +57,15 @@ export function isBundledFont(
   value: BundledFont | CustomFont,
 ): value is BundledFont {
   return typeof value === "string";
+}
+
+export function loadCustomFonts(fonts: CustomFont[]) {
+  const customFontEntries = fonts
+    .map((font) => {
+      const fileName = font.uri.split("/").at(-1);
+      if (!fileName) return undefined;
+      return [removeFileExtension(fileName), font.uri] as const;
+    })
+    .filter((entry) => entry !== undefined);
+  return loadFontsAsync(Object.fromEntries(customFontEntries));
 }
