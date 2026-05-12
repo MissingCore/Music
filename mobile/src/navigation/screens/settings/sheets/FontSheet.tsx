@@ -3,13 +3,13 @@ import { Text } from "react-native";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
 
-import { getFont } from "~/lib/style";
 import { toLowerCase } from "~/utils/string";
 import { DetachedSheet } from "~/components/Sheet";
 import { HorizontalRadioList } from "~/components/Sheet/HorizontalRadioList";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import type { BundledFont } from "~/modules/font/constants";
 import { BundledFontOptions } from "~/modules/font/constants";
+import { getFont } from "~/modules/font/utils";
 
 export function AccentFontSheet(props: { ref: TrueSheetRef }) {
   const accentFont = usePreferenceStore((s) => s.accentFont);
