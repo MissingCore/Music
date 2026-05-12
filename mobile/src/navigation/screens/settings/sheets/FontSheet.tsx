@@ -8,8 +8,8 @@ import { toLowerCase } from "~/utils/string";
 import { DetachedSheet } from "~/components/Sheet";
 import { HorizontalRadioList } from "~/components/Sheet/HorizontalRadioList";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import type { Font } from "~/stores/Preference/constants";
-import { FontOptions } from "~/stores/Preference/constants";
+import type { BundledFont } from "~/modules/font/constants";
+import { BundledFontOptions } from "~/modules/font/constants";
 
 export function AccentFontSheet(props: { ref: TrueSheetRef }) {
   const accentFont = usePreferenceStore((s) => s.accentFont);
@@ -38,8 +38,8 @@ export function PrimaryFontSheet(props: { ref: TrueSheetRef }) {
 function FontSheet(props: {
   ref: TrueSheetRef;
   kind: "Accent" | "Primary";
-  selectedFont: Font;
-  updateFont: (newFont: Font) => void;
+  selectedFont: BundledFont;
+  updateFont: (newFont: BundledFont) => void;
 }) {
   const headline = props.kind === "Accent";
   return (
@@ -48,7 +48,7 @@ function FontSheet(props: {
       titleKey={`feat.font.extra.${toLowerCase(props.kind)}`}
     >
       <HorizontalRadioList
-        data={FontOptions}
+        data={BundledFontOptions}
         selected={props.selectedFont}
         onPress={(font) => props.updateFont(font)}
         renderPreview={(font) => (

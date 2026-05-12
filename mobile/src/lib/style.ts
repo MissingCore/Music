@@ -4,8 +4,8 @@ import { extendTailwindMerge } from "tailwind-merge";
 
 import { BorderRadius, FontFamily, FontSize } from "~/constants/Styles";
 import { toLowerCase } from "~/utils/string";
+import type { BundledFont } from "~/modules/font/constants";
 import { ColorRoleOptions } from "~/modules/theme/constants";
-import type { Font } from "~/stores/Preference/constants";
 
 //#region Color
 // Need to include `transparent` as otherwise, things will get merged incorrectly.
@@ -36,7 +36,7 @@ export function cn(...inputs: ClassValue[]) {
  * accent & primary font used.
  */
 export function getFont(
-  font: Font,
+  font: BundledFont,
   options?: { bold?: boolean; headline?: boolean },
 ) {
   const fontCode = font === "Geist Mono" ? "geistMono" : toLowerCase(font);

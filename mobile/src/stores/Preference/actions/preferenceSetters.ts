@@ -3,7 +3,7 @@ import { Uniwind } from "uniwind";
 
 import i18next from "~/modules/i18n";
 import { preferenceStore } from "../store";
-import type { Font, NowPlayingDesign } from "../constants";
+import type { NowPlayingDesign } from "../constants";
 import {
   clampMinAlbumLength,
   clampPlaybackDelay,
@@ -13,6 +13,7 @@ import { playbackStore } from "../../Playback/store";
 import { getSourceName } from "../../Playback/utils";
 
 import { clearAllQueries } from "~/lib/react-query";
+import type { BundledFont } from "~/modules/font/constants";
 import type { DefaultTheme } from "~/modules/theme/constants";
 import {
   getCustomTheme,
@@ -20,7 +21,7 @@ import {
   resolveCustomTheme,
 } from "~/modules/theme/utils";
 
-export function setAccentFont(accentFont: Font) {
+export function setAccentFont(accentFont: BundledFont) {
   preferenceStore.setState({ accentFont });
 }
 
@@ -50,7 +51,7 @@ export function setNowPlayingDesign(nowPlayingDesign: NowPlayingDesign) {
   preferenceStore.setState({ nowPlayingDesign });
 }
 
-export function setPrimaryFont(primaryFont: Font) {
+export function setPrimaryFont(primaryFont: BundledFont) {
   preferenceStore.setState({ primaryFont });
 }
 

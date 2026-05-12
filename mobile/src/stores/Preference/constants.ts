@@ -1,18 +1,6 @@
+import type { BundledFont } from "~/modules/font/constants";
 import type { CustomTheme, DefaultTheme } from "~/modules/theme/constants";
 import type { Tab } from "./types";
-
-//#region Font
-export const FontOptions = [
-  "NDot",
-  "NType",
-  "Roboto",
-  "Inter",
-  "Geist Mono",
-  "System",
-] as const;
-
-export type Font = (typeof FontOptions)[number];
-//#endregion
 
 //#region Now Playing Design
 export const NowPlayingDesignOptions = ["plain", "vinyl", "vinylOld"] as const;
@@ -36,9 +24,9 @@ export interface PreferenceStore {
   forceLTR: boolean;
 
   /** Font used for some accent text (ie: major headings). */
-  accentFont: Font;
+  accentFont: BundledFont;
   /** Font used for text. */
-  primaryFont: Font;
+  primaryFont: BundledFont;
   /** Acts as current scheme if `activeCustomThemeId` is defined. */
   theme: DefaultTheme;
   /** Id of active custom theme. Has higher priority than `theme`. */
