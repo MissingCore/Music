@@ -4,7 +4,7 @@ import { AppState } from "react-native";
 import type { SharedValue } from "react-native-reanimated";
 import {
   Easing,
-  makeMutable,
+  ReduceMotion,
   useAnimatedReaction,
   useSharedValue,
   withTiming,
@@ -61,6 +61,11 @@ export function SeekbarContext(props: { children: React.ReactNode }) {
       animatedPosition.value = withTiming(activeTrack.duration, {
         duration: estimatedAnimationDuration,
         easing: Easing.linear,
+        //! If the user disables "Transition animation scale" or enables
+        //! "Remove animations", `withTiming` will resolve immediately,
+        //! causing the seekbar to display the max duration. Setting
+        //! `ReduceMotion.Never` will ensure this animation always runs.
+        reduceMotion: ReduceMotion.Never,
       });
     },
     [
