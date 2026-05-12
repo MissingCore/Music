@@ -1,10 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
-import { useMemo } from "react";
+import { File } from "expo-file-system";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
+import type { CustomFont } from "../schema";
+
 import { Add } from "~/resources/icons/Add";
 import { Check } from "~/resources/icons/Check";
+import { Delete } from "~/resources/icons/Delete";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
 
@@ -14,11 +18,15 @@ import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import { cn } from "~/lib/style";
 import { FlatList } from "~/components/Base/List";
 import { Pressable } from "~/components/Base/Pressable";
-import { FilledIconButton } from "~/components/Form/Button/Icon";
+import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { StyledText } from "~/components/Typography/StyledText";
 import type { Font } from "../constants";
 import { BundledFontOptions } from "../constants";
-import { useCustomFonts } from "../queries";
+import {
+  deleteCustomFont,
+  revalidateCustomFonts,
+  useCustomFonts,
+} from "../queries";
 import {
   areFontEqual,
   getFont,
@@ -56,6 +64,7 @@ function FontsScreenBase(props: {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { isPending, data } = useCustomFonts();
+  const canDeleteFont = useCanDeleteFont();
 
   const fontOptions = useMemo(() => {
     if (!data) return BundledFontOptions;
@@ -106,6 +115,14 @@ function FontsScreenBase(props: {
               >
                 {getFontDisplayName(font)}
               </StyledText>
+              {canDeleteFont(font) ? (
+                <IconButton
+                  Icon={Delete}
+                  accessibilityLabel={t("form.delete")}
+                  onPress={() => onDeleteFont(font as CustomFont)}
+                  _iconColor="error"
+                />
+              ) : null}
             </Pressable>
           );
         }}
@@ -114,3 +131,26 @@ function FontsScreenBase(props: {
     </>
   );
 }
+
+//#region Deletion Handling
+function useCanDeleteFont() {
+  const accentFont = usePreferenceStore((s) => s.accentFont);
+  const primaryFont = usePreferenceStore((s) => s.primaryFont);
+  return useCallback(
+    (font: Font) => {
+      if (isBundledFont(font)) return false;
+      return (
+        !areFontEqual(font, accentFont) && !areFontEqual(font, primaryFont)
+      );
+    },
+    [accentFont, primaryFont],
+  );
+}
+
+async function onDeleteFont(font: CustomFont) {
+  await deleteCustomFont(font.id);
+  const customFontFile = new File(font.uri);
+  customFontFile.delete();
+  revalidateCustomFonts();
+}
+//#endregion

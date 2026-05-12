@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { eq } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { CustomFont } from "./schema";
@@ -17,6 +18,10 @@ export async function getCustomFonts() {
 
 export async function createCustomFont(entry: Omit<CustomFont, "id">) {
   return db.insert(customFonts).values(entry);
+}
+
+export async function deleteCustomFont(id: string) {
+  return db.delete(customFonts).where(eq(customFonts.id, id));
 }
 //#endregion
 
