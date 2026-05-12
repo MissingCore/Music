@@ -7,9 +7,9 @@ import { toLowerCase } from "~/utils/string";
 import { DetachedSheet } from "~/components/Sheet";
 import { HorizontalRadioList } from "~/components/Sheet/HorizontalRadioList";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import type { BundledFont } from "~/modules/font/constants";
+import type { Font } from "~/modules/font/constants";
 import { BundledFontOptions } from "~/modules/font/constants";
-import { getFont } from "~/modules/font/utils";
+import { getFont, isBundledFont } from "~/modules/font/utils";
 
 export function AccentFontSheet(props: { ref: TrueSheetRef }) {
   const accentFont = usePreferenceStore((s) => s.accentFont);
@@ -38,10 +38,14 @@ export function PrimaryFontSheet(props: { ref: TrueSheetRef }) {
 function FontSheet(props: {
   ref: TrueSheetRef;
   kind: "Accent" | "Primary";
-  selectedFont: BundledFont;
-  updateFont: (newFont: BundledFont) => void;
+  selectedFont: Font;
+  updateFont: (newFont: Font) => void;
 }) {
   const headline = props.kind === "Accent";
+  const selectedBundledFont = isBundledFont(props.selectedFont)
+    ? props.selectedFont
+    : "Roboto";
+
   return (
     <DetachedSheet
       ref={props.ref}
@@ -49,7 +53,7 @@ function FontSheet(props: {
     >
       <HorizontalRadioList
         data={BundledFontOptions}
-        selected={props.selectedFont}
+        selected={selectedBundledFont}
         onPress={(font) => props.updateFont(font)}
         renderPreview={(font) => (
           <Text

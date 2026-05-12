@@ -13,7 +13,7 @@ import { playbackStore } from "../../Playback/store";
 import { getSourceName } from "../../Playback/utils";
 
 import { clearAllQueries } from "~/lib/react-query";
-import type { BundledFont } from "~/modules/font/constants";
+import type { Font } from "~/modules/font/constants";
 import type { DefaultTheme } from "~/modules/theme/constants";
 import {
   getCustomTheme,
@@ -21,7 +21,7 @@ import {
   resolveCustomTheme,
 } from "~/modules/theme/utils";
 
-export function setAccentFont(accentFont: BundledFont) {
+export function setAccentFont(accentFont: Font) {
   preferenceStore.setState({ accentFont });
 }
 
@@ -51,7 +51,7 @@ export function setNowPlayingDesign(nowPlayingDesign: NowPlayingDesign) {
   preferenceStore.setState({ nowPlayingDesign });
 }
 
-export function setPrimaryFont(primaryFont: BundledFont) {
+export function setPrimaryFont(primaryFont: Font) {
   preferenceStore.setState({ primaryFont });
 }
 

@@ -1,4 +1,4 @@
-import type { BundledFont } from "~/modules/font/constants";
+import type { Font } from "~/modules/font/constants";
 import type { CustomTheme, DefaultTheme } from "~/modules/theme/constants";
 import type { Tab } from "./types";
 
@@ -24,9 +24,9 @@ export interface PreferenceStore {
   forceLTR: boolean;
 
   /** Font used for some accent text (ie: major headings). */
-  accentFont: BundledFont;
+  accentFont: Font;
   /** Font used for text. */
-  primaryFont: BundledFont;
+  primaryFont: Font;
   /** Acts as current scheme if `activeCustomThemeId` is defined. */
   theme: DefaultTheme;
   /** Id of active custom theme. Has higher priority than `theme`. */

@@ -1,3 +1,5 @@
+import type { CustomFont } from "./schema";
+
 //#region Bundled Fonts
 export const FontFamily = {
   roboto: "Roboto-Regular",
@@ -24,3 +26,5 @@ export const BundledFontOptions = [
 
 export type BundledFont = (typeof BundledFontOptions)[number];
 //#endregion
+
+export type Font = BundledFont | CustomFont;

@@ -11,6 +11,7 @@ import { TabOrderSheet } from "./sheets/TabOrderSheet";
 import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { Switch } from "~/components/UI/Switch";
+import { getFontDisplayName } from "~/modules/font/utils";
 
 export default function AppearanceSettings() {
   const { t } = useTranslation();
@@ -36,12 +37,12 @@ export default function AppearanceSettings() {
         <SegmentedList>
           <SegmentedList.Item
             labelTextKey="feat.font.extra.accent"
-            supportingText={accentFont}
+            supportingText={getFontDisplayName(accentFont)}
             onPress={() => accentFontSheetRef.current?.present()}
           />
           <SegmentedList.Item
             labelTextKey="feat.font.extra.primary"
-            supportingText={primaryFont}
+            supportingText={getFontDisplayName(primaryFont)}
             onPress={() => primaryFontSheetRef.current?.present()}
           />
           <SegmentedList.Item
