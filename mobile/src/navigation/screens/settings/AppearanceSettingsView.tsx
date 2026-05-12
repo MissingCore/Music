@@ -5,7 +5,6 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
-import { AccentFontSheet, PrimaryFontSheet } from "./sheets/FontSheet";
 import { TabOrderSheet } from "./sheets/TabOrderSheet";
 
 import { SegmentedList } from "~/components/List/Segmented";
@@ -23,14 +22,10 @@ export default function AppearanceSettings() {
   const showNavbar = usePreferenceStore((s) => s.showNavbar);
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const squareArtwork = usePreferenceStore((s) => s.squareArtwork);
-  const accentFontSheetRef = useSheetRef();
-  const primaryFontSheetRef = useSheetRef();
   const tabOrderSheetRef = useSheetRef();
 
   return (
     <>
-      <AccentFontSheet ref={accentFontSheetRef} />
-      <PrimaryFontSheet ref={primaryFontSheetRef} />
       <TabOrderSheet ref={tabOrderSheetRef} />
 
       <ListLayout>
@@ -38,12 +33,12 @@ export default function AppearanceSettings() {
           <SegmentedList.Item
             labelTextKey="feat.font.extra.accent"
             supportingText={getFontDisplayName(accentFont)}
-            onPress={() => accentFontSheetRef.current?.present()}
+            onPress={() => navigation.navigate("AccentFonts")}
           />
           <SegmentedList.Item
             labelTextKey="feat.font.extra.primary"
             supportingText={getFontDisplayName(primaryFont)}
-            onPress={() => primaryFontSheetRef.current?.present()}
+            onPress={() => navigation.navigate("PrimaryFonts")}
           />
           <SegmentedList.Item
             labelTextKey="feat.theme.title"

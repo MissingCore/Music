@@ -3,14 +3,13 @@ import type { CustomFont } from "./schema";
 import type { BundledFont, Font } from "./constants";
 import { FontFamily } from "./constants";
 
-export function isBundledFont(
-  value: BundledFont | CustomFont,
-): value is BundledFont {
-  return typeof value === "string";
-}
-
-export function getFontDisplayName(font: Font) {
-  return isBundledFont(font) ? font : font.name;
+export function areFontEqual(fontA: Font, fontB: Font) {
+  if (!isBundledFont(fontA) && !isBundledFont(fontB)) {
+    return fontA.id === fontB.id;
+  } else if (typeof fontA === typeof fontB) {
+    return fontA === fontB;
+  }
+  return false;
 }
 
 function getBundledFontFamily(
@@ -46,4 +45,14 @@ export function getFont(
     );
   }
   return getBundledFontFamily(font, options);
+}
+
+export function getFontDisplayName(font: Font) {
+  return isBundledFont(font) ? font : font.name;
+}
+
+export function isBundledFont(
+  value: BundledFont | CustomFont,
+): value is BundledFont {
+  return typeof value === "string";
 }
