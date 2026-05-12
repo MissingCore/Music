@@ -85,6 +85,8 @@ export interface PreferenceStore {
 
   /** If we should rescan the library on app launch. */
   rescanOnLaunch: boolean;
+  /** If tracks use the artwork from their album. */
+  optimizedImageSave: boolean;
 
   /** Directories we'll limit to when looking for tracks. */
   listAllow: string[];

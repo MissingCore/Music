@@ -63,6 +63,7 @@
     "unsaved": "Puede que tengas cambios sin guardar.",
     "stay": "Quedarse",
     "leave": "Salir",
+    "close": null,
     "create": "Crear",
     "delete": "Borrar",
     "edit": "Editar",
@@ -133,7 +134,8 @@
       "title": "Orden de pestañas",
       "brief": "Organiza y ajusta las pestañas visibles.",
       "extra": {
-        "setHomeTab": "Abrir la pestaña {{- name}} al iniciar."
+        "setHomeTab": "Abrir la pestaña {{- name}} al iniciar.",
+        "showNavbar": null
       }
     },
     "minAlbumLength": {
@@ -241,6 +243,14 @@
     "deepRescan": {
       "title": "Reescaneo profundo",
       "brief": "Ignora optimizaciones y escanea todo desde cero."
+    },
+    "optimizedImageSave": {
+      "title": null,
+      "brief": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
     },
     "rescanOnLaunch": {
       "title": "Reescaneo al abrir",

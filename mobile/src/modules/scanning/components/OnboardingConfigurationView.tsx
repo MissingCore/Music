@@ -6,7 +6,10 @@ import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
-import { ScanningConfigurations } from "~/navigation/screens/settings/ScanningSettingsView";
+import {
+  OptimizedImageSavingSetting,
+  ScanningConfigurations,
+} from "~/navigation/screens/settings/ScanningSettingsView";
 
 import { ExtendedTButton } from "~/components/Form/Button";
 import { SegmentedList } from "~/components/List/Segmented";
@@ -34,6 +37,7 @@ export function OnboardingConfiguration() {
 
         <TEm textKey="feat.scanning.title" className="-mb-4" />
         <ScanningConfigurations.Settings {...sheetRefs} />
+        <OptimizedImageSavingSetting />
         <TEm textKey="feat.appUpdate.title" className="-mb-4" />
         <AppUpdateConfigurations />
 

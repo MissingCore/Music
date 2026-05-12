@@ -63,6 +63,7 @@
     "unsaved": "Vous avez des modifications non enregistrées.",
     "stay": "Rester",
     "leave": "Quitter",
+    "close": null,
     "create": "Créer",
     "delete": "Supprimer",
     "edit": "Modifier",
@@ -133,7 +134,8 @@
       "title": "Ordre des onglets",
       "brief": "Personnalisez l'ordre et la visibilité des onglets.",
       "extra": {
-        "setHomeTab": "Ouvrir l’onglet {{- name}} au lancement de l’application."
+        "setHomeTab": "Ouvrir l’onglet {{- name}} au lancement de l’application.",
+        "showNavbar": null
       }
     },
     "minAlbumLength": {
@@ -241,6 +243,14 @@
     "deepRescan": {
       "title": "Recherche en profondeur",
       "brief": "Ignore toutes les mesures de saut qui accélèrent la fonction normale de recherche."
+    },
+    "optimizedImageSave": {
+      "title": null,
+      "brief": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
     },
     "rescanOnLaunch": {
       "title": "Rescanner au lancement de l'app",

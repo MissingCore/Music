@@ -16,6 +16,7 @@ type ToggleableKey =
   | "quickFavorite"
   | "quickScroll"
   | "miniplayerGestures"
+  | "optimizedImageSave"
   | "rcNotification"
   | "rescanOnLaunch"
   | "repeatOnSkip"

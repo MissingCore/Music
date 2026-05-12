@@ -63,6 +63,7 @@
     "unsaved": "आपके पास कुछ असहेजित परिवर्तन हो सकते हैं।",
     "stay": "रहें",
     "leave": "छोड़ें",
+    "close": null,
     "create": "बनाएँ",
     "delete": "हटाएं",
     "edit": "संपादित करें",
@@ -133,7 +134,8 @@
       "title": "होम टैब्स क्रम",
       "brief": "टैब्स के क्रम और दृश्यता को अनुकूलित करें।",
       "extra": {
-        "setHomeTab": "ऐप लॉन्च पर `{{- name}}` टैब खोलें।"
+        "setHomeTab": "ऐप लॉन्च पर `{{- name}}` टैब खोलें।",
+        "showNavbar": null
       }
     },
     "minAlbumLength": {
@@ -241,6 +243,14 @@
     "deepRescan": {
       "title": "गहरा पुनः स्कैन",
       "brief": "सामान्य पुनः स्कैन फीचर को तेज करने वाले किसी भी छोड़ने वाले उपायों को अनदेखा करता है।"
+    },
+    "optimizedImageSave": {
+      "title": null,
+      "brief": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
     },
     "rescanOnLaunch": {
       "title": "लॉन्च पर फिर से स्कैन करें",

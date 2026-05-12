@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `tracks_uri_unique` ON `tracks` (`uri`);

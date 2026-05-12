@@ -23,7 +23,7 @@ import { createGenres } from "~/data/genre/api";
 import { updateTrack } from "~/data/track/api";
 import { useTrack, useTrackGenres } from "~/data/track/queries";
 import { Resynchronize } from "~/stores/Playback/actions";
-import { usePreferenceStore } from "~/stores/Preference/store";
+import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { getArtworkUri } from "~/modules/scanning/helpers/artwork";
 import { AppCleanUp } from "~/modules/scanning/helpers/cleanup";
 
@@ -287,7 +287,9 @@ async function onEditTrack(data: TrackMetadata) {
       ]);
       if (newAlbum) albumId = newAlbum.id;
     }
-    if (!albumId) updatedTrack.embeddedArtwork = artworkUri;
+    if (!albumId || !preferenceStore.getState().optimizedImageSave) {
+      updatedTrack.embeddedArtwork = artworkUri;
+    }
 
     // Replace old artist relations.
     await db.delete(tracksToArtists).where(eq(tracksToArtists.trackId, id));
