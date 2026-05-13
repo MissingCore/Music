@@ -8,10 +8,8 @@ import { FontFamily } from "./constants";
 export function areFontEqual(fontA: Font, fontB: Font) {
   if (!isBundledFont(fontA) && !isBundledFont(fontB)) {
     return fontA.id === fontB.id;
-  } else if (typeof fontA === typeof fontB) {
-    return fontA === fontB;
   }
-  return false;
+  return fontA === fontB;
 }
 
 function getBundledFontFamily(

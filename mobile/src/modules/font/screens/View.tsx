@@ -2,12 +2,10 @@ import { useNavigation } from "@react-navigation/native";
 import { File } from "expo-file-system";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 
 import type { CustomFont } from "../schema";
 
 import { Add } from "~/resources/icons/Add";
-import { Check } from "~/resources/icons/Check";
 import { Delete } from "~/resources/icons/Delete";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
@@ -19,6 +17,7 @@ import { cn } from "~/lib/style";
 import { FlatList } from "~/components/Base/List";
 import { Pressable } from "~/components/Base/Pressable";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
+import { Radio } from "~/components/Form/Radio";
 import { StyledText } from "~/components/Typography/StyledText";
 import type { Font } from "../constants";
 import { BundledFontOptions } from "../constants";
@@ -101,14 +100,7 @@ function FontsScreenBase(props: {
                 },
               )}
             >
-              <View
-                className={cn(
-                  "size-5 items-center justify-center rounded-full border border-onSurface",
-                  { "border-0 bg-onSurface": selected },
-                )}
-              >
-                {selected ? <Check size={18} color="surface" /> : null}
-              </View>
+              <Radio selected={selected} />
               <StyledText
                 style={{ fontFamily: getFont(font, { headline }) }}
                 className="shrink grow"

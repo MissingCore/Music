@@ -70,7 +70,6 @@ function FontForm() {
         <ExtendedTButton
           textKey="feat.backup.extra.import"
           onPress={onImportFont}
-          disabled={isSubmitting}
           className="bg-secondary active:bg-secondaryDim"
           textClassName="text-onSecondary"
         />
