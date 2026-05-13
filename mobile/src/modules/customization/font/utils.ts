@@ -1,9 +1,9 @@
 import { loadAsync as loadFontsAsync } from "expo-font";
 
 import { toLowerCase, removeFileExtension } from "~/utils/string";
+import type { BundledFont, Font } from "./core/constants";
+import { FontFamily } from "./core/constants";
 import type { CustomFont } from "./core/schema";
-import type { BundledFont, Font } from "./constants";
-import { FontFamily } from "./constants";
 
 export function areFontEqual(fontA: Font, fontB: Font) {
   if (!isBundledFont(fontA) && !isBundledFont(fontB)) {

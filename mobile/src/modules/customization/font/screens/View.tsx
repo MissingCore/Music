@@ -19,8 +19,8 @@ import { Pressable } from "~/components/Base/Pressable";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { Radio } from "~/components/Form/Radio";
 import { StyledText } from "~/components/Typography/StyledText";
-import type { Font } from "../constants";
-import { BundledFontOptions } from "../constants";
+import type { Font } from "../core/constants";
+import { BundledFontOptions } from "../core/constants";
 import {
   deleteCustomFont,
   revalidateCustomFonts,
