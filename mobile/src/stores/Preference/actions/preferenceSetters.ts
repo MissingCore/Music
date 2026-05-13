@@ -13,7 +13,7 @@ import { playbackStore } from "../../Playback/store";
 import { getSourceName } from "../../Playback/utils";
 
 import { clearAllQueries } from "~/lib/react-query";
-import type { Font } from "~/modules/font/constants";
+import type { Font } from "~/modules/customization/font/core/constants";
 import type { DefaultTheme } from "~/modules/theme/constants";
 import {
   getCustomTheme,

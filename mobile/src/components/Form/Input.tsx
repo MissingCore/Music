@@ -8,7 +8,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { FontSize } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
-import { getFont } from "~/modules/font/utils";
+import { getFont } from "~/modules/customization/font/utils";
 
 export function useInputRef() {
   return useRef<RNTextInput | RNGHTextInput>(null);

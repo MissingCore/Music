@@ -10,7 +10,7 @@ import { TabOrderSheet } from "./sheets/TabOrderSheet";
 import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { Switch } from "~/components/UI/Switch";
-import { getFontDisplayName } from "~/modules/font/utils";
+import { getFontDisplayName } from "~/modules/customization/font/utils";
 
 export default function AppearanceSettings() {
   const { t } = useTranslation();

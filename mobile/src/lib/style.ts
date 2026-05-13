@@ -3,7 +3,7 @@ import { clsx } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 
 import { BorderRadius, FontSize } from "~/constants/Styles";
-import { FontFamily } from "~/modules/font/constants";
+import { FontFamily } from "~/modules/customization/font/core/constants";
 import { ColorRoleOptions } from "~/modules/theme/constants";
 
 //#region Color

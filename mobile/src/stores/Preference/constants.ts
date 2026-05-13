@@ -1,4 +1,4 @@
-import type { Font } from "~/modules/font/constants";
+import type { Font } from "~/modules/customization/font/core/constants";
 import type { CustomTheme, DefaultTheme } from "~/modules/theme/constants";
 import type { Tab } from "./types";
 
