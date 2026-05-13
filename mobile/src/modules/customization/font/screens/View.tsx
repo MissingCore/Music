@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 
 import type { CustomFont } from "../core/schema";
 
@@ -109,7 +110,9 @@ function FontsScreenBase(props: {
                   onPress={() => deleteCustomFont(font.id)}
                   _iconColor="error"
                 />
-              ) : null}
+              ) : (
+                <View className="size-10" />
+              )}
             </Pressable>
           );
         }}
