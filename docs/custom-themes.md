@@ -2,7 +2,7 @@
 
 As of `v3.1.0`, MissingCore Music supports custom themes. These themes can be imported & exported so that you can share it with others.
 
-Themes are imported & exported as `.json` files. As an example:
+Themes are exported as `.json` files. They can be imported as `.json` or `.txt` files. As an example:
 
 ```json
 {

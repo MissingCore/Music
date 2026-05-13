@@ -25,7 +25,7 @@ export async function exportTheme(theme: CustomTheme): Promise<void> {
 //#region Import
 export async function readThemeFile(): Promise<ThemeExport> {
   const { assets, canceled } = await getDocumentAsync({
-    type: ["application/json", "application/octet-stream"],
+    type: ["application/json", "application/octet-stream", "text/plain"],
   });
   if (canceled) throw new Error(i18next.t("err.msg.actionCancel"));
   if (!assets[0]) throw new Error(i18next.t("err.msg.noSelect"));
