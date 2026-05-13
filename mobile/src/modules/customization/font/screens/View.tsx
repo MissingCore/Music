@@ -20,8 +20,7 @@ import { Radio } from "~/components/Form/Radio";
 import { StyledText } from "~/components/Typography/StyledText";
 import type { Font } from "../core/constants";
 import { BundledFontOptions } from "../core/constants";
-import { deleteCustomFont } from "../core/data";
-import { useCustomFonts } from "../queries";
+import { deleteCustomFont, useCustomFonts } from "../core/data";
 import {
   areFontEqual,
   getFont,

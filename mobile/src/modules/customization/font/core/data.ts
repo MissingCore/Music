@@ -1,5 +1,6 @@
 import { toast } from "@missingcore/toast";
 import { createId } from "@paralleldrive/cuid2";
+import { useQuery } from "@tanstack/react-query";
 import { eq } from "drizzle-orm";
 import { getDocumentAsync } from "expo-document-picker";
 import { Directory, File, Paths } from "expo-file-system";
@@ -72,5 +73,17 @@ export async function deleteCustomFont(fontId: string) {
     const fontFile = new File(result.uri);
     if (fontFile.exists) fontFile.delete();
   } catch {}
+}
+//#endregion
+
+//#region Font Querying
+export async function getCustomFonts() {
+  return db.query.customFonts.findMany({
+    orderBy: (fields, { asc }) => asc(fields.name),
+  });
+}
+
+export function useCustomFonts() {
+  return useQuery({ queryKey, queryFn: getCustomFonts });
 }
 //#endregion
