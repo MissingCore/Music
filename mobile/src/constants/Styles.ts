@@ -51,20 +51,6 @@ export const Colors = {
   green: "#1DB159",
 } as const;
 
-export const FontFamily = {
-  roboto: "Roboto-Regular",
-  robotoMedium: "Roboto-Medium",
-  inter: "Inter-Regular",
-  interMedium: "Inter-Medium",
-  geistMono: "GeistMono-Regular",
-  geistMonoMedium: "GeistMono-Medium",
-  ndot: "Ndot-77_JP_Extended",
-  ntype: "NType82-Regular",
-  ntypeHeadline: "NType82-Headline",
-
-  system: "System",
-} as const;
-
 export const FontSize = {
   xxs: 10,
   xs: 12,

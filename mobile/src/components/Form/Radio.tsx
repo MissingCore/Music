@@ -7,7 +7,7 @@ import { cn } from "~/lib/style";
 import { Pressable } from "../Base/Pressable";
 
 //#region Base
-function Radio({ selected }: { selected: boolean }) {
+export function Radio({ selected }: { selected: boolean }) {
   return (
     <View
       className={cn(

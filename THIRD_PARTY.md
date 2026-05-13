@@ -22,6 +22,7 @@
 | expo-document-picker | MIT | https://github.com/expo/expo/tree/main/packages/expo-document-picker |
 | expo-drizzle-studio-plugin | MIT | https://github.com/drizzle-team/drizzle-studio-expo |
 | expo-file-system | MIT | https://github.com/expo/expo/tree/main/packages/expo-file-system |
+| expo-font | MIT | https://github.com/expo/expo/tree/main/packages/expo-font |
 | expo-image | MIT | https://github.com/expo/expo/tree/main/packages/expo-image |
 | expo-image-manipulator | MIT | https://github.com/expo/expo/tree/main/packages/expo-image-manipulator |
 | expo-image-picker | MIT | https://github.com/expo/expo/tree/main/packages/expo-image-picker |

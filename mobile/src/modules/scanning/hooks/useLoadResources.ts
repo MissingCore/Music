@@ -11,6 +11,7 @@ import { checkForMigrations } from "../helpers/migrations";
 
 import { createImageDirectory } from "~/lib/file-system";
 import { Stopwatch } from "~/utils/debug";
+import { createFontDirectory } from "~/modules/font/helpers/storage";
 
 /** Logic that should be run before rendering the onboarding/scanning progress views. */
 export function useLoadResources() {
@@ -29,6 +30,7 @@ export function useLoadResources() {
         const stopwatch = new Stopwatch();
 
         await createImageDirectory();
+        await createFontDirectory();
 
         // Fix database entries if we make any "breaking" changes.
         await checkForMigrations();

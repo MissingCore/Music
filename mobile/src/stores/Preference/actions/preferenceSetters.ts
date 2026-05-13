@@ -3,7 +3,7 @@ import { Uniwind } from "uniwind";
 
 import i18next from "~/modules/i18n";
 import { preferenceStore } from "../store";
-import type { Font, NowPlayingDesign } from "../constants";
+import type { NowPlayingDesign } from "../constants";
 import {
   clampMinAlbumLength,
   clampPlaybackDelay,
@@ -13,6 +13,7 @@ import { playbackStore } from "../../Playback/store";
 import { getSourceName } from "../../Playback/utils";
 
 import { clearAllQueries } from "~/lib/react-query";
+import type { Font } from "~/modules/font/constants";
 import type { DefaultTheme } from "~/modules/theme/constants";
 import {
   getCustomTheme,
