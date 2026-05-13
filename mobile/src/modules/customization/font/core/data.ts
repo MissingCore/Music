@@ -36,7 +36,7 @@ export async function saveCustomFont(entry: { name: string; uri: string }) {
   const cachedFont = new File(entry.uri);
   const finalDestination = new File(
     FontDirectory,
-    `${createId()}${fontExtension}`,
+    `${createId()}.${fontExtension}`,
   );
 
   try {
