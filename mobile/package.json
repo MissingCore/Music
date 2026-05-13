@@ -17,7 +17,7 @@
     "atlas": "npx expo export --platform android && npx expo-atlas",
     "typecheck": "tsc --noEmit",
     "lint": "expo lint",
-    "circular-dep": "npx dpdm ./src/* --circular --exit-code circular:1 --warning=false",
+    "circular-dep": "npx dpdm@4.0.1 ./src/* --circular --exit-code circular:1 --warning=false",
     "db:generate": "drizzle-kit generate",
     "sync:licenses": "license-checker-rseidelsohn --production --depth=0 --excludePrivatePackages --clarificationsFile ./scripts/licenses/licenseClarification.json --customPath ./scripts/licenses/customLicenseFormat.json --json | node ./scripts/licenses/updateLicenses.mjs",
     "release": "git pull && python ./scripts/release/release_bump.py"
@@ -114,18 +114,6 @@
       "ANDROID_SYNCHRONOUSLY_UPDATE_UI_PROPS": false,
       "DISABLE_COMMIT_PAUSING_MECHANISM": false,
       "EXPERIMENTAL_CSS_ANIMATIONS_FOR_SVG_COMPONENTS": true
-    }
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@missingcore/music-glyph-toys",
-      "@sentry/cli",
-      "react-native-audio-browser",
-      "sharp"
-    ],
-    "patchedDependencies": {
-      "react-native-android-widget": "patches/react-native-android-widget.patch",
-      "@lodev09/react-native-true-sheet": "patches/@lodev09__react-native-true-sheet.patch"
     }
   }
 }

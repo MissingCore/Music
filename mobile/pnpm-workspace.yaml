@@ -1,0 +1,14 @@
+# Ensure only packages released at least 1 day ago can be installed.
+minimumReleaseAge: 1440
+
+nodeLinker: "hoisted"
+
+onlyBuiltDependencies:
+  - "@missingcore/music-glyph-toys"
+  - "@sentry/cli"
+  - "react-native-audio-browser"
+  - "sharp"
+
+patchedDependencies:
+  "@lodev09/react-native-true-sheet": "patches/@lodev09__react-native-true-sheet.patch"
+  "react-native-android-widget": "patches/react-native-android-widget.patch"
