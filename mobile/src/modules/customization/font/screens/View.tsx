@@ -3,7 +3,7 @@ import { File } from "expo-file-system";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-import type { CustomFont } from "../schema";
+import type { CustomFont } from "../core/schema";
 
 import { Add } from "~/resources/icons/Add";
 import { Delete } from "~/resources/icons/Delete";

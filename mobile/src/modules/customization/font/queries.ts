@@ -2,8 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { eq } from "drizzle-orm";
 
 import { db } from "~/db";
-import type { CustomFont } from "./schema";
-import { customFonts } from "./schema";
+import type { CustomFont } from "./core/schema";
+import { customFonts } from "./core/schema";
 
 import { queryClient } from "~/lib/react-query";
 

@@ -1,4 +1,4 @@
-import type { CustomFont } from "./schema";
+import type { CustomFont } from "./core/schema";
 
 //#region Bundled Fonts
 export const FontFamily = {

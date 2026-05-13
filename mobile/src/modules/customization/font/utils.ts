@@ -1,7 +1,7 @@
 import { loadAsync as loadFontsAsync } from "expo-font";
 
 import { toLowerCase, removeFileExtension } from "~/utils/string";
-import type { CustomFont } from "./schema";
+import type { CustomFont } from "./core/schema";
 import type { BundledFont, Font } from "./constants";
 import { FontFamily } from "./constants";
 
