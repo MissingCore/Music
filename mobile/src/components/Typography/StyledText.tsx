@@ -5,7 +5,8 @@ import { Text } from "react-native";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
-import { cn, getFont } from "~/lib/style";
+import { cn } from "~/lib/style";
+import { getFont } from "~/modules/font/utils";
 
 /** Styled `<Text />`. */
 export function StyledText({

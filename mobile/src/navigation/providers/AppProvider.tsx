@@ -15,6 +15,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { queryClient } from "~/lib/react-query";
 import { GestureHandlerRootView } from "~/components/Base/GestureHandlerRootView";
+import { getFont } from "~/modules/font/utils";
 import { useCurrentScheme, useTheme } from "~/modules/theme/hooks";
 
 /** All providers used by the app. */
@@ -69,7 +70,7 @@ function ToastProvider() {
     <Toaster
       t={t}
       theme={{
-        fontFamily: primaryFont,
+        fontFamily: getFont(primaryFont),
         surface: theme.surfaceContainerLowest,
         onSurface: theme.onSurface,
         surfaceBorder: theme.surfaceContainerHigh,

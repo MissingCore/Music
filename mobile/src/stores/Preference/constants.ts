@@ -1,18 +1,6 @@
+import type { Font } from "~/modules/font/constants";
 import type { CustomTheme, DefaultTheme } from "~/modules/theme/constants";
 import type { Tab } from "./types";
-
-//#region Font
-export const FontOptions = [
-  "NDot",
-  "NType",
-  "Roboto",
-  "Inter",
-  "Geist Mono",
-  "System",
-] as const;
-
-export type Font = (typeof FontOptions)[number];
-//#endregion
 
 //#region Now Playing Design
 export const NowPlayingDesignOptions = ["plain", "vinyl", "vinylOld"] as const;

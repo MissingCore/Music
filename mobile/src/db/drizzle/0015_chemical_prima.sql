@@ -1,0 +1,1 @@
+ALTER TABLE `custom_fonts` RENAME COLUMN "display_name" TO "name";
