@@ -1,6 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
 import Animated, {
   Easing,
+  ReduceMotion,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
@@ -78,6 +79,10 @@ export function Marquee({
         ),
       ),
       -1,
+      undefined,
+      undefined,
+      //! See: https://github.com/MissingCore/Music/pull/480
+      ReduceMotion.Never,
     );
   }, [containerWidth, contentWidth, offset, inForeground]);
 
