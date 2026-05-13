@@ -45,7 +45,7 @@ export default function NowPlaying() {
     <SeekbarContext>
       <SafeContainer additionalTopOffset={56} className="flex-1 gap-8">
         <ArtworkSlot artwork={track.artwork} trackId={track.id} />
-        <View className="gap-6 px-4">
+        <View className="-mt-8 gap-6 px-4">
           <Metadata track={track} />
           <SeekBar id={track.id} uri={track.uri} trackLength={track.duration} />
           <PlaybackControls />
