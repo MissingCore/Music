@@ -57,6 +57,12 @@ export function isBundledFont(
   return typeof value === "string";
 }
 
+export async function loadCustomFont(fontUri: string) {
+  const fileName = fontUri.split("/").at(-1);
+  if (!fileName) throw new Error("File name cannot be derived.");
+  return loadFontsAsync({ [removeFileExtension(fileName)]: fontUri });
+}
+
 export function loadCustomFonts(fonts: Array<{ uri: string }>) {
   const customFontEntries = fonts
     .map((font) => {

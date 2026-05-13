@@ -1,5 +1,4 @@
 import { useNavigation } from "@react-navigation/native";
-import { File } from "expo-file-system";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -21,11 +20,8 @@ import { Radio } from "~/components/Form/Radio";
 import { StyledText } from "~/components/Typography/StyledText";
 import type { Font } from "../core/constants";
 import { BundledFontOptions } from "../core/constants";
-import {
-  deleteCustomFont,
-  revalidateCustomFonts,
-  useCustomFonts,
-} from "../queries";
+import { deleteCustomFont } from "../core/data";
+import { useCustomFonts } from "../queries";
 import {
   areFontEqual,
   getFont,
@@ -111,7 +107,7 @@ function FontsScreenBase(props: {
                 <IconButton
                   Icon={Delete}
                   accessibilityLabel={t("form.delete")}
-                  onPress={() => onDeleteFont(font as CustomFont)}
+                  onPress={() => deleteCustomFont(font.id)}
                   _iconColor="error"
                 />
               ) : null}
@@ -129,7 +125,7 @@ function useCanDeleteFont() {
   const accentFont = usePreferenceStore((s) => s.accentFont);
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
   return useCallback(
-    (font: Font) => {
+    (font: Font): font is CustomFont => {
       if (isBundledFont(font)) return false;
       return (
         !areFontEqual(font, accentFont) && !areFontEqual(font, primaryFont)
@@ -137,12 +133,5 @@ function useCanDeleteFont() {
     },
     [accentFont, primaryFont],
   );
-}
-
-async function onDeleteFont(font: CustomFont) {
-  await deleteCustomFont(font.id);
-  const customFontFile = new File(font.uri);
-  customFontFile.delete();
-  revalidateCustomFonts();
 }
 //#endregion

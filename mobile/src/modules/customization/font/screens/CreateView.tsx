@@ -1,13 +1,11 @@
 import { toast } from "@missingcore/toast";
-import { getDocumentAsync } from "expo-document-picker";
+import { useNavigation } from "@react-navigation/native";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { z } from "zod/mini";
 
 import { Close } from "~/resources/icons/Close";
-
-import { router } from "~/navigation/utils/router";
 
 import { wait } from "~/utils/promise";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
@@ -20,15 +18,27 @@ import {
 } from "~/modules/form/FormState";
 import { FormInputImpl } from "~/modules/form/FormState/FormInput";
 import { ZSchema } from "~/modules/form/utils";
-import { saveFont } from "../helpers/storage";
-import { createCustomFont, revalidateCustomFonts } from "../queries";
-import { loadCustomFonts } from "../utils";
+import { pickFont, saveCustomFont } from "../core/data";
+import { loadCustomFont } from "../utils";
 
 function useFormState() {
   return useFormStateContext<FontEntry>();
 }
 
 export default function CreateFont() {
+  const navigation = useNavigation();
+
+  const onCreateFont = useCallback(
+    async (entry: FontEntry) => {
+      const result = await saveCustomFont(entry);
+      if (result) {
+        await loadCustomFont(result.uri);
+        navigation.goBack();
+      }
+    },
+    [navigation],
+  );
+
   return (
     <FormStateProvider
       schema={FontEntrySchema}
@@ -49,19 +59,14 @@ function FontForm() {
 
   const onImportFont = useCallback(async () => {
     try {
-      const { assets, canceled } = await getDocumentAsync({
-        type: ["font/otf", "font/ttf"],
-      });
-      if (canceled) throw new Error(t("err.msg.actionCancel"));
-      if (!assets[0]) throw new Error(t("err.msg.noSelect"));
-
+      const fontUri = await pickFont();
       await wait(100);
       toast.t("feat.backup.extra.importSuccess");
-      setFields({ uri: assets[0].uri });
+      setFields({ uri: fontUri });
     } catch (err) {
       toast.error((err as Error).message);
     }
-  }, [t, setFields]);
+  }, [setFields]);
 
   return (
     <KeyboardAwareScrollView contentContainerClassName="gap-6 p-4">
@@ -102,20 +107,4 @@ const FontEntrySchema = z.object({
 });
 
 type FontEntry = z.infer<typeof FontEntrySchema>;
-//#endregion
-
-//#region Submit Handler
-async function onCreateFont({ name, uri }: FontEntry) {
-  try {
-    const savedUri = await saveFont(uri);
-
-    await createCustomFont({ name, uri: savedUri });
-    await loadCustomFonts([{ uri: savedUri }]);
-    revalidateCustomFonts();
-
-    router.back();
-  } catch {
-    toast.tError("err.flow.generic.title");
-  }
-}
 //#endregion
