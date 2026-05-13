@@ -4,6 +4,7 @@ import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import type { AnimatedRef, SharedValue } from "react-native-reanimated";
 import type { ReanimatedScrollEvent } from "react-native-reanimated/lib/typescript/hook/commonTypes";
 import Animated, {
+  ReduceMotion,
   clamp,
   scrollTo,
   useAnimatedReaction,
@@ -83,7 +84,11 @@ export function Scrollbar({
   const dismissScrollbar = useCallback(() => {
     "worklet";
     isOngoing.value = false;
-    isScrollingBuffer.value = withTiming(0, { duration: HIDE_DELAY });
+    isScrollingBuffer.value = withTiming(0, {
+      duration: HIDE_DELAY,
+      //! See: https://github.com/MissingCore/Music/pull/480
+      reduceMotion: ReduceMotion.Never,
+    });
   }, [isOngoing, isScrollingBuffer]);
 
   //* Show scrollbar if we have at least 2 screens worth of content.
@@ -103,7 +108,11 @@ export function Scrollbar({
       if (prevVal === null) return; //? Don't call on "initialization".
       isScrollingBuffer.value = 1;
       if (isOngoing.value) return;
-      isScrollingBuffer.value = withTiming(0, { duration: HIDE_DELAY });
+      isScrollingBuffer.value = withTiming(0, {
+        duration: HIDE_DELAY,
+        //! See: https://github.com/MissingCore/Music/pull/480
+        reduceMotion: ReduceMotion.Never,
+      });
     },
   );
   //#endregion
@@ -153,6 +162,8 @@ export function Scrollbar({
     width: THUMB_SIZE,
     opacity: withTiming(scrollbarVisible ? 1 : 0, {
       duration: scrollbarVisible ? 150 : 500,
+      //! See: https://github.com/MissingCore/Music/pull/480
+      reduceMotion: ReduceMotion.Never,
     }),
     //? Prevents `dev` mode error when `scaledScrollAmount = NaN` from `0/0`.
     transform: [{ translateY: scaledScrollAmount.value || 0 }],
@@ -161,7 +172,11 @@ export function Scrollbar({
   const thumbStyle = useAnimatedStyle(() => ({
     height: withTiming(
       isOngoing.value || prevY.value !== -1 ? THUMB_SIZE : COLLAPSED_THUMB_SIZE,
-      { duration: 150 },
+      {
+        duration: 150,
+        //! See: https://github.com/MissingCore/Music/pull/480
+        reduceMotion: ReduceMotion.Never,
+      },
     ),
     width: THUMB_SIZE,
   }));
