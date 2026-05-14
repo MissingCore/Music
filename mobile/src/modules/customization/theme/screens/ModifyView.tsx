@@ -8,8 +8,8 @@ import { PreferenceSetters } from "~/stores/Preference/actions";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
 import { wait } from "~/utils/promise";
+import type { ThemeEntry } from "../components/ModifyViewBase";
 import { ModifyThemeBase } from "../components/ModifyViewBase";
-import type { ThemeEntry } from "../helpers/zod";
 import {
   deleteCustomTheme,
   revalidateCustomThemes,

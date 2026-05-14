@@ -1,14 +1,25 @@
 import { getDocumentAsync } from "expo-document-picker";
 import { File } from "expo-file-system";
 
+import { z } from "zod/mini";
+
 import i18next from "~/modules/i18n";
 
 import { pickDirectory } from "~/lib/file-system";
-import type { ThemeExport } from "./zod";
-import { ThemeExportSchema } from "./zod";
-import type { CustomTheme, ThemeColors } from "../core/constants";
+import { ZSchema } from "~/modules/form/utils";
+import type { CustomTheme, ThemeColors } from "./constants";
+import { ColorSchemeOptions } from "./constants";
+import { ColorRoleZodMap } from "./utils";
 
-//#region Export
+//#region Backup
+const ThemeExportSchema = z.object({
+  name: ZSchema.NonEmptyString,
+  scheme: z.enum(ColorSchemeOptions),
+  colors: z.object(ColorRoleZodMap),
+});
+
+type ThemeExport = z.infer<typeof ThemeExportSchema>;
+
 export async function exportTheme(theme: CustomTheme): Promise<void> {
   const dir = await pickDirectory();
   const file = dir.createFile("custom_theme", "application/json");
@@ -20,9 +31,7 @@ export async function exportTheme(theme: CustomTheme): Promise<void> {
     }),
   );
 }
-//#endregion
 
-//#region Import
 export async function readThemeFile(): Promise<ThemeExport> {
   const { assets, canceled } = await getDocumentAsync({
     type: ["application/json", "application/octet-stream", "text/plain"],

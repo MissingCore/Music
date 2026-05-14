@@ -10,7 +10,7 @@ import { TextInput } from "~/components/Form/Input";
 import { Modal } from "~/components/Modal";
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import type { HexColor } from "../core/constants";
-import { normalizeHexColor } from "../helpers/color";
+import { normalizeHexColor } from "../core/utils";
 
 export function ColorPickerInput(props: {
   label: string;

@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { wait } from "~/utils/promise";
 import { ModifyThemeBase } from "../components/ModifyViewBase";
-import { readThemeFile } from "../helpers/backup";
+import { readThemeFile } from "../core/data";
 import { createCustomTheme, revalidateCustomThemes } from "../queries";
 
 export default function CreateTheme() {
