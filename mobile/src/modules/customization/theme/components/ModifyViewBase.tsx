@@ -18,7 +18,11 @@ import { FormInputImpl } from "~/modules/form/FormState/FormInput";
 import { ZSchema } from "~/modules/form/utils";
 import { ColorPickerInput } from "./ColorPickerInput";
 import type { ColorRole, HexColor } from "../core/constants";
-import { ColorRoleOptions, Themes } from "../core/constants";
+import {
+  ColorRoleOptions,
+  ColorSchemeOptions,
+  Themes,
+} from "../core/constants";
 import { ColorRoleZodMap } from "../core/utils";
 
 function useFormState() {
@@ -114,7 +118,7 @@ const ThemeEntrySchema = z.object({
   _importGen: z.nullable(z.number()),
   // Actual form fields:
   name: ZSchema.NonEmptyString,
-  scheme: z.enum(["light", "dark"]),
+  scheme: z.enum(ColorSchemeOptions),
   ...ColorRoleZodMap,
 });
 
