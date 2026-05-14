@@ -56,7 +56,7 @@ export default function ModifyTheme({
       onSubmit={async ({ _importGen, ...entry }) => {
         try {
           await updateCustomTheme(themeId, entry);
-          if (isActiveTheme) await PreferenceSetters.setTheme(themeId);
+          if (isActiveTheme) PreferenceSetters.setTheme(themeId);
           navigation.goBack();
         } catch {
           toast.tError("err.flow.generic.title");
