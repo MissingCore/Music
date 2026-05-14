@@ -33,11 +33,10 @@ export async function pickFont() {
 
 /** Saves font in correct directory and create a new database entry. */
 export async function saveCustomFont(entry: { name: string; uri: string }) {
-  const fontExtension = entry.uri.split(".").at(-1)!;
   const cachedFont = new File(entry.uri);
   const finalDestination = new File(
     FontDirectory,
-    `${createId()}.${fontExtension}`,
+    `${createId()}${cachedFont.extension}`,
   );
 
   try {
