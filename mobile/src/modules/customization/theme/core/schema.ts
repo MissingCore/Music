@@ -1,7 +1,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import { sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-import type { ColorScheme } from "./constants";
+import type { ColorScheme } from "../constants";
 
 export const customThemes = sqliteTable("custom_themes", {
   id: text()

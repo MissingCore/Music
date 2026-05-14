@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { eq } from "drizzle-orm";
 
 import { db } from "~/db";
-import { customThemes } from "./schema";
+import { customThemes } from "./core/schema";
 
 import { throwIfNoResults } from "~/lib/drizzle";
 import { queryClient } from "~/lib/react-query";

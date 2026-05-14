@@ -2,7 +2,7 @@ import { Uniwind } from "uniwind";
 import { Appearance } from "react-native";
 
 import { db } from "~/db";
-import type { customThemes } from "./schema";
+import type { customThemes } from "./core/schema";
 
 import type { CustomTheme, DefaultTheme, HexColor } from "./constants";
 import { DefaultThemeOptions } from "./constants";
