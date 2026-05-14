@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { cn } from "~/lib/style";
-import type { VariantColor } from "~/modules/customization/theme/constants";
+import type { VariantColor } from "~/modules/customization/theme/core/constants";
 import { useTheme } from "~/modules/customization/theme/hooks";
 import { StyledText } from "../Typography/StyledText";
 

@@ -14,7 +14,7 @@ import { getSourceName } from "../../Playback/utils";
 
 import { clearAllQueries } from "~/lib/react-query";
 import type { Font } from "~/modules/customization/font/core/constants";
-import type { DefaultTheme } from "~/modules/customization/theme/constants";
+import type { DefaultTheme } from "~/modules/customization/theme/core/constants";
 import {
   getCustomTheme,
   isDefaultTheme,

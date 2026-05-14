@@ -2,7 +2,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useMemo } from "react";
 
 import { cn } from "~/lib/style";
-import type { ColorRole } from "~/modules/customization/theme/constants";
+import type { ColorRole } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
 
 /** Gradient where the darkest portion is on the top. */

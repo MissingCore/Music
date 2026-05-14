@@ -2,8 +2,8 @@ import { z } from "zod/mini";
 
 import { ZSchema } from "~/modules/form/utils";
 import { normalizeHexColor } from "./color";
-import type { ColorRole } from "../constants";
-import { ColorRoleOptions } from "../constants";
+import type { ColorRole } from "../core/constants";
+import { ColorRoleOptions } from "../core/constants";
 
 export const HexColorSchema = z.pipe(
   ZSchema.NonEmptyString,

@@ -15,8 +15,8 @@ import {
 } from "~/modules/form/FormState";
 import { FormInputImpl } from "~/modules/form/FormState/FormInput";
 import { ColorPickerInput } from "./ColorPickerInput";
-import type { ColorRole, HexColor } from "../constants";
-import { ColorRoleOptions, Themes } from "../constants";
+import type { ColorRole, HexColor } from "../core/constants";
+import { ColorRoleOptions, Themes } from "../core/constants";
 import type { ThemeEntry } from "../helpers/zod";
 import { ThemeEntrySchema } from "../helpers/zod";
 

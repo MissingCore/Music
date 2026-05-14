@@ -9,7 +9,7 @@ import { ExtendedTButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import { Modal } from "~/components/Modal";
 import { Em, StyledText } from "~/components/Typography/StyledText";
-import type { HexColor } from "../constants";
+import type { HexColor } from "../core/constants";
 import { normalizeHexColor } from "../helpers/color";
 
 export function ColorPickerInput(props: {

@@ -20,7 +20,7 @@ import type { Icon } from "~/resources/icons/type";
 import { Colors } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
-import type { AppColor } from "~/modules/customization/theme/constants";
+import type { AppColor } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
 import { Em } from "../Typography/StyledText";
 

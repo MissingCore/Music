@@ -6,7 +6,7 @@ import i18next from "~/modules/i18n";
 import { pickDirectory } from "~/lib/file-system";
 import type { ThemeExport } from "./zod";
 import { ThemeExportSchema } from "./zod";
-import type { CustomTheme, ThemeColors } from "../constants";
+import type { CustomTheme, ThemeColors } from "../core/constants";
 
 //#region Export
 export async function exportTheme(theme: CustomTheme): Promise<void> {

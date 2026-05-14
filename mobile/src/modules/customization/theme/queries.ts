@@ -6,7 +6,7 @@ import { customThemes } from "./core/schema";
 
 import { throwIfNoResults } from "~/lib/drizzle";
 import { queryClient } from "~/lib/react-query";
-import type { ResolvedTheme } from "./constants";
+import type { ResolvedTheme } from "./core/constants";
 
 const queryKey = ["custom-themes"] as const;
 

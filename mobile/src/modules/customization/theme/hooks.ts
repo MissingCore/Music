@@ -3,8 +3,8 @@ import { useColorScheme } from "react-native";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
-import type { AppColor } from "./constants";
-import { Themes } from "./constants";
+import type { AppColor } from "./core/constants";
+import { Themes } from "./core/constants";
 import { isHexColor } from "./utils";
 
 //#region Hooks

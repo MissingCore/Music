@@ -20,12 +20,12 @@ import { Pressable } from "~/components/Base/Pressable";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { StyledText } from "~/components/Typography/StyledText";
 import { exportTheme } from "../helpers/backup";
-import type { CustomTheme, HexColor } from "../constants";
+import type { CustomTheme, HexColor } from "../core/constants";
 import {
   DefaultThemeOptions,
   Themes as DefaultThemes,
   SystemTheme,
-} from "../constants";
+} from "../core/constants";
 import { useCustomThemes } from "../queries";
 import { formatAsCustomTheme, isDefaultTheme } from "../utils";
 

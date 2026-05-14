@@ -1,4 +1,4 @@
-import type { HexColor } from "../constants";
+import type { HexColor } from "../core/constants";
 
 /** Normalizes `#RGB` and `#RRGGBB` strings to uppercase `#RRGGBB`. */
 export function normalizeHexColor(value: string) {

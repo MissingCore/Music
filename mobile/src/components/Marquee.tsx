@@ -15,7 +15,7 @@ import { useInForeground } from "~/stores/ListenerState";
 
 import { OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
-import type { ColorRole } from "~/modules/customization/theme/constants";
+import type { ColorRole } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
 import { ScrollView } from "./Base/ScrollView";
 

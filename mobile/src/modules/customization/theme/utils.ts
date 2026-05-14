@@ -4,8 +4,8 @@ import { Appearance } from "react-native";
 import { db } from "~/db";
 import type { customThemes } from "./core/schema";
 
-import type { CustomTheme, DefaultTheme, HexColor } from "./constants";
-import { DefaultThemeOptions } from "./constants";
+import type { CustomTheme, DefaultTheme, HexColor } from "./core/constants";
+import { DefaultThemeOptions } from "./core/constants";
 
 export function formatAsCustomTheme(
   entry: typeof customThemes.$inferSelect,

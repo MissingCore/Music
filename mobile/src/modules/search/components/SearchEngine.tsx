@@ -14,7 +14,7 @@ import { FlatList, useFlatListRef } from "~/components/Base/List";
 import { Button } from "~/components/Form/Button";
 import { TopDownGradient } from "~/components/Gradient";
 import { TEm } from "~/components/Typography/StyledText";
-import type { ColorRole } from "~/modules/customization/theme/constants";
+import type { ColorRole } from "~/modules/customization/theme/core/constants";
 import { TrackAction } from "~/modules/media/components/Track";
 import { SearchBar } from "./SearchBar";
 import { SearchResult } from "./SearchResult";
