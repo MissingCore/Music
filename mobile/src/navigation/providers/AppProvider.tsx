@@ -16,7 +16,10 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { queryClient } from "~/lib/react-query";
 import { GestureHandlerRootView } from "~/components/Base/GestureHandlerRootView";
 import { getFont } from "~/modules/customization/font/utils";
-import { useCurrentScheme, useTheme } from "~/modules/theme/hooks";
+import {
+  useCurrentScheme,
+  useTheme,
+} from "~/modules/customization/theme/hooks";
 
 /** All providers used by the app. */
 export function AppProvider(props: { children: React.ReactNode }) {

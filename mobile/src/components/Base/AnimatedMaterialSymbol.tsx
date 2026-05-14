@@ -3,7 +3,7 @@ import { Path, Svg } from "react-native-svg";
 
 import type { Icon } from "~/resources/icons/type";
 
-import { useColor } from "~/modules/theme/hooks";
+import { useColor } from "~/modules/customization/theme/hooks";
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 

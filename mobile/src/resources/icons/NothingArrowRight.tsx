@@ -1,6 +1,6 @@
 import Svg, { Circle } from "react-native-svg";
 
-import { useColor } from "~/modules/theme/hooks";
+import { useColor } from "~/modules/customization/theme/hooks";
 import type { Icon } from "./type";
 
 // Custom SVG made in Figma.

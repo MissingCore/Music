@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { cn } from "~/lib/style";
-import type { VariantColor } from "~/modules/theme/constants";
-import { useTheme } from "~/modules/theme/hooks";
+import type { VariantColor } from "~/modules/customization/theme/constants";
+import { useTheme } from "~/modules/customization/theme/hooks";
 import { StyledText } from "../Typography/StyledText";
 
 export type ListItemContentProps = (

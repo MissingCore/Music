@@ -9,7 +9,10 @@ import { throwIfNoResults } from "~/lib/drizzle";
 import { createPersistedStore } from "~/lib/zustand";
 import { getCustomFonts } from "~/modules/customization/font/core/data";
 import { loadCustomFont } from "~/modules/customization/font/utils";
-import { getCustomTheme, resolveCustomTheme } from "~/modules/theme/utils";
+import {
+  getCustomTheme,
+  resolveCustomTheme,
+} from "~/modules/customization/theme/utils";
 import type { PreferenceStore } from "./constants";
 import { OmittedFields } from "./constants";
 import { resolveLanguageConfigs } from "./utils";

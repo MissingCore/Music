@@ -10,7 +10,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { sessionStore, useSessionStore } from "~/stores/Session/store";
 import { findAndSetCachedWaveform } from "~/stores/Session/actions";
 
-import { useTheme } from "~/modules/theme/hooks";
+import { useTheme } from "~/modules/customization/theme/hooks";
 
 //#region Waveform
 interface WaveformProps {

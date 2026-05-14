@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { Colors } from "~/constants/Styles";
-import { useCurrentTheme } from "~/modules/theme/hooks";
+import { useCurrentTheme } from "~/modules/customization/theme/hooks";
 
 /** Light theme for React Navigation components. */
 const LightNavTheme = {

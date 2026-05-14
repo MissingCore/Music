@@ -15,8 +15,8 @@ import { useInForeground } from "~/stores/ListenerState";
 
 import { OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
-import type { ColorRole } from "~/modules/theme/constants";
-import { useColor } from "~/modules/theme/hooks";
+import type { ColorRole } from "~/modules/customization/theme/constants";
+import { useColor } from "~/modules/customization/theme/hooks";
 import { ScrollView } from "./Base/ScrollView";
 
 /** Used to progressively display long content. */

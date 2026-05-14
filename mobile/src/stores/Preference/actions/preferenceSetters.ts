@@ -14,12 +14,12 @@ import { getSourceName } from "../../Playback/utils";
 
 import { clearAllQueries } from "~/lib/react-query";
 import type { Font } from "~/modules/customization/font/core/constants";
-import type { DefaultTheme } from "~/modules/theme/constants";
+import type { DefaultTheme } from "~/modules/customization/theme/constants";
 import {
   getCustomTheme,
   isDefaultTheme,
   resolveCustomTheme,
-} from "~/modules/theme/utils";
+} from "~/modules/customization/theme/utils";
 
 export function setAccentFont(accentFont: Font) {
   preferenceStore.setState({ accentFont });

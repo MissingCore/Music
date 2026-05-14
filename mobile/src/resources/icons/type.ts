@@ -1,4 +1,4 @@
-import type { AppColor } from "~/modules/theme/constants";
+import type { AppColor } from "~/modules/customization/theme/constants";
 
 export type Icon = {
   /** Defaults to `24px`. */

@@ -27,7 +27,7 @@ import { Pressable } from "~/components/Base/Pressable";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { Menu } from "~/components/Menu";
 import { TStyledText } from "~/components/Typography/StyledText";
-import { useTheme } from "~/modules/theme/hooks";
+import { useTheme } from "~/modules/customization/theme/hooks";
 import type { Tab } from "~/stores/Preference/types";
 import { MiniPlayer } from "./MiniPlayer";
 
