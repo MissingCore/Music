@@ -11,7 +11,7 @@ You can customize what font is used for primary (ie: general text) & accent (ie:
 
 ## Custom Themes
 
-You can customize the theme the app uses (light/dark/system). As of `v3.1.0`, you can create your own theme manually in the app or by importing a `.txt` or .`json` file with the structure below. These themes can also be exported (as a `.json` file), allowing you to share them with others.
+You can customize the theme the app uses (light/dark/system). As of `v3.1.0`, you can create your own theme manually in the app or by importing a `.txt` or `.json` file with the structure below. These themes can also be exported (as a `.json` file), allowing you to share them with others.
 
 > [!IMPORTANT]
 > We only support 3/6-digit Hex color codes (ie: no opacity).

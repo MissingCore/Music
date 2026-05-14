@@ -31,7 +31,7 @@ export async function pickFont() {
   return assets[0].uri;
 }
 
-/** Saves font in correct directory and create a new database entry. */
+/** Saves font in correct directory and creates a new database entry. */
 export async function saveCustomFont(entry: { name: string; uri: string }) {
   const cachedFont = new File(entry.uri);
   const finalDestination = new File(
@@ -59,7 +59,7 @@ export async function saveCustomFont(entry: { name: string; uri: string }) {
   }
 }
 
-/** Delete font database entry and font file. */
+/** Deletes font database entry and font file. */
 export async function deleteCustomFont(fontId: string) {
   try {
     const [result] = await db
