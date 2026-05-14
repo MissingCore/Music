@@ -29,7 +29,10 @@ export function ColorPickerInput(props: {
 
   const onPickerComplete = (colors: ColorFormatsObject) => {
     const normalized = normalizeHexColor(colors.hex);
-    if (normalized) props.onUpdateValue(normalized);
+    if (normalized) {
+      setDraftValue(normalized);
+      props.onUpdateValue(normalized);
+    }
   };
 
   return (
