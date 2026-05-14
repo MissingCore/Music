@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "9fe12de9-0fc5-422a-85fb-21231b458fa7",
+  "id": "6bf3aafe-3c6e-49b2-a895-8e33d7d78415",
   "prevId": "af4c5398-3b5b-47fb-bc3a-8219f61c6b4f",
   "tables": {
     "albums": {
@@ -606,7 +606,15 @@
           }
         }
       },
-      "indexes": {},
+      "indexes": {
+        "tracks_uri_unique": {
+          "name": "tracks_uri_unique",
+          "columns": [
+            "uri"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {
         "tracks_album_id_albums_id_fk": {
           "name": "tracks_album_id_albums_id_fk",
@@ -901,6 +909,37 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "custom_fonts": {
+      "name": "custom_fonts",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "uri": {
+          "name": "uri",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "custom_themes": {
       "name": "custom_themes",
       "columns": {
@@ -933,6 +972,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "primary_dim": {
+          "name": "primary_dim",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "on_primary": {
           "name": "on_primary",
           "type": "text",
@@ -949,6 +995,13 @@
         },
         "secondary": {
           "name": "secondary",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "secondary_dim": {
+          "name": "secondary_dim",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -975,6 +1028,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "error_dim": {
+          "name": "error_dim",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "on_error": {
           "name": "on_error",
           "type": "text",
@@ -984,27 +1044,6 @@
         },
         "on_error_variant": {
           "name": "on_error_variant",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "primary_dim": {
-          "name": "primary_dim",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "secondary_dim": {
-          "name": "secondary_dim",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "error_dim": {
-          "name": "error_dim",
           "type": "text",
           "primaryKey": false,
           "notNull": true,

@@ -13,10 +13,7 @@ import m0008 from "./0008_little_toad.sql";
 import m0009 from "./0009_ambitious_puppet_master.sql";
 import m0010 from "./0010_spooky_blue_marvel.sql";
 import m0011 from "./0011_awesome_gateway.sql";
-import m0012 from "./0012_typical_jack_murdock.sql";
-import m0013 from "./0013_wealthy_sally_floyd.sql";
-import m0014 from "./0014_dark_mandarin.sql";
-import m0015 from "./0015_chemical_prima.sql";
+import m0012 from "./0012_organic_mordo.sql";
 
 export default {
   journal,
@@ -34,8 +31,5 @@ export default {
     m0010,
     m0011,
     m0012,
-    m0013,
-    m0014,
-    m0015,
   },
 };
