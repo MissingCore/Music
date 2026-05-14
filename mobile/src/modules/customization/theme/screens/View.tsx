@@ -19,15 +19,14 @@ import { FlatList } from "~/components/Base/List";
 import { Pressable } from "~/components/Base/Pressable";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { StyledText } from "~/components/Typography/StyledText";
-import { exportTheme } from "../helpers/backup";
-import type { CustomTheme, HexColor } from "../constants";
+import type { CustomTheme, HexColor } from "../core/constants";
 import {
   DefaultThemeOptions,
   Themes as DefaultThemes,
   SystemTheme,
-} from "../constants";
-import { useCustomThemes } from "../queries";
-import { formatAsCustomTheme, isDefaultTheme } from "../utils";
+} from "../core/constants";
+import { exportTheme, useCustomThemes } from "../core/data";
+import { formatCustomTheme, isDefaultTheme } from "../utils";
 
 const DefaultThemeMap = {
   light: DefaultThemes.light,
@@ -119,7 +118,7 @@ export default function Themes() {
                     Icon={FileSave}
                     accessibilityLabel={t("feat.backup.extra.export")}
                     onPress={() =>
-                      onExportTheme(formatAsCustomTheme(themeMap[themeId]!))
+                      onExportTheme(formatCustomTheme(themeMap[themeId]!))
                     }
                     _iconColor={themeColors.onSurface as HexColor}
                     _rippleColor={themeColors.surfaceContainerHigh as HexColor}

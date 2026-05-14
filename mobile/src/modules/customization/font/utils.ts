@@ -1,17 +1,18 @@
 import { loadAsync as loadFontsAsync } from "expo-font";
 
 import { toLowerCase, removeFileExtension } from "~/utils/string";
-import type { CustomFont } from "./schema";
-import type { BundledFont, Font } from "./constants";
-import { FontFamily } from "./constants";
+import type { BundledFont, Font } from "./core/constants";
+import { FontFamily } from "./core/constants";
 
-export function areFontEqual(fontA: Font, fontB: Font) {
-  if (!isBundledFont(fontA) && !isBundledFont(fontB)) {
-    return fontA.id === fontB.id;
-  }
-  return fontA === fontB;
+//#region Loader
+export async function loadCustomFont(fontUri: string) {
+  const fileName = fontUri.split("/").at(-1);
+  if (!fileName) throw new Error("File name cannot be derived.");
+  return loadFontsAsync({ [removeFileExtension(fileName)]: fontUri });
 }
+//#endregion
 
+//#region Query
 function getBundledFontFamily(
   font: BundledFont,
   options?: { bold?: boolean; headline?: boolean },
@@ -50,20 +51,17 @@ export function getFont(
 export function getFontDisplayName(font: Font) {
   return isBundledFont(font) ? font : font.name;
 }
+//#endregion
 
-export function isBundledFont(
-  value: BundledFont | CustomFont,
-): value is BundledFont {
+//#region Validators
+export function areFontEqual(fontA: Font, fontB: Font) {
+  if (!isBundledFont(fontA) && !isBundledFont(fontB)) {
+    return fontA.id === fontB.id;
+  }
+  return fontA === fontB;
+}
+
+export function isBundledFont(value: Font): value is BundledFont {
   return typeof value === "string";
 }
-
-export function loadCustomFonts(fonts: Array<{ uri: string }>) {
-  const customFontEntries = fonts
-    .map((font) => {
-      const fileName = font.uri.split("/").at(-1);
-      if (!fileName) return undefined;
-      return [removeFileExtension(fileName), font.uri] as const;
-    })
-    .filter((entry) => entry !== undefined);
-  return loadFontsAsync(Object.fromEntries(customFontEntries));
-}
+//#endregion

@@ -14,8 +14,8 @@ import type { Prettify } from "~/utils/types";
 import type { PlayFromSource } from "~/stores/Playback/types";
 
 //? Need to export all schemas from a single file.
-export * from "~/modules/font/schema";
-export * from "~/modules/theme/schema";
+export * from "~/modules/customization/font/core/schema";
+export * from "~/modules/customization/theme/core/schema";
 
 //#region Artist
 export const artists = sqliteTable("artists", {

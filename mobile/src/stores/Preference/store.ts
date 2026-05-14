@@ -5,11 +5,14 @@ import { useStore } from "zustand";
 import i18next from "~/modules/i18n";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
-import { throwIfNoResults } from "~/lib/drizzle";
 import { createPersistedStore } from "~/lib/zustand";
-import { getCustomFonts } from "~/modules/font/queries";
-import { loadCustomFonts } from "~/modules/font/utils";
-import { getCustomTheme, resolveCustomTheme } from "~/modules/theme/utils";
+import { getCustomFonts } from "~/modules/customization/font/core/data";
+import { loadCustomFont } from "~/modules/customization/font/utils";
+import { getCustomTheme } from "~/modules/customization/theme/core/data";
+import {
+  formatCustomTheme,
+  resolveCustomTheme,
+} from "~/modules/customization/theme/utils";
 import type { PreferenceStore } from "./constants";
 import { OmittedFields } from "./constants";
 import { resolveLanguageConfigs } from "./utils";
@@ -19,18 +22,14 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     _hasHydrated: false,
     _init: async (state) => {
       // Load custom fonts.
-      try {
-        const customFonts = await getCustomFonts();
-        await loadCustomFonts(customFonts);
-      } catch (err) {
-        console.log("[Preference Store] Failed to load custom fonts:", err);
-      }
+      const customFonts = await getCustomFonts();
+      await Promise.allSettled(customFonts.map((f) => loadCustomFont(f.uri)));
 
       // Set app theme on initialization.
       try {
         if (state.activeCustomThemeId) {
-          const activeCustomTheme = await throwIfNoResults(
-            getCustomTheme(state.activeCustomThemeId),
+          const activeCustomTheme = formatCustomTheme(
+            await getCustomTheme(state.activeCustomThemeId),
           );
           resolveCustomTheme(activeCustomTheme);
           set({ activeCustomTheme });

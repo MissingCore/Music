@@ -9,8 +9,8 @@ import { ExtendedTButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import { Modal } from "~/components/Modal";
 import { Em, StyledText } from "~/components/Typography/StyledText";
-import type { HexColor } from "../constants";
-import { normalizeHexColor } from "../helpers/color";
+import type { HexColor } from "../core/constants";
+import { normalizeHexColor } from "../core/utils";
 
 export function ColorPickerInput(props: {
   label: string;
@@ -29,7 +29,10 @@ export function ColorPickerInput(props: {
 
   const onPickerComplete = (colors: ColorFormatsObject) => {
     const normalized = normalizeHexColor(colors.hex);
-    if (normalized) props.onUpdateValue(normalized);
+    if (normalized) {
+      setDraftValue(normalized);
+      props.onUpdateValue(normalized);
+    }
   };
 
   return (

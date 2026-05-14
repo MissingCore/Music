@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { View } from "react-native";
+import { z } from "zod/mini";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 
@@ -14,11 +15,15 @@ import {
   useFormStateContext,
 } from "~/modules/form/FormState";
 import { FormInputImpl } from "~/modules/form/FormState/FormInput";
+import { ZSchema } from "~/modules/form/utils";
 import { ColorPickerInput } from "./ColorPickerInput";
-import type { ColorRole, HexColor } from "../constants";
-import { ColorRoleOptions, Themes } from "../constants";
-import type { ThemeEntry } from "../helpers/zod";
-import { ThemeEntrySchema } from "../helpers/zod";
+import type { ColorRole, HexColor } from "../core/constants";
+import {
+  ColorRoleOptions,
+  ColorSchemeOptions,
+  Themes,
+} from "../core/constants";
+import { ColorRoleZodMap } from "../core/utils";
 
 function useFormState() {
   return useFormStateContext<ThemeEntry>();
@@ -105,4 +110,17 @@ function ThemeForm({ bottomOffset }: { bottomOffset: number }) {
     </KeyboardAwareScrollView>
   );
 }
+//#endregion
+
+//#region Schema
+const ThemeEntrySchema = z.object({
+  // Additional context:
+  _importGen: z.nullable(z.number()),
+  // Actual form fields:
+  name: ZSchema.NonEmptyString,
+  scheme: z.enum(ColorSchemeOptions),
+  ...ColorRoleZodMap,
+});
+
+export type ThemeEntry = z.infer<typeof ThemeEntrySchema>;
 //#endregion

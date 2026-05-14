@@ -51,10 +51,10 @@ import ModifyTrack from "./screens/tracks/ModifyView";
 import Tracks from "./screens/tracks/View";
 import { TrackSheet } from "./screens/tracks/sheets/TrackSheet";
 import { ArtistsSheet } from "./sheets/ArtistsSheet";
+import FontScreenGroup from "~/modules/customization/font/screens";
+import ThemeScreenGroup from "~/modules/customization/theme/screens";
 import EqualizerSettings from "~/modules/equalizer/screens/View";
-import FontScreenGroup from "~/modules/font/screens";
 import Search from "~/modules/search/screens/View";
-import ThemeScreenGroup from "~/modules/theme/screens";
 
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { useTabsByVisibility } from "~/stores/Preference/hooks";

@@ -1,5 +1,8 @@
-import type { Font } from "~/modules/font/constants";
-import type { CustomTheme, DefaultTheme } from "~/modules/theme/constants";
+import type { Font } from "~/modules/customization/font/core/constants";
+import type {
+  CustomTheme,
+  DefaultTheme,
+} from "~/modules/customization/theme/core/constants";
 import type { Tab } from "./types";
 
 //#region Now Playing Design

@@ -4,7 +4,7 @@ import { Text } from "react-native";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { cn } from "~/lib/style";
-import { getFont } from "~/modules/font/utils";
+import { getFont } from "~/modules/customization/font/utils";
 
 /** `<Text />` that utilizes the accent font. */
 export function AccentText({

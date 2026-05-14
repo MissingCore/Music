@@ -3,8 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { wait } from "~/utils/promise";
 import { ModifyThemeBase } from "../components/ModifyViewBase";
-import { readThemeFile } from "../helpers/backup";
-import { createCustomTheme, revalidateCustomThemes } from "../queries";
+import { pickTheme, saveCustomTheme } from "../core/data";
 
 export default function CreateTheme() {
   const navigation = useNavigation();
@@ -14,7 +13,7 @@ export default function CreateTheme() {
         label: "feat.backup.extra.import",
         action: async ({ setFields }) => {
           try {
-            const { name, scheme, colors } = await readThemeFile();
+            const { name, scheme, colors } = await pickTheme();
             await wait(100);
             toast.t("feat.backup.extra.importSuccess");
             setFields({ name, scheme, ...colors, _importGen: Date.now() });
@@ -25,8 +24,7 @@ export default function CreateTheme() {
       }}
       onSubmit={async ({ _importGen, ...entry }) => {
         try {
-          await createCustomTheme(entry);
-          revalidateCustomThemes();
+          await saveCustomTheme(entry);
           navigation.goBack();
         } catch {
           toast.tError("err.flow.generic.title");

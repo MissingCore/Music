@@ -14,8 +14,8 @@ import { FontSize } from "~/constants/Styles";
 import { Links, openLink } from "~/lib/web-browser";
 import { SegmentedList } from "~/components/List/Segmented";
 import { AccentText } from "~/components/Typography/AccentText";
-import { getFont } from "~/modules/font/utils";
-import { useTheme } from "~/modules/theme/hooks";
+import { getFont } from "~/modules/customization/font/utils";
+import { useTheme } from "~/modules/customization/theme/hooks";
 
 export default function AppUpdate() {
   const { release, isRC } = useHasNewUpdate();

@@ -15,7 +15,7 @@ import { useScanningProgressStore } from "../ScanningProgress";
 
 import { CachedSlider } from "~/components/Form/Slider";
 import { Em, TEm } from "~/components/Typography/StyledText";
-import { SystemTheme } from "~/modules/theme/constants";
+import { SystemTheme } from "~/modules/customization/theme/core/constants";
 
 export function ScanningProgress() {
   const { container, logo } = BootSplash.useHideAnimation({

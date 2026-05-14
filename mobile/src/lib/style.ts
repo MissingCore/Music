@@ -3,8 +3,8 @@ import { clsx } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 
 import { BorderRadius, FontSize } from "~/constants/Styles";
-import { FontFamily } from "~/modules/font/constants";
-import { ColorRoleOptions } from "~/modules/theme/constants";
+import { FontFamily } from "~/modules/customization/font/core/constants";
+import { ColorRoleOptions } from "~/modules/customization/theme/core/constants";
 
 //#region Color
 // Need to include `transparent` as otherwise, things will get merged incorrectly.
