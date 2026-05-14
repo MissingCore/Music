@@ -16,7 +16,7 @@ import { clearAllQueries } from "~/lib/react-query";
 import type { Font } from "~/modules/customization/font/core/constants";
 import type { DefaultTheme } from "~/modules/customization/theme/core/constants";
 import {
-  getCustomTheme,
+  getFormattedCustomTheme,
   isDefaultTheme,
   resolveCustomTheme,
 } from "~/modules/customization/theme/utils";
@@ -64,7 +64,7 @@ export async function setTheme(theme: DefaultTheme | (string & {})) {
       activeCustomTheme: null,
     });
   } else {
-    const customTheme = await getCustomTheme(theme);
+    const customTheme = await getFormattedCustomTheme(theme);
     if (!customTheme) {
       toast.error(
         i18next.t("template.notFound", { name: i18next.t("feat.theme.title") }),

@@ -1,13 +1,14 @@
 import { Uniwind } from "uniwind";
 import { Appearance } from "react-native";
 
-import { db } from "~/db";
 import type { customThemes } from "./core/schema";
 
 import type { CustomTheme, DefaultTheme, HexColor } from "./core/constants";
 import { DefaultThemeOptions } from "./core/constants";
+import { getCustomTheme } from "./core/data";
 
-export function formatAsCustomTheme(
+//#region Loader
+export function formatCustomTheme(
   entry: typeof customThemes.$inferSelect,
 ): CustomTheme {
   const { id, name, scheme, ...colors } = entry;
@@ -15,22 +16,13 @@ export function formatAsCustomTheme(
 }
 
 /** Returns `CustomTheme` object if it exists.  */
-export async function getCustomTheme(themeId: string) {
-  const customTheme = await db.query.customThemes.findFirst({
-    where: (fields, { eq }) => eq(fields.id, themeId),
-  });
-  if (!customTheme) return null;
-  return formatAsCustomTheme(customTheme);
-}
-
-export function isDefaultTheme(
-  theme: DefaultTheme | (string & {}),
-): theme is DefaultTheme {
-  return DefaultThemeOptions.includes(theme as DefaultTheme);
-}
-
-export function isHexColor(color?: string): color is HexColor {
-  return color !== undefined && color.startsWith("#");
+export async function getFormattedCustomTheme(themeId: string) {
+  try {
+    const customTheme = await getCustomTheme(themeId);
+    return formatCustomTheme(customTheme);
+  } catch {
+    return null;
+  }
 }
 
 export function resolveCustomTheme(theme: CustomTheme) {
@@ -46,3 +38,16 @@ export function resolveCustomTheme(theme: CustomTheme) {
   Uniwind.setTheme("custom");
   Appearance.setColorScheme(theme.scheme);
 }
+//#endregion
+
+//#region Validators
+export function isDefaultTheme(
+  theme: DefaultTheme | (string & {}),
+): theme is DefaultTheme {
+  return DefaultThemeOptions.includes(theme as DefaultTheme);
+}
+
+export function isHexColor(color?: string): color is HexColor {
+  return color !== undefined && color.startsWith("#");
+}
+//#endregion

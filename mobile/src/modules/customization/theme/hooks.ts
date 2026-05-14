@@ -7,7 +7,6 @@ import type { AppColor } from "./core/constants";
 import { Themes } from "./core/constants";
 import { isHexColor } from "./utils";
 
-//#region Hooks
 /** Returns if we're using light or dark scheme. */
 export function useCurrentScheme() {
   const deviceTheme = useColorScheme();
@@ -52,4 +51,3 @@ export function useColor(
     color = isHexColor(wantedColor) ? wantedColor : theme[wantedColor];
   return color;
 }
-//#endregion

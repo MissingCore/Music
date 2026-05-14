@@ -25,9 +25,8 @@ import {
   Themes as DefaultThemes,
   SystemTheme,
 } from "../core/constants";
-import { exportTheme } from "../core/data";
-import { useCustomThemes } from "../queries";
-import { formatAsCustomTheme, isDefaultTheme } from "../utils";
+import { exportTheme, useCustomThemes } from "../core/data";
+import { formatCustomTheme, isDefaultTheme } from "../utils";
 
 const DefaultThemeMap = {
   light: DefaultThemes.light,
@@ -119,7 +118,7 @@ export default function Themes() {
                     Icon={FileSave}
                     accessibilityLabel={t("feat.backup.extra.export")}
                     onPress={() =>
-                      onExportTheme(formatAsCustomTheme(themeMap[themeId]!))
+                      onExportTheme(formatCustomTheme(themeMap[themeId]!))
                     }
                     _iconColor={themeColors.onSurface as HexColor}
                     _rippleColor={themeColors.surfaceContainerHigh as HexColor}

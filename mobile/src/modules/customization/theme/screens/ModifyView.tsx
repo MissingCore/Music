@@ -12,10 +12,9 @@ import type { ThemeEntry } from "../components/ModifyViewBase";
 import { ModifyThemeBase } from "../components/ModifyViewBase";
 import {
   deleteCustomTheme,
-  revalidateCustomThemes,
   updateCustomTheme,
   useCustomTheme,
-} from "../queries";
+} from "../core/data";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -46,7 +45,6 @@ export default function ModifyTheme({
                 await wait(1);
                 try {
                   await deleteCustomTheme(themeId);
-                  revalidateCustomThemes();
                   navigation.goBack();
                 } catch {
                   toast.tError("err.flow.generic.title");
@@ -58,7 +56,6 @@ export default function ModifyTheme({
       onSubmit={async ({ _importGen, ...entry }) => {
         try {
           await updateCustomTheme(themeId, entry);
-          revalidateCustomThemes();
           if (isActiveTheme) PreferenceSetters.setTheme(themeId);
           navigation.goBack();
         } catch {
