@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { usePlaylistsNames } from "~/data/playlist/queries";
 import {
   useToggleTrackInPlaylist,
@@ -22,6 +24,8 @@ export function TrackToPlaylistsSheet({ id }: { id: string }) {
   const toggleInPlaylist = useToggleTrackInPlaylist(id);
   const sheetListHandlers = useEnableSheetScroll();
 
+  const inListSet = useMemo(() => new Set(inList ?? []), [inList]);
+
   return (
     <DetachedSheet
       globalKey={GLOBAL_SHEET_KEY}
@@ -31,21 +35,18 @@ export function TrackToPlaylistsSheet({ id }: { id: string }) {
       <FlatList
         data={playlistsNames}
         keyExtractor={(name) => name}
-        extraData={inList}
-        renderItem={({ item: name }) => {
-          const selected = inList?.includes(name) ?? false;
-          return (
-            <CheckboxField
-              checked={selected}
-              onCheck={() => mutateGuard(toggleInPlaylist, name)}
-              className="mb-2"
-            >
-              <Marquee color="surfaceBright">
-                <StyledText>{name}</StyledText>
-              </Marquee>
-            </CheckboxField>
-          );
-        }}
+        extraData={inListSet}
+        renderItem={({ item: name }) => (
+          <CheckboxField
+            checked={inListSet.has(name)}
+            onCheck={() => mutateGuard(toggleInPlaylist, name)}
+            className="mb-2"
+          >
+            <Marquee color="surfaceBright">
+              <StyledText>{name}</StyledText>
+            </Marquee>
+          </CheckboxField>
+        )}
         getItemLayout={getItemLayout}
         ListEmptyComponent={
           <ContentPlaceholder errMsgKey="err.msg.noPlaylists" />

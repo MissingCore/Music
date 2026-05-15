@@ -49,8 +49,9 @@ export function pickKeys<T extends Record<PropertyKey, any>, K extends keyof T>(
   obj: T,
   keys: readonly K[],
 ) {
+  const keySet = new Set(keys);
   return Object.fromEntries(
-    Object.entries(obj).filter(([key, _val]) => keys.includes(key as K)),
+    Object.entries(obj).filter(([key, _val]) => keySet.has(key as K)),
   ) as Pick<T, K>;
 }
 
@@ -59,7 +60,8 @@ export function omitKeys<T extends Record<PropertyKey, any>, K extends keyof T>(
   obj: T,
   keys: readonly K[],
 ) {
+  const keySet = new Set(keys);
   return Object.fromEntries(
-    Object.entries(obj).filter(([key, _val]) => !keys.includes(key as K)),
+    Object.entries(obj).filter(([key, _val]) => !keySet.has(key as K)),
   ) as Omit<T, K>;
 }

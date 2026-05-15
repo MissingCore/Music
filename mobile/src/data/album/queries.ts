@@ -18,8 +18,7 @@ export function useAlbumForScreen(albumId: string) {
   return useQuery({
     ...q.albums.detail(albumId),
     select: ({ name, artistsKey, artwork, isFavorite, tracks, year }) => {
-      const albumArtists = AlbumArtistsKey.deconstruct(artistsKey);
-
+      const albumArtists = new Set(AlbumArtistsKey.deconstruct(artistsKey));
       return {
         name,
         imageSource: artwork,
@@ -34,7 +33,7 @@ export function useAlbumForScreen(albumId: string) {
         tracks: tracks.map(({ name: title, duration, artists, ...other }) => {
           let description = formatSeconds(duration);
           if (Array.isArray(artists)) {
-            const diff = artists.filter((name) => !albumArtists.includes(name));
+            const diff = artists.filter((name) => !albumArtists.has(name));
             if (diff.length > 0) description += ` • ${diff.join(", ")}`;
           }
 
@@ -42,7 +41,7 @@ export function useAlbumForScreen(albumId: string) {
           return { ...rest, title, description, imageSource: null };
         }),
 
-        artists: albumArtists,
+        artists: [...albumArtists],
         isFavorite,
       };
     },

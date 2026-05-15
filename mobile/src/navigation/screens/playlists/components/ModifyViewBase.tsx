@@ -54,7 +54,8 @@ export function ModifyPlaylistBase(props: {
   // Exclude `FavoritesPlaylistKey` as we don't return it when fetching all
   // playlists & don't check it in `sanitizePlaylistName`.
   const usedNames = useMemo(
-    () => [...props.referenceData.playlistNames!, FavoritesPlaylistKey],
+    () =>
+      new Set([...props.referenceData.playlistNames!, FavoritesPlaylistKey]),
     [props.referenceData.playlistNames],
   );
 
@@ -80,7 +81,7 @@ export function ModifyPlaylistBase(props: {
             const sanitized = sanitizePlaylistName(name);
             isUnique =
               props.initialData?.name === sanitized ||
-              !usedNames.includes(sanitized);
+              !usedNames.has(sanitized);
           } catch {}
           return isUnique;
         }}
