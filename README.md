@@ -34,6 +34,7 @@ A Nothing inspired **local** music player.
 - Diverse music organization: Albums, Artists, Favorites, Folder Structure, Genres, Playlists
 - Local metadata editor for quick changes (doesn't modify the actual file)
 - Multi-artist support
+- Custom theme & font support
 - Artwork customizability for Albums, Artists, Genres, Playlists, and Tracks
 - BYO (Bring Your Own) Lyrics
 - Background playback w/ media control notification
@@ -157,7 +158,7 @@ See all the [available documentation here](./docs). Some highlights include:
 
 - [`Building this App`](./docs/building-this-app.md)
 - [`Nothing Interactions`](./docs/nothing-interactions.md)
-- [`Supported Gestures`](./docs/supported-gestures.md)
+- [`Customizations`](./docs/customizations.md)
 - [`🧪 Experimental Features`](./docs/experimental-features.md)
 - [`[🧪 Experimental] Widgets`](./docs/widgets.md)
 
