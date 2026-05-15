@@ -50,12 +50,15 @@ export async function readM3UPlaylist() {
   }
 
   // Get uris so we can search our database.
-  const trackUris =
-    strategy === "absolute"
-      ? trackPaths.map((path) => `file://${slashStart ? "" : "/"}${path}`)
-      : strategy === "relative"
-        ? trackPaths.map((path) => joinPaths(fileDirectory, path))
-        : trackPaths;
+  const trackUris = Array.from(
+    new Set(
+      strategy === "absolute"
+        ? trackPaths.map((path) => `file://${slashStart ? "" : "/"}${path}`)
+        : strategy === "relative"
+          ? trackPaths.map((path) => joinPaths(fileDirectory, path))
+          : trackPaths,
+    ),
+  );
 
   const playlistTracks = await getTracks([
     inArray(structuredTracksView.uri, trackUris),
