@@ -64,9 +64,12 @@ export function ContentPlaceholder(
       {props.isPending ? (
         <Loading />
       ) : props.errMsg ? (
-        <StyledText center>{props.errMsg}</StyledText>
+        <StyledText className="text-center">{props.errMsg}</StyledText>
       ) : (
-        <TStyledText textKey={props.errMsgKey ?? "err.msg.noContent"} center />
+        <TStyledText
+          textKey={props.errMsgKey ?? "err.msg.noContent"}
+          className="text-center"
+        />
       )}
     </View>
   );

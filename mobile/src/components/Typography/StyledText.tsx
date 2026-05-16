@@ -13,19 +13,15 @@ export function StyledText({
   className,
   style,
   bold,
-  center,
   dim,
   ...props
-}: TextProps & Partial<Record<"bold" | "center" | "dim", boolean>>) {
+}: TextProps & Partial<Record<"bold" | "dim", boolean>>) {
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
   return (
     <Text
       className={cn(
         "text-left text-base text-onSurface",
-        {
-          "text-center": center,
-          "text-xs text-onSurfaceVariant": dim,
-        },
+        { "text-xs text-onSurfaceVariant": dim },
         className,
       )}
       style={[
