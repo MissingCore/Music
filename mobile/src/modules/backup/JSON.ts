@@ -140,6 +140,7 @@ async function importBackup() {
   // Select the `music_backup.json` file we'll be importing from.
   const { assets, canceled } = await getDocumentAsync({
     type: ["application/json", "application/octet-stream"],
+    copyToCacheDirectory: false,
   });
   if (canceled) throw new Error(i18next.t("err.msg.actionCancel"));
   if (!assets[0]) throw new Error(i18next.t("err.msg.noSelect"));
@@ -152,8 +153,6 @@ async function importBackup() {
     // Validate the data structure.
     backupContents = MusicBackup.parse(JSON.parse(docContents));
   } catch {
-    // Delete cached file before throwing a more readable error.
-    documentFile.delete();
     throw new Error(i18next.t("err.msg.invalidStructure"));
   }
 
@@ -171,7 +170,11 @@ async function importBackup() {
   await Promise.allSettled(
     importedPlaylists.map(async ({ name, tracks: plTracks }) => {
       const exists = allPlaylists.find((pl) => pl.id === name);
-      const playlistTracks = findExistingTracks(plTracks);
+      const _playlistTracks = findExistingTracks(plTracks);
+      // Remove any duplicates.
+      const playlistTracks = Array.from(
+        new Set(_playlistTracks.map((t) => t.id)),
+      ).map((tId) => ({ id: tId }));
       // Create or update playlist to have the current track order.
       if (exists) {
         await updatePlaylist(name, {
@@ -199,9 +202,6 @@ async function importBackup() {
         ),
       ),
   ]);
-
-  // Delete the cached document.
-  documentFile.delete();
 }
 //#endregion
 
