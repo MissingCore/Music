@@ -15,6 +15,7 @@ import { ListLayout } from "~/navigation/layouts/ListLayout";
 
 import { Links, openLink } from "~/lib/web-browser";
 import { SegmentedList } from "~/components/List/Segmented";
+import { ConfirmableAction } from "~/components/Modal";
 import { Switch } from "~/components/UI/Switch";
 
 export default function ExperimentalSettings() {
@@ -31,10 +32,14 @@ export default function ExperimentalSettings() {
         RightElement={<Switch enabled={queueAwareNext} />}
       />
 
-      <SegmentedList.Item
-        labelTextKey="feat.waveformSlider.extra.purgeCache"
-        supportingText={t("feat.waveformSlider.extra.purgeCacheBrief")}
-        onPress={purgeWaveformCache}
+      <ConfirmableAction
+        Component={SegmentedList.Item}
+        componentProps={{
+          labelTextKey: "feat.waveformSlider.extra.purgeCache",
+          supportingText: t("feat.waveformSlider.extra.purgeCacheBrief"),
+          onPress: purgeWaveformCache,
+        }}
+        modalMessage={["feat.waveformSlider.extra.purgeCache"]}
       />
 
       <SegmentedList.Item

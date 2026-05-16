@@ -1,4 +1,5 @@
 import type { ParseKeys } from "i18next";
+import { useState } from "react";
 import { Modal as RNModal, View } from "react-native";
 
 import { cn } from "~/lib/style";
@@ -30,10 +31,7 @@ export function ModalTemplate(
 ) {
   return (
     <Modal visible={props.visible}>
-      <TStyledText
-        textKey={props.titleKey}
-        style={{ fontSize: 18, textAlign: "center" }}
-      />
+      <TStyledText textKey={props.titleKey} style={{ fontSize: 18 }} />
       <ModalActions
         topAction={props.topAction}
         bottomAction={props.bottomAction}
@@ -71,6 +69,50 @@ export function ModalActions(props: ModalActionsProp) {
         )}
       />
     </View>
+  );
+}
+//#endregion
+
+//#region Confirmable
+/** Have a component with an `onPress` prop display a confirmation modal. */
+export function ConfirmableAction<
+  TComponent extends (props: any) => React.ReactNode,
+>(props: {
+  /** A component with an `onPress` prop. */
+  Component: TComponent;
+  componentProps: React.ComponentProps<TComponent> & { onPress: VoidFunction };
+  disableModal?: boolean;
+  modalMessage: [ParseKeys] | [ParseKeys, ParseKeys];
+}) {
+  const [visible, setVisible] = useState(false);
+  return (
+    <>
+      {/* @ts-expect-error - Typing is valid. */}
+      <props.Component
+        {...props.componentProps}
+        onPress={() =>
+          props.disableModal ? props.componentProps.onPress() : setVisible(true)
+        }
+      />
+      <Modal visible={visible}>
+        {props.modalMessage.map((msg) => (
+          <TStyledText key={msg} textKey={msg} style={{ fontSize: 18 }} />
+        ))}
+        <ModalActions
+          topAction={{
+            textKey: "form.confirm",
+            onPress: () => {
+              props.componentProps.onPress();
+              setVisible(false);
+            },
+          }}
+          bottomAction={{
+            textKey: "form.cancel",
+            onPress: () => setVisible(false),
+          }}
+        />
+      </Modal>
+    </>
   );
 }
 //#endregion
