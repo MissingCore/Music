@@ -13,6 +13,7 @@ interface SheetProps {
   descriptionKey?: ParseKeys;
   value: number;
   setValue: (newValue: number) => void;
+  maxLength?: number;
 }
 
 export function DetachedNumericSheet(props: SheetProps) {
@@ -45,6 +46,7 @@ export function DetachedNumericSheet(props: SheetProps) {
       ) : null}
       <NumericInput
         defaultValue={`${props.value}`}
+        maxLength={props.maxLength}
         onChangeText={(text) => setNewValue(text)}
         className="mx-auto w-full max-w-[50%] border-b border-outline text-center"
         forSheet

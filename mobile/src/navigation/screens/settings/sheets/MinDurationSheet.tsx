@@ -13,6 +13,7 @@ export function MinDurationSheet(props: { ref: TrueSheetRef }) {
       descriptionKey="feat.minTrackDuration.description"
       value={minSeconds}
       setValue={PreferenceSetters.setMinSeconds}
+      maxLength={2} // Max out at 99 seconds.
     />
   );
 }
