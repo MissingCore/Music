@@ -51,7 +51,7 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
         </Pressable>
         <View className="gap-1">
           <TEm textKey="feat.language.extra.translators" dim />
-          <Marquee>
+          <Marquee color="surfaceBright">
             <StyledText className="text-xs">{translatorsString}</StyledText>
           </Marquee>
         </View>
