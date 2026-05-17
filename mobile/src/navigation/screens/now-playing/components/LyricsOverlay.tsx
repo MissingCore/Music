@@ -1,5 +1,4 @@
 import { getLyric } from "@missingcore/react-native-metadata-retriever";
-import { toast } from "@missingcore/toast";
 import { useNavigation } from "@react-navigation/native";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -82,7 +81,9 @@ function LyricsContent(props: { trackId: string; offset: number }) {
   );
 
   if (isPending) return null;
-  else if (error || !data) return <LyricsNotFound {...props} />;
+  else if (error || !data) {
+    return <LyricsNotFound key={props.trackId} {...props} />;
+  }
 
   return (
     <>
@@ -120,13 +121,14 @@ function LyricsContent(props: { trackId: string; offset: number }) {
 function LyricsNotFound(props: { trackId: string; offset: number }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const [checkingEmbeddedLyrics, setCheckingEmbeddedLyrics] = useState(false);
+  const [checkingEmbeddedLyrics, setCheckingEmbeddedLyrics] = useState(true);
 
-  const checkForLyrics = async () => {
-    setCheckingEmbeddedLyrics(true);
-    await fetchEmbeddedLyrics();
-    setCheckingEmbeddedLyrics(false);
-  };
+  useEffect(() => {
+    (async () => {
+      await fetchEmbeddedLyrics();
+      setCheckingEmbeddedLyrics(false);
+    })();
+  }, []);
 
   return (
     <View
@@ -134,25 +136,14 @@ function LyricsNotFound(props: { trackId: string; offset: number }) {
       className="items-center gap-6 pb-4"
     >
       <TEm textKey="err.msg.noLyrics" className="text-xl" />
-      <View className="w-full max-w-48 gap-0.75">
-        <ExtendedTButton
-          textKey="feat.lyrics.extra.useEmbedded"
-          onPress={checkForLyrics}
-          disabled={checkingEmbeddedLyrics}
-          className="min-h-auto rounded-b-xs"
-          textClassName="text-xs"
-        />
-        <ExtendedTButton
-          // @ts-expect-error - Will display text if key doesn't exist.
-          textKey={t("template.entryManage", { name: t("feat.lyrics.title") })}
-          onPress={() =>
-            navigation.navigate("Lyrics", { linkTo: props.trackId })
-          }
-          disabled={checkingEmbeddedLyrics}
-          className="min-h-auto rounded-t-xs"
-          textClassName="text-xs"
-        />
-      </View>
+      <ExtendedTButton
+        // @ts-expect-error - Will display text if key doesn't exist.
+        textKey={t("template.entryManage", { name: t("feat.lyrics.title") })}
+        onPress={() => navigation.navigate("Lyrics", { linkTo: props.trackId })}
+        disabled={checkingEmbeddedLyrics}
+        className="min-h-auto w-full max-w-48"
+        textClassName="text-xs"
+      />
     </View>
   );
 }
@@ -162,23 +153,20 @@ async function fetchEmbeddedLyrics() {
   if (!activeTrack) return;
   try {
     const embeddedLyrics = await getLyric(activeTrack.uri);
-    if (!embeddedLyrics) return toast.tError("err.msg.noLyrics");
+    if (!embeddedLyrics) return;
 
     const newLyric = await createLyric({
       name: `${activeTrack.name} - ${getArtistsString(activeTrack.artists)}`,
       lyrics: embeddedLyrics,
     });
     if (!newLyric) throw new Error("Lyric not returned after insertion.");
-    await linkTrackToLyric({
-      name: activeTrack.name,
-      trackId: activeTrack.id,
-      lyricId: newLyric.id,
-    });
+    await linkTrackToLyric(
+      { name: activeTrack.name, trackId: activeTrack.id, lyricId: newLyric.id },
+      false,
+    );
 
     queryClient.invalidateQueries({ queryKey: q.lyrics._def });
-  } catch {
-    toast.tError("err.flow.generic.title");
-  }
+  } catch {}
 }
 //#endregion
 
