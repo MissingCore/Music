@@ -18,7 +18,7 @@ export default (): ExpoConfig => {
     name: "Music",
     slug: "Music",
     description: "A Nothing inspired music player.",
-    version: "3.1.0-rc.1",
+    version: "3.1.0-rc.2",
     platforms: ["android"],
     githubUrl: "https://github.com/MissingCore/Music",
     orientation: "portrait",
@@ -30,7 +30,7 @@ export default (): ExpoConfig => {
     assetBundlePatterns: ["**/*"],
     android: {
       package: "com.cyanchill.missingcore.music",
-      versionCode: 2100,
+      versionCode: 2110,
       adaptiveIcon: {
         foregroundImage: `./assets/${BUILD_THEME}/adaptive-icon.png`,
         monochromeImage: `./assets/${BUILD_THEME}/adaptive-icon-monochrome.png`,
