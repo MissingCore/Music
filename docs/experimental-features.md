@@ -6,6 +6,12 @@ Most experimental features require you to enable it in the "Experimental Feature
 
 See the [dedicated `Android Auto` documentation for more information](./android-auto.md).
 
+## Downsample High Sample Rate Audio (192kHz+)
+
+> **Enabled by default.**
+
+This fixes [#138](https://github.com/MissingCore/Music/issues/138), an issue where high sample rate audio (`352.8kHz` & `384kHz`) cannot be played due to Exoplayer limitations, by downsampling the audio to `192kHz`. **This will be removed in the future once we deem it to be stable as we're currently unsure if there's any side-effects.**
+
 ## Equalizer
 
 We support the default 5-band equalizer with 10 provided presets and the option to set a custom preset.
@@ -65,12 +71,6 @@ There are situations where the queue awareness will get reset:
 The Sleep Timer experimental features can be found on the "Now Playing" screen.
 
 It enables you to automatically stop playback after the specified number of minutes. You can optionally delay the completion of the timer until the final track finishes.
-
-## Smooth Playback Transition
-
-> **Enabled by default.**
-
-This makes it so that we flow into the next track seamlessly after the current track finishes, restoring pre-v2.7.0 behavior. **This will be removed in the future once we deem it to be stable.**
 
 ## Waveform Slider
 

@@ -101,6 +101,11 @@ export interface PreferenceStore {
   queueAwareNext: boolean;
   /** Utilize a waveform slider on the Now Playing screen. */
   waveformSlider: boolean;
+  /**
+   * Downsample high sample rate tracks so that they can be played instead
+   * of throwing an error.
+   */
+  downsamplingProcessor: boolean;
 }
 
 export const OmittedFields: string[] = [

@@ -5,6 +5,7 @@ import {
   MatrixAction,
 } from "@missingcore/music-glyph-toys";
 import { toast } from "@missingcore/toast";
+import AsyncStorage from "expo-sqlite/kv-store";
 import type {
   BrowserConfiguration,
   BrowserSource,
@@ -78,8 +79,18 @@ async function initServices() {
   console.warn("[InitServices] Initializing services...");
   GlyphToy.connect();
 
+  //* Fetch the value from `AsyncStorage` instead of `preferenceStore` as the
+  //* store might not be hydrated in time (so if we turned it off, it might
+  //* still be enabled due to the default value being `true`).
+  const dontUseDownsamplingProcessor =
+    (await AsyncStorage.getItem("downsamplingProcessor")) === "false";
+
   //? Seems like we can setup the playback service in the background/headlessly.
-  await AudioBrowser.setupPlayer();
+  await AudioBrowser.setupPlayer({
+    android: {
+      downsamplingProcessor: !dontUseDownsamplingProcessor,
+    },
+  });
   AudioBrowser.updateOptions(getAudioBrowserOptions());
 
   //#region Glyph Toy Events

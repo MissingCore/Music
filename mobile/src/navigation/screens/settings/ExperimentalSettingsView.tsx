@@ -22,6 +22,9 @@ export default function ExperimentalSettings() {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const queueAwareNext = usePreferenceStore((s) => s.queueAwareNext);
+  const downsamplingProcessor = usePreferenceStore(
+    (s) => s.downsamplingProcessor,
+  );
 
   return (
     <ListLayout>
@@ -30,6 +33,13 @@ export default function ExperimentalSettings() {
         supportingText={t("feat.queue.extra.queueAwareNextBrief")}
         onPress={PreferenceTogglers.toggleQueueAwareNext}
         RightElement={<Switch enabled={queueAwareNext} />}
+      />
+
+      <SegmentedList.Item
+        labelText="Downsample High Sample Rate Audio (192kHz+)"
+        supportingText="Downsamples high sample rate audio files to 192kHz so that they can be played instead of throwing an error. This will eventually be the default behavior. Disable this feature if you encounter issues."
+        onPress={PreferenceTogglers.toggleDownsamplingProcessor}
+        RightElement={<Switch enabled={downsamplingProcessor} />}
       />
 
       <ConfirmableAction
