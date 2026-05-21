@@ -82,13 +82,13 @@ async function initServices() {
   //* Fetch the value from `AsyncStorage` instead of `preferenceStore` as the
   //* store might not be hydrated in time (so if we turned it off, it might
   //* still be enabled due to the default value being `true`).
-  const dontUseDownsamplingProcessor =
-    (await AsyncStorage.getItem("downsamplingProcessor")) === "false";
+  const useDownsamplingProcessor =
+    (await AsyncStorage.getItem("downsamplingProcessor")) ?? "true";
 
   //? Seems like we can setup the playback service in the background/headlessly.
   await AudioBrowser.setupPlayer({
     android: {
-      downsamplingProcessor: !dontUseDownsamplingProcessor,
+      downsamplingProcessor: useDownsamplingProcessor === "true",
     },
   });
   AudioBrowser.updateOptions(getAudioBrowserOptions());
