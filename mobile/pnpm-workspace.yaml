@@ -3,11 +3,13 @@ minimumReleaseAge: 1440
 
 nodeLinker: "hoisted"
 
-onlyBuiltDependencies:
-  - "@missingcore/music-glyph-toys"
-  - "@sentry/cli"
-  - "react-native-audio-browser"
-  - "sharp"
+allowBuilds:
+  "@missingcore/music-glyph-toys": true
+  "@sentry/cli": true
+  esbuild: false
+  "react-native-audio-browser": true
+  "sharp": true
+  unrs-resolver: false
 
 patchedDependencies:
   "@lodev09/react-native-true-sheet": "patches/@lodev09__react-native-true-sheet.patch"

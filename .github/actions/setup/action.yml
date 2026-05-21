@@ -7,7 +7,7 @@ runs:
     - name: Install pnpm
       uses: pnpm/action-setup@v5
       with:
-        version: 10
+        version: 11
     - name: Setup Node.js with pnpm cache
       uses: actions/setup-node@v6
       with:
@@ -17,7 +17,6 @@ runs:
     - name: Change global yarn version
       run: |
         corepack enable
-        corepack use pnpm@latest-10
         corepack prepare yarn@4.13.0 --activate
       shell: bash
 

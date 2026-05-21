@@ -5,12 +5,8 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
-  '@lodev09/react-native-true-sheet':
-    hash: e629511ec9a360ce64c6f2cbcb19d75a7b9b47d7dd1d172d57695cb35845ebce
-    path: patches/@lodev09__react-native-true-sheet.patch
-  react-native-android-widget:
-    hash: 700a44715e685edefbbcca4d1c8a1a80c90ea32f567b124241138d01b981b064
-    path: patches/react-native-android-widget.patch
+  '@lodev09/react-native-true-sheet': e629511ec9a360ce64c6f2cbcb19d75a7b9b47d7dd1d172d57695cb35845ebce
+  react-native-android-widget: 700a44715e685edefbbcca4d1c8a1a80c90ea32f567b124241138d01b981b064
 
 importers:
 
@@ -26,8 +22,8 @@ importers:
         specifier: 3.4.2
         version: 3.4.2(patch_hash=e629511ec9a360ce64c6f2cbcb19d75a7b9b47d7dd1d172d57695cb35845ebce)(@react-navigation/native@7.2.4(react-native@0.83.9(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native-reanimated@4.3.1(react-native-worklets@0.8.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(react-native@0.83.9(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.9(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native-worklets@0.8.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(react-native@0.83.9(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.9(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       '@missingcore/music-glyph-toys':
-        specifier: github:MissingCore/music-glyph-toys#01731b075e273a490b74cd23159abf36acc83b40
-        version: https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/01731b075e273a490b74cd23159abf36acc83b40(react-native@0.83.9(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
+        specifier: github:MissingCore/music-glyph-toys#6e2dfb85f7e66ace7dac536587b8129589fa6fd6
+        version: https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/6e2dfb85f7e66ace7dac536587b8129589fa6fd6(react-native@0.83.9(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       '@missingcore/react-native-actual-path':
         specifier: 0.1.0
         version: 0.1.0(react-native@0.83.9(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
@@ -1669,8 +1665,8 @@ packages:
       react-native-worklets:
         optional: true
 
-  '@missingcore/music-glyph-toys@https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/01731b075e273a490b74cd23159abf36acc83b40':
-    resolution: {tarball: https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/01731b075e273a490b74cd23159abf36acc83b40}
+  '@missingcore/music-glyph-toys@https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/6e2dfb85f7e66ace7dac536587b8129589fa6fd6':
+    resolution: {gitHosted: true, integrity: sha512-xMSmqnk+czIARYAZOV0ob8TKNdlXa7TjdKx9ygOz0uoYjQdYMHsVryUNRVjBOlbAt9cBexnRrgk1Tiufx7ZqGQ==, tarball: https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/6e2dfb85f7e66ace7dac536587b8129589fa6fd6}
     version: 0.4.0
     peerDependencies:
       react: '*'
@@ -4950,7 +4946,7 @@ packages:
         optional: true
 
   react-native-audio-browser@https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/bb9da301fdc284e144a54488c83c1af87b0ba61f:
-    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/bb9da301fdc284e144a54488c83c1af87b0ba61f}
+    resolution: {gitHosted: true, integrity: sha512-l8FShEJUIFADaMHQJcZYuprBUWEJY2ce81JB16jSHkXEM/I2ZhWy1c06rCgTdS7sgWJgdgT2ipRuV5Wu1QLAdg==, tarball: https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/bb9da301fdc284e144a54488c83c1af87b0ba61f}
     version: 0.1.0
     peerDependencies:
       react: '*'
@@ -7289,7 +7285,7 @@ snapshots:
       react-native-reanimated: 4.3.1(react-native-worklets@0.8.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(react-native@0.83.9(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0))(react-native@0.83.9(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-worklets: 0.8.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(react-native@0.83.9(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
 
-  '@missingcore/music-glyph-toys@https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/01731b075e273a490b74cd23159abf36acc83b40(react-native@0.83.9(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)':
+  '@missingcore/music-glyph-toys@https://codeload.github.com/MissingCore/music-glyph-toys/tar.gz/6e2dfb85f7e66ace7dac536587b8129589fa6fd6(react-native@0.83.9(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)':
     dependencies:
       react: 19.2.0
       react-native: 0.83.9(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.0)
