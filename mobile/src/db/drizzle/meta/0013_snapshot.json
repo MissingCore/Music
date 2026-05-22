@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "6bf3aafe-3c6e-49b2-a895-8e33d7d78415",
-  "prevId": "af4c5398-3b5b-47fb-bc3a-8219f61c6b4f",
+  "id": "c1dfd855-3c22-470e-b85a-0a37f441421a",
+  "prevId": "6bf3aafe-3c6e-49b2-a895-8e33d7d78415",
   "tables": {
     "albums": {
       "name": "albums",
