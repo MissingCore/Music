@@ -100,9 +100,12 @@ export async function findAndSaveAudio() {
     db.query.invalidTracks.findMany(),
   ]);
   // Format data as objects for faster reads inside a loop.
-  const savedMap = Object.fromEntries(prevSaved.map((t) => [t.uri, t]));
-  const hiddenMap = Object.fromEntries(prevHidden.map((t) => [t.uri, t]));
-  const erroredMap = Object.fromEntries(prevErrored.map((t) => [t.uri, t]));
+  const savedIdMap = Object.fromEntries(prevSaved.map((t) => [t.id, t]));
+  const savedURIMap = Object.fromEntries(prevSaved.map((t) => [t.uri, t]));
+  const hiddenIdMap = Object.fromEntries(prevHidden.map((t) => [t.id, t]));
+  const hiddenURIMap = Object.fromEntries(prevHidden.map((t) => [t.uri, t]));
+  const erroredIdMap = Object.fromEntries(prevErrored.map((t) => [t.id, t]));
+  const erroredURIMap = Object.fromEntries(prevErrored.map((t) => [t.uri, t]));
 
   // Find the tracks we can skip indexing or need updating.
   const seenIdsMap: Record<string, string> = {};
@@ -113,6 +116,7 @@ export async function findAndSaveAudio() {
 
   //* We allow tracks with the same `id`, but different `uri` to "pass through".
   discoveredTracks.forEach(({ id, modificationTime, uri }) => {
+    //#region "Broken" Track Handling
     //? 1. Mark track as "broken" if MediaStore returns the `id` or `uri` again.
     const seenIdAgain = seenIdsMap[id]; // Returns prior `uri` for that `id`.
     seenIdsMap[id] = uri;
@@ -127,20 +131,58 @@ export async function findAndSaveAudio() {
       return;
     }
 
-    //? 2. Ignore if track is "broken".
-    if (broken.has(uri)) return;
-    //? 3. Ignore if track is hidden.
-    if (hiddenMap[uri]) return unmodified.add(uri);
+    //? 2. Mark track as "broken" if `uri` is the same, but `id` has changed.
+    if (
+      (savedURIMap[uri] && savedURIMap[uri].id !== id) ||
+      (hiddenURIMap[uri] && hiddenURIMap[uri].id !== id) ||
+      (erroredURIMap[uri] && erroredURIMap[uri].id !== id)
+    ) {
+      [
+        savedURIMap[uri]?.uri,
+        hiddenURIMap[uri]?.uri,
+        erroredURIMap[uri]?.uri,
+        uri,
+      ].forEach((brokenURI) => {
+        if (!brokenURI) return;
+        newOrModified.delete(brokenURI);
+        unmodified.delete(brokenURI);
+        broken.add(brokenURI);
+      });
+      return;
+    }
+    //? 3. Mark track as "broken" if `id` is the same, but `uri` has changed.
+    if (
+      (savedIdMap[id] && savedIdMap[id].uri !== uri) ||
+      (hiddenIdMap[id] && hiddenIdMap[id].uri !== uri) ||
+      (erroredIdMap[id] && erroredIdMap[id].uri !== uri)
+    ) {
+      [
+        savedIdMap[id]?.uri,
+        hiddenIdMap[id]?.uri,
+        erroredIdMap[id]?.uri,
+        uri,
+      ].forEach((brokenURI) => {
+        if (!brokenURI) return;
+        newOrModified.delete(brokenURI);
+        unmodified.delete(brokenURI);
+        broken.add(brokenURI);
+      });
+      return;
+    }
 
-    //? 4. Handle if track is new.
-    const isSaved = savedMap[uri];
-    const isInvalid = erroredMap[uri];
+    //? 4. Ignore if track is "broken".
+    if (broken.has(uri)) return;
+    //#endregion
+
+    //? 5. Ignore if track is hidden.
+    if (hiddenURIMap[uri]) return unmodified.add(uri);
+
+    //? 6. Handle if track is new.
+    const isSaved = savedURIMap[uri];
+    const isInvalid = erroredURIMap[uri];
     if (!isSaved && !isInvalid) return newOrModified.add(uri);
 
-    //? 5. Mark track as "broken" if `uri` is the same, but `id` has changed.
-    if ((isSaved || isInvalid)!.id !== id) return broken.add(uri);
-
-    //? 6. Determine if track is modified based on difference in `modificationTime`
+    //? 7. Determine if track is modified based on difference in `modificationTime`
     //? and whether it has been manually edited by the user.
     const hasEdited = typeof isSaved?.editedMetadata === "number";
     const isMaybeModified =
