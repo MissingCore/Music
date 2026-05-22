@@ -63,7 +63,7 @@
     "unsaved": "Puede que tengas cambios sin guardar.",
     "stay": "Quedarse",
     "leave": "Salir",
-    "close": null,
+    "close": "Cerrar",
     "create": "Crear",
     "delete": "Borrar",
     "edit": "Editar",
@@ -135,7 +135,7 @@
       "brief": "Organiza y ajusta las pestañas visibles.",
       "extra": {
         "setHomeTab": "Abrir la pestaña {{- name}} al iniciar.",
-        "showNavbar": null
+        "showNavbar": "Mostrar barra de navegación"
       }
     },
     "minAlbumLength": {
@@ -245,11 +245,11 @@
       "brief": "Ignora optimizaciones y escanea todo desde cero."
     },
     "optimizedImageSave": {
-      "title": null,
-      "brief": null,
+      "title": "Guardado optimizado de imágenes",
+      "brief": "Las canciones comparten el mismo artwork que su álbum.",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Deshabilitar esta función hará que la aplicación use sustancialmente más almacenamiento. Además, puede ralentizar el escaneo, ya que el artwork se guardaría localmente.",
+        "line2": "Requiere usar la función de Reescaneo profundo para aplicar los cambios."
       }
     },
     "rescanOnLaunch": {
