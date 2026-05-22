@@ -114,7 +114,6 @@ export async function findAndSaveAudio() {
   //? For weird edge-cases (ie: seeing the same `id` or `uri` multiple times).
   const broken = new Set<string>();
 
-  //* We allow tracks with the same `id`, but different `uri` to "pass through".
   discoveredTracks.forEach(({ id, modificationTime, uri }) => {
     //#region "Broken" Track Handling
     //? 1. Mark track as "broken" if MediaStore returns the `id` or `uri` again.
