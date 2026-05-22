@@ -129,6 +129,7 @@ export const AppCleanUp = {
     )
       .flatMap((ids) => ids.map(({ id }) => id))
       .filter((id) => !foundTrackIdsSet.has(id));
+    console.log(`Deleting ${unusedTrackIds.length} tracks...`);
 
     if (unusedTrackIds.length > 0) {
       await Promise.allSettled([

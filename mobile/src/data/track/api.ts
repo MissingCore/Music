@@ -154,7 +154,13 @@ export function toggleTrackInPlaylist(entry: InsertedTrackPlaylistRelation) {
 /** Create/update track entries. */
 export function upsertTracks(entries: InsertedTrack[]) {
   return db.insert(tracks).values(entries).onConflictDoUpdate({
-    target: tracks.id,
+    //? This is only used in `findAndSaveAudio()`, in which we should
+    //? have prevented insertion of the following situations:
+    //?   1. Entries with the same `id` but different `uri`.
+    //?   2. Entries with the same `uri` but different `id`.
+    //? So if `onConflictDoUpdate` is triggered, it's only when we're
+    //? updating the track.
+    target: tracks.uri,
     set: UpsertFields,
   });
 }
