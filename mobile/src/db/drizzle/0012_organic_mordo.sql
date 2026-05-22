@@ -36,4 +36,4 @@ CREATE TABLE `custom_themes` (
 	`inverse_on_surface` text NOT NULL
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `tracks_uri_unique` ON `tracks` (`uri`);
+DROP INDEX IF EXISTS `tracks_uri_unique`;

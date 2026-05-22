@@ -104,7 +104,7 @@ export const tracks = sqliteTable("tracks", {
   bitrate: integer(),
   sampleRate: integer(),
   size: integer().notNull(),
-  uri: text().notNull().unique(),
+  uri: text().notNull(),
   modificationTime: integer().notNull(),
   discoverTime: integer().notNull().default(-1),
   // Artwork
