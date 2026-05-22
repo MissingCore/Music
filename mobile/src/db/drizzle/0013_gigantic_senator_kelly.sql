@@ -1,0 +1,1 @@
+DROP INDEX IF EXISTS `tracks_uri_unique`;
