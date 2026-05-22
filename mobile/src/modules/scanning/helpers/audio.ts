@@ -87,58 +87,77 @@ export async function findAndSaveAudio() {
   //#endregion
 
   //#region Change Detection
-  const savedTracks = await db.query.tracks.findMany({
-    columns: {
-      id: true,
-      modificationTime: true,
-      uri: true,
-      editedMetadata: true,
-    },
-  });
-  const hiddenTracks = await db.query.hiddenTracks.findMany();
-  const erroredTracks = await db.query.invalidTracks.findMany();
+  const [prevSaved, prevHidden, prevErrored] = await Promise.all([
+    db.query.tracks.findMany({
+      columns: {
+        id: true,
+        modificationTime: true,
+        uri: true,
+        editedMetadata: true,
+      },
+    }),
+    db.query.hiddenTracks.findMany(),
+    db.query.invalidTracks.findMany(),
+  ]);
   // Format data as objects for faster reads inside a loop.
-  const savedMap = Object.fromEntries(savedTracks.map((t) => [t.id, t]));
-  const hiddenMap = Object.fromEntries(hiddenTracks.map((t) => [t.id, t]));
-  const erroredMap = Object.fromEntries(erroredTracks.map((t) => [t.id, t]));
+  const savedMap = Object.fromEntries(prevSaved.map((t) => [t.uri, t]));
+  const hiddenMap = Object.fromEntries(prevHidden.map((t) => [t.uri, t]));
+  const erroredMap = Object.fromEntries(prevErrored.map((t) => [t.uri, t]));
 
   // Find the tracks we can skip indexing or need updating.
-  const modified = new Set<string>();
+  const seenIdsMap: Record<string, string> = {};
+  const newOrModified = new Set<string>();
   const unmodified = new Set<string>();
+  //? For weird edge-cases (ie: seeing the same `id` or `uri` multiple times).
+  const broken = new Set<string>();
+
+  //* We allow tracks with the same `id`, but different `uri` to "pass through".
   discoveredTracks.forEach(({ id, modificationTime, uri }) => {
-    // Skip if track is hidden.
-    if (hiddenMap[id]) return unmodified.add(id);
+    //? 1. Mark track as "broken" if MediaStore returns the `id` or `uri` again.
+    const seenIdAgain = seenIdsMap[id]; // Returns prior `uri` for that `id`.
+    seenIdsMap[id] = uri;
+    const seenURIAgain = newOrModified.has(uri) || unmodified.has(uri);
+    if (seenIdAgain !== undefined || seenURIAgain) {
+      [seenIdAgain, uri].forEach((brokenURI) => {
+        if (!brokenURI) return;
+        newOrModified.delete(brokenURI);
+        unmodified.delete(brokenURI);
+        broken.add(brokenURI);
+      });
+      return;
+    }
 
-    // Skip if track is new.
-    const isSaved = savedMap[id];
-    const isInvalid = erroredMap[id];
-    if (!isSaved && !isInvalid) return;
+    //? 2. Ignore if track is "broken".
+    if (broken.has(uri)) return;
+    //? 3. Ignore if track is hidden.
+    if (hiddenMap[uri]) return unmodified.add(uri);
 
-    // Get context for determining if track has been modified.
+    //? 4. Handle if track is new.
+    const isSaved = savedMap[uri];
+    const isInvalid = erroredMap[uri];
+    if (!isSaved && !isInvalid) return newOrModified.add(uri);
+
+    //? 5. Mark track as "broken" if `uri` is the same, but `id` has changed.
+    if ((isSaved || isInvalid)!.id !== id) return broken.add(uri);
+
+    //? 6. Determine if track is modified based on difference in `modificationTime`
+    //? and whether it has been manually edited by the user.
+    const hasEdited = typeof isSaved?.editedMetadata === "number";
     const isMaybeModified =
       Math.abs(modificationTime - (isSaved ?? isInvalid)!.modificationTime) >
       CHANGE_DELTA;
-    const hasEdited = typeof isSaved?.editedMetadata === "number";
-    let isDifferentUri = (isSaved ?? isInvalid)!.uri !== uri;
 
-    // A track which has been moved may be detected twice by `expo-media-library`
-    // in its new & old location with the same `id`. This logic helps mark the
-    // track as modified.
-    if (isDifferentUri && unmodified.has(id)) unmodified.delete(id);
-    else if (!isDifferentUri && modified.has(id)) isDifferentUri = true; // Encountered old location.
-
-    // Retry indexing if modification time or uri is different.
-    if ((!hasEdited && isMaybeModified) || isDifferentUri) modified.add(id);
-    else unmodified.add(id);
+    if (!hasEdited && isMaybeModified) newOrModified.add(uri);
+    else unmodified.add(uri);
   });
 
-  const unstagedTracks = discoveredTracks.filter(
-    ({ id }) => !unmodified.has(id),
+  const unstagedTracks = discoveredTracks.filter(({ uri }) =>
+    newOrModified.has(uri),
   );
 
   scanningProgressStore.setState({
     scannedTracks: 0,
-    modifiedTracks: discoveredTracks.length - unmodified.size,
+    modifiedTracks: newOrModified.size,
     failedTrackScans: 0,
   });
   console.log(`Determined unstaged content in ${stopwatch.lapTime()}.`);
@@ -260,9 +279,9 @@ export async function findAndSaveAudio() {
   );
 
   return {
-    foundFiles: discoveredTracks,
+    foundFiles: discoveredTracks.filter(({ uri }) => !broken.has(uri)),
     unstagedFiles: unstagedTracks,
-    changed: discoveredTracks.length - unmodified.size,
+    changed: newOrModified.size,
   };
 }
 
