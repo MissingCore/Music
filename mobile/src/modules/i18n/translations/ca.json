@@ -63,7 +63,7 @@
     "unsaved": "Poder tens canvis sense desar.",
     "stay": "Queda't",
     "leave": "Eixir",
-    "close": null,
+    "close": "Tancar",
     "create": "Crear",
     "delete": "Eliminar",
     "edit": "Editar",
@@ -135,7 +135,7 @@
       "brief": "Personalitza l'ordre i visibilitat de les pestanyes.",
       "extra": {
         "setHomeTab": "Obrir la pestanya {{- name}} a l'inici.",
-        "showNavbar": null
+        "showNavbar": "Mostrar barra de navegació"
       }
     },
     "minAlbumLength": {
@@ -162,8 +162,8 @@
       "title": "Llengua",
       "extra": {
         "contribute": "Contribueix amb traduccions",
-        "useLTR": null,
-        "translators": null
+        "useLTR": "Forçar disseny LTR en idiomes RTL. Requereix reiniciar.",
+        "translators": "Traductors"
       }
     },
     "backup": {
@@ -171,9 +171,9 @@
       "description": "Transfereix dades d'aquesta aplicació entre dispositius a través del fitxer `music_backup.json`.",
       "extra": {
         "export": "Exporta",
-        "exportSuccess": null,
+        "exportSuccess": "Exportació completada correctament.",
         "import": "Importa",
-        "importSuccess": null
+        "importSuccess": "Importació completada correctament."
       }
     },
     "insights": {
@@ -188,15 +188,15 @@
       }
     },
     "mostPlayed": {
-      "title": null,
-      "brief": null,
+      "title": "Més reproduïdes",
+      "brief": "Les teves cançons més escoltades.",
       "extra": {
-        "playCount": null
+        "playCount": "{{count}} reproduccions"
       }
     },
     "hiddenTracks": {
-      "title": null,
-      "brief": null
+      "title": "Pistes ocultes",
+      "brief": "Pistes no mostrades a l'aplicació."
     },
     "saveErrors": {
       "title": "Errors al guardar",
@@ -205,14 +205,14 @@
     "playback": {
       "title": "Reproduint",
       "extra": {
-        "delay": null,
+        "delay": "Retard natural",
         "options": "Ajusts de reproducció",
         "speed": "Velocitat de reproducció",
         "volume": "Volum de l'aplicació"
       }
     },
     "continuePlaybackOnDismiss": {
-      "title": null,
+      "title": "Seguir reproduint al tancar",
       "description": null
     },
     "repeatOnSkip": {
