@@ -1,8 +1,11 @@
 # Personal Privacy Build
 
+> [!IMPORTANT]
+> Builds are currently broken due to PNPM updating its major version. This should be fixed when the `main` branch contains the code for `v3.1.0`.
+
 This document will go through the steps to build this app for personal privacy, which removes Sentry, the third-party service we use for automatic reporting of any errors encountered.
 
-> [!NOTE]  
+> [!NOTE]
 > I have built in a feature which notifies users through the Settings page in the app whenever a new version of the app is available (via GitHub Release Notes), which should keep you up-to-date with the latest features.
 
 For simplicity, all of this will be done on GitHub as you don't need to download and set up any unnecessary programs that you may only use once. This means a **GitHub account is required**. You should read [GitHub's Privacy Policy](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement). In addition, we removed any unnecessary things found in the [`Building this App`](./building-this-app.md) document as technically, you can use this as an alternate way of building the app.
@@ -27,14 +30,17 @@ In the newly created forked repository, click the `Actions` tab and then the `I 
 
 Now on the `Actions` tab, click `Create Privacy Build APKs` in the sidebar. Next click on the `Run workflow` dropdown on the right and **select `Branch: main`**. Then click `Run workflow`.
 
-> [!NOTE]  
-> The `main` branch contains the code for the current version of the app available on the Google Play Store. This should take around ~15-30 minutes to complete.
+> [!NOTE]
+> Alternatively, when the dropdown opens, you can click `Tags` and a specific version.
+
+> [!NOTE]
+> The `main` branch contains the code for the current version of the app available on the Google Play Store. This should take around ~40 minutes to complete.
 
 <img src="./assets/personal-privacy-build/build_apk_1.jpg" alt="Visual steps for running the workflow that creates the APKs." />
 
 ### If The Workflow Fails
 
-> [!NOTE]  
+> [!NOTE]
 > This shouldn't happen anymore, but if it does for whatever reason, here are the steps to re-run the workflow.
 
 In case you see that the workflow throws an error such as: `Gradle build daemon disappeared unexpectedly (it may have been killed or may have crashed)` or `Execution failed for task ':app:collectReleaseDependencies'.`, just re-run the workflow.

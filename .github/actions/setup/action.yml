@@ -17,6 +17,7 @@ runs:
     - name: Change global yarn version
       run: |
         corepack enable
+        corepack use pnpm@latest-11
         corepack prepare yarn@4.13.0 --activate
       shell: bash
 
