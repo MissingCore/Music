@@ -54,6 +54,8 @@ export interface PreferenceStore {
   dragClearPlayback: boolean;
   /** Design used for the Now Playing screen. */
   nowPlayingDesign: NowPlayingDesign;
+  /** If lyrics will be displyad over the artwork on the Now Playing screen. */
+  showLyrics: boolean;
 
   /** Show functional Nothing-styled scrollbar on supported screens. */
   quickScroll: boolean;

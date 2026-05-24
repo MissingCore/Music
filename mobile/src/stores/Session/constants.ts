@@ -16,8 +16,6 @@ export interface SessionStore {
   /** Artists displayed in global artist sheet. */
   displayedArtists: { artists: Artist[]; popStrategy?: PopStrategy } | null;
 
-  /** If lyrics will be displyad over the artwork on the Now Playing screen. */
-  showLyrics: boolean;
   /** Waveform data for the active track. */
   activeWaveformContext: WaveformSample | null;
 }

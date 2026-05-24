@@ -2,7 +2,7 @@ import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { View } from "react-native";
 
-import { useSessionStore } from "~/stores/Session/store";
+import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { ArtworkPicker } from "./Artwork";
 import { LyricsOverlay } from "./LyricsOverlay";
@@ -12,7 +12,7 @@ export function ArtworkSlot(props: {
   artwork: string | null;
   trackId: string;
 }) {
-  const showLyrics = useSessionStore((s) => s.showLyrics);
+  const showLyrics = usePreferenceStore((s) => s.showLyrics);
   const { containerProps, size } = useArtworkSize();
 
   return (

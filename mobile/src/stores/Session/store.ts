@@ -10,7 +10,6 @@ export const sessionStore = createStore<SessionStore>()(() => ({
   displayedTrack: null,
   displayedArtists: null,
 
-  showLyrics: false,
   activeWaveformContext: null,
 }));
 

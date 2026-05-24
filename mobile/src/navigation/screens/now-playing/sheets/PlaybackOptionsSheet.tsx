@@ -40,8 +40,8 @@ export function PlaybackOptionsSheet(props: {
   const playingSource = usePlaybackStore((s) => s.playingFrom);
   const sourceName = usePlaybackStore((s) => s.playingFromName);
   const playbackDelay = usePreferenceStore((s) => s.playbackDelay);
+  const showLyrics = usePreferenceStore((s) => s.showLyrics);
   const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
-  const showLyrics = useSessionStore((s) => s.showLyrics);
   const volume = useSessionStore((s) => s.volume);
   const appearanceSheetRef = useSheetRef();
   const playbackSpeedRef = useSheetRef();
@@ -118,7 +118,7 @@ export function PlaybackOptionsSheet(props: {
             labelKey="feat.lyrics.title"
             RightElement={
               <Pressable
-                onPress={toggleLyricsView}
+                onPress={PreferenceTogglers.toggleKey("showLyrics")}
                 className="h-8 justify-center"
               >
                 <Switch enabled={showLyrics} />
@@ -179,10 +179,4 @@ const VolumeSliderOptions = {
     formatValue: (val: number) => `${Math.round(val * 100)}%`,
   },
 };
-//#endregion
-
-//#region Helpers
-function toggleLyricsView() {
-  sessionStore.setState((prev) => ({ showLyrics: !prev.showLyrics }));
-}
 //#endregion
