@@ -57,7 +57,7 @@
     "i18next": "26.2.0",
     "intl-pluralrules": "2.0.1",
     "jotai": "2.20.0",
-    "react": "19.2.6",
+    "react": "19.2.3",
     "react-i18next": "17.0.8",
     "react-native": "0.85.3",
     "react-native-android-widget": "0.20.3",
