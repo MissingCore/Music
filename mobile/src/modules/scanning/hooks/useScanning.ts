@@ -1,4 +1,4 @@
-import { usePermissions as useMediaLibraryPermissions } from "expo-media-library";
+import { usePermissions as useMediaLibraryPermissions } from "expo-media-library/legacy";
 import { useCallback, useEffect, useState } from "react";
 
 import { Resynchronize } from "~/stores/Playback/actions";

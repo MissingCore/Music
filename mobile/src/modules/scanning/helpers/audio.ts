@@ -4,8 +4,8 @@ import {
 } from "@missingcore/react-native-metadata-retriever";
 import { inArray } from "drizzle-orm";
 import { File } from "expo-file-system";
-import type { Asset as MediaLibraryAsset } from "expo-media-library";
-import { getAssetsAsync } from "expo-media-library";
+import type { Asset as MediaLibraryAsset } from "expo-media-library/legacy";
+import { getAssetsAsync } from "expo-media-library/legacy";
 
 import { db } from "~/db";
 import type { InvalidTrack } from "~/db/schema";
