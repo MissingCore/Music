@@ -66,9 +66,6 @@ importers:
       expo:
         specifier: 56.0.4
         version: 56.0.4(@babel/core@7.29.0)(@expo/dom-webview@56.0.5)(react-native-worklets@0.8.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(react-native@0.85.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3))(react-native@0.85.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3)(typescript@6.0.3)
-      expo-device:
-        specifier: 56.0.4
-        version: 56.0.4(expo@56.0.4)
       expo-drizzle-studio-plugin:
         specifier: 0.2.1
         version: 0.2.1(expo-sqlite@56.0.4(expo@56.0.4)(react-native@0.85.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3))(expo@56.0.4)
@@ -3089,11 +3086,6 @@ packages:
       expo: '*'
       react-native: '*'
 
-  expo-device@56.0.4:
-    resolution: {integrity: sha512-ucVcGPkvBrl2QHuy7XcYex2Y6BETvJ6TREutZrwLGUDnlvbpKS8KfQoNZOpvkyo5Nmm9RrasYQ0CrXmBHho2mg==}
-    peerDependencies:
-      expo: '*'
-
   expo-drizzle-studio-plugin@0.2.1:
     resolution: {integrity: sha512-AjMC7SOutMAv/MkeJSp/26gnHLAA17SG8EtsjIKW6tDcBkq4plDVhjMLusoGe9f0vzYK8KrOvWjEWZ/R+KvIGg==}
     peerDependencies:
@@ -5189,10 +5181,6 @@ packages:
   typescript@6.0.3:
     resolution: {integrity: sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==}
     engines: {node: '>=14.17'}
-    hasBin: true
-
-  ua-parser-js@0.7.41:
-    resolution: {integrity: sha512-O3oYyCMPYgNNHuO7Jjk3uacJWZF8loBgwrfd/5LE/HyZ3lUIOdniQ7DNXJcIgZbwioZxk0fLfI4EVnetdiX5jg==}
     hasBin: true
 
   uc.micro@2.1.0:
@@ -8508,11 +8496,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  expo-device@56.0.4(expo@56.0.4):
-    dependencies:
-      expo: 56.0.4(@babel/core@7.29.0)(@expo/dom-webview@56.0.5)(react-native-worklets@0.8.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(react-native@0.85.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3))(react-native@0.85.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3)(typescript@6.0.3)
-      ua-parser-js: 0.7.41
-
   expo-drizzle-studio-plugin@0.2.1(expo-sqlite@56.0.4(expo@56.0.4)(react-native@0.85.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3))(expo@56.0.4):
     dependencies:
       expo: 56.0.4(@babel/core@7.29.0)(@expo/dom-webview@56.0.5)(react-native-worklets@0.8.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(react-native@0.85.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3))(react-native@0.85.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3)(typescript@6.0.3)
@@ -10758,8 +10741,6 @@ snapshots:
       - supports-color
 
   typescript@6.0.3: {}
-
-  ua-parser-js@0.7.41: {}
 
   uc.micro@2.1.0: {}
 

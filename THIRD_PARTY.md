@@ -18,7 +18,6 @@
 | clsx | MIT | https://github.com/lukeed/clsx |
 | drizzle-orm | Apache-2.0 | https://github.com/drizzle-team/drizzle-orm |
 | expo | MIT | https://github.com/expo/expo/tree/main/packages/expo |
-| expo-device | MIT | https://github.com/expo/expo/tree/main/packages/expo-device |
 | expo-drizzle-studio-plugin | MIT | https://github.com/drizzle-team/drizzle-studio-expo |
 | expo-file-system | MIT | https://github.com/expo/expo/tree/main/packages/expo-file-system |
 | expo-font | MIT | https://github.com/expo/expo/tree/main/packages/expo-font |
