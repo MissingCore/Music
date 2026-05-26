@@ -1,7 +1,5 @@
 import { toast } from "@missingcore/toast";
 import { useMutation } from "@tanstack/react-query";
-import { getDocumentAsync } from "expo-document-picker";
-import { File } from "expo-file-system";
 import { eq, inArray } from "drizzle-orm";
 import { z } from "zod/mini";
 
@@ -19,7 +17,7 @@ import { sanitizePlaylistName } from "~/data/playlist/utils";
 import { getTracks } from "~/data/track/api";
 import { mergeTracks } from "~/data/track/utils";
 
-import { pickDirectory } from "~/lib/file-system";
+import { pickDirectory, pickFile } from "~/lib/file-system";
 import { clearAllQueries } from "~/lib/react-query";
 import { ZSchema } from "~/modules/form/utils";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
@@ -137,21 +135,16 @@ async function exportBackup() {
 
 //#region Import
 async function importBackup() {
-  // Select the `music_backup.json` file we'll be importing from.
-  const { assets, canceled } = await getDocumentAsync({
-    type: ["application/json", "application/octet-stream"],
-    copyToCacheDirectory: false,
-  });
-  if (canceled) throw new Error(i18next.t("err.msg.actionCancel"));
-  if (!assets[0]) throw new Error(i18next.t("err.msg.noSelect"));
-  const documentFile = new File(assets[0].uri);
+  const backupFile = await pickFile([
+    "application/json",
+    "application/octet-stream",
+  ]);
 
   // Read, parse, and validate file contents.
-  const docContents = await documentFile.text();
   let backupContents;
   try {
     // Validate the data structure.
-    backupContents = MusicBackup.parse(JSON.parse(docContents));
+    backupContents = MusicBackup.parse(await backupFile.json());
   } catch {
     throw new Error(i18next.t("err.msg.invalidStructure"));
   }

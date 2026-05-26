@@ -1,7 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { eq } from "drizzle-orm";
-import { getDocumentAsync } from "expo-document-picker";
-import { File } from "expo-file-system";
 import { z } from "zod/mini";
 
 import { db } from "~/db";
@@ -10,7 +8,7 @@ import { customThemes } from "./schema";
 import i18next from "~/modules/i18n";
 
 import { throwIfNoResults } from "~/lib/drizzle";
-import { pickDirectory } from "~/lib/file-system";
+import { pickDirectory, pickFile } from "~/lib/file-system";
 import { queryClient } from "~/lib/react-query";
 import { ZSchema } from "~/modules/form/utils";
 import type { CustomTheme, ResolvedTheme } from "./constants";
@@ -31,16 +29,14 @@ const ThemeExportSchema = z.object({
 });
 
 export async function pickTheme() {
-  const { assets, canceled } = await getDocumentAsync({
-    type: ["application/json", "application/octet-stream", "text/plain"],
-    copyToCacheDirectory: false,
-  });
-  if (canceled) throw new Error(i18next.t("err.msg.actionCancel"));
-  if (!assets[0]) throw new Error(i18next.t("err.msg.noSelect"));
-
+  const themeFile = await pickFile([
+    "application/json",
+    "application/octet-stream",
+    "text/plain",
+  ]);
   try {
-    const fileContents = await new File(assets[0].uri).text();
-    return ThemeExportSchema.parse(JSON.parse(fileContents));
+    const fileContents = await themeFile.json();
+    return ThemeExportSchema.parse(fileContents);
   } catch {
     throw new Error(i18next.t("err.msg.invalidStructure"));
   }

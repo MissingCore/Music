@@ -7,10 +7,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { queries as q } from "~/data/keyStore";
 import { createLyric } from "~/data/lyric/api";
 
+import { pickFile } from "~/lib/file-system";
 import { wait } from "~/utils/promise";
 import { ModifyLyricBase } from "./components/ModifyViewBase";
 import { linkTrackToLyric } from "./helpers/linkTrackToLyric";
-import { readLyricFile } from "./helpers/readLyricFile";
 
 type Props = StaticScreenProps<{ linkTo?: string }>;
 
@@ -28,10 +28,14 @@ export default function CreateLyric({
         label: "feat.backup.extra.import",
         action: async ({ setFields }) => {
           try {
-            const { name, contents } = await readLyricFile();
+            const lrcFile = await pickFile(["application/lrc", "text/plain"]);
+            const lrcFileInfo = {
+              name: lrcFile.name.split(".")[0],
+              lyrics: await lrcFile.text(),
+            };
             await wait(100);
             toast.t("feat.backup.extra.importSuccess");
-            setFields({ name, lyrics: contents });
+            setFields(lrcFileInfo);
           } catch (err) {
             toast.error((err as Error).message);
           }
