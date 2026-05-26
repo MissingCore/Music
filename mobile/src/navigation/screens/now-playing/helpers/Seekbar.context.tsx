@@ -38,22 +38,24 @@ export function SeekbarContext(props: { children: React.ReactNode }) {
       const estimatedAnimationDuration =
         (remainingSeconds * 1000) / playbackSpeed;
 
-      animatedPosition.value = withTiming(activeTrack.duration, {
-        duration: estimatedAnimationDuration,
-        easing: Easing.linear,
-        //! If the user disables "Transition animation scale" or enables
-        //! "Remove animations", `withTiming` will resolve immediately,
-        //! causing the seekbar to display the max duration. Setting
-        //! `ReduceMotion.Never` will ensure this animation always runs.
-        reduceMotion: ReduceMotion.Never,
-      });
+      animatedPosition.set(
+        withTiming(activeTrack.duration, {
+          duration: estimatedAnimationDuration,
+          easing: Easing.linear,
+          //! If the user disables "Transition animation scale" or enables
+          //! "Remove animations", `withTiming` will resolve immediately,
+          //! causing the seekbar to display the max duration. Setting
+          //! `ReduceMotion.Never` will ensure this animation always runs.
+          reduceMotion: ReduceMotion.Never,
+        }),
+      );
     },
     [animatedPosition, playbackSpeed, activeTrack],
   );
 
   // Initialize `animatedPosition`.
   useEffect(() => {
-    animatedPosition.value = lastPosition;
+    animatedPosition.set(lastPosition);
     setRenderedPos(lastPosition);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [animatedPosition, setRenderedPos]);
@@ -61,15 +63,15 @@ export function SeekbarContext(props: { children: React.ReactNode }) {
   // Synchronize with `lastPosition`.
   useEffect(() => {
     if (isSeeking) return;
-    const priorPos = Number(String(animatedPosition.value));
-    animatedPosition.value = lastPosition;
+    const priorPos = Number(String(animatedPosition.get()));
+    animatedPosition.set(lastPosition);
     // Prevent slight rubberbanding when pausing as `animatedPosition` will be
     // ahead of whatever is reported by the `PlaybackProgressUpdated` event.
     if (!isPlaying && priorPos !== 0 && lastPosition !== 0) {
-      //! Prevents an infinite loop caused by `animatedPosition.value` for some
+      //! Prevents an infinite loop caused by `animatedPosition.get()` for some
       //! reason not equaling `priorPos` after setting it in this block.
       if (lastPosition === pausedPositionRef.current) {
-        animatedPosition.value = pausedPositionRef.current;
+        animatedPosition.set(pausedPositionRef.current);
         return;
       }
       pausedPositionRef.current = priorPos;
@@ -84,7 +86,7 @@ export function SeekbarContext(props: { children: React.ReactNode }) {
 
   // Synchronize JS state with shared value.
   useAnimatedReaction(
-    () => animatedPosition.value,
+    () => animatedPosition.get(),
     (currVal) => {
       if (inForeground) scheduleOnRN(setRenderedPos, currVal);
     },

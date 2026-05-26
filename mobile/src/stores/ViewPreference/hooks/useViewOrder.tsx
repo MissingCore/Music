@@ -42,6 +42,7 @@ export function useViewOrder<
     }
     if (!isAsc) sortedResults.reverse();
 
+    // eslint-disable-next-line react-hooks/set-state-in-render
     setCachedComputation((prev) => ({ ...prev, [cacheKey]: sortedResults }));
     return sortedResults;
   }, [isAsc, orderBy, cachedComputation]);

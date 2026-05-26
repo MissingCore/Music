@@ -22,7 +22,7 @@ export const FrequencySlider = memo(function FrequencySlider(props: Props) {
   const [bandValue, setBandValue] = useState(props.value);
 
   useAnimatedReaction(
-    () => liveBandValue.value,
+    () => liveBandValue.get(),
     (curr) => scheduleOnRN(setBandValue, curr),
   );
 

@@ -41,17 +41,19 @@ export function Toast({ toast, exiting, theme }: Props) {
       Gesture.Pan()
         .enabled(!exiting)
         .activeOffsetY([-10, 10])
-        .onUpdate(({ translationY }) => {
-          panAmount.value = Math.min(0, translationY);
-        })
+        .onUpdate(({ translationY }) =>
+          panAmount.set(Math.min(0, translationY)),
+        )
         .onEnd(({ velocityY }) => {
           const metThreshold = velocityY < -500;
-          panAmount.value = withSpring(
-            metThreshold ? -(topOffset + toastHeight.value + 256) : 0,
-            undefined,
-            (finished) => {
-              if (finished && metThreshold) scheduleOnRN(onRemove);
-            },
+          panAmount.set(
+            withSpring(
+              metThreshold ? -(topOffset + toastHeight.get() + 256) : 0,
+              undefined,
+              (finished) => {
+                if (finished && metThreshold) scheduleOnRN(onRemove);
+              },
+            ),
           );
         }),
     [panAmount, toastHeight, topOffset, exiting, onRemove],
@@ -60,21 +62,21 @@ export function Toast({ toast, exiting, theme }: Props) {
 
   //#region Enter/Exit Animations
   useEffect(() => {
-    animationState.value = withTiming(
-      exiting ? 0 : 1,
-      undefined,
-      (finished) => {
+    animationState.set(
+      withTiming(exiting ? 0 : 1, undefined, (finished) => {
         if (finished && exiting) scheduleOnRN(onRemove);
-      },
+      }),
     );
 
     //? Auto-dismiss toast after `4s` if `toast.autoDismiss = true`.
     let autoDismissTimer: ReturnType<typeof setTimeout>;
     if (toast.autoDismiss && !exiting) {
       autoDismissTimer = setTimeout(() => {
-        animationState.value = withTiming(0, undefined, (finished) => {
-          if (finished) scheduleOnRN(onRemove);
-        });
+        animationState.set(
+          withTiming(0, undefined, (finished) => {
+            if (finished) scheduleOnRN(onRemove);
+          }),
+        );
       }, 4300);
     }
 
@@ -86,14 +88,14 @@ export function Toast({ toast, exiting, theme }: Props) {
   const toastStyles = useAnimatedStyle(() => ({
     top: topOffset,
     maxWidth: Math.min(384, windowDimensions.width - 32),
-    opacity: animationState.value,
+    opacity: animationState.get(),
     transform: [
       { translateX: "-50%" },
       {
         translateY:
-          panAmount.value < 0
-            ? panAmount.value
-            : `${-100 + animationState.value * 100}%`,
+          panAmount.get() < 0
+            ? panAmount.get()
+            : `${-100 + animationState.get() * 100}%`,
       },
     ],
   }));
@@ -108,9 +110,7 @@ export function Toast({ toast, exiting, theme }: Props) {
   return (
     <GestureDetector gesture={panGesture}>
       <Animated.View
-        onLayout={(e) => {
-          toastHeight.value = e.nativeEvent.layout.height;
-        }}
+        onLayout={(e) => toastHeight.set(e.nativeEvent.layout.height)}
         style={[
           styles.container,
           {

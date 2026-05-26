@@ -50,22 +50,22 @@ export function Scrollbar({
 
   //* How much we can actually scroll.
   const scrollableArea = useDerivedValue(
-    () => listScrollHeight.value - listHeight.value,
+    () => listScrollHeight.get() - listHeight.get(),
   );
 
   //* Scales down `listScrollAmount` to fit inside of `scrollbarHeight`.
   const scaledScrollAmount = useDerivedValue(() => {
-    const scrollPercent = listScrollAmount.value / scrollableArea.value;
-    return scrollPercent * scrollbarHeight.value;
+    const scrollPercent = listScrollAmount.get() / scrollableArea.get();
+    return scrollPercent * scrollbarHeight.get();
   });
 
   //* Scroll to given offset using Reanimated.
   useDerivedValue(() => {
-    if (nextScrollPosition.value === -1) return;
+    if (nextScrollPosition.get() === -1) return;
     //? For some reason on the New Architecture, things only work if we set
     //? this to `false`, like in our original implementation in:
     //?   - https://github.com/MissingCore/Music/commit/e9a1ff9b66390928210ff054629b6b7d09e1af6a
-    scrollTo(listRef, 0, nextScrollPosition.value, false);
+    scrollTo(listRef, 0, nextScrollPosition.get(), false);
   });
 
   //#region Visibility
@@ -76,43 +76,47 @@ export function Scrollbar({
   //* Keeps the scrollbar visible.
   const persistScrollbar = useCallback(() => {
     "worklet";
-    isOngoing.value = true;
-    isScrollingBuffer.value = 1;
+    isOngoing.set(true);
+    isScrollingBuffer.set(1);
   }, [isOngoing, isScrollingBuffer]);
 
   //* Start the timer to hide the scrollbar.
   const dismissScrollbar = useCallback(() => {
     "worklet";
-    isOngoing.value = false;
-    isScrollingBuffer.value = withTiming(0, {
-      duration: HIDE_DELAY,
-      //! See: https://github.com/MissingCore/Music/pull/480
-      reduceMotion: ReduceMotion.Never,
-    });
+    isOngoing.set(false);
+    isScrollingBuffer.set(
+      withTiming(0, {
+        duration: HIDE_DELAY,
+        //! See: https://github.com/MissingCore/Music/pull/480
+        reduceMotion: ReduceMotion.Never,
+      }),
+    );
   }, [isOngoing, isScrollingBuffer]);
 
   //* Show scrollbar if we have at least 2 screens worth of content.
   useDerivedValue(() => {
-    const hasEnoughContent = listScrollHeight.value / listHeight.value > 2;
+    const hasEnoughContent = listScrollHeight.get() / listHeight.get() > 2;
     scheduleOnRN(
       setScrollbarVisible,
-      isVisible && hasEnoughContent && isScrollingBuffer.value !== 0,
+      isVisible && hasEnoughContent && isScrollingBuffer.get() !== 0,
     );
   });
 
   //* Show scrollbar when we're scrolling and hide it after a delay
   //* after stopping when the thumb is released.
   useAnimatedReaction(
-    () => listScrollAmount.value,
+    () => listScrollAmount.get(),
     (_, prevVal) => {
       if (prevVal === null) return; //? Don't call on "initialization".
-      isScrollingBuffer.value = 1;
-      if (isOngoing.value) return;
-      isScrollingBuffer.value = withTiming(0, {
-        duration: HIDE_DELAY,
-        //! See: https://github.com/MissingCore/Music/pull/480
-        reduceMotion: ReduceMotion.Never,
-      });
+      isScrollingBuffer.set(1);
+      if (isOngoing.get()) return;
+      isScrollingBuffer.set(
+        withTiming(0, {
+          duration: HIDE_DELAY,
+          //! See: https://github.com/MissingCore/Music/pull/480
+          reduceMotion: ReduceMotion.Never,
+        }),
+      );
     },
   );
   //#endregion
@@ -128,26 +132,26 @@ export function Scrollbar({
     .enabled(scrollbarVisible)
     .onStart(({ absoluteY }) => {
       persistScrollbar();
-      prevY.value = absoluteY;
+      prevY.set(absoluteY);
     })
     .onUpdate(({ absoluteY }) => {
       persistScrollbar();
-      const changeDelta = absoluteY - prevY.value;
+      const changeDelta = absoluteY - prevY.get();
       const clampedScaledPosition = clamp(
         0,
-        scaledScrollAmount.value + changeDelta,
-        scrollbarHeight.value,
+        scaledScrollAmount.get() + changeDelta,
+        scrollbarHeight.get(),
       );
-      const scrollPercent = clampedScaledPosition / scrollbarHeight.value;
-      const unscaledScrollAmount = scrollPercent * scrollableArea.value;
+      const scrollPercent = clampedScaledPosition / scrollbarHeight.get();
+      const unscaledScrollAmount = scrollPercent * scrollableArea.get();
 
-      nextScrollPosition.value = unscaledScrollAmount;
-      prevY.value = absoluteY;
+      nextScrollPosition.set(unscaledScrollAmount);
+      prevY.set(absoluteY);
     })
     .onEnd(() => {
       dismissScrollbar();
-      nextScrollPosition.value = -1;
-      prevY.value = -1;
+      nextScrollPosition.set(-1);
+      prevY.set(-1);
     })
     .onFinalize(() => {
       if (onEnd) onEnd();
@@ -166,12 +170,12 @@ export function Scrollbar({
       reduceMotion: ReduceMotion.Never,
     }),
     //? Prevents `dev` mode error when `scaledScrollAmount = NaN` from `0/0`.
-    transform: [{ translateY: scaledScrollAmount.value || 0 }],
+    transform: [{ translateY: scaledScrollAmount.get() || 0 }],
   }));
 
   const thumbStyle = useAnimatedStyle(() => ({
     height: withTiming(
-      isOngoing.value || prevY.value !== -1 ? THUMB_SIZE : COLLAPSED_THUMB_SIZE,
+      isOngoing.get() || prevY.get() !== -1 ? THUMB_SIZE : COLLAPSED_THUMB_SIZE,
       {
         duration: 150,
         //! See: https://github.com/MissingCore/Music/pull/480
@@ -185,11 +189,11 @@ export function Scrollbar({
   return (
     <Animated.View
       pointerEvents={scrollbarVisible ? "box-none" : "none"}
-      onLayout={(e) => {
-        // Subtract `THUMB_SIZE` so that at max scroll, the bottom of the
-        // thumb doesn't hang over the scrollbar track.
-        scrollbarHeight.value = e.nativeEvent.layout.height - THUMB_SIZE;
-      }}
+      // Subtract `THUMB_SIZE` so that at max scroll, the bottom of the
+      // thumb doesn't hang over the scrollbar track.
+      onLayout={(e) =>
+        scrollbarHeight.set(e.nativeEvent.layout.height - THUMB_SIZE)
+      }
       style={{ right: 8, top: top - THUMB_SIZE / 2, bottom }}
       className="absolute z-50"
     >
@@ -219,12 +223,12 @@ export function useScrollbarContext() {
         //* Figures out how much scrolling room we have (includes `listHeight`).
         onContentSizeChange: (_width: number, height: number) => {
           "worklet";
-          listScrollHeight.value = height;
+          listScrollHeight.set(height);
         },
         //* Determines the visible content area.
         onLayout: (e: LayoutChangeEvent) => {
           "worklet";
-          listHeight.value = e.nativeEvent.layout.height;
+          listHeight.set(e.nativeEvent.layout.height);
         },
       },
       /** Props to spread onto the `<Scrollbar />` component. */
@@ -232,7 +236,7 @@ export function useScrollbarContext() {
       /** Use inside of the scroll listener. */
       onScroll: (e: ReanimatedScrollEvent) => {
         "worklet";
-        listScrollAmount.value = e.contentOffset.y;
+        listScrollAmount.set(e.contentOffset.y);
       },
     }),
     [listHeight, listScrollAmount, listScrollHeight],

@@ -35,6 +35,7 @@ export function SleepTimerSheet(props: { ref: TrueSheetRef }) {
 
   const endString = useMemo(() => {
     if (minutesAsNum === undefined) return "—";
+    // eslint-disable-next-line react-hooks/purity
     const estEndTime = endAt ? endAt : Date.now() + minutesAsNum * 60000;
     return new Date(estEndTime).toLocaleTimeString(undefined, {
       hour: "numeric",

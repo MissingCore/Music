@@ -45,7 +45,7 @@ function PlaybackSpeedPreset(props: {
     <Button
       onPress={() => {
         setPlaybackSpeed(props.preset);
-        props.value.value = props.preset;
+        props.value.set(props.preset);
       }}
       className="min-h-8 flex-1 rounded-full py-2 active:bg-surfaceContainer"
     >

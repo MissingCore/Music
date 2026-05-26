@@ -15,13 +15,10 @@ export function useDetachedDimViewContext() {
       dimViewHandlers: {
         // Fake the dimness animation when the back action is done as
         // `onPositionChange` doesn't fire in this situation.
-        onBackPress: () => {
-          dimness.value = withTiming(0);
-        },
+        onBackPress: () => dimness.set(withTiming(0)),
         // Fires when we drag the sheet to dismiss.
-        onPositionChange: (e: PositionChangeEvent) => {
-          dimness.value = e.nativeEvent.detent * 0.5;
-        },
+        onPositionChange: (e: PositionChangeEvent) =>
+          dimness.set(e.nativeEvent.detent * 0.5),
       },
       /** Pass directly to `<DetachedDimView />`. */
       dimness,
@@ -31,7 +28,7 @@ export function useDetachedDimViewContext() {
 }
 
 export function DetachedDimView(props: { dimness: SharedValue<number> }) {
-  const viewStyle = useAnimatedStyle(() => ({ opacity: props.dimness.value }));
+  const viewStyle = useAnimatedStyle(() => ({ opacity: props.dimness.get() }));
   return (
     <Animated.View
       pointerEvents="none"

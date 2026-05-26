@@ -66,13 +66,14 @@ export function CurrentListLayout<TData>({
     ),
   );
   const setHeaderHeight = useCallback(
-    (e: LayoutChangeEvent) => {
-      headerHeight.value = Math.round(
-        e.nativeEvent.layout.height -
-          contentStartOffset +
-          ESTIMATED_TOPAPPBAR_YPAD,
-      );
-    },
+    (e: LayoutChangeEvent) =>
+      headerHeight.set(
+        Math.round(
+          e.nativeEvent.layout.height -
+            contentStartOffset +
+            ESTIMATED_TOPAPPBAR_YPAD,
+        ),
+      ),
     [headerHeight, contentStartOffset],
   );
   //#endregion
@@ -83,14 +84,14 @@ export function CurrentListLayout<TData>({
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (e) => {
       "worklet";
-      scrollPosition.value = e.contentOffset.y;
+      scrollPosition.set(e.contentOffset.y);
     },
   });
 
   const stickyStyles = useAnimatedStyle(() => ({
     paddingTop: minStickyTopOffset,
     transform: [
-      { translateY: Math.max(0, headerHeight.value - scrollPosition.value) },
+      { translateY: Math.max(0, headerHeight.get() - scrollPosition.get()) },
     ],
   }));
   //#endregion
@@ -207,7 +208,7 @@ function DeferredArtwork(props: ListArtworkProps) {
   // Additional container styling.
   const horizTranslation = useSharedValue(0);
   const coverStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: -horizTranslation.value }],
+    transform: [{ translateX: -horizTranslation.get() }],
   }));
 
   return (
@@ -235,14 +236,12 @@ function AnimatedVinyl(
     isPlaying && arePlaybackSourceEqual(playingSource, props.listSource);
 
   const onMount = useCallback(() => {
-    props.horizTranslation.value = withTiming(props.size / 4, {
-      duration: 500,
-    });
+    props.horizTranslation.set(withTiming(props.size / 4, { duration: 500 }));
   }, [props.horizTranslation, props.size]);
 
   const discStyle = useAnimatedStyle(() => ({
     // Multiplied by 2 due to also needing to account the translation of the parent.
-    transform: [{ translateX: props.horizTranslation.value * 2 }],
+    transform: [{ translateX: props.horizTranslation.get() * 2 }],
   }));
 
   return (

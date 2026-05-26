@@ -125,6 +125,7 @@ function RootScreens(_: RootScreensProps) {
       //  - Though there were some users got the screen error but didn't encounter
       //  the database issue.
       if (!canResetHomeScreens) {
+        // eslint-disable-next-line react-hooks/globals
         canResetHomeScreens = true;
         // Reset home tab preferences if we have a mismatch.
         preferenceStore.setState({

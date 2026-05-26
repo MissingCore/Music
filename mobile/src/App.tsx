@@ -101,15 +101,17 @@ function FakeLayoutTransition(props: {
   useEffect(() => {
     if (!props.unmount || animState !== "idle") return;
     setAnimState("in-progress");
-    opacity.value = withDelay(
-      500,
-      withTiming(0, { duration: 500 }, () => {
-        scheduleOnRN(setAnimState, "finished");
-      }),
+    opacity.set(
+      withDelay(
+        500,
+        withTiming(0, { duration: 500 }, () => {
+          scheduleOnRN(setAnimState, "finished");
+        }),
+      ),
     );
   }, [props.unmount, animState, opacity]);
 
-  const animatedStyle = useAnimatedStyle(() => ({ opacity: opacity.value }));
+  const animatedStyle = useAnimatedStyle(() => ({ opacity: opacity.get() }));
 
   if (animState === "finished") return null;
   return (

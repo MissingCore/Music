@@ -99,8 +99,8 @@ export const CachedSlider = memo(function CachedSlider(props: {
   const setCurrVal = useCallback(
     (val: number) => {
       "worklet";
-      currVal.value = val;
-      if (props.liveValue !== undefined) props.liveValue.value = val;
+      currVal.set(val);
+      if (props.liveValue !== undefined) props.liveValue.set(val);
     },
     [currVal, props.liveValue],
   );
@@ -108,23 +108,22 @@ export const CachedSlider = memo(function CachedSlider(props: {
   //? Synchronize internal value with external value.
   useDerivedValue(() => {
     if (props.liveValue === undefined) return;
-    if (props.liveValue.value === currVal.value) return;
+    if (props.liveValue.get() === currVal.get()) return;
     //? If values are different, it means `liveValue` was changed.
-    currVal.value = props.liveValue.value;
+    currVal.set(props.liveValue.get());
   });
   //#endregion
 
   //#region Layout Context
   const sliderLength = useSharedValue(0);
   const onLayout = useCallback(
-    (e: LayoutChangeEvent) => {
-      sliderLength.value = e.nativeEvent.layout[onVertical("height", "width")];
-    },
+    (e: LayoutChangeEvent) =>
+      sliderLength.set(e.nativeEvent.layout[onVertical("height", "width")]),
     [onVertical, sliderLength],
   );
 
   const containerRatio = useDerivedValue(
-    () => sliderLength.value / moveableDistance,
+    () => sliderLength.get() / moveableDistance,
   );
   //#endregion
 
@@ -141,12 +140,12 @@ export const CachedSlider = memo(function CachedSlider(props: {
       if (Math.abs(velocity) > 500) return;
       // Don't immediately call `onChange` if we haven't moved `debounceMultipler * step`.
       if (
-        Math.abs(debounceFrom.value - value) <
+        Math.abs(debounceFrom.get() - value) <
         step.current * debounceMultiplier.current
       ) {
         return;
       }
-      debounceFrom.value = value;
+      debounceFrom.set(value);
       if (onChangeRef.current) scheduleOnRN(onChangeRef.current, value);
     },
     [debounceFrom],
@@ -163,10 +162,10 @@ export const CachedSlider = memo(function CachedSlider(props: {
       "worklet";
       const i18nAdjustedL =
         I18nManager.isRTL && !props.inverted && !props.vertical
-          ? sliderLength.value - l
+          ? sliderLength.get() - l
           : l;
-      const clampedValue = clamp(0, i18nAdjustedL, sliderLength.value);
-      let progressPrecent = clampedValue / sliderLength.value;
+      const clampedValue = clamp(0, i18nAdjustedL, sliderLength.get());
+      let progressPrecent = clampedValue / sliderLength.get();
       if (props.vertical) progressPrecent = 1 - progressPrecent;
       const rawVal = progressPrecent * moveableDistance + props.min;
       // Round based on the step.
@@ -203,9 +202,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
       Gesture.Pan()
         .enabled(!props.disabled)
         .onBegin(() => setIsInteracting(true))
-        .onStart(({ x, y }) => {
-          debounceFrom.value = onVerticalWorklet(y, x);
-        })
+        .onStart(({ x, y }) => debounceFrom.set(onVerticalWorklet(y, x)))
         .onUpdate(({ x, y, velocityX, velocityY }) => {
           const nextValue = calculateNextValue(onVerticalWorklet(y, x));
           setCurrVal(nextValue);
@@ -276,24 +273,24 @@ export const CachedSlider = memo(function CachedSlider(props: {
 
   // Section that goes to min.
   const toMinProgressWrapperStyle = useAnimatedStyle(() => ({
-    [StyleKey.longSide]: anchorDistFromMin * containerRatio.value,
+    [StyleKey.longSide]: anchorDistFromMin * containerRatio.get(),
   }));
 
   const toMinProgressStyle = useAnimatedStyle(() => ({
     backgroundColor: props.transparent ? Colors.transparent : progressColor,
-    [StyleKey.longSide]: (anchorPoint - currVal.value) * containerRatio.value,
-    opacity: currVal.value > anchorPoint ? 0 : 1,
+    [StyleKey.longSide]: (anchorPoint - currVal.get()) * containerRatio.get(),
+    opacity: currVal.get() > anchorPoint ? 0 : 1,
   }));
 
   // Section that goes to max.
   const toMaxProgressWrapperStyle = useAnimatedStyle(() => ({
-    [StyleKey.longSide]: anchorDistFromMax * containerRatio.value,
+    [StyleKey.longSide]: anchorDistFromMax * containerRatio.get(),
   }));
 
   const toMaxProgressStyle = useAnimatedStyle(() => ({
     backgroundColor: props.transparent ? Colors.transparent : progressColor,
-    [StyleKey.longSide]: (currVal.value - anchorPoint) * containerRatio.value,
-    opacity: currVal.value < anchorPoint ? 0 : 1,
+    [StyleKey.longSide]: (currVal.get() - anchorPoint) * containerRatio.get(),
+    opacity: currVal.get() < anchorPoint ? 0 : 1,
   }));
   //#endregion
 
@@ -384,10 +381,10 @@ const SliderOverlay = memo(function SliderOverlay(
   },
 ) {
   const { t } = useTranslation();
-  const [currentValue, setCurrentValue] = useState(() => props.value.value);
+  const [currentValue, setCurrentValue] = useState(() => props.value.get());
 
   useAnimatedReaction(
-    () => props.value.value,
+    () => props.value.get(),
     (currVal) => scheduleOnRN(setCurrentValue, currVal),
   );
 

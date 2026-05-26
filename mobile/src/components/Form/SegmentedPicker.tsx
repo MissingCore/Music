@@ -35,7 +35,7 @@ export function SegmentedPicker({
       {
         translateX: withTiming(
           OnRTLWorklet.decide(-selectedIndex, selectedIndex) *
-            (pickerWidth.value / options.length),
+            (pickerWidth.get() / options.length),
           { duration: 250 },
         ),
       },
@@ -46,9 +46,7 @@ export function SegmentedPicker({
     <View className="gap-2">
       <View className="rounded-full bg-surfaceContainerLowest p-0.5">
         <View
-          onLayout={(e) => {
-            pickerWidth.value = e.nativeEvent.layout.width;
-          }}
+          onLayout={(e) => pickerWidth.set(e.nativeEvent.layout.width)}
           className="relative flex-row items-start justify-center"
         >
           <Animated.View

@@ -52,7 +52,7 @@ export function Marquee({
   useEffect(() => {
     if (containerWidth === -1 || contentWidth === -1) return;
     // Make sure we reset whenever the children changes size.
-    offset.value = 0;
+    offset.set(0);
     if (contentWidth <= containerWidth) return;
     // Don't run animations when app is in background to prevent slight
     // freeze on return to foreground.
@@ -63,32 +63,34 @@ export function Marquee({
     const totalDuration = (scrollRoom / 24) * 1000;
 
     // Only attempt marquee animation if the content is wide enough.
-    offset.value = withRepeat(
-      withSequence(
-        withDelay(
-          3000,
-          withTiming(scrollRoom, {
-            duration: totalDuration,
-            easing: Easing.linear,
-          }),
+    offset.set(
+      withRepeat(
+        withSequence(
+          withDelay(
+            3000,
+            withTiming(scrollRoom, {
+              duration: totalDuration,
+              easing: Easing.linear,
+            }),
+          ),
+          withDelay(
+            3000,
+            withTiming(0, { duration: totalDuration, easing: Easing.linear }),
+          ),
         ),
-        withDelay(
-          3000,
-          withTiming(0, { duration: totalDuration, easing: Easing.linear }),
-        ),
+        -1,
       ),
-      -1,
     );
   }, [containerWidth, contentWidth, offset, inForeground]);
 
   const contentStyles = useAnimatedStyle(() => ({
-    transform: [{ translateX: OnRTLWorklet.flipSign(-offset.value) }],
+    transform: [{ translateX: OnRTLWorklet.flipSign(-offset.get()) }],
   }));
 
   // Styles to determine when to render the scroll shadow.
   const isLeftVisible = useAnimatedStyle(() => ({
     display:
-      offset.value === OnRTLWorklet.decide(contentWidth - containerWidth, 0)
+      offset.get() === OnRTLWorklet.decide(contentWidth - containerWidth, 0)
         ? "none"
         : "flex",
     [OnRTLWorklet.decide("right", "left")]: 0,
@@ -96,7 +98,7 @@ export function Marquee({
   const isRightVisible = useAnimatedStyle(() => ({
     display:
       !isStatic &&
-      offset.value !== OnRTLWorklet.decide(0, contentWidth - containerWidth)
+      offset.get() !== OnRTLWorklet.decide(0, contentWidth - containerWidth)
         ? "flex"
         : "none",
     [OnRTLWorklet.decide("left", "right")]: 0,
