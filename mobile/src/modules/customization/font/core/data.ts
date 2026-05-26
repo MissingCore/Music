@@ -41,7 +41,7 @@ export async function saveCustomFont(entry: { name: string; uri: string }) {
 
   try {
     //? Save font to dedicated fonts directory that we control.
-    cachedFont.copy(finalDestination);
+    await cachedFont.copy(finalDestination);
 
     //? Create new entry in database.
     const fontEntry = { name: entry.name, uri: finalDestination.uri };

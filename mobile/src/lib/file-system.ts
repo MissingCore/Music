@@ -112,6 +112,6 @@ export async function saveImage(uri: string) {
   });
   // Move cached image to final location.
   const finalLocation = new File(webpUri);
-  finalLocation.move(new Directory(ImageDirectory));
+  await finalLocation.move(new Directory(ImageDirectory));
   return finalLocation.uri;
 }
