@@ -294,8 +294,8 @@ function useShyHeaderContext(args: {
   const headerStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: -headerTranslation.get() }],
     opacity: clamp(
-      0,
       (args.headerHeight - headerTranslation.get()) / args.headerHeight,
+      0,
       1,
     ),
   }));
@@ -395,7 +395,7 @@ function useShyHeaderContext(args: {
       //? Handle header position in relation to scroll.
       const changeDelta = e.contentOffset.y - prevOffsetY.get();
       headerTranslation.set(
-        clamp(0, headerTranslation.get() + changeDelta, args.headerHeight),
+        clamp(headerTranslation.get() + changeDelta, 0, args.headerHeight),
       );
 
       prevOffsetY.set(e.contentOffset.y);

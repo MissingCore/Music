@@ -138,8 +138,8 @@ export function Scrollbar({
       persistScrollbar();
       const changeDelta = absoluteY - prevY.get();
       const clampedScaledPosition = clamp(
-        0,
         scaledScrollAmount.get() + changeDelta,
+        0,
         scrollbarHeight.get(),
       );
       const scrollPercent = clampedScaledPosition / scrollbarHeight.get();

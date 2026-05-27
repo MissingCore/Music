@@ -164,7 +164,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
         I18nManager.isRTL && !props.inverted && !props.vertical
           ? sliderLength.get() - l
           : l;
-      const clampedValue = clamp(0, i18nAdjustedL, sliderLength.get());
+      const clampedValue = clamp(i18nAdjustedL, 0, sliderLength.get());
       let progressPrecent = clampedValue / sliderLength.get();
       if (props.vertical) progressPrecent = 1 - progressPrecent;
       const rawVal = progressPrecent * moveableDistance + props.min;
