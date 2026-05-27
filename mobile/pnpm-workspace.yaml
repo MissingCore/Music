@@ -12,6 +12,9 @@ allowBuilds:
   "sharp": true
   unrs-resolver: false
 
+minimumReleaseAgeExclude:
+  - "@missingcore/react-native-metadata-retriever"
+
 patchedDependencies:
   "@lodev09/react-native-true-sheet": "patches/@lodev09__react-native-true-sheet.patch"
   "react-native-android-widget": "patches/react-native-android-widget.patch"

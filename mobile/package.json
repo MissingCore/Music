@@ -26,14 +26,14 @@
     "@boterop/react-native-background-timer": "2.6.0",
     "@legendapp/list": "2.0.19",
     "@lodev09/react-native-true-sheet": "3.4.2",
-    "@missingcore/music-glyph-toys": "github:MissingCore/music-glyph-toys#6e2dfb85f7e66ace7dac536587b8129589fa6fd6",
+    "@missingcore/music-glyph-toys": "github:MissingCore/music-glyph-toys#f34db01c67b218ccd3085ddb5e2d135399445bef",
     "@missingcore/react-native-actual-path": "0.1.0",
     "@missingcore/react-native-audio-analyzer": "3.2.0-beta.4",
-    "@missingcore/react-native-metadata-retriever": "3.0.0",
+    "@missingcore/react-native-metadata-retriever": "3.1.0",
     "@paralleldrive/cuid2": "3.3.0",
-    "@react-navigation/material-top-tabs": "7.4.27",
-    "@react-navigation/native": "7.2.4",
-    "@react-navigation/native-stack": "7.15.1",
+    "@react-navigation/material-top-tabs": "7.4.28",
+    "@react-navigation/native": "7.2.5",
+    "@react-navigation/native-stack": "7.16.0",
     "@rn-primitives/portal": "1.4.0",
     "@sentry/react-native": "8.12.0",
     "@tanstack/react-query": "5.100.14",
@@ -77,7 +77,7 @@
     "zustand": "5.0.13"
   },
   "devDependencies": {
-    "@babel/core": "7.29.0",
+    "@babel/core": "7.29.7",
     "@tanstack/eslint-plugin-query": "5.100.14",
     "@types/react": "19.2.15",
     "babel-plugin-inline-import": "3.0.0",
@@ -96,7 +96,7 @@
     "prettier-plugin-tailwindcss": "0.8.0",
     "tailwindcss": "4.3.0",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.59.4"
+    "typescript-eslint": "8.60.0"
   },
   "expo": {
     "autolinking": {
