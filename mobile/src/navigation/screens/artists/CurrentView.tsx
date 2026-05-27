@@ -4,7 +4,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useArtistDetails, useArtistTracks } from "~/data/artist/queries";
 import type { ArtistAlbum } from "~/data/artist/types";
 import { useGetColumn } from "~/hooks/useGetColumn";
-import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { useBottomActionsOffset } from "~/navigation/hooks/useBottomActions";
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
@@ -91,9 +90,6 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
     gutters: 32,
     minWidth: 100,
   });
-  const primaryFont = usePreferenceStore((s) => s.primaryFont);
-
-  const estimatedListHeight = width + (primaryFont === "Inter" ? 42 : 39);
 
   if (!albums) return null;
   return (
@@ -117,7 +113,6 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
             className={index > 0 ? "ml-3" : undefined}
           />
         )}
-        style={{ minHeight: estimatedListHeight }}
         className="-mx-4"
         contentContainerClassName="px-4"
       />

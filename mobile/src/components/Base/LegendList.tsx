@@ -1,7 +1,7 @@
 import type {
   LegendListRef as RawLegendListRef,
   LegendListRenderItemProps,
-} from "@legendapp/list";
+} from "@legendapp/list/react-native";
 import type { AnimatedLegendListProps } from "@legendapp/list/reanimated";
 import { AnimatedLegendList } from "@legendapp/list/reanimated";
 import { memo, useRef } from "react";
@@ -32,6 +32,7 @@ export const LegendList = memo(function LegendList(props) {
   return (
     <WrappedAnimatedLegendList
       key={`list-with-${props.numColumns}-cols`}
+      maintainVisibleContentPosition={false}
       overScrollMode="never"
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}

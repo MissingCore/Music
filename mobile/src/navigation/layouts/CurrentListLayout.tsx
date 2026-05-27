@@ -56,15 +56,7 @@ export function CurrentListLayout<TData>({
   const contentStartOffset = insets.top + ESTIMATED_TOPAPPBAR_HEIGHT + 16;
 
   //#region Header Height Calculations
-  const headerHeight = useSharedValue(
-    Math.round(
-      contentStartOffset -
-        minStickyTopOffset +
-        imageSize +
-        (listInfo.artists ? 70 : 50) +
-        32, // Required gaps
-    ),
-  );
+  const headerHeight = useSharedValue(-1);
   const setHeaderHeight = useCallback(
     (e: LayoutChangeEvent) =>
       headerHeight.set(
@@ -89,6 +81,7 @@ export function CurrentListLayout<TData>({
   });
 
   const stickyStyles = useAnimatedStyle(() => ({
+    opacity: headerHeight.get() === -1 ? 0 : 1,
     paddingTop: minStickyTopOffset,
     transform: [
       { translateY: Math.max(0, headerHeight.get() - scrollPosition.get()) },
@@ -97,13 +90,6 @@ export function CurrentListLayout<TData>({
   //#endregion
 
   //#region Layout Estimations
-  const guessItemSize = useCallback((index: number, item: any) => {
-    if (typeof item === "number" || typeof item === "string") {
-      return 16 + (index === 0 ? 8 : 16);
-    }
-    return 56; // 48px Height + 8px Margin Bottom
-  }, []);
-
   const getItemType = useCallback((item: any) => {
     if (typeof item === "number" || typeof item === "string") return "label";
     return "row";
@@ -114,11 +100,17 @@ export function CurrentListLayout<TData>({
     <>
       <LegendList
         {...props}
-        getEstimatedItemSize={guessItemSize}
+        estimatedHeaderSize={Math.round(
+          contentStartOffset -
+            minStickyTopOffset +
+            imageSize +
+            (listInfo.artists ? 70 : 50) +
+            32, // Required gaps
+        )}
+        estimatedItemSize={56}
         data={data}
         getItemType={getItemType}
         onScroll={scrollHandler}
-        maintainVisibleContentPosition={false}
         ListHeaderComponent={
           <View>
             <View

@@ -197,7 +197,6 @@ export function NScrollListLayout<TData>({
         ref={internalListRef}
         {...scrollBarContext.layoutHandlers}
         onScroll={shyHeaderContext.scrollHandler}
-        maintainVisibleContentPosition={false}
         {...props}
         contentContainerStyle={{
           paddingHorizontal: 16,
