@@ -175,27 +175,29 @@ function Breadcrumbs({
   const onLayoutShift = (newWidth: number) => {
     // `newWidth` doesn't include the `px-4` on `<StickyActionListLayout />`
     // and in `<Animated.ScrollView />`.
-    newScrollPos.value = 64 + newWidth - screenWidth;
-    if (newWidth < lastWidth.value) {
-      removedWidth.value = withSequence(
-        withTiming(lastWidth.value - newWidth, { duration: 0 }),
-        withDelay(300, withTiming(0, { duration: 0 })),
+    newScrollPos.set(64 + newWidth - screenWidth);
+    if (newWidth < lastWidth.get()) {
+      removedWidth.set(
+        withSequence(
+          withTiming(lastWidth.get() - newWidth, { duration: 0 }),
+          withDelay(300, withTiming(0, { duration: 0 })),
+        ),
       );
     }
-    lastWidth.value = newWidth;
+    lastWidth.set(newWidth);
   };
 
   useDerivedValue(() => {
     scrollTo(
       breadcrumbsRef,
-      OnRTLWorklet.decide(0, newScrollPos.value),
+      OnRTLWorklet.decide(0, newScrollPos.get()),
       0,
       true,
     );
   });
 
   const offsetStyle = useAnimatedStyle(() => ({
-    paddingRight: removedWidth.value,
+    paddingRight: removedWidth.get(),
   }));
 
   return (

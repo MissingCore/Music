@@ -66,16 +66,15 @@ function VinylSeekBar(props: ArtworkProps) {
 function VinylLegacy(props: ArtworkProps) {
   const coverPosition = useSharedValue(0);
   const coverStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: coverPosition.value }],
+    transform: [{ translateY: coverPosition.get() }],
   }));
   return (
     <View
-      onLayout={() => {
-        coverPosition.value = withDelay(
-          50,
-          withTiming(-props.size / 2, { duration: 500 }),
-        );
-      }}
+      onLayout={() =>
+        coverPosition.set(
+          withDelay(50, withTiming(-props.size / 2, { duration: 500 })),
+        )
+      }
       className="relative"
     >
       <VinylSeekBar {...props} />

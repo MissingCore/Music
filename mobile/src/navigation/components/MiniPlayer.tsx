@@ -65,9 +65,7 @@ export function MiniPlayer() {
 
   const onResetStore = useCallback(() => {
     resetPlaybackStore();
-    BackgroundTimer.setTimeout(() => {
-      panAmount.value = 0;
-    }, 1000);
+    BackgroundTimer.setTimeout(() => panAmount.set(0), 1000);
   }, [panAmount, resetPlaybackStore]);
 
   const panGesture = useMemo(
@@ -76,19 +74,19 @@ export function MiniPlayer() {
         .enabled(dragClearPlayback)
         // Only register for vertical pan, allowing swipe gesture to work.
         .activeOffsetY([-10, 10])
-        .onUpdate(({ translationY }) => {
-          panAmount.value = Math.max(0, translationY);
-        })
+        .onUpdate(({ translationY }) =>
+          panAmount.set(Math.max(0, translationY)),
+        )
         .onEnd(({ velocityY }) => {
           //? Resetting the playback store is based off pan velocity.
           const metThreshold = velocityY > 500;
-          panAmount.value = withSpring(metThreshold ? insets.bottom + 256 : 0);
+          panAmount.set(withSpring(metThreshold ? insets.bottom + 256 : 0));
         }),
     [panAmount, insets, dragClearPlayback],
   );
 
   useAnimatedReaction(
-    () => panAmount.value,
+    () => panAmount.get(),
     (currVal, prevVal) => {
       const threshold = insets.bottom + BottomActionsOffset;
       if (currVal > threshold && (prevVal === null || prevVal < threshold)) {
@@ -98,7 +96,7 @@ export function MiniPlayer() {
   );
 
   const animatedStyles = useAnimatedStyle(() => ({
-    transform: [{ translateY: panAmount.value }],
+    transform: [{ translateY: panAmount.get() }],
   }));
   //#endregion
 

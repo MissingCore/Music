@@ -52,9 +52,8 @@ function TracksSavingProgress() {
   const failedTrackScans = useScanningProgressStore((s) => s.failedTrackScans);
 
   useEffect(() => {
-    currProgress.value = withSpring(
-      scannedTracks + failedTrackScans,
-      SpringConfig,
+    currProgress.set(
+      withSpring(scannedTracks + failedTrackScans, SpringConfig),
     );
   }, [currProgress, scannedTracks, failedTrackScans]);
 
@@ -90,7 +89,7 @@ function ArtworkSavingProgress() {
   const uncheckedArtwork = useScanningProgressStore((s) => s.uncheckedArtwork);
 
   useEffect(() => {
-    currProgress.value = withSpring(checkedArtwork, SpringConfig);
+    currProgress.set(withSpring(checkedArtwork, SpringConfig));
   }, [currProgress, checkedArtwork]);
 
   if (uncheckedArtwork === 0) return null;

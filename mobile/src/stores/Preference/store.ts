@@ -1,4 +1,4 @@
-import { getLocales } from "expo-localization";
+import { I18nManager } from "react-native";
 import { Uniwind } from "uniwind";
 import { useStore } from "zustand";
 
@@ -44,7 +44,11 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
 
       // Try to use device language if no language is specified.
       await resolveLanguageConfigs(
-        state.language || getLocales()[0]?.languageTag || "en",
+        state.language ||
+          // Get initial locale via React Native API.
+          //  - https://github.com/facebook/react-native/issues/33577#issuecomment-1675373285
+          I18nManager.getConstants().localeIdentifier?.replace("_", "-") ||
+          "en",
         state.forceLTR,
       );
       if (state.language === "") {

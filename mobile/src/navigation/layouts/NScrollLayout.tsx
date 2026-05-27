@@ -292,10 +292,10 @@ function useShyHeaderContext(args: {
   const headerTranslation = useSharedValue(0);
   const translationTimer = useSharedValue(0);
   const headerStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: -headerTranslation.value }],
+    transform: [{ translateY: -headerTranslation.get() }],
     opacity: clamp(
+      (args.headerHeight - headerTranslation.get()) / args.headerHeight,
       0,
-      (args.headerHeight - headerTranslation.value) / args.headerHeight,
       1,
     ),
   }));
@@ -305,9 +305,9 @@ function useShyHeaderContext(args: {
   if (resetTriggerValue.current !== args.resetOn) {
     resetTriggerValue.current = args.resetOn;
     scheduleOnUI(() => {
-      headerTranslation.value = 0;
+      headerTranslation.set(0);
       cancelAnimation(translationTimer);
-      translationTimer.value = 0;
+      translationTimer.set(0);
     });
   }
   //#endregion
@@ -323,19 +323,19 @@ function useShyHeaderContext(args: {
       onInit: (offsetY: number) => {
         "worklet";
         cancelAnimation(translationTimer);
-        translationTimer.value = 0;
+        translationTimer.set(0);
         //? `withSpring` might make `headerTranslation` briefly not `0`.
-        wasSnapped.value = headerTranslation.value < 16;
-        dragOffsetYStart.value = offsetY;
+        wasSnapped.set(headerTranslation.get() < 16);
+        dragOffsetYStart.set(offsetY);
       },
       // Handle snapping the header when scrolling stops.
       onComplete: (offsetY: number) => {
         "worklet";
-        translationTimer.value = 0;
+        translationTimer.set(0);
         //? Snap the header to a position after scrolling has stopped.
-        const changeDelta = dragOffsetYStart.value - offsetY;
+        const changeDelta = dragOffsetYStart.get() - offsetY;
         const snapThreshold = args.headerHeight * SNAP_PERCENT;
-        dragOffsetYStart.value = INVALID_STATE;
+        dragOffsetYStart.set(INVALID_STATE);
 
         // Only snap when not at the beginning of the list where the header
         // should be fully visible.
@@ -344,23 +344,23 @@ function useShyHeaderContext(args: {
           // For the case where we scroll enough to snap, but stopped within the beginning of the list.
           offsetY + changeDelta > args.headerHeight
         ) {
-          if (wasSnapped.value && Math.abs(changeDelta) <= snapThreshold) {
+          if (wasSnapped.get() && Math.abs(changeDelta) <= snapThreshold) {
             // Keep header snapped if already snapped and didn't meet the threshold.
-            headerTranslation.value = withSpring(0);
+            headerTranslation.set(withSpring(0));
           } else if (changeDelta > snapThreshold) {
             // Snap header open if we meet the threshold.
-            headerTranslation.value = withSpring(0);
+            headerTranslation.set(withSpring(0));
           } else {
-            headerTranslation.value = withSpring(
-              Math.min(args.headerHeight, offsetY),
+            headerTranslation.set(
+              withSpring(Math.min(args.headerHeight, offsetY)),
             );
           }
         } else if (changeDelta < 0) {
           // Snap header to `offset` when scrolling down if within the header height.
-          headerTranslation.value = withSpring(offsetY);
+          headerTranslation.set(withSpring(offsetY));
         }
 
-        wasSnapped.value = false;
+        wasSnapped.set(false);
       },
     }),
     [
@@ -375,9 +375,11 @@ function useShyHeaderContext(args: {
   // Handle snapping the header when we stop scrolling via `NScrollbar`.
   const onNScrollGestureEnd = useCallback(() => {
     "worklet";
-    translationTimer.value = withTiming(1, { duration: 150 }, (isDone) => {
-      if (isDone) snapHandlers.onComplete(prevOffsetY.value);
-    });
+    translationTimer.set(
+      withTiming(1, { duration: 150 }, (isDone) => {
+        if (isDone) snapHandlers.onComplete(prevOffsetY.get());
+      }),
+    );
   }, [snapHandlers, translationTimer, prevOffsetY]);
 
   const scrollHandler = useAnimatedScrollHandler({
@@ -386,27 +388,27 @@ function useShyHeaderContext(args: {
 
       //? Handle situation where we scroll via `NScrollbar` (as `onBeginDrag`
       //? doesn't get fired).
-      if (dragOffsetYStart.value === INVALID_STATE) {
+      if (dragOffsetYStart.get() === INVALID_STATE) {
         snapHandlers.onInit(e.contentOffset.y);
       }
 
       //? Handle header position in relation to scroll.
-      const changeDelta = e.contentOffset.y - prevOffsetY.value;
-      headerTranslation.value = clamp(
-        0,
-        headerTranslation.value + changeDelta,
-        args.headerHeight,
+      const changeDelta = e.contentOffset.y - prevOffsetY.get();
+      headerTranslation.set(
+        clamp(headerTranslation.get() + changeDelta, 0, args.headerHeight),
       );
 
-      prevOffsetY.value = e.contentOffset.y;
+      prevOffsetY.set(e.contentOffset.y);
 
       //? Reset timer if somehow `onScroll` was fired after the `NScrollbar` gesture completed.
-      if (translationTimer.value !== 0) {
+      if (translationTimer.get() !== 0) {
         cancelAnimation(translationTimer);
-        translationTimer.value = 0;
-        translationTimer.value = withTiming(1, { duration: 150 }, (isDone) => {
-          if (isDone) snapHandlers.onComplete(e.contentOffset.y);
-        });
+        translationTimer.set(0);
+        translationTimer.set(
+          withTiming(1, { duration: 150 }, (isDone) => {
+            if (isDone) snapHandlers.onComplete(e.contentOffset.y);
+          }),
+        );
       }
     },
     onBeginDrag: (e) => snapHandlers.onInit(e.contentOffset.y),

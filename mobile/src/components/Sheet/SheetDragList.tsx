@@ -69,9 +69,9 @@ export function SheetDragList<TData>({
   const onCleanup = useCallback(() => {
     setReactiveActiveIndex(INACTIVE);
     scheduleOnUI(() => {
-      activeIndex.value = INACTIVE;
-      pan.value = 0;
-      shifted.value = 0;
+      activeIndex.set(INACTIVE);
+      pan.set(0);
+      shifted.set(0);
     });
     setEnabled(true);
   }, [activeIndex, pan, shifted]);
@@ -82,28 +82,28 @@ export function SheetDragList<TData>({
         .enabled(enabled)
         .onStart(() => {
           // Bail out of gesture early.
-          if (activeIndex.value === INACTIVE) scheduleOnRN(setEnabled, false);
+          if (activeIndex.get() === INACTIVE) scheduleOnRN(setEnabled, false);
         })
         .onUpdate(({ translationY }) => {
-          if (activeIndex.value === INACTIVE) return;
-          pan.value = translationY;
+          if (activeIndex.get() === INACTIVE) return;
+          pan.set(translationY);
 
           const shiftedAmount = clamp(
             Math.round(translationY / estimatedItemSize),
-            -activeIndex.value,
-            data.length - 1 - activeIndex.value,
+            -activeIndex.get(),
+            data.length - 1 - activeIndex.get(),
           );
-          shifted.value = shiftedAmount;
+          shifted.set(shiftedAmount);
         })
         .onFinalize(() => {
           // Ensure we reset the gesture focus.
           scheduleOnRN(setEnabled, false);
-          if (activeIndex.value !== INACTIVE) {
+          if (activeIndex.get() !== INACTIVE) {
             if (onDragEnd) scheduleOnRN(onDragEnd);
             scheduleOnRN(
               onReordered,
-              activeIndex.value,
-              activeIndex.value + shifted.value,
+              activeIndex.get(),
+              activeIndex.get() + shifted.get(),
             );
           }
           scheduleOnRN(onCleanup);
@@ -137,9 +137,7 @@ export function SheetDragList<TData>({
           onInitDrag: () => {
             if (onDragBegin) onDragBegin(info.item, info.index);
             setReactiveActiveIndex(info.index);
-            scheduleOnUI(() => {
-              activeIndex.value = info.index;
-            });
+            scheduleOnUI(() => activeIndex.set(info.index));
           },
         })}
       </TranslationWrapper>
@@ -190,31 +188,32 @@ function TranslationWrapper(props: {
   const itemPan = useSharedValue(0);
 
   useAnimatedReaction(
-    () => pan.value,
+    () => pan.get(),
     (currVal) => {
-      if (activeIndex.value === INACTIVE) itemPan.value = 0;
-      else if (index === activeIndex.value) itemPan.value = currVal;
+      if (activeIndex.get() === INACTIVE) itemPan.set(0);
+      else if (index === activeIndex.get()) itemPan.set(currVal);
       else {
         // Direction item will be moved.
         const dir = currVal < 0 ? 1 : -1;
 
         //? If we get a negative number, item is in path of current pan direction.
-        const relToOGPos = dir * (index - activeIndex.value);
+        const relToOGPos = dir * (index - activeIndex.get());
         //? If we get a non-negative number, item may have been moevd.
         const relToShiftedPos =
-          dir * (index - (activeIndex.value + shifted.value));
+          dir * (index - (activeIndex.get() + shifted.get()));
 
-        itemPan.value =
+        itemPan.set(
           relToOGPos < 0 && relToShiftedPos >= 0
             ? withSpring(dir * estimatedItemSize)
-            : withSpring(0);
+            : withSpring(0),
+        );
       }
     },
   );
 
   const styles = useAnimatedStyle(() => ({
-    zIndex: index === activeIndex.value ? 100 : 0,
-    transform: [{ translateY: itemPan.value }],
+    zIndex: index === activeIndex.get() ? 100 : 0,
+    transform: [{ translateY: itemPan.get() }],
   }));
 
   return <Animated.View style={styles}>{children}</Animated.View>;

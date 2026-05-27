@@ -7,6 +7,7 @@ import { z } from "zod/mini";
 
 import { Close } from "~/resources/icons/Close";
 
+import { pickFile } from "~/lib/file-system";
 import { wait } from "~/utils/promise";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { ExtendedTButton } from "~/components/Form/Button";
@@ -18,7 +19,7 @@ import {
 } from "~/modules/form/FormState";
 import { FormInputImpl } from "~/modules/form/FormState/FormInput";
 import { ZSchema } from "~/modules/form/utils";
-import { pickFont, saveCustomFont } from "../core/data";
+import { saveCustomFont } from "../core/data";
 import { loadCustomFont } from "../utils";
 
 function useFormState() {
@@ -59,10 +60,10 @@ function FontForm() {
 
   const onImportFont = useCallback(async () => {
     try {
-      const fontUri = await pickFont();
+      const fontFile = await pickFile(["font/otf", "font/ttf"]);
       await wait(100);
       toast.t("feat.backup.extra.importSuccess");
-      setFields({ uri: fontUri });
+      setFields({ uri: fontFile.uri });
     } catch (err) {
       toast.error((err as Error).message);
     }

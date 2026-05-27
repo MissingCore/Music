@@ -1,4 +1,4 @@
-import { openBrowserAsync } from "expo-web-browser";
+import { Linking } from "react-native";
 
 import { APP_VERSION } from "~/constants/Config";
 
@@ -23,8 +23,7 @@ export const Links = {
 };
 //#endregion
 
+/** Opens link in device's default browser. */
 export async function openLink(url: string) {
-  //? Set `createTask = false` as otherwise, it creates a new task.
-  //?   - Ref: https://github.com/expo/expo/pull/41457
-  return openBrowserAsync(url, { createTask: false });
+  return Linking.openURL(url);
 }

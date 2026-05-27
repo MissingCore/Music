@@ -25,7 +25,7 @@ export function useVinylSeekbar() {
   const radius = useSharedValue(0);
 
   const vinylStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${convertUnit(timedPosition.value)}deg` }],
+    transform: [{ rotate: `${convertUnit(timedPosition.get())}deg` }],
   }));
 
   const vinylWrapperArgs = useMemo(
@@ -33,8 +33,8 @@ export function useVinylSeekbar() {
       ref: wrapperRef,
       onLayout: () => {
         wrapperRef.current?.measure((_x, _y, width, height, pageX, pageY) => {
-          center.value = { x: pageX + width / 2, y: pageY + height / 2 };
-          radius.value = Math.min(width, height) / 2;
+          center.set({ x: pageX + width / 2, y: pageY + height / 2 });
+          radius.set(Math.min(width, height) / 2);
         });
       },
       style: vinylStyle,
@@ -47,10 +47,10 @@ export function useVinylSeekbar() {
   const isWithinBound = useCallback(
     ({ absoluteX, absoluteY }: Position) => {
       "worklet";
-      const a = center.value.x - absoluteX;
-      const b = center.value.y - absoluteY;
+      const a = center.get().x - absoluteX;
+      const b = center.get().y - absoluteY;
       const c = Math.sqrt(a ** 2 + b ** 2);
-      return c <= radius.value;
+      return c <= radius.get();
     },
     [center, radius],
   );
@@ -58,7 +58,7 @@ export function useVinylSeekbar() {
   const getAngle = useCallback(
     ({ absoluteX, absoluteY }: Position) => {
       "worklet";
-      return Math.atan2(absoluteY - center.value.y, absoluteX - center.value.x);
+      return Math.atan2(absoluteY - center.get().y, absoluteX - center.get().x);
     },
     [center],
   );
@@ -77,7 +77,7 @@ export function useVinylSeekbar() {
         .onStart(({ absoluteX, absoluteY }) => {
           if (isWithinBound({ absoluteX, absoluteY })) {
             scheduleOnRN(setIsSeeking, true);
-            prevAngle.value = getAngle({ absoluteX, absoluteY });
+            prevAngle.set(getAngle({ absoluteX, absoluteY }));
           } else {
             scheduleOnRN(setGestureInBound, false);
           }
@@ -86,35 +86,35 @@ export function useVinylSeekbar() {
           if (isWithinBound({ absoluteX, absoluteY })) {
             let currAngle = getAngle({ absoluteX, absoluteY });
             // Ensure arctan calculation is continuous.
-            while (currAngle < prevAngle.value - Math.PI)
+            while (currAngle < prevAngle.get() - Math.PI)
               currAngle += 2 * Math.PI;
-            while (currAngle > prevAngle.value + Math.PI)
+            while (currAngle > prevAngle.get() + Math.PI)
               currAngle -= 2 * Math.PI;
             const rotateAmount =
-              ((currAngle - prevAngle.value) * 180) / Math.PI;
+              ((currAngle - prevAngle.get()) * 180) / Math.PI;
 
-            prevAngle.value = currAngle;
+            prevAngle.set(currAngle);
 
             // Calculate new position.
             const changeDelta = convertUnit(rotateAmount, "degrees");
-            const newPosition = timedPosition.value + changeDelta;
-            if (newPosition < 0) timedPosition.value = 0;
-            else if (newPosition > duration) timedPosition.value = duration;
-            else timedPosition.value = newPosition;
+            const newPosition = timedPosition.get() + changeDelta;
+            if (newPosition < 0) timedPosition.set(0);
+            else if (newPosition > duration) timedPosition.set(duration);
+            else timedPosition.set(newPosition);
 
-            hasUpdatedPosition.value = true;
+            hasUpdatedPosition.set(true);
           } else {
             scheduleOnRN(setGestureInBound, false);
           }
         })
         .onEnd(() => {
-          if (hasUpdatedPosition.value)
-            scheduleOnRN(PlaybackControls.seekTo, timedPosition.value);
+          if (hasUpdatedPosition.get())
+            scheduleOnRN(PlaybackControls.seekTo, timedPosition.get());
         })
         .onFinalize(() => {
           scheduleOnRN(setIsSeeking, false);
           scheduleOnRN(setGestureInBound, true);
-          hasUpdatedPosition.value = false;
+          hasUpdatedPosition.set(false);
         }),
     [
       isWithinBound,

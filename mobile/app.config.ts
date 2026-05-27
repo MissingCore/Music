@@ -1,5 +1,10 @@
+import navigationBarPlugin from "@zoontek/react-native-navigation-bar/expo";
 import type { ExpoConfig } from "expo/config";
+import fontPlugin from "expo-font/plugin";
+import imagePickerPlugin from "expo-image-picker/plugin";
+import mediaLibraryPlugin from "expo-media-library/plugin";
 import type { WithAndroidWidgetsParams } from "react-native-android-widget";
+import bootsplashPlugin from "react-native-bootsplash/expo";
 
 const BUILD_THEME: "light" | "dark" = "light";
 const BACKGROUND_COLOR = BUILD_THEME === "light" ? "#F2F2F2" : "#000000";
@@ -31,6 +36,7 @@ export default (): ExpoConfig => {
     android: {
       package: "com.cyanchill.missingcore.music",
       versionCode: 2130,
+      allowBackup: false,
       adaptiveIcon: {
         foregroundImage: `./assets/${BUILD_THEME}/adaptive-icon.png`,
         monochromeImage: `./assets/${BUILD_THEME}/adaptive-icon-monochrome.png`,
@@ -79,36 +85,27 @@ export default (): ExpoConfig => {
           },
         },
       ],
-      [
-        "expo-font",
-        {
-          fonts: [
-            "assets/fonts/Roboto-Regular.ttf",
-            "assets/fonts/Roboto-Medium.ttf",
-            "assets/fonts/Inter-Regular.ttf",
-            "assets/fonts/Inter-Medium.ttf",
-            "assets/fonts/GeistMono-Regular.ttf",
-            "assets/fonts/GeistMono-Medium.ttf",
-            "assets/fonts/Ndot-77_JP_Extended.ttf",
-            "assets/fonts/NType82-Regular.otf",
-            "assets/fonts/NType82-Headline.otf",
-          ],
-        },
-      ],
-      ["expo-image-picker", { microphonePermission: false }],
-      ["expo-media-library", { granularPermissions: ["audio"] }],
-      [
-        "react-native-bootsplash",
-        {
-          logo: `./assets/${BUILD_THEME}/splash-icon.png`,
-          background: BACKGROUND_COLOR,
-          assetsOutput: `./assets/${BUILD_THEME}/bootsplash`,
-        },
-      ],
-      [
-        "@zoontek/react-native-navigation-bar",
-        { android: { enforceNavigationBarContrast: false } },
-      ],
+      fontPlugin({
+        fonts: [
+          "assets/fonts/Roboto-Regular.ttf",
+          "assets/fonts/Roboto-Medium.ttf",
+          "assets/fonts/Inter-Regular.ttf",
+          "assets/fonts/Inter-Medium.ttf",
+          "assets/fonts/GeistMono-Regular.ttf",
+          "assets/fonts/GeistMono-Medium.ttf",
+          "assets/fonts/Ndot-77_JP_Extended.ttf",
+          "assets/fonts/NType82-Regular.otf",
+          "assets/fonts/NType82-Headline.otf",
+        ],
+      }),
+      imagePickerPlugin({ microphonePermission: false }),
+      mediaLibraryPlugin({ granularPermissions: ["audio"] }),
+      bootsplashPlugin({
+        logo: `./assets/${BUILD_THEME}/splash-icon.png`,
+        background: BACKGROUND_COLOR,
+        assetsOutput: `./assets/${BUILD_THEME}/bootsplash`,
+      }),
+      navigationBarPlugin({ android: { enforceNavigationBarContrast: false } }),
       ["react-native-android-widget", widgetPluginConfig],
       ...optionalPlugins,
     ],

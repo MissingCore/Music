@@ -59,6 +59,13 @@ module.exports = defineConfig([
       "import/order": "off",
 
       "prettier/prettier": ["error", { endOfLine: "auto" }],
+
+      //! Alot of false positives:
+      //! - https://github.com/facebook/react/issues/34775
+      //! - https://github.com/facebook/react/issues/34743
+      "react-hooks/preserve-manual-memoization": "off",
+      "react-hooks/refs": "off",
+      "react-hooks/set-state-in-effect": "off",
     },
   },
   /* Ignored directories & files */

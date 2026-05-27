@@ -18,8 +18,6 @@
 | clsx | MIT | https://github.com/lukeed/clsx |
 | drizzle-orm | Apache-2.0 | https://github.com/drizzle-team/drizzle-orm |
 | expo | MIT | https://github.com/expo/expo/tree/main/packages/expo |
-| expo-device | MIT | https://github.com/expo/expo/tree/main/packages/expo-device |
-| expo-document-picker | MIT | https://github.com/expo/expo/tree/main/packages/expo-document-picker |
 | expo-drizzle-studio-plugin | MIT | https://github.com/drizzle-team/drizzle-studio-expo |
 | expo-file-system | MIT | https://github.com/expo/expo/tree/main/packages/expo-file-system |
 | expo-font | MIT | https://github.com/expo/expo/tree/main/packages/expo-font |
@@ -27,10 +25,8 @@
 | expo-image-manipulator | MIT | https://github.com/expo/expo/tree/main/packages/expo-image-manipulator |
 | expo-image-picker | MIT | https://github.com/expo/expo/tree/main/packages/expo-image-picker |
 | expo-linear-gradient | MIT | https://github.com/expo/expo/tree/main/packages/expo-linear-gradient |
-| expo-localization | MIT | https://github.com/expo/expo/tree/main/packages/expo-localization |
 | expo-media-library | MIT | https://github.com/expo/expo/tree/main/packages/expo-media-library |
 | expo-sqlite | MIT | https://github.com/expo/expo/tree/main/packages/expo-sqlite |
-| expo-web-browser | MIT | https://github.com/expo/expo/tree/main/packages/expo-web-browser |
 | Geist Mono Font | OFL-1.1 | https://github.com/vercel/geist-font |
 | i18next | MIT | https://github.com/i18next/i18next |
 | Inter Font | OFL-1.1 | https://rsms.me/inter |
