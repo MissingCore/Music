@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { View } from "react-native";
-import type { ColorFormatsObject } from "reanimated-color-picker";
-import ColorPicker, { HueSlider, Panel1 } from "reanimated-color-picker";
 
-import { BorderRadius } from "~/constants/Styles";
 import { Pressable } from "~/components/Base/Pressable";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import { Modal } from "~/components/Modal";
 import { Em, StyledText } from "~/components/Typography/StyledText";
+import { ColorPicker } from "./ColorPicker";
 import type { HexColor } from "../core/constants";
 import { normalizeHexColor } from "../core/utils";
 
@@ -27,12 +25,9 @@ export function ColorPickerInput(props: {
     if (normalized) props.onUpdateValue(normalized);
   };
 
-  const onPickerComplete = (colors: ColorFormatsObject) => {
-    const normalized = normalizeHexColor(colors.hex);
-    if (normalized) {
-      setDraftValue(normalized);
-      props.onUpdateValue(normalized);
-    }
+  const onPickerComplete = (hex: HexColor) => {
+    setDraftValue(hex);
+    props.onUpdateValue(hex);
   };
 
   return (
@@ -45,7 +40,8 @@ export function ColorPickerInput(props: {
       >
         <View
           className="aspect-square h-full"
-          style={{ backgroundColor: props.value }}
+          //? Suppress warning that thinks we're using a SharedValue in inline styles.
+          style={{ backgroundColor: `${props.value}` }}
         />
         <View className="p-2">
           <Em>{props.label}</Em>
@@ -70,17 +66,7 @@ export function ColorPickerInput(props: {
             />
           </View>
 
-          <ColorPicker
-            value={props.value}
-            onCompleteJS={onPickerComplete}
-            thumbSize={20}
-            sliderThickness={26}
-            boundedThumb
-            style={{ gap: 12 }}
-          >
-            <Panel1 style={{ borderRadius: BorderRadius.md }} />
-            <HueSlider style={{ borderRadius: BorderRadius.full }} />
-          </ColorPicker>
+          <ColorPicker value={props.value} onComplete={onPickerComplete} />
 
           <ExtendedTButton
             textKey="form.close"
