@@ -5,7 +5,7 @@
 We use the following packages to display these translations:
 
 - [`i18next`](https://www.i18next.com/) which deals with language switching.
-- [`intl-pluralrules`](https://github.com/eemeli/intl-pluralrules) which is used as a peer dependency to get plurals working.
+- [`intl-pluralrules`](https://github.com/eemeli/intl-pluralrules) which is used as a dependency to get plurals working.
 
 ## File Structure
 
