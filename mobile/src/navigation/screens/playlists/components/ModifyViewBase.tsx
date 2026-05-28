@@ -19,12 +19,8 @@ import { AddMusicSheet } from "../sheets/AddMusicSheet";
 
 import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
-import {
-  DragList,
-  useDragListState,
-  useInitDrag,
-} from "~/components/Base/DragList";
-import type { ListRenderItemInfo } from "~/components/Base/List";
+import type { DragListRenderItemInfo } from "~/components/DragList";
+import { DragList, useDragListState } from "~/components/DragList";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { RemovableItem } from "~/components/List/RemovableItem";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
@@ -126,7 +122,7 @@ function PlaylistForm(props: {
   );
 
   const reorderTrack = useCallback(
-    ({ from: fromIndex, to: toIndex }: { from: number; to: number }) =>
+    (fromIndex: number, toIndex: number) =>
       setFields((prev) => ({
         trackIds: moveArray(prev.trackIds, { fromIndex, toIndex }),
       })),
@@ -137,7 +133,7 @@ function PlaylistForm(props: {
   const keyExtractor = useCallback((tId: string) => tId, []);
 
   const renderItem = useCallback(
-    (args: ListRenderItemInfo<string>) => (
+    (args: DragListRenderItemInfo<string>) => (
       <RenderItem
         {...args}
         isSubmitting={isSubmitting}
@@ -153,10 +149,11 @@ function PlaylistForm(props: {
       <AddTracksSheet ref={addTracksSheetRef} />
       <DragList
         pointerEvents={isSubmitting ? "none" : "auto"}
+        estimatedItemSize={56}
         data={trackIds}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
-        onReorder={reorderTrack}
+        onReordered={reorderTrack}
         ListHeaderComponent={
           <ListHeaderComponent
             isFavoritesList={props.isFavoritesList}
@@ -278,7 +275,7 @@ function ListHeaderComponent(props: {
 //#endregion
 
 //#region Rendered Item
-type RenderItemProps = ListRenderItemInfo<string> & {
+type RenderItemProps = DragListRenderItemInfo<string> & {
   isSubmitting: boolean;
   onRemove: (id: string) => void;
 };
@@ -291,8 +288,7 @@ const RenderItem = memo(
     onRemove,
   }: RenderItemProps) {
     const { t } = useTranslation();
-    const initDrag = useInitDrag();
-    const { isActive, isDragging } = useDragListState(index);
+    const { isActive, isDragging, onInitDrag } = useDragListState(index);
     const track = useCachedTrack(item);
 
     return (
@@ -315,7 +311,7 @@ const RenderItem = memo(
             <IconButton
               Icon={DragHandle}
               accessibilityLabel={t("template.entryMove", { name: track.name })}
-              onPressIn={initDrag}
+              onPressIn={onInitDrag}
               disabled={isDragging && !isActive}
               size="xs"
             />

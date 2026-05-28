@@ -47,7 +47,6 @@
 | react-native-nitro-modules | MIT | https://github.com/mrousavy/nitro |
 | react-native-pager-view | MIT | https://github.com/callstack/react-native-pager-view |
 | react-native-reanimated | MIT | https://github.com/software-mansion/react-native-reanimated |
-| react-native-reorderable-list | MIT | https://github.com/omahili/react-native-reorderable-list |
 | react-native-safe-area-context | MIT | https://github.com/AppAndFlow/react-native-safe-area-context |
 | react-native-screens | MIT | https://github.com/software-mansion/react-native-screens |
 | react-native-svg | MIT | https://github.com/software-mansion/react-native-svg |

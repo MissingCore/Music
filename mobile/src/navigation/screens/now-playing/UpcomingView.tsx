@@ -17,12 +17,8 @@ import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
 import { wait } from "~/utils/promise";
-import {
-  DragList,
-  useDragListState,
-  useInitDrag,
-} from "~/components/Base/DragList";
-import type { ListRenderItemInfo } from "~/components/Base/List";
+import type { DragListRenderItemInfo } from "~/components/DragList";
+import { DragList, useDragListState } from "~/components/DragList";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { RemovableItem } from "~/components/List/RemovableItem";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
@@ -55,13 +51,10 @@ export default function Upcoming() {
     return cachedData.toSpliced(listIndex, 1, { ...activeTrack, active: true });
   }, [cachedData, listIndex]);
 
-  const onMove = useCallback(
-    ({ from: fromIndex, to: toIndex }: { from: number; to: number }) => {
-      Queue.moveTrack(fromIndex, toIndex);
-      setCachedData((prev) => moveArray(prev, { fromIndex, toIndex }));
-    },
-    [],
-  );
+  const onMove = useCallback((fromIndex: number, toIndex: number) => {
+    Queue.moveTrack(fromIndex, toIndex);
+    setCachedData((prev) => moveArray(prev, { fromIndex, toIndex }));
+  }, []);
 
   const onRemoveTrack = useCallback((key: string) => {
     Queue.removeKey(key);
@@ -87,7 +80,7 @@ export default function Upcoming() {
   const keyExtractor = useCallback(({ key }: { key: string }) => key, []);
 
   const renderItem = useCallback(
-    (args: ListRenderItemInfo<TrackData>) => (
+    (args: DragListRenderItemInfo<TrackData>) => (
       <RenderItem
         {...args}
         disableAfter={disableIndex}
@@ -116,10 +109,11 @@ export default function Upcoming() {
       />
       <DragList
         initialScrollIndex={listIndex}
+        estimatedItemSize={56}
         data={modifiedData}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
-        onReorder={onMove}
+        onReordered={onMove}
         contentContainerClassName="px-4"
       />
     </>
@@ -127,7 +121,7 @@ export default function Upcoming() {
 }
 
 //#region Rendered Track
-type RenderItemProps = ListRenderItemInfo<TrackData> & {
+type RenderItemProps = DragListRenderItemInfo<TrackData> & {
   disableAfter: number;
   onRemove: (tKey: string) => void;
 };
@@ -140,9 +134,7 @@ const RenderItem = memo(
     onRemove,
   }: RenderItemProps) {
     const { t } = useTranslation();
-    const initDrag = useInitDrag();
-    const { isActive, isDragging } = useDragListState(index);
-
+    const { isActive, isDragging, onInitDrag } = useDragListState(index);
     return (
       <RemovableItem
         label={item.name}
@@ -169,7 +161,7 @@ const RenderItem = memo(
             <IconButton
               Icon={DragHandle}
               accessibilityLabel={t("template.entryMove", { name: item.name })}
-              onPressIn={initDrag}
+              onPressIn={onInitDrag}
               disabled={isDragging && !isActive}
               size="xs"
             />
