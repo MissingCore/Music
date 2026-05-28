@@ -198,7 +198,8 @@ function DragListImpl<TData>({
         withDelay(
           250,
           withTiming(0, { duration: 0 }, (finished) => {
-            if (finished) autoScrollDirection.set(direction);
+            if (finished)
+              autoScrollDirection.set(clamp(direction * 1.25, -2.5, 2.5));
           }),
         ),
       );
