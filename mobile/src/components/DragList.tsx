@@ -189,7 +189,7 @@ function DragListImpl<TData>({
     },
   );
 
-  // `Gesture.Native()` allows for scroll to work.
+  // The "Native" gesture allows for scroll to work.
   const nativeGesture = useNativeGesture({});
   const gestures = useSimultaneousGestures(nativeGesture, panListenerGesture);
 
