@@ -74,8 +74,7 @@ export function useVinylSeekbar() {
     enabled: gestureInBound,
     onActivate: ({ absoluteX, absoluteY }) => {
       if (!isWithinBound({ absoluteX, absoluteY })) {
-        gestureInBound.set(false);
-        return;
+        return gestureInBound.set(false);
       }
 
       scheduleOnRN(setIsSeeking, true);
@@ -83,8 +82,7 @@ export function useVinylSeekbar() {
     },
     onUpdate: ({ absoluteX, absoluteY }) => {
       if (!isWithinBound({ absoluteX, absoluteY })) {
-        gestureInBound.set(false);
-        return;
+        return gestureInBound.set(false);
       }
 
       let currAngle = getAngle({ absoluteX, absoluteY });

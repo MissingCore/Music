@@ -1,12 +1,10 @@
+import { createContext, use, useCallback, useMemo, useRef } from "react";
 import {
-  createContext,
-  use,
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+  GestureDetector,
+  useNativeGesture,
+  usePanGesture,
+  useSimultaneousGestures,
+} from "react-native-gesture-handler";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, {
   clamp,
@@ -71,7 +69,7 @@ function DragListImpl<TData>({
   onReordered,
   ...props
 }: DragListProps<TData>) {
-  const [enabled, setEnabled] = useState(true);
+  const enabled = useSharedValue(true);
 
   const dataRef = useRef(data);
   const pan = useDragListStore((s) => s.pan);
@@ -123,8 +121,9 @@ function DragListImpl<TData>({
       pan.set(0);
       shifted.set(0);
     });
-    setEnabled(true);
+    enabled.set(true);
   }, [
+    enabled,
     setReactiveActiveIndex,
     autoScrollDirection,
     autoScrollAmount,
@@ -133,55 +132,39 @@ function DragListImpl<TData>({
     shifted,
   ]);
 
-  const panListenerGesture = useMemo(
-    () =>
-      Gesture.Pan()
-        .enabled(enabled)
-        .onStart(() => {
-          // Bail out of gesture early.
-          if (activeIndex.get() === INACTIVE) scheduleOnRN(setEnabled, false);
-        })
-        .onUpdate(({ translationY, y }) => {
-          //? Stop auto-scroll when we move (clears the timer which continues the auto-scroll).
-          autoScrollDirection.set(0);
-          if (activeIndex.get() === INACTIVE) return;
-          pan.set(autoScrollAmount.get() + translationY);
-          revalidatedShifted();
+  const panListenerGesture = usePanGesture({
+    enabled,
+    onActivate: () => {
+      // Bail out of gesture early.
+      if (activeIndex.get() === INACTIVE) enabled.set(false);
+    },
+    onUpdate: ({ translationY, y }) => {
+      //? Stop auto-scroll when we move (clears the timer which continues the auto-scroll).
+      autoScrollDirection.set(0);
+      if (activeIndex.get() === INACTIVE) return;
+      pan.set(autoScrollAmount.get() + translationY);
+      revalidatedShifted();
 
-          //? Auto-scroll handling.
-          let direction = 0;
-          if (y < estimatedItemSize) direction = -1;
-          else if (y > listHeight.get() - estimatedItemSize) direction = 1;
-          autoScrollDirection.set(direction);
-        })
-        .onFinalize(() => {
-          // Ensure we reset the gesture focus.
-          scheduleOnRN(setEnabled, false);
-          if (activeIndex.get() !== INACTIVE) {
-            if (onDragEnd) scheduleOnRN(onDragEnd);
-            scheduleOnRN(
-              onReordered,
-              activeIndex.get(),
-              activeIndex.get() + shifted.get(),
-            );
-          }
-          scheduleOnRN(onCleanup);
-        }),
-    [
-      enabled,
-      listHeight,
-      autoScrollDirection,
-      autoScrollAmount,
-      revalidatedShifted,
-      estimatedItemSize,
-      activeIndex,
-      pan,
-      onDragEnd,
-      onReordered,
-      onCleanup,
-      shifted,
-    ],
-  );
+      //? Auto-scroll handling.
+      let direction = 0;
+      if (y < estimatedItemSize) direction = -1;
+      else if (y > listHeight.get() - estimatedItemSize) direction = 1;
+      autoScrollDirection.set(direction);
+    },
+    onFinalize: () => {
+      // Ensure we reset the gesture focus.
+      enabled.set(false);
+      if (activeIndex.get() !== INACTIVE) {
+        if (onDragEnd) scheduleOnRN(onDragEnd);
+        scheduleOnRN(
+          onReordered,
+          activeIndex.get(),
+          activeIndex.get() + shifted.get(),
+        );
+      }
+      scheduleOnRN(onCleanup);
+    },
+  });
 
   useAnimatedReaction(
     () => autoScrollDirection.get(),
@@ -206,11 +189,9 @@ function DragListImpl<TData>({
     },
   );
 
-  const gesture = useMemo(
-    // `Gesture.Native()` allows for scroll to work.
-    () => Gesture.Simultaneous(Gesture.Native(), panListenerGesture),
-    [panListenerGesture],
-  );
+  // `Gesture.Native()` allows for scroll to work.
+  const nativeGesture = useNativeGesture({});
+  const gestures = useSimultaneousGestures(nativeGesture, panListenerGesture);
 
   const renderDragItem = useCallback(
     (info: ListRenderItemInfo<TData>) => (
@@ -228,7 +209,7 @@ function DragListImpl<TData>({
   }
 
   return (
-    <GestureDetector gesture={gesture}>
+    <GestureDetector gesture={gestures}>
       <LegendList
         {...props}
         ref={listRef}

@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { GestureDetector, usePanGesture } from "react-native-gesture-handler";
 import Animated, {
   LinearTransition,
   SlideInLeft,
@@ -68,22 +68,17 @@ export function MiniPlayer() {
     BackgroundTimer.setTimeout(() => panAmount.set(0), 1000);
   }, [panAmount, resetPlaybackStore]);
 
-  const panGesture = useMemo(
-    () =>
-      Gesture.Pan()
-        .enabled(dragClearPlayback)
-        // Only register for vertical pan, allowing swipe gesture to work.
-        .activeOffsetY([-10, 10])
-        .onUpdate(({ translationY }) =>
-          panAmount.set(Math.max(0, translationY)),
-        )
-        .onEnd(({ velocityY }) => {
-          //? Resetting the playback store is based off pan velocity.
-          const metThreshold = velocityY > 500;
-          panAmount.set(withSpring(metThreshold ? insets.bottom + 256 : 0));
-        }),
-    [panAmount, insets, dragClearPlayback],
-  );
+  const panGesture = usePanGesture({
+    enabled: dragClearPlayback,
+    // Only register for vertical pan, allowing swipe gesture to work.
+    activeOffsetY: [-10, 10],
+    onUpdate: ({ translationY }) => panAmount.set(Math.max(0, translationY)),
+    onDeactivate: ({ velocityY }) => {
+      //? Resetting the playback store is based off pan velocity.
+      const metThreshold = velocityY > 500;
+      panAmount.set(withSpring(metThreshold ? insets.bottom + 256 : 0));
+    },
+  });
 
   useAnimatedReaction(
     () => panAmount.get(),

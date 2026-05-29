@@ -4,7 +4,12 @@ import { memo, useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { LayoutChangeEvent, ViewStyle } from "react-native";
 import { I18nManager, View } from "react-native";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import {
+  GestureDetector,
+  useCompetingGestures,
+  usePanGesture,
+  useTapGesture,
+} from "react-native-gesture-handler";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, {
   clamp,
@@ -176,60 +181,37 @@ export const CachedSlider = memo(function CachedSlider(props: {
   //#endregion
 
   //#region Gestures
-  const tapGesure = useMemo(
-    () =>
-      Gesture.Tap()
-        .enabled(!props.disabled)
-        .onBegin(() => setIsInteracting(true))
-        .onEnd(({ x, y }) => {
-          const finalizedValue = calculateNextValue(onVerticalWorklet(y, x));
-          setCurrVal(finalizedValue);
-          setIsInteracting(false);
-          if (onCompleteRef.current)
-            scheduleOnRN(onCompleteRef.current, finalizedValue);
-        }),
-    [
-      onVerticalWorklet,
-      calculateNextValue,
-      setIsInteracting,
-      setCurrVal,
-      props.disabled,
-    ],
-  );
+  const tapGesture = useTapGesture({
+    enabled: !props.disabled,
+    onBegin: () => setIsInteracting(true),
+    onDeactivate: ({ x, y }) => {
+      const finalizedValue = calculateNextValue(onVerticalWorklet(y, x));
+      setCurrVal(finalizedValue);
+      setIsInteracting(false);
+      if (onCompleteRef.current)
+        scheduleOnRN(onCompleteRef.current, finalizedValue);
+    },
+  });
 
-  const panGesture = useMemo(
-    () =>
-      Gesture.Pan()
-        .enabled(!props.disabled)
-        .onBegin(() => setIsInteracting(true))
-        .onStart(({ x, y }) => debounceFrom.set(onVerticalWorklet(y, x)))
-        .onUpdate(({ x, y, velocityX, velocityY }) => {
-          const nextValue = calculateNextValue(onVerticalWorklet(y, x));
-          setCurrVal(nextValue);
-          debouncedOnChange(nextValue, onVerticalWorklet(velocityY, velocityX));
-        })
-        .onEnd(({ x, y }) => {
-          const finalizedValue = calculateNextValue(onVerticalWorklet(y, x));
-          setCurrVal(finalizedValue);
-          if (onCompleteRef.current)
-            scheduleOnRN(onCompleteRef.current, finalizedValue);
-        })
-        .onFinalize(() => setIsInteracting(false)),
-    [
-      onVerticalWorklet,
-      calculateNextValue,
-      setIsInteracting,
-      setCurrVal,
-      debounceFrom,
-      debouncedOnChange,
-      props.disabled,
-    ],
-  );
+  const panGesture = usePanGesture({
+    enabled: !props.disabled,
+    onBegin: () => setIsInteracting(true),
+    onActivate: ({ x, y }) => debounceFrom.set(onVerticalWorklet(y, x)),
+    onUpdate: ({ x, y, velocityX, velocityY }) => {
+      const nextValue = calculateNextValue(onVerticalWorklet(y, x));
+      setCurrVal(nextValue);
+      debouncedOnChange(nextValue, onVerticalWorklet(velocityY, velocityX));
+    },
+    onDeactivate: ({ x, y }) => {
+      const finalizedValue = calculateNextValue(onVerticalWorklet(y, x));
+      setCurrVal(finalizedValue);
+      if (onCompleteRef.current)
+        scheduleOnRN(onCompleteRef.current, finalizedValue);
+    },
+    onFinalize: () => setIsInteracting(false),
+  });
 
-  const gestures = useMemo(
-    () => Gesture.Race(tapGesure, panGesture),
-    [tapGesure, panGesture],
-  );
+  const gestures = useCompetingGestures(tapGesture, panGesture);
   //#endregion
 
   //#region Styling

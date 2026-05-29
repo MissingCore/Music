@@ -1,7 +1,12 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect } from "react";
 import { View } from "react-native";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import {
+  GestureDetector,
+  useCompetingGestures,
+  usePanGesture,
+  useTapGesture,
+} from "react-native-gesture-handler";
 import Animated, {
   clamp,
   useAnimatedStyle,
@@ -63,34 +68,26 @@ export function ColorPicker({
   }, [hue, saturation, brightness, onComplete]);
 
   //#region Panel Gestures + Styles
-  const panelTapGesture = useMemo(
-    () =>
-      Gesture.Tap().onEnd(({ x, y }) => {
-        if (contentWidth.get() <= 0) return;
-        saturation.set(clamp(x / contentWidth.get(), 0, 1));
-        brightness.set(clamp(1 - y / PANEL_HEIGHT, 0, 1));
+  const panelTapGesture = useTapGesture({
+    onDeactivate: ({ x, y }) => {
+      if (contentWidth.get() <= 0) return;
+      saturation.set(clamp(x / contentWidth.get(), 0, 1));
+      brightness.set(clamp(1 - y / PANEL_HEIGHT, 0, 1));
 
-        scheduleOnRN(emitCurrentColor);
-      }),
-    [contentWidth, saturation, brightness, emitCurrentColor],
-  );
+      scheduleOnRN(emitCurrentColor);
+    },
+  });
 
-  const panelPanGesture = useMemo(
-    () =>
-      Gesture.Pan()
-        .onUpdate(({ x, y }) => {
-          if (contentWidth.get() <= 0) return;
-          saturation.set(clamp(x / contentWidth.get(), 0, 1));
-          brightness.set(clamp(1 - y / PANEL_HEIGHT, 0, 1));
-        })
-        .onEnd(() => scheduleOnRN(emitCurrentColor)),
-    [contentWidth, saturation, brightness, emitCurrentColor],
-  );
+  const panelPanGesture = usePanGesture({
+    onUpdate: ({ x, y }) => {
+      if (contentWidth.get() <= 0) return;
+      saturation.set(clamp(x / contentWidth.get(), 0, 1));
+      brightness.set(clamp(1 - y / PANEL_HEIGHT, 0, 1));
+    },
+    onDeactivate: () => scheduleOnRN(emitCurrentColor),
+  });
 
-  const panelGestures = useMemo(
-    () => Gesture.Race(panelTapGesture, panelPanGesture),
-    [panelPanGesture, panelTapGesture],
-  );
+  const panelGestures = useCompetingGestures(panelTapGesture, panelPanGesture);
 
   const panelStyle = useAnimatedStyle(() => ({
     height: PANEL_HEIGHT,
@@ -109,32 +106,24 @@ export function ColorPicker({
   //#endregion
 
   //#region Hue Slider Gestures + Styles
-  const hueTapGesture = useMemo(
-    () =>
-      Gesture.Tap().onEnd(({ x }) => {
-        if (contentWidth.get() <= 0) return;
-        hue.set(clamp(((x / contentWidth.get()) * 360) | 0, 0, 360));
+  const hueTapGesture = useTapGesture({
+    onDeactivate: ({ x }) => {
+      if (contentWidth.get() <= 0) return;
+      hue.set(clamp(((x / contentWidth.get()) * 360) | 0, 0, 360));
 
-        scheduleOnRN(emitCurrentColor);
-      }),
-    [contentWidth, hue, emitCurrentColor],
-  );
+      scheduleOnRN(emitCurrentColor);
+    },
+  });
 
-  const huePanGesture = useMemo(
-    () =>
-      Gesture.Pan()
-        .onUpdate(({ x }) => {
-          if (contentWidth.get() <= 0) return;
-          hue.set(clamp(((x / contentWidth.get()) * 360) | 0, 0, 360));
-        })
-        .onEnd(() => scheduleOnRN(emitCurrentColor)),
-    [contentWidth, hue, emitCurrentColor],
-  );
+  const huePanGesture = usePanGesture({
+    onUpdate: ({ x }) => {
+      if (contentWidth.get() <= 0) return;
+      hue.set(clamp(((x / contentWidth.get()) * 360) | 0, 0, 360));
+    },
+    onDeactivate: () => scheduleOnRN(emitCurrentColor),
+  });
 
-  const hueGesture = useMemo(
-    () => Gesture.Race(hueTapGesture, huePanGesture),
-    [huePanGesture, hueTapGesture],
-  );
+  const hueGestures = useCompetingGestures(hueTapGesture, huePanGesture);
 
   const sliderHandleStyle = useAnimatedStyle(() => ({
     height: HANDLE_SIZE,
@@ -174,7 +163,7 @@ export function ColorPicker({
         </Animated.View>
       </GestureDetector>
 
-      <GestureDetector gesture={hueGesture}>
+      <GestureDetector gesture={hueGestures}>
         <View
           style={{ height: HUE_SLIDER_HEIGHT }}
           className="relative overflow-hidden rounded-full"

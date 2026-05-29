@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { Animated, View } from "react-native";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { GestureDetector, usePanGesture } from "react-native-gesture-handler";
 
 import { NothingArrowRight } from "~/resources/icons/NothingArrowRight";
 
@@ -76,19 +76,16 @@ export function Swipeable({
     [props.onSwipeLeft, props.onSwipeRight],
   );
 
-  const swipeGesture = Gesture.Pan()
+  const swipeGesture = usePanGesture({
     // Since we're not using `react-native-reanimated`.
-    .runOnJS(true)
+    runOnJS: true,
     // Allows scrolling to work without triggering gesture.
-    .activeOffsetX([-10, 10])
-    .enabled(!disabled)
-    .onStart(() => {
-      animationRef.current?.stop();
-    })
-    .onUpdate(({ translationX }) => {
-      dragX.setValue(clampSwipeAmount(translationX));
-    })
-    .onEnd(({ translationX, velocityX }) => {
+    activeOffsetX: [-10, 10],
+    enabled: !disabled,
+    onActivate: () => animationRef.current?.stop(),
+    onUpdate: ({ translationX }) =>
+      dragX.setValue(clampSwipeAmount(translationX)),
+    onDeactivate: ({ translationX, velocityX }) => {
       // Include velocity in final translated amount if overshoot is enabled.
       const velocityDistance = (overshootSwipe ? 1 : 0) * velocityX * DRAG_TOSS;
       const clampedTranslation = clampSwipeAmount(
@@ -148,7 +145,8 @@ export function Swipeable({
           useNativeDriver: true,
         });
       });
-    });
+    },
+  });
 
   const onRowLayout = useCallback((e: LayoutChangeEvent) => {
     rowWidth.current = e.nativeEvent.layout.width;
