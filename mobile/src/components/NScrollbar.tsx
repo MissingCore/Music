@@ -1,6 +1,11 @@
 import { useCallback, useMemo, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import {
+  GestureDetector,
+  useLongPressGesture,
+  usePanGesture,
+  useSimultaneousGestures,
+} from "react-native-gesture-handler";
 import type { AnimatedRef, SharedValue } from "react-native-reanimated";
 import type { ReanimatedScrollEvent } from "react-native-reanimated/lib/typescript/hook/commonTypes";
 import Animated, {
@@ -122,19 +127,20 @@ export function Scrollbar({
   //#endregion
 
   //#region Gestures
-  const pressGesture = Gesture.LongPress()
-    .enabled(scrollbarVisible)
-    .minDuration(0)
-    .onStart(persistScrollbar)
-    .onEnd(dismissScrollbar);
+  const pressGesture = useLongPressGesture({
+    enabled: scrollbarVisible,
+    minDuration: 0,
+    onActivate: persistScrollbar,
+    onDeactivate: dismissScrollbar,
+  });
 
-  const scrollGesture = Gesture.Pan()
-    .enabled(scrollbarVisible)
-    .onStart(({ absoluteY }) => {
+  const scrollGesture = usePanGesture({
+    enabled: scrollbarVisible,
+    onActivate: ({ absoluteY }) => {
       persistScrollbar();
       prevY.set(absoluteY);
-    })
-    .onUpdate(({ absoluteY }) => {
+    },
+    onUpdate: ({ absoluteY }) => {
       persistScrollbar();
       const changeDelta = absoluteY - prevY.get();
       const clampedScaledPosition = clamp(
@@ -147,17 +153,18 @@ export function Scrollbar({
 
       nextScrollPosition.set(unscaledScrollAmount);
       prevY.set(absoluteY);
-    })
-    .onEnd(() => {
+    },
+    onDeactivate: () => {
       dismissScrollbar();
       nextScrollPosition.set(-1);
       prevY.set(-1);
-    })
-    .onFinalize(() => {
+    },
+    onFinalize: () => {
       if (onEnd) onEnd();
-    });
+    },
+  });
 
-  const gestures = Gesture.Simultaneous(pressGesture, scrollGesture);
+  const gestures = useSimultaneousGestures(pressGesture, scrollGesture);
   //#endregion
 
   //#region Styles

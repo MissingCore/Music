@@ -1,12 +1,10 @@
+import { createContext, use, useCallback, useMemo, useRef } from "react";
 import {
-  createContext,
-  use,
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+  GestureDetector,
+  useNativeGesture,
+  usePanGesture,
+  useSimultaneousGestures,
+} from "react-native-gesture-handler";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, {
   clamp,
@@ -23,6 +21,7 @@ import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
 import type { StoreApi } from "zustand";
 import { createStore, useStore } from "zustand";
 
+import { cn } from "~/lib/style";
 import type { LegendListProps, ListRenderItemInfo } from "./Base/LegendList";
 import { LegendList, useAnimatedLegendListRef } from "./Base/LegendList";
 
@@ -47,6 +46,9 @@ interface DragListProps<TData> extends Omit<
   onDragEnd?: VoidFunction;
   /** Called when an item is successfully moved. */
   onReordered: (fromIndex: number, toIndex: number) => void;
+
+  /** If default stylings to fix "fake gaps" will be applied. Defaults to `true`. */
+  useDefaultStyles?: boolean;
 }
 
 const INACTIVE = -1;
@@ -66,12 +68,13 @@ function DragListImpl<TData>({
   data,
   renderItem,
   estimatedItemSize,
+  useDefaultStyles = true,
   onDragBegin: _,
   onDragEnd,
   onReordered,
   ...props
 }: DragListProps<TData>) {
-  const [enabled, setEnabled] = useState(true);
+  const enabled = useSharedValue(true);
 
   const dataRef = useRef(data);
   const pan = useDragListStore((s) => s.pan);
@@ -122,9 +125,10 @@ function DragListImpl<TData>({
       autoScrollAmount.set(0);
       pan.set(0);
       shifted.set(0);
+      enabled.set(true);
     });
-    setEnabled(true);
   }, [
+    enabled,
     setReactiveActiveIndex,
     autoScrollDirection,
     autoScrollAmount,
@@ -133,55 +137,39 @@ function DragListImpl<TData>({
     shifted,
   ]);
 
-  const panListenerGesture = useMemo(
-    () =>
-      Gesture.Pan()
-        .enabled(enabled)
-        .onStart(() => {
-          // Bail out of gesture early.
-          if (activeIndex.get() === INACTIVE) scheduleOnRN(setEnabled, false);
-        })
-        .onUpdate(({ translationY, y }) => {
-          //? Stop auto-scroll when we move (clears the timer which continues the auto-scroll).
-          autoScrollDirection.set(0);
-          if (activeIndex.get() === INACTIVE) return;
-          pan.set(autoScrollAmount.get() + translationY);
-          revalidatedShifted();
+  const panListenerGesture = usePanGesture({
+    enabled,
+    onActivate: () => {
+      // Bail out of gesture early.
+      if (activeIndex.get() === INACTIVE) enabled.set(false);
+    },
+    onUpdate: ({ translationY, y }) => {
+      //? Stop auto-scroll when we move (clears the timer which continues the auto-scroll).
+      autoScrollDirection.set(0);
+      if (activeIndex.get() === INACTIVE) return;
+      pan.set(autoScrollAmount.get() + translationY);
+      revalidatedShifted();
 
-          //? Auto-scroll handling.
-          let direction = 0;
-          if (y < estimatedItemSize) direction = -1;
-          else if (y > listHeight.get() - estimatedItemSize) direction = 1;
-          autoScrollDirection.set(direction);
-        })
-        .onFinalize(() => {
-          // Ensure we reset the gesture focus.
-          scheduleOnRN(setEnabled, false);
-          if (activeIndex.get() !== INACTIVE) {
-            if (onDragEnd) scheduleOnRN(onDragEnd);
-            scheduleOnRN(
-              onReordered,
-              activeIndex.get(),
-              activeIndex.get() + shifted.get(),
-            );
-          }
-          scheduleOnRN(onCleanup);
-        }),
-    [
-      enabled,
-      listHeight,
-      autoScrollDirection,
-      autoScrollAmount,
-      revalidatedShifted,
-      estimatedItemSize,
-      activeIndex,
-      pan,
-      onDragEnd,
-      onReordered,
-      onCleanup,
-      shifted,
-    ],
-  );
+      //? Auto-scroll handling.
+      let direction = 0;
+      if (y < estimatedItemSize) direction = -1;
+      else if (y > listHeight.get() - estimatedItemSize) direction = 1;
+      autoScrollDirection.set(direction);
+    },
+    onFinalize: () => {
+      // Ensure we reset the gesture focus.
+      enabled.set(false);
+      if (activeIndex.get() !== INACTIVE) {
+        if (onDragEnd) scheduleOnRN(onDragEnd);
+        scheduleOnRN(
+          onReordered,
+          activeIndex.get(),
+          activeIndex.get() + shifted.get(),
+        );
+      }
+      scheduleOnRN(onCleanup);
+    },
+  });
 
   useAnimatedReaction(
     () => autoScrollDirection.get(),
@@ -206,11 +194,9 @@ function DragListImpl<TData>({
     },
   );
 
-  const gesture = useMemo(
-    // `Gesture.Native()` allows for scroll to work.
-    () => Gesture.Simultaneous(Gesture.Native(), panListenerGesture),
-    [panListenerGesture],
-  );
+  // The "Native" gesture allows for scroll to work.
+  const nativeGesture = useNativeGesture({});
+  const gestures = useSimultaneousGestures(nativeGesture, panListenerGesture);
 
   const renderDragItem = useCallback(
     (info: ListRenderItemInfo<TData>) => (
@@ -228,7 +214,7 @@ function DragListImpl<TData>({
   }
 
   return (
-    <GestureDetector gesture={gesture}>
+    <GestureDetector gesture={gestures}>
       <LegendList
         {...props}
         ref={listRef}
@@ -245,6 +231,11 @@ function DragListImpl<TData>({
         scrollEnabled={reactiveActiveIndex === INACTIVE}
         // Fixes some issues caused by recycling.
         extraData={reactiveActiveIndex}
+        className={cn({ "-mb-2": useDefaultStyles }, props.className)}
+        contentContainerClassName={cn(
+          { "py-4": useDefaultStyles },
+          props.contentContainerClassName,
+        )}
       />
     </GestureDetector>
   );
