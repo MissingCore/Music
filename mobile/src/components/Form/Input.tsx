@@ -34,7 +34,6 @@ export function NumericInput({
   );
 
   return (
-    // @ts-expect-error - Ref is compatible.
     <Input
       inputMode="numeric"
       //? The order of where we define certain props is important with
@@ -79,7 +78,6 @@ export function TextInput({
   );
 
   return (
-    // @ts-expect-error - Ref is compatible.
     <Input
       textAlign={OnRTL.decide("right", "left")}
       placeholderTextColorClassName="accent-onSurfaceVariant"
