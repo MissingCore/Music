@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { Animated, View } from "react-native";
 import { GestureDetector, usePanGesture } from "react-native-gesture-handler";
+import { useSharedValue } from "react-native-reanimated";
 
 import { NothingArrowRight } from "~/resources/icons/NothingArrowRight";
 
@@ -59,7 +60,7 @@ export function Swipeable({
   const [swipeAmount, setSwipeAmount] = useState(0);
 
   const dragX = useRef(new Animated.Value(0)).current;
-  const animationRef = useRef<Animated.CompositeAnimation>(null);
+  const animationRef = useSharedValue<Animated.CompositeAnimation | null>(null);
 
   useEffect(() => {
     const listener = dragX.addListener(({ value }) => setSwipeAmount(value));
@@ -82,7 +83,7 @@ export function Swipeable({
     // Allows scrolling to work without triggering gesture.
     activeOffsetX: [-10, 10],
     enabled: !disabled,
-    onActivate: () => animationRef.current?.stop(),
+    onActivate: () => animationRef.get()?.stop(),
     onUpdate: ({ translationX }) =>
       dragX.setValue(clampSwipeAmount(translationX)),
     onDeactivate: ({ translationX, velocityX }) => {
@@ -104,7 +105,7 @@ export function Swipeable({
       if (clampSwipeAmount(translationX) === 0) return;
 
       // Create animation the swiped item will translate to.
-      animationRef.current = overshootSwipe
+      const pendingAnimation = overshootSwipe
         ? Animated.spring(dragX, {
             toValue: metThreshold
               ? (swipedLeft ? -1 : 1) * rowWidth.current
@@ -128,7 +129,11 @@ export function Swipeable({
         else props.onSwipeRight!();
       }
 
-      animationRef.current.start(async ({ finished }) => {
+      //! With RNGH's hook-based API, setting a ref value and accessing it
+      //! later in the same callback will not result in returning that set
+      //! value.
+      animationRef.set(pendingAnimation);
+      pendingAnimation.start(async ({ finished }) => {
         // Run callback after the animation finishes successfully and if
         // we met the threshold.
         if (!fireCallbackBeforeCompletion && finished && metThreshold) {

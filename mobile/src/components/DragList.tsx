@@ -125,8 +125,8 @@ function DragListImpl<TData>({
       autoScrollAmount.set(0);
       pan.set(0);
       shifted.set(0);
+      enabled.set(true);
     });
-    enabled.set(true);
   }, [
     enabled,
     setReactiveActiveIndex,
