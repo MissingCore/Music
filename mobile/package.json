@@ -59,7 +59,7 @@
     "react-native-android-widget": "0.20.3",
     "react-native-audio-browser": "github:MissingCore/react-native-audio-browser#bb9da301fdc284e144a54488c83c1af87b0ba61f",
     "react-native-bootsplash": "7.3.1",
-    "react-native-gesture-handler": "3.0.0-beta.5",
+    "react-native-gesture-handler": "3.0.0",
     "react-native-keyboard-controller": "1.21.8",
     "react-native-markdown-renderer": "4.1.1",
     "react-native-nitro-modules": "0.35.7",
