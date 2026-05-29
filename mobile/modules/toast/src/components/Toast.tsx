@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect } from "react";
 import { StyleSheet, Text, useWindowDimensions } from "react-native";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { GestureDetector, usePanGesture } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -36,28 +36,23 @@ export function Toast({ toast, exiting, theme }: Props) {
   //#region Dismiss Gesture
   const panAmount = useSharedValue(0);
 
-  const panGesture = useMemo(
-    () =>
-      Gesture.Pan()
-        .enabled(!exiting)
-        .activeOffsetY([-10, 10])
-        .onUpdate(({ translationY }) =>
-          panAmount.set(Math.min(0, translationY)),
-        )
-        .onEnd(({ velocityY }) => {
-          const metThreshold = velocityY < -500;
-          panAmount.set(
-            withSpring(
-              metThreshold ? -(topOffset + toastHeight.get() + 256) : 0,
-              undefined,
-              (finished) => {
-                if (finished && metThreshold) scheduleOnRN(onRemove);
-              },
-            ),
-          );
-        }),
-    [panAmount, toastHeight, topOffset, exiting, onRemove],
-  );
+  const panGesture = usePanGesture({
+    enabled: !exiting,
+    activeOffsetY: [-10, 10],
+    onUpdate: ({ translationY }) => panAmount.set(Math.min(0, translationY)),
+    onDeactivate: ({ velocityY }) => {
+      const metThreshold = velocityY < -500;
+      panAmount.set(
+        withSpring(
+          metThreshold ? -(topOffset + toastHeight.get() + 256) : 0,
+          undefined,
+          (finished) => {
+            if (finished && metThreshold) scheduleOnRN(onRemove);
+          },
+        ),
+      );
+    },
+  });
   //#endregion
 
   //#region Enter/Exit Animations
