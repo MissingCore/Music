@@ -1,6 +1,6 @@
 import { useAtomValue, useSetAtom } from "jotai";
-import { useCallback, useMemo, useRef, useState } from "react";
-import { Gesture } from "react-native-gesture-handler";
+import { useCallback, useMemo, useRef } from "react";
+import { usePanGesture } from "react-native-gesture-handler";
 import type Animated from "react-native-reanimated";
 import { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
@@ -65,68 +65,55 @@ export function useVinylSeekbar() {
   //#endregion
 
   //#region Gesture
-  const [gestureInBound, setGestureInBound] = useState(true);
+  const gestureInBound = useSharedValue(true);
   const prevAngle = useSharedValue(0);
   const hasUpdatedPosition = useSharedValue(false);
 
-  const seekGesture = useMemo(
-    () =>
-      Gesture.Pan()
-        .shouldCancelWhenOutside(true)
-        .enabled(gestureInBound)
-        .onStart(({ absoluteX, absoluteY }) => {
-          if (isWithinBound({ absoluteX, absoluteY })) {
-            scheduleOnRN(setIsSeeking, true);
-            prevAngle.set(getAngle({ absoluteX, absoluteY }));
-          } else {
-            scheduleOnRN(setGestureInBound, false);
-          }
-        })
-        .onUpdate(({ absoluteX, absoluteY }) => {
-          if (isWithinBound({ absoluteX, absoluteY })) {
-            let currAngle = getAngle({ absoluteX, absoluteY });
-            // Ensure arctan calculation is continuous.
-            while (currAngle < prevAngle.get() - Math.PI)
-              currAngle += 2 * Math.PI;
-            while (currAngle > prevAngle.get() + Math.PI)
-              currAngle -= 2 * Math.PI;
-            const rotateAmount =
-              ((currAngle - prevAngle.get()) * 180) / Math.PI;
+  const seekGesture = usePanGesture({
+    shouldCancelWhenOutside: true,
+    enabled: gestureInBound,
+    onActivate: ({ absoluteX, absoluteY }) => {
+      if (!isWithinBound({ absoluteX, absoluteY })) {
+        gestureInBound.set(false);
+        return;
+      }
 
-            prevAngle.set(currAngle);
+      scheduleOnRN(setIsSeeking, true);
+      prevAngle.set(getAngle({ absoluteX, absoluteY }));
+    },
+    onUpdate: ({ absoluteX, absoluteY }) => {
+      if (!isWithinBound({ absoluteX, absoluteY })) {
+        gestureInBound.set(false);
+        return;
+      }
 
-            // Calculate new position.
-            const changeDelta = convertUnit(rotateAmount, "degrees");
-            const newPosition = timedPosition.get() + changeDelta;
-            if (newPosition < 0) timedPosition.set(0);
-            else if (newPosition > duration) timedPosition.set(duration);
-            else timedPosition.set(newPosition);
+      let currAngle = getAngle({ absoluteX, absoluteY });
+      // Ensure arctan calculation is continuous.
+      while (currAngle < prevAngle.get() - Math.PI) currAngle += 2 * Math.PI;
+      while (currAngle > prevAngle.get() + Math.PI) currAngle -= 2 * Math.PI;
+      const rotateAmount = ((currAngle - prevAngle.get()) * 180) / Math.PI;
 
-            hasUpdatedPosition.set(true);
-          } else {
-            scheduleOnRN(setGestureInBound, false);
-          }
-        })
-        .onEnd(() => {
-          if (hasUpdatedPosition.get())
-            scheduleOnRN(PlaybackControls.seekTo, timedPosition.get());
-        })
-        .onFinalize(() => {
-          scheduleOnRN(setIsSeeking, false);
-          scheduleOnRN(setGestureInBound, true);
-          hasUpdatedPosition.set(false);
-        }),
-    [
-      isWithinBound,
-      getAngle,
-      setIsSeeking,
-      timedPosition,
-      duration,
-      prevAngle,
-      hasUpdatedPosition,
-      gestureInBound,
-    ],
-  );
+      prevAngle.set(currAngle);
+
+      // Calculate new position.
+      const changeDelta = convertUnit(rotateAmount, "degrees");
+      const newPosition = timedPosition.get() + changeDelta;
+      if (newPosition < 0) timedPosition.set(0);
+      else if (newPosition > duration) timedPosition.set(duration);
+      else timedPosition.set(newPosition);
+
+      hasUpdatedPosition.set(true);
+    },
+    onDeactivate: () => {
+      if (hasUpdatedPosition.get())
+        scheduleOnRN(PlaybackControls.seekTo, timedPosition.get());
+    },
+    onFinalize: () => {
+      scheduleOnRN(setIsSeeking, false);
+      gestureInBound.set(true);
+      hasUpdatedPosition.set(false);
+    },
+  });
   //#endregion
 
   return useMemo(
