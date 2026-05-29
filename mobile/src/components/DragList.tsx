@@ -21,6 +21,7 @@ import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
 import type { StoreApi } from "zustand";
 import { createStore, useStore } from "zustand";
 
+import { cn } from "~/lib/style";
 import type { LegendListProps, ListRenderItemInfo } from "./Base/LegendList";
 import { LegendList, useAnimatedLegendListRef } from "./Base/LegendList";
 
@@ -45,6 +46,9 @@ interface DragListProps<TData> extends Omit<
   onDragEnd?: VoidFunction;
   /** Called when an item is successfully moved. */
   onReordered: (fromIndex: number, toIndex: number) => void;
+
+  /** If default stylings to fix "fake gaps" will be applied. Defaults to `true`. */
+  useDefaultStyles?: boolean;
 }
 
 const INACTIVE = -1;
@@ -64,6 +68,7 @@ function DragListImpl<TData>({
   data,
   renderItem,
   estimatedItemSize,
+  useDefaultStyles = true,
   onDragBegin: _,
   onDragEnd,
   onReordered,
@@ -226,6 +231,11 @@ function DragListImpl<TData>({
         scrollEnabled={reactiveActiveIndex === INACTIVE}
         // Fixes some issues caused by recycling.
         extraData={reactiveActiveIndex}
+        className={cn({ "-mb-2": useDefaultStyles }, props.className)}
+        contentContainerClassName={cn(
+          { "py-4": useDefaultStyles },
+          props.contentContainerClassName,
+        )}
       />
     </GestureDetector>
   );
