@@ -13,8 +13,9 @@ const resolveAssetSource = Image.resolveAssetSource;
 
 /** Internal app directory where we store images. */
 export const ImageDirectory = Paths.join(Paths.document, "images");
+export const PlaceholderDirectory = Paths.join(Paths.document, "placeholders");
 export const PlaceholderImageFile = Paths.join(
-  Paths.document,
+  PlaceholderDirectory,
   "music-glyph.png",
 );
 
@@ -22,6 +23,9 @@ export const PlaceholderImageFile = Paths.join(
 export async function createImageDirectory() {
   const imgDir = new Directory(ImageDirectory);
   if (!imgDir.exists) imgDir.create();
+
+  const placeholderDir = new Directory(PlaceholderDirectory);
+  if (!placeholderDir.exists) placeholderDir.create();
 
   //? Save a bundled asset to the local file system as we can't pass a
   //? `require()` image to `react-native-audio-browser`.

@@ -32,7 +32,11 @@ import { sessionStore } from "~/stores/Session/store";
 import { AppCleanUp } from "~/modules/scanning/helpers/cleanup";
 import { router } from "~/navigation/utils/router";
 
-import { PlaceholderImageFile } from "~/lib/file-system";
+import {
+  ImageDirectory,
+  PlaceholderDirectory,
+  PlaceholderImageFile,
+} from "~/lib/file-system";
 import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 import { clearAllQueries } from "~/lib/react-query";
 import { bgWait } from "~/utils/promise";
@@ -88,6 +92,7 @@ async function initServices() {
   //? Seems like we can setup the playback service in the background/headlessly.
   await AudioBrowser.setupPlayer({
     android: {
+      allowedArtworkParentPaths: [ImageDirectory, PlaceholderDirectory],
       downsamplingProcessor: useDownsamplingProcessor === "true",
     },
   });
