@@ -1,4 +1,4 @@
-import { toast } from "@missingcore/toast";
+import { toast } from "@missingcore/ui/toast";
 import { useMutation } from "@tanstack/react-query";
 import { and, eq, isNull } from "drizzle-orm";
 

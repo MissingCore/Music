@@ -1,5 +1,5 @@
 import { getActualPath } from "@missingcore/react-native-actual-path";
-import { toast } from "@missingcore/toast";
+import { toast } from "@missingcore/ui/toast";
 import { Directory } from "expo-file-system";
 import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";

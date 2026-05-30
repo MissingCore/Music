@@ -4,7 +4,7 @@
     "strict": true,
     "paths": {
       "@missingcore/native-utils": ["./modules/native-utils"],
-      "@missingcore/toast": ["./modules/toast"],
+      "@missingcore/ui/*": ["./modules/ui/*"],
       "~/*": ["./src/*"]
     },
     "noUncheckedIndexedAccess": true

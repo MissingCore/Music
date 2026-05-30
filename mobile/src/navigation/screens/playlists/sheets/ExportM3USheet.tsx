@@ -1,4 +1,4 @@
-import { toast } from "@missingcore/toast";
+import { toast } from "@missingcore/ui/toast";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
