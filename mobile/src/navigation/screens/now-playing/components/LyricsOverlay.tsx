@@ -1,5 +1,6 @@
 import { getLyric } from "@missingcore/react-native-metadata-retriever";
 import { useNavigation } from "@react-navigation/native";
+import { File } from "expo-file-system";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
@@ -125,7 +126,7 @@ function LyricsNotFound(props: { trackId: string; offset: number }) {
 
   useEffect(() => {
     (async () => {
-      await fetchEmbeddedLyrics();
+      await fetchLyrics();
       setCheckingEmbeddedLyrics(false);
     })();
   }, []);
@@ -148,16 +149,24 @@ function LyricsNotFound(props: { trackId: string; offset: number }) {
   );
 }
 
-async function fetchEmbeddedLyrics() {
+async function fetchLyrics() {
   const { activeTrack } = playbackStore.getState();
   if (!activeTrack) return;
   try {
-    const embeddedLyrics = await getLyric(activeTrack.uri);
-    if (!embeddedLyrics) return;
+    //? 1. Start by looking for embedded lyrics.
+    let foundLyrics = await getLyric(activeTrack.uri);
+
+    //? 2. Check for adjacent lyric files (`.lrc`).
+    const fileSlug = activeTrack.uri.split(".").slice(0, -1).join(".");
+    const adjacentLrcFile = new File(`${fileSlug}.lrc`);
+    if (adjacentLrcFile.exists) foundLyrics = await adjacentLrcFile.text();
+
+    // Silently return if no lyrics are found.
+    if (!foundLyrics) return;
 
     const newLyric = await createLyric({
       name: `${activeTrack.name} - ${getArtistsString(activeTrack.artists)}`,
-      lyrics: embeddedLyrics,
+      lyrics: foundLyrics,
     });
     if (!newLyric) throw new Error("Lyric not returned after insertion.");
     await linkTrackToLyric(
@@ -166,7 +175,9 @@ async function fetchEmbeddedLyrics() {
     );
 
     queryClient.invalidateQueries({ queryKey: q.lyrics._def });
-  } catch {}
+  } catch (err) {
+    console.log(err);
+  }
 }
 //#endregion
 
