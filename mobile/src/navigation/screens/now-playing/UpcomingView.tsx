@@ -1,3 +1,5 @@
+import type { DragListRenderItemInfo } from "@missingcore/ui/drag-list";
+import { DragList, useDragListState } from "@missingcore/ui/drag-list";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { inArray } from "drizzle-orm";
 import { memo, useCallback, useMemo, useRef, useState } from "react";
@@ -17,8 +19,6 @@ import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
 import { wait } from "~/utils/promise";
-import type { DragListRenderItemInfo } from "~/components/DragList";
-import { DragList, useDragListState } from "~/components/DragList";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { RemovableItem } from "~/components/List/RemovableItem";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
@@ -114,7 +114,8 @@ export default function Upcoming() {
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         onReordered={onMove}
-        contentContainerClassName="px-4"
+        className="-mb-2"
+        contentContainerClassName="p-4"
       />
     </>
   );
