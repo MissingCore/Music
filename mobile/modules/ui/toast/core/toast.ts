@@ -1,4 +1,3 @@
-import { createId } from "@paralleldrive/cuid2";
 import type { ParseKeys } from "i18next";
 
 import { toastStore } from "./store";
@@ -9,12 +8,20 @@ type ToastHandler<T extends boolean> = (
   options?: ToastOptions,
 ) => void;
 
+const genId = (() => {
+  let count = 0;
+  return () => {
+    count += 1;
+    return `${Date.now()}-${count}`;
+  };
+})();
+
 function createToast(
   message: string,
   type: ToastType,
   opts?: ToastOptions,
 ): Toast {
-  return { id: createId(), type, message, autoDismiss: true, ...opts };
+  return { id: genId(), type, message, autoDismiss: true, ...opts };
 }
 
 function createHandler<T extends boolean>(
