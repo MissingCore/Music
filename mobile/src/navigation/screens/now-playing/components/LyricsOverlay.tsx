@@ -70,7 +70,7 @@ function LyricsContent(props: { trackId: string; offset: number }) {
 
   const lyricsLines = useMemo(() => {
     if (!data?.lyrics) return [];
-    return data.lyrics.split("\n");
+    return data.lyrics.split("\n").map((line) => line.trim());
   }, [data?.lyrics]);
 
   const isSynchronized = useMemo(
@@ -175,9 +175,7 @@ async function fetchLyrics() {
     );
 
     queryClient.invalidateQueries({ queryKey: q.lyrics._def });
-  } catch (err) {
-    console.log(err);
-  }
+  } catch {}
 }
 //#endregion
 
