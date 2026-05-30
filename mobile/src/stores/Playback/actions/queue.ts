@@ -1,4 +1,4 @@
-import { toast } from "@missingcore/toast";
+import { toast } from "@missingcore/ui/toast";
 import { createId } from "@paralleldrive/cuid2";
 import AudioBrowser from "react-native-audio-browser";
 

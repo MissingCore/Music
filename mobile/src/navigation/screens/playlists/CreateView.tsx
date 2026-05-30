@@ -1,4 +1,4 @@
-import { toast } from "@missingcore/toast";
+import { toast } from "@missingcore/ui/toast";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQueryClient } from "@tanstack/react-query";

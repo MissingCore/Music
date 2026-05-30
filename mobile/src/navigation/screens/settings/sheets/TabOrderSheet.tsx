@@ -1,3 +1,5 @@
+import type { DragListRenderItemInfo } from "@missingcore/ui/drag-list";
+import { DragList, useDragListState } from "@missingcore/ui/drag-list";
 import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -8,8 +10,6 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { Tabs } from "~/stores/Preference/actions";
 
 import { cn } from "~/lib/style";
-import type { DragListRenderItemInfo } from "~/components/DragList";
-import { DragList, useDragListState } from "~/components/DragList";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { CheckboxField } from "~/components/Form/Checkbox";
 import { DetachedSheet } from "~/components/Sheet";
@@ -33,7 +33,6 @@ export function TabOrderSheet(props: { ref: TrueSheetRef }) {
         onDragBegin={() => setDraggable(false)}
         onDragEnd={() => setDraggable(true)}
         onReordered={Tabs.move}
-        useDefaultStyles={false}
         style={{ height: 440 }}
         contentContainerClassName="gap-2"
       />

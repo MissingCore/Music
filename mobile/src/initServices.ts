@@ -4,7 +4,7 @@ import {
   GlyphToy,
   MatrixAction,
 } from "@missingcore/music-glyph-toys";
-import { toast } from "@missingcore/toast";
+import { toast } from "@missingcore/ui/toast";
 import AsyncStorage from "expo-sqlite/kv-store";
 import type {
   BrowserConfiguration,

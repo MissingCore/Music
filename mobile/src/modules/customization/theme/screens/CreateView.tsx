@@ -1,4 +1,4 @@
-import { toast } from "@missingcore/toast";
+import { toast } from "@missingcore/ui/toast";
 import { useNavigation } from "@react-navigation/native";
 
 import { wait } from "~/utils/promise";

@@ -1,4 +1,4 @@
-import { Toaster } from "@missingcore/toast";
+import { Toaster } from "@missingcore/ui/toast";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { NavigationBar } from "@zoontek/react-native-navigation-bar";
 import { useTranslation } from "react-i18next";

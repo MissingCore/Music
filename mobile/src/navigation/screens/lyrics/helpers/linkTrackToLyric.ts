@@ -1,4 +1,4 @@
-import { toast } from "@missingcore/toast";
+import { toast } from "@missingcore/ui/toast";
 
 import { db } from "~/db";
 import { tracksToLyrics } from "~/db/schema";

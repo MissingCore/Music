@@ -1,4 +1,4 @@
-import { toast } from "@missingcore/toast";
+import { toast } from "@missingcore/ui/toast";
 import { Uniwind } from "uniwind";
 
 import i18next from "~/modules/i18n";

@@ -2,7 +2,7 @@ import {
   MetadataPresets,
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
-import { toast } from "@missingcore/toast";
+import { toast } from "@missingcore/ui/toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { eq } from "drizzle-orm";
 import { useCallback } from "react";

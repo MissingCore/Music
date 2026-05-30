@@ -1,4 +1,6 @@
-import { toast } from "@missingcore/toast";
+import type { DragListRenderItemInfo } from "@missingcore/ui/drag-list";
+import { DragList, useDragListState } from "@missingcore/ui/drag-list";
+import { toast } from "@missingcore/ui/toast";
 import { createContext, memo, use, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -19,8 +21,6 @@ import { AddMusicSheet } from "../sheets/AddMusicSheet";
 
 import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
-import type { DragListRenderItemInfo } from "~/components/DragList";
-import { DragList, useDragListState } from "~/components/DragList";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { RemovableItem } from "~/components/List/RemovableItem";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
@@ -161,8 +161,9 @@ function PlaylistForm(props: {
           />
         }
         ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noTracks" />}
+        className="-mb-2"
         contentContainerStyle={{ paddingBottom: props.bottomOffset }}
-        contentContainerClassName="px-4"
+        contentContainerClassName="p-4"
       />
     </>
   );
