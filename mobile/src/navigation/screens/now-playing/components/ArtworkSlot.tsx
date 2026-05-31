@@ -4,8 +4,8 @@ import { View } from "react-native";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
+import { LyricsOverlay } from "~/modules/lyric/components/LyricsOverlay";
 import { ArtworkPicker } from "./Artwork";
-import { LyricsOverlay } from "./LyricsOverlay";
 
 /** Renders in the top portion of the Now Playing screen, handling the current artwork and lyrics. */
 export function ArtworkSlot(props: {

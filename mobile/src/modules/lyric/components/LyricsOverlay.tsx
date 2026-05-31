@@ -24,7 +24,7 @@ import { IconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
 import { Em, TEm } from "~/components/Typography/StyledText";
 import { useTheme } from "~/modules/customization/theme/hooks";
-import { linkTrackToLyric } from "../../lyrics/helpers/linkTrackToLyric";
+import { linkTrackToLyric } from "../helpers/linkTrackToLyric";
 
 const SCROLL_OFFSET = 64;
 const LINE_GAP = 16;
