@@ -18,7 +18,9 @@ export interface LyricStore {
   /** Get a more accurate initial state. */
   _init: (state: LyricStore) => Promise<void>;
 
+  /** If lyrics will be displyad over the artwork on the Now Playing screen. */
   visible: boolean;
+  /** List of online providers we can get lyrics from. */
   providers: LyricProvider[];
 }
 
