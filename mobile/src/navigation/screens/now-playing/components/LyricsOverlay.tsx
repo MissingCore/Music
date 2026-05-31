@@ -157,9 +157,11 @@ async function fetchLyrics() {
     let foundLyrics = await getLyric(activeTrack.uri);
 
     //? 2. Check for adjacent lyric files (`.lrc`).
-    const fileSlug = activeTrack.uri.split(".").slice(0, -1).join(".");
-    const adjacentLrcFile = new File(`${fileSlug}.lrc`);
-    if (adjacentLrcFile.exists) foundLyrics = await adjacentLrcFile.text();
+    if (!foundLyrics) {
+      const fileSlug = activeTrack.uri.split(".").slice(0, -1).join(".");
+      const adjacentLrcFile = new File(`${fileSlug}.lrc`);
+      if (adjacentLrcFile.exists) foundLyrics = await adjacentLrcFile.text();
+    }
 
     // Silently return if no lyrics are found.
     if (!foundLyrics) return;
