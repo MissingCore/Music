@@ -29,6 +29,10 @@ We support the default 5-band equalizer with 10 provided presets and the option 
 > [!IMPORTANT]
 > There's a high probability of the Glyph Button interactions not working since I don't have a Nothing Phone 3 to test things out (which might be caused by the connection between the toy and the app not being correctly implemented).
 
+## Lyric Providers
+
+See the [dedicated `Lyrics Provider` documentation for more information](./lyrics.md#-experimental-lyric-providers).
+
 ## M3U Files
 
 > No Toggle Required.
