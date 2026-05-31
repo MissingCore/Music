@@ -164,13 +164,13 @@ async function fetchLyrics() {
     // Silently return if no lyrics are found.
     if (!foundLyrics) return;
 
-    let lrcEntryName = activeTrack.name;
+    const lrcEntryName = [activeTrack.name];
     if (activeTrack.artists)
-      lrcEntryName += ` - ${getArtistsString(activeTrack.artists)}`;
-    if (activeTrack.albumName) lrcEntryName += ` - ${activeTrack.albumName}`;
+      lrcEntryName.push(getArtistsString(activeTrack.artists));
+    if (activeTrack.albumName) lrcEntryName.push(activeTrack.albumName);
 
     const newLyric = await createLyric({
-      name: lrcEntryName,
+      name: lrcEntryName.join(" - "),
       lyrics: foundLyrics,
     });
     if (!newLyric) throw new Error("Lyric not returned after insertion.");
