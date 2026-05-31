@@ -4,12 +4,12 @@ export interface LyricProvider {
   id: string;
   name: string;
   endpoint: string;
-  /** Additional HTTP headers to pass with the request. */
-  httpHeaders: Array<[string, string]>;
-  /** The type of response we expect. */
-  responseType: OutputType;
-  /** Steps to get to the field containing the lyrics. */
-  traversal: Array<{ field: string; type: OutputType }>;
+  /** We expect either JSON or Plain Text response from the endpoint. */
+  isJSONResponse: boolean;
+  /** Additional HTTP headers to pass with the request. It'll be a list of "Key: Value" pairs. */
+  headers: string;
+  /** List of fields we need to go through to get to the field with the lyrics. */
+  traversedFields: string[];
 }
 
 //#region Store
