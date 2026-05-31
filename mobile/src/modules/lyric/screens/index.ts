@@ -27,7 +27,7 @@ const LyricScreenGroup = {
 
     LyricsProviders: {
       screen: LyricsProviders,
-      option: { title: "feat.lyrics.extra.providers" },
+      options: { title: "feat.lyrics.extra.providers" },
     },
     CreateLyricProvider: {
       screen: CreateLyricProvider,
