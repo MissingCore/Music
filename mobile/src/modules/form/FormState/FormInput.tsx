@@ -10,16 +10,21 @@ import { FlatList } from "~/components/Base/List";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
 import { RemovableItem } from "~/components/List/RemovableItem";
-import { TEm } from "~/components/Typography/StyledText";
+import { Em, TEm } from "~/components/Typography/StyledText";
 
 //#region Label
 export function InputLabel(props: {
-  labelKey: ParseKeys;
+  labelKey?: ParseKeys;
+  label?: string;
   RightElement?: React.ReactNode;
 }) {
   return (
     <View className="mb-1 min-h-8 flex-row items-center justify-between gap-4">
-      <TEm textKey={props.labelKey} />
+      {props.labelKey ? (
+        <TEm textKey={props.labelKey} />
+      ) : (
+        <Em>{props.label}</Em>
+      )}
       {props.RightElement}
     </View>
   );
@@ -29,7 +34,8 @@ export function InputLabel(props: {
 //#region Text/Numeric Input
 export function FormInputImpl<TData extends Record<string, any>>() {
   return function FormInput(props: {
-    labelKey: ParseKeys;
+    labelKey?: ParseKeys;
+    label?: string;
     field: KeysOfValue<TData, string | number | null>;
     numeric?: boolean;
   }) {
@@ -67,7 +73,8 @@ export function FormInputImpl<TData extends Record<string, any>>() {
 //#region Array Input
 export function ArrayFormInputImpl<TData extends Record<string, any>>() {
   return function ArrayFormInput(props: {
-    labelKey: ParseKeys;
+    labelKey?: ParseKeys;
+    label?: string;
     field: KeysOfValue<TData, string[]>;
   }) {
     const { t } = useTranslation();
@@ -84,7 +91,7 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
             <IconButton
               Icon={Add}
               accessibilityLabel={t("template.entryAdd", {
-                name: t(props.labelKey),
+                name: props.labelKey ? t(props.labelKey) : props.label,
               })}
               onPress={() =>
                 setField((prev) => ({ ...prev, [field]: [...prev[field], ""] }))
@@ -137,7 +144,8 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
 //#region Textarea
 export function TextareaImpl<TData extends Record<string, any>>() {
   return function Textarea(props: {
-    labelKey: ParseKeys;
+    labelKey?: ParseKeys;
+    label?: string;
     field: KeysOfValue<TData, string>;
   }) {
     const { data, setField, isSubmitting } = useFormState<TData>();
