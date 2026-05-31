@@ -246,7 +246,8 @@
     "lyrics": {
       "title": "Lyrics",
       "extra": {
-        "useEmbedded": "Use Embedded"
+        "useEmbedded": "Use Embedded",
+        "providers": "Lyrics Providers"
       }
     },
     "scanning": {
