@@ -56,7 +56,7 @@ export function FormInputImpl<TData extends Record<string, any>>() {
 
     return (
       <View className="flex-1">
-        <InputLabel labelKey={props.labelKey} />
+        <InputLabel labelKey={props.labelKey} label={props.label} />
         <TextInput
           inputMode={props.numeric ? "numeric" : undefined}
           editable={!isSubmitting}
@@ -87,6 +87,7 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
       <View>
         <InputLabel
           labelKey={props.labelKey}
+          label={props.label}
           RightElement={
             <IconButton
               Icon={Add}
@@ -151,7 +152,7 @@ export function TextareaImpl<TData extends Record<string, any>>() {
     const { data, setField, isSubmitting } = useFormState<TData>();
     return (
       <View className="flex-1">
-        <InputLabel labelKey={props.labelKey} />
+        <InputLabel labelKey={props.labelKey} label={props.label} />
         <TextInput
           editable={!isSubmitting}
           value={data[props.field]}
