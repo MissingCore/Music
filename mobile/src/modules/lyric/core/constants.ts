@@ -1,6 +1,7 @@
 export type OutputType = "string" | "object" | "array";
 
 export interface LyricProvider {
+  id: string;
   name: string;
   endpoint: string;
   /** Additional HTTP headers to pass with the request. */
