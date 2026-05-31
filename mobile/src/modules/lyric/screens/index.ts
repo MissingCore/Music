@@ -1,6 +1,7 @@
 import CreateLyricProvider from "./CreateProviderView";
 import CreateLyric from "./CreateView";
 import Lyric from "./CurrentView";
+import ModifyLyricProvider from "./ModifyProviderView";
 import ModifyLyric from "./ModifyView";
 import LyricsProviders from "./ProviderView";
 import Lyrics from "./View";
@@ -31,6 +32,10 @@ const LyricScreenGroup = {
     CreateLyricProvider: {
       screen: CreateLyricProvider,
       options: { title: "form.create" },
+    },
+    ModifyLyricProvider: {
+      screen: ModifyLyricProvider,
+      options: { title: "form.edit" },
     },
   },
 } as const;

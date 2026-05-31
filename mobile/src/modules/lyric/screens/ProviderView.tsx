@@ -9,7 +9,7 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
 import { LegendList } from "~/components/Base/LegendList";
-import { FilledIconButton } from "~/components/Form/Button/Icon";
+import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { ListItem } from "~/components/List";
 
 export default function LyricsProviders() {
@@ -35,11 +35,16 @@ export default function LyricsProviders() {
           <ListItem
             labelText={item.name}
             supportingText={item.endpoint}
-            RightElement={<Edit />}
-            onPress={() =>
-              console.log(`Editing "${item.name}" lyric provider...`)
+            RightElement={
+              <IconButton
+                Icon={Edit}
+                accessibilityLabel={t("form.edit")}
+                onPress={() =>
+                  navigation.navigate("ModifyLyricProvider", { id: item.id })
+                }
+              />
             }
-            className="mb-0.75"
+            className="mb-2"
           />
         )}
         ListEmptyComponent={
