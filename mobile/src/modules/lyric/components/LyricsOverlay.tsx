@@ -14,9 +14,12 @@ import { createLyric } from "~/data/lyric/api";
 import { useLyricForTrack } from "~/data/lyric/queries";
 import { playbackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
+import { lyricStore } from "../core/store";
+import { fetchLyricFromProvider } from "../core/data";
 
 import { queryClient } from "~/lib/react-query";
 import { cn } from "~/lib/style";
+import { getSafeUri } from "~/utils/string";
 import type { FlatListProps, FlatListRef } from "~/components/Base/List";
 import { FlatList, useFlatListRef } from "~/components/Base/List";
 import { ExtendedTButton } from "~/components/Form/Button";
@@ -151,6 +154,8 @@ function LyricsNotFound(props: { trackId: string; offset: number }) {
 
 async function fetchLyrics() {
   const { activeTrack } = playbackStore.getState();
+  const lyricsProviders = lyricStore.getState().providers;
+
   if (!activeTrack) return;
   try {
     //? 1. Start by looking for embedded lyrics.
@@ -159,8 +164,16 @@ async function fetchLyrics() {
     //? 2. Check for adjacent lyric files (`.lrc`).
     if (!foundLyrics) {
       const fileSlug = activeTrack.uri.split(".").slice(0, -1).join(".");
-      const adjacentLrcFile = new File(`${fileSlug}.lrc`);
+      const adjacentLrcFile = new File(getSafeUri(`${fileSlug}.lrc`));
       if (adjacentLrcFile.exists) foundLyrics = await adjacentLrcFile.text();
+    }
+
+    //? 3. Check for online lyrics.
+    if (!foundLyrics) {
+      for (const provider of lyricsProviders) {
+        foundLyrics = await fetchLyricFromProvider(activeTrack, provider);
+        if (foundLyrics) break;
+      }
     }
 
     // Silently return if no lyrics are found.
@@ -182,7 +195,9 @@ async function fetchLyrics() {
     );
 
     queryClient.invalidateQueries({ queryKey: q.lyrics._def });
-  } catch {}
+  } catch (err) {
+    console.log(err);
+  }
 }
 //#endregion
 
