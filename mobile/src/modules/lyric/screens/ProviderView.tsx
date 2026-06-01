@@ -86,6 +86,7 @@ function RenderItem({ item, index }: DragListRenderItemInfo<LyricProvider>) {
             Icon={DragHandle}
             accessibilityLabel={t("template.entryMove", { name: item.name })}
             onPressIn={onInitDrag}
+            disabled={isDragging && !isActive}
           />
         </View>
       }
