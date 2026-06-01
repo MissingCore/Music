@@ -35,6 +35,8 @@
     "upcoming": "Upcoming",
     "playingFrom": "Playing From",
 
+    "instructions": "Instructions",
+
     "disc": "Disc {{count}}"
   },
 
@@ -247,7 +249,11 @@
       "title": "Lyrics",
       "extra": {
         "useEmbedded": "Use Embedded",
-        "providers": "Lyrics Providers"
+        "providers": "Lyrics Providers",
+        "providersInstructions": {
+          "line1": "For legal reasons, we do not automatically provide online sources for displaying lyrics as we do not have a license for doing so. Instead we support providers, which you can use to specify where we can pull lyrics from.",
+          "line2": "Click to learn more on you can create a provider."
+        }
       }
     },
     "scanning": {

@@ -20,6 +20,7 @@ export const Links = {
   PrivacyPolicy: "https://missingcore.vercel.app/music/privacy-policy",
   Translations: "https://crowdin.com/project/missingcore-music",
   AndroidAuto: `${GITHUB}/blob/dev/docs/android-auto.md`,
+  LyricsProviders: `${GITHUB}/blob/dev/docs/lyrics.md#-experimental-lyric-providers`,
 };
 //#endregion
 
