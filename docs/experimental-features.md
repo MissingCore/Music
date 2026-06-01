@@ -31,7 +31,7 @@ We support the default 5-band equalizer with 10 provided presets and the option 
 
 ## Lyric Providers
 
-See the [dedicated `Lyrics Provider` documentation for more information](./lyrics.md#-experimental-lyric-providers).
+See the [dedicated `Lyrics Provider` documentation for more information](./lyrics.md#-experimental-lyrics-providers).
 
 ## M3U Files
 

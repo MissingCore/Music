@@ -91,7 +91,7 @@ function LyricProviderForm({ bottomOffset }: { bottomOffset: number }) {
 //#region Schema
 const LyricProviderEntrySchema = z.object({
   name: ZSchema.NonEmptyString,
-  endpoint: z.httpUrl().check(z.trim(), z.minLength(1)),
+  endpoint: z.httpUrl().check(z.trim()),
   isJSONResponse: z.boolean(),
   headers: z.string(),
   traversedFields: z.array(ZSchema.NonEmptyString),
