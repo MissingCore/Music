@@ -47,7 +47,12 @@ export default function LyricsProviders() {
         onReordered={moveLyricProvider}
         ListHeaderComponent={<Instructions />}
         ListEmptyComponent={
-          <ContentPlaceholder errMsgKey="err.msg.noContent" />
+          <ContentPlaceholder
+            // @ts-expect-error - Will display text if key doesn't exist.
+            errMsgKey={t("template.noContentFound", {
+              name: t("feat.lyrics.extra.providers").toLocaleLowerCase(),
+            })}
+          />
         }
         className="-mb-4"
         contentContainerClassName="p-4"

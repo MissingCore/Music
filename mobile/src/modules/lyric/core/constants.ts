@@ -1,5 +1,3 @@
-export type OutputType = "string" | "object" | "array";
-
 export interface LyricProvider {
   id: string;
   name: string;
