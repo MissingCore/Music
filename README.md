@@ -36,7 +36,7 @@ A Nothing inspired **local** music player.
 - Multi-artist support
 - Custom theme & font support
 - Artwork customizability for Albums, Artists, Genres, Playlists, and Tracks
-- BYO (Bring Your Own) Lyrics
+- Lyrics (BYO - Bring Your Own, Embedded, Providers)
 - Background playback w/ media control notification
 - Queue manipulation (track removal & reordering)
 - Vinyl on "Now Playing" screen acts as a seekbar (24s for a full rotation)

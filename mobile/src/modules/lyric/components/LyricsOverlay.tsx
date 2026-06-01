@@ -1,6 +1,4 @@
-import { getLyric } from "@missingcore/react-native-metadata-retriever";
 import { useNavigation } from "@react-navigation/native";
-import { File } from "expo-file-system";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
@@ -8,15 +6,11 @@ import { usePolledProgress } from "react-native-audio-browser";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Edit } from "~/resources/icons/Edit";
-import { queries as q } from "~/data/keyStore";
-import { getArtistsString } from "~/data/artist/utils";
-import { createLyric } from "~/data/lyric/api";
 import { useLyricForTrack } from "~/data/lyric/queries";
-import { playbackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
-import { queryClient } from "~/lib/react-query";
 import { cn } from "~/lib/style";
+import { bgWait } from "~/utils/promise";
 import type { FlatListProps, FlatListRef } from "~/components/Base/List";
 import { FlatList, useFlatListRef } from "~/components/Base/List";
 import { ExtendedTButton } from "~/components/Form/Button";
@@ -24,7 +18,7 @@ import { IconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
 import { Em, TEm } from "~/components/Typography/StyledText";
 import { useTheme } from "~/modules/customization/theme/hooks";
-import { linkTrackToLyric } from "../../lyrics/helpers/linkTrackToLyric";
+import { autoDiscoverLyrics } from "../helpers/autoDiscoverLyrics";
 
 const SCROLL_OFFSET = 64;
 const LINE_GAP = 16;
@@ -125,10 +119,15 @@ function LyricsNotFound(props: { trackId: string; offset: number }) {
   const [checkingEmbeddedLyrics, setCheckingEmbeddedLyrics] = useState(true);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     (async () => {
-      await fetchLyrics();
+      await autoDiscoverLyrics(controller);
+      await bgWait(250);
       setCheckingEmbeddedLyrics(false);
     })();
+
+    return () => controller.abort();
   }, []);
 
   return (
@@ -147,42 +146,6 @@ function LyricsNotFound(props: { trackId: string; offset: number }) {
       />
     </View>
   );
-}
-
-async function fetchLyrics() {
-  const { activeTrack } = playbackStore.getState();
-  if (!activeTrack) return;
-  try {
-    //? 1. Start by looking for embedded lyrics.
-    let foundLyrics = await getLyric(activeTrack.uri);
-
-    //? 2. Check for adjacent lyric files (`.lrc`).
-    if (!foundLyrics) {
-      const fileSlug = activeTrack.uri.split(".").slice(0, -1).join(".");
-      const adjacentLrcFile = new File(`${fileSlug}.lrc`);
-      if (adjacentLrcFile.exists) foundLyrics = await adjacentLrcFile.text();
-    }
-
-    // Silently return if no lyrics are found.
-    if (!foundLyrics) return;
-
-    const lrcEntryName = [activeTrack.name];
-    if (activeTrack.artists)
-      lrcEntryName.push(getArtistsString(activeTrack.artists));
-    if (activeTrack.albumName) lrcEntryName.push(activeTrack.albumName);
-
-    const newLyric = await createLyric({
-      name: lrcEntryName.join(" - "),
-      lyrics: foundLyrics,
-    });
-    if (!newLyric) throw new Error("Lyric not returned after insertion.");
-    await linkTrackToLyric(
-      { name: activeTrack.name, trackId: activeTrack.id, lyricId: newLyric.id },
-      false,
-    );
-
-    queryClient.invalidateQueries({ queryKey: q.lyrics._def });
-  } catch {}
 }
 //#endregion
 

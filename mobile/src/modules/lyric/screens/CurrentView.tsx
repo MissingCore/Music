@@ -29,7 +29,7 @@ import {
   StyledText,
   TStyledText,
 } from "~/components/Typography/StyledText";
-import { LinkTracksSheet } from "./sheets/LinkTracksSheet";
+import { LinkTracksSheet } from "../sheets/LinkTracksSheet";
 
 type Props = StaticScreenProps<{ id: string }>;
 

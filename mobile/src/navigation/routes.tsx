@@ -25,10 +25,6 @@ import Artists from "./screens/artists/View";
 import Folders from "./screens/folders/View";
 import Genre from "./screens/genres/CurrentView";
 import Genres from "./screens/genres/View";
-import CreateLyric from "./screens/lyrics/CreateView";
-import Lyric from "./screens/lyrics/CurrentView";
-import ModifyLyric from "./screens/lyrics/ModifyView";
-import Lyrics from "./screens/lyrics/View";
 import Upcoming from "./screens/now-playing/UpcomingView";
 import NowPlaying from "./screens/now-playing/View";
 import CreatePlaylist from "./screens/playlists/CreateView";
@@ -54,6 +50,7 @@ import { ArtistsSheet } from "./sheets/ArtistsSheet";
 import FontScreenGroup from "~/modules/customization/font/screens";
 import ThemeScreenGroup from "~/modules/customization/theme/screens";
 import EqualizerSettings from "~/modules/equalizer/screens/View";
+import LyricScreenGroup from "~/modules/lyric/screens";
 import Search from "~/modules/search/screens/View";
 
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
@@ -304,26 +301,7 @@ export const RootStack = createNativeStackNavigator({
         },
       },
     },
-    Lyric: {
-      screenOptions: {
-        animation: "fade",
-      },
-      screens: {
-        Lyrics: {
-          screen: Lyrics,
-          options: { title: "feat.lyrics.title" },
-        },
-        CreateLyric: {
-          screen: CreateLyric,
-          options: { title: "form.create" },
-        },
-        ModifyLyric: {
-          screen: ModifyLyric,
-          options: { title: "form.edit" },
-        },
-        Lyric,
-      },
-    },
+    Lyric: LyricScreenGroup,
     Setting: {
       screenOptions: {
         animation: "fade",

@@ -2,17 +2,17 @@ import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { View } from "react-native";
 
-import { usePreferenceStore } from "~/stores/Preference/store";
+import { useLyricStore } from "~/modules/lyric/core/store";
 
+import { LyricsOverlay } from "~/modules/lyric/components/LyricsOverlay";
 import { ArtworkPicker } from "./Artwork";
-import { LyricsOverlay } from "./LyricsOverlay";
 
 /** Renders in the top portion of the Now Playing screen, handling the current artwork and lyrics. */
 export function ArtworkSlot(props: {
   artwork: string | null;
   trackId: string;
 }) {
-  const showLyrics = usePreferenceStore((s) => s.showLyrics);
+  const showLyrics = useLyricStore((s) => s.visible);
   const { containerProps, size } = useArtworkSize();
 
   return (

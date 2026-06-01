@@ -11,6 +11,7 @@ import {
   useEqualizerStore,
 } from "~/modules/equalizer/core/store";
 import { _initEQStore, setEQPreset } from "~/modules/equalizer/core/actions";
+import { useLyricStore } from "~/modules/lyric/core/store";
 
 import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 import { revalidateWidgets } from "~/modules/widget/utils";
@@ -28,12 +29,14 @@ export function useSetup() {
   const playbackHydrated = usePlaybackStore((s) => s._hasHydrated);
   const preferenceHydrated = usePreferenceStore((s) => s._hasHydrated);
   const equalizerHydrated = useEqualizerStore((s) => s._hasHydrated);
+  const lyricHydrated = useLyricStore((s) => s._hasHydrated);
 
   useEffect(() => {
     if (
       !playbackHydrated ||
       !preferenceHydrated ||
       !equalizerHydrated ||
+      !lyricHydrated ||
       setupState !== "idle"
     ) {
       return;
@@ -87,7 +90,13 @@ export function useSetup() {
 
       setSetupState("ready");
     })();
-  }, [playbackHydrated, preferenceHydrated, equalizerHydrated, setupState]);
+  }, [
+    playbackHydrated,
+    preferenceHydrated,
+    equalizerHydrated,
+    lyricHydrated,
+    setupState,
+  ]);
 
   return setupState === "ready";
 }

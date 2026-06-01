@@ -10,7 +10,7 @@ import { useLyric } from "~/data/lyric/queries";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
 import { wait } from "~/utils/promise";
-import { ModifyLyricBase } from "./components/ModifyViewBase";
+import { ModifyLyricBase } from "../components/ModifyViewBase";
 
 type Props = StaticScreenProps<{ id: string }>;
 

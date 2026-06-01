@@ -7,6 +7,7 @@ import { waveformSamples } from "~/db/schema";
 
 import { Equalizer } from "~/resources/icons/Equalizer";
 import { OpenInNew } from "~/resources/icons/OpenInNew";
+import { Search } from "~/resources/icons/Search";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { sessionStore } from "~/stores/Session/store";
@@ -61,6 +62,13 @@ export default function ExperimentalSettings() {
         labelTextKey="feat.equalizer.title"
         onPress={() => navigation.navigate("EqualizerSettings")}
         LeftElement={<Equalizer />}
+        className="gap-4"
+      />
+
+      <SegmentedList.Item
+        labelTextKey="feat.lyrics.extra.providers"
+        onPress={() => navigation.navigate("LyricsProviders")}
+        LeftElement={<Search />}
         className="gap-4"
       />
     </ListLayout>

@@ -1,3 +1,7 @@
+export function isBoolean(item: any): item is boolean {
+  return typeof item === "boolean";
+}
+
 export function isNumber(item: any): item is number {
   return typeof item === "number";
 }

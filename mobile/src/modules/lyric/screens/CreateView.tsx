@@ -9,8 +9,8 @@ import { createLyric } from "~/data/lyric/api";
 
 import { pickFile } from "~/lib/file-system";
 import { wait } from "~/utils/promise";
-import { ModifyLyricBase } from "./components/ModifyViewBase";
-import { linkTrackToLyric } from "./helpers/linkTrackToLyric";
+import { ModifyLyricBase } from "../components/ModifyViewBase";
+import { linkTrackToLyric } from "../helpers/linkTrackToLyric";
 
 type Props = StaticScreenProps<{ linkTo?: string }>;
 

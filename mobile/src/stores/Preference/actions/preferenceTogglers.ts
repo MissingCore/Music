@@ -22,7 +22,6 @@ type ToggleableKey =
   | "rescanOnLaunch"
   | "repeatOnSkip"
   | "restoreLastPosition"
-  | "showLyrics"
   | "showNavbar"
   | "squareArtwork";
 

@@ -21,7 +21,7 @@ import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import type { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 
 import { wait } from "~/utils/promise";
-import { isNumber, isString } from "~/utils/validation";
+import { isBoolean, isNumber, isString } from "~/utils/validation";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { ModalTemplate } from "~/components/Modal";
@@ -96,7 +96,12 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
       // Skip check if field is omitted.
       if (omittedFieldsRef.current.includes(field)) return false;
 
-      if (isString(value) || isNumber(value) || value === null) {
+      if (
+        isString(value) ||
+        isNumber(value) ||
+        isBoolean(value) ||
+        value === null
+      ) {
         return initData.current[field] !== value;
       } else if (Array.isArray(value)) {
         // FIXME: We need to better handle arrays of any type.
