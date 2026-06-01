@@ -5,6 +5,7 @@ import { View } from "react-native";
 import { Add } from "~/resources/icons/Add";
 import { useFormStateContext } from ".";
 
+import { cn } from "~/lib/style";
 import type { KeysOfValue } from "~/utils/types";
 import { FlatList } from "~/components/Base/List";
 import { IconButton } from "~/components/Form/Button/Icon";
@@ -148,6 +149,7 @@ export function TextareaImpl<TData extends Record<string, any>>() {
     labelKey?: ParseKeys;
     label?: string;
     field: KeysOfValue<TData, string>;
+    oneLine?: boolean;
   }) {
     const { data, setField, isSubmitting } = useFormState<TData>();
     return (
@@ -156,12 +158,20 @@ export function TextareaImpl<TData extends Record<string, any>>() {
         <TextInput
           editable={!isSubmitting}
           value={data[props.field]}
-          onChangeText={(text) =>
-            setField((prev) => ({ ...prev, [props.field]: text }))
+          onChangeText={(_text) =>
+            setField((prev) => {
+              let text = _text;
+              if (props.oneLine) text = text.replace(/\r?\n|\r/g, "");
+              return { ...prev, [props.field]: text };
+            })
           }
           multiline
           textAlignVertical="top"
-          className="min-h-64 w-full rounded-sm border border-outline px-2 py-3"
+          //? Don't display an "Enter" key.
+          submitBehavior={props.oneLine ? "blurAndSubmit" : undefined}
+          className={cn("w-full rounded-sm border border-outline px-2 py-3", {
+            "min-h-64": !props.oneLine,
+          })}
         />
       </View>
     );

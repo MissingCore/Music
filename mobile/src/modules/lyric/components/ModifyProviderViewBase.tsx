@@ -66,7 +66,7 @@ function LyricProviderForm({ bottomOffset }: { bottomOffset: number }) {
       contentContainerClassName="gap-6 p-4"
     >
       <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
-      <FormInput label="Endpoint" field="endpoint" />
+      <Textarea label="Endpoint" field="endpoint" oneLine />
       <ArrayFormInput label="Traversed Fields" field="traversedFields" />
       <SheetLabelAction
         label="isJSONResponse"
