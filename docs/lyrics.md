@@ -29,7 +29,7 @@ Given you have a license to an API that distributes lyrics which can be displaye
 - `Endpoint`: The URL to the API endpoint. For the query parameters in the API endpoint, use the supported placeholder values (`%name%`, `%artistName%`, `%albumName%`, `%duration%`) as the value.
 
   ```
-  https://www.example.com/api/lyrics/get?artist_name=%artistName%&track_name=%name%&album_name=%albumName%&duration=%duration%
+  https://www.example.com/api/get?artist_name=%artistName%&track_name=%name%&album_name=%albumName%&duration=%duration%
   ```
 
 - `isJSONResponse`: Whether the response from the API endpoint is an array or object. If set to "false", then we assume the response is a string.
@@ -40,4 +40,28 @@ Given you have a license to an API that distributes lyrics which can be displaye
   X-API-Key: ...
   ```
 
-- `Traversed Fields`: The list of object properties we need to go through to return lyrics.
+- `Traversed Fields`: The list of object properties we need to go through to return lyrics. For example:
+
+  ```
+  // If the endpoint returned the following:
+  [
+    {
+      "id": 123456,
+      "name": "Track name",
+      "trackName": "Track name",
+      "artistName": "Artist name",
+      "albumName": "Album name",
+      "duration": 123,
+      "lyrics": {
+        "plain": "...",
+        "synced": "..."
+      }
+    }
+  ]
+
+  // To get the lyrics, we would write down 2 entries in this exact order:
+  lyrics
+  synced
+  ```
+
+  - If `isJSONResponse` is "false", then this should be left empty as the response should be the lyrics themselves.
