@@ -12,7 +12,7 @@ import { queryClient } from "~/lib/react-query";
 const queryKey = ["custom-fonts"] as const;
 
 //#region Font Management
-const FontDirectory = Paths.join(Paths.document, "fonts");
+export const FontDirectory = Paths.join(Paths.document, "fonts");
 
 export function createFontDirectory() {
   const fontDir = new Directory(FontDirectory);

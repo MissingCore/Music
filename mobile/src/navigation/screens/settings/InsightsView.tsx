@@ -24,6 +24,7 @@ import { abbreviateSize, formatSeconds } from "~/utils/number";
 import { SegmentedList } from "~/components/List/Segmented";
 import { Legend } from "~/components/UI/Legend";
 import { ProgressBar } from "~/components/UI/ProgressBar";
+import { FontDirectory } from "~/modules/customization/font/core/data";
 import { useTheme } from "~/modules/customization/theme/hooks";
 
 export default function Insights() {
@@ -76,6 +77,7 @@ function StorageWidget() {
         entries={[
           { color: Colors.red, value: data?.images ?? 0 },
           { color: Colors.yellow, value: data?.database ?? 0 },
+          { color: Colors.green, value: data?.fonts ?? 0 },
           { color: Colors.blue, value: data?.other ?? 0 },
           { color: outline, value: data?.cache ?? 0 },
         ]}
@@ -91,6 +93,11 @@ function StorageWidget() {
           labelTextKey="feat.insights.extra.database"
           value={getValue("database")}
           color={Colors.yellow}
+        />
+        <Legend.Item
+          labelTextKey="feat.font.title"
+          value={getValue("fonts")}
+          color={Colors.green}
         />
         <Legend.Item
           labelTextKey="feat.insights.extra.other"
@@ -114,13 +121,15 @@ function StorageWidget() {
 async function getStorageSummary() {
   const dbSize = getDirectorySize(new Directory(Paths.document, "SQLite"));
   const imgSize = getDirectorySize(new Directory(ImageDirectory));
+  const fontSize = getDirectorySize(new Directory(FontDirectory));
   const otherSize = getDirectorySize(new Directory(Paths.document));
   const cacheSize = getDirectorySize(new Directory(Paths.cache));
 
   return {
     images: imgSize,
     database: dbSize,
-    other: otherSize - imgSize - dbSize,
+    fonts: fontSize,
+    other: otherSize - imgSize - dbSize - fontSize,
     cache: cacheSize,
     total: otherSize + cacheSize,
   };

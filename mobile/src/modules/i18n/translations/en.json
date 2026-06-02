@@ -140,6 +140,7 @@
       "title": "Appearance"
     },
     "font": {
+      "title": "Fonts",
       "extra": {
         "accent": "Accent Font",
         "primary": "Primary Font"
