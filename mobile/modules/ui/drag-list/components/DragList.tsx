@@ -74,6 +74,7 @@ export function DragList<TData>(props: DragListProps<TData>) {
 
 function DragListImpl<TData>({
   data,
+  keyExtractor,
   renderItem,
   estimatedItemSize,
   onDragBegin: _,
@@ -205,12 +206,18 @@ function DragListImpl<TData>({
   const gestures = useSimultaneousGestures(nativeGesture, panListenerGesture);
 
   const renderDragItem = useCallback(
-    (info: LegendListRenderItemProps<TData>) => (
-      <ItemWrapper index={info.index}>
-        {renderItem({ item: info.item, index: info.index })}
+    ({ item, index }: LegendListRenderItemProps<TData>) => (
+      <ItemWrapper
+        //? Define a key to prevent weird flashing issues potentially caused
+        //? by outdated translations styles being applied by forcing a re-render
+        //? only on the items that moved.
+        key={`${keyExtractor(item, index)}_${index}`}
+        index={index}
+      >
+        {renderItem({ item, index })}
       </ItemWrapper>
     ),
-    [renderItem],
+    [keyExtractor, renderItem],
   );
 
   // Reset transitions during render after the data changes to prevent flashing.
@@ -228,6 +235,7 @@ function DragListImpl<TData>({
         onLayout={(e) => listHeight.set(e.nativeEvent.layout.height)}
         estimatedItemSize={estimatedItemSize}
         data={dataRef.current}
+        keyExtractor={keyExtractor}
         renderItem={renderDragItem}
         // Prevent dragged item from disappearing when moved outside of `windowSize`.
         alwaysRender={{
