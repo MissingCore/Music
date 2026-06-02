@@ -30,6 +30,7 @@
     "settings": "Настройки",
     "upcoming": "Предстоящее",
     "playingFrom": "Играет с",
+    "instructions": null,
     "disc": "Диск {{count}}"
   },
   "template": {
@@ -225,7 +226,12 @@
     "lyrics": {
       "title": null,
       "extra": {
-        "useEmbedded": null
+        "useEmbedded": null,
+        "providers": null,
+        "providersInstructions": {
+          "line1": null,
+          "line2": null
+        }
       }
     },
     "scanning": {

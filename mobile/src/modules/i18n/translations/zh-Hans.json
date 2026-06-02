@@ -30,6 +30,7 @@
     "settings": "设置",
     "upcoming": "即将播放",
     "playingFrom": "正在播放来自",
+    "instructions": null,
     "disc": "碟片 {{count}}"
   },
   "template": {
@@ -225,7 +226,12 @@
     "lyrics": {
       "title": null,
       "extra": {
-        "useEmbedded": null
+        "useEmbedded": null,
+        "providers": null,
+        "providersInstructions": {
+          "line1": null,
+          "line2": null
+        }
       }
     },
     "scanning": {

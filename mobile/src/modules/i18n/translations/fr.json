@@ -30,6 +30,7 @@
     "settings": "Paramètres",
     "upcoming": "À venir",
     "playingFrom": "Joue depuis",
+    "instructions": null,
     "disc": "CD {{count}}"
   },
   "template": {
@@ -225,7 +226,12 @@
     "lyrics": {
       "title": "Paroles",
       "extra": {
-        "useEmbedded": "Utiliser l'intégration"
+        "useEmbedded": "Utiliser l'intégration",
+        "providers": null,
+        "providersInstructions": {
+          "line1": null,
+          "line2": null
+        }
       }
     },
     "scanning": {

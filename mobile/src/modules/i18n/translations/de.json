@@ -30,6 +30,7 @@
     "settings": "Einstellungen",
     "upcoming": "Bevorstehend",
     "playingFrom": "Wiedergabe von",
+    "instructions": null,
     "disc": "CD {{count}}"
   },
   "template": {
@@ -225,7 +226,12 @@
     "lyrics": {
       "title": "Lyrics",
       "extra": {
-        "useEmbedded": "Eingebettete verwenden"
+        "useEmbedded": "Eingebettete verwenden",
+        "providers": null,
+        "providersInstructions": {
+          "line1": null,
+          "line2": null
+        }
       }
     },
     "scanning": {

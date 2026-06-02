@@ -30,6 +30,7 @@
     "settings": "Ajusts",
     "upcoming": "Pròxima",
     "playingFrom": "Reproduint des de",
+    "instructions": null,
     "disc": "Disc {{count}}"
   },
   "template": {
@@ -225,7 +226,12 @@
     "lyrics": {
       "title": null,
       "extra": {
-        "useEmbedded": null
+        "useEmbedded": null,
+        "providers": null,
+        "providersInstructions": {
+          "line1": null,
+          "line2": null
+        }
       }
     },
     "scanning": {

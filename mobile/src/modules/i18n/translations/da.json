@@ -30,6 +30,7 @@
     "settings": "Indstillinger",
     "upcoming": "Næste sange",
     "playingFrom": "Afspiller fra",
+    "instructions": null,
     "disc": "Plade {{count}}"
   },
   "template": {
@@ -225,7 +226,12 @@
     "lyrics": {
       "title": "Sangtekster",
       "extra": {
-        "useEmbedded": null
+        "useEmbedded": null,
+        "providers": null,
+        "providersInstructions": {
+          "line1": null,
+          "line2": null
+        }
       }
     },
     "scanning": {

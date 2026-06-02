@@ -30,6 +30,7 @@
     "settings": "Ayarlar",
     "upcoming": "Sıradaki",
     "playingFrom": "Şuradan Oynatılıyor:",
+    "instructions": null,
     "disc": "Disk {{count}}"
   },
   "template": {
@@ -225,7 +226,12 @@
     "lyrics": {
       "title": "Şarkı Sözleri",
       "extra": {
-        "useEmbedded": "Gömülü Olanı Kullan"
+        "useEmbedded": "Gömülü Olanı Kullan",
+        "providers": null,
+        "providersInstructions": {
+          "line1": null,
+          "line2": null
+        }
       }
     },
     "scanning": {
