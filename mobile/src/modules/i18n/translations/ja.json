@@ -30,6 +30,7 @@
     "settings": "設定",
     "upcoming": "次に再生",
     "playingFrom": "再生元",
+    "instructions": null,
     "disc": "ディスク {{count}}"
   },
   "template": {
@@ -225,7 +226,12 @@
     "lyrics": {
       "title": "歌詞",
       "extra": {
-        "useEmbedded": "埋め込みを使用する"
+        "useEmbedded": "埋め込みを使用する",
+        "providers": null,
+        "providersInstructions": {
+          "line1": null,
+          "line2": null
+        }
       }
     },
     "scanning": {

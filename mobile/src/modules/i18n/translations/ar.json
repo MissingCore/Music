@@ -30,6 +30,7 @@
     "settings": "الإعدادات",
     "upcoming": "القادم",
     "playingFrom": "يتم التشغيل من",
+    "instructions": null,
     "disc": "قرص {{count}}"
   },
   "template": {
@@ -225,7 +226,12 @@
     "lyrics": {
       "title": null,
       "extra": {
-        "useEmbedded": null
+        "useEmbedded": null,
+        "providers": null,
+        "providersInstructions": {
+          "line1": null,
+          "line2": null
+        }
       }
     },
     "scanning": {

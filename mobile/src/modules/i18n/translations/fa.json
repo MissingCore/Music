@@ -30,6 +30,7 @@
     "settings": "تنظیمات",
     "upcoming": "بعدی",
     "playingFrom": "در حال پخش از",
+    "instructions": null,
     "disc": "دیسک {{count}}"
   },
   "template": {
@@ -225,7 +226,12 @@
     "lyrics": {
       "title": "متن آهنگ",
       "extra": {
-        "useEmbedded": "استفاده از متن پیوست"
+        "useEmbedded": "استفاده از متن پیوست",
+        "providers": null,
+        "providersInstructions": {
+          "line1": null,
+          "line2": null
+        }
       }
     },
     "scanning": {

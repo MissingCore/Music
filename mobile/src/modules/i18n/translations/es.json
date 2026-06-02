@@ -30,6 +30,7 @@
     "settings": "Configuración",
     "upcoming": "A continuación",
     "playingFrom": "Reproduciendo desde",
+    "instructions": null,
     "disc": "Disco {{count}}"
   },
   "template": {
@@ -225,7 +226,12 @@
     "lyrics": {
       "title": "Letras",
       "extra": {
-        "useEmbedded": "Usar letra integrada"
+        "useEmbedded": "Usar letra integrada",
+        "providers": null,
+        "providersInstructions": {
+          "line1": null,
+          "line2": null
+        }
       }
     },
     "scanning": {
