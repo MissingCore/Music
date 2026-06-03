@@ -29,7 +29,7 @@
     "@missingcore/music-glyph-toys": "github:MissingCore/music-glyph-toys#f34db01c67b218ccd3085ddb5e2d135399445bef",
     "@missingcore/react-native-actual-path": "0.1.0",
     "@missingcore/react-native-audio-analyzer": "3.2.0-beta.4",
-    "@missingcore/react-native-metadata-retriever": "3.1.0",
+    "@missingcore/react-native-metadata-retriever": "github:MissingCore/react-native-metadata-retriever#0b8240abae2645febc30fc8ed74aa63af47f269f",
     "@paralleldrive/cuid2": "3.3.0",
     "@react-navigation/material-top-tabs": "7.4.28",
     "@react-navigation/native": "7.2.5",

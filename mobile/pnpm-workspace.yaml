@@ -5,6 +5,7 @@ nodeLinker: "hoisted"
 
 allowBuilds:
   "@missingcore/music-glyph-toys": true
+  "@missingcore/react-native-metadata-retriever": true
   "@sentry/cli": true
   esbuild: false
   msgpackr-extract: false
