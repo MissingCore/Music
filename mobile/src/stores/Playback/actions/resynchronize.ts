@@ -30,7 +30,7 @@ export async function onActiveTrack(args: {
     // Update media notification with updated metadata.
     const rnabTrack = AudioBrowser.getActiveTrack();
     if (!rnabTrack) return;
-    AudioBrowser.updateNowPlaying(formatTrackforPlayer(updatedTrackData));
+    AudioBrowser.updateNowPlaying(formatTrackforPlayer(updatedTrackData, null));
 
     GlyphToy.setMatrixArtwork(updatedTrackData.artwork);
   } catch {}

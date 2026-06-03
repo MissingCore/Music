@@ -5,7 +5,7 @@ import { getArtistsString } from "../artist/utils";
 
 import { PlaceholderImageFile } from "~/lib/file-system";
 import { getSafeUri } from "~/utils/string";
-import { Maybe } from "~/utils/types";
+import type { Maybe } from "~/utils/types";
 
 /**
  * Merge 2 lists of tracks. Tracks that appear in both lists will result
