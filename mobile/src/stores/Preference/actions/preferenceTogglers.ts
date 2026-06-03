@@ -61,6 +61,12 @@ export function toggleQueueAwareNext() {
   playbackStore.setState({ numQueuedNext: 0 });
 }
 
+export function toggleReplayGain() {
+  const nextState = !preferenceStore.getState().replayGain;
+  preferenceStore.setState({ replayGain: nextState });
+  AudioBrowser.setReplayGainStatus(nextState);
+}
+
 export async function toggleWaveformSlider() {
   const nextState = !preferenceStore.getState().waveformSlider;
   preferenceStore.setState({ waveformSlider: nextState });

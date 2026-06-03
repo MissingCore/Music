@@ -62,7 +62,7 @@ export function useSetup() {
       await revalidateWidgets({ openApp: !playbackStore.getState().isPlaying });
 
       const { repeat, playingFrom, activeKey } = playbackStore.getState();
-      const { restoreLastPosition, continuePlaybackOnDismiss } =
+      const { restoreLastPosition, continuePlaybackOnDismiss, replayGain } =
         preferenceStore.getState();
       if (restoreLastPosition) {
         playbackStore.setState({ _restoredTrackKey: activeKey });
@@ -77,6 +77,7 @@ export function useSetup() {
       if (repeat === RepeatModes.REPEAT_ONE) {
         AudioBrowser.setRepeatMode("track");
       }
+      AudioBrowser.setReplayGainStatus(replayGain);
 
       // Ensure equalizer settings are loaded.
       const { enabled, preset } = equalizerStore.getState();

@@ -323,6 +323,9 @@
         "Rock": "Rock"
       }
     },
+    "replayGain": {
+      "title": "Replay Gain"
+    },
     "ignoreInterrupt": {
       "title": "Ignore Interruptions",
       "brief": "Continue playing audio when an interruption such as a notification or a call occurs. You will need to manually pause and unpause the music during these situations."

@@ -42,6 +42,7 @@ export function PlaybackOptionsSheet(props: {
   const playingSource = usePlaybackStore((s) => s.playingFrom);
   const sourceName = usePlaybackStore((s) => s.playingFromName);
   const playbackDelay = usePreferenceStore((s) => s.playbackDelay);
+  const replayGainStaus = usePreferenceStore((s) => s.replayGain);
   const showLyrics = useLyricStore((s) => s.visible);
   const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
   const volume = useSessionStore((s) => s.volume);
@@ -124,6 +125,17 @@ export function PlaybackOptionsSheet(props: {
                 className="h-8 justify-center"
               >
                 <Switch enabled={showLyrics} />
+              </Pressable>
+            }
+          />
+          <SheetLabelAction
+            labelKey="feat.replayGain.title"
+            RightElement={
+              <Pressable
+                onPress={PreferenceTogglers.toggleReplayGain}
+                className="h-8 justify-center"
+              >
+                <Switch enabled={replayGainStaus} />
               </Pressable>
             }
           />

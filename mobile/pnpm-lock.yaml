@@ -115,8 +115,8 @@ importers:
         specifier: 0.20.3
         version: 0.20.3(patch_hash=700a44715e685edefbbcca4d1c8a1a80c90ea32f567b124241138d01b981b064)(expo@56.0.8)(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3)
       react-native-audio-browser:
-        specifier: github:MissingCore/react-native-audio-browser#eb4a9f48a860dc278882bf1445f868ad963d0ac0
-        version: https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/eb4a9f48a860dc278882bf1445f868ad963d0ac0(react-native-nitro-modules@0.35.9(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3))(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3)
+        specifier: github:MissingCore/react-native-audio-browser#d1341edf495657869178785d449e24fc7a6e978e
+        version: https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/d1341edf495657869178785d449e24fc7a6e978e(react-native-nitro-modules@0.35.9(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3))(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3)
       react-native-bootsplash:
         specifier: 7.3.1
         version: 7.3.1(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3)(typescript@6.0.3)
@@ -4566,8 +4566,8 @@ packages:
       expo:
         optional: true
 
-  react-native-audio-browser@https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/eb4a9f48a860dc278882bf1445f868ad963d0ac0:
-    resolution: {gitHosted: true, integrity: sha512-EKDnds3QZiDbd9c7CqNJZT7t12fDY29B7j9eSsieXUXsNJllVHhtQC5Qw4yRxX7bvu0WB7eNV1EfcKn25Xv/zA==, tarball: https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/eb4a9f48a860dc278882bf1445f868ad963d0ac0}
+  react-native-audio-browser@https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/d1341edf495657869178785d449e24fc7a6e978e:
+    resolution: {gitHosted: true, integrity: sha512-G/+0UKxMSg+mHMSNNRSOnKBvSnxJ7AiOUAxZ2zKHxgLXvG6wwzOK+D3SzJeN8QDMd49/jLpqWnOUlQ/pryTupw==, tarball: https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/d1341edf495657869178785d449e24fc7a6e978e}
     version: 0.1.0
     peerDependencies:
       react: '*'
@@ -9952,7 +9952,7 @@ snapshots:
     optionalDependencies:
       expo: 56.0.8(@babel/core@7.29.7)(@expo/dom-webview@56.0.5)(react-native-worklets@0.8.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3))(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3)(typescript@6.0.3)
 
-  react-native-audio-browser@https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/eb4a9f48a860dc278882bf1445f868ad963d0ac0(react-native-nitro-modules@0.35.9(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3))(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3):
+  react-native-audio-browser@https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/d1341edf495657869178785d449e24fc7a6e978e(react-native-nitro-modules@0.35.9(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3))(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3):
     dependencies:
       react: 19.2.3
       react-native: 0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.15)(react@19.2.3)
