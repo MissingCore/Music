@@ -4,6 +4,7 @@ import {
   GlyphToy,
   MatrixAction,
 } from "@missingcore/music-glyph-toys";
+import { getR128Gain } from "@missingcore/react-native-metadata-retriever";
 import { toast } from "@missingcore/ui/toast";
 import AsyncStorage from "expo-sqlite/kv-store";
 import type {
@@ -162,7 +163,9 @@ async function initServices() {
     if (queuePosition === 0 && repeat === RepeatModes.NO_REPEAT) return;
 
     // Load the next track into the queue for smoother playback.
-    AudioBrowser.add(formatTrackforPlayer(activeTrack));
+    AudioBrowser.add(
+      formatTrackforPlayer(activeTrack, await getR128Gain(activeTrack.uri)),
+    );
   });
 
   // Called when "Smooth Playback Transition" doesn't trigger.

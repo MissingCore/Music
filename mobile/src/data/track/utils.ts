@@ -5,6 +5,7 @@ import { getArtistsString } from "../artist/utils";
 
 import { PlaceholderImageFile } from "~/lib/file-system";
 import { getSafeUri } from "~/utils/string";
+import { Maybe } from "~/utils/types";
 
 /**
  * Merge 2 lists of tracks. Tracks that appear in both lists will result
@@ -20,7 +21,7 @@ export function mergeTracks<TData extends { id: string }>(
 }
 
 /** Format track data to be used with the AudioBrowser queue. */
-export function formatTrackforPlayer(track: Track) {
+export function formatTrackforPlayer(track: Track, replayGain: Maybe<number>) {
   return {
     src: getSafeUri(track.uri),
     artwork: track.artwork || PlaceholderImageFile,
@@ -28,5 +29,6 @@ export function formatTrackforPlayer(track: Track) {
     artist: getArtistsString(track.artists, "No Artist"),
     album: track.albumName || undefined,
     duration: track.duration,
+    replayGain: replayGain ?? undefined,
   } satisfies AddTrack;
 }

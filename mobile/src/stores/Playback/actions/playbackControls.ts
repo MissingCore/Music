@@ -1,3 +1,4 @@
+import { getR128Gain } from "@missingcore/react-native-metadata-retriever";
 import AudioBrowser from "react-native-audio-browser";
 
 import { addPlayedMediaList } from "~/data/recent/api";
@@ -24,7 +25,10 @@ export async function loadCurrentTrack() {
   const { _hasRestoredPosition, _restoredTrackKey, lastPosition, activeTrack } =
     playbackStore.getState();
   if (!activeTrack) return;
-  AudioBrowser.load(formatTrackforPlayer(activeTrack));
+
+  AudioBrowser.load(
+    formatTrackforPlayer(activeTrack, await getR128Gain(activeTrack.uri)),
+  );
 
   //* Restore Last Played Position
   if (!_hasRestoredPosition) {
