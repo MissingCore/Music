@@ -63,11 +63,11 @@ export interface PlaybackStore {
   /** Number of tracks queued next via "Play Next". */
   numQueuedNext: number;
 
-  /** Whether replay gain is enabled. */
+  /** Whether ReplayGain is enabled. */
   isReplayGainEnabled: boolean;
-  /** ReplayGain pre-amp that applies to tracks with tags. */
+  /** ReplayGain pre-amp that applies to tracks with the embedded tags. */
   preAmpWTags: number;
-  /** ReplayGain pre-amp that applies to tracks without tags. */
+  /** ReplayGain pre-amp that applies to tracks without the embedded tags. */
   preAmpWOTags: number;
 }
 
