@@ -65,6 +65,10 @@ export interface PlaybackStore {
 
   /** Whether replay gain is enabled. */
   isReplayGainEnabled: boolean;
+  /** ReplayGain pre-amp that applies to tracks with tags. */
+  preAmpWTags: number;
+  /** ReplayGain pre-amp that applies to tracks without tags. */
+  preAmpWOTags: number;
 }
 
 export const PersistedFields: string[] = [
