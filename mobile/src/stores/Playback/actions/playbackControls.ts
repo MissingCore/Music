@@ -23,7 +23,6 @@ export async function loadCurrentTrack() {
   const { _hasRestoredPosition, _restoredTrackKey, lastPosition, activeTrack } =
     playbackStore.getState();
   if (!activeTrack) return;
-
   AudioBrowser.load(await applyReplayGainToTrack(activeTrack));
 
   //* Restore Last Played Position
