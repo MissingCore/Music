@@ -22,19 +22,15 @@ export function ReplayGainSettings() {
       />
       <SegmentedList.CustomItem className="p-4">
         <View
-          needsOffscreenAlphaCompositing
+          needsOffscreenAlphaCompositing={!isReplayGainEnabled}
+          renderToHardwareTextureAndroid={!isReplayGainEnabled}
           className={cn("gap-4", { "opacity-25": !isReplayGainEnabled })}
         >
-          <View className="gap-0.5">
-            <TStyledText
-              textKey="feat.replayGain.extra.preAmp"
-              className="text-sm"
-            />
-            <TStyledText
-              textKey="feat.replayGain.extra.preAmpDescription"
-              dim
-            />
-          </View>
+          <TStyledText
+            textKey="feat.replayGain.extra.preAmp"
+            className="-mb-3.5 text-sm"
+          />
+          <TStyledText textKey="feat.replayGain.extra.preAmpDescription" dim />
           <Divider />
           <PreAmpSlider variant="preAmpWTags" disabled={!isReplayGainEnabled} />
           <PreAmpSlider
