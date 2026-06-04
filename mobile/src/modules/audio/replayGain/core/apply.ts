@@ -7,15 +7,20 @@ import { playbackStore } from "~/stores/Playback/store";
 
 import { PlaceholderImageFile } from "~/lib/file-system";
 import { getSafeUri } from "~/utils/string";
+import { isNumber } from "~/utils/validation";
 
 //! Only `applyReplayGainToTrack()` should be exported from this file to
 //! minimize the risk of circular dependencies.
 
 /** Returns a formatted Track object that AudioBrowser uses. */
 export async function applyReplayGainToTrack(track: Track, apply = true) {
-  const { isReplayGainEnabled } = playbackStore.getState();
+  const { isReplayGainEnabled, preAmpWTags, preAmpWOTags } =
+    playbackStore.getState();
   const replayGain =
     isReplayGainEnabled && apply ? await getR128Gain(track.uri) : null;
+  const finalDB = isNumber(replayGain)
+    ? replayGain + preAmpWTags
+    : preAmpWOTags;
 
   return {
     src: getSafeUri(track.uri),
@@ -24,6 +29,6 @@ export async function applyReplayGainToTrack(track: Track, apply = true) {
     artist: getArtistsString(track.artists, "No Artist"),
     album: track.albumName || undefined,
     duration: track.duration,
-    replayGain: replayGain ?? undefined,
+    replayGain: finalDB,
   } satisfies AddTrack;
 }
