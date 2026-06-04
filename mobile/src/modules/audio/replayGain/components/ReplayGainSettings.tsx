@@ -69,7 +69,7 @@ function PreAmpSlider(props: {
           disabled={props.disabled}
           hitSlop={10}
           anchorAt={0}
-          trackColor="surfaceContainerLow"
+          trackColor="surfaceContainer"
           roundedEndStop
           _debounceMultiplier={0}
           _className="shrink grow"
