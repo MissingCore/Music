@@ -307,6 +307,9 @@
     "experimental": {
       "title": "Experimental Features"
     },
+    "audioEffects": {
+      "title": "Audio Effects"
+    },
     "equalizer": {
       "title": "Equalizer",
       "extra": {
@@ -321,6 +324,15 @@
         "Jazz": "Jazz",
         "Pop": "Pop",
         "Rock": "Rock"
+      }
+    },
+    "replayGain": {
+      "title": "ReplayGain",
+      "extra": {
+        "preAmp": "ReplayGain Pre-amp",
+        "preAmpDescription": "Adjusts loudness when ReplayGain is enabled. May cause peaking on some tracks. Changes are applied on next track.",
+        "adjustWithTags": "Adjustment With Tags",
+        "adjustWithoutTags": "Adjustment Without Tags"
       }
     },
     "ignoreInterrupt": {

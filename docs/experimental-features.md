@@ -68,6 +68,10 @@ There are situations where the queue awareness will get reset:
 - Playing a track outside of the "Play Next" range.
 - Playing a track via the screen containing the original list.
 
+## ReplayGain
+
+See the [dedicated `ReplayGain` documentation for more information](./replaygain.md).
+
 ## Sleep Timer
 
 > No Toggle Required.

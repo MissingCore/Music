@@ -6,6 +6,7 @@ import { db } from "~/db";
 import { waveformSamples } from "~/db/schema";
 
 import { Equalizer } from "~/resources/icons/Equalizer";
+import { GraphicEQ } from "~/resources/icons/GraphicEQ";
 import { OpenInNew } from "~/resources/icons/OpenInNew";
 import { Search } from "~/resources/icons/Search";
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -57,6 +58,12 @@ export default function ExperimentalSettings() {
         labelText="Android Auto"
         onPress={() => openLink(Links.AndroidAuto)}
         RightElement={<OpenInNew />}
+      />
+      <SegmentedList.Item
+        labelTextKey="feat.audioEffects.title"
+        onPress={() => navigation.navigate("AudioEffects")}
+        LeftElement={<GraphicEQ />}
+        className="gap-4"
       />
       <SegmentedList.Item
         labelTextKey="feat.equalizer.title"

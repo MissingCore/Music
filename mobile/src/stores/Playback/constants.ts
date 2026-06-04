@@ -62,6 +62,13 @@ export interface PlaybackStore {
   queuePosition: number;
   /** Number of tracks queued next via "Play Next". */
   numQueuedNext: number;
+
+  /** Whether ReplayGain is enabled. */
+  isReplayGainEnabled: boolean;
+  /** ReplayGain pre-amp that applies to tracks with the embedded tags. */
+  preAmpWTags: number;
+  /** ReplayGain pre-amp that applies to tracks without the embedded tags. */
+  preAmpWOTags: number;
 }
 
 export const PersistedFields: string[] = [
@@ -74,5 +81,8 @@ export const PersistedFields: string[] = [
   "queue",
   "activeKey",
   "queuePosition",
+  "isReplayGainEnabled",
+  "preAmpWTags",
+  "preAmpWOTags",
 ] satisfies Array<keyof PlaybackStore>;
 //#endregion

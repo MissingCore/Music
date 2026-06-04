@@ -23,7 +23,6 @@ import { getGenre, getGenresSummary } from "~/data/genre/api";
 import { getPlaylist, getPlaylistsSummary } from "~/data/playlist/api";
 import { addPlayedTrack } from "~/data/recent/api";
 import { deleteTracks, getSortedTracks } from "~/data/track/api";
-import { formatTrackforPlayer } from "~/data/track/utils";
 import type { CommonTrack } from "~/data/types";
 import { playbackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
@@ -41,6 +40,7 @@ import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 import { clearAllQueries } from "~/lib/react-query";
 import { bgWait } from "~/utils/promise";
 import { capitalize, getSafeUri } from "~/utils/string";
+import { applyReplayGainToTrack } from "~/modules/audio/replayGain/core/apply";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaImage } from "~/modules/media/components/MediaImage";
 import { revalidateWidgets } from "~/modules/widget/utils";
@@ -162,7 +162,7 @@ async function initServices() {
     if (queuePosition === 0 && repeat === RepeatModes.NO_REPEAT) return;
 
     // Load the next track into the queue for smoother playback.
-    AudioBrowser.add(formatTrackforPlayer(activeTrack));
+    AudioBrowser.add(await applyReplayGainToTrack(activeTrack));
   });
 
   // Called when "Smooth Playback Transition" doesn't trigger.
