@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import * as ReplayGain from "../core/actions";
 
+import { cn } from "~/lib/style";
 import { Divider } from "~/components/Divider";
 import { CachedSlider } from "~/components/Form/Slider";
 import { SegmentedList } from "~/components/List/Segmented";
@@ -19,34 +20,42 @@ export function ReplayGainSettings() {
         onPress={ReplayGain.toggleStatus}
         RightElement={<Switch enabled={isReplayGainEnabled} />}
       />
-      <SegmentedList.CustomItem className="gap-4 p-4">
-        <View className="gap-0.5">
-          <TStyledText
-            textKey="feat.replayGain.extra.preAmp"
-            className="text-sm"
-          />
-          <TStyledText textKey="feat.replayGain.extra.preAmpDescription" dim />
-        </View>
+      <SegmentedList.CustomItem className="p-4">
+        <View className={cn("gap-4", { "opacity-25": !isReplayGainEnabled })}>
+          <View className="gap-0.5">
+            <TStyledText
+              textKey="feat.replayGain.extra.preAmp"
+              className="text-sm"
+            />
+            <TStyledText
+              textKey="feat.replayGain.extra.preAmpDescription"
+              dim
+            />
+          </View>
 
-        <Divider />
-        <PreAmpSlider variant="preAmpWTags" />
-        <PreAmpSlider variant="preAmpWOTags" />
+          <Divider />
+
+          <PreAmpSlider variant="preAmpWTags" disabled={!isReplayGainEnabled} />
+          <PreAmpSlider
+            variant="preAmpWOTags"
+            disabled={!isReplayGainEnabled}
+          />
+        </View>
       </SegmentedList.CustomItem>
     </SegmentedList>
   );
 }
 
-function PreAmpSlider({
-  variant,
-}: {
+function PreAmpSlider(props: {
   variant: "preAmpWTags" | "preAmpWOTags";
+  disabled: boolean;
 }) {
-  const preAmpValue = usePlaybackStore((s) => s[variant]);
+  const preAmpValue = usePlaybackStore((s) => s[props.variant]);
 
   return (
     <View className="gap-2">
       <TEm
-        textKey={`feat.replayGain.extra.${variant === "preAmpWTags" ? "adjustWithTags" : "adjustWithoutTags"}`}
+        textKey={`feat.replayGain.extra.${props.variant === "preAmpWTags" ? "adjustWithTags" : "adjustWithoutTags"}`}
       />
       <View className="flex-row items-center gap-2">
         <CachedSlider
@@ -55,10 +64,11 @@ function PreAmpSlider({
           max={15}
           step={0.1}
           onChange={
-            variant === "preAmpWTags"
+            props.variant === "preAmpWTags"
               ? ReplayGain.updatePreAmpWithTags
               : ReplayGain.updatePreAmpWithoutTags
           }
+          disabled={props.disabled}
           hitSlop={10}
           anchorAt={0}
           trackColor="surfaceContainerLow"
