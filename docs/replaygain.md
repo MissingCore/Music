@@ -2,7 +2,7 @@
 
 MissingCore Music supports ReplayGain as an experimental feature. In addition, we support a pre-amp which gets applied when the feature is enabled.
 
-ReplayGain is a feature which normalizes audio such that its peak loudness hits `89 dB`. As such, enabling this feature may result in audio becoming quieter.
+ReplayGain is a feature which normalizes audio such that its perceived loudness hits `89 dB`. As such, enabling this feature may result in audio becoming quieter.
 
 ## How It Works
 
@@ -27,3 +27,6 @@ Once the track is played, the ReplayGain value will be applied (given the `Repla
 We currently pull the ReplayGain value from the following tags: `ReplayGain Xing/Info`, `REPLAYGAIN_TRACK_GAIN`, and `R128_TRACK_GAIN`.
 
 - Only `ReplayGain Xing/Info` & `REPLAYGAIN_TRACK_GAIN` have been validated on MP3 files.
+
+> [!NOTE]
+> If ReplayGain isn't working for a file, email it to `missingcoredev@outlook.com` and I'll investigate the tag that's being used and implement a fix.
