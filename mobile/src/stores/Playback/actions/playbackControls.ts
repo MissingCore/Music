@@ -1,10 +1,7 @@
-import { getR128Gain } from "@missingcore/react-native-metadata-retriever";
 import AudioBrowser from "react-native-audio-browser";
 
 import { addPlayedMediaList } from "~/data/recent/api";
-import { formatTrackforPlayer } from "~/data/track/utils";
 import { preferenceStore } from "~/stores/Preference/store";
-
 import { playbackStore } from "../store";
 import { RepeatModes } from "../constants";
 import type { PlayFromSource } from "../types";
@@ -17,6 +14,7 @@ import {
 } from "../utils";
 
 import { isAudioBrowserSetUp } from "~/lib/react-native-audio-browser";
+import { applyReplayGainToTrack } from "~/modules/audio/replayGain/core/apply";
 import { revalidateWidgets } from "~/modules/widget/utils";
 
 //#region Loaders
@@ -26,9 +24,7 @@ export async function loadCurrentTrack() {
     playbackStore.getState();
   if (!activeTrack) return;
 
-  AudioBrowser.load(
-    formatTrackforPlayer(activeTrack, await getR128Gain(activeTrack.uri)),
-  );
+  AudioBrowser.load(await applyReplayGainToTrack(activeTrack));
 
   //* Restore Last Played Position
   if (!_hasRestoredPosition) {

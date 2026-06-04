@@ -6,11 +6,11 @@ import {
   updatePlayedMediaList,
 } from "~/data/recent/api";
 import { getTrack } from "~/data/track/api";
-import { formatTrackforPlayer } from "~/data/track/utils";
-
 import { playbackStore } from "../store";
 import type { PlayFromSource } from "../types";
 import { arePlaybackSourceEqual, getSourceName } from "../utils";
+
+import { applyReplayGainToTrack } from "~/modules/audio/replayGain/core/apply";
 
 /** See if we should revalidate the `activeTrack` value stored in the Playback store. */
 export async function onActiveTrack(args: {
@@ -30,7 +30,9 @@ export async function onActiveTrack(args: {
     // Update media notification with updated metadata.
     const rnabTrack = AudioBrowser.getActiveTrack();
     if (!rnabTrack) return;
-    AudioBrowser.updateNowPlaying(formatTrackforPlayer(updatedTrackData, null));
+    AudioBrowser.updateNowPlaying(
+      await applyReplayGainToTrack(updatedTrackData, false),
+    );
 
     GlyphToy.setMatrixArtwork(updatedTrackData.artwork);
   } catch {}

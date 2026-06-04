@@ -1,12 +1,9 @@
-import { getR128Gain } from "@missingcore/react-native-metadata-retriever";
 import { toast } from "@missingcore/ui/toast";
 import { createId } from "@paralleldrive/cuid2";
 import AudioBrowser from "react-native-audio-browser";
 
 import i18next from "~/modules/i18n";
-
 import type { Track } from "~/data/track/types";
-import { formatTrackforPlayer } from "~/data/track/utils";
 import { playbackStore } from "../store";
 import { extractTrackId, getTrackIdsList, getUpdatedLists } from "../utils";
 import { preferenceStore } from "../../Preference/store";
@@ -15,6 +12,7 @@ import { clamp } from "~/utils/number";
 import { moveArray } from "~/utils/object";
 import { bgWait } from "~/utils/promise";
 import { isString } from "~/utils/validation";
+import { applyReplayGainToTrack } from "~/modules/audio/replayGain/core/apply";
 
 interface QueueInsertionProps {
   id: string | string[];
@@ -118,12 +116,7 @@ export async function removeIds(ids: string[]) {
     if (!newActiveTrack) return;
 
     await bgWait(250);
-    AudioBrowser.load(
-      formatTrackforPlayer(
-        newActiveTrack,
-        await getR128Gain(newActiveTrack.uri),
-      ),
-    );
+    AudioBrowser.load(await applyReplayGainToTrack(newActiveTrack));
   }
 
   playbackStore.setState({
@@ -202,10 +195,7 @@ export async function synchronize() {
   });
 
   // Change playing track if the previous active track doesn't exist in the updated list.
-  if (isDiffTrack)
-    AudioBrowser.load(
-      formatTrackforPlayer(newTrack, await getR128Gain(newTrack.uri)),
-    );
+  if (isDiffTrack) AudioBrowser.load(await applyReplayGainToTrack(newTrack));
 }
 
 //#region Internal Utils
