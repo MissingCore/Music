@@ -62,6 +62,9 @@ export interface PlaybackStore {
   queuePosition: number;
   /** Number of tracks queued next via "Play Next". */
   numQueuedNext: number;
+
+  /** Whether replay gain is enabled. */
+  isReplayGainEnabled: boolean;
 }
 
 export const PersistedFields: string[] = [
@@ -74,5 +77,6 @@ export const PersistedFields: string[] = [
   "queue",
   "activeKey",
   "queuePosition",
+  "isReplayGainEnabled",
 ] satisfies Array<keyof PlaybackStore>;
 //#endregion

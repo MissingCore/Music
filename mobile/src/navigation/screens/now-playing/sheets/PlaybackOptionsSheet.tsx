@@ -7,6 +7,7 @@ import { Equalizer } from "~/resources/icons/Equalizer";
 import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
 import { VolumeUp } from "~/resources/icons/VolumeUp";
 import { usePlaybackStore } from "~/stores/Playback/store";
+import { ReplayGain } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import {
   PreferenceSetters,
@@ -42,7 +43,7 @@ export function PlaybackOptionsSheet(props: {
   const playingSource = usePlaybackStore((s) => s.playingFrom);
   const sourceName = usePlaybackStore((s) => s.playingFromName);
   const playbackDelay = usePreferenceStore((s) => s.playbackDelay);
-  const replayGainStaus = usePreferenceStore((s) => s.replayGain);
+  const isReplayGainEnabled = usePlaybackStore((s) => s.isReplayGainEnabled);
   const showLyrics = useLyricStore((s) => s.visible);
   const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
   const volume = useSessionStore((s) => s.volume);
@@ -132,10 +133,10 @@ export function PlaybackOptionsSheet(props: {
             labelKey="feat.replayGain.title"
             RightElement={
               <Pressable
-                onPress={PreferenceTogglers.toggleReplayGain}
+                onPress={ReplayGain.toggleStatus}
                 className="h-8 justify-center"
               >
-                <Switch enabled={replayGainStaus} />
+                <Switch enabled={isReplayGainEnabled} />
               </Pressable>
             }
           />

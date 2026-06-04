@@ -62,8 +62,6 @@ export interface PreferenceStore {
 
   /** Delay before next track is naturally played. */
   playbackDelay: number;
-  /** Whether replay gain is enabled. */
-  replayGain: boolean;
 
   /** If playback will continue when we dismiss the app. */
   continuePlaybackOnDismiss: boolean;

@@ -101,7 +101,6 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     squareArtwork: true,
 
     playbackDelay: 0,
-    replayGain: false,
 
     continuePlaybackOnDismiss: false,
     repeatOnSkip: false,
