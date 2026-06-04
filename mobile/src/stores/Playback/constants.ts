@@ -82,5 +82,7 @@ export const PersistedFields: string[] = [
   "activeKey",
   "queuePosition",
   "isReplayGainEnabled",
+  "preAmpWTags",
+  "preAmpWOTags",
 ] satisfies Array<keyof PlaybackStore>;
 //#endregion
