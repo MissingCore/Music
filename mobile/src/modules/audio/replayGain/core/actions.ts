@@ -1,6 +1,7 @@
 import AudioBrowser from "react-native-audio-browser";
 
 import { playbackStore } from "~/stores/Playback/store";
+import { DB_OFFSET } from "./constants";
 
 import { clamp } from "~/utils/number";
 
@@ -11,9 +12,13 @@ export function toggleStatus() {
 }
 
 export function updatePreAmpWithTags(dB: number) {
-  playbackStore.setState({ preAmpWTags: clamp(-15, dB, 15) });
+  playbackStore.setState({
+    preAmpWTags: clamp(DB_OFFSET.min, dB, DB_OFFSET.max),
+  });
 }
 
 export function updatePreAmpWithoutTags(dB: number) {
-  playbackStore.setState({ preAmpWOTags: clamp(-15, dB, 15) });
+  playbackStore.setState({
+    preAmpWOTags: clamp(DB_OFFSET.min, dB, DB_OFFSET.max),
+  });
 }

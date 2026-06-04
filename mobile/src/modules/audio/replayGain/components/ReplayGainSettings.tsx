@@ -2,6 +2,7 @@ import { View } from "react-native";
 
 import { usePlaybackStore } from "~/stores/Playback/store";
 import * as ReplayGain from "../core/actions";
+import { DB_OFFSET } from "../core/constants";
 
 import { cn } from "~/lib/style";
 import { Divider } from "~/components/Divider";
@@ -57,8 +58,8 @@ function PreAmpSlider(props: {
       <View className="flex-row items-center gap-2">
         <CachedSlider
           initValue={preAmpValue}
-          min={-15}
-          max={15}
+          min={DB_OFFSET.min}
+          max={DB_OFFSET.max}
           step={0.1}
           onChange={
             props.variant === "preAmpWTags"
