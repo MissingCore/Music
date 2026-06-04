@@ -21,7 +21,10 @@ export function ReplayGainSettings() {
         RightElement={<Switch enabled={isReplayGainEnabled} />}
       />
       <SegmentedList.CustomItem className="p-4">
-        <View className={cn("gap-4", { "opacity-25": !isReplayGainEnabled })}>
+        <View
+          needsOffscreenAlphaCompositing
+          className={cn("gap-4", { "opacity-25": !isReplayGainEnabled })}
+        >
           <View className="gap-0.5">
             <TStyledText
               textKey="feat.replayGain.extra.preAmp"
@@ -32,9 +35,7 @@ export function ReplayGainSettings() {
               dim
             />
           </View>
-
           <Divider />
-
           <PreAmpSlider variant="preAmpWTags" disabled={!isReplayGainEnabled} />
           <PreAmpSlider
             variant="preAmpWOTags"
