@@ -14,10 +14,8 @@ import { isNumber } from "~/utils/validation";
 
 /** Returns a formatted Track object that AudioBrowser uses. */
 export async function applyReplayGainToTrack(track: Track, apply = true) {
-  const { isReplayGainEnabled, preAmpWTags, preAmpWOTags } =
-    playbackStore.getState();
-  const replayGain =
-    isReplayGainEnabled && apply ? await getR128Gain(track.uri) : null;
+  const { preAmpWTags, preAmpWOTags } = playbackStore.getState();
+  const replayGain = apply ? await getR128Gain(track.uri) : null;
   const finalDB = isNumber(replayGain)
     ? replayGain + preAmpWTags
     : preAmpWOTags;
