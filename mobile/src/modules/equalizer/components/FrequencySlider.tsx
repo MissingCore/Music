@@ -44,7 +44,7 @@ export const FrequencySlider = memo(function FrequencySlider(props: Props) {
         _className="h-48"
       />
       <Em style={{ fontVariant: ["tabular-nums"] }}>
-        {bandValue > 0 ? "+" : ""}
+        {bandValue >= 0 ? "+" : ""}
         {bandValue / 100}
       </Em>
     </View>
