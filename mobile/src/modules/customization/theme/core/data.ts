@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod/mini";
 
 import { db } from "~/db";
-import { customThemes } from "./schema";
+import { customThemes } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 
