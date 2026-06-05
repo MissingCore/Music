@@ -5,7 +5,7 @@ import { Equalizer } from "~/resources/icons/Equalizer";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 
 import { SegmentedList } from "~/components/List/Segmented";
-import EqualizerSettings from "../equalizer/screens/View";
+import EqualizerSettings from "./equalizer/screens/View";
 import { ReplayGainSettings } from "./replayGain/components/ReplayGainSettings";
 
 function AudioEffectsView() {
