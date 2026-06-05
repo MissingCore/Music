@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import AudioBrowser from "react-native-audio-browser";
 
 import { ActivityZone } from "~/resources/icons/ActivityZone";
-import { Equalizer } from "~/resources/icons/Equalizer";
+import { GraphicEQ } from "~/resources/icons/GraphicEQ";
 import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
 import { VolumeUp } from "~/resources/icons/VolumeUp";
 import { usePlaybackStore } from "~/stores/Playback/store";
@@ -58,9 +58,9 @@ export function PlaybackOptionsSheet(props: {
     navigation.navigate(...getMediaLinkContext(playingSource));
   }, [navigation, props.ref, playingSource]);
 
-  const navigateToEQSettings = useCallback(async () => {
+  const navigateToAudioEffectsScree = useCallback(async () => {
     await props.ref.current?.dismiss();
-    navigation.navigate("EqualizerSettings");
+    navigation.navigate("AudioEffects");
   }, [navigation, props.ref]);
 
   //#region Sheet Presenters
@@ -147,9 +147,9 @@ export function PlaybackOptionsSheet(props: {
               className="gap-4"
             />
             <SegmentedList.Item
-              labelTextKey="feat.equalizer.title"
-              onPress={navigateToEQSettings}
-              LeftElement={<Equalizer />}
+              labelTextKey="feat.audioEffects.title"
+              onPress={navigateToAudioEffectsScree}
+              LeftElement={<GraphicEQ />}
               className="gap-4"
             />
             <SegmentedList.Item
