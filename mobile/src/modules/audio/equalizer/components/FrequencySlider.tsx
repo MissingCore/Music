@@ -38,6 +38,7 @@ export const FrequencySlider = memo(function FrequencySlider(props: Props) {
         disabled={props.disabled}
         hitSlop={10}
         anchorAt={0}
+        trackColor="surfaceContainer"
         roundedEndStop
         vertical
         _debounceMultiplier={1}

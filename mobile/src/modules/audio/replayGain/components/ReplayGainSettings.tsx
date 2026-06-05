@@ -1,7 +1,7 @@
 import { View } from "react-native";
 
 import { usePlaybackStore } from "~/stores/Playback/store";
-import * as ReplayGain from "../core/actions";
+import { toggleStatus } from "../core/actions";
 
 import { cn } from "~/lib/style";
 import { Divider } from "~/components/Divider";
@@ -16,7 +16,7 @@ export function ReplayGainSettings() {
     <SegmentedList>
       <SegmentedList.Item
         labelTextKey="feat.replayGain.title"
-        onPress={ReplayGain.toggleStatus}
+        onPress={toggleStatus}
         RightElement={<Switch enabled={isReplayGainEnabled} />}
       />
       <SegmentedList.CustomItem className="p-4">

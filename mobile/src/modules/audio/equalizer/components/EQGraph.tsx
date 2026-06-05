@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { View, useWindowDimensions } from "react-native";
+import { createContext, use, useMemo, useState } from "react";
+import { View } from "react-native";
 import {
   Circle,
   Defs,
@@ -12,6 +12,7 @@ import {
 import { useEqualizerStore } from "../core/store";
 
 import { OnRTL } from "~/lib/react";
+import { cn } from "~/lib/style";
 import { Em } from "~/components/Typography/StyledText";
 import { useTheme } from "~/modules/customization/theme/hooks";
 
@@ -21,19 +22,29 @@ const ClampedOrdinate = Ordinate - YPadding;
 const GraphHeight = Ordinate * 2 + 1;
 const XAxisYPos = Ordinate + 1;
 
+/** Store graph width in a context as we may render it in other content. */
+const GraphWidthContext = createContext(0);
+
 /** Graph displaying Equalizer configuration based on the Nothing X design. */
 export function EQGraph(props: EQLineProps) {
+  const [graphWidth, setGraphWidth] = useState(0);
   return (
-    <View
-      style={{ height: GraphHeight }}
-      className="relative mb-4 w-full rounded-xl bg-surfaceContainerLowest"
-    >
-      <Svg style={{ height: "100%", width: "100%" }}>
-        <GraphAnnotations />
-        <EQLine points={props.points} />
-      </Svg>
-      <GraphLabels />
-    </View>
+    <GraphWidthContext value={graphWidth}>
+      <View
+        onLayout={(e) => setGraphWidth(e.nativeEvent.layout.width)}
+        style={{ height: GraphHeight }}
+        className={cn(
+          "relative mb-4 w-full rounded-md bg-surfaceContainerLow",
+          { "opacity-0": graphWidth === 0 },
+        )}
+      >
+        <Svg style={{ height: "100%", width: "100%" }}>
+          <GraphAnnotations />
+          <EQLine points={props.points} />
+        </Svg>
+        <GraphLabels />
+      </View>
+    </GraphWidthContext>
   );
 }
 
@@ -45,7 +56,7 @@ interface EQLineProps {
 
 function EQLine(props: EQLineProps) {
   const { scheme, onSurfaceVariant, surfaceContainerHigh } = useTheme();
-  const width = useGraphWidth();
+  const width = use(GraphWidthContext);
   const eqBandOrdinate = useEqualizerStore((s) => s.bandOrdinate);
 
   const points = useMemo(
@@ -130,7 +141,7 @@ const DisplayedFrequencies = [
 
 /** Draws x-axis and tick marks for certain frequencies. */
 function GraphAnnotations() {
-  const width = useGraphWidth();
+  const width = use(GraphWidthContext);
   const { surfaceContainer } = useTheme();
   return (
     <>
@@ -159,7 +170,7 @@ function GraphAnnotations() {
  * navigating back when in `<GraphAnnotations />`.
  */
 function GraphLabels() {
-  const width = useGraphWidth();
+  const width = use(GraphWidthContext);
   return DisplayedFrequencies.map(({ label, xPosPercent }) => (
     <Em
       key={label}
@@ -172,13 +183,5 @@ function GraphLabels() {
       {label}
     </Em>
   ));
-}
-//#endregion
-
-//#region Utils
-/** Returns width of the graph (which is the full width of the screen minus gutters). */
-function useGraphWidth() {
-  const { width } = useWindowDimensions();
-  return width - 32;
 }
 //#endregion
