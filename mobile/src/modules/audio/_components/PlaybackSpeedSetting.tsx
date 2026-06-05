@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { View } from "react-native";
 import AudioBrowser from "react-native-audio-browser";
 import type { SharedValue } from "react-native-reanimated";
@@ -9,21 +8,19 @@ import { sessionStore, useSessionStore } from "~/stores/Session/store";
 
 import { Button } from "~/components/Form/Button";
 import { CachedSlider } from "~/components/Form/Slider";
-import { DetachedSheet } from "~/components/Sheet";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { Em } from "~/components/Typography/StyledText";
+import { SegmentedList } from "~/components/List/Segmented";
+import { Em, TStyledText } from "~/components/Typography/StyledText";
 
-export function PlaybackSpeedSheet(props: { ref: TrueSheetRef }) {
-  const [stopDrag, setStopDrag] = useState(false);
+export function PlaybackSpeedSetting() {
   const playbackSpeed = useSessionStore((s) => s.playbackSpeed);
   const cachedPlaybackSpeed = useSharedValue(playbackSpeed);
 
   return (
-    <DetachedSheet ref={props.ref} draggable={!stopDrag}>
+    <SegmentedList.CustomItem className="gap-4 p-4">
+      <TStyledText textKey="feat.playback.extra.speed" className="text-sm" />
       <CachedSlider
         initValue={playbackSpeed}
         liveValue={cachedPlaybackSpeed}
-        getInteractionStatus={setStopDrag}
         {...PlaybackSpeedSliderOptions}
       />
       <View className="flex-row items-center gap-4">
@@ -32,7 +29,7 @@ export function PlaybackSpeedSheet(props: { ref: TrueSheetRef }) {
         <PlaybackSpeedPreset preset={1.5} value={cachedPlaybackSpeed} />
         <PlaybackSpeedPreset preset={2} value={cachedPlaybackSpeed} />
       </View>
-    </DetachedSheet>
+    </SegmentedList.CustomItem>
   );
 }
 
@@ -47,7 +44,7 @@ function PlaybackSpeedPreset(props: {
         setPlaybackSpeed(props.preset);
         props.value.set(props.preset);
       }}
-      className="min-h-8 flex-1 rounded-full py-2 active:bg-surfaceContainer"
+      className="min-h-8 flex-1 rounded-full bg-surfaceContainerLow py-2 active:bg-surfaceContainer"
     >
       <Em>{formatValue(props.preset)}</Em>
     </Button>
@@ -76,10 +73,11 @@ const PlaybackSpeedSliderOptions = {
   step: 0.05,
   thickness: 48,
   onChange: setPlaybackSpeed,
+  trackColor: "surfaceContainer",
   overlay: {
     accessibilityLabelKey: "feat.playback.extra.speed" as const,
     Icon: SlowMotionVideo,
     formatValue,
   },
-};
+} as const;
 //#endregion

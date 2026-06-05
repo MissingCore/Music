@@ -9,8 +9,11 @@ import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import {
   equalizerStore,
   useEqualizerStore,
-} from "~/modules/equalizer/core/store";
-import { _initEQStore, setEQPreset } from "~/modules/equalizer/core/actions";
+} from "~/modules/audio/equalizer/core/store";
+import {
+  _initEQStore,
+  setEQPreset,
+} from "~/modules/audio/equalizer/core/actions";
 import { useLyricStore } from "~/modules/lyric/core/store";
 
 import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
