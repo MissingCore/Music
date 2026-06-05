@@ -231,6 +231,7 @@
       "extra": {
         "delay": "Playback Delay",
         "options": "Playback Options",
+        "pitch": "Playback Pitch",
         "speed": "Playback Speed",
         "volume": "App Volume"
       }

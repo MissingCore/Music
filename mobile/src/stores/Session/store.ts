@@ -5,6 +5,7 @@ import type { SessionStore } from "./constants";
 
 export const sessionStore = createStore<SessionStore>()(() => ({
   playbackSpeed: 1,
+  playbackPitch: 1,
   volume: 1,
 
   displayedTrack: null,
