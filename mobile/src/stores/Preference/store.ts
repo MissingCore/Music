@@ -6,8 +6,6 @@ import i18next from "~/modules/i18n";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
 import { createPersistedStore } from "~/lib/zustand";
-import { getCustomFonts } from "~/modules/customization/font/core/data";
-import { loadCustomFont } from "~/modules/customization/font/utils";
 import { getCustomTheme } from "~/modules/customization/theme/core/data";
 import {
   formatCustomTheme,
@@ -21,10 +19,6 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
   (set) => ({
     _hasHydrated: false,
     _init: async (state) => {
-      // Load custom fonts.
-      const customFonts = await getCustomFonts();
-      await Promise.allSettled(customFonts.map((f) => loadCustomFont(f.uri)));
-
       // Set app theme on initialization.
       try {
         if (state.activeCustomThemeId) {
