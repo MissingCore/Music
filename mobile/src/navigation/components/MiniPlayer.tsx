@@ -136,10 +136,10 @@ export function MiniPlayer() {
               "bg-surfaceContainerLow": gestureUI && isPressed,
             })}
           >
-            <Marquee color="surfaceContainerLowest">
+            <Marquee color={`surfaceContainerLow${!isPressed ? "est" : ""}`}>
               <StyledText className="text-sm">{track.name}</StyledText>
             </Marquee>
-            <Marquee color="surfaceContainerLowest">
+            <Marquee color={`surfaceContainerLow${!isPressed ? "est" : ""}`}>
               <StyledText dim className="text-xxs">
                 {getArtistsString(track.artists)}
               </StyledText>
