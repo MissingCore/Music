@@ -3,7 +3,7 @@ import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import type { CustomFont } from "../core/schema";
+import type { CustomFont } from "~/db/schema";
 
 import { Add } from "~/resources/icons/Add";
 import { Delete } from "~/resources/icons/Delete";

@@ -14,7 +14,6 @@ import type { Prettify } from "~/utils/types";
 import type { PlayFromSource } from "~/stores/Playback/types";
 
 //? Need to export all schemas from a single file.
-export * from "~/modules/customization/font/core/schema";
 export * from "~/modules/customization/theme/core/schema";
 
 //#region Artist
@@ -344,6 +343,16 @@ export const tracksToGenresRelations = relations(tracksToGenres, ({ one }) => ({
 }));
 //#endregion
 
+//#region Customizations
+export const customFonts = sqliteTable("custom_fonts", {
+  id: text()
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  name: text().notNull(),
+  uri: text().notNull(),
+});
+//#endregion
+
 //#region Types
 export type Artist = InferSelectModel<typeof artists>;
 
@@ -360,4 +369,6 @@ export type PlayedMediaList = Prettify<
 >;
 
 export type WaveformSample = InferSelectModel<typeof waveformSamples>;
+
+export type CustomFont = InferSelectModel<typeof customFonts>;
 //#endregion
