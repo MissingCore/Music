@@ -70,7 +70,7 @@ export function EqualizerSettings() {
                   onPress={() => setEQPreset(preset)}
                   disabled={!currEQ?.enabled}
                   className={cn(
-                    "min-h-auto rounded-full bg-surfaceContainerLow py-2 disabled:opacity-100",
+                    "min-h-auto rounded-full bg-surfaceContainerLow py-2 active:bg-surfaceContainer disabled:opacity-100",
                     { "bg-primary active:bg-primaryDim": isActive },
                   )}
                 >

@@ -60,7 +60,7 @@ export default function ExperimentalSettings() {
       />
       <SegmentedList.Item
         labelTextKey="feat.audioEffects.title"
-        onPress={() => navigation.navigate("AudioEffects")}
+        onPress={() => navigation.navigate("AudioEffects", {})}
         LeftElement={<GraphicEQ />}
         className="gap-4"
       />

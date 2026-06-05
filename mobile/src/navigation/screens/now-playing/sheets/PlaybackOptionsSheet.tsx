@@ -4,7 +4,6 @@ import AudioBrowser from "react-native-audio-browser";
 
 import { ActivityZone } from "~/resources/icons/ActivityZone";
 import { GraphicEQ } from "~/resources/icons/GraphicEQ";
-import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
 import { VolumeUp } from "~/resources/icons/VolumeUp";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -18,7 +17,6 @@ import { toggleLyricVisibility } from "~/modules/lyric/core/actions";
 
 import { getMediaLinkContext } from "~/navigation/utils/router";
 import { AppearanceSheet } from "./AppearanceSheet";
-import { PlaybackSpeedSheet } from "./PlaybackSpeedSheet";
 
 import { Pressable } from "~/components/Base/Pressable";
 import { ScrollView } from "~/components/Base/ScrollView";
@@ -46,7 +44,6 @@ export function PlaybackOptionsSheet(props: {
   const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
   const volume = useSessionStore((s) => s.volume);
   const appearanceSheetRef = useSheetRef();
-  const playbackSpeedRef = useSheetRef();
   const sheetListHandlers = useEnableSheetScroll(true);
 
   const navigateToList = useCallback(async () => {
@@ -60,7 +57,7 @@ export function PlaybackOptionsSheet(props: {
 
   const navigateToAudioEffectsScree = useCallback(async () => {
     await props.ref.current?.dismiss();
-    navigation.navigate("AudioEffects");
+    navigation.navigate("AudioEffects", { showHidden: true });
   }, [navigation, props.ref]);
 
   //#region Sheet Presenters
@@ -68,17 +65,11 @@ export function PlaybackOptionsSheet(props: {
     await props.ref.current?.dismiss();
     appearanceSheetRef.current?.present();
   }, [appearanceSheetRef, props.ref]);
-
-  const presentPlaybackSheet = useCallback(async () => {
-    await props.ref.current?.dismiss();
-    playbackSpeedRef.current?.present();
-  }, [playbackSpeedRef, props.ref]);
   //#endregion
 
   return (
     <>
       <AppearanceSheet ref={appearanceSheetRef} />
-      <PlaybackSpeedSheet ref={playbackSpeedRef} />
 
       <DetachedSheet
         ref={props.ref}
@@ -150,12 +141,6 @@ export function PlaybackOptionsSheet(props: {
               labelTextKey="feat.audioEffects.title"
               onPress={navigateToAudioEffectsScree}
               LeftElement={<GraphicEQ />}
-              className="gap-4"
-            />
-            <SegmentedList.Item
-              labelTextKey="feat.playback.extra.speed"
-              onPress={presentPlaybackSheet}
-              LeftElement={<SlowMotionVideo />}
               className="gap-4"
             />
           </SegmentedList>
