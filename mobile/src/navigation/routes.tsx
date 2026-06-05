@@ -50,7 +50,6 @@ import { ArtistsSheet } from "./sheets/ArtistsSheet";
 import AudioEffectScreenGroup from "~/modules/audio/_screens";
 import FontScreenGroup from "~/modules/customization/font/screens";
 import ThemeScreenGroup from "~/modules/customization/theme/screens";
-import EqualizerSettings from "~/modules/equalizer/screens/View";
 import LyricScreenGroup from "~/modules/lyric/screens";
 import Search from "~/modules/search/screens/View";
 
@@ -316,10 +315,6 @@ export const RootStack = createNativeStackNavigator({
         AppearanceSettings: {
           screen: AppearanceSettings,
           options: { title: "feat.appearance.title" },
-        },
-        EqualizerSettings: {
-          screen: EqualizerSettings,
-          options: { title: "feat.equalizer.title" },
         },
         Insights: {
           screen: Insights,

@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { db } from "~/db";
 import { waveformSamples } from "~/db/schema";
 
-import { Equalizer } from "~/resources/icons/Equalizer";
 import { GraphicEQ } from "~/resources/icons/GraphicEQ";
 import { OpenInNew } from "~/resources/icons/OpenInNew";
 import { Search } from "~/resources/icons/Search";
@@ -63,12 +62,6 @@ export default function ExperimentalSettings() {
         labelTextKey="feat.audioEffects.title"
         onPress={() => navigation.navigate("AudioEffects")}
         LeftElement={<GraphicEQ />}
-        className="gap-4"
-      />
-      <SegmentedList.Item
-        labelTextKey="feat.equalizer.title"
-        onPress={() => navigation.navigate("EqualizerSettings")}
-        LeftElement={<Equalizer />}
         className="gap-4"
       />
 
