@@ -55,7 +55,7 @@ export function PlaybackOptionsSheet(props: {
     navigation.navigate(...getMediaLinkContext(playingSource));
   }, [navigation, props.ref, playingSource]);
 
-  const navigateToAudioEffectsScree = useCallback(async () => {
+  const navigateToAudioEffectsScreen = useCallback(async () => {
     await props.ref.current?.dismiss();
     navigation.navigate("AudioEffects", { showHidden: true });
   }, [navigation, props.ref]);
@@ -139,7 +139,7 @@ export function PlaybackOptionsSheet(props: {
             />
             <SegmentedList.Item
               labelTextKey="feat.audioEffects.title"
-              onPress={navigateToAudioEffectsScree}
+              onPress={navigateToAudioEffectsScreen}
               LeftElement={<GraphicEQ />}
               className="gap-4"
             />
