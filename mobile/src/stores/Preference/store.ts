@@ -5,6 +5,7 @@ import { useStore } from "zustand";
 import i18next from "~/modules/i18n";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
+import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
 import { createPersistedStore } from "~/lib/zustand";
 import { getCustomTheme } from "~/modules/customization/theme/core/data";
 import {
@@ -30,7 +31,10 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
         } else {
           Uniwind.setTheme(state.theme);
         }
-      } catch {
+      } catch (err) {
+        //! FIXME: Temporary to see if we get a `no such table: custom_themes` error.
+        if (SENTRY_ENABLED && !__DEV__) Sentry.captureException(err);
+
         // Reset custom theme if it no longer exists in the database.
         Uniwind.setTheme(state.theme);
         set({ activeCustomThemeId: null, activeCustomTheme: null });
