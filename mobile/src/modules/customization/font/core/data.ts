@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 import { Directory, File, Paths } from "expo-file-system";
 
 import { db } from "~/db";
-import { customFonts } from "./schema";
+import { customFonts } from "~/db/schema";
 
 import { queryClient } from "~/lib/react-query";
 

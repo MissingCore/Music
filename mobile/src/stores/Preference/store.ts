@@ -5,9 +5,8 @@ import { useStore } from "zustand";
 import i18next from "~/modules/i18n";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
+import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
 import { createPersistedStore } from "~/lib/zustand";
-import { getCustomFonts } from "~/modules/customization/font/core/data";
-import { loadCustomFont } from "~/modules/customization/font/utils";
 import { getCustomTheme } from "~/modules/customization/theme/core/data";
 import {
   formatCustomTheme,
@@ -21,10 +20,6 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
   (set) => ({
     _hasHydrated: false,
     _init: async (state) => {
-      // Load custom fonts.
-      const customFonts = await getCustomFonts();
-      await Promise.allSettled(customFonts.map((f) => loadCustomFont(f.uri)));
-
       // Set app theme on initialization.
       try {
         if (state.activeCustomThemeId) {
@@ -36,7 +31,10 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
         } else {
           Uniwind.setTheme(state.theme);
         }
-      } catch {
+      } catch (err) {
+        //! FIXME: Temporary to see if we get a `no such table: custom_themes` error.
+        if (SENTRY_ENABLED && !__DEV__) Sentry.captureException(err);
+
         // Reset custom theme if it no longer exists in the database.
         Uniwind.setTheme(state.theme);
         set({ activeCustomThemeId: null, activeCustomTheme: null });

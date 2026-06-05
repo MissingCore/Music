@@ -14,9 +14,12 @@ import {
   _initEQStore,
   setEQPreset,
 } from "~/modules/audio/equalizer/core/actions";
+import { getCustomFonts } from "~/modules/customization/font/core/data";
+import { loadCustomFont } from "~/modules/customization/font/utils";
 import { useLyricStore } from "~/modules/lyric/core/store";
 
 import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
+import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
 
@@ -49,6 +52,17 @@ export function useSetup() {
       setSetupState("pending");
       GlyphToy.connect();
       await onAppStartUpInit;
+
+      // Load custom fonts. Done in a try-catch due to Sentry reporting error
+      // that `custom_fonts` table doesn't exist.
+      try {
+        const savedCustomFonts = await getCustomFonts();
+        await Promise.allSettled(
+          savedCustomFonts.map((f) => loadCustomFont(f.uri)),
+        );
+      } catch (err) {
+        if (SENTRY_ENABLED && !__DEV__) Sentry.captureException(err);
+      }
 
       // Initial Equalizer store values after we ensure AudioBrowser is initialized.
       // Otherwise we get startup crashes from calling `AudioBrowser.getEqualizerSettings()`.

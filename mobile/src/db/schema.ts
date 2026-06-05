@@ -13,10 +13,6 @@ import {
 import type { Prettify } from "~/utils/types";
 import type { PlayFromSource } from "~/stores/Playback/types";
 
-//? Need to export all schemas from a single file.
-export * from "~/modules/customization/font/core/schema";
-export * from "~/modules/customization/theme/core/schema";
-
 //#region Artist
 export const artists = sqliteTable("artists", {
   name: text().primaryKey(),
@@ -344,6 +340,57 @@ export const tracksToGenresRelations = relations(tracksToGenres, ({ one }) => ({
 }));
 //#endregion
 
+//#region Customizations
+export const customFonts = sqliteTable("custom_fonts", {
+  id: text()
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  name: text().notNull(),
+  uri: text().notNull(),
+});
+
+export const customThemes = sqliteTable("custom_themes", {
+  id: text()
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  name: text().notNull(),
+  scheme: text().$type<"light" | "dark">().notNull().default("light"),
+
+  primary: text().notNull(),
+  primaryDim: text().notNull(),
+  onPrimary: text().notNull(),
+  onPrimaryVariant: text().notNull(),
+
+  secondary: text().notNull(),
+  secondaryDim: text().notNull(),
+  onSecondary: text().notNull(),
+  onSecondaryVariant: text().notNull(),
+
+  error: text().notNull(),
+  errorDim: text().notNull(),
+  onError: text().notNull(),
+  onErrorVariant: text().notNull(),
+
+  surfaceDim: text().notNull(),
+  surface: text().notNull(),
+  surfaceBright: text().notNull(),
+
+  surfaceContainerLowest: text().notNull(),
+  surfaceContainerLow: text().notNull(),
+  surfaceContainer: text().notNull(),
+  surfaceContainerHigh: text().notNull(),
+  surfaceContainerHighest: text().notNull(),
+
+  onSurface: text().notNull(),
+  onSurfaceVariant: text().notNull(),
+  outline: text().notNull(),
+  outlineVariant: text().notNull(),
+
+  inverseSurface: text().notNull(),
+  inverseOnSurface: text().notNull(),
+});
+//#endregion
+
 //#region Types
 export type Artist = InferSelectModel<typeof artists>;
 
@@ -360,4 +407,6 @@ export type PlayedMediaList = Prettify<
 >;
 
 export type WaveformSample = InferSelectModel<typeof waveformSamples>;
+
+export type CustomFont = InferSelectModel<typeof customFonts>;
 //#endregion
