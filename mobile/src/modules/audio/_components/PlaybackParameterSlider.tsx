@@ -62,7 +62,7 @@ export function PlaybackParameterSlider(props: {
           hitSlop={10}
           trackColor="surfaceContainer"
           roundedEndStop
-          _debounceMultiplier={0}
+          _debounceMultiplier={1}
           _className="shrink grow"
         />
         <View className="w-14 flex-row items-center justify-center gap-2">
