@@ -30,6 +30,8 @@ import type { AppColor } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
 import { Em } from "../Typography/StyledText";
 
+const ACTIVE_OFFSET: [number, number] = [-10, 10];
+
 /**
  * Reanimated slider whose render value is handled internally and is
  * instantiated on mount.
@@ -200,6 +202,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
 
   const panGesture = usePanGesture({
     enabled: !props.disabled,
+    [`activeOffset${props.vertical ? "Y" : "X"}`]: ACTIVE_OFFSET,
     onBegin: () => setIsInteracting(true),
     onActivate: ({ x, y }) => debounceFrom.set(onVerticalWorklet(y, x)),
     onUpdate: ({ x, y, velocityX, velocityY }) => {
