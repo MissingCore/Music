@@ -10,7 +10,7 @@ import { Edit } from "~/resources/icons/Edit";
 import { Info } from "~/resources/icons/Info";
 import { OpenInNew } from "~/resources/icons/OpenInNew";
 import { useLyricStore } from "../core/store";
-import { moveLyricProvider } from "../core/actions";
+import { moveLyricProvider, toggleCheckEmbeddedLyrics } from "../core/actions";
 import type { LyricProvider } from "../core/constants";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
@@ -21,7 +21,9 @@ import { Links, openLink } from "~/lib/web-browser";
 import { Button } from "~/components/Form/Button";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { ListItem } from "~/components/List";
+import { SegmentedList } from "~/components/List/Segmented";
 import { StyledText } from "~/components/Typography/StyledText";
+import { Switch } from "~/components/UI/Switch";
 
 export default function LyricsProviders() {
   const { t } = useTranslation();
@@ -97,18 +99,27 @@ function RenderItem({ item, index }: DragListRenderItemInfo<LyricProvider>) {
 
 function Instructions() {
   const { t } = useTranslation();
+  const checkEmbeddedLyrics = useLyricStore((s) => s.checkEmbedded);
+
   return (
-    <Button
-      onPress={() => openLink(Links.LyricsProviders)}
-      className="mb-4 flex-row items-start pl-2"
-    >
-      <Info size={20} color="onSurfaceVariant" />
-      <StyledText dim className="shrink grow text-sm">
-        {t("feat.lyrics.extra.providersInstructions.line1")}
-        {"\n\n"}
-        {t("feat.lyrics.extra.providersInstructions.line2")}
-      </StyledText>
-      <OpenInNew />
-    </Button>
+    <View className="mb-6 gap-6">
+      <Button
+        onPress={() => openLink(Links.LyricsProviders)}
+        className="flex-row items-start pl-2"
+      >
+        <Info size={20} color="onSurfaceVariant" />
+        <StyledText dim className="shrink grow text-sm">
+          {t("feat.lyrics.extra.providersInstructions.line1")}
+          {"\n\n"}
+          {t("feat.lyrics.extra.providersInstructions.line2")}
+        </StyledText>
+        <OpenInNew />
+      </Button>
+      <SegmentedList.Item
+        labelTextKey="feat.lyrics.extra.useEmbedded"
+        onPress={toggleCheckEmbeddedLyrics}
+        RightElement={<Switch enabled={checkEmbeddedLyrics} />}
+      />
+    </View>
   );
 }

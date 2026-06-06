@@ -16,12 +16,14 @@ import { linkTrackToLyric } from "./linkTrackToLyric";
 /** Find lyrics for the current active track. */
 export async function autoDiscoverLyrics(abortController: AbortController) {
   const { activeTrack } = playbackStore.getState();
-  const lyricsProviders = lyricStore.getState().providers;
+  const { providers: lyricsProviders, checkEmbedded } = lyricStore.getState();
 
   if (!activeTrack || abortController.signal.aborted) return;
   try {
+    let foundLyrics: string | null = null;
+
     //? 1. Start by looking for embedded lyrics.
-    let foundLyrics = await getLyric(activeTrack.uri);
+    if (checkEmbedded) foundLyrics = await getLyric(activeTrack.uri);
 
     //? 2. Check for adjacent lyric files (`.lrc`).
     if (!foundLyrics) {

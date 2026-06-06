@@ -250,7 +250,7 @@
     "lyrics": {
       "title": "Lyrics",
       "extra": {
-        "useEmbedded": "Use Embedded",
+        "useEmbedded": "Use Embedded Lyrics",
         "providers": "Lyrics Providers",
         "providersInstructions": {
           "line1": "For legal reasons, we do not automatically provide online sources for displaying lyrics as we do not have a license for doing so. Instead we support providers, which you can use to specify where we can pull lyrics from.",

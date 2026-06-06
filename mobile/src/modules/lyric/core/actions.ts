@@ -40,3 +40,7 @@ export function updateLyricProvider(
 export function toggleLyricVisibility() {
   lyricStore.setState((prev) => ({ visible: !prev.visible }));
 }
+
+export function toggleCheckEmbeddedLyrics() {
+  lyricStore.setState((prev) => ({ checkEmbedded: !prev.checkEmbedded }));
+}

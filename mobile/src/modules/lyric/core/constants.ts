@@ -19,12 +19,18 @@ export interface LyricStore {
 
   /** If lyrics will be displyad over the artwork on the Now Playing screen. */
   visible: boolean;
+  /**
+   * If embedded lyrics are checked. Useful in the situation where the embedded
+   * lyrics check results in undesirable results.
+   */
+  checkEmbedded: boolean;
   /** List of online providers we can get lyrics from. */
   providers: LyricProvider[];
 }
 
 export const PersistedFields: string[] = [
   "visible",
+  "checkEmbedded",
   "providers",
 ] satisfies Array<keyof LyricStore>;
 //#endregion
