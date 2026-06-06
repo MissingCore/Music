@@ -21,6 +21,13 @@ export function clamp(min: number, value: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
 
+/** Count the number of positions after the decimal in a number. */
+export function countDecimals(value: number) {
+  const asString = value.toString();
+  if (!asString.includes(".")) return 0;
+  return asString.split(".").at(-1)!.length;
+}
+
 /** Convert epoch time to `YYYY-MM-DD` */
 export function formatEpoch(ms: number) {
   const date = new Date(ms);

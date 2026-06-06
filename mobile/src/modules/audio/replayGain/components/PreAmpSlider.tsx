@@ -34,7 +34,7 @@ export const PreAmpSlider = memo(function PreAmpSlider(props: {
           anchorAt={0}
           trackColor="surfaceContainer"
           roundedEndStop
-          _debounceMultiplier={0}
+          _debounceMultiplier={1}
           _className="shrink grow"
         />
 

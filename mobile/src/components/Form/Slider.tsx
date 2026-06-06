@@ -25,9 +25,12 @@ import type { Icon } from "~/resources/icons/type";
 import { Colors } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
+import { countDecimals } from "~/utils/number";
 import type { AppColor } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
 import { Em } from "../Typography/StyledText";
+
+const ACTIVE_OFFSET: [number, number] = [-10, 10];
 
 /**
  * Reanimated slider whose render value is handled internally and is
@@ -93,6 +96,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
   const moveableDistance = props.max - props.min;
   const step = useRef(props.step ?? 1);
   const debounceMultiplier = useRef(props._debounceMultiplier ?? 5);
+  const decimalPlaceCount = useRef(countDecimals(props.step ?? 1));
 
   const anchorPoint = props.anchorAt ?? props.min;
   const distFromMin = anchorPoint - props.min;
@@ -145,7 +149,10 @@ export const CachedSlider = memo(function CachedSlider(props: {
       if (Math.abs(velocity) > 500) return;
       // Don't immediately call `onChange` if we haven't moved `debounceMultipler * step`.
       if (
-        Math.abs(debounceFrom.get() - value) <
+        roundToDecimal(
+          Math.abs(debounceFrom.get() - value),
+          decimalPlaceCount.current,
+        ) <
         step.current * debounceMultiplier.current
       ) {
         return;
@@ -195,6 +202,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
 
   const panGesture = usePanGesture({
     enabled: !props.disabled,
+    [`activeOffset${props.vertical ? "Y" : "X"}`]: ACTIVE_OFFSET,
     onBegin: () => setIsInteracting(true),
     onActivate: ({ x, y }) => debounceFrom.set(onVerticalWorklet(y, x)),
     onUpdate: ({ x, y, velocityX, velocityY }) => {
@@ -405,5 +413,11 @@ function roundToStep(rawNum: number, step: number) {
 
   if (decimalPlaces === 0) return roundedVal;
   return parseFloat(roundedVal.toFixed(decimalPlaces));
+}
+
+/** Round number to specified decimal places. */
+function roundToDecimal(value: number, decimals: number) {
+  "worklet";
+  return Number(value.toFixed(decimals));
 }
 //#endregion

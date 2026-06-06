@@ -8,6 +8,8 @@ import type { PopStrategy } from "./types";
 export interface SessionStore {
   /** The rate at which the media is played (from 0.25 to 2). */
   playbackSpeed: number;
+  /** The factor at which the pitch will be shifted (from 0.25 to 2). */
+  playbackPitch: number;
   /** Percentage of device volume audio will be outputted with. */
   volume: number;
 

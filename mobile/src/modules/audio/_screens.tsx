@@ -2,7 +2,7 @@ import type { StaticScreenProps } from "@react-navigation/native";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 
-import { PlaybackSpeedSetting } from "./_components/PlaybackSpeedSetting";
+import { PlaybackParameterSettings } from "./_components/PlaybackParameterSettings";
 import { EqualizerSettings } from "./equalizer/components/EqualizerSettings";
 import { ReplayGainSettings } from "./replayGain/components/ReplayGainSettings";
 
@@ -16,7 +16,7 @@ function AudioEffectsView({
   return (
     <ListLayout>
       <EqualizerSettings />
-      {showHidden ? <PlaybackSpeedSetting /> : null}
+      {showHidden ? <PlaybackParameterSettings /> : null}
       <ReplayGainSettings />
     </ListLayout>
   );
