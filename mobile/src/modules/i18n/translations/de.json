@@ -118,6 +118,7 @@
       "title": "Aussehen"
     },
     "font": {
+      "title": null,
       "extra": {
         "accent": "Akzentschrift",
         "primary": "Primäre Schriftart"
@@ -208,6 +209,7 @@
       "extra": {
         "delay": "Wiedergabeverzögerung",
         "options": "Wiedergabeoptionen",
+        "pitch": null,
         "speed": "Wiedergabegeschwindigkeit",
         "volume": "App-Lautstärke"
       }
@@ -284,6 +286,9 @@
     "experimental": {
       "title": "Experimentelle Funktionen"
     },
+    "audioEffects": {
+      "title": null
+    },
     "equalizer": {
       "title": "Equalizer",
       "extra": {
@@ -298,6 +303,15 @@
         "Jazz": "Jazz",
         "Pop": "Pop",
         "Rock": "Rock"
+      }
+    },
+    "replayGain": {
+      "title": null,
+      "extra": {
+        "preAmp": null,
+        "preAmpDescription": null,
+        "adjustWithTags": null,
+        "adjustWithoutTags": null
       }
     },
     "ignoreInterrupt": {

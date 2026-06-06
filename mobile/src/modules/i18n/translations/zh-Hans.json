@@ -118,6 +118,7 @@
       "title": "外观"
     },
     "font": {
+      "title": null,
       "extra": {
         "accent": "强调字体",
         "primary": "首选字体"
@@ -208,6 +209,7 @@
       "extra": {
         "delay": null,
         "options": "播放选项",
+        "pitch": null,
         "speed": "倍速",
         "volume": "应用音量"
       }
@@ -284,6 +286,9 @@
     "experimental": {
       "title": null
     },
+    "audioEffects": {
+      "title": null
+    },
     "equalizer": {
       "title": null,
       "extra": {
@@ -298,6 +303,15 @@
         "Jazz": null,
         "Pop": null,
         "Rock": null
+      }
+    },
+    "replayGain": {
+      "title": null,
+      "extra": {
+        "preAmp": null,
+        "preAmpDescription": null,
+        "adjustWithTags": null,
+        "adjustWithoutTags": null
       }
     },
     "ignoreInterrupt": {

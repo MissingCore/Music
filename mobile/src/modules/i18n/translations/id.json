@@ -118,6 +118,7 @@
       "title": "Tampilan"
     },
     "font": {
+      "title": null,
       "extra": {
         "accent": "Font Aksen",
         "primary": "Font Primer"
@@ -208,6 +209,7 @@
       "extra": {
         "delay": null,
         "options": "Opsi Pemutaran",
+        "pitch": null,
         "speed": "Kecepatan Pemutaran",
         "volume": "Volume Aplikasi"
       }
@@ -284,6 +286,9 @@
     "experimental": {
       "title": null
     },
+    "audioEffects": {
+      "title": null
+    },
     "equalizer": {
       "title": null,
       "extra": {
@@ -298,6 +303,15 @@
         "Jazz": null,
         "Pop": null,
         "Rock": null
+      }
+    },
+    "replayGain": {
+      "title": null,
+      "extra": {
+        "preAmp": null,
+        "preAmpDescription": null,
+        "adjustWithTags": null,
+        "adjustWithoutTags": null
       }
     },
     "ignoreInterrupt": {

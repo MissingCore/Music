@@ -118,6 +118,7 @@
       "title": "Apariencia"
     },
     "font": {
+      "title": null,
       "extra": {
         "accent": "Fuente de acento",
         "primary": "Fuente principal"
@@ -208,6 +209,7 @@
       "extra": {
         "delay": "Retraso natural",
         "options": "Opciones",
+        "pitch": null,
         "speed": "Velocidad",
         "volume": "Volumen"
       }
@@ -284,6 +286,9 @@
     "experimental": {
       "title": "Funciones experimentales"
     },
+    "audioEffects": {
+      "title": null
+    },
     "equalizer": {
       "title": "Ecualizador",
       "extra": {
@@ -298,6 +303,15 @@
         "Jazz": "Jazz",
         "Pop": "Pop",
         "Rock": "Rock"
+      }
+    },
+    "replayGain": {
+      "title": null,
+      "extra": {
+        "preAmp": null,
+        "preAmpDescription": null,
+        "adjustWithTags": null,
+        "adjustWithoutTags": null
       }
     },
     "ignoreInterrupt": {

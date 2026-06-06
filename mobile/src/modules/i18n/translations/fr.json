@@ -30,7 +30,7 @@
     "settings": "Paramètres",
     "upcoming": "À venir",
     "playingFrom": "Joue depuis",
-    "instructions": null,
+    "instructions": "Instructions",
     "disc": "CD {{count}}"
   },
   "template": {
@@ -118,6 +118,7 @@
       "title": "Apparence"
     },
     "font": {
+      "title": null,
       "extra": {
         "accent": "Police Accentuée",
         "primary": "Police Principale"
@@ -208,6 +209,7 @@
       "extra": {
         "delay": "Délai de lecture naturel",
         "options": "Options de Lecture",
+        "pitch": null,
         "speed": "Vitesse de lecture",
         "volume": "Volume de l'application"
       }
@@ -227,10 +229,10 @@
       "title": "Paroles",
       "extra": {
         "useEmbedded": "Utiliser l'intégration",
-        "providers": null,
+        "providers": "Fournisseurs de paroles",
         "providersInstructions": {
-          "line1": null,
-          "line2": null
+          "line1": "Pour des raisons juridiques, nous ne fournissons pas automatiquement de sources en ligne pour l'affichage des paroles, car nous ne disposons pas de licence à cet effet. Nous proposons toutefois une liste de fournisseurs que vous pouvez utiliser pour nous indiquer d'où nous pouvons extraire les paroles.",
+          "line2": "Cliquez ici pour en savoir plus sur la manière de créer un prestataire."
         }
       }
     },
@@ -284,6 +286,9 @@
     "experimental": {
       "title": "Fonctionnalités Expérimentales"
     },
+    "audioEffects": {
+      "title": null
+    },
     "equalizer": {
       "title": "Égaliseur",
       "extra": {
@@ -298,6 +303,15 @@
         "Jazz": "Jazz",
         "Pop": "Pop",
         "Rock": "Rock"
+      }
+    },
+    "replayGain": {
+      "title": null,
+      "extra": {
+        "preAmp": null,
+        "preAmpDescription": null,
+        "adjustWithTags": null,
+        "adjustWithoutTags": null
       }
     },
     "ignoreInterrupt": {

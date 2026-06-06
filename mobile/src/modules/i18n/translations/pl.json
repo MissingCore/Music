@@ -118,6 +118,7 @@
       "title": "Wygląd"
     },
     "font": {
+      "title": null,
       "extra": {
         "accent": "Czcionka tytułów",
         "primary": "Czcionka główna"
@@ -208,6 +209,7 @@
       "extra": {
         "delay": "Opóźnenie pomiędzy utworami",
         "options": "Opcje odtwarzania",
+        "pitch": null,
         "speed": "Prędkość odtwarzania",
         "volume": "Głośność aplikacji"
       }
@@ -284,6 +286,9 @@
     "experimental": {
       "title": "Funkcje eksperymentalne"
     },
+    "audioEffects": {
+      "title": null
+    },
     "equalizer": {
       "title": "Equalizer",
       "extra": {
@@ -298,6 +303,15 @@
         "Jazz": "Jazz",
         "Pop": "Pop",
         "Rock": "Rock"
+      }
+    },
+    "replayGain": {
+      "title": null,
+      "extra": {
+        "preAmp": null,
+        "preAmpDescription": null,
+        "adjustWithTags": null,
+        "adjustWithoutTags": null
       }
     },
     "ignoreInterrupt": {
