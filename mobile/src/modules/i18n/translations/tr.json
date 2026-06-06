@@ -118,6 +118,7 @@
       "title": "Görünüm"
     },
     "font": {
+      "title": null,
       "extra": {
         "accent": "Vurgu Yazı Tipi",
         "primary": "Birincil Yazı Tipi"
@@ -208,6 +209,7 @@
       "extra": {
         "delay": "Oynatma Gecikmesi",
         "options": "Oynatma Seçenekleri",
+        "pitch": null,
         "speed": "Oynatma Hızı",
         "volume": "Uygulama Sesi"
       }
@@ -284,6 +286,9 @@
     "experimental": {
       "title": "Deneysel Özellikler"
     },
+    "audioEffects": {
+      "title": null
+    },
     "equalizer": {
       "title": "Ekolayzer",
       "extra": {
@@ -298,6 +303,15 @@
         "Jazz": "Caz",
         "Pop": "Pop",
         "Rock": "Rock"
+      }
+    },
+    "replayGain": {
+      "title": null,
+      "extra": {
+        "preAmp": null,
+        "preAmpDescription": null,
+        "adjustWithTags": null,
+        "adjustWithoutTags": null
       }
     },
     "ignoreInterrupt": {

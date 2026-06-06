@@ -118,6 +118,7 @@
       "title": "ظاهر"
     },
     "font": {
+      "title": null,
       "extra": {
         "accent": "قلم تاکیدی",
         "primary": "قلم اصلی"
@@ -208,6 +209,7 @@
       "extra": {
         "delay": "تأخیر طبیعی پخش",
         "options": "گزینه های پخش",
+        "pitch": null,
         "speed": "سرعت پخش",
         "volume": "صدای برنامه"
       }
@@ -284,6 +286,9 @@
     "experimental": {
       "title": "ویژگی های آزمایشی"
     },
+    "audioEffects": {
+      "title": null
+    },
     "equalizer": {
       "title": "اکولایزر",
       "extra": {
@@ -298,6 +303,15 @@
         "Jazz": "جاز",
         "Pop": "پاپ",
         "Rock": "راک"
+      }
+    },
+    "replayGain": {
+      "title": null,
+      "extra": {
+        "preAmp": null,
+        "preAmpDescription": null,
+        "adjustWithTags": null,
+        "adjustWithoutTags": null
       }
     },
     "ignoreInterrupt": {

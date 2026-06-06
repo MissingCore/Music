@@ -118,6 +118,7 @@
       "title": "Внешний вид"
     },
     "font": {
+      "title": null,
       "extra": {
         "accent": "Шрифт",
         "primary": "Основной шрифт"
@@ -208,6 +209,7 @@
       "extra": {
         "delay": null,
         "options": "Параметры воспроизведения",
+        "pitch": null,
         "speed": "Скорость воспроизведения",
         "volume": "Громкость приложения"
       }
@@ -284,6 +286,9 @@
     "experimental": {
       "title": "Экспериментальные функции"
     },
+    "audioEffects": {
+      "title": null
+    },
     "equalizer": {
       "title": null,
       "extra": {
@@ -298,6 +303,15 @@
         "Jazz": null,
         "Pop": null,
         "Rock": null
+      }
+    },
+    "replayGain": {
+      "title": null,
+      "extra": {
+        "preAmp": null,
+        "preAmpDescription": null,
+        "adjustWithTags": null,
+        "adjustWithoutTags": null
       }
     },
     "ignoreInterrupt": {

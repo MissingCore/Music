@@ -118,6 +118,7 @@
       "title": "外観"
     },
     "font": {
+      "title": null,
       "extra": {
         "accent": "アクセントフォント",
         "primary": "プライマリフォント"
@@ -208,6 +209,7 @@
       "extra": {
         "delay": "再生遅延",
         "options": "再生オプション",
+        "pitch": null,
         "speed": "再生速度",
         "volume": "アプリの音量"
       }
@@ -284,6 +286,9 @@
     "experimental": {
       "title": "試験的な機能"
     },
+    "audioEffects": {
+      "title": null
+    },
     "equalizer": {
       "title": "イコライザー",
       "extra": {
@@ -298,6 +303,15 @@
         "Jazz": "ジャズ",
         "Pop": "ポップ",
         "Rock": "ロック"
+      }
+    },
+    "replayGain": {
+      "title": null,
+      "extra": {
+        "preAmp": null,
+        "preAmpDescription": null,
+        "adjustWithTags": null,
+        "adjustWithoutTags": null
       }
     },
     "ignoreInterrupt": {
