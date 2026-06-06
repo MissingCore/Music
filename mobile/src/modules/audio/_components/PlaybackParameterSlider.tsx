@@ -33,15 +33,6 @@ export function PlaybackParameterSlider(props: {
     [props.onUpdate, fieldName],
   );
 
-  const overlayOptions = useMemo(
-    () => ({
-      accessibilityLabelKey: fieldNameKey,
-      Icon: props.Icon,
-      formatValue,
-    }),
-    [props.Icon, fieldNameKey],
-  );
-
   const PresetButtons = useMemo(() => {
     return PRESET_OPTIONS.map((preset) => (
       <Button
@@ -60,17 +51,27 @@ export function PlaybackParameterSlider(props: {
   return (
     <SegmentedList.CustomItem className="gap-4 p-4">
       <TStyledText textKey={fieldNameKey} className="text-sm" />
-      <CachedSlider
-        initValue={storedValue}
-        liveValue={cachedValue}
-        min={0.25}
-        max={2}
-        step={0.05}
-        onChange={setField}
-        thickness={48}
-        trackColor="surfaceContainer"
-        overlay={overlayOptions}
-      />
+      <View className="flex-row items-center gap-2">
+        <CachedSlider
+          initValue={storedValue}
+          liveValue={cachedValue}
+          min={0.25}
+          max={2}
+          step={0.05}
+          onChange={setField}
+          hitSlop={10}
+          trackColor="surfaceContainer"
+          roundedEndStop
+          _debounceMultiplier={0}
+          _className="shrink grow"
+        />
+        <View className="w-14 flex-row items-center justify-center gap-2">
+          {<props.Icon size={20} />}
+          <Em style={{ fontVariant: ["tabular-nums"] }}>
+            {numberFormatter.format(storedValue)}x
+          </Em>
+        </View>
+      </View>
       <View className="flex-row items-center gap-4">{PresetButtons}</View>
     </SegmentedList.CustomItem>
   );
