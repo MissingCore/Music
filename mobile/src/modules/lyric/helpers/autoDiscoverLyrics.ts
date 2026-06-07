@@ -13,6 +13,9 @@ import { bgWait } from "~/utils/promise";
 import { getSafeUri } from "~/utils/string";
 import { linkTrackToLyric } from "./linkTrackToLyric";
 
+const BUFFER_MS = 30000;
+let lastRequestAt = 0;
+
 /** Find lyrics for the current active track. */
 export async function autoDiscoverLyrics(abortController: AbortController) {
   const { activeTrack } = playbackStore.getState();
@@ -34,8 +37,11 @@ export async function autoDiscoverLyrics(abortController: AbortController) {
 
     //? 3. Check for online lyrics.
     if (!foundLyrics) {
-      //? Wait for 1s before doing an online search to prevent accidental fires when spamming the controls.
-      await bgWait(1000);
+      //? Wait for 2.5s before doing an online search to prevent accidental fires when
+      //? spamming the controls. Applies if this gets called within 30s.
+      const prevLastRequestAt = lastRequestAt;
+      lastRequestAt = Date.now();
+      if (Date.now() - prevLastRequestAt < BUFFER_MS) await bgWait(2500);
 
       for (const provider of lyricsProviders) {
         if (abortController.signal.aborted) return;
