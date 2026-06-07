@@ -5,13 +5,12 @@ import AudioBrowser from "react-native-audio-browser";
 import { ActivityZone } from "~/resources/icons/ActivityZone";
 import { GraphicEQ } from "~/resources/icons/GraphicEQ";
 import { VolumeUp } from "~/resources/icons/VolumeUp";
-import { usePlaybackStore } from "~/stores/Playback/store";
+import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import {
   PreferenceSetters,
   PreferenceTogglers,
 } from "~/stores/Preference/actions";
-import { sessionStore, useSessionStore } from "~/stores/Session/store";
 import { useLyricStore } from "~/modules/lyric/core/store";
 import { toggleLyricVisibility } from "~/modules/lyric/core/actions";
 
@@ -42,7 +41,7 @@ export function PlaybackOptionsSheet(props: {
   const playbackDelay = usePreferenceStore((s) => s.playbackDelay);
   const showLyrics = useLyricStore((s) => s.visible);
   const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
-  const volume = useSessionStore((s) => s.volume);
+  const volume = usePlaybackStore((s) => s.volume);
   const appearanceSheetRef = useSheetRef();
   const sheetListHandlers = useEnableSheetScroll(true);
 
@@ -157,7 +156,7 @@ const VolumeSliderOptions = {
   step: 0.01,
   thickness: 48,
   onChange: (volume: number) => {
-    sessionStore.setState({ volume });
+    playbackStore.setState({ volume });
     AudioBrowser.setVolume(volume);
   },
   overlay: {

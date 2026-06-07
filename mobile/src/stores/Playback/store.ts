@@ -110,6 +110,9 @@ export const playbackStore = createPersistedStore<PlaybackStore>(
     isReplayGainEnabled: false,
     preAmpWTags: 0,
     preAmpWOTags: 0,
+
+    restoreVolume: false,
+    volume: 1,
   }),
   {
     name: "music::playback-store",

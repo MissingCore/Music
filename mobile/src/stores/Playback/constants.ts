@@ -69,6 +69,11 @@ export interface PlaybackStore {
   preAmpWTags: number;
   /** ReplayGain pre-amp that applies to tracks without the embedded tags. */
   preAmpWOTags: number;
+
+  /** Whether volume will be persisted. */
+  restoreVolume: boolean;
+  /** Percentage of device volume audio will be outputted with. */
+  volume: number;
 }
 
 export const PersistedFields: string[] = [
@@ -84,5 +89,7 @@ export const PersistedFields: string[] = [
   "isReplayGainEnabled",
   "preAmpWTags",
   "preAmpWOTags",
+  "restoreVolume",
+  "volume",
 ] satisfies Array<keyof PlaybackStore>;
 //#endregion
