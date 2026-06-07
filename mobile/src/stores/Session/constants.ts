@@ -10,8 +10,6 @@ export interface SessionStore {
   playbackSpeed: number;
   /** The factor at which the pitch will be shifted (from 0.25 to 2). */
   playbackPitch: number;
-  /** Percentage of device volume audio will be outputted with. */
-  volume: number;
 
   /** Track displayed in global track sheet. */
   displayedTrack: Track | null;

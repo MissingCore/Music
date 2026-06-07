@@ -233,6 +233,7 @@
         "options": "Playback Options",
         "pitch": "Playback Pitch",
         "speed": "Playback Speed",
+        "restoreVolume": "Restore App Volume",
         "volume": "App Volume"
       }
     },
