@@ -211,6 +211,7 @@
         "options": "Oynatma Seçenekleri",
         "pitch": null,
         "speed": "Oynatma Hızı",
+        "restoreVolume": null,
         "volume": "Uygulama Sesi"
       }
     },

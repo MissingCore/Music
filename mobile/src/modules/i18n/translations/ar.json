@@ -211,6 +211,7 @@
         "options": "خيارات التشغيل",
         "pitch": null,
         "speed": "سرعة التشغيل",
+        "restoreVolume": null,
         "volume": "مستوى صوت التطبيق"
       }
     },

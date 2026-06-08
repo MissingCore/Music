@@ -211,6 +211,7 @@
         "options": "گزینه های پخش",
         "pitch": null,
         "speed": "سرعت پخش",
+        "restoreVolume": null,
         "volume": "صدای برنامه"
       }
     },

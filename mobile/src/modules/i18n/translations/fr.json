@@ -118,7 +118,7 @@
       "title": "Apparence"
     },
     "font": {
-      "title": null,
+      "title": "Polices d'écriture",
       "extra": {
         "accent": "Police Accentuée",
         "primary": "Police Principale"
@@ -209,8 +209,9 @@
       "extra": {
         "delay": "Délai de lecture naturel",
         "options": "Options de Lecture",
-        "pitch": null,
+        "pitch": "Hauteur de lecture",
         "speed": "Vitesse de lecture",
+        "restoreVolume": "Restaurer le volume de l'application",
         "volume": "Volume de l'application"
       }
     },
@@ -228,7 +229,7 @@
     "lyrics": {
       "title": "Paroles",
       "extra": {
-        "useEmbedded": "Utiliser l'intégration",
+        "useEmbedded": "Utiliser les paroles intégrées",
         "providers": "Fournisseurs de paroles",
         "providersInstructions": {
           "line1": "Pour des raisons juridiques, nous ne fournissons pas automatiquement de sources en ligne pour l'affichage des paroles, car nous ne disposons pas de licence à cet effet. Nous proposons toutefois une liste de fournisseurs que vous pouvez utiliser pour nous indiquer d'où nous pouvons extraire les paroles.",
@@ -287,7 +288,7 @@
       "title": "Fonctionnalités Expérimentales"
     },
     "audioEffects": {
-      "title": null
+      "title": "Effets audio"
     },
     "equalizer": {
       "title": "Égaliseur",
@@ -306,12 +307,12 @@
       }
     },
     "replayGain": {
-      "title": null,
+      "title": "ReplayGain",
       "extra": {
-        "preAmp": null,
-        "preAmpDescription": null,
-        "adjustWithTags": null,
-        "adjustWithoutTags": null
+        "preAmp": "Préamplificateur ReplayGain",
+        "preAmpDescription": "Règle le volume lorsque ReplayGain est activé. Cela peut entraîner des pics de volume sur certaines pistes. Les modifications s'appliquent à la piste suivante.",
+        "adjustWithTags": "Ajustement à l'aide de balises",
+        "adjustWithoutTags": "Ajustement sans balise"
       }
     },
     "ignoreInterrupt": {

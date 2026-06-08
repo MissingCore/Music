@@ -211,6 +211,7 @@
         "options": "Opzioni di riproduzione",
         "pitch": null,
         "speed": "Velocità di riproduzione",
+        "restoreVolume": null,
         "volume": "Volume dell'app"
       }
     },

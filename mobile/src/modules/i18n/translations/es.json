@@ -30,7 +30,7 @@
     "settings": "Configuración",
     "upcoming": "A continuación",
     "playingFrom": "Reproduciendo desde",
-    "instructions": null,
+    "instructions": "Instrucciones",
     "disc": "Disco {{count}}"
   },
   "template": {
@@ -118,7 +118,7 @@
       "title": "Apariencia"
     },
     "font": {
-      "title": null,
+      "title": "Fuentes",
       "extra": {
         "accent": "Fuente de acento",
         "primary": "Fuente principal"
@@ -209,8 +209,9 @@
       "extra": {
         "delay": "Retraso natural",
         "options": "Opciones",
-        "pitch": null,
+        "pitch": "Pitch de reproducción",
         "speed": "Velocidad",
+        "restoreVolume": "Restaurar volumen de aplicación",
         "volume": "Volumen"
       }
     },
@@ -229,10 +230,10 @@
       "title": "Letras",
       "extra": {
         "useEmbedded": "Usar letra integrada",
-        "providers": null,
+        "providers": "Proveedor de letras",
         "providersInstructions": {
-          "line1": null,
-          "line2": null
+          "line1": "Por motivos legales, no proporcionamos automáticamente fuentes en línea para mostrar letras de canciones, ya que no contamos con una licencia para hacerlo. En su lugar, ofrecemos compatibilidad con distintos proveedores, que puedes utilizar para especificar de dónde podemos obtener las letras.",
+          "line2": "Haz clic para obtener más información sobre cómo crear un proveedor."
         }
       }
     },
@@ -287,7 +288,7 @@
       "title": "Funciones experimentales"
     },
     "audioEffects": {
-      "title": null
+      "title": "Efectos de audio"
     },
     "equalizer": {
       "title": "Ecualizador",
@@ -306,12 +307,12 @@
       }
     },
     "replayGain": {
-      "title": null,
+      "title": "ReplayGain",
       "extra": {
-        "preAmp": null,
-        "preAmpDescription": null,
-        "adjustWithTags": null,
-        "adjustWithoutTags": null
+        "preAmp": "Preamplificación de ReplayGain",
+        "preAmpDescription": "Ajusta el volumen cuando ReplayGain está activado. Puede provocar saturación en algunas pistas. Los cambios se aplicarán en la siguiente pista.",
+        "adjustWithTags": "Ajuste con tags",
+        "adjustWithoutTags": "Ajuste sin tags"
       }
     },
     "ignoreInterrupt": {

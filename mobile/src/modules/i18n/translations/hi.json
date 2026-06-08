@@ -211,6 +211,7 @@
         "options": "प्लेबैक विकल्प",
         "pitch": null,
         "speed": "प्लेबैक गति",
+        "restoreVolume": null,
         "volume": "ऐप वॉल्यूम"
       }
     },
