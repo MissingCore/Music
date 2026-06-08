@@ -211,6 +211,7 @@
         "options": "播放选项",
         "pitch": null,
         "speed": "倍速",
+        "restoreVolume": null,
         "volume": "应用音量"
       }
     },

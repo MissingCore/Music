@@ -211,6 +211,7 @@
         "options": "再生オプション",
         "pitch": null,
         "speed": "再生速度",
+        "restoreVolume": null,
         "volume": "アプリの音量"
       }
     },

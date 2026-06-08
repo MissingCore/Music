@@ -211,6 +211,7 @@
         "options": "Wiedergabeoptionen",
         "pitch": null,
         "speed": "Wiedergabegeschwindigkeit",
+        "restoreVolume": null,
         "volume": "App-Lautstärke"
       }
     },

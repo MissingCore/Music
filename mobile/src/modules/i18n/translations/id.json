@@ -7,8 +7,8 @@
     "artists": "Artis",
     "folder": "Folder",
     "folders": "Folder",
-    "genre": null,
-    "genres": null,
+    "genre": "Genre",
+    "genres": "Genre",
     "playlist": "Daftar Putar",
     "playlists": "Daftar Putar",
     "track": "Trek",
@@ -24,29 +24,29 @@
     "favorites": "Difavoritkan",
     "unFavorite": "Batal Sukai",
     "favoriteTracks": "Trek Favorit",
-    "all": null,
-    "more": null,
+    "all": "Semua",
+    "more": "Selengkapnya",
     "home": "Beranda",
     "settings": "Pengaturan",
     "upcoming": "Yang akan Datang",
     "playingFrom": "Memutar Dari",
-    "instructions": null,
+    "instructions": "Instruksi",
     "disc": "Disk {{count}}"
   },
   "template": {
-    "entryAdd": null,
+    "entryAdd": "Tambahkan `{{- name}}`.",
     "entryAdded": "`{{- name}}` telah ditambahkan.",
     "entryRemove": "`{{- name}}` Dihapus.",
     "entryRemoved": "`{{- name}}` Telah Dihapus.",
-    "entryManage": null,
+    "entryManage": "Kelola {{- name}}",
     "entrySeeMore": "Lihat selengkapnya tentang `{{- name}}`.",
     "notFound": "`{{- name}}` tidak ditemukan.",
-    "entryMove": null,
+    "entryMove": "Pindahkan `{{- name}}`",
     "entryShow": "Tampilkan `{{- name}}`",
     "entryHide": "Sembunyikan `{{- name}}`",
     "entryEnable": "Aktifkan `{{- name}}`",
     "entryDisable": "Nonaktifkan `{{- name}}`",
-    "noContentFound": null
+    "noContentFound": "{{- name}} tidak ditemukan."
   },
   "plural": {
     "entry_one": "{{count}} entri",
@@ -64,12 +64,12 @@
     "unsaved": "Anda masih memiliki perubahan yang belum disimpan.",
     "stay": "Tetap disini",
     "leave": "Keluar",
-    "close": null,
-    "create": null,
-    "delete": null,
-    "edit": null,
+    "close": "Tutup",
+    "create": "Buat",
+    "delete": "Hapus",
+    "edit": "Sunting",
     "clear": "Hapus",
-    "reset": null,
+    "reset": "Atur ulang",
     "validation": {
       "unique": "Unik"
     }
@@ -95,11 +95,11 @@
       "noResults": "Tidak ada hasil yang ditemukan.",
       "noAlbums": "Tidak ada album yang ditemukan.",
       "noArtists": "Tidak ada artis yang ditemukan.",
-      "noGenres": null,
+      "noGenres": "Tidak ada genre yang ditemukan.",
       "noPlaylists": "Tidak ada daftar putar yang ditemukan.",
       "noTracks": "Tidak ada trek yang ditemukan.",
-      "noHiddenTracks": null,
-      "noLyrics": null
+      "noHiddenTracks": "Tidak ada trek tersembunyi ditemukan.",
+      "noLyrics": "Lirik tidak ditemukan."
     }
   },
   "feat": {
@@ -110,15 +110,15 @@
         "downloadAPK": "Unduh APK saat ini",
         "updateGoogle": "Perbarui melalui Play Store",
         "version": "Versi",
-        "checkUpdates": null,
-        "rcNotification": null
+        "checkUpdates": "Periksa Pembaruan",
+        "rcNotification": "Pemberitahuan Pra-Rilis"
       }
     },
     "appearance": {
       "title": "Tampilan"
     },
     "font": {
-      "title": null,
+      "title": "Fon",
       "extra": {
         "accent": "Font Aksen",
         "primary": "Font Primer"
@@ -133,20 +133,20 @@
       }
     },
     "tabsOrder": {
-      "title": "Urutan Tab Beranda",
+      "title": "Urutan Tab",
       "brief": "Kustomisasikan urutan dan visibilitas tab.",
       "extra": {
-        "setHomeTab": null,
-        "showNavbar": null
+        "setHomeTab": "Buka tab {{- name}} saat aplikasi diluncurkan.",
+        "showNavbar": "Tampilkan Bilah Navigasi"
       }
     },
     "minAlbumLength": {
-      "title": null
+      "title": "Panjang Album Minimal"
     },
     "miniplayerGestures": {
-      "title": null,
+      "title": "Gestur Pemutar mini",
       "extra": {
-        "dragClearPlayback": null
+        "dragClearPlayback": "Seret Pemutar mini Bawah untuk Membersihkan Pemutaran"
       }
     },
     "nowPlayingDesign": {
@@ -157,15 +157,15 @@
       }
     },
     "quickScroll": {
-      "title": null,
-      "brief": null
+      "title": "Gulir Cepat",
+      "brief": "Tampilkan bilah gulir Nothing-styled di layar yang mendukung."
     },
     "language": {
       "title": "Bahasa",
       "extra": {
         "contribute": "Kontribusi Penerjemahan",
-        "useLTR": null,
-        "translators": null
+        "useLTR": "Gunakan tata letak LTR. Mulai ulang diperlukan.",
+        "translators": "Penerjemah"
       }
     },
     "backup": {
@@ -173,9 +173,9 @@
       "description": "Transfer data dari aplikasi ini antar perangkat melalui berkas `music_backup.json`.",
       "extra": {
         "export": "Ekspor",
-        "exportSuccess": null,
+        "exportSuccess": "Ekspor berhasil diselesaikan.",
         "import": "Impor",
-        "importSuccess": null
+        "importSuccess": "Impor berhasil diselesaikan."
       }
     },
     "insights": {
@@ -190,15 +190,15 @@
       }
     },
     "mostPlayed": {
-      "title": null,
-      "brief": null,
+      "title": "Sering Diputar",
+      "brief": "Trek teratas all-time.",
       "extra": {
-        "playCount": null
+        "playCount": "{{count}} pemutaran"
       }
     },
     "hiddenTracks": {
-      "title": null,
-      "brief": null
+      "title": "Trek Tersembunyi",
+      "brief": "Trek tidak ditampilkan di aplikasi."
     },
     "saveErrors": {
       "title": "Simpan Galat",
@@ -207,32 +207,33 @@
     "playback": {
       "title": "Pemutaran",
       "extra": {
-        "delay": null,
+        "delay": "Delay Pemutaran",
         "options": "Opsi Pemutaran",
-        "pitch": null,
+        "pitch": "Pitch Pemutaran",
         "speed": "Kecepatan Pemutaran",
+        "restoreVolume": "Pulihkan Volume Aplikasi",
         "volume": "Volume Aplikasi"
       }
     },
     "continuePlaybackOnDismiss": {
-      "title": null,
-      "description": null
+      "title": "Lanjutkan Pemutaran saat Ditutup",
+      "description": "Biarkan pemutaran musik berlanjutkan ketika kamu menutup aplikasi dari tugas baru-baru ini. Tutup paksa aplikasi saat pemutaran berhenti."
     },
     "repeatOnSkip": {
       "title": "Tetap dalam Mode Mengulang saat Melewati",
       "brief": "Jangan mengalihkan mode ke \"Ulangi\" dari \"Ulangi Sekali\" saat melewati."
     },
     "restoreLastPosition": {
-      "title": null
+      "title": "Pulihkan Dari Posisi Terakhir Diputar"
     },
     "lyrics": {
-      "title": null,
+      "title": "Lirik",
       "extra": {
-        "useEmbedded": null,
-        "providers": null,
+        "useEmbedded": "Gunakan Lirik Tersemat",
+        "providers": "Penyedia Lirik",
         "providersInstructions": {
-          "line1": null,
-          "line2": null
+          "line1": "Untuk alasan legal, kami tidak secara otomatis menyediakan sumber daring untuk menampilkan lirik karena kami tidak memiliki lisensi untuk melakukannya. Sebagai gantinya kami mendukung penyedia layanan, yang dapat Anda gunakan untuk menentukan dari mana kami dapat mengambil lirik.",
+          "line2": "Klik untuk mempelajari selengkapnya bagaimana kamu bisa membuat layanan."
         }
       }
     },
@@ -253,20 +254,20 @@
       "brief": "Mengabaikan tindakan apa pun yang mempercepat fitur pemindaian ulang normal."
     },
     "optimizedImageSave": {
-      "title": null,
-      "brief": null,
+      "title": "Optimalkan Penyimpanan Gambar",
+      "brief": "Trek yang dibagikan sama seperti gambar sebagai album mereka.",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Menonaktifkan fitur ini akan menyebabkan aplikasi menggunakan lebih banyak penyimpanan dan mungkin pemindaian akan melambat, karena sampul disimpan secara lokal.",
+        "line2": "Memerlukan penggunaan fitur Deep Rescan untuk menerapkan perubahan."
       }
     },
     "rescanOnLaunch": {
-      "title": null,
-      "brief": null
+      "title": "Pindai Ulang saat Diluncurkan",
+      "brief": "Jika dinonaktifkan, gunakan fitur Pindai Ulang untuk mendeteksi baru, diperbaru, dan trek dihapus."
     },
     "listAllow": {
       "title": "Diizinkan",
-      "description": null
+      "description": "Tentukan dimana trek bisa ditemukan. Jika kosong, akan mencari dimana-mana."
     },
     "listBlock": {
       "title": "Diblokir",
@@ -277,41 +278,41 @@
       "description": "Durasi audio dalam detik yang tidak ingin kami simpan."
     },
     "separators": {
-      "title": null,
+      "title": "Pemisah Multi-Value",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Menerapkan ke trek baru. Gunakan fitur Deep Rescan untuk memperbarui trek yang sudah ada.",
+        "line2": "Peringatan: Hasil ini mungkin beberapa tag salah teridentifikasi saat memiliki beberapa value. Tidak berlaku untuk trek yang kamu ubah secara manual."
       }
     },
     "experimental": {
-      "title": null
+      "title": "Fitur Eksperimental"
     },
     "audioEffects": {
-      "title": null
+      "title": "Efek Audio"
     },
     "equalizer": {
-      "title": null,
+      "title": "Equalizer",
       "extra": {
-        "Custom": null,
-        "Normal": null,
-        "Classical": null,
-        "Dance": null,
-        "Flat": null,
-        "Folk": null,
-        "Heavy Metal": null,
-        "Hip Hop": null,
-        "Jazz": null,
-        "Pop": null,
-        "Rock": null
+        "Custom": "Kustom",
+        "Normal": "Normal",
+        "Classical": "Klasik",
+        "Dance": "Dance",
+        "Flat": "Flat",
+        "Folk": "Folk",
+        "Heavy Metal": "Heavy Metal",
+        "Hip Hop": "Hip Hop",
+        "Jazz": "Jazz",
+        "Pop": "Pop",
+        "Rock": "Rock"
       }
     },
     "replayGain": {
-      "title": null,
+      "title": "ReplayGain",
       "extra": {
-        "preAmp": null,
-        "preAmpDescription": null,
-        "adjustWithTags": null,
-        "adjustWithoutTags": null
+        "preAmp": "ReplayGain Pre-amp",
+        "preAmpDescription": "Sesuaikan tingkat suara ketika ReplayGain diaktifkan. Dapat menyebabkan puncak pada beberapa trek. Perubahan diterapkan di trek berikutnya.",
+        "adjustWithTags": "Sesuaikan Dengan Tag",
+        "adjustWithoutTags": "Sesuaikan Tidak dengan Tag"
       }
     },
     "ignoreInterrupt": {
@@ -319,20 +320,20 @@
       "brief": "Lanjutkan memutar audio ketika interupsi seperti notifikasi atau panggilan telepon. Anda harus menjeda secara manual dan melanjutkan musik dalam situasi ini."
     },
     "sleepTimer": {
-      "title": null,
-      "description": null,
+      "title": "Pewaktu Tidur",
+      "description": "Hentikan pemutaran audio setelah pada waktu yang ditentukan.",
       "extra": {
-        "start": null,
-        "stopTime": null,
-        "extend": null
+        "start": "Mulai",
+        "stopTime": "Audio akan berhenti memutar di {{- time}}.",
+        "extend": "Tambah timer hingga trek berhenti."
       }
     },
     "waveformSlider": {
-      "title": null,
+      "title": "Slider Waveform",
       "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
+        "purgeCache": "Bersihkan Tembolok Waveform",
+        "purgeCacheBrief": "Bebaskan ruang penyimpanan untuk merekalkulasi waveform dari pemutaran trek.",
+        "purgeCacheToast": "Tembolok waveform dibersihkan."
       }
     },
     "code": {
@@ -351,8 +352,8 @@
     },
     "onboarding": {
       "extra": {
-        "configureSettings": null,
-        "startScan": null,
+        "configureSettings": "Pengaturan Konfigurasi",
+        "startScan": "Mulai Pemindaian Trek",
         "saveTracks": "Menyimpan Trek",
         "saveImages": "Menyimpan Gambar"
       }
@@ -360,7 +361,7 @@
     "playedRecent": {
       "title": "Baru Saja Diputar",
       "extra": {
-        "notFound": null
+        "notFound": "Tidak ada yang diputar dalam {{amount}} hari terakhir."
       }
     },
     "search": {
@@ -373,7 +374,7 @@
       "extra": {
         "change": "Ubah Karya Seni",
         "remove": "Hapus Karya Seni",
-        "square": null
+        "square": "Sampul Kotak"
       }
     },
     "directory": {
@@ -384,38 +385,38 @@
     },
     "playlist": {
       "extra": {
-        "m3uImport": null,
-        "m3uExport": null,
-        "absolute": null,
-        "relative": null
+        "m3uImport": "Impor Daftar Putar M3U",
+        "m3uExport": "Ekspor sebagai M3U",
+        "absolute": "Absolut",
+        "relative": "Relatif"
       }
     },
     "trackMetadata": {
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Sunting bagaimana trek muncul untuk aplikasi ini. Ini tidak mengubah file itu sendiri.",
+        "line2": "Catatan: Perubahan anda mungkin diatur ulang jika file ini diubah."
       },
       "extra": {
-        "albumArtists": null,
-        "disc": null,
-        "name": null,
-        "trackNumber": null,
-        "year": null
+        "albumArtists": "Artis Album",
+        "disc": "Disk",
+        "name": "Nama",
+        "trackNumber": "Nomer Trek",
+        "year": "Tahun"
       }
     },
     "modalViewPreference": {
-      "title": null,
+      "title": "Opsi Layar",
       "extra": {
-        "layout": null,
-        "list": null,
-        "grid": null,
-        "compactGrid": null,
+        "layout": "Tata Letak",
+        "list": "Daftar",
+        "grid": "Ubin",
+        "compactGrid": "Ubin Kompak",
         "sort": "urutan penyortiran",
         "asc": "Urutan Naik",
-        "discover": null,
-        "duration": null,
+        "discover": "Jelajahi Waktu",
+        "duration": "Durasi",
         "modified": "Terakhir Diubah",
-        "trackCount": null
+        "trackCount": "Hitungan Trek"
       }
     },
     "modalTrack": {
@@ -424,18 +425,18 @@
         "filePath": "Lokasi Berkas",
         "sampleRate": "Sample Rate",
         "size": "Ukuran",
-        "trackQuickActions": null,
+        "trackQuickActions": "Tindakan Cepat Trek",
         "addToPlaylist": "Tambahkan ke Daftar Putar"
       }
     },
     "queue": {
       "extra": {
         "add": "Tambahkan ke Antrian",
-        "playNext": null,
-        "playLast": null,
+        "playNext": "Putar Berikutnya",
+        "playLast": "Putar Terakhir",
         "toast": "`{{- name}}` ditambahkan ke antrian.",
-        "queueAwareNext": null,
-        "queueAwareNextBrief": null
+        "queueAwareNext": "Putar Berikutnya dengan Mempertimbangkan Antrian",
+        "queueAwareNextBrief": "Upaya untuk menambahkan trek setelah akhir \"Putar Berikutnya\" trek."
       }
     }
   }

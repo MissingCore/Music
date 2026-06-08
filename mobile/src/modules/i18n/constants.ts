@@ -74,6 +74,7 @@ export const LANGUAGES = [
         link: "https://crowdin.com/profile/julian.bouys",
       },
       { display: "Mickael81", link: "https://crowdin.com/profile/mickael81" },
+      { display: "Sertra", link: "https://www.github.com/SertraFurr" },
     ],
   },
   {

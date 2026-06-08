@@ -211,6 +211,7 @@
         "options": "Ekstra optioner til afspilning",
         "pitch": null,
         "speed": "Afspilningshastighed",
+        "restoreVolume": null,
         "volume": "Appens lydstyrke"
       }
     },

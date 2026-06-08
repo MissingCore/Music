@@ -211,6 +211,7 @@
         "options": "Opcje odtwarzania",
         "pitch": null,
         "speed": "Prędkość odtwarzania",
+        "restoreVolume": null,
         "volume": "Głośność aplikacji"
       }
     },
