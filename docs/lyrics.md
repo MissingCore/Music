@@ -65,3 +65,11 @@ Given you have a license to an API that distributes lyrics which can be displaye
   ```
 
   - If `isJSONResponse` is "false", then this should be left empty as the response should be the lyrics themselves.
+
+## Supported Lyric Formats
+
+Lyrics will be rendered as a static string, unless it's identified as synchronized by the following conditions:
+
+- Every line starts with `[mm:ss.ms]` or `[mm:ss]`.
+  - Tags at the start of the lyrics that follow a similar format (ie: `[ti:]`) will be ignored.
+- Word-by-word lyrics (using either square or angle brackets) are also supported (ie: `[mm:ss.ms]`, `<mm:ss.ms>`).
