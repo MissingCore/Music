@@ -36,7 +36,7 @@ export async function autoDiscoverLyrics(abortController: AbortController) {
     }
 
     //? 3. Check for online lyrics.
-    if (!foundLyrics) {
+    if (!foundLyrics && lyricsProviders.length > 0) {
       //? Wait for 2.5s before doing an online search to prevent accidental fires when
       //? spamming the controls. Applies if this gets called within 30s.
       const prevLastRequestAt = lastRequestAt;
