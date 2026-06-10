@@ -35,6 +35,7 @@ export function TabOrderSheet(props: { ref: TrueSheetRef }) {
         onReordered={Tabs.move}
         style={{ height: 440 }}
         contentContainerClassName="gap-2"
+        alwaysKeyRenderedItems
       />
     </DetachedSheet>
   );

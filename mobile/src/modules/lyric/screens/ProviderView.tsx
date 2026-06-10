@@ -58,6 +58,7 @@ export default function LyricsProviders() {
         }
         className="-mb-4"
         contentContainerClassName="p-4"
+        alwaysKeyRenderedItems
       />
     </>
   );

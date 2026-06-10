@@ -4,7 +4,7 @@ import type {
 } from "@legendapp/list/react-native";
 import type { AnimatedLegendListProps } from "@legendapp/list/reanimated";
 import { AnimatedLegendList } from "@legendapp/list/reanimated";
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   GestureDetector,
   useNativeGesture,
@@ -52,6 +52,8 @@ interface DragListProps<TData> extends Pick<
   renderItem: (info: DragListRenderItemInfo<TData>) => React.ReactElement;
   /** Size of the rendered items. All items should be the same size, with any gap included. */
   estimatedItemSize: number;
+  /** Guaranteed fix to lingering outdated styles at the cost of poor scroll performance. */
+  alwaysKeyRenderedItems?: boolean;
 
   /** Called when item captured drag gesture. */
   onDragBegin?: VoidFunction;
@@ -77,6 +79,7 @@ function DragListImpl<TData>({
   keyExtractor,
   renderItem,
   estimatedItemSize,
+  alwaysKeyRenderedItems = false,
   onDragBegin: _,
   onDragEnd,
   onReordered,
@@ -98,6 +101,24 @@ function DragListImpl<TData>({
   const scrollPosition = useSharedValue(0);
   const autoScrollDirection = useSharedValue(0);
   const autoScrollAmount = useSharedValue(0);
+
+  const [isInReRenderRange, _setIsInReRenderRange] =
+    useState<(index: number) => boolean>();
+  const setIsInReRenderRange = useCallback((start: number, end: number) => {
+    if (start === end) return _setIsInReRenderRange(undefined);
+    _setIsInReRenderRange(
+      () => (index: number) =>
+        start > end
+          ? index >= end && index <= start
+          : index <= end && index >= start,
+    );
+  }, []);
+
+  //? Resets `isInReRenderRange` the render after force-re-rendering the moved
+  //? items to purge outdated styles.
+  useEffect(() => {
+    if (reactiveActiveIndex === INACTIVE) _setIsInReRenderRange(undefined);
+  }, [reactiveActiveIndex]);
 
   const revalidatedShifted = useCallback(() => {
     "worklet";
@@ -169,11 +190,10 @@ function DragListImpl<TData>({
       enabled.set(false);
       if (activeIndex.get() !== INACTIVE) {
         if (onDragEnd) scheduleOnRN(onDragEnd);
-        scheduleOnRN(
-          onReordered,
-          activeIndex.get(),
-          activeIndex.get() + shifted.get(),
-        );
+        const startIndex = activeIndex.get();
+        const endIndex = activeIndex.get() + shifted.get();
+        scheduleOnRN(setIsInReRenderRange, startIndex, endIndex);
+        scheduleOnRN(onReordered, startIndex, endIndex);
       }
       scheduleOnRN(onCleanup);
     },
@@ -206,18 +226,22 @@ function DragListImpl<TData>({
   const gestures = useSimultaneousGestures(nativeGesture, panListenerGesture);
 
   const renderDragItem = useCallback(
-    ({ item, index }: LegendListRenderItemProps<TData>) => (
+    ({ item, index, extraData }: LegendListRenderItemProps<TData>) => (
       <ItemWrapper
-        //? Define a key to prevent weird flashing issues potentially caused
-        //? by outdated translations styles being applied by forcing a re-render
-        //? only on the items that moved.
-        key={`${keyExtractor(item, index)}_${index}`}
+        //? Define a key to prevent weird flashing issues potentially caused by
+        //? outdated translations styles being applied by forcing a re-render only
+        //? on the items that moved. This has a side-effect of making scrolling worse.
+        key={
+          alwaysKeyRenderedItems || extraData?.(index)
+            ? `${keyExtractor(item, index)}_${index}`
+            : undefined
+        }
         index={index}
       >
         {renderItem({ item, index })}
       </ItemWrapper>
     ),
-    [keyExtractor, renderItem],
+    [alwaysKeyRenderedItems, keyExtractor, renderItem],
   );
 
   // Reset transitions during render after the data changes to prevent flashing.
@@ -246,7 +270,7 @@ function DragListImpl<TData>({
         scrollEnabled={reactiveActiveIndex === INACTIVE}
         recycleItems
         // Fixes some issues caused by recycling.
-        extraData={reactiveActiveIndex}
+        extraData={isInReRenderRange}
         maintainVisibleContentPosition={false}
         overScrollMode="never"
         showsHorizontalScrollIndicator={false}
