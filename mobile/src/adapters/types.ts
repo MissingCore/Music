@@ -99,17 +99,23 @@ export namespace MediaLibrary {
 }
 
 export interface Adapter {
+  protocol: AdapterProtocol;
+
+  /** Returns a list of albums, sorted by their name in ascending order. */
   getAlbums(): Promise<MediaLibrary.Album[]>;
   getAlbum(id: string): Promise<MediaLibrary.Album2>;
 
+  /** Returns a list of artists, sorted by their name in ascending order. */
   getArtists(): Promise<MediaLibrary.Artist[]>;
   getArtist(id: string): Promise<MediaLibrary.Artist2>;
 
   getFolder(id: string): Promise<MediaLibrary.Folder>;
 
+  /** Returns a list of genres, sorted by their name in ascending order. */
   getGenres(): Promise<MediaLibrary.Genre[]>;
   getGenre(id: string): Promise<MediaLibrary.Genre2>;
 
+  /** Returns a list of playlists, sorted by their name in ascending order. */
   getPlaylists(): Promise<MediaLibrary.Playlist[]>;
   getPlaylist(id: string): Promise<MediaLibrary.Playlist2>;
 
