@@ -35,8 +35,15 @@ export function toBaseListObject(data: SchemaBase & ListBase) {
 
 //#region Album Formatters
 export function toAlbumListObject(data: AlbumListsResult) {
+  let yearStr: string | null = null;
+  if (data.minYear !== null && data.maxYear !== null) {
+    if (data.minYear === data.maxYear) yearStr = `${data.maxYear}`;
+    else yearStr = `${data.minYear} - ${data.maxYear}`;
+  }
+
   return {
     ...toBaseListObject(data),
+    year: yearStr,
     artist: AlbumArtistsKey.toString(data.artistsKey),
     artists: AlbumArtistsKey.deconstruct(data.artistsKey).map((name) => {
       return { id: name, name };

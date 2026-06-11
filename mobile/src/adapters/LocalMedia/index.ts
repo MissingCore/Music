@@ -1,7 +1,6 @@
-import { eq, max, min } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 import { db } from "~/db";
-import { tracks } from "~/db/schema";
 
 import { Protocol } from "../core/constants";
 import type { Adapter } from "../core/types";
@@ -39,15 +38,11 @@ export const LocalMediaAdapter: Adapter = {
 
   //#region getAlbum
   async getAlbum(id) {
-    const [[details], [range], albumTracks] = await Promise.all([
+    const [[details], albumTracks] = await Promise.all([
       throwIfNoResults(
         db.select().from(albumListsView).where(eq(albumListsView.id, id)),
         "err.msg.noAlbums",
       ),
-      db
-        .select({ minYear: min(tracks.year), maxYear: max(tracks.year) })
-        .from(tracks)
-        .where(eq(tracks.albumId, id)),
       db
         .select({
           ...sharedTrackColumns,
@@ -63,15 +58,8 @@ export const LocalMediaAdapter: Adapter = {
     ]);
     if (!details) throw new Error("[getAlbum] This check should never run.");
 
-    let yearStr: string | null = null;
-    if (range && range.minYear !== null && range.maxYear !== null) {
-      if (range.minYear === range.maxYear) yearStr = `${range.maxYear}`;
-      else yearStr = `${range.minYear} - ${range.maxYear}`;
-    }
-
     return {
       ...toAlbumListObject(details),
-      year: yearStr,
       tracks: albumTracks.map((track) => ({
         ...toBaseTrackObject(track),
         disc: track.disc,

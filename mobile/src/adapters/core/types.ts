@@ -19,6 +19,8 @@ export namespace MediaLibrary {
   type SimpleRelation = { id: string; name: string };
 
   export interface Album extends SchemaBase, ListBase {
+    /** Release year(s) in a "display" format.*/
+    year: Maybe<string>;
     /** Album artists in a "display" format. */
     artist: string;
     artists: SimpleRelation[];
@@ -28,8 +30,6 @@ export namespace MediaLibrary {
 
   /** `Album` with relations. */
   export interface Album2 extends Album {
-    /** Release year(s) in a "display" format.*/
-    year: Maybe<string>;
     tracks: Array<Track & { disc: Maybe<number>; track: Maybe<number> }>;
   }
 
@@ -37,7 +37,7 @@ export namespace MediaLibrary {
 
   /** `Artist` with relations. */
   export interface Artist2 extends Artist {
-    albums: Array<Album & { year: Maybe<string> }>;
+    albums: Album[];
     tracks: Track[];
   }
 

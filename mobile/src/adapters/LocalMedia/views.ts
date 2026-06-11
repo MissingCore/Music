@@ -1,4 +1,4 @@
-import { count, eq, getTableColumns, sql, sum } from "drizzle-orm";
+import { count, eq, getTableColumns, max, min, sql, sum } from "drizzle-orm";
 
 import { db } from "~/db";
 import {
@@ -26,6 +26,8 @@ export const albumListsView = db
     ...albumFields,
     duration: sum(tracks.duration).as("total_duration"),
     trackCount: count(tracks.id).as("total_track_count"),
+    minYear: min(tracks.year).as("min_album_year"),
+    maxYear: max(tracks.year).as("max_album_year"),
   })
   .from(albums)
   .innerJoin(tracks, eq(albums.id, tracks.albumId))
