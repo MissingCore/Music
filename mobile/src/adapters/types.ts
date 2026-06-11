@@ -18,21 +18,21 @@ export namespace MediaLibrary {
   /** Minimal representation of a relation to another data structure. */
   type SimpleRelation = { id: string; name: string };
 
-  /** Basic representation of an album. */
   export interface Album extends SchemaBase, ListBase {
     /** Album artists in a "display" format. */
     artist: string;
     artists: SimpleRelation[];
+    /** @note May not be entirely accurate. */
+    isFavorite: Maybe<boolean>;
   }
 
   /** `Album` with relations. */
   export interface Album2 extends Album {
-    tracks: Array<
-      Track & { disc: Maybe<number>; track: Maybe<number>; year: Maybe<number> }
-    >;
+    /** Release year(s) in a "display" format.*/
+    year: Maybe<string>;
+    tracks: Array<Track & { disc: Maybe<number>; track: Maybe<number> }>;
   }
 
-  /** Basic representation of an artist. */
   export interface Artist extends SchemaBase, ListBase {}
 
   /** `Artist` with relations. */
@@ -41,7 +41,6 @@ export namespace MediaLibrary {
     tracks: Track[];
   }
 
-  /** Basic representation of a folder. */
   export interface Folder extends SchemaBase {
     subDirs: string[];
     tracks: Track[];
@@ -55,7 +54,6 @@ export namespace MediaLibrary {
     tracks: Track[];
   }
 
-  /** Basic representation of a playlist. */
   export interface Playlist extends SchemaBase, ListBase {}
 
   /** `Playlist` with relations. */
