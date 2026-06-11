@@ -230,9 +230,11 @@ function toBaseListObject(data: {
 function toBaseTrackObject(
   data: Pick<StructuredTracksResult, keyof typeof sharedTrackColumns>,
 ) {
-  const trackArtists = data.artists
-    ? (JSON.parse(data.artists) as string[])
-    : null;
+  let trackArtists: string[] | null = null;
+  try {
+    if (data.artists) trackArtists = JSON.parse(data.artists) as string[];
+  } catch {}
+
   return {
     id: data.id ?? data.name,
     protocol: _AdapterProtocol,

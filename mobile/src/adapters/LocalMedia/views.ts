@@ -20,7 +20,7 @@ export const albumListsView = db
   })
   .from(albums)
   .innerJoin(tracks, eq(albums.id, tracks.albumId))
-  .groupBy(albums.name)
+  .groupBy(albums.id)
   .orderBy(iAsc(albums.name), iAsc(albums.artistsKey))
   .as("album_lists_view");
 //#endregion
