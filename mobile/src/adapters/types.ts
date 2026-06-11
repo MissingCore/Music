@@ -86,7 +86,7 @@ export namespace MediaLibrary {
   }
 
   /** Representation of additional data associated with a track. */
-  export interface TrackStat {
+  export interface TrackStats {
     trackId: string;
     protocol: AdapterProtocol;
 
@@ -96,4 +96,24 @@ export namespace MediaLibrary {
     sampleRate: Maybe<number>;
     size: Maybe<number>;
   }
+}
+
+export interface Adapter {
+  getAlbums(): Promise<MediaLibrary.Album[]>;
+  getAlbum(id: string): Promise<MediaLibrary.Album2>;
+
+  getArtists(): Promise<MediaLibrary.Artist[]>;
+  getArtist(id: string): Promise<MediaLibrary.Artist2>;
+
+  getFolder(id: string): Promise<MediaLibrary.Folder>;
+
+  getGenres(): Promise<MediaLibrary.Genre[]>;
+  getGenre(id: string): Promise<MediaLibrary.Genre2>;
+
+  getPlaylists(): Promise<MediaLibrary.Playlist[]>;
+  getPlaylist(id: string): Promise<MediaLibrary.Playlist2>;
+
+  getTracks(): Promise<MediaLibrary.Track[]>;
+  getTrack(id: string): Promise<MediaLibrary.Track>;
+  getTrackStats(id: string): Promise<MediaLibrary.TrackStats>;
 }
