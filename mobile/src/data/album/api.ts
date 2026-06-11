@@ -125,7 +125,7 @@ export async function getAlbumsSummary<
     .from(albums)
     .where(and(...(conditions ?? [])))
     .innerJoin(orderedAlbumTracks, eq(albums.id, orderedAlbumTracks.albumId))
-    .groupBy(albums.name)
+    .groupBy(albums.id)
     .orderBy(iAsc(albums.name), iAsc(albums.artistsKey));
 
   return results
