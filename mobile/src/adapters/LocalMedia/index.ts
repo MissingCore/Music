@@ -3,8 +3,8 @@ import { eq, max, min } from "drizzle-orm";
 import { db } from "~/db";
 import { tracks } from "~/db/schema";
 
-import type { Adapter } from "../types";
-import { Protocol } from "../constants";
+import { Protocol } from "../core/constants";
+import type { Adapter } from "../core/types";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import {
@@ -21,14 +21,12 @@ import {
   structuredTracksView,
 } from "./views";
 
-const _AdapterProtocol = Protocol.LOCAL;
-
 /**
  * Returns media stored on the device locally, which is managed by our
  * SQLite database.
  */
 export const LocalMediaAdapter: Adapter = {
-  protocol: _AdapterProtocol,
+  protocol: Protocol.LOCAL,
 
   //#region getAlbums
   async getAlbums() {

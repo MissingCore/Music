@@ -1,6 +1,7 @@
 import { AlbumArtistsKey } from "~/data/album/utils";
 
-import { Protocol } from "../constants";
+import { Protocol } from "../core/constants";
+
 import type {
   AlbumListsResult,
   SharedTrackColumn,
