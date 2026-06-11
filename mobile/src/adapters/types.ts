@@ -15,11 +15,12 @@ export namespace MediaLibrary {
 
   type ListBase = { duration: number; trackCount: number };
 
+  /** Minimal representation of a relation to another data structure. */
   type SimpleRelation = { id: string; name: string };
 
   /** Basic representation of an album. */
   export interface Album extends SchemaBase, ListBase {
-    /** Artist in a "display" format. */
+    /** Album artists in a "display" format. */
     artist: string;
     artists: SimpleRelation[];
   }
@@ -62,10 +63,11 @@ export namespace MediaLibrary {
     tracks: Track[];
   }
 
+  /** Shared representation of a track. */
   export interface Track extends SchemaBase {
     /** Points to the playable media. */
     src: string;
-    /** A positive number (tracks without a `duration` will be filtered out). */
+    /** Track length in seconds. Tracks without a valid `duration` will be filtered out. */
     duration: number;
 
     /** Artist in a "display" format. */
@@ -81,5 +83,17 @@ export namespace MediaLibrary {
 
     /** Identifies the folder this track is in. */
     parent: Maybe<string>;
+  }
+
+  /** Representation of additional data associated with a track. */
+  export interface TrackStat {
+    trackId: string;
+    protocol: AdapterProtocol;
+
+    /** The mimetype of the file. */
+    contentType: Maybe<string>;
+    bitrate: Maybe<number>;
+    sampleRate: Maybe<number>;
+    size: Maybe<number>;
   }
 }
