@@ -1,26 +1,22 @@
-import { eq, getTableColumns, max, min, sum, count } from "drizzle-orm";
+import { eq, max, min } from "drizzle-orm";
 
 import { db } from "~/db";
-import {
-  artists,
-  genres,
-  playlists,
-  tracks,
-  tracksToArtists,
-  tracksToGenres,
-  tracksToPlaylists,
-} from "~/db/schema";
-
-import { AlbumArtistsKey } from "~/data/album/utils";
+import { tracks } from "~/db/schema";
 
 import type { Adapter } from "../types";
 import { Protocol } from "../constants";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
-import { omitKeys } from "~/utils/object";
-import type { StructuredTracksResult } from "./views";
+import {
+  toAlbumListObject,
+  toBaseListObject,
+  toBaseTrackObject,
+} from "./formatters";
 import {
   albumListsView,
+  artistListsView,
+  genreListsView,
+  playlistListsView,
   sharedTrackColumns,
   structuredTracksView,
 } from "./views";
@@ -38,14 +34,7 @@ export const LocalMediaAdapter: Adapter = {
   async getAlbums() {
     const results = await db.select().from(albumListsView);
     return results
-      .map((album) => ({
-        ...toBaseListObject(album),
-        artist: AlbumArtistsKey.toString(album.artistsKey),
-        artists: AlbumArtistsKey.deconstruct(album.artistsKey).map(
-          (artistName) => ({ id: artistName, name: artistName }),
-        ),
-        isFavorite: album.isFavorite,
-      }))
+      .map(toAlbumListObject)
       .sort((a, b) => a.name.localeCompare(b.name));
   },
   //#endregion
@@ -83,12 +72,7 @@ export const LocalMediaAdapter: Adapter = {
     }
 
     return {
-      ...toBaseListObject(details),
-      artist: AlbumArtistsKey.toString(details.artistsKey),
-      artists: AlbumArtistsKey.deconstruct(details.artistsKey).map((name) => {
-        return { id: name, name };
-      }),
-      isFavorite: details.isFavorite,
+      ...toAlbumListObject(details),
       year: yearStr,
       tracks: albumTracks.map((track) => ({
         ...toBaseTrackObject(track),
@@ -101,18 +85,7 @@ export const LocalMediaAdapter: Adapter = {
 
   //#region getArtists
   async getArtists() {
-    const results = await db
-      .select({
-        ...getTableColumns(artists),
-        duration: sum(tracks.duration),
-        trackCount: count(tracks.id),
-      })
-      .from(artists)
-      .innerJoin(tracksToArtists, eq(artists.name, tracksToArtists.artistName))
-      .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id))
-      .groupBy(artists.name)
-      .orderBy(iAsc(artists.name));
-
+    const results = await db.select().from(artistListsView);
     return results
       .map(toBaseListObject)
       .sort((a, b) => a.name.localeCompare(b.name));
@@ -133,18 +106,7 @@ export const LocalMediaAdapter: Adapter = {
 
   //#region getGenres
   async getGenres() {
-    const results = await db
-      .select({
-        ...getTableColumns(genres),
-        duration: sum(tracks.duration),
-        trackCount: count(tracks.id),
-      })
-      .from(genres)
-      .innerJoin(tracksToGenres, eq(genres.name, tracksToGenres.genreName))
-      .innerJoin(tracks, eq(tracksToGenres.trackId, tracks.id))
-      .groupBy(genres.name)
-      .orderBy(iAsc(genres.name));
-
+    const results = await db.select().from(genreListsView);
     return results
       .map(toBaseListObject)
       .sort((a, b) => a.name.localeCompare(b.name));
@@ -159,23 +121,12 @@ export const LocalMediaAdapter: Adapter = {
 
   //#region getPlaylists
   async getPlaylists() {
-    const results = await db
-      .select({
-        ...playlistFields,
-        duration: sum(tracks.duration),
-        trackCount: count(tracks.id),
-      })
-      .from(playlists)
-      .innerJoin(
-        tracksToPlaylists,
-        eq(playlists.name, tracksToPlaylists.playlistName),
-      )
-      .innerJoin(tracks, eq(tracksToPlaylists.trackId, tracks.id))
-      .groupBy(playlists.name)
-      .orderBy(iAsc(playlists.name));
-
+    const results = await db.select().from(playlistListsView);
     return results
-      .map(toBaseListObject)
+      .map((playlist) => ({
+        ...toBaseListObject(playlist),
+        isFavorite: playlist.isFavorite,
+      }))
       .sort((a, b) => a.name.localeCompare(b.name));
   },
   //#endregion
@@ -204,54 +155,3 @@ export const LocalMediaAdapter: Adapter = {
   },
   //#endregion
 };
-
-//#region Internal Utils
-const playlistFields = omitKeys(getTableColumns(playlists), ["isFavorite"]);
-
-/** Reformats data used in a list to its shared repesentation. */
-function toBaseListObject(data: {
-  id?: string;
-  name: string;
-  artwork: string | null;
-  duration: string | null;
-  trackCount: number;
-}) {
-  return {
-    id: data.id ?? data.name,
-    protocol: _AdapterProtocol,
-    name: data.name,
-    artworkSrc: data.artwork,
-    duration: Number(data.duration) || 0,
-    trackCount: data.trackCount,
-  };
-}
-
-/** Reformats track data to its shared repesentation. */
-function toBaseTrackObject(
-  data: Pick<StructuredTracksResult, keyof typeof sharedTrackColumns>,
-) {
-  let trackArtists: string[] | null = null;
-  try {
-    if (data.artists) trackArtists = JSON.parse(data.artists) as string[];
-  } catch {}
-
-  return {
-    id: data.id ?? data.name,
-    protocol: _AdapterProtocol,
-    name: data.name,
-    artworkSrc: data.artwork,
-    src: data.uri,
-    duration: data.duration,
-    artist: data.artistsName,
-    artists:
-      trackArtists && trackArtists.length > 0
-        ? trackArtists.map((name) => ({ id: name, name }))
-        : null,
-    album: data.albumName,
-    albumId: data.albumId,
-    discoverTime: data.discoverTime,
-    modificationTime: data.modificationTime,
-    parent: data.parentFolder,
-  };
-}
-//#endregion

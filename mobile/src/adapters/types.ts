@@ -54,7 +54,9 @@ export namespace MediaLibrary {
     tracks: Track[];
   }
 
-  export interface Playlist extends SchemaBase, ListBase {}
+  export interface Playlist extends SchemaBase, ListBase {
+    isFavorite: Maybe<boolean>;
+  }
 
   /** `Playlist` with relations. */
   export interface Playlist2 extends Playlist {

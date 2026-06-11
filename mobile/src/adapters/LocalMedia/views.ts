@@ -1,7 +1,16 @@
 import { count, eq, getTableColumns, sql, sum } from "drizzle-orm";
 
 import { db } from "~/db";
-import { albums, tracks, tracksToArtists } from "~/db/schema";
+import {
+  albums,
+  artists,
+  genres,
+  playlists,
+  tracks,
+  tracksToArtists,
+  tracksToGenres,
+  tracksToPlaylists,
+} from "~/db/schema";
 
 import { getSubqueryFields, iAsc } from "~/lib/drizzle";
 import { omitKeys, pickKeys } from "~/utils/object";
@@ -23,8 +32,63 @@ export const albumListsView = db
   .groupBy(albums.id)
   .orderBy(iAsc(albums.name), iAsc(albums.artistsKey))
   .as("album_lists_view");
+
+//? Used for type inference since we can't directly call `typeof` on an anonymous function.
+const _getAlbumLists = async () => db.select().from(albumListsView);
+export type AlbumListsResult = Awaited<
+  ReturnType<typeof _getAlbumLists>
+>[number];
 //#endregion
 
+//#region Artist View
+export const artistListsView = db
+  .select({
+    ...getTableColumns(artists),
+    duration: sum(tracks.duration).as("total_duration"),
+    trackCount: count(tracks.id).as("total_track_count"),
+  })
+  .from(artists)
+  .innerJoin(tracksToArtists, eq(artists.name, tracksToArtists.artistName))
+  .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id))
+  .groupBy(artists.name)
+  .orderBy(iAsc(artists.name))
+  .as("artist_lists_view");
+//#endregion
+
+//#region Genre View
+export const genreListsView = db
+  .select({
+    ...getTableColumns(genres),
+    duration: sum(tracks.duration).as("total_duration"),
+    trackCount: count(tracks.id).as("total_track_count"),
+  })
+  .from(genres)
+  .innerJoin(tracksToGenres, eq(genres.name, tracksToGenres.genreName))
+  .innerJoin(tracks, eq(tracksToGenres.trackId, tracks.id))
+  .groupBy(genres.name)
+  .orderBy(iAsc(genres.name))
+  .as("genre_lists_view");
+//#endregion
+
+//#region Playlist View
+export const playlistListsView = db
+  .select({
+    ...getTableColumns(playlists),
+    duration: sum(tracks.duration).as("total_duration"),
+    trackCount: count(tracks.id).as("total_track_count"),
+  })
+  .from(playlists)
+  .innerJoin(
+    tracksToPlaylists,
+    eq(playlists.name, tracksToPlaylists.playlistName),
+  )
+  .innerJoin(tracks, eq(tracksToPlaylists.trackId, tracks.id))
+  .groupBy(playlists.name)
+  .orderBy(iAsc(playlists.name))
+  .as("playlist_lists_view");
+//#endregion
+
+//#region Track View
 /**
  * Order the `tracksToArtists` table by artist names. Used for ensuring
  * artist name order when generating the `artists` field on tracks.
@@ -95,3 +159,6 @@ export const sharedTrackColumns = pickKeys(
     "parentFolder",
   ],
 );
+
+export type SharedTrackColumn = keyof typeof sharedTrackColumns;
+//#endregion
