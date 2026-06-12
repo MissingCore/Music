@@ -207,19 +207,40 @@ export const LocalMediaAdapter: Adapter = {
 
   //#region getTracks
   async getTracks() {
-    return [];
+    const results = await db.select().from(structuredTracksView);
+    return results.map(toBaseTrackObject);
   },
   //#endregion
 
   //#region getTrack
-  async getTrack() {
-    throw new Error("`getTrack` is unimplemented.");
+  async getTrack(id) {
+    const [result] = await throwIfNoResults(
+      db
+        .select(sharedTrackColumns)
+        .from(structuredTracksView)
+        .where(eq(structuredTracksView.id, id)),
+    );
+    if (!result) throw new Error("[getTrack] This check should never run.");
+
+    return toBaseTrackObject(result);
   },
   //#endregion
 
   //#region getTrackStats
-  async getTrackStats() {
-    throw new Error("`getTrackStats` is unimplemented.");
+  async getTrackStats(id) {
+    const { format, ...stats } = await throwIfNoResults(
+      db.query.tracks.findFirst({
+        where: (fields, { eq }) => eq(fields.id, id),
+        columns: { format: true, bitrate: true, sampleRate: true, size: true },
+      }),
+    );
+
+    return {
+      ...stats,
+      trackId: id,
+      protocol: this.protocol,
+      contentType: format,
+    };
   },
   //#endregion
 };
