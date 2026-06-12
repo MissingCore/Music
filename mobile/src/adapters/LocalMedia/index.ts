@@ -16,6 +16,7 @@ import {
   toAlbumListObject,
   toBaseListObject,
   toBaseTrackObject,
+  toPlaylistListObject,
 } from "./formatters";
 import {
   albumListsView,
@@ -170,10 +171,7 @@ export const LocalMediaAdapter: Adapter = {
   async getPlaylists() {
     const results = await db.select().from(playlistListsView);
     return results
-      .map((playlist) => ({
-        ...toBaseListObject(playlist),
-        isFavorite: playlist.isFavorite,
-      }))
+      .map(toPlaylistListObject)
       .sort((a, b) => a.name.localeCompare(b.name));
   },
   //#endregion
@@ -196,13 +194,12 @@ export const LocalMediaAdapter: Adapter = {
           structuredTracksView,
           eq(tracksToPlaylists.trackId, structuredTracksView.id),
         )
-        .orderBy(iAsc(structuredTracksView.name)),
+        .orderBy(iAsc(tracksToPlaylists.position)),
     ]);
     if (!details) throw new Error("[getPlaylist] This check should never run.");
 
     return {
-      ...toBaseListObject(details),
-      isFavorite: details.isFavorite,
+      ...toPlaylistListObject(details),
       tracks: playlistTracks.map(toBaseTrackObject),
     };
   },

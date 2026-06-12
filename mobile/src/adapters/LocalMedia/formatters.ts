@@ -4,6 +4,7 @@ import { Protocol } from "../core/constants";
 
 import type {
   AlbumListsResult,
+  PlaylistListsResult,
   SharedTrackColumn,
   StructuredTracksResult,
 } from "./views";
@@ -48,6 +49,24 @@ export function toAlbumListObject(data: AlbumListsResult) {
     artists: AlbumArtistsKey.deconstruct(data.artistsKey).map((name) => {
       return { id: name, name };
     }),
+    isFavorite: data.isFavorite,
+  };
+}
+//#endregion
+
+//#region Playlist Formatters
+export function toPlaylistListObject(data: PlaylistListsResult) {
+  let collageArtwork: Array<string | null> | null = null;
+  if (typeof data.collageArtwork === "string") {
+    try {
+      // `data.collageArtwork` should either be an array with at least 1 defined item or `null`.
+      collageArtwork = JSON.parse(data.collageArtwork).slice(0, 4);
+    } catch {}
+  }
+
+  return {
+    ...toBaseListObject(data),
+    artworkSrc: data.artwork ?? collageArtwork,
     isFavorite: data.isFavorite,
   };
 }

@@ -54,7 +54,8 @@ export namespace MediaLibrary {
     tracks: Track[];
   }
 
-  export interface Playlist extends SchemaBase, ListBase {
+  export interface Playlist extends Omit<SchemaBase, "artworkSrc">, ListBase {
+    artworkSrc: Maybe<string> | Array<string | null>;
     isFavorite: Maybe<boolean>;
   }
 
