@@ -259,20 +259,15 @@ export const LocalMediaAdapter: Adapter = {
   //#endregion
 
   //#region getTrackStats
-  async getTrackStats(id) {
+  async getTrackStats(trackId) {
     const { format, ...stats } = await throwIfNoResults(
       db.query.tracks.findFirst({
-        where: (fields, { eq }) => eq(fields.id, id),
+        where: (fields, { eq }) => eq(fields.id, trackId),
         columns: { format: true, bitrate: true, sampleRate: true, size: true },
       }),
     );
 
-    return {
-      ...stats,
-      trackId: id,
-      protocol: this.protocol,
-      contentType: format,
-    };
+    return { ...stats, trackId, protocol: this.protocol, contentType: format };
   },
   //#endregion
 };
