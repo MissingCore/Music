@@ -18,7 +18,7 @@ import { getFont } from "~/modules/customization/font/utils";
 import { useTheme } from "~/modules/customization/theme/hooks";
 
 export default function AppUpdate() {
-  const { release, isRC } = useHasNewUpdate();
+  const { release } = useHasNewUpdate();
   const { scheme, onSurface, onSurfaceVariant, outlineVariant } = useTheme();
   const accentFont = usePreferenceStore((s) => s.accentFont);
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
@@ -124,14 +124,12 @@ export default function AppUpdate() {
           LeftElement={<LogoGitHub />}
           className="gap-4"
         />
-        {!isRC ? (
-          <SegmentedList.Item
-            labelTextKey="feat.appUpdate.extra.updateGoogle"
-            onPress={() => openLink(Links.PlayStore)}
-            LeftElement={<LogoPlayStore />}
-            className="gap-4"
-          />
-        ) : null}
+        <SegmentedList.Item
+          labelTextKey="feat.appUpdate.extra.updateGoogle"
+          onPress={() => openLink(Links.PlayStore)}
+          LeftElement={<LogoPlayStore />}
+          className="gap-4"
+        />
       </SegmentedList>
     </ListLayout>
   );
