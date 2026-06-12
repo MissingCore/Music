@@ -1,11 +1,12 @@
 import { eq } from "drizzle-orm";
 
 import { db } from "~/db";
+import { albumsToArtists, tracksToArtists } from "~/db/schema";
 
 import { Protocol } from "../core/constants";
 import type { Adapter } from "../core/types";
 
-import { iAsc, throwIfNoResults } from "~/lib/drizzle";
+import { getSubqueryFields, iAsc, throwIfNoResults } from "~/lib/drizzle";
 import {
   toAlbumListObject,
   toBaseListObject,
@@ -79,8 +80,43 @@ export const LocalMediaAdapter: Adapter = {
   //#endregion
 
   //#region getArtist
-  async getArtist() {
-    throw new Error("`getArtist` is unimplemented.");
+  async getArtist(id) {
+    const [[details], artistAlbums, artistTracks] = await Promise.all([
+      throwIfNoResults(
+        db.select().from(artistListsView).where(eq(artistListsView.name, id)),
+        "err.msg.noArtists",
+      ),
+      db
+        .select(getSubqueryFields(albumListsView))
+        .from(albumsToArtists)
+        .where(eq(albumsToArtists.artistName, id))
+        .innerJoin(
+          albumListsView,
+          eq(albumsToArtists.albumId, albumListsView.id),
+        ),
+      db
+        .select(sharedTrackColumns)
+        .from(tracksToArtists)
+        .where(eq(tracksToArtists.artistName, id))
+        .innerJoin(
+          structuredTracksView,
+          eq(tracksToArtists.trackId, structuredTracksView.id),
+        )
+        .orderBy(iAsc(structuredTracksView.name)),
+    ]);
+    if (!details) throw new Error("[getArtist] This check should never run.");
+
+    const sortedAlbums = artistAlbums.sort(
+      (a, b) =>
+        (b.maxYear ?? -1) - (a.maxYear ?? -1) ||
+        (b.minYear ?? -1) - (a.minYear ?? -1),
+    );
+
+    return {
+      ...toBaseListObject(details),
+      albums: sortedAlbums.map(toAlbumListObject),
+      tracks: artistTracks.map(toBaseTrackObject),
+    };
   },
   //#endregion
 
