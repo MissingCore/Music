@@ -1,7 +1,12 @@
 import { eq } from "drizzle-orm";
 
 import { db } from "~/db";
-import { albumsToArtists, tracksToArtists } from "~/db/schema";
+import {
+  albumsToArtists,
+  tracksToArtists,
+  tracksToGenres,
+  tracksToPlaylists,
+} from "~/db/schema";
 
 import { Protocol } from "../core/constants";
 import type { Adapter } from "../core/types";
@@ -136,8 +141,28 @@ export const LocalMediaAdapter: Adapter = {
   //#endregion
 
   //#region getGenre
-  async getGenre() {
-    throw new Error("`getGenre` is unimplemented.");
+  async getGenre(id) {
+    const [[details], genreTracks] = await Promise.all([
+      throwIfNoResults(
+        db.select().from(genreListsView).where(eq(genreListsView.name, id)),
+        "err.msg.noGenres",
+      ),
+      db
+        .select(sharedTrackColumns)
+        .from(tracksToGenres)
+        .where(eq(tracksToGenres.genreName, id))
+        .innerJoin(
+          structuredTracksView,
+          eq(tracksToGenres.trackId, structuredTracksView.id),
+        )
+        .orderBy(iAsc(structuredTracksView.name)),
+    ]);
+    if (!details) throw new Error("[getGenre] This check should never run.");
+
+    return {
+      ...toBaseListObject(details),
+      tracks: genreTracks.map(toBaseTrackObject),
+    };
   },
   //#endregion
 
@@ -154,8 +179,32 @@ export const LocalMediaAdapter: Adapter = {
   //#endregion
 
   //#region getPlaylist
-  async getPlaylist() {
-    throw new Error("`getPlaylist` is unimplemented.");
+  async getPlaylist(id) {
+    const [[details], playlistTracks] = await Promise.all([
+      throwIfNoResults(
+        db
+          .select()
+          .from(playlistListsView)
+          .where(eq(playlistListsView.name, id)),
+        "err.msg.noPlaylists",
+      ),
+      db
+        .select(sharedTrackColumns)
+        .from(tracksToPlaylists)
+        .where(eq(tracksToPlaylists.playlistName, id))
+        .innerJoin(
+          structuredTracksView,
+          eq(tracksToPlaylists.trackId, structuredTracksView.id),
+        )
+        .orderBy(iAsc(structuredTracksView.name)),
+    ]);
+    if (!details) throw new Error("[getPlaylist] This check should never run.");
+
+    return {
+      ...toBaseListObject(details),
+      isFavorite: details.isFavorite,
+      tracks: playlistTracks.map(toBaseTrackObject),
+    };
   },
   //#endregion
 
