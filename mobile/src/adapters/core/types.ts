@@ -41,8 +41,16 @@ export namespace MediaLibrary {
     tracks: Track[];
   }
 
-  export interface Folder extends SchemaBase {
-    subDirs: string[];
+  export interface Folder extends Omit<SchemaBase, "id"> {
+    /** If it's not a string, then it's the "root" directory. */
+    id: Maybe<string>;
+    /**
+     * Identifies the folder this folder is in. If it's not a string, then
+     * it's the "root" directory.
+     */
+    parent: Maybe<string>;
+
+    subDirs: SimpleRelation[];
     tracks: Track[];
   }
 
@@ -110,7 +118,7 @@ export interface Adapter {
   getArtists(): Promise<MediaLibrary.Artist[]>;
   getArtist(id: string): Promise<MediaLibrary.Artist2>;
 
-  getFolder(id: string): Promise<MediaLibrary.Folder>;
+  getFolder(path: Maybe<string>): Promise<MediaLibrary.Folder>;
 
   /** Returns a list of genres, sorted by their name in ascending order. */
   getGenres(): Promise<MediaLibrary.Genre[]>;

@@ -8,10 +8,13 @@ import {
   tracksToPlaylists,
 } from "~/db/schema";
 
+import { getFolderDirectories } from "~/data/folder/api";
+
 import { Protocol } from "../core/constants";
 import type { Adapter } from "../core/types";
 
 import { getSubqueryFields, iAsc, throwIfNoResults } from "~/lib/drizzle";
+import { addTrailingSlash } from "~/utils/string";
 import {
   toAlbumListObject,
   toBaseListObject,
@@ -127,8 +130,37 @@ export const LocalMediaAdapter: Adapter = {
   //#endregion
 
   //#region getFolder
-  async getFolder() {
-    throw new Error("`getFolder` is unimplemented.");
+  async getFolder(path) {
+    const [details, directories, folderTracks] = await Promise.all([
+      path
+        ? db.query.fileNodes.findFirst({
+            where: (fields, { eq }) => eq(fields.path, path),
+          })
+        : undefined,
+      getFolderDirectories(path),
+      path
+        ? db
+            .select(sharedTrackColumns)
+            .from(structuredTracksView)
+            .where(
+              eq(
+                structuredTracksView.parentFolder,
+                `file:///${addTrailingSlash(path)}`,
+              ),
+            )
+            .orderBy(iAsc(structuredTracksView.name))
+        : [],
+    ]);
+
+    return {
+      id: path,
+      protocol: this.protocol,
+      name: details?.name ?? "",
+      artworkSrc: null,
+      parent: details?.parentPath,
+      subDirs: directories.map(({ name }) => ({ id: name, name })),
+      tracks: folderTracks.map(toBaseTrackObject),
+    };
   },
   //#endregion
 
