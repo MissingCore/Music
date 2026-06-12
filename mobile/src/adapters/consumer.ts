@@ -1,4 +1,6 @@
 import i18next from "~/modules/i18n";
+import type { TracksSortOptions } from "~/data/types";
+import { viewPreferenceStore } from "~/stores/ViewPreference/store";
 
 import { Protocol } from "./core/constants";
 import type { Adapter, AdapterProtocol, MediaLibrary } from "./core/types";
@@ -53,7 +55,10 @@ export async function getGenres() {
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
-export async function getGenre(route: string) {
+export async function getGenre(
+  route: string,
+  sortOptions?: TracksSortOptions<"genreTracks">,
+) {
   // `params` should be in the form of: `:screenId?adapter1=value&adapter2=value`
   const usedAdapters = Array.from(
     new URLSearchParams(route.split("?").at(-1)).entries(),
@@ -78,7 +83,33 @@ export async function getGenre(route: string) {
   }
 
   // Sort the tracks.
-  merged.tracks.sort((a, b) => a.name.localeCompare(b.name));
+  const isAsc =
+    sortOptions?.isAsc ?? viewPreferenceStore.getState().genreTracksIsAsc;
+  const order =
+    sortOptions?.order ?? viewPreferenceStore.getState().genreTracksOrder;
+
+  merged.tracks.sort((a, b) => {
+    const aData =
+      a[
+        order === "artistName"
+          ? "artist"
+          : order === "albumName"
+            ? "album"
+            : order
+      ];
+    const bData =
+      b[
+        order === "artistName"
+          ? "artist"
+          : order === "albumName"
+            ? "album"
+            : order
+      ];
+    if (!aData) return -1;
+    if (!bData) return 1;
+    return `${aData}`.localeCompare(`${bData}`);
+  });
+  if (!isAsc) merged.tracks.reverse();
 
   return merged;
 }

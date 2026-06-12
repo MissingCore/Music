@@ -94,10 +94,10 @@ export const queries = {
         queryFn: getGenres,
       });
     },
-    detail(route: string) {
+    detail(route: string, sortOptions?: TracksSortOptions<"genreTracks">) {
       return queryOptions({
-        queryKey: [...this._def, "detail", route],
-        queryFn: () => getGenre(route),
+        queryKey: [...this._def, "detail", route, sortOptions],
+        queryFn: () => getGenre(route, sortOptions),
       });
     },
   },
