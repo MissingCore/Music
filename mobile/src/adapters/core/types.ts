@@ -120,7 +120,6 @@ export interface Adapter {
 
   getFolder(path: Maybe<string>): Promise<MediaLibrary.Folder>;
 
-  /** Returns a list of genres, sorted by their name in ascending order. */
   getGenres(): Promise<MediaLibrary.Genre[]>;
   getGenre(id: string): Promise<MediaLibrary.Genre2>;
 

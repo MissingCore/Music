@@ -167,9 +167,7 @@ export const LocalMediaAdapter: Adapter = {
   //#region getGenres
   async getGenres() {
     const results = await db.select().from(genreListsView);
-    return results
-      .map(toBaseListObject)
-      .sort((a, b) => a.name.localeCompare(b.name));
+    return results.map(toBaseListObject);
   },
   //#endregion
 

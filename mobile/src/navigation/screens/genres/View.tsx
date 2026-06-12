@@ -20,10 +20,10 @@ export default function Genres() {
   const sortedData = useViewOrder("genre", data);
   const formatData = useCallback(
     (item: GenreData) => ({
-      id: item.name,
+      id: item.route,
       title: item.name,
       description: t("plural.track", { count: item.trackCount }),
-      imageSource: item.artwork,
+      imageSource: item.artworkSrc ?? null,
     }),
     [t],
   );

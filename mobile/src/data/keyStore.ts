@@ -3,6 +3,8 @@ import { ne } from "drizzle-orm";
 
 import { playlists } from "~/db/schema";
 
+import { getGenres } from "~/adapters/consumer";
+
 import { getAlbum, getAlbumsSummary } from "./album/api";
 import {
   getArtist,
@@ -10,7 +12,7 @@ import {
   getSortedArtistTracks,
 } from "./artist/api";
 import { getFavoriteLists } from "./favorite/api";
-import { getGenre, getGenresSummary, getSortedGenreTracks } from "./genre/api";
+import { getGenre, getSortedGenreTracks } from "./genre/api";
 import { getLyric, getLyricsSummary } from "./lyric/api";
 import { getPlaylist, getPlaylistsSummary } from "./playlist/api";
 import {
@@ -90,7 +92,7 @@ export const queries = {
     get all() {
       return queryOptions({
         queryKey: [...this._def, "all"],
-        queryFn: getGenresSummary,
+        queryFn: getGenres,
       });
     },
     detail(genreName: string) {
