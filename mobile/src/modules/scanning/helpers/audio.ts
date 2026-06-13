@@ -115,8 +115,17 @@ export async function findAndSaveAudio() {
     `Found ${foundAssets2.length} tracks, filtered down to ${discoveredTracks2.length} in ${stopwatch.lapTime()}.`,
   );
 
-  console.log(discoveredTracks2);
+  // console.log(discoveredTracks2);
   //#endregion
+
+  const expoMediaIds = new Set(foundAssets.map((t) => t.id));
+  const ourForkIds = new Set(foundAssets2.map((t) => t.id));
+
+  const onlyMediaIds = expoMediaIds.difference(ourForkIds);
+  const onlyForkIds = ourForkIds.difference(expoMediaIds);
+
+  console.log(foundAssets.filter((t) => onlyMediaIds.has(t.id)));
+  console.log(foundAssets2.filter((t) => onlyForkIds.has(t.id)));
 
   //#region Change Detection
   const savedTracks = await db.query.tracks.findMany({
