@@ -1,4 +1,4 @@
-import type { MusicAsset } from "@missingcore/native-utils";
+import type { Asset } from "@missingcore/native-utils";
 import { getMusicAssets } from "@missingcore/native-utils";
 import {
   MetadataPresets,
@@ -6,8 +6,6 @@ import {
 } from "@missingcore/react-native-metadata-retriever";
 import { inArray } from "drizzle-orm";
 import { File } from "expo-file-system";
-import type { Asset as MediaLibraryAsset } from "expo-media-library/legacy";
-import { getAssetsAsync } from "expo-media-library/legacy";
 
 import { db } from "~/db";
 import type { InvalidTrack } from "~/db/schema";
@@ -59,20 +57,26 @@ export async function findAndSaveAudio() {
   const listAllow = _listAllow.map((p) => `file://${addTrailingSlash(p)}`);
   const listBlock = _listBlock.map((p) => `file://${addTrailingSlash(p)}`);
 
-  // Get all audio files discoverable by `expo-media-library`.
-  const foundAssets: MediaLibraryAsset[] = [];
+  /*
+    ? Takes ~30 seconds to return metadata for all the tracks.
+  */
+
+  // Get all audio files discoverable by MediaStore.
+  const foundAssets: Asset[] = [];
   let isComplete = false;
-  let lastRead: string | undefined;
+  let lastRead: number | undefined;
   do {
-    const { assets, endCursor, hasNextPage } = await getAssetsAsync({
-      after: lastRead,
+    const { assets, endCursor, hasNextPage } = await getMusicAssets({
       first: BATCH_PRESETS.LIGHT,
-      mediaType: "audio",
+      after: lastRead,
+      // resolveWithFullInfo: true,
     });
     foundAssets.push(...assets);
     lastRead = endCursor;
     isComplete = !hasNextPage;
   } while (!isComplete);
+
+  console.log(foundAssets);
 
   const discoveredTracks = foundAssets.filter(
     (a) =>
@@ -87,49 +91,6 @@ export async function findAndSaveAudio() {
     `Found ${foundAssets.length} tracks, filtered down to ${discoveredTracks.length} in ${stopwatch.lapTime()}.`,
   );
   //#endregion
-
-  /*
-    ? Takes ~30 seconds to return metadata for all the tracks.
-  */
-  // Get all audio files discoverable by `expo-media-library`.
-  const foundAssets2: MusicAsset[] = [];
-  let isComplete2 = false;
-  let lastRead2: number | undefined;
-  do {
-    const assets2 = await getMusicAssets({
-      after: lastRead2,
-      first: BATCH_PRESETS.LIGHT,
-      resolveWithFullInfo: true,
-    });
-    foundAssets2.push(...assets2.assets);
-    lastRead2 = assets2.endCursor;
-    isComplete2 = !assets2.hasNextPage;
-  } while (!isComplete2);
-
-  const discoveredTracks2 = foundAssets2.filter(
-    (a) =>
-      // Ensure track is in the allowlist if it's non-empty.
-      (listAllow.length === 0 || listAllow.some((p) => a.uri.startsWith(p))) &&
-      // Ensure track isn't in the blocklist.
-      !listBlock.some((p) => a.uri.startsWith(p)) &&
-      // Ensure track meets the minimum duration requirement.
-      (a.duration ?? 0) > minSeconds,
-  );
-  console.log(
-    `Found ${foundAssets2.length} tracks, filtered down to ${discoveredTracks2.length} in ${stopwatch.lapTime()}.`,
-  );
-
-  console.log(foundAssets2);
-  //#endregion
-
-  const expoMediaIds = new Set(foundAssets.map((t) => t.id));
-  const ourForkIds = new Set(foundAssets2.map((t) => t.id));
-
-  const onlyMediaIds = expoMediaIds.difference(ourForkIds);
-  const onlyForkIds = ourForkIds.difference(expoMediaIds);
-
-  console.log(foundAssets.filter((t) => onlyMediaIds.has(t.id)));
-  console.log(foundAssets2.filter((t) => onlyForkIds.has(t.id)));
 
   //#region Change Detection
   const savedTracks = await db.query.tracks.findMany({
@@ -323,10 +284,7 @@ const wantedMetadata = [
  * **Note:** We return `album`, which is non-standard and should be used
  * to create an Album and then swapped out with the created `albumId`.
  */
-async function getTrackMetadata(
-  asset: MediaLibraryAsset,
-  delimiters: string[],
-) {
+async function getTrackMetadata(asset: Asset, delimiters: string[]) {
   const { id, uri, duration, modificationTime, filename } = asset;
   const { bitrate, sampleRate, ...t } = await getMetadata(uri, wantedMetadata);
   let fileSize = 0;
@@ -379,7 +337,7 @@ async function getTrackMetadata(
 
 /** Returns `TrackMetadata` or `InvalidTrack`. */
 function safeRetrieveMetadataFactory(delimiters: string[]) {
-  return async (asset: MediaLibraryAsset) => {
+  return async (asset: Asset) => {
     const { id, uri, modificationTime } = asset;
     try {
       const trackEntry = await getTrackMetadata(asset, delimiters);
