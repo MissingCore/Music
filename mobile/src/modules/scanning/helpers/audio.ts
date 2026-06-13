@@ -1,3 +1,5 @@
+import type { MusicAsset } from "@missingcore/native-utils";
+import { getMusicAssets } from "@missingcore/native-utils";
 import {
   MetadataPresets,
   getMetadata,
@@ -84,6 +86,36 @@ export async function findAndSaveAudio() {
   console.log(
     `Found ${foundAssets.length} tracks, filtered down to ${discoveredTracks.length} in ${stopwatch.lapTime()}.`,
   );
+  //#endregion
+
+  /*
+    ? Takes ~30 seconds to return metadata for all the tracks.
+  */
+  // Get all audio files discoverable by `expo-media-library`.
+  const foundAssets2: MusicAsset[] = [];
+  let isComplete2 = false;
+  let lastPage = 0;
+  do {
+    const assets2 = await getMusicAssets(lastPage, BATCH_PRESETS.LIGHT);
+    foundAssets2.push(...assets2);
+    lastPage += 1;
+    isComplete2 = assets2.length < BATCH_PRESETS.LIGHT;
+  } while (!isComplete2);
+
+  const discoveredTracks2 = foundAssets2.filter(
+    (a) =>
+      // Ensure track is in the allowlist if it's non-empty.
+      (listAllow.length === 0 || listAllow.some((p) => a.uri.startsWith(p))) &&
+      // Ensure track isn't in the blocklist.
+      !listBlock.some((p) => a.uri.startsWith(p)) &&
+      // Ensure track meets the minimum duration requirement.
+      (a.duration ?? 0) > minSeconds,
+  );
+  console.log(
+    `Found ${foundAssets2.length} tracks, filtered down to ${discoveredTracks2.length} in ${stopwatch.lapTime()}.`,
+  );
+
+  console.log(discoveredTracks2);
   //#endregion
 
   //#region Change Detection
