@@ -112,7 +112,7 @@ class NativeUtilsModule : Module() {
         MediaStore.Audio.Media.DATA
       )
 
-      val selection = "${MediaStore.Audio.Media.IS_MUSIC} != 0"
+      val selection = "${MediaStore.Audio.Media.MIME_TYPE} LIKE 'audio/%'"
       val queryUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
 
       val results = mutableListOf<Map<String, Any?>>()

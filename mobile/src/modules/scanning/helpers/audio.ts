@@ -115,7 +115,7 @@ export async function findAndSaveAudio() {
     `Found ${foundAssets2.length} tracks, filtered down to ${discoveredTracks2.length} in ${stopwatch.lapTime()}.`,
   );
 
-  // console.log(discoveredTracks2);
+  console.log(foundAssets2);
   //#endregion
 
   const expoMediaIds = new Set(foundAssets.map((t) => t.id));
