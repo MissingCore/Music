@@ -14,14 +14,14 @@ import java.io.IOException
 fun getAssets(context: Context, assetOptions: AssetsOptions): Bundle {
   val contentResolver = context.contentResolver
   try {
-    val (selection, order, limit, offset) = getQueryFromOptions(assetOptions)
+    val (selection, selectionArgs, order, limit, offset) = getQueryFromOptions(assetOptions)
     val resolveWithFullInfo = assetOptions.resolveWithFullInfo ?: false
     val projection = if (resolveWithFullInfo) AUDIO_ASSET_PROJECTION else ASSET_PROJECTION
     contentResolver.query(
       EXTERNAL_CONTENT_URI,
       projection,
       selection,
-      null,
+      selectionArgs,
       order
     ).use { assetsCursor ->
       if (assetsCursor == null) {
