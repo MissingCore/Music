@@ -2,6 +2,8 @@ package expo.modules.nativeutils.media
 
 import android.provider.MediaStore
 
+val ARTIST_PLACEHOLDER = "<unknown>"
+
 val EXTERNAL_CONTENT_URI = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
 
 /** Columns to give context about the file. */
