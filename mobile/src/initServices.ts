@@ -1,9 +1,4 @@
 import BackgroundTimer from "@boterop/react-native-background-timer";
-import {
-  GlyphButton,
-  GlyphToy,
-  MatrixAction,
-} from "@missingcore/music-glyph-toys";
 import { toast } from "@missingcore/ui/toast";
 import AsyncStorage from "expo-sqlite/kv-store";
 import type {
@@ -81,7 +76,6 @@ const erroredTrackUris = new Set<string>();
  */
 async function initServices() {
   console.warn("[InitServices] Initializing services...");
-  GlyphToy.connect();
 
   //* Fetch the value from `AsyncStorage` instead of `preferenceStore` as the
   //* store might not be hydrated in time (so if we turned it off, it might
@@ -98,22 +92,12 @@ async function initServices() {
   });
   AudioBrowser.updateOptions(getAudioBrowserOptions());
 
-  //#region Glyph Toy Events
-  GlyphButton.onMount(() => GlyphToy.connect());
-
-  GlyphButton.onTouchUp(async ({ action }) => {
-    if (action === MatrixAction.PLAY_PAUSE) await PlaybackControls.playToggle();
-    if (action === MatrixAction.SKIP) await PlaybackControls.next();
-  });
-  //#endregion
-
   //#region Media Events
   // This event gets called when `appKilledPlaybackBehavior = "stop-playback-and-remove-notification"`.
   AudioBrowser.handleBeforeServiceKilled(async (permanent) => {
     await revalidateWidgets({ openApp: true });
     if (permanent) {
       console.warn("[handleBeforeServiceKilled] Running aggressive cleanup...");
-      GlyphToy.disconnect();
       AudioBrowser.reset();
     }
   });
@@ -206,10 +190,6 @@ async function initServices() {
         (Math.min(e.track.duration!, 10) - lastPosition) * 1000,
       );
     }
-
-    //? We now fallback to the path specified by `PlaceholderImageFile`
-    //? if we have no embedded artwork.
-    GlyphToy.setMatrixArtwork(e.track.artwork || null);
 
     await revalidateWidgets();
   });

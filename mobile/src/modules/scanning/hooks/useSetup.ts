@@ -1,4 +1,3 @@
-import { GlyphToy } from "@missingcore/music-glyph-toys";
 import { useEffect, useState } from "react";
 import AudioBrowser from "react-native-audio-browser";
 
@@ -50,7 +49,6 @@ export function useSetup() {
 
     (async () => {
       setSetupState("pending");
-      GlyphToy.connect();
       await onAppStartUpInit;
 
       // Load custom fonts. Done in a try-catch due to Sentry reporting error

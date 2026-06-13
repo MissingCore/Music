@@ -22,13 +22,6 @@ We support the default 5-band equalizer with 10 provided presets and the option 
 > [!NOTE]
 > Having this feature enabled may cause the app to feel slower (ie: slower navigation, slower opening of sheets).
 
-## Glyph Toy
-
-[Documentation can be found in the dedicated `music-glyph-toys` repository](https://github.com/MissingCore/music-glyph-toys?tab=readme-ov-file#toy-design--usage), with notes on the interaction support we added to simulate media controls via the Glyph Button.
-
-> [!IMPORTANT]
-> There's a high probability of the Glyph Button interactions not working since I don't have a Nothing Phone 3 to test things out (which might be caused by the connection between the toy and the app not being correctly implemented).
-
 ## Lyric Providers
 
 See the [dedicated `Lyrics Provider` documentation for more information](./lyrics.md#-experimental-lyrics-providers).

@@ -1,4 +1,3 @@
-import { GlyphToy } from "@missingcore/music-glyph-toys";
 import AudioBrowser from "react-native-audio-browser";
 
 import {
@@ -33,8 +32,6 @@ export async function onActiveTrack(args: {
     AudioBrowser.updateNowPlaying(
       await applyReplayGainToTrack(updatedTrackData, false),
     );
-
-    GlyphToy.setMatrixArtwork(updatedTrackData.artwork);
   } catch {}
 }
 

@@ -116,9 +116,9 @@ This (hopefully) lists all permissions required by Music based on those requeste
     </tr>
     <!-- Services Permissions -->
     <tr>
-      <td rowspan="4">Services</td>
+      <td rowspan="3">Services</td>
       <td><code>FOREGROUND_SERVICE</code></td>
-      <td rowspan="4">—</td>
+      <td rowspan="3">—</td>
       <td rowspan="3">Enables media playback while the app is in the background.</td>
     </tr>
     <tr>
@@ -126,10 +126,6 @@ This (hopefully) lists all permissions required by Music based on those requeste
     </tr>
     <tr>
       <td><code>WAKE_LOCK</code></td>
-    </tr>
-    <tr>
-      <td><code>com.nothing.ketchum.permission.ENABLE</code></td>
-      <td>Enables experimental Glyph Toys support.</td>
     </tr>
     <!-- Other Permissions -->
     <tr>

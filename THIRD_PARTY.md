@@ -3,7 +3,6 @@
 | @boterop/react-native-background-timer | MIT | https://github.com/boterop/react-native-background-timer |
 | @legendapp/list | MIT | https://github.com/LegendApp/legend-list |
 | @lodev09/react-native-true-sheet | MIT | https://github.com/lodev09/react-native-true-sheet |
-| @missingcore/music-glyph-toys | AGPL-3.0-only | https://github.com/MissingCore/music-glyph-toys |
 | @missingcore/react-native-actual-path | MIT | https://github.com/MissingCore/react-native-actual-path |
 | @missingcore/react-native-audio-analyzer | MIT | https://github.com/exzos28/react-native-audio-analyzer |
 | @missingcore/react-native-metadata-retriever | MIT | https://github.com/MissingCore/react-native-metadata-retriever |
