@@ -6,29 +6,19 @@ import android.content.Context
 import android.content.res.Configuration
 import android.net.Uri
 import android.provider.MediaStore
-import expo.modules.kotlin.exception.Exceptions
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
+import expo.modules.nativeutils.media.EXTERNAL_CONTENT_URI
+import expo.modules.nativeutils.media.AUDIO_ASSET_PROJECTION
+import expo.modules.nativeutils.media.AssetsOptions
+import expo.modules.nativeutils.media.assets.getAssets
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.IOException
 import java.io.OutputStream
-import java.net.URL
-import java.util.regex.Pattern
 import org.apache.commons.io.IOUtils
-
-fun slashifyFilePath(path: String?): String? {
-  return if (path == null) {
-    null
-  } else if (path.startsWith("file:///")) {
-    path
-  } else {
-    // Ensure leading schema with a triple slash
-    Pattern.compile("^file:/*").matcher(path).replaceAll("file:///")
-  }
-}
 
 class NativeUtilsModule : Module() {
   private val context: Context?
@@ -82,109 +72,9 @@ class NativeUtilsModule : Module() {
     }
 
 
-    AsyncFunction("getMusicAssets") { page: Int, pageSize: Int ->
+    AsyncFunction("getMusicAssets") { assetOptions: AssetsOptions ->
       val currentContext = context
-      if (currentContext == null) return@AsyncFunction emptyList<Map<String, Any?>>()
-
-      val normalizedPage = page.coerceAtLeast(0)
-      val normalizedPageSize = pageSize.coerceAtLeast(1)
-      val offsetLong = normalizedPage.toLong() * normalizedPageSize
-      if (offsetLong > Int.MAX_VALUE) return@AsyncFunction emptyList<Map<String, Any?>>()
-      val offset = offsetLong.toInt()
-      val sortOrder = "${MediaStore.Audio.Media.DATE_ADDED} DESC"
-
-      val projection = arrayOf(
-        MediaStore.Audio.Media._ID,
-        MediaStore.Audio.Media.DISPLAY_NAME,
-        MediaStore.Audio.Media.TITLE,
-        MediaStore.Audio.Media.ALBUM,
-        MediaStore.Audio.Media.ARTIST,
-        MediaStore.Audio.Media.ALBUM_ARTIST,
-        MediaStore.Audio.Media.DURATION,
-        MediaStore.Audio.Media.SIZE,
-        MediaStore.Audio.Media.DATE_ADDED,
-        MediaStore.Audio.Media.DATE_MODIFIED,
-        MediaStore.Audio.Media.MIME_TYPE,
-        MediaStore.Audio.Media.BITRATE,
-        MediaStore.Audio.Media.DISC_NUMBER,
-        MediaStore.Audio.Media.TRACK,
-        MediaStore.Audio.Media.YEAR,
-        MediaStore.Audio.Media.DATA
-      )
-
-      val selection = "${MediaStore.Audio.Media.MIME_TYPE} LIKE 'audio/%'"
-      val queryUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-
-      val results = mutableListOf<Map<String, Any?>>()
-      currentContext.contentResolver.query(queryUri, projection, selection, null, sortOrder)?.use { cursor ->
-        if (!cursor.moveToPosition(offset)) return@use
-
-        val idIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
-        val displayNameIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)
-        val titleIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
-        val albumIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)
-        val artistIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
-        val albumArtistIndex = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ARTIST)
-        val durationIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
-        val sizeIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)
-        val dateAddedIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)
-        val dateModifiedIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)
-        val mimeTypeIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.MIME_TYPE)
-        val bitrateIndex = cursor.getColumnIndex(MediaStore.Audio.Media.BITRATE)
-        val discNumberIndex = cursor.getColumnIndex(MediaStore.Audio.Media.DISC_NUMBER)
-        val trackIndex = cursor.getColumnIndex(MediaStore.Audio.Media.TRACK)
-        val yearIndex = cursor.getColumnIndex(MediaStore.Audio.Media.YEAR)
-        val dataIndex = cursor.getColumnIndex(MediaStore.Audio.Media.DATA)
-
-        var remaining = normalizedPageSize
-        do {
-          val id = cursor.getLong(idIndex)
-          val contentUri = ContentUris.withAppendedId(queryUri, id)
-          val filePath = if (dataIndex != -1) cursor.getString(dataIndex) else null
-          val rawUri = if (!filePath.isNullOrBlank()) {
-            Uri.fromFile(File(filePath)).toString()
-          } else {
-            contentUri.toString()
-          }
-          val uri = Uri.decode(rawUri)
-          val durationMs = cursor.getLong(durationIndex)
-          val dateAdded = cursor.getLong(dateAddedIndex)
-          val dateModified = cursor.getLong(dateModifiedIndex)
-          val albumArtist = if (albumArtistIndex != -1) cursor.getString(albumArtistIndex) else null
-          val bitrate = if (bitrateIndex != -1) cursor.getInt(bitrateIndex) else null
-          val discNumber = if (discNumberIndex != -1) cursor.getInt(discNumberIndex) else null
-          val trackNumber = if (trackIndex != -1) cursor.getInt(trackIndex) else null
-          val year = if (yearIndex != -1) cursor.getInt(yearIndex) else null
-          val genre = getGenreForAudioId(currentContext, id)
-
-          results.add(
-            mapOf(
-              "id" to id.toString(),
-              "uri" to uri,
-              "filename" to cursor.getString(displayNameIndex),
-              "title" to cursor.getString(titleIndex),
-              "album" to cursor.getString(albumIndex),
-              "artist" to cursor.getString(artistIndex),
-              "albumArtist" to albumArtist,
-              "genre" to genre,
-              "duration" to if (durationMs >= 0) durationMs.toDouble() / 1000.0 else null,
-              "fileSize" to cursor.getLong(sizeIndex),
-              "mimeType" to cursor.getString(mimeTypeIndex),
-              "bitrate" to bitrate,
-              "discNumber" to discNumber,
-              "trackNumber" to trackNumber,
-              "year" to year,
-              "mediaType" to "audio",
-              "creationTime" to if (dateAdded > 0) dateAdded * 1000 else null,
-              "modificationTime" to if (dateModified > 0) dateModified * 1000 else null
-            )
-          )
-
-          remaining -= 1
-        } while (remaining > 0 && cursor.moveToNext())
-      }
-
-      return@AsyncFunction results
+      return@AsyncFunction if (currentContext != null) getAssets(currentContext, assetOptions) else emptyList<Map<String, Any?>>()
     }
   }
 
@@ -226,6 +116,5 @@ class NativeUtilsModule : Module() {
     }
     return null
   }
-
   //#endregion
 }

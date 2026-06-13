@@ -1,31 +1,45 @@
 import { NativeModule, requireNativeModule } from "expo";
 
+interface AssetsOptions {
+  first: number;
+  after?: number;
+  fromIds?: string[];
+  resolveWithFullInfo?: boolean;
+}
+
 export type MusicAsset = {
   id: string;
+  filename: string;
   uri: string;
-  filename: string | null;
+  mimeType: string;
+  creationTime: number;
+  modificationTime: number;
+  duration: number;
+
   title: string | null;
   album: string | null;
-  artist: string | null;
   albumArtist: string | null;
+  artist: string | null;
   genre: string | null;
-  duration: number | null;
-  fileSize: number | null;
-  mimeType: string | null;
-  bitrate: number | null;
+  year: number | null;
   discNumber: number | null;
   trackNumber: number | null;
-  year: number | null;
-  mediaType: "audio";
-  creationTime: number | null;
-  modificationTime: number | null;
+  bitrate: number | null;
+  fileSize: number | null;
+};
+
+export type MusicAssetResult = {
+  assets: MusicAsset[];
+  hasNextPage: boolean;
+  endCursor: number;
+  totalCount: number;
 };
 
 declare class NativeUtilsModule extends NativeModule {
   isSystemDarkMode: boolean;
   launchAppViaIntent(): void;
   saveBundledAssetToURI(assetName: string, toUri: string): Promise<void>;
-  getMusicAssets(page: number, pageSize: number): Promise<MusicAsset[]>;
+  getMusicAssets(options: AssetsOptions): Promise<MusicAssetResult>;
 }
 
 const nativeModule = requireNativeModule<NativeUtilsModule>("NativeUtils");
@@ -46,8 +60,7 @@ export async function saveBundledAssetToURI(assetName: string, toUri: string) {
 }
 
 export async function getMusicAssets(
-  page: number,
-  pageSize: number,
-): Promise<MusicAsset[]> {
-  return nativeModule.getMusicAssets(page, pageSize);
+  options: AssetsOptions,
+): Promise<MusicAssetResult> {
+  return nativeModule.getMusicAssets(options);
 }

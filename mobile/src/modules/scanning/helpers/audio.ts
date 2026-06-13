@@ -94,12 +94,16 @@ export async function findAndSaveAudio() {
   // Get all audio files discoverable by `expo-media-library`.
   const foundAssets2: MusicAsset[] = [];
   let isComplete2 = false;
-  let lastPage = 0;
+  let lastRead2: number | undefined;
   do {
-    const assets2 = await getMusicAssets(lastPage, BATCH_PRESETS.LIGHT);
-    foundAssets2.push(...assets2);
-    lastPage += 1;
-    isComplete2 = assets2.length < BATCH_PRESETS.LIGHT;
+    const assets2 = await getMusicAssets({
+      after: lastRead2,
+      first: BATCH_PRESETS.LIGHT,
+      resolveWithFullInfo: true,
+    });
+    foundAssets2.push(...assets2.assets);
+    lastRead2 = assets2.endCursor;
+    isComplete2 = !assets2.hasNextPage;
   } while (!isComplete2);
 
   const discoveredTracks2 = foundAssets2.filter(
