@@ -18,7 +18,6 @@ fun putAssetsInfo(
   val filenameIndex = cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)
   val localUriIndex = cursor.getColumnIndex(MediaStore.Audio.Media.DATA)
   val mimeTypeIndex = cursor.getColumnIndex(MediaStore.Audio.Media.MIME_TYPE)
-  val creationDateIndex = cursor.getColumnIndex(MediaStore.Audio.Media.DATE_ADDED)
   val modificationDateIndex = cursor.getColumnIndex(MediaStore.Audio.Media.DATE_MODIFIED)
   val durationIndex = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)
 
@@ -46,7 +45,6 @@ fun putAssetsInfo(
       putString("filename", cursor.getString(filenameIndex))
       putString("uri", localUri)
       putString("mimeType", cursor.getString(mimeTypeIndex))
-      putDouble("creationTime", cursor.getLong(creationDateIndex) * 1000.0)
       putDouble("modificationTime", cursor.getLong(modificationDateIndex) * 1000.0)
       putDouble("duration", cursor.getLong(durationIndex) / 1000.0)
     }

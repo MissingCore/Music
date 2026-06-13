@@ -12,7 +12,6 @@ export type Asset = {
   filename: string;
   uri: string;
   mimeType: string;
-  creationTime: number;
   modificationTime: number;
   duration: number;
 };

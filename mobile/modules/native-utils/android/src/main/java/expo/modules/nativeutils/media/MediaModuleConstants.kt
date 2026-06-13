@@ -12,7 +12,6 @@ val ASSET_PROJECTION = arrayOf(
   MediaStore.Audio.Media.DISPLAY_NAME,
   MediaStore.Audio.Media.DATA,
   MediaStore.Audio.Media.MIME_TYPE,
-  MediaStore.Audio.Media.DATE_ADDED,
   MediaStore.Audio.Media.DATE_MODIFIED,
   MediaStore.Audio.Media.DURATION,
 )
