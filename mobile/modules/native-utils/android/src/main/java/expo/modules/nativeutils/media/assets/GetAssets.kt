@@ -1,8 +1,10 @@
 package expo.modules.nativeutils.media.assets
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import expo.modules.nativeutils.media.ASSET_PROJECTION
+import expo.modules.nativeutils.media.AUDIO_METADATA_ASSET_PROJECTION
 import expo.modules.nativeutils.media.AssetQueryException
 import expo.modules.nativeutils.media.AssetsOptions
 import expo.modules.nativeutils.media.EXTERNAL_CONTENT_URI
@@ -13,12 +15,12 @@ import java.io.IOException
 fun getAssets(context: Context, assetOptions: AssetsOptions): Bundle {
   val contentResolver = context.contentResolver
   try {
-    val (selection, order, limit, offset) = getQueryFromOptions(assetOptions)
+    val (selection, selectionArgs, order, limit, offset) = getQueryFromOptions(assetOptions)
     contentResolver.query(
       EXTERNAL_CONTENT_URI,
-      ASSET_PROJECTION,
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) AUDIO_METADATA_ASSET_PROJECTION else ASSET_PROJECTION,
       selection,
-      null,
+      selectionArgs,
       order
     ).use { assetsCursor ->
       if (assetsCursor == null) {

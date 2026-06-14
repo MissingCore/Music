@@ -3,6 +3,8 @@ import { NativeModule, requireNativeModule } from "expo";
 interface AssetsOptions {
   first: number;
   after?: number;
+  /** Return results from assets with the following ids. */
+  fromIds?: string[];
 }
 
 export type Asset = {
@@ -13,6 +15,21 @@ export type Asset = {
   modificationTime: number;
   duration: number;
   fileSize: number;
+
+  /** Only available on Android 11+. */
+  metadata: MusicMetadataAsset | null;
+};
+
+export type MusicMetadataAsset = {
+  title: string | null;
+  album: string | null;
+  albumArtist: string | null;
+  artist: string | null;
+  genre: string | null;
+  year: number | null;
+  discNumber: number | null;
+  trackNumber: number | null;
+  bitrate: number | null;
 };
 
 export type MusicAssetResult = {

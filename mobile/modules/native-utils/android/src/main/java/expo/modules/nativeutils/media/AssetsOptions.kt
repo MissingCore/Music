@@ -8,4 +8,5 @@ import expo.modules.kotlin.types.OptimizedRecord
 data class AssetsOptions(
   @Field val first: Double,
   @Field val after: Double?,
+  @Field val fromIds: List<String>?,
 ) : Record
