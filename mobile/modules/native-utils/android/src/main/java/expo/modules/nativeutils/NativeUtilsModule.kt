@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.net.Uri
-import android.provider.MediaStore
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 import expo.modules.nativeutils.media.AssetsOptions
@@ -97,21 +96,6 @@ class NativeUtilsModule : Module() {
       }
     }
     return currentContext.resources.openRawResource(resourceId)
-  }
-
-  private fun getGenreForAudioId(currentContext: Context, audioId: Long): String? {
-    if (audioId > Int.MAX_VALUE) return null
-    val genreUri = MediaStore.Audio.Genres.getContentUriForAudioId("external", audioId.toInt())
-    val projection = arrayOf(MediaStore.Audio.Genres.NAME)
-    currentContext.contentResolver.query(genreUri, projection, null, null, null)?.use { cursor ->
-      if (cursor.moveToFirst()) {
-        val nameIndex = cursor.getColumnIndex(MediaStore.Audio.Genres.NAME)
-        if (nameIndex != -1) {
-          return cursor.getString(nameIndex)
-        }
-      }
-    }
-    return null
   }
   //#endregion
 }
