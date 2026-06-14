@@ -10,7 +10,8 @@ fun putAssetsInfo(
   cursor: Cursor,
   response: MutableList<Bundle>,
   limit: Int,
-  offset: Int
+  offset: Int,
+  returnWithMetadata: Boolean
 ) {
   val idIndex = cursor.getColumnIndex(MediaStore.Audio.Media._ID)
   val filenameIndex = cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)
@@ -20,7 +21,7 @@ fun putAssetsInfo(
   val durationIndex = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)
   val sizeIndex = cursor.getColumnIndex(MediaStore.Audio.Media.SIZE)
 
-  val returnMetadata = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+  val returnMetadata = returnWithMetadata && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
   val titleIndex = if (returnMetadata) cursor.getColumnIndex(MediaStore.Audio.Media.TITLE) else -1
   val albumIndex = if (returnMetadata) cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM) else -1
   val albumArtistIndex = if (returnMetadata) cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ARTIST) else -1

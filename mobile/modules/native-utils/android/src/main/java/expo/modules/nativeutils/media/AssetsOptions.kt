@@ -9,4 +9,5 @@ data class AssetsOptions(
   @Field val first: Double,
   @Field val after: Double?,
   @Field val fromIds: List<String>?,
+  @Field val returnWithMetadata: Boolean?
 ) : Record

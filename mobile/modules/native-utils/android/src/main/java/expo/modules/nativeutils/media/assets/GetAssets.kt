@@ -16,9 +16,10 @@ fun getAssets(context: Context, assetOptions: AssetsOptions): Bundle {
   val contentResolver = context.contentResolver
   try {
     val (selection, selectionArgs, order, limit, offset) = getQueryFromOptions(assetOptions)
+    val returnWithMetadata = assetOptions.returnWithMetadata == true && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
     contentResolver.query(
       EXTERNAL_CONTENT_URI,
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) AUDIO_METADATA_ASSET_PROJECTION else ASSET_PROJECTION,
+      if (returnWithMetadata) AUDIO_METADATA_ASSET_PROJECTION else ASSET_PROJECTION,
       selection,
       selectionArgs,
       order
@@ -32,6 +33,7 @@ fun getAssets(context: Context, assetOptions: AssetsOptions): Bundle {
         assetsInfo,
         limit.toInt(),
         offset,
+        returnWithMetadata,
       )
       return Bundle().apply {
         putParcelableArrayList("assets", assetsInfo)

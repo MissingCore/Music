@@ -5,6 +5,8 @@ interface AssetsOptions {
   after?: number;
   /** Return results from assets with the following ids. */
   fromIds?: string[];
+  /** Whether metadata should also be returned with the query. Only effective on Android 11+. */
+  returnWithMetadata?: boolean;
 }
 
 export type Asset = {
