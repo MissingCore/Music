@@ -4,7 +4,13 @@ import android.database.Cursor
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import androidx.annotation.ChecksSdkIntAtLeast
 import expo.modules.nativeutils.media.ARTIST_PLACEHOLDER
+
+@ChecksSdkIntAtLeast(api=Build.VERSION_CODES.R)
+fun isMetadataSupported(): Boolean {
+  return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+}
 
 fun putAssetsInfo(
   cursor: Cursor,
@@ -21,7 +27,7 @@ fun putAssetsInfo(
   val durationIndex = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)
   val sizeIndex = cursor.getColumnIndex(MediaStore.Audio.Media.SIZE)
 
-  val returnMetadata = returnWithMetadata && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+  val returnMetadata = returnWithMetadata && isMetadataSupported()
   val titleIndex = if (returnMetadata) cursor.getColumnIndex(MediaStore.Audio.Media.TITLE) else -1
   val albumIndex = if (returnMetadata) cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM) else -1
   val albumArtistIndex = if (returnMetadata) cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ARTIST) else -1
@@ -31,6 +37,7 @@ fun putAssetsInfo(
   val discNumberIndex = if (returnMetadata) cursor.getColumnIndex(MediaStore.Audio.Media.DISC_NUMBER) else -1
   val trackNumberIndex = if (returnMetadata) cursor.getColumnIndex(MediaStore.Audio.Media.TRACK) else -1
   val bitrateIndex = if (returnMetadata) cursor.getColumnIndex(MediaStore.Audio.Media.BITRATE) else -1
+  val sampleRateIndex = if (returnMetadata) cursor.getColumnIndex(MediaStore.Audio.Media.SAMPLERATE) else -1
 
   if (!cursor.moveToPosition(offset)) {
     return
@@ -69,12 +76,14 @@ fun putAssetsInfo(
         }
         if (bitrateIndex != -1) putInt("bitrate", cursor.getInt(bitrateIndex))
         if (sizeIndex != -1) putLong("fileSize", cursor.getLong(sizeIndex))
+        if (sampleRateIndex != -1) putInt("sampleRate", cursor.getInt(sampleRateIndex))
       }
 
       // Remove following values if `0`.
       if (assetMetadata.getInt("discNumber") == 0) assetMetadata.putString("discNumber", null)
       if (assetMetadata.getInt("trackNumber") == 0) assetMetadata.putString("trackNumber", null)
       if (assetMetadata.getInt("year") == 0) assetMetadata.putString("year", null)
+      if (assetMetadata.getInt("sampleRate") == 0) assetMetadata.putString("sampleRate", null)
 
       // Remove placeholder set for artist.
       if (assetMetadata.getString("artist") == ARTIST_PLACEHOLDER) assetMetadata.putString("artist", null)

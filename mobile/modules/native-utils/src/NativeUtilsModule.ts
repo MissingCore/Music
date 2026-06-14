@@ -32,6 +32,9 @@ export type MusicMetadataAsset = {
   discNumber: number | null;
   trackNumber: number | null;
   bitrate: number | null;
+
+  /** Only available on Android 16+. */
+  sampleRate: number | null;
 };
 
 export type MusicAssetResult = {

@@ -60,7 +60,6 @@ export async function findAndSaveAudio() {
     const { assets, endCursor, hasNextPage } = await getMusicAssets({
       first: BATCH_PRESETS.LIGHT,
       after: lastRead,
-      returnWithMetadata: true,
     });
     foundAssets.push(...assets);
     lastRead = endCursor;
@@ -328,6 +327,8 @@ class MediaStoreQuerier {
       year: metadata.year,
       format: asset.mimeType,
       genres: trimmedGenre ? splitOn(trimmedGenre, this.delimiters) : [],
+      bitrate: metadata.bitrate,
+      sampleRate: metadata.sampleRate,
       duration: asset.duration,
       uri: asset.uri,
       modificationTime: asset.modificationTime,

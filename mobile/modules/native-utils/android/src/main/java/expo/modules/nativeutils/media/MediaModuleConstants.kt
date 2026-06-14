@@ -38,4 +38,5 @@ val AUDIO_METADATA_ASSET_PROJECTION = arrayOf(
   MediaStore.Audio.Media.DISC_NUMBER,
   MediaStore.Audio.Media.TRACK,
   MediaStore.Audio.Media.BITRATE,
+  MediaStore.Audio.Media.SAMPLERATE,
 )
