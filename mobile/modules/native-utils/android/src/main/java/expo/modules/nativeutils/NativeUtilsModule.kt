@@ -1,15 +1,12 @@
 package expo.modules.nativeutils
 
 import android.annotation.SuppressLint
-import android.content.ContentUris
 import android.content.Context
 import android.content.res.Configuration
 import android.net.Uri
 import android.provider.MediaStore
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
-import expo.modules.nativeutils.media.EXTERNAL_CONTENT_URI
-import expo.modules.nativeutils.media.AUDIO_ASSET_PROJECTION
 import expo.modules.nativeutils.media.AssetsOptions
 import expo.modules.nativeutils.media.assets.getAssets
 import java.io.File

@@ -3,7 +3,6 @@ package expo.modules.nativeutils.media.assets
 import android.content.Context
 import android.os.Bundle
 import expo.modules.nativeutils.media.ASSET_PROJECTION
-import expo.modules.nativeutils.media.AUDIO_ASSET_PROJECTION
 import expo.modules.nativeutils.media.AssetQueryException
 import expo.modules.nativeutils.media.AssetsOptions
 import expo.modules.nativeutils.media.EXTERNAL_CONTENT_URI
@@ -14,14 +13,12 @@ import java.io.IOException
 fun getAssets(context: Context, assetOptions: AssetsOptions): Bundle {
   val contentResolver = context.contentResolver
   try {
-    val (selection, selectionArgs, order, limit, offset) = getQueryFromOptions(assetOptions)
-    val resolveWithFullInfo = assetOptions.resolveWithFullInfo ?: false
-    val projection = if (resolveWithFullInfo) AUDIO_ASSET_PROJECTION else ASSET_PROJECTION
+    val (selection, order, limit, offset) = getQueryFromOptions(assetOptions)
     contentResolver.query(
       EXTERNAL_CONTENT_URI,
-      projection,
+      ASSET_PROJECTION,
       selection,
-      selectionArgs,
+      null,
       order
     ).use { assetsCursor ->
       if (assetsCursor == null) {
@@ -29,12 +26,10 @@ fun getAssets(context: Context, assetOptions: AssetsOptions): Bundle {
       }
       val assetsInfo = ArrayList<Bundle>()
       putAssetsInfo(
-        context,
         assetsCursor,
         assetsInfo,
         limit.toInt(),
         offset,
-        resolveWithFullInfo
       )
       return Bundle().apply {
         putParcelableArrayList("assets", assetsInfo)

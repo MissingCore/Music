@@ -1,10 +1,8 @@
 import { NativeModule, requireNativeModule } from "expo";
 
-interface AssetsOptions<ExtendResults extends boolean | undefined = false> {
+interface AssetsOptions {
   first: number;
   after?: number;
-  fromIds?: string[];
-  resolveWithFullInfo?: ExtendResults;
 }
 
 export type Asset = {
@@ -14,25 +12,11 @@ export type Asset = {
   mimeType: string;
   modificationTime: number;
   duration: number;
+  fileSize: number;
 };
 
-export type MusicAsset = Asset & {
-  title: string | null;
-  album: string | null;
-  albumArtist: string | null;
-  artist: string | null;
-  genre: string | null;
-  year: number | null;
-  discNumber: number | null;
-  trackNumber: number | null;
-  bitrate: number | null;
-  fileSize: number | null;
-};
-
-export type MusicAssetResult<
-  ExtendResults extends boolean | undefined = false,
-> = {
-  assets: Array<ExtendResults extends true ? MusicAsset : Asset>;
+export type MusicAssetResult = {
+  assets: Asset[];
   hasNextPage: boolean;
   endCursor: number;
   totalCount: number;
@@ -62,12 +46,8 @@ export async function saveBundledAssetToURI(assetName: string, toUri: string) {
   return nativeModule.saveBundledAssetToURI(assetName, toUri);
 }
 
-export async function getMusicAssets<
-  ExtendResults extends boolean | undefined = false,
->(
-  options: AssetsOptions<ExtendResults>,
-): Promise<MusicAssetResult<ExtendResults>> {
-  return nativeModule.getMusicAssets(
-    options as AssetsOptions<any>,
-  ) as unknown as MusicAssetResult<ExtendResults>;
+export async function getMusicAssets(
+  options: AssetsOptions,
+): Promise<MusicAssetResult> {
+  return nativeModule.getMusicAssets(options);
 }

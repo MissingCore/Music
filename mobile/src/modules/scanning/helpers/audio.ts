@@ -57,10 +57,6 @@ export async function findAndSaveAudio() {
   const listAllow = _listAllow.map((p) => `file://${addTrailingSlash(p)}`);
   const listBlock = _listBlock.map((p) => `file://${addTrailingSlash(p)}`);
 
-  /*
-    ? Takes ~30 seconds to return metadata for all the tracks.
-  */
-
   // Get all audio files discoverable by MediaStore.
   const foundAssets: Asset[] = [];
   let isComplete = false;
@@ -69,14 +65,11 @@ export async function findAndSaveAudio() {
     const { assets, endCursor, hasNextPage } = await getMusicAssets({
       first: BATCH_PRESETS.LIGHT,
       after: lastRead,
-      // resolveWithFullInfo: true,
     });
     foundAssets.push(...assets);
     lastRead = endCursor;
     isComplete = !hasNextPage;
   } while (!isComplete);
-
-  console.log(foundAssets);
 
   const discoveredTracks = foundAssets.filter(
     (a) =>
