@@ -259,7 +259,7 @@ if (findProperty('music.WITH_SENTRY')?.toBoolean()) {
     *    - We're going to trust that it works in the production variants which are built with
     *    `./gradlew assembleRelease`.
     */
-    apply from: new File(["node", "--print", "require('path').dirname(require.resolve('@sentry/react-native/package.json'))"].execute().text.trim(), "sentry.gradle")
+    apply from: new File(["node", "--print", "require('path').dirname(require.resolve('@sentry/react-native/package.json'))"].execute().text.trim(), "sentry.gradle.kts")
 
     /**
     * View default settings at: https://docs.sentry.io/platforms/android/configuration/gradle/

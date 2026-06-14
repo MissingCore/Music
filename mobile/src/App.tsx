@@ -36,6 +36,7 @@ if (SENTRY_ENABLED) {
       "No matching browser activity found",
       "non-premultiplied bitmap",
     ],
+    enableAutoConsoleLogs: false,
     //? Disable logging console messages in Sentry introduced in `@sentry/react-native@7.4.0`.
     integrations(integrations: Array<{ name: string }>) {
       return integrations.filter((i) => !RemovedIntegrations.has(i.name));

@@ -4,11 +4,10 @@ minimumReleaseAge: 1440
 nodeLinker: "hoisted"
 
 allowBuilds:
-  "@missingcore/react-native-metadata-retriever": true
   "@sentry/cli": true
   esbuild: false
   msgpackr-extract: false
-  "react-native-audio-browser": true
+  react-native-audio-browser@https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/f202a8f0acad8e1051fc70d0f31206c1851b7a8d: true
   "sharp": true
   unrs-resolver: false
 
