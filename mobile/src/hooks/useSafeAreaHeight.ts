@@ -1,5 +1,7 @@
-import { Platform, useWindowDimensions } from "react-native";
+import { useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { getAPIVersionCode } from "~/lib/device";
 
 /** Returns height of screen excluding system decoration (status & navigation bar). */
 export function useSafeAreaHeight() {
@@ -9,6 +11,6 @@ export function useSafeAreaHeight() {
   // In Android API 35+, the "height" now includes the system decoration
   // areas and display cutout (status & navigation bar heights).
   //  - https://github.com/facebook/react-native/issues/47080#issuecomment-2421914957
-  if (Number(Platform.Version) < 35) return screenHeight;
+  if (getAPIVersionCode() < 35) return screenHeight;
   return screenHeight - insets.top - insets.bottom;
 }
