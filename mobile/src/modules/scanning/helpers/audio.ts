@@ -20,6 +20,7 @@ import { deleteTracks, upsertTracks } from "~/data/track/api";
 import { preferenceStore } from "~/stores/Preference/store";
 import { scanningProgressStore } from "../ScanningProgress";
 
+import { getAPIVersionCode } from "~/lib/device";
 import { getExcludedColumns } from "~/lib/drizzle";
 import { Stopwatch } from "~/utils/debug";
 import { chunkArray } from "~/utils/object";
@@ -149,14 +150,24 @@ export async function findAndSaveAudio() {
   const albumIdMap: Record<string, Record<string, string>> = {};
 
   const delimiters = preferenceStore.getState().separators;
+
+  const useMediaStoreMethod = getAPIVersionCode() >= 30;
+
+  const formatAsset = assetFormatterFactory(delimiters);
   const safeRetrieveMetadata = safeRetrieveMetadataFactory(delimiters);
+
   // Save tracks in batches of 50 (a good number if the user leaves midway
   // as we would have saved at least some tracks).
-  const trackBatches = chunkArray(unstagedTracks, 50);
+  const trackBatches = chunkArray(
+    unstagedTracks,
+    useMediaStoreMethod ? MEDIASTORE_QUERY_BATCH : 50,
+  );
   for (const tBatch of trackBatches) {
-    const res = await Promise.allSettled(tBatch.map(safeRetrieveMetadata));
-    const results = res.filter(isFulfilled).map((r) => r.value);
-    const errors: InvalidTrack[] = res.filter(isRejected).map((r) => r.reason);
+    // Use `MediaStore` method on Android 11+.
+    const { results, errors } = await (useMediaStoreMethod
+      ? queryMetadataFromMediaStore(tBatch, formatAsset)
+      : queryMetadataFromMetadataRetriever(tBatch, safeRetrieveMetadata));
+
     scanningProgressStore.setState((prev) => ({
       scannedTracks: prev.scannedTracks + results.length,
       failedTrackScans: prev.failedTrackScans + errors.length,
@@ -266,7 +277,101 @@ export async function findAndSaveAudio() {
   };
 }
 
-//#region Internal Helpers
+//#region MediaStore Querier
+const MEDIASTORE_QUERY_BATCH = BATCH_PRESETS.LIGHT;
+
+/** Queries the metadata from Mediastore. */
+async function queryMetadataFromMediaStore(
+  unstagedAssets: Asset[],
+  formatter: ReturnType<typeof assetFormatterFactory>,
+) {
+  const initTrackIds = new Set(unstagedAssets.map((t) => t.id));
+  const { assets } = await getMusicAssets({
+    first: MEDIASTORE_QUERY_BATCH,
+    fromIds: [...initTrackIds],
+    returnWithMetadata: true,
+  });
+
+  /** Contain any assets we failed to find. */
+  const missingAssets: Asset[] = [];
+
+  const formattedAssets = assets
+    .filter((a) => {
+      if (a.metadata !== null) return true;
+      missingAssets.push(a);
+      return false;
+    })
+    .map(formatter);
+
+  return {
+    results: formattedAssets,
+    errors: missingAssets.map((a) => ({
+      id: a.id,
+      uri: a.uri,
+      modificationTime: a.modificationTime,
+      errorName: "MediaStore_Query_Error",
+      errorMessage:
+        "MediaStore did not return a `metadata` field with this asset.",
+    })),
+  };
+}
+
+/** Formats `Asset` which has a populated `metadata` field. */
+function assetFormatterFactory(delimiters: string[]) {
+  return function formatAsset(asset: Asset) {
+    const metadata = asset.metadata!;
+
+    const trimmedArtistName = metadata.artist?.trim() || null;
+    const trimmedGenre = metadata.genre?.trim() || null;
+
+    let newAlbum;
+    const trimmedAlbumTitle = metadata.album?.trim() || null;
+    const trimmedAlbumArtist = metadata.albumArtist?.trim() || null;
+    if (trimmedAlbumTitle && trimmedAlbumArtist) {
+      const albumArtists = splitOn(trimmedAlbumArtist, delimiters);
+      const artistsKey = AlbumArtistsKey.from(albumArtists);
+      if (artistsKey) {
+        newAlbum = { name: trimmedAlbumTitle, artistsKey, albumArtists };
+      }
+    }
+
+    return {
+      id: asset.id,
+      name: metadata.title?.trim() || removeFileExtension(asset.filename),
+      /** @deprecated Do not use this field directly. */
+      rawArtistName: trimmedArtistName,
+      artistNames: trimmedArtistName
+        ? splitOn(trimmedArtistName, delimiters)
+        : [],
+      album: newAlbum,
+      track: metadata.trackNumber,
+      disc: metadata.discNumber,
+      year: metadata.year,
+      format: asset.mimeType,
+      genres: trimmedGenre ? splitOn(trimmedGenre, delimiters) : [],
+      duration: asset.duration,
+      uri: asset.uri,
+      modificationTime: asset.modificationTime,
+      fetchedArt: false,
+      size: asset.fileSize,
+    };
+  };
+}
+//#endregion
+
+//#region MetadataRetriever Querier
+/** Queries the metadata from our MetadataRetriever package. */
+async function queryMetadataFromMetadataRetriever(
+  unstagedAssets: Asset[],
+  formatter: ReturnType<typeof safeRetrieveMetadataFactory>,
+) {
+  const res = await Promise.allSettled(unstagedAssets.map(formatter));
+  const results = res.filter(isFulfilled).map((r) => r.value);
+  const errors: InvalidTrack[] = res.filter(isRejected).map((r) => r.reason);
+
+  return { results: results, errors };
+}
+
 const wantedMetadata = [
   ...MetadataPresets.standard,
   ...["discNumber", "genre", "bitrate", "sampleMimeType", "sampleRate"],
@@ -348,7 +453,9 @@ function safeRetrieveMetadataFactory(delimiters: string[]) {
     }
   };
 }
+//#endregion
 
+//#region Internal Helpers
 const UpsertInvalidTrackFields = getExcludedColumns([
   "uri",
   "errorName",
