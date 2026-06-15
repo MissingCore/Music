@@ -25,7 +25,7 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
-import { BottomActionsOffset } from "../hooks/useBottomActions";
+import { BottomActionsOffset } from "../../hooks/useBottomActions";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
@@ -107,7 +107,7 @@ export function MiniPlayer() {
         exiting={OnRTL.decide(SlideOutRight, SlideOutLeft)}
         style={animatedStyles}
         className={cn(
-          "relative z-10 shrink grow overflow-hidden rounded-full bg-surfaceContainerLowest",
+          "relative z-10 -mx-16 h-14 shrink grow overflow-hidden rounded-full bg-surfaceContainerLowest",
           { "bg-surfaceContainerLow": isPressed },
         )}
       >
