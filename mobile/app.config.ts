@@ -2,7 +2,6 @@ import navigationBarPlugin from "@zoontek/react-native-navigation-bar/expo";
 import type { ExpoConfig } from "expo/config";
 import fontPlugin from "expo-font/plugin";
 import imagePickerPlugin from "expo-image-picker/plugin";
-import mediaLibraryPlugin from "expo-media-library/plugin";
 import type { WithAndroidWidgetsParams } from "react-native-android-widget";
 import bootsplashPlugin from "react-native-bootsplash/expo";
 
@@ -23,7 +22,7 @@ export default (): ExpoConfig => {
     name: "Music",
     slug: "Music",
     description: "A Nothing inspired music player.",
-    version: "3.2.0-rc.1",
+    version: "3.2.0",
     platforms: ["android"],
     githubUrl: "https://github.com/MissingCore/Music",
     orientation: "portrait",
@@ -35,7 +34,7 @@ export default (): ExpoConfig => {
     assetBundlePatterns: ["**/*"],
     android: {
       package: "com.cyanchill.missingcore.music",
-      versionCode: 2140,
+      versionCode: 2150,
       allowBackup: false,
       adaptiveIcon: {
         foregroundImage: `./assets/${BUILD_THEME}/adaptive-icon.png`,
@@ -47,8 +46,6 @@ export default (): ExpoConfig => {
         "android.permission.VIBRATE",
         // From `expo-image-picker`.
         "android.permission.CAMERA",
-        // From `expo-media-library`.
-        "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
       ],
       intentFilters: [
         // Whenever we rebuild the `AndroidManifest.xml` file, we should delete
@@ -99,7 +96,6 @@ export default (): ExpoConfig => {
         ],
       }),
       imagePickerPlugin({ microphonePermission: false }),
-      mediaLibraryPlugin({ granularPermissions: ["audio"] }),
       bootsplashPlugin({
         logo: `./assets/${BUILD_THEME}/splash-icon.png`,
         background: BACKGROUND_COLOR,

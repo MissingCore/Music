@@ -94,6 +94,8 @@ export interface PreferenceStore {
   rcNotification: boolean;
 
   //! Experimental Features
+  /** Whether MediaStore is used to extract metadata. Requires Android 11+. */
+  mediaStoreScanner: boolean;
   /**
    * Tracks added via "Play Next" will attempt to added after the previous
    * added track. Tracking resets after app session ends.

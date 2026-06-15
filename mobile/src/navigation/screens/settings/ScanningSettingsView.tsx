@@ -10,6 +10,7 @@ import { MinDurationSheet } from "./sheets/MinDurationSheet";
 import { ScanFilterListSheet } from "./sheets/ScanFilterListSheet";
 import { SeparatorsSheet } from "./sheets/SeparatorsSheet";
 
+import { getAPIVersionCode } from "~/lib/device";
 import { mutateGuard } from "~/lib/react-query";
 import { SegmentedList } from "~/components/List/Segmented";
 import { ConfirmableAction } from "~/components/Modal";
@@ -56,6 +57,8 @@ export default function ScanningSettings() {
           <OptimizedImageSavingSetting />
         </SegmentedList>
 
+        <MediaStoreScannerSetting />
+
         <ScanningConfigurations.Settings {...sheetRefs} />
       </ListLayout>
     </>
@@ -83,6 +86,22 @@ export function OptimizedImageSavingSetting() {
       disableModal={!optimizedImageSave}
     />
   );
+}
+//#endregion
+
+//#region MediaStore Scanner
+export function MediaStoreScannerSetting() {
+  const { t } = useTranslation();
+  const mediaStoreScanner = usePreferenceStore((s) => s.mediaStoreScanner);
+
+  return getAPIVersionCode() >= 30 ? (
+    <SegmentedList.Item
+      labelTextKey="feat.scanning.extra.useMediaStore"
+      supportingText={t("feat.scanning.extra.useMediaStoreBrief")}
+      onPress={PreferenceTogglers.toggleKey("mediaStoreScanner")}
+      RightElement={<Switch enabled={mediaStoreScanner} />}
+    />
+  ) : null;
 }
 //#endregion
 

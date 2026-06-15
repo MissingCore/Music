@@ -260,7 +260,11 @@
       }
     },
     "scanning": {
-      "title": "Scanning"
+      "title": "Scanning",
+      "extra": {
+        "useMediaStore": "🧪 Use MediaStore Scanner",
+        "useMediaStoreBrief": "Extremely fast, but may not be as accurate. Requires Android 11+."
+      }
     },
     "rescan": {
       "title": "Rescan",

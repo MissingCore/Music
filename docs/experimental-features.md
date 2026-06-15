@@ -22,13 +22,6 @@ We support the default 5-band equalizer with 10 provided presets and the option 
 > [!NOTE]
 > Having this feature enabled may cause the app to feel slower (ie: slower navigation, slower opening of sheets).
 
-## Glyph Toy
-
-[Documentation can be found in the dedicated `music-glyph-toys` repository](https://github.com/MissingCore/music-glyph-toys?tab=readme-ov-file#toy-design--usage), with notes on the interaction support we added to simulate media controls via the Glyph Button.
-
-> [!IMPORTANT]
-> There's a high probability of the Glyph Button interactions not working since I don't have a Nothing Phone 3 to test things out (which might be caused by the connection between the toy and the app not being correctly implemented).
-
 ## Lyric Providers
 
 See the [dedicated `Lyrics Provider` documentation for more information](./lyrics.md#-experimental-lyrics-providers).
@@ -49,6 +42,18 @@ For exporting M3U files:
 
 - We support absolute paths (ie: `/storage/emulated/0/...`).
 - We support relative paths (relative to where we want to save the file).
+
+## MediaStore Scanner
+
+This is an alternative method of extracting metadata for tracks, which is extremely fast since everything is already tracked in MediaStore's SQLite database. As such, **this requires Android 11+** to enable due to most of the fields being introduced in this version.
+
+Although the MediaStore scanner is extremely fast, it has some problems. I've noticed that:
+
+- The `year` field isn't returned for `.flac` files.
+- If a track has no embedded `album` field, the name of the folder the track is in is returned instead (so all tracks will return a value in the `album` field).
+- We've handled these issues internally:
+  - If a track has a disc & track number, the value returned for the track number will incorporate both values (ie: `1002` for disc 1, track 2).
+  - If a track has no embedded `artist` field, `<unknown>` is returned.
 
 ## Queue-Aware Play Next
 

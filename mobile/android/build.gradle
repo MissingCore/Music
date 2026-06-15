@@ -7,7 +7,7 @@ buildscript {
   }
   dependencies {
     if (findProperty('music.WITH_SENTRY')?.toBoolean()) {
-      classpath("io.sentry:sentry-android-gradle-plugin:6.8.1")
+      classpath("io.sentry:sentry-android-gradle-plugin:6.10.0")
     }
     classpath('com.android.tools.build:gradle')
     classpath('com.facebook.react:react-native-gradle-plugin')
@@ -20,9 +20,6 @@ allprojects {
     google()
     mavenCentral()
     maven { url 'https://jitpack.io' }
-    maven {
-      url "$rootDir/../node_modules/@missingcore/music-glyph-toys/android/glyph-matrix-sdk"
-    }
   }
 }
 
