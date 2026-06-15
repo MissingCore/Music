@@ -115,9 +115,9 @@ export async function findAndSaveAudio() {
     const hasEdited = typeof isSaved?.editedMetadata === "number";
     let isDifferentUri = (isSaved ?? isInvalid)!.uri !== uri;
 
-    // A track which has been moved may be detected twice by `expo-media-library`
-    // in its new & old location with the same `id`. This logic helps mark the
-    // track as modified.
+    // A track which has been moved may be detected twice by MediaStore
+    // in its new & old location with the same `id`. This logic helps
+    // mark the track as modified.
     if (isDifferentUri && unmodified.has(id)) unmodified.delete(id);
     else if (!isDifferentUri && modified.has(id)) isDifferentUri = true; // Encountered old location.
 
