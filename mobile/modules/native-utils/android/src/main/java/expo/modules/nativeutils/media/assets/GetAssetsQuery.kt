@@ -27,14 +27,16 @@ internal fun getQueryFromOptions(input: AssetsOptions): GetAssetsQuery {
 @Throws(IllegalArgumentException::class)
 private fun createSelectionString(input: AssetsOptions): Pair<String, Array<String>?> {
   val selectionBuilder = StringBuilder()
+  var selectionArgs: Array<String>? = null
 
   if (input.fromIds?.isNotEmpty() ?: false) {
     val questionMarks = input.fromIds.joinToString(",") { "?" }
     selectionBuilder.append("${MediaStore.Audio.Media._ID} IN ($questionMarks)")
     selectionBuilder.append(" AND ")
+    selectionArgs = input.fromIds.toTypedArray()
   }
 
   selectionBuilder.append("${MediaStore.Audio.Media.MIME_TYPE} LIKE 'audio/%'")
 
-  return Pair(selectionBuilder.toString(), input.fromIds?.toTypedArray())
+  return Pair(selectionBuilder.toString(), selectionArgs)
 }
