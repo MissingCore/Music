@@ -16,6 +16,7 @@ type ToggleableKey =
   | "quickAddQueue"
   | "quickFavorite"
   | "quickScroll"
+  | "mediaStoreScanner"
   | "miniplayerGestures"
   | "optimizedImageSave"
   | "rcNotification"

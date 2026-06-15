@@ -10,6 +10,7 @@ import { MinDurationSheet } from "./sheets/MinDurationSheet";
 import { ScanFilterListSheet } from "./sheets/ScanFilterListSheet";
 import { SeparatorsSheet } from "./sheets/SeparatorsSheet";
 
+import { getAPIVersionCode } from "~/lib/device";
 import { mutateGuard } from "~/lib/react-query";
 import { SegmentedList } from "~/components/List/Segmented";
 import { ConfirmableAction } from "~/components/Modal";
@@ -98,6 +99,7 @@ export const ScanningConfigurations = {
   /** All settings which affects the content which gets saved. */
   Settings: memo(function ScanningConfigurations(props: ScanningSheetRefs) {
     const { t } = useTranslation();
+    const mediaStoreScanner = usePreferenceStore((s) => s.mediaStoreScanner);
     const allowList = usePreferenceStore((s) => s.listAllow);
     const blockList = usePreferenceStore((s) => s.listBlock);
     const ignoreDuration = usePreferenceStore((s) => s.minSeconds);
@@ -105,6 +107,15 @@ export const ScanningConfigurations = {
 
     return (
       <>
+        {getAPIVersionCode() >= 30 ? (
+          <SegmentedList.Item
+            labelTextKey="feat.scanning.extra.useMediaStore"
+            supportingText={t("feat.scanning.extra.useMediaStoreBrief")}
+            onPress={PreferenceTogglers.toggleKey("mediaStoreScanner")}
+            RightElement={<Switch enabled={mediaStoreScanner} />}
+          />
+        ) : null}
+
         <SegmentedList>
           <SegmentedList.Item
             labelTextKey="feat.listAllow.title"

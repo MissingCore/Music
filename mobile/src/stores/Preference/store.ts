@@ -118,6 +118,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     rcNotification: false,
 
     //! Experimental Features
+    mediaStoreScanner: false,
     downsamplingProcessor: true,
     queueAwareNext: false,
     waveformSlider: false,

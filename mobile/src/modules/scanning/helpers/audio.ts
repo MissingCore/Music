@@ -142,10 +142,13 @@ export async function findAndSaveAudio() {
   // Keep tracks of album ids from reading `artistsKey` & the album name.
   const albumIdMap: Record<string, Record<string, string>> = {};
 
-  const useMediaStoreMethod = getAPIVersionCode() >= 30;
+  const { separators: delimiters, mediaStoreScanner } =
+    preferenceStore.getState();
+
+  const useMediaStoreMethod = mediaStoreScanner && getAPIVersionCode() >= 30;
   const assetQuerier = new (
     useMediaStoreMethod ? MediaStoreQuerier : MetadataRetrieverQuerier
-  )(preferenceStore.getState().separators);
+  )(delimiters);
 
   // Query in batches in the situation the user leaves midway, we still have
   // indexed some content.
