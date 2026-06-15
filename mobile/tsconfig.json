@@ -4,6 +4,7 @@
     "strict": true,
     "paths": {
       "@missingcore/native-utils": ["./modules/native-utils"],
+      "@missingcore/native-utils/media": ["./modules/native-utils/src/media"],
       "@missingcore/ui/*": ["./modules/ui/*"],
       "~/*": ["./src/*"]
     },

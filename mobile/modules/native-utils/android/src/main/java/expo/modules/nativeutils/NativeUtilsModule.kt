@@ -68,7 +68,7 @@ class NativeUtilsModule : Module() {
     }
 
 
-    AsyncFunction("getMusicAssets") { assetOptions: AssetsOptions ->
+    AsyncFunction("getAudioAssets") { assetOptions: AssetsOptions ->
       val currentContext = context
       return@AsyncFunction if (currentContext != null) getAssets(currentContext, assetOptions) else emptyList<Map<String, Any?>>()
     }

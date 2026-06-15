@@ -1,5 +1,5 @@
-import type { Asset } from "@missingcore/native-utils";
-import { getMusicAssets } from "@missingcore/native-utils";
+import type { Asset } from "@missingcore/native-utils/media";
+import { getAudioAssets } from "@missingcore/native-utils/media";
 import {
   MetadataPresets,
   getMetadata,
@@ -57,7 +57,7 @@ export async function findAndSaveAudio() {
   let isComplete = false;
   let lastRead: number | undefined;
   do {
-    const { assets, endCursor, hasNextPage } = await getMusicAssets({
+    const { assets, endCursor, hasNextPage } = await getAudioAssets({
       first: BATCH_PRESETS.LIGHT,
       after: lastRead,
     });
@@ -280,7 +280,7 @@ class MediaStoreQuerier {
   /** Queries metadata for assets from MediaStore. */
   async query(assets: Asset[]) {
     const idsToQuery = new Set(assets.map((a) => a.id));
-    const queryResults = await getMusicAssets({
+    const queryResults = await getAudioAssets({
       first: this.batchAmount,
       fromIds: [...idsToQuery],
       returnWithMetadata: true,
