@@ -57,6 +57,8 @@ export default function ScanningSettings() {
           <OptimizedImageSavingSetting />
         </SegmentedList>
 
+        <MediaStoreScannerSetting />
+
         <ScanningConfigurations.Settings {...sheetRefs} />
       </ListLayout>
     </>
@@ -87,6 +89,22 @@ export function OptimizedImageSavingSetting() {
 }
 //#endregion
 
+//#region MediaStore Scanner
+export function MediaStoreScannerSetting() {
+  const { t } = useTranslation();
+  const mediaStoreScanner = usePreferenceStore((s) => s.mediaStoreScanner);
+
+  return getAPIVersionCode() >= 30 ? (
+    <SegmentedList.Item
+      labelTextKey="feat.scanning.extra.useMediaStore"
+      supportingText={t("feat.scanning.extra.useMediaStoreBrief")}
+      onPress={PreferenceTogglers.toggleKey("mediaStoreScanner")}
+      RightElement={<Switch enabled={mediaStoreScanner} />}
+    />
+  ) : null;
+}
+//#endregion
+
 //#region Scanning Configurations
 type ScanningSheetRefs = {
   allowListSheetRef: TrueSheetRef;
@@ -99,7 +117,6 @@ export const ScanningConfigurations = {
   /** All settings which affects the content which gets saved. */
   Settings: memo(function ScanningConfigurations(props: ScanningSheetRefs) {
     const { t } = useTranslation();
-    const mediaStoreScanner = usePreferenceStore((s) => s.mediaStoreScanner);
     const allowList = usePreferenceStore((s) => s.listAllow);
     const blockList = usePreferenceStore((s) => s.listBlock);
     const ignoreDuration = usePreferenceStore((s) => s.minSeconds);
@@ -107,15 +124,6 @@ export const ScanningConfigurations = {
 
     return (
       <>
-        {getAPIVersionCode() >= 30 ? (
-          <SegmentedList.Item
-            labelTextKey="feat.scanning.extra.useMediaStore"
-            supportingText={t("feat.scanning.extra.useMediaStoreBrief")}
-            onPress={PreferenceTogglers.toggleKey("mediaStoreScanner")}
-            RightElement={<Switch enabled={mediaStoreScanner} />}
-          />
-        ) : null}
-
         <SegmentedList>
           <SegmentedList.Item
             labelTextKey="feat.listAllow.title"
