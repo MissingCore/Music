@@ -1,11 +1,10 @@
+import type { Asset } from "@missingcore/native-utils/media";
+import { getAudioAssets } from "@missingcore/native-utils/media";
 import {
   MetadataPresets,
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
 import { inArray } from "drizzle-orm";
-import { File } from "expo-file-system";
-import type { Asset as MediaLibraryAsset } from "expo-media-library/legacy";
-import { getAssetsAsync } from "expo-media-library/legacy";
 
 import { db } from "~/db";
 import type { InvalidTrack } from "~/db/schema";
@@ -20,16 +19,12 @@ import { deleteTracks, upsertTracks } from "~/data/track/api";
 import { preferenceStore } from "~/stores/Preference/store";
 import { scanningProgressStore } from "../ScanningProgress";
 
+import { getAPIVersionCode } from "~/lib/device";
 import { getExcludedColumns } from "~/lib/drizzle";
 import { Stopwatch } from "~/utils/debug";
 import { chunkArray } from "~/utils/object";
 import { BATCH_PRESETS, isFulfilled, isRejected } from "~/utils/promise";
-import {
-  addTrailingSlash,
-  getSafeUri,
-  removeFileExtension,
-  splitOn,
-} from "~/utils/string";
+import { addTrailingSlash, removeFileExtension, splitOn } from "~/utils/string";
 
 /**
  * Difference in `modificiationTime` to trigger a refetch. This is due to
@@ -57,15 +52,14 @@ export async function findAndSaveAudio() {
   const listAllow = _listAllow.map((p) => `file://${addTrailingSlash(p)}`);
   const listBlock = _listBlock.map((p) => `file://${addTrailingSlash(p)}`);
 
-  // Get all audio files discoverable by `expo-media-library`.
-  const foundAssets: MediaLibraryAsset[] = [];
+  // Get all audio files discoverable by MediaStore.
+  const foundAssets: Asset[] = [];
   let isComplete = false;
-  let lastRead: string | undefined;
+  let lastRead: number | undefined;
   do {
-    const { assets, endCursor, hasNextPage } = await getAssetsAsync({
-      after: lastRead,
+    const { assets, endCursor, hasNextPage } = await getAudioAssets({
       first: BATCH_PRESETS.LIGHT,
-      mediaType: "audio",
+      after: lastRead,
     });
     foundAssets.push(...assets);
     lastRead = endCursor;
@@ -121,9 +115,9 @@ export async function findAndSaveAudio() {
     const hasEdited = typeof isSaved?.editedMetadata === "number";
     let isDifferentUri = (isSaved ?? isInvalid)!.uri !== uri;
 
-    // A track which has been moved may be detected twice by `expo-media-library`
-    // in its new & old location with the same `id`. This logic helps mark the
-    // track as modified.
+    // A track which has been moved may be detected twice by MediaStore
+    // in its new & old location with the same `id`. This logic helps
+    // mark the track as modified.
     if (isDifferentUri && unmodified.has(id)) unmodified.delete(id);
     else if (!isDifferentUri && modified.has(id)) isDifferentUri = true; // Encountered old location.
 
@@ -148,15 +142,20 @@ export async function findAndSaveAudio() {
   // Keep tracks of album ids from reading `artistsKey` & the album name.
   const albumIdMap: Record<string, Record<string, string>> = {};
 
-  const delimiters = preferenceStore.getState().separators;
-  const safeRetrieveMetadata = safeRetrieveMetadataFactory(delimiters);
-  // Save tracks in batches of 50 (a good number if the user leaves midway
-  // as we would have saved at least some tracks).
-  const trackBatches = chunkArray(unstagedTracks, 50);
+  const { separators: delimiters, mediaStoreScanner } =
+    preferenceStore.getState();
+
+  const useMediaStoreMethod = mediaStoreScanner && getAPIVersionCode() >= 30;
+  const assetQuerier = new (
+    useMediaStoreMethod ? MediaStoreQuerier : MetadataRetrieverQuerier
+  )(delimiters);
+
+  // Query in batches in the situation the user leaves midway, we still have
+  // indexed some content.
+  const trackBatches = chunkArray(unstagedTracks, assetQuerier.batchAmount);
   for (const tBatch of trackBatches) {
-    const res = await Promise.allSettled(tBatch.map(safeRetrieveMetadata));
-    const results = res.filter(isFulfilled).map((r) => r.value);
-    const errors: InvalidTrack[] = res.filter(isRejected).map((r) => r.reason);
+    const { results, errors } = await assetQuerier.query(tBatch);
+
     scanningProgressStore.setState((prev) => ({
       scannedTracks: prev.scannedTracks + results.length,
       failedTrackScans: prev.failedTrackScans + errors.length,
@@ -266,92 +265,204 @@ export async function findAndSaveAudio() {
   };
 }
 
+//#region MediaStore Querier
+class MediaStoreQuerier {
+  private delimiters: string[] = [];
+  // This querier is extremely fast (essentially a SQLite store), so we
+  // can increase the batch size.
+  batchAmount = BATCH_PRESETS.LIGHT;
+
+  constructor(delimiters: string[]) {
+    this.delimiters = delimiters;
+  }
+
+  /** Queries metadata for assets from MediaStore. */
+  async query(assets: Asset[]) {
+    const requestedById = new Map(assets.map((a) => [a.id, a]));
+    const queryResults = await getAudioAssets({
+      first: this.batchAmount,
+      fromIds: [...requestedById.keys()],
+      returnWithMetadata: true,
+    });
+
+    const results: Array<ReturnType<typeof this.formatResult>> = [];
+    /** Assets that weren't returned by MediaStore. */
+    const errors: InvalidTrack[] = [];
+
+    for (const asset of queryResults.assets) {
+      requestedById.delete(asset.id);
+      if (asset.metadata === null) errors.push(this.formatError(asset));
+      else results.push(this.formatResult(asset));
+    }
+
+    // Mark results not returned by query as errored.
+    for (const asset of requestedById.values()) {
+      errors.push({
+        ...this.formatError(asset),
+        errorName: "MediaStore_Missing_Asset",
+        errorMessage: "MediaStore did not return asset.",
+      });
+    }
+
+    return { results, errors };
+  }
+
+  /** Formats `Asset` which has a populated `metadata` field. */
+  private formatResult(asset: Asset) {
+    const metadata = asset.metadata!;
+
+    const trimmedArtistName = metadata.artist?.trim() || null;
+    const trimmedGenre = metadata.genre?.trim() || null;
+
+    let newAlbum;
+    const trimmedAlbumTitle = metadata.album?.trim() || null;
+    const trimmedAlbumArtist = metadata.albumArtist?.trim() || null;
+    if (trimmedAlbumTitle && trimmedAlbumArtist) {
+      const albumArtists = splitOn(trimmedAlbumArtist, this.delimiters);
+      const artistsKey = AlbumArtistsKey.from(albumArtists);
+      if (artistsKey) {
+        newAlbum = { name: trimmedAlbumTitle, artistsKey, albumArtists };
+      }
+    }
+
+    return {
+      id: asset.id,
+      name: metadata.title?.trim() || removeFileExtension(asset.filename),
+      /** @deprecated Do not use this field directly. */
+      rawArtistName: trimmedArtistName,
+      artistNames: trimmedArtistName
+        ? splitOn(trimmedArtistName, this.delimiters)
+        : [],
+      album: newAlbum,
+      track: metadata.trackNumber,
+      disc: metadata.discNumber,
+      year: metadata.year,
+      format: asset.mimeType,
+      genres: trimmedGenre ? splitOn(trimmedGenre, this.delimiters) : [],
+      bitrate: metadata.bitrate,
+      sampleRate: metadata.sampleRate,
+      duration: asset.duration,
+      uri: asset.uri,
+      modificationTime: asset.modificationTime,
+      fetchedArt: false,
+      size: asset.fileSize,
+    };
+  }
+
+  /** Formats `Asset` into an entry that can be inserted into the `invalidTracks` table. */
+  private formatError(asset: Asset): InvalidTrack {
+    return {
+      id: asset.id,
+      uri: asset.uri,
+      modificationTime: asset.modificationTime,
+      errorName: "MediaStore_Query_Error",
+      errorMessage:
+        "MediaStore did not return a `metadata` field with this asset.",
+    };
+  }
+}
+//#endregion
+
+//#region MetadataRetriever Querier
+class MetadataRetrieverQuerier {
+  private delimiters: string[] = [];
+  // Batches of 50 is a good number for a slow querier (in the situation the
+  // user leaves midway, we would have saved at least some tracks).
+  batchAmount = 50;
+
+  constructor(delimiters: string[]) {
+    this.delimiters = delimiters;
+  }
+
+  /** Queries metadata for assets from our MetadataRetriever package. */
+  async query(assets: Asset[]) {
+    const queryResults = await Promise.allSettled(
+      assets.map(async (asset) => {
+        const { id, uri, modificationTime } = asset;
+        try {
+          const trackEntry = await this.getTrackMetadata(asset);
+          return Promise.resolve(trackEntry);
+        } catch (err) {
+          const isError = err instanceof Error;
+          const errorInfo = {
+            errorName: isError ? err.name : "UnknownError",
+            errorMessage: isError
+              ? err.message
+              : "Rejected for unknown reasons.",
+          };
+          // We may end up here if the track at the given uri doesn't exist anymore.
+          console.log(`[Track ${id}] ${errorInfo.errorMessage}`);
+          return Promise.reject({ id, uri, modificationTime, ...errorInfo });
+        }
+      }),
+    );
+
+    return {
+      results: queryResults.filter(isFulfilled).map((r) => r.value),
+      errors: queryResults
+        .filter(isRejected)
+        .map((r) => r.reason as InvalidTrack),
+    };
+  }
+
+  private wantedMetadata = [
+    ...MetadataPresets.standard,
+    ...["discNumber", "genre", "bitrate", "sampleMimeType", "sampleRate"],
+  ] as const;
+
+  /**
+   * Get the metadata associated with a track.
+   *
+   * **Note:** We return `album`, which is non-standard and should be used
+   * to create an Album and then swapped out with the created `albumId`.
+   */
+  private async getTrackMetadata(asset: Asset) {
+    const { bitrate, sampleRate, ...t } = await getMetadata(
+      asset.uri,
+      this.wantedMetadata,
+    );
+
+    const trimmedArtistName = t.artist?.trim() || null;
+    const trimmedGenre = t.genre?.trim() || null;
+
+    let newAlbum;
+    const trimmedAlbumTitle = t.albumTitle?.trim() || null;
+    const trimmedAlbumArtist = t.albumArtist?.trim() || null;
+    if (trimmedAlbumTitle && trimmedAlbumArtist) {
+      const albumArtists = splitOn(trimmedAlbumArtist, this.delimiters);
+      const artistsKey = AlbumArtistsKey.from(albumArtists);
+      if (artistsKey) {
+        newAlbum = { name: trimmedAlbumTitle, artistsKey, albumArtists };
+      }
+    }
+
+    return {
+      id: asset.id,
+      name: t.title?.trim() || removeFileExtension(asset.filename),
+      /** @deprecated Do not use this field directly. */
+      rawArtistName: trimmedArtistName,
+      artistNames: trimmedArtistName
+        ? splitOn(trimmedArtistName, this.delimiters)
+        : [],
+      album: newAlbum,
+      track: t.trackNumber,
+      disc: t.discNumber,
+      year: t.year,
+      format: t.sampleMimeType,
+      genres: trimmedGenre ? splitOn(trimmedGenre, this.delimiters) : [],
+      bitrate,
+      sampleRate,
+      duration: asset.duration,
+      uri: asset.uri,
+      modificationTime: asset.modificationTime,
+      fetchedArt: false,
+      size: asset.fileSize,
+    };
+  }
+}
+//#endregion
+
 //#region Internal Helpers
-const wantedMetadata = [
-  ...MetadataPresets.standard,
-  ...["discNumber", "genre", "bitrate", "sampleMimeType", "sampleRate"],
-] as const;
-
-/**
- * Get the metadata associated with a track.
- *
- * **Note:** We return `album`, which is non-standard and should be used
- * to create an Album and then swapped out with the created `albumId`.
- */
-async function getTrackMetadata(
-  asset: MediaLibraryAsset,
-  delimiters: string[],
-) {
-  const { id, uri, duration, modificationTime, filename } = asset;
-  const { bitrate, sampleRate, ...t } = await getMetadata(uri, wantedMetadata);
-  let fileSize = 0;
-  try {
-    const file = new File(getSafeUri(uri));
-    if (file.exists) fileSize = file.size ?? 0;
-  } catch (err) {
-    // The new `expo-file-system` API will throw an error if certain characters are
-    // in the URI when it previously didn't.
-    console.log(err);
-  }
-
-  const trimmedArtistName = t.artist?.trim() || null;
-  const trimmedGenre = t.genre?.trim() || null;
-
-  let newAlbum;
-  const trimmedAlbumTitle = t.albumTitle?.trim() || null;
-  const trimmedAlbumArtist = t.albumArtist?.trim() || null;
-  if (trimmedAlbumTitle && trimmedAlbumArtist) {
-    const albumArtists = splitOn(trimmedAlbumArtist, delimiters);
-    const artistsKey = AlbumArtistsKey.from(albumArtists);
-    if (artistsKey) {
-      newAlbum = { name: trimmedAlbumTitle, artistsKey, albumArtists };
-    }
-  }
-
-  return {
-    id,
-    name: t.title?.trim() || removeFileExtension(filename),
-    /** @deprecated Do not use this field directly. */
-    rawArtistName: trimmedArtistName,
-    artistNames: trimmedArtistName
-      ? splitOn(trimmedArtistName, delimiters)
-      : [],
-    album: newAlbum,
-    track: t.trackNumber,
-    disc: t.discNumber,
-    year: t.year,
-    format: t.sampleMimeType,
-    genres: trimmedGenre ? splitOn(trimmedGenre, delimiters) : [],
-    bitrate,
-    sampleRate,
-    duration,
-    uri,
-    modificationTime,
-    fetchedArt: false,
-    size: fileSize,
-  };
-}
-
-/** Returns `TrackMetadata` or `InvalidTrack`. */
-function safeRetrieveMetadataFactory(delimiters: string[]) {
-  return async (asset: MediaLibraryAsset) => {
-    const { id, uri, modificationTime } = asset;
-    try {
-      const trackEntry = await getTrackMetadata(asset, delimiters);
-      return Promise.resolve(trackEntry);
-    } catch (err) {
-      const isError = err instanceof Error;
-      const errorInfo = {
-        errorName: isError ? err.name : "UnknownError",
-        errorMessage: isError ? err.message : "Rejected for unknown reasons.",
-      };
-      // We may end up here if the track at the given uri doesn't exist anymore.
-      console.log(`[Track ${id}] ${errorInfo.errorMessage}`);
-      return Promise.reject({ id, uri, modificationTime, ...errorInfo });
-    }
-  };
-}
-
 const UpsertInvalidTrackFields = getExcludedColumns([
   "uri",
   "errorName",

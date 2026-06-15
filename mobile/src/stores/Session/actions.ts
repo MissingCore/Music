@@ -1,9 +1,10 @@
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
+import { getMetadata } from "@missingcore/react-native-metadata-retriever";
 import type { NavigationProp } from "@react-navigation/native";
 
 import { db } from "~/db";
 
-import { getTrack } from "~/data/track/api";
+import { getTrack, updateTrack } from "~/data/track/api";
 
 import { sessionStore } from "./store";
 import type { PopStrategy } from "./types";
@@ -16,6 +17,15 @@ import { wait } from "~/utils/promise";
 export async function presentTrackSheet(trackId: string) {
   try {
     const sheetTrack = await getTrack(trackId);
+    if (!sheetTrack.sampleRate) {
+      try {
+        const result = await getMetadata(sheetTrack.uri, ["sampleRate"]);
+        sheetTrack.sampleRate = result.sampleRate;
+        // Update track in the background.
+        if (result.sampleRate) updateTrack(trackId, result);
+      } catch {}
+    }
+
     sessionStore.setState({ displayedTrack: sheetTrack });
     await wait(1);
     TrueSheet.present("TrackSheet");

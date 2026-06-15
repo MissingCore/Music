@@ -4,29 +4,17 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.net.Uri
-import expo.modules.kotlin.exception.Exceptions
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
+import expo.modules.nativeutils.media.AssetsOptions
+import expo.modules.nativeutils.media.assets.getAssets
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.IOException
 import java.io.OutputStream
-import java.net.URL
-import java.util.regex.Pattern
 import org.apache.commons.io.IOUtils
-
-fun slashifyFilePath(path: String?): String? {
-  return if (path == null) {
-    null
-  } else if (path.startsWith("file:///")) {
-    path
-  } else {
-    // Ensure leading schema with a triple slash
-    Pattern.compile("^file:/*").matcher(path).replaceAll("file:///")
-  }
-}
 
 class NativeUtilsModule : Module() {
   private val context: Context?
@@ -77,6 +65,13 @@ class NativeUtilsModule : Module() {
         val out: OutputStream = FileOutputStream(toUri.toFile())
         IOUtils.copy(inputStream, out)
       }
+    }
+
+
+    AsyncFunction("getAudioAssets") { assetOptions: AssetsOptions ->
+      val currentContext = context
+      if (currentContext == null) throw Exception("React Context is currently undefined.")
+      return@AsyncFunction getAssets(currentContext, assetOptions)
     }
   }
 

@@ -7,6 +7,7 @@ import { PreferenceTogglers } from "~/stores/Preference/actions";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import {
+  MediaStoreScannerSetting,
   OptimizedImageSavingSetting,
   ScanningConfigurations,
 } from "~/navigation/screens/settings/ScanningSettingsView";
@@ -38,6 +39,7 @@ export function OnboardingConfiguration() {
         <TEm textKey="feat.scanning.title" className="-mb-4" />
         <ScanningConfigurations.Settings {...sheetRefs} />
         <OptimizedImageSavingSetting />
+        <MediaStoreScannerSetting />
         <TEm textKey="feat.appUpdate.title" className="-mb-4" />
         <AppUpdateConfigurations />
 
