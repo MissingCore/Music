@@ -12,9 +12,9 @@ import {
   usePlaylistForScreen,
 } from "~/data/playlist/queries";
 
-import { useBottomActionsOffset } from "~/navigation/hooks/useBottomActions";
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
 import { PlaylistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
+import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 import type { MenuAction } from "~/navigation/components/CurrentListMenu";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";

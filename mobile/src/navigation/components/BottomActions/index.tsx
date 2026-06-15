@@ -2,7 +2,7 @@ import { View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { useRenderBottomActions } from "../../hooks/useBottomActions";
+import { useRenderBottomActions } from "./useBottomActions";
 
 import { MiniPlayer } from "./MiniPlayer";
 import { Navbar, SearchButton, SettingsButton } from "./NavActions";

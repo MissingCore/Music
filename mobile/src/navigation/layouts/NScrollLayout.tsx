@@ -25,7 +25,7 @@ import { scheduleOnUI } from "react-native-worklets";
 import { MoreHoriz } from "~/resources/icons/MoreHoriz";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
-import { BottomActionsOffset } from "~/navigation/hooks/useBottomActions";
+import { BottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 
 import type {
   AnimatedLegendListRef,

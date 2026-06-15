@@ -22,8 +22,7 @@ import { getArtistsString } from "~/data/artist/utils";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
-
-import { BottomActionsOffset } from "../../hooks/useBottomActions";
+import { BottomActionsOffset } from "./useBottomActions";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
