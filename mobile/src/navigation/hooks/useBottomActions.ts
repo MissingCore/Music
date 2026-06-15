@@ -35,7 +35,7 @@ export function useRenderBottomActions() {
   return useMemo(
     () => ({
       miniPlayer: canRenderMiniPlayer && (onHomeScreen || isMiniPlayerShown),
-      navBar: onHomeScreen,
+      navBar: Boolean(onHomeScreen),
     }),
     [canRenderMiniPlayer, isMiniPlayerShown, onHomeScreen],
   );

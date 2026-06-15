@@ -1,20 +1,78 @@
 import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useMemo, useState } from "react";
-import Animated, { SlideInDown, SlideOutDown } from "react-native-reanimated";
+import { useTranslation } from "react-i18next";
+import { View } from "react-native";
+import Animated, {
+  SlideInDown,
+  SlideInLeft,
+  SlideInRight,
+  SlideOutDown,
+  SlideOutLeft,
+  SlideOutRight,
+} from "react-native-reanimated";
 
+import { Search } from "~/resources/icons/Search";
+import { Settings } from "~/resources/icons/Settings";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTabsByVisibility } from "~/stores/Preference/hooks";
+
+import { useHasNewUpdate } from "~/navigation/hooks/useHasNewUpdate";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { capitalize } from "~/utils/string";
 import { FlatList, useFlatListRef } from "~/components/Base/List";
 import { Pressable } from "~/components/Base/Pressable";
+import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { useTheme } from "~/modules/customization/theme/hooks";
 import type { Tab } from "~/stores/Preference/types";
 
+export function SearchButton() {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+  return (
+    <Animated.View
+      entering={OnRTL.decide(SlideInRight, SlideInLeft)}
+      exiting={OnRTL.decide(SlideOutRight, SlideOutLeft)}
+    >
+      <FilledIconButton
+        Icon={Search}
+        accessibilityLabel={t("feat.search.title")}
+        onPress={() => navigation.navigate("Search")}
+        size="lg"
+        className="size-14"
+      />
+    </Animated.View>
+  );
+}
+
+export function SettingsButton() {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+  const { hasNewUpdate } = useHasNewUpdate();
+  return (
+    <Animated.View
+      entering={OnRTL.decide(SlideInLeft, SlideInRight)}
+      exiting={OnRTL.decide(SlideOutLeft, SlideOutRight)}
+      className="relative"
+    >
+      <FilledIconButton
+        Icon={Settings}
+        accessibilityLabel={t("term.settings")}
+        onPress={() => navigation.navigate("Settings")}
+        size="lg"
+        className="size-14"
+      />
+      {hasNewUpdate && (
+        <View className="absolute top-3 right-3 size-2 rounded-full bg-primary" />
+      )}
+    </Animated.View>
+  );
+}
+
+//#region Navbar
 export function Navbar() {
   const navigation = useNavigation();
   const { surfaceContainerLowest } = useTheme();
@@ -49,7 +107,7 @@ export function Navbar() {
     <Animated.View
       entering={SlideInDown}
       exiting={SlideOutDown}
-      className="relative h-14 shrink grow overflow-hidden rounded-full bg-surfaceContainerLowest"
+      className="relative h-14 w-full shrink grow overflow-hidden rounded-full bg-surfaceContainerLowest"
     >
       <FlatList
         ref={listRef}
@@ -102,3 +160,4 @@ function getHomeScreenRoute(tabKey: Tab) {
   if (tabKey === "home") return { term: "term.home", screen: "Home" } as const;
   return { term: `term.${tabKey}s`, screen: `${capitalize(tabKey)}s` } as const;
 }
+//#endregion
