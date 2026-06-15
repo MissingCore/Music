@@ -1,4 +1,4 @@
-import { usePermissions as useMediaLibraryPermissions } from "expo-media-library/legacy";
+import { useMediaLibraryPermissions } from "@missingcore/native-utils/media";
 import { useCallback, useEffect, useState } from "react";
 
 import { Resynchronize } from "~/stores/Playback/actions";
@@ -15,9 +15,7 @@ import { Stopwatch } from "~/utils/debug";
  * SQLite database.
  */
 export function useScanning(canStart: boolean) {
-  const [permissionResponse, requestPermission] = useMediaLibraryPermissions({
-    granularPermissions: ["audio"],
-  });
+  const [permissionResponse, requestPermission] = useMediaLibraryPermissions();
   const [status, setStatus] = useState<"in-progress" | "complete" | undefined>(
     undefined,
   );
