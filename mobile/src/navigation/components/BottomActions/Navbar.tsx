@@ -1,7 +1,7 @@
 import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useMemo, useState } from "react";
-import { View } from "react-native";
+import Animated, { SlideInDown, SlideOutDown } from "react-native-reanimated";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTabsByVisibility } from "~/stores/Preference/hooks";
@@ -46,7 +46,11 @@ export function Navbar() {
   }, [listRef, activeIndex, mounted]);
 
   return (
-    <View className="relative h-14 shrink grow overflow-hidden rounded-full bg-surfaceContainerLowest">
+    <Animated.View
+      entering={SlideInDown}
+      exiting={SlideOutDown}
+      className="relative h-14 shrink grow overflow-hidden rounded-full bg-surfaceContainerLowest"
+    >
       <FlatList
         ref={listRef}
         onLayout={() => setMounted(true)}
@@ -88,7 +92,7 @@ export function Navbar() {
         style={{ [OnRTL.decide("left", "right")]: 0 }}
         className="absolute h-full w-4"
       />
-    </View>
+    </Animated.View>
   );
 }
 

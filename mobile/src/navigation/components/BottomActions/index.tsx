@@ -1,7 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import Animated from "react-native-reanimated";
+import Animated, {
+  LinearTransition,
+  SlideInLeft,
+  SlideInRight,
+  SlideOutLeft,
+  SlideOutRight,
+} from "react-native-reanimated";
 
 import { Search } from "~/resources/icons/Search";
 import { Settings } from "~/resources/icons/Settings";
@@ -9,6 +15,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { useRenderBottomActions } from "../../hooks/useBottomActions";
 import { useHasNewUpdate } from "../../hooks/useHasNewUpdate";
 
+import { OnRTL } from "~/lib/react";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { MiniPlayer } from "./MiniPlayer";
 import { Navbar } from "./Navbar";
@@ -26,24 +33,34 @@ export function BottomActions() {
   return (
     <View>
       <Animated.View
+        layout={LinearTransition}
         pointerEvents="box-none"
         className="absolute bottom-0 left-0 w-full flex-row items-end gap-2 p-4 pt-0"
       >
         {rendered.navBar ? (
-          <FilledIconButton
-            Icon={Search}
-            accessibilityLabel={t("feat.search.title")}
-            onPress={() => navigation.navigate("Search")}
-            size="lg"
-            className="size-14"
-          />
+          <Animated.View
+            entering={OnRTL.decide(SlideInRight, SlideInLeft)}
+            exiting={OnRTL.decide(SlideOutRight, SlideOutLeft)}
+          >
+            <FilledIconButton
+              Icon={Search}
+              accessibilityLabel={t("feat.search.title")}
+              onPress={() => navigation.navigate("Search")}
+              size="lg"
+              className="size-14"
+            />
+          </Animated.View>
         ) : null}
-        <View className="shrink grow gap-2">
+        <Animated.View layout={LinearTransition} className="shrink grow gap-2">
           {rendered.miniPlayer ? <MiniPlayer /> : null}
           {rendered.navBar && showNavbar ? <Navbar /> : null}
-        </View>
+        </Animated.View>
         {rendered.navBar ? (
-          <View className="relative">
+          <Animated.View
+            entering={OnRTL.decide(SlideInLeft, SlideInRight)}
+            exiting={OnRTL.decide(SlideOutLeft, SlideOutRight)}
+            className="relative"
+          >
             <FilledIconButton
               Icon={Settings}
               accessibilityLabel={t("term.settings")}
@@ -54,7 +71,7 @@ export function BottomActions() {
             {hasNewUpdate && (
               <View className="absolute top-3 right-3 size-2 rounded-full bg-primary" />
             )}
-          </View>
+          </Animated.View>
         ) : null}
       </Animated.View>
     </View>
