@@ -62,7 +62,7 @@ fun putAssetsInfo(
       val assetMetadata = Bundle().apply {
         if (titleIndex != -1) putString("title", cursor.getString(titleIndex))
         if (albumIndex != -1) putString("album", cursor.getString(albumIndex))
-        if (albumIndex != -1) putString("albumArtist", cursor.getString(albumArtistIndex))
+        if (albumArtistIndex != -1) putString("albumArtist", cursor.getString(albumArtistIndex))
         if (artistIndex != -1) putString("artist", cursor.getString(artistIndex))
         if (genreIndex != -1) putString("genre", cursor.getString(genreIndex))
         if (yearIndex != -1) putInt("year", cursor.getInt(yearIndex))

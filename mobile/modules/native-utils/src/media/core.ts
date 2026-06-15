@@ -12,6 +12,13 @@ export async function getAudioAssets(
   if (!NativeUtils.getAudioAssets) {
     throw new Error("`getAudioAssets` is not available.");
   }
+  if (options.first <= 0) {
+    throw new Error("`first` must be greater than 0.");
+  }
+  if ((options.after || 0) < 0) {
+    throw new Error("`after` must be greater than 0.");
+  }
+
   return NativeUtils.getAudioAssets(options);
 }
 

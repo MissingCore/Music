@@ -70,7 +70,8 @@ class NativeUtilsModule : Module() {
 
     AsyncFunction("getAudioAssets") { assetOptions: AssetsOptions ->
       val currentContext = context
-      return@AsyncFunction if (currentContext != null) getAssets(currentContext, assetOptions) else emptyList<Map<String, Any?>>()
+      if (currentContext == null) throw Exception("React Context is currently undefined.")
+      return@AsyncFunction getAssets(currentContext, assetOptions)
     }
   }
 

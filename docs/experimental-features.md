@@ -51,7 +51,9 @@ Although the MediaStore scanner is extremely fast, it has some problems. I've no
 
 - The `year` field isn't returned for `.flac` files.
 - If a track has no embedded `album` field, the name of the folder the track is in is returned instead (so all tracks will return a value in the `album` field).
-- We've handled this internally, but if a track has a disc & track number, the value returned for the track number will incorporate both values (ie: `1002` for disc 1, track 2).
+- We've handled these issues internally:
+  - If a track has a disc & track number, the value returned for the track number will incorporate both values (ie: `1002` for disc 1, track 2).
+  - If a track has no embedded `artist` field, `<unknown>` is returned.
 
 ## Queue-Aware Play Next
 

@@ -154,7 +154,6 @@ export async function findAndSaveAudio() {
   // indexed some content.
   const trackBatches = chunkArray(unstagedTracks, assetQuerier.batchAmount);
   for (const tBatch of trackBatches) {
-    // Use `MediaStore` method on Android 11+.
     const { results, errors } = await assetQuerier.query(tBatch);
 
     scanningProgressStore.setState((prev) => ({
@@ -279,10 +278,10 @@ class MediaStoreQuerier {
 
   /** Queries metadata for assets from MediaStore. */
   async query(assets: Asset[]) {
-    const idsToQuery = new Set(assets.map((a) => a.id));
+    const requestedById = new Map(assets.map((a) => [a.id, a]));
     const queryResults = await getAudioAssets({
       first: this.batchAmount,
-      fromIds: [...idsToQuery],
+      fromIds: [...requestedById.keys()],
       returnWithMetadata: true,
     });
 
@@ -291,8 +290,18 @@ class MediaStoreQuerier {
     const errors: InvalidTrack[] = [];
 
     for (const asset of queryResults.assets) {
+      requestedById.delete(asset.id);
       if (asset.metadata === null) errors.push(this.formatError(asset));
       else results.push(this.formatResult(asset));
+    }
+
+    // Mark results not returned by query as errored.
+    for (const asset of requestedById.values()) {
+      errors.push({
+        ...this.formatError(asset),
+        errorName: "MediaStore_Missing_Asset",
+        errorMessage: "MediaStore did not return asset.",
+      });
     }
 
     return { results, errors };

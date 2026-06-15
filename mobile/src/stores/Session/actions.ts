@@ -18,9 +18,12 @@ export async function presentTrackSheet(trackId: string) {
   try {
     const sheetTrack = await getTrack(trackId);
     if (!sheetTrack.sampleRate) {
-      const { sampleRate } = await getMetadata(sheetTrack.uri, ["sampleRate"]);
-      sheetTrack.sampleRate = sampleRate;
-      if (sampleRate) updateTrack(trackId, { sampleRate });
+      try {
+        const result = await getMetadata(sheetTrack.uri, ["sampleRate"]);
+        sheetTrack.sampleRate = result.sampleRate;
+        // Update track in the background.
+        if (result.sampleRate) updateTrack(trackId, result);
+      } catch {}
     }
 
     sessionStore.setState({ displayedTrack: sheetTrack });
