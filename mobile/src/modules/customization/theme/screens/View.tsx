@@ -5,9 +5,6 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { Icon } from "~/resources/icons";
-import { Add } from "~/resources/icons/Add";
-import { Edit } from "~/resources/icons/Edit";
-import { FileSave } from "~/resources/icons/FileSave";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
 
@@ -59,7 +56,7 @@ export default function Themes() {
       <ScreenOptions
         headerRight={() => (
           <FilledIconButton
-            Icon={Add}
+            icon="add"
             accessibilityLabel={t("form.create")}
             onPress={() => navigation.navigate("CreateTheme")}
           />
@@ -108,7 +105,7 @@ export default function Themes() {
               {!isDefaultTheme(themeId) ? (
                 <View className="flex-row items-center">
                   <IconButton
-                    Icon={Edit}
+                    icon="edit"
                     accessibilityLabel={t("form.edit")}
                     onPress={() =>
                       navigation.navigate("ModifyTheme", { id: themeId })
@@ -117,7 +114,7 @@ export default function Themes() {
                     _rippleColor={themeColors.surfaceContainerHigh as HexColor}
                   />
                   <IconButton
-                    Icon={FileSave}
+                    icon="file-save"
                     accessibilityLabel={t("feat.backup.extra.export")}
                     onPress={() =>
                       onExportTheme(formatCustomTheme(themeMap[themeId]!))

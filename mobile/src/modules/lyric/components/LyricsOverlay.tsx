@@ -5,7 +5,6 @@ import { Text, View } from "react-native";
 import { usePolledProgress } from "react-native-audio-browser";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { Edit } from "~/resources/icons/Edit";
 import { useLyricForTrack } from "~/data/lyric/queries";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
@@ -102,7 +101,7 @@ function LyricsContent(props: { trackId: string; offset: number }) {
       )}
 
       <IconButton
-        Icon={Edit}
+        icon="edit"
         accessibilityLabel={t("form.edit")}
         onPress={() => navigation.navigate("ModifyLyric", { id: data.id })}
         className="absolute right-0 bottom-0 z-100"

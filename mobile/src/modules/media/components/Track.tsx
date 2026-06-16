@@ -1,9 +1,6 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Favorite } from "~/resources/icons/Favorite";
-import { MoreVert } from "~/resources/icons/MoreVert";
-import { QueueMusic } from "~/resources/icons/QueueMusic";
 import {
   useTrackFavoriteStatus,
   useToggleTrackInPlaylist,
@@ -71,13 +68,13 @@ export function TrackAction(props: { id: string; title: string }) {
       {quickFavorite ? <FavoriteButton id={props.id} /> : null}
       {quickAddQueue ? (
         <IconButton
-          Icon={QueueMusic}
+          icon="queue-music"
           accessibilityLabel={t("feat.queue.extra.playNext")}
           onPress={() => Queue.add({ id: props.id, name: props.title })}
         />
       ) : null}
       <IconButton
-        Icon={MoreVert}
+        icon="more-vert"
         accessibilityLabel={t("template.entrySeeMore", { name: props.title })}
         onPress={() => presentTrackSheet(props.id)}
       />
@@ -95,10 +92,9 @@ export function FavoriteButton(props: { id: string; size?: ButtonSize }) {
 
   return (
     <IconButton
-      Icon={Favorite}
+      icon={`favorite${isFav ? "-filled" : ""}`}
       accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
       onPress={() => mutateGuard(toggleInPlaylist, FavoritesPlaylistKey)}
-      alternative={isFav}
       size={props.size}
     />
   );

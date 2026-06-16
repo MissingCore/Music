@@ -1,12 +1,5 @@
 import { useTranslation } from "react-i18next";
 
-import { Pause } from "~/resources/icons/Pause";
-import { PlayArrow } from "~/resources/icons/PlayArrow";
-import { Repeat } from "~/resources/icons/Repeat";
-import { RepeatOne } from "~/resources/icons/RepeatOne";
-import { Shuffle } from "~/resources/icons/Shuffle";
-import { SkipNext } from "~/resources/icons/SkipNext";
-import { SkipPrevious } from "~/resources/icons/SkipPrevious";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, PlaybackSettings } from "~/stores/Playback/actions";
 
@@ -21,7 +14,7 @@ export function RepeatButton({ size = "lg" }: { size?: ButtonSize }) {
 
   return (
     <IconButton
-      Icon={repeatMode === "repeat-one" ? RepeatOne : Repeat}
+      icon={repeatMode === "no-repeat" ? "repeat" : repeatMode}
       accessibilityLabel={t(
         `term.repeat${repeatMode === "repeat-one" ? "One" : ""}`,
       )}
@@ -38,7 +31,7 @@ export function ShuffleButton({ size = "lg" }: { size?: ButtonSize }) {
   const isActive = usePlaybackStore((s) => s.shuffle);
   return (
     <IconButton
-      Icon={Shuffle}
+      icon="shuffle"
       accessibilityLabel={t("term.shuffle")}
       onPress={PlaybackSettings.toggleShuffle}
       size={size}
@@ -53,7 +46,7 @@ export function PlayToggleButton() {
   const isPlaying = usePlaybackStore((s) => s.isPlaying);
   return (
     <FilledIconButton
-      Icon={isPlaying ? Pause : PlayArrow}
+      icon={isPlaying ? "pause-filled" : "play-arrow-filled"}
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
       onPress={() => PlaybackControls.playToggle()}
       className={cn("bg-primary px-6 py-2 active:bg-primaryDim", {
@@ -70,7 +63,7 @@ export function NextButton({ size = "lg" }: { size?: ButtonSize }) {
   const { t } = useTranslation();
   return (
     <IconButton
-      Icon={SkipNext}
+      icon="skip-next-filled"
       accessibilityLabel={t("term.next")}
       onPress={() => PlaybackControls.next()}
       size={size}
@@ -83,7 +76,7 @@ export function PreviousButton({ size = "lg" }: { size?: ButtonSize }) {
   const { t } = useTranslation();
   return (
     <IconButton
-      Icon={SkipPrevious}
+      icon="skip-previous-filled"
       accessibilityLabel={t("term.prev")}
       onPress={PlaybackControls.prev}
       size={size}

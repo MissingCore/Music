@@ -5,9 +5,6 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { Icon } from "~/resources/icons";
-import { Add } from "~/resources/icons/Add";
-import { DragHandle } from "~/resources/icons/DragHandle";
-import { Edit } from "~/resources/icons/Edit";
 import { useLyricStore } from "../core/store";
 import { moveLyricProvider, toggleCheckEmbeddedLyrics } from "../core/actions";
 import type { LyricProvider } from "../core/constants";
@@ -34,7 +31,7 @@ export default function LyricsProviders() {
       <ScreenOptions
         headerRight={() => (
           <FilledIconButton
-            Icon={Add}
+            icon="add"
             accessibilityLabel={t("form.create")}
             onPress={() => navigation.navigate("CreateLyricProvider")}
           />
@@ -77,7 +74,7 @@ function RenderItem({ item, index }: DragListRenderItemInfo<LyricProvider>) {
       RightElement={
         <View className="flex-row">
           <IconButton
-            Icon={Edit}
+            icon="edit"
             accessibilityLabel={t("form.edit")}
             onPress={() =>
               navigation.navigate("ModifyLyricProvider", { id: item.id })
@@ -85,7 +82,7 @@ function RenderItem({ item, index }: DragListRenderItemInfo<LyricProvider>) {
             disabled={isDragging}
           />
           <IconButton
-            Icon={DragHandle}
+            icon="drag-handle"
             accessibilityLabel={t("template.entryMove", { name: item.name })}
             onPressIn={onInitDrag}
             disabled={isDragging && !isActive}

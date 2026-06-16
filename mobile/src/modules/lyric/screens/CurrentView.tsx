@@ -8,9 +8,6 @@ import { View } from "react-native";
 import { db } from "~/db";
 import { tracksToLyrics } from "~/db/schema";
 
-import { Add } from "~/resources/icons/Add";
-import { Edit } from "~/resources/icons/Edit";
-import { LinkOff } from "~/resources/icons/LinkOff";
 import { queries as q } from "~/data/keyStore";
 import { getArtistsString } from "~/data/artist/utils";
 import { useLyric } from "~/data/lyric/queries";
@@ -55,7 +52,7 @@ export default function Lyric({
       <ScreenOptions
         headerRight={() => (
           <FilledIconButton
-            Icon={Edit}
+            icon="edit"
             accessibilityLabel={t("form.edit")}
             onPress={() => navigation.navigate("ModifyLyric", { id: lyricId })}
           />
@@ -72,7 +69,7 @@ export default function Lyric({
           <SegmentedList.CustomItem className="min-h-12 flex-row items-center justify-between gap-2 pr-2 pl-4">
             <TStyledText textKey="term.tracks" className="shrink grow" />
             <IconButton
-              Icon={Add}
+              icon="add"
               accessibilityLabel={t("template.entryAdd", {
                 name: t("term.track"),
               })}
@@ -97,7 +94,7 @@ export default function Lyric({
                       ) : null}
                     </View>
                     <IconButton
-                      Icon={LinkOff}
+                      icon="link-off"
                       accessibilityLabel={t("template.entryRemove", { name })}
                       onPress={() => unlinkTrack({ trackId: id, lyricId })}
                     />

@@ -7,8 +7,6 @@ import { View } from "react-native";
 import { z } from "zod/mini";
 
 import { Icon } from "~/resources/icons";
-import { Add } from "~/resources/icons/Add";
-import { DragHandle } from "~/resources/icons/DragHandle";
 import { getArtistsString } from "~/data/artist/utils";
 import { usePlaylistsNames } from "~/data/playlist/queries";
 import { sanitizePlaylistName } from "~/data/playlist/utils";
@@ -259,7 +257,7 @@ function ListHeaderComponent(props: {
         labelKey="term.tracks"
         RightElement={
           <IconButton
-            Icon={Add}
+            icon="add"
             accessibilityLabel={t("template.entryAdd", {
               name: t("term.track"),
             })}
@@ -309,7 +307,7 @@ const RenderItem = memo(
           imageSource={track.artwork}
           RightElement={
             <IconButton
-              Icon={DragHandle}
+              icon="drag-handle"
               accessibilityLabel={t("template.entryMove", { name: track.name })}
               onPressIn={onInitDrag}
               disabled={isDragging && !isActive}

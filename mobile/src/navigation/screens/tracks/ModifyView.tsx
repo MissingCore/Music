@@ -14,7 +14,6 @@ import { db } from "~/db";
 import { tracksToArtists, tracksToGenres } from "~/db/schema";
 
 import { Icon } from "~/resources/icons";
-import { ColorWand } from "~/resources/icons/ColorWand";
 import { upsertAlbums } from "~/data/album/api";
 import type { AlbumSummary } from "~/data/album/types";
 import { AlbumArtistsKey } from "~/data/album/utils";
@@ -181,7 +180,7 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
             labelKey="term.album"
             RightElement={
               <IconButton
-                Icon={ColorWand}
+                icon="color-wand"
                 accessibilityLabel={t("template.entryAdd", {
                   name: t("term.album"),
                 })}

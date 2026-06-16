@@ -4,8 +4,6 @@ import { Keyboard, View } from "react-native";
 
 import i18next from "~/modules/i18n";
 import { Icon } from "~/resources/icons";
-import { Add } from "~/resources/icons/Add";
-import { Close } from "~/resources/icons/Close";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 
 import { FlatList } from "~/components/Base/List";
@@ -46,7 +44,7 @@ export function SeparatorsSheet(props: { ref: TrueSheetRef }) {
               <StyledText>{item}</StyledText>
             </Marquee>
             <IconButton
-              Icon={Close}
+              icon="close"
               accessibilityLabel={t("template.entryRemove", { name: item })}
               onPress={() => removeSeparator(item)}
             />
@@ -93,7 +91,7 @@ function SeparatorForm() {
         forSheet
       />
       <FilledIconButton
-        Icon={Add}
+        icon="add"
         accessibilityLabel={t("template.entryAdd", { name: inputForm.value })}
         onPress={async () => {
           Keyboard.dismiss();

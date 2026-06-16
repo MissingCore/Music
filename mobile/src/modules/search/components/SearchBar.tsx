@@ -2,7 +2,6 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { Icon } from "~/resources/icons";
-import { Close } from "~/resources/icons/Close";
 
 import { IconButton } from "~/components/Form/Button/Icon";
 import { TextInput, useInputRef } from "~/components/Form/Input";
@@ -28,7 +27,7 @@ export function SearchBar(props: {
         forSheet
       />
       <IconButton
-        Icon={Close}
+        icon="close"
         accessibilityLabel={t("form.clear")}
         onPress={() => {
           inputRef.current?.clear();

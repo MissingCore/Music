@@ -2,8 +2,6 @@ import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { DoNotDisturbOn } from "~/resources/icons/DoNotDisturbOn";
-
 import { cn } from "~/lib/style";
 import { Pressable } from "../Base/Pressable";
 import { IconButton } from "../Form/Button/Icon";
@@ -43,7 +41,7 @@ export const RemovableItem = memo(function RemovableItem(
       className={cn("min-h-12 flex-row items-center gap-1", props.className)}
     >
       <IconButton
-        Icon={DoNotDisturbOn}
+        icon="do-not-disturb-on"
         accessibilityLabel={t("template.entryRemove", { name: props.label })}
         onPress={props.onRemove}
         disabled={props.disableRemove}

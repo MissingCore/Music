@@ -2,7 +2,6 @@ import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Add } from "~/resources/icons/Add";
 import { useFormStateContext } from ".";
 
 import { cn } from "~/lib/style";
@@ -91,7 +90,7 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
           label={props.label}
           RightElement={
             <IconButton
-              Icon={Add}
+              icon="add"
               accessibilityLabel={t("template.entryAdd", {
                 name: props.labelKey ? t(props.labelKey) : props.label,
               })}

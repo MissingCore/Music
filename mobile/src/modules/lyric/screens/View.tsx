@@ -3,7 +3,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
 import { Icon } from "~/resources/icons";
-import { Add } from "~/resources/icons/Add";
 import { useLyrics } from "~/data/lyric/queries";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
@@ -32,7 +31,7 @@ export default function Lyrics({
       <ScreenOptions
         headerRight={() => (
           <FilledIconButton
-            Icon={Add}
+            icon="add"
             accessibilityLabel={t("form.create")}
             onPress={() => {
               // Clear `linkTo` param as it should get "used".

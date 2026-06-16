@@ -5,8 +5,6 @@ import { inArray } from "drizzle-orm";
 import { memo, useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Cached } from "~/resources/icons/Cached";
-import { DragHandle } from "~/resources/icons/DragHandle";
 import { getArtistsString } from "~/data/artist/utils";
 import { getTracks } from "~/data/track/api";
 import { structuredTracksView } from "~/data/views";
@@ -100,7 +98,7 @@ export default function Upcoming() {
       <ScreenOptions
         headerRight={() => (
           <FilledIconButton
-            Icon={Cached}
+            icon="cached"
             accessibilityLabel={t("form.reset")}
             onPress={onSynchronizeQueue}
             disabled={isSynchronizing}
@@ -160,7 +158,7 @@ const RenderItem = memo(
           LeftElement={item.active ? <PlayingIndicator /> : undefined}
           RightElement={
             <IconButton
-              Icon={DragHandle}
+              icon="drag-handle"
               accessibilityLabel={t("template.entryMove", { name: item.name })}
               onPressIn={onInitDrag}
               disabled={isDragging && !isActive}

@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import type { Icon } from "~/resources/icons/type";
 import { Image } from "~/resources/icons/Image";
 import { LowPriority } from "~/resources/icons/LowPriority";
-import { MoreHoriz } from "~/resources/icons/MoreHoriz";
 import { QueueMusic } from "~/resources/icons/QueueMusic";
 import { Sort } from "~/resources/icons/Sort";
 import { Queue } from "~/stores/Playback/actions";
@@ -79,7 +78,7 @@ export function CurrentListMenu(props: {
       visible={visible}
       anchor={
         <IconButton
-          Icon={MoreHoriz}
+          icon="more-horiz"
           accessibilityLabel={t("term.more")}
           onPress={() => setVisible((prev) => !prev)}
         />

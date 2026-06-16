@@ -15,8 +15,6 @@ import { BackHandler, View } from "react-native";
 import type { ZodMiniObject } from "zod/mini";
 import { z } from "zod/mini";
 
-import { Check } from "~/resources/icons/Check";
-
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import type { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 
@@ -246,7 +244,7 @@ function TopAppBar() {
       headerLeft={isSubmitting ? () => undefined : undefined}
       headerRight={() => (
         <FilledIconButton
-          Icon={Check}
+          icon="check"
           accessibilityLabel={t("form.apply")}
           onPress={onSubmit}
           disabled={!canSubmit || isSubmitting}

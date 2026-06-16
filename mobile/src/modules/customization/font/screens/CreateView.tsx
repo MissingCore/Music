@@ -5,8 +5,6 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { z } from "zod/mini";
 
-import { Close } from "~/resources/icons/Close";
-
 import { pickFile } from "~/lib/file-system";
 import { wait } from "~/utils/promise";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
@@ -89,7 +87,7 @@ function FontForm() {
             {data.uri}
           </StyledText>
           <IconButton
-            Icon={Close}
+            icon="close"
             accessibilityLabel={t("template.entryRemove", { name: data.uri })}
             onPress={() => setFields({ uri: "" })}
             disabled={isSubmitting}

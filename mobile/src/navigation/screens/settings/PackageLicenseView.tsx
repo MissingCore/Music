@@ -1,7 +1,6 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
-import { OpenInNew } from "~/resources/icons/OpenInNew";
 import LicensesList from "~/resources/licenses.json";
 
 import { openLink } from "~/lib/web-browser";
@@ -27,7 +26,7 @@ export default function PackageLicense({
       <ScreenOptions
         headerRight={() => (
           <FilledIconButton
-            Icon={OpenInNew}
+            icon="open-in-new"
             accessibilityLabel={t("template.entrySeeMore", {
               name: licenseInfo.name,
             })}

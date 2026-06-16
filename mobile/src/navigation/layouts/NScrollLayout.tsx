@@ -22,7 +22,6 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scheduleOnUI } from "react-native-worklets";
 
-import { MoreHoriz } from "~/resources/icons/MoreHoriz";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
 import {
@@ -182,7 +181,7 @@ export function NScrollListLayout<TData>({
       <>
         {Actions}
         <FilledIconButton
-          Icon={MoreHoriz}
+          icon="more-horiz"
           accessibilityLabel={t("feat.modalViewPreference.title")}
           onPress={() => sheetRef.current?.present()}
         />

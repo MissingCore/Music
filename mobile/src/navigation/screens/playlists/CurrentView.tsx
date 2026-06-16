@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { Edit } from "~/resources/icons/Edit";
-import { Favorite } from "~/resources/icons/Favorite";
 import { FileSave } from "~/resources/icons/FileSave";
 import {
   useFavoritePlaylist,
@@ -91,14 +90,13 @@ export default function Playlist({
             <View className="flex-row gap-1">
               {id !== FavoritesPlaylistKey ? (
                 <IconButton
-                  Icon={Favorite}
+                  icon={`favorite${isToggled ? "-filled" : ""}`}
                   accessibilityLabel={t(
                     `term.${isToggled ? "unF" : "f"}avorite`,
                   )}
                   onPress={() =>
                     mutateGuard(favoritePlaylist, !data.isFavorite)
                   }
-                  alternative={isToggled}
                 />
               ) : null}
               <CurrentListMenu

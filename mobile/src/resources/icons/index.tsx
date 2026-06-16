@@ -6,10 +6,10 @@ import glyphMap from "./app-icons.glyphmap.json";
 
 const AppIcons = createNanoIconSet(glyphMap);
 
-export type SupportedIcoName = React.ComponentProps<typeof AppIcons>["name"];
+export type SupportedIconName = React.ComponentProps<typeof AppIcons>["name"];
 
 type Props = {
-  name: SupportedIcoName;
+  name: SupportedIconName;
   /** Defaults to `24px`. */
   size?: number;
   /** Defaults to theme's `onSurface` color. */

@@ -4,12 +4,8 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import type { Icon } from "~/resources/icons/type";
-import { Delete } from "~/resources/icons/Delete";
 import { Edit } from "~/resources/icons/Edit";
-import { Favorite } from "~/resources/icons/Favorite";
-import { Image } from "~/resources/icons/Image";
 import { LowPriority } from "~/resources/icons/LowPriority";
-import { PlaylistAdd } from "~/resources/icons/PlaylistAdd";
 import { QueueMusic } from "~/resources/icons/QueueMusic";
 import { Schedule } from "~/resources/icons/Schedule";
 import {
@@ -172,20 +168,19 @@ function IconActions(props: { data: Track; editArtwork: VoidFunction }) {
   return (
     <View className="flex-row justify-between gap-1 rounded-md bg-surfaceContainerLowest px-1">
       <IconButton
-        Icon={Favorite}
+        icon={`favorite${isFav ? "-filled" : ""}`}
         accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
         onPress={() => mutateGuard(toggleInPlaylist, FavoritesPlaylistKey)}
-        alternative={isFav}
         size="md"
       />
       <IconButton
-        Icon={PlaylistAdd}
+        icon="playlist-add"
         accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
         onPress={sheetAction(() => TrueSheet.present("TrackToPlaylistsSheet"))}
         size="md"
       />
       <IconButton
-        Icon={Edit}
+        icon="edit"
         accessibilityLabel={t("form.edit")}
         onPress={sheetAction(() =>
           navigation.navigate("ModifyTrack", { id: props.data.id }),
@@ -193,13 +188,13 @@ function IconActions(props: { data: Track; editArtwork: VoidFunction }) {
         size="md"
       />
       <IconButton
-        Icon={Image}
+        icon="image"
         accessibilityLabel={t("feat.artwork.extra.change")}
         onPress={sheetAction(props.editArtwork)}
         size="md"
       />
       <IconButton
-        Icon={Delete}
+        icon="delete"
         accessibilityLabel={t("template.entryHide", { name: props.data.name })}
         onPress={sheetAction(() =>
           mutateGuard(hideTrack, { track: props.data }),

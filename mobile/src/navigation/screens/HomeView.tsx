@@ -1,7 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
-import { History } from "~/resources/icons/History";
 import { useFavoriteListsForCards } from "~/data/favorite/queries";
 
 import { NScrollLayout } from "~/navigation/layouts/NScrollLayout";
@@ -20,7 +19,7 @@ export default function Home() {
       titleKey="term.home"
       Actions={
         <FilledIconButton
-          Icon={History}
+          icon="history"
           accessibilityLabel={t("feat.playedRecent.title")}
           onPress={() => navigation.navigate("RecentlyPlayed")}
         />

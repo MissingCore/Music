@@ -16,8 +16,6 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scheduleOnRN } from "react-native-worklets";
 
-import { Pause } from "~/resources/icons/Pause";
-import { PlayArrow } from "~/resources/icons/PlayArrow";
 import { getArtistsString } from "~/data/artist/utils";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
@@ -150,7 +148,7 @@ export function MiniPlayer() {
           >
             {!gestureUI ? <PreviousButton /> : null}
             <IconButton
-              Icon={isPlaying ? Pause : PlayArrow}
+              icon={isPlaying ? "pause-filled" : "play-arrow-filled"}
               accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
               onPress={() => PlaybackControls.playToggle()}
               size="lg"

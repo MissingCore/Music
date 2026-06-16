@@ -2,9 +2,6 @@ import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Add } from "~/resources/icons/Add";
-import { Remove } from "~/resources/icons/Remove";
-
 import { FilledIconButton } from "./Button/Icon";
 import { Em } from "../Typography/StyledText";
 
@@ -33,7 +30,7 @@ export const NumberStepper = memo(function NumberStepper({
   return (
     <View className="flex-row items-center gap-2">
       <FilledIconButton
-        Icon={Remove}
+        icon="remove"
         accessibilityLabel={t("template.entryRemove", {
           name: t("plural.second", { count: 1 }),
         })}
@@ -47,7 +44,7 @@ export const NumberStepper = memo(function NumberStepper({
         {props.suffix}
       </Em>
       <FilledIconButton
-        Icon={Add}
+        icon="add"
         accessibilityLabel={t("template.entryRemove", {
           name: t("plural.second", { count: 1 }),
         })}
