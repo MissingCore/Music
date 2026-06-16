@@ -10,4 +10,8 @@
 **Ionicons**
 
 - We use `color-wand`, `flask-filled`, `logo-github`, `logo-google-playstore`, `repeat`, and `shuffle`.
+
+**Custom Icons**
+
+- `nothing-arrow-right`
 - `repeat-one` is a custom icon based on Ionicons' `repeat` & `calendar-number` icons.

@@ -4,7 +4,7 @@ import { Animated, View } from "react-native";
 import { GestureDetector, usePanGesture } from "react-native-gesture-handler";
 import { useSharedValue } from "react-native-reanimated";
 
-import { NothingArrowRight } from "~/resources/icons/NothingArrowRight";
+import { Icon } from "~/resources/icons";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
@@ -280,7 +280,7 @@ function SwipeIconWrapper(props: {
 function SwipeIcon({ rotate = false }) {
   return (
     <View className={rotate ? "rotate-180" : undefined}>
-      <NothingArrowRight size={32} />
+      <Icon name="nothing-arrow-right" size={32} />
     </View>
   );
 }
