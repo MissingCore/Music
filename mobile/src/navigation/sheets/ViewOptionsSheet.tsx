@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
+import { Icon } from "~/resources/icons";
 import { GridView } from "~/resources/icons/GridView";
-import { Sort } from "~/resources/icons/Sort";
 import { ViewAgenda } from "~/resources/icons/ViewAgenda";
 import { ViewModule } from "~/resources/icons/ViewModule";
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -49,7 +49,7 @@ export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
             props.ref.current?.dismiss();
             sortOrderSheetRef.current?.present();
           }}
-          LeftElement={<Sort />}
+          LeftElement={<Icon name="sort" />}
           className="gap-4"
         />
       </DetachedSheet>
@@ -105,7 +105,7 @@ function ViewOptionsSheetTemplate(props: {
             props.ref.current?.dismiss();
             sortOrderSheetRef.current?.present();
           }}
-          LeftElement={<Sort />}
+          LeftElement={<Icon name="sort" />}
           className="gap-4"
         />
       </DetachedSheet>
