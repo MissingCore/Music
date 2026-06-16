@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 
@@ -11,6 +12,12 @@ import { Navbar, SearchButton, SettingsButton } from "./NavActions";
 /** Actions stickied to the bottom of the screens. */
 export function BottomActions() {
   const showNavbar = usePreferenceStore((s) => s.showNavbar);
+
+  const BottomActionsLayout = useMemo(
+    () => (showNavbar ? WithNavBar : WithOutNavBar),
+    [showNavbar],
+  );
+
   //  Extra `View` is to fix positioning when button navigation is selected.
   return (
     <View>
@@ -19,7 +26,7 @@ export function BottomActions() {
         pointerEvents="box-none"
         className="absolute bottom-0 left-0 w-full items-end gap-2 p-4 pt-0"
       >
-        {showNavbar ? <WithNavBar /> : <WithOutNavBar />}
+        <BottomActionsLayout />
       </Animated.View>
     </View>
   );
