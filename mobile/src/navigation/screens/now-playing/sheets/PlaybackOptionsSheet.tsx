@@ -3,7 +3,6 @@ import { useCallback, useState } from "react";
 import AudioBrowser from "react-native-audio-browser";
 
 import { Icon } from "~/resources/icons";
-import { VolumeUp } from "~/resources/icons/VolumeUp";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import {
@@ -160,8 +159,8 @@ const VolumeSliderOptions = {
   },
   overlay: {
     accessibilityLabelKey: "feat.playback.extra.volume" as const,
-    Icon: VolumeUp,
+    icon: "volume-up-filled",
     formatValue: (val: number) => `${Math.round(val * 100)}%`,
   },
-};
+} as const;
 //#endregion

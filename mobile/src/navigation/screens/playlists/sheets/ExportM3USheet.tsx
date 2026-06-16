@@ -2,9 +2,6 @@ import { toast } from "@missingcore/ui/toast";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { ConversionPath } from "~/resources/icons/ConversionPath";
-import { Graph1 } from "~/resources/icons/Graph1";
-
 import { ExtendedTButton } from "~/components/Form/Button";
 import type { PickerOption } from "~/components/Form/SegmentedPicker";
 import { SegmentedPicker } from "~/components/Form/SegmentedPicker";
@@ -19,8 +16,8 @@ export function ExportM3USheet(props: { ref: TrueSheetRef; id: string }) {
 
   const pickerOptions: PickerOption[] = useMemo(
     () => [
-      { Icon: ConversionPath, label: t("feat.playlist.extra.absolute") },
-      { Icon: Graph1, label: t("feat.playlist.extra.relative") },
+      { icon: "conversion-path", label: t("feat.playlist.extra.absolute") },
+      { icon: "graph-1", label: t("feat.playlist.extra.relative") },
     ],
     [t],
   );

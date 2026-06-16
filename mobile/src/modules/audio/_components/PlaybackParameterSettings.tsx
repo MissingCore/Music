@@ -1,8 +1,5 @@
 import AudioBrowser from "react-native-audio-browser";
 
-import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
-import { VoiceSelection } from "~/resources/icons/VoiceSelection";
-
 import { SegmentedList } from "~/components/List/Segmented";
 import { PlaybackParameterSlider } from "./PlaybackParameterSlider";
 
@@ -12,12 +9,12 @@ export function PlaybackParameterSettings() {
       <PlaybackParameterSlider
         field="pitch"
         onUpdate={AudioBrowser.setPitch}
-        Icon={VoiceSelection}
+        icon="voice-selection"
       />
       <PlaybackParameterSlider
         field="speed"
         onUpdate={AudioBrowser.setRate}
-        Icon={SlowMotionVideo}
+        icon="slow-motion-video"
       />
     </SegmentedList>
   );
