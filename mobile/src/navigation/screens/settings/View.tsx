@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
 import { Icon } from "~/resources/icons";
-import { Flask } from "~/resources/icons/Flask";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 
@@ -104,7 +103,7 @@ export default function Settings() {
         <SegmentedList.Item
           labelTextKey="feat.experimental.title"
           onPress={() => navigation.navigate("ExperimentalSettings")}
-          LeftElement={<Flask />}
+          LeftElement={<Icon name="flask-filled" />}
           className="gap-4"
         />
 

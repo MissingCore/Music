@@ -1,10 +1,18 @@
 import Svg, { Circle } from "react-native-svg";
 
+import type { AppColor } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
-import type { Icon } from "./type";
 
 // Custom SVG made in Figma.
-export function NothingArrowRight({ size = 24, color }: Icon) {
+export function NothingArrowRight({
+  size = 24,
+  color,
+}: {
+  /** Defaults to `24px`. */
+  size?: number;
+  /** Defaults to theme's `onSurface` color. */
+  color?: AppColor;
+}) {
   const usedColor = useColor(color, "onSurface");
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill={usedColor}>
