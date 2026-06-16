@@ -35,7 +35,7 @@ function WithNavBar() {
       {rendered.navBar ? (
         <Animated.View
           layout={LinearTransition}
-          className="w-full flex-row gap-2"
+          className="-z-1 w-full flex-row gap-2"
         >
           <SearchButton />
           <Navbar />

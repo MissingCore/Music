@@ -25,7 +25,10 @@ import { scheduleOnUI } from "react-native-worklets";
 import { MoreHoriz } from "~/resources/icons/MoreHoriz";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
-import { BottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
+import {
+  BottomActionsOffset,
+  useBottomActionsOffset,
+} from "~/navigation/components/BottomActions/useBottomActions";
 
 import type {
   AnimatedLegendListRef,
@@ -65,10 +68,14 @@ export function NScrollLayout(props: {
   const scrollRef = useAnimatedScrollViewRef();
 
   // NScrollbar
+  const showNavbar = usePreferenceStore((s) => s.showNavbar);
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const scrollBarContext = useScrollbarContext();
 
-  const bottomOffset = BottomActionsOffset + 16;
+  const bottomOffset = useBottomActionsOffset(
+    16 + (showNavbar ? BottomActionsOffset : 0),
+    showNavbar ? -8 : 0,
+  );
 
   // Shy Header
   const [topBarHeight, setTopBarHeight] = useState(
@@ -150,10 +157,14 @@ export function NScrollListLayout<TData>({
   const sheetRef = useSheetRef();
 
   // NScrollbar
+  const showNavbar = usePreferenceStore((s) => s.showNavbar);
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const scrollBarContext = useScrollbarContext();
 
-  const bottomOffset = BottomActionsOffset + 16;
+  const bottomOffset = useBottomActionsOffset(
+    16 + (showNavbar ? BottomActionsOffset : 0),
+    showNavbar ? -8 : 0,
+  );
 
   // Shy Header
   const [topBarHeight, setTopBarHeight] = useState(
