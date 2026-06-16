@@ -108,11 +108,7 @@ export default (): ExpoConfig => {
         {
           iconSets: [
             {
-              inputDir: "./assets/icons/ionicons",
-              outputDir: "./src/resources/icons",
-            },
-            {
-              inputDir: "./assets/icons/material-symbols",
+              inputDir: "./assets/icons/app-icons",
               outputDir: "./src/resources/icons",
             },
           ],
