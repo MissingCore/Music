@@ -3,9 +3,9 @@ import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
 
 import i18next from "~/modules/i18n";
+import { Icon } from "~/resources/icons";
 import { Add } from "~/resources/icons/Add";
 import { Close } from "~/resources/icons/Close";
-import { Info } from "~/resources/icons/Info";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 
 import { FlatList } from "~/components/Base/List";
@@ -59,7 +59,7 @@ export function SeparatorsSheet(props: { ref: TrueSheetRef }) {
 
       <Divider />
       <View className="flex-row gap-2 pb-2">
-        <Info size={16} color="onSurfaceVariant" />
+        <Icon name="info" size={16} color="onSurfaceVariant" />
         <TStyledText
           textKey="feat.separators.description.line2"
           dim

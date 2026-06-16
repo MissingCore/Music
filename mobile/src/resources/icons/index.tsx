@@ -6,7 +6,9 @@ import glyphMap from "./material-symbols.glyphmap.json";
 
 const MaterialIcon = createNanoIconSet(glyphMap);
 
-type SupportedIcoName = React.ComponentProps<typeof MaterialIcon>["name"];
+export type SupportedIcoName = React.ComponentProps<
+  typeof MaterialIcon
+>["name"];
 
 type Props = {
   name: SupportedIcoName;

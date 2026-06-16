@@ -5,8 +5,7 @@ import { useTranslation } from "react-i18next";
 import { db } from "~/db";
 import { waveformSamples } from "~/db/schema";
 
-import { OpenInNew } from "~/resources/icons/OpenInNew";
-import { Search } from "~/resources/icons/Search";
+import { Icon } from "~/resources/icons";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { sessionStore } from "~/stores/Session/store";
@@ -55,13 +54,13 @@ export default function ExperimentalSettings() {
       <SegmentedList.Item
         labelText="Android Auto"
         onPress={() => openLink(Links.AndroidAuto)}
-        RightElement={<OpenInNew />}
+        RightElement={<Icon name="open-in-new" />}
       />
 
       <SegmentedList.Item
         labelTextKey="feat.lyrics.extra.providers"
         onPress={() => navigation.navigate("LyricsProviders")}
-        LeftElement={<Search />}
+        LeftElement={<Icon name="search" />}
         className="gap-4"
       />
     </ListLayout>

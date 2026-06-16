@@ -2,7 +2,7 @@ import type { ParseKeys } from "i18next";
 import { memo } from "react";
 import { View } from "react-native";
 
-import { Check } from "~/resources/icons/Check";
+import { Icon } from "~/resources/icons";
 
 import { cn } from "~/lib/style";
 import { Pressable } from "../Base/Pressable";
@@ -18,7 +18,7 @@ function Checkbox({ checked, size = 20 }: { checked: boolean; size?: number }) {
         { "border-0 bg-onSurface": checked },
       )}
     >
-      {checked ? <Check size={size} color="surface" /> : null}
+      {checked ? <Icon name="check" size={size} color="surface" /> : null}
     </View>
   );
 }

@@ -13,8 +13,8 @@ import { z } from "zod/mini";
 import { db } from "~/db";
 import { tracksToArtists, tracksToGenres } from "~/db/schema";
 
+import { Icon } from "~/resources/icons";
 import { ColorWand } from "~/resources/icons/ColorWand";
-import { Info } from "~/resources/icons/Info";
 import { upsertAlbums } from "~/data/album/api";
 import type { AlbumSummary } from "~/data/album/types";
 import { AlbumArtistsKey } from "~/data/album/utils";
@@ -166,7 +166,7 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
         contentContainerClassName="gap-4 p-4"
       >
         <View className="flex-row gap-2 rounded-md bg-surfaceContainerLowest p-4 pl-2">
-          <Info size={20} color="onSurfaceVariant" />
+          <Icon name="info" size={20} color="onSurfaceVariant" />
           <StyledText dim className="shrink grow text-sm">
             {t("feat.trackMetadata.description.line1")}
             {"\n\n"}

@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Text, View } from "react-native";
 import Markdown from "react-native-markdown-renderer";
 
-import { Info } from "~/resources/icons/Info";
+import { Icon } from "~/resources/icons";
 import { LogoGitHub } from "~/resources/icons/LogoGitHub";
 import { LogoPlayStore } from "~/resources/icons/LogoPlayStore";
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -83,7 +83,7 @@ export default function AppUpdate() {
                 style={{ backgroundColor: codeBg }}
                 className="gap-1 p-2"
               >
-                <Info size={20} color="onSurfaceVariant" />
+                <Icon name="info" size={20} color="onSurfaceVariant" />
                 {children}
               </SegmentedList.CustomItem>
             ),

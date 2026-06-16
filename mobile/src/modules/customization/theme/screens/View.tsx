@@ -4,8 +4,8 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
+import { Icon } from "~/resources/icons";
 import { Add } from "~/resources/icons/Add";
-import { Check } from "~/resources/icons/Check";
 import { Edit } from "~/resources/icons/Edit";
 import { FileSave } from "~/resources/icons/FileSave";
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -93,7 +93,9 @@ export default function Themes() {
                 )}
                 style={{ borderColor: themeColors.onSurface }}
               >
-                {selected ? <Check size={18} color="surface" /> : null}
+                {selected ? (
+                  <Icon name="check" size={18} color="surface" />
+                ) : null}
               </View>
               <StyledText
                 style={{ color: themeColors.onSurface }}

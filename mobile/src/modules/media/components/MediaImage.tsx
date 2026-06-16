@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { View } from "react-native";
 import { withUniwind } from "uniwind";
 
-import { Folder } from "~/resources/icons/Folder";
+import { Icon } from "~/resources/icons";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { cn } from "~/lib/style";
@@ -62,7 +62,7 @@ export function MediaImage({
   } else if (type === "folder") {
     return (
       <View style={{ padding: size / 4 }} className={usedClasses}>
-        <Folder size={size / 2} color="#FFFFFF" />
+        <Icon name="folder" size={size / 2} color="#FFFFFF" />
       </View>
     );
   }

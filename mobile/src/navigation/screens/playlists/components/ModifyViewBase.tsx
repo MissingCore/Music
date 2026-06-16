@@ -6,9 +6,8 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { z } from "zod/mini";
 
+import { Icon } from "~/resources/icons";
 import { Add } from "~/resources/icons/Add";
-import { Cancel } from "~/resources/icons/Cancel";
-import { CheckCircle } from "~/resources/icons/CheckCircle";
 import { DragHandle } from "~/resources/icons/DragHandle";
 import { getArtistsString } from "~/data/artist/utils";
 import { usePlaylistsNames } from "~/data/playlist/queries";
@@ -215,10 +214,6 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
 function PlaylistNameField({ isFavoritesList }: { isFavoritesList?: boolean }) {
   const { passedConstraints } = useFormState();
 
-  const ConstraintIcon = useMemo(
-    () => (passedConstraints ? CheckCircle : Cancel),
-    [passedConstraints],
-  );
   const constraintColor = !passedConstraints ? "onSurfaceVariant" : undefined;
 
   return (
@@ -234,7 +229,11 @@ function PlaylistNameField({ isFavoritesList }: { isFavoritesList?: boolean }) {
         <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
       )}
       <View className="shrink flex-row items-center gap-0.5">
-        <ConstraintIcon size={16} color={constraintColor} />
+        <Icon
+          name={passedConstraints ? "check-circle" : "cancel"}
+          size={16}
+          color={constraintColor}
+        />
         <TStyledText
           textKey="form.validation.unique"
           className={cn("text-xs", constraintColor)}

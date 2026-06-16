@@ -4,11 +4,10 @@ import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
+import { Icon } from "~/resources/icons";
 import { Add } from "~/resources/icons/Add";
 import { DragHandle } from "~/resources/icons/DragHandle";
 import { Edit } from "~/resources/icons/Edit";
-import { Info } from "~/resources/icons/Info";
-import { OpenInNew } from "~/resources/icons/OpenInNew";
 import { useLyricStore } from "../core/store";
 import { moveLyricProvider, toggleCheckEmbeddedLyrics } from "../core/actions";
 import type { LyricProvider } from "../core/constants";
@@ -108,13 +107,13 @@ function Instructions() {
         onPress={() => openLink(Links.LyricsProviders)}
         className="flex-row items-start pl-2"
       >
-        <Info size={20} color="onSurfaceVariant" />
+        <Icon name="info" size={20} color="onSurfaceVariant" />
         <StyledText dim className="shrink grow text-sm">
           {t("feat.lyrics.extra.providersInstructions.line1")}
           {"\n\n"}
           {t("feat.lyrics.extra.providersInstructions.line2")}
         </StyledText>
-        <OpenInNew />
+        <Icon name="open-in-new" />
       </Button>
       <SegmentedList.Item
         labelTextKey="feat.lyrics.extra.useEmbedded"
