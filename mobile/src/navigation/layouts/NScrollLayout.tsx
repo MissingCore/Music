@@ -68,14 +68,13 @@ export function NScrollLayout(props: {
   const scrollRef = useAnimatedScrollViewRef();
 
   // NScrollbar
-  const showNavbar = usePreferenceStore((s) => s.showNavbar);
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const scrollBarContext = useScrollbarContext();
 
-  const bottomOffset = useBottomActionsOffset(
-    16 + (showNavbar ? BottomActionsOffset : 0),
-    showNavbar ? -8 : 0,
-  );
+  let bottomOffset = BottomActionsOffset + 16;
+  const showNavbar = usePreferenceStore((s) => s.showNavbar);
+  const miniplayVisible = useBottomActionsOffset() !== 0;
+  bottomOffset += miniplayVisible && showNavbar ? BottomActionsOffset - 8 : 0;
 
   // Shy Header
   const [topBarHeight, setTopBarHeight] = useState(
@@ -157,14 +156,13 @@ export function NScrollListLayout<TData>({
   const sheetRef = useSheetRef();
 
   // NScrollbar
-  const showNavbar = usePreferenceStore((s) => s.showNavbar);
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const scrollBarContext = useScrollbarContext();
 
-  const bottomOffset = useBottomActionsOffset(
-    16 + (showNavbar ? BottomActionsOffset : 0),
-    showNavbar ? -8 : 0,
-  );
+  let bottomOffset = BottomActionsOffset + 16;
+  const showNavbar = usePreferenceStore((s) => s.showNavbar);
+  const miniplayVisible = useBottomActionsOffset() !== 0;
+  bottomOffset += miniplayVisible && showNavbar ? BottomActionsOffset - 8 : 0;
 
   // Shy Header
   const [topBarHeight, setTopBarHeight] = useState(

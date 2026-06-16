@@ -45,10 +45,7 @@ export function useRenderBottomActions() {
 export const BottomActionsOffset = 72; // 56px Height + 16px Bottom Padding
 
 /** Returns the offset we need to apply to account for the bottom actions. */
-export function useBottomActionsOffset(
-  additionalOffset = 0,
-  offsetWithMiniPlayer = 0,
-) {
+export function useBottomActionsOffset(additionalOffset = 0) {
   const activeTrack = usePlaybackStore((s) => s.activeTrack);
 
   //? We've previously accounted for whether the miniplayer can be rendered on the
@@ -59,9 +56,7 @@ export function useBottomActionsOffset(
   const isMiniPlayerRendered = !!activeTrack;
 
   return useMemo(
-    () =>
-      (isMiniPlayerRendered ? BottomActionsOffset + offsetWithMiniPlayer : 0) +
-      additionalOffset,
-    [additionalOffset, offsetWithMiniPlayer, isMiniPlayerRendered],
+    () => (isMiniPlayerRendered ? BottomActionsOffset : 0) + additionalOffset,
+    [additionalOffset, isMiniPlayerRendered],
   );
 }
