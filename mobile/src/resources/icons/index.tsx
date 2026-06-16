@@ -2,13 +2,11 @@ import { createNanoIconSet } from "react-native-nano-icons";
 
 import type { AppColor } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
-import glyphMap from "./material-symbols.glyphmap.json";
+import glyphMap from "./app-icons.glyphmap.json";
 
-const MaterialIcon = createNanoIconSet(glyphMap);
+const AppIcons = createNanoIconSet(glyphMap);
 
-export type SupportedIcoName = React.ComponentProps<
-  typeof MaterialIcon
->["name"];
+export type SupportedIcoName = React.ComponentProps<typeof AppIcons>["name"];
 
 type Props = {
   name: SupportedIcoName;
@@ -21,7 +19,7 @@ type Props = {
 export function Icon({ name, size = 24, color }: Props) {
   const usedColor = useColor(color, "onSurface");
   return (
-    <MaterialIcon
+    <AppIcons
       name={name}
       size={size}
       color={usedColor}
