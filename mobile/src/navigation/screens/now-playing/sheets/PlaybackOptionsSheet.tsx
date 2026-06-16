@@ -2,8 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useCallback, useState } from "react";
 import AudioBrowser from "react-native-audio-browser";
 
-import { ActivityZone } from "~/resources/icons/ActivityZone";
-import { GraphicEQ } from "~/resources/icons/GraphicEQ";
+import { Icon } from "~/resources/icons";
 import { VolumeUp } from "~/resources/icons/VolumeUp";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -133,13 +132,13 @@ export function PlaybackOptionsSheet(props: {
             <SegmentedList.Item
               labelTextKey="feat.appearance.title"
               onPress={presentAppearanceSheet}
-              LeftElement={<ActivityZone />}
+              LeftElement={<Icon name="activity-zone" />}
               className="gap-4"
             />
             <SegmentedList.Item
               labelTextKey="feat.audioEffects.title"
               onPress={navigateToAudioEffectsScreen}
-              LeftElement={<GraphicEQ />}
+              LeftElement={<Icon name="graphic-eq" />}
               className="gap-4"
             />
           </SegmentedList>

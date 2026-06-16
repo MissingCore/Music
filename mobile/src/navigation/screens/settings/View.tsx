@@ -1,17 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
-import { Archive } from "~/resources/icons/Archive";
-import { AutoPlay } from "~/resources/icons/AutoPlay";
-import { BarChart4Bars } from "~/resources/icons/BarChart4Bars";
-import { DocumentSearch } from "~/resources/icons/DocumentSearch";
+import { Icon } from "~/resources/icons";
 import { Flask } from "~/resources/icons/Flask";
-import { FormatPaint } from "~/resources/icons/FormatPaint";
-import { GraphicEQ } from "~/resources/icons/GraphicEQ";
-import { Lyrics } from "~/resources/icons/Lyrics";
-import { MobileArrowDown } from "~/resources/icons/MobileArrowDown";
-import { OpenInNew } from "~/resources/icons/OpenInNew";
-import { Translate } from "~/resources/icons/Translate";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 
@@ -47,7 +38,7 @@ export default function Settings() {
             labelTextKey="feat.appUpdate.title"
             supportingText={t("feat.appUpdate.brief")}
             onPress={() => navigation.navigate("AppUpdate")}
-            LeftElement={<MobileArrowDown color="onSecondary" />}
+            LeftElement={<Icon name="mobile-arrow-down" color="onSecondary" />}
             className="gap-4 rounded-full bg-secondary"
             _psuedoClassName="active:bg-secondaryDim"
             _textColor="onSecondary"
@@ -58,13 +49,13 @@ export default function Settings() {
           <SegmentedList.Item
             labelTextKey="feat.appearance.title"
             onPress={() => navigation.navigate("AppearanceSettings")}
-            LeftElement={<FormatPaint />}
+            LeftElement={<Icon name="format-paint" />}
             className="gap-4"
           />
           <SegmentedList.Item
             labelTextKey="feat.language.title"
             onPress={() => languageSheetRef.current?.present()}
-            LeftElement={<Translate />}
+            LeftElement={<Icon name="translate" />}
             className="gap-4"
           />
         </SegmentedList>
@@ -73,13 +64,13 @@ export default function Settings() {
           <SegmentedList.Item
             labelTextKey="feat.backup.title"
             onPress={() => backupSheetRef.current?.present()}
-            LeftElement={<Archive />}
+            LeftElement={<Icon name="archive" />}
             className="gap-4"
           />
           <SegmentedList.Item
             labelTextKey="feat.insights.title"
             onPress={() => navigation.navigate("Insights")}
-            LeftElement={<BarChart4Bars />}
+            LeftElement={<Icon name="bar-chart-4-bars" />}
             className="gap-4"
           />
         </SegmentedList>
@@ -87,25 +78,25 @@ export default function Settings() {
           <SegmentedList.Item
             labelTextKey="feat.audioEffects.title"
             onPress={() => navigation.navigate("AudioEffects", {})}
-            LeftElement={<GraphicEQ />}
+            LeftElement={<Icon name="graphic-eq" />}
             className="gap-4"
           />
           <SegmentedList.Item
             labelTextKey="feat.lyrics.title"
             onPress={() => navigation.navigate("Lyrics", {})}
-            LeftElement={<Lyrics />}
+            LeftElement={<Icon name="lyrics" />}
             className="gap-4"
           />
           <SegmentedList.Item
             labelTextKey="feat.playback.title"
             onPress={() => navigation.navigate("PlaybackSettings")}
-            LeftElement={<AutoPlay />}
+            LeftElement={<Icon name="autoplay" />}
             className="gap-4"
           />
           <SegmentedList.Item
             labelTextKey="feat.scanning.title"
             onPress={() => navigation.navigate("ScanningSettings")}
-            LeftElement={<DocumentSearch />}
+            LeftElement={<Icon name="document-search" />}
             className="gap-4"
           />
         </SegmentedList>
@@ -122,17 +113,17 @@ export default function Settings() {
             labelTextKey="feat.code.title"
             supportingText={t("feat.code.brief")}
             onPress={() => openLink(Links.GitHub)}
-            RightElement={<OpenInNew />}
+            RightElement={<Icon name="open-in-new" />}
           />
           <SegmentedList.Item
             labelTextKey="feat.license.title"
             onPress={() => openLink(Links.License)}
-            RightElement={<OpenInNew />}
+            RightElement={<Icon name="open-in-new" />}
           />
           <SegmentedList.Item
             labelTextKey="feat.privacy.title"
             onPress={() => openLink(Links.PrivacyPolicy)}
-            RightElement={<OpenInNew />}
+            RightElement={<Icon name="open-in-new" />}
           />
           <SegmentedList.Item
             labelTextKey="feat.thirdParty.title"
@@ -146,7 +137,7 @@ export default function Settings() {
             labelTextKey="feat.appUpdate.extra.version"
             supportingText={APP_VERSION}
             onPress={() => openLink(Links.CurrentRelease)}
-            RightElement={<OpenInNew />}
+            RightElement={<Icon name="open-in-new" />}
             className="rounded-none"
           />
           <Divider className="mx-4" />
