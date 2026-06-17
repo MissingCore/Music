@@ -4,6 +4,8 @@ import { db } from "~/db";
 import type { PlayedMediaList } from "~/db/schema";
 import { playedMediaLists, tracks } from "~/db/schema";
 
+import { getGenre } from "~/adapters/consumer";
+
 import i18next from "~/modules/i18n";
 import type { PlayFromSource } from "~/stores/Playback/types";
 import { getAlbumDetails } from "../album/api";
@@ -11,7 +13,6 @@ import { AlbumArtistsKey } from "../album/utils";
 import { getArtist } from "../artist/api";
 import { getArtistsString } from "../artist/utils";
 import { getSortedFolderTracks } from "../folder/api";
-import { getGenre } from "../genre/api";
 import { getPlaylist } from "../playlist/api";
 
 import { iDesc } from "~/lib/drizzle";
@@ -151,12 +152,10 @@ async function getRecentListEntry(source: PlayFromSource) {
       entry.title = source.id.split("/").at(-2) ?? source.id;
       entry.description = i18next.t("plural.track", { count: numTracks });
     } else if (source.type === "genre") {
-      const data = await getGenre(source.id, true);
-      entry.source = data.artwork;
+      const data = await getGenre(source.id);
+      entry.source = data.artworkSrc || null;
       entry.title = data.name;
-      entry.description = i18next.t("plural.track", {
-        count: data.tracks.length,
-      });
+      entry.description = i18next.t("plural.track", { count: data.trackCount });
     } else {
       if (source.id === ReservedPlaylists.tracks) {
         const numTracks = await db.$count(tracks);

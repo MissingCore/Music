@@ -10,11 +10,12 @@ import AudioBrowser from "react-native-audio-browser";
 
 import { db } from "~/db";
 
+import { getGenre, getGenres, getGenreTracks } from "~/adapters/consumer";
+
 import i18next from "~/modules/i18n";
 import { getAlbum, getAlbumsSummary } from "~/data/album/api";
 import { getArtist, getArtistsSummary } from "~/data/artist/api";
 import { getArtistsString } from "~/data/artist/utils";
-import { getGenre, getGenresSummary } from "~/data/genre/api";
 import { getPlaylist, getPlaylistsSummary } from "~/data/playlist/api";
 import { addPlayedTrack } from "~/data/recent/api";
 import { deleteTracks, getSortedTracks } from "~/data/track/api";
@@ -328,8 +329,30 @@ async function initServices() {
     "/album/{id}": getMediaCategoryEntryRoute("album", getAlbum),
     "/artist": () => getMediaCategoryRoute("artist", getArtistsSummary),
     "/artist/{id}": getMediaCategoryEntryRoute("artist", getArtist),
-    "/genre": () => getMediaCategoryRoute("genre", getGenresSummary),
-    "/genre/{id}": getMediaCategoryEntryRoute("genre", getGenre),
+    "/genre": () =>
+      getMediaCategoryRoute("genre", async () => {
+        const results = await getGenres();
+        return results.map(({ artworkSrc, ...rest }) => ({
+          ...rest,
+          artwork: artworkSrc || null,
+        }));
+      }),
+    "/genre/{id}": getMediaCategoryEntryRoute("genre", async (id: string) => {
+      const [{ name }, genreTracks] = await Promise.all([
+        getGenre(id),
+        getGenreTracks(id),
+      ]);
+      return {
+        name,
+        tracks: genreTracks.map(({ src, album, artworkSrc, ...rest }) => ({
+          ...rest,
+          uri: src,
+          albumName: album || null,
+          artwork: artworkSrc || null,
+          artists: rest.artists?.map(({ name }) => name) || null,
+        })),
+      };
+    }),
     "/playlist": () => getMediaCategoryRoute("playlist", getPlaylistsSummary),
     "/playlist/{id}": getMediaCategoryEntryRoute("playlist", getPlaylist),
     "/track": getMediaCategoryEntryRoute("track", async () => {
