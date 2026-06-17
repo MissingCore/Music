@@ -10,7 +10,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { Schedule } from "~/resources/icons/Schedule";
+import { Icon } from "~/resources/icons";
 import { useInForeground } from "~/stores/ListenerState";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { useDelayedReady } from "~/hooks/useDelayedReady";
@@ -174,7 +174,7 @@ function ListInfo(props: ListInfoProps) {
           <StyledText dim className="text-xxs">
             {" • "}
           </StyledText>
-          <Schedule size={12} color="onSurfaceVariant" />
+          <Icon name="schedule" size={12} color="onSurfaceVariant" />
           <StyledText dim className="text-xxs">
             {` ${props.metadata.at(-1)!}`}
           </StyledText>

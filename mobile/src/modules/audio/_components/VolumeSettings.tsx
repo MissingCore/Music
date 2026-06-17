@@ -3,7 +3,6 @@ import AudioBrowser from "react-native-audio-browser";
 import { useAnimatedReaction, useSharedValue } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 
-import { VolumeUp } from "~/resources/icons/VolumeUp";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 
 import { SegmentedList } from "~/components/List/Segmented";
@@ -39,7 +38,7 @@ export function VolumeSettings() {
           step={0.01}
           onChange={setVolume}
           _debounceMultiplier={5}
-          Icon={VolumeUp}
+          icon="volume-up-filled"
           displayedValue={`${Math.round(_volume * 100)}%`}
         />
       </SegmentedList.CustomItem>

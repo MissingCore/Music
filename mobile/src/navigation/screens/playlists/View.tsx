@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Add } from "~/resources/icons/Add";
 import { usePlaylists } from "~/data/playlist/queries";
 import { useViewLayout } from "~/stores/ViewPreference/hooks/useViewLayout";
 import { useViewOrder } from "~/stores/ViewPreference/hooks/useViewOrder";
@@ -55,7 +54,7 @@ function PlaylistActions() {
   const navigation = useNavigation();
   return (
     <FilledIconButton
-      Icon={Add}
+      icon="add"
       accessibilityLabel={t("form.create")}
       onPress={() => navigation.navigate("CreatePlaylist")}
       className="bg-primary active:bg-primaryDim"

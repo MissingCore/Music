@@ -3,11 +3,6 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { KeyboardArrowDown } from "~/resources/icons/KeyboardArrowDown";
-import { MoreHoriz } from "~/resources/icons/MoreHoriz";
-import { MoreVert } from "~/resources/icons/MoreVert";
-import { Timer } from "~/resources/icons/Timer";
-import { ViewAgenda } from "~/resources/icons/ViewAgenda";
 import type { Track } from "~/data/track/types";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -87,7 +82,7 @@ function Metadata({ track }: { track: Track }) {
       <View className="flex-row items-center gap-1">
         <FavoriteButton id={track.id} size="lg" />
         <IconButton
-          Icon={MoreVert}
+          icon="more-vert"
           accessibilityLabel={t("template.entrySeeMore", { name: track.name })}
           onPress={() => presentTrackSheet(track.id)}
           size="lg"
@@ -144,13 +139,13 @@ function BottomAppBar({ trackId }: { trackId: string }) {
             present={() => sleepTimerSheetRef.current?.present()}
           />
           <FilledIconButton
-            Icon={ViewAgenda}
+            icon="view-agenda"
             accessibilityLabel={t("term.upcoming")}
             onPress={() => navigation.navigate("Upcoming")}
             size="lg"
           />
           <FilledIconButton
-            Icon={MoreHoriz}
+            icon="more-horiz"
             accessibilityLabel={t("feat.playback.extra.options")}
             onPress={() => playbackOptionsSheetRef.current?.present()}
             size="lg"
@@ -166,7 +161,7 @@ function SleepTimerButton(props: { present: VoidFunction }) {
   const sleepTimerActive = useSleepTimerStore((s) => s.endAt) !== null;
   return (
     <FilledIconButton
-      Icon={Timer}
+      icon="timer"
       accessibilityLabel={t("feat.sleepTimer.title")}
       onPress={props.present}
       className={
@@ -190,7 +185,7 @@ function BackButton() {
   if (usedDesign !== "vinylOld") return <View />;
   return (
     <FilledIconButton
-      Icon={KeyboardArrowDown}
+      icon="keyboard-arrow-down"
       accessibilityLabel={t("form.back")}
       onPress={() => navigation.goBack()}
       size="lg"

@@ -3,12 +3,11 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Favorite } from "~/resources/icons/Favorite";
 import { useAlbumForScreen, useFavoriteAlbum } from "~/data/album/queries";
 
-import { useBottomActionsOffset } from "~/navigation/hooks/useBottomActions";
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
 import { AlbumArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
+import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
@@ -85,10 +84,9 @@ export default function Album({
           Actions: (
             <View className="flex-row gap-1">
               <IconButton
-                Icon={Favorite}
+                icon={`favorite${isToggled ? "-filled" : ""}`}
                 accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
                 onPress={() => mutateGuard(favoriteAlbum, !data.isFavorite)}
-                alternative={isToggled}
               />
               <CurrentListMenu
                 name={data.name}

@@ -29,14 +29,14 @@ export async function autoDiscoverLyrics(abortController: AbortController) {
     if (checkEmbedded) foundLyrics = await getLyric(activeTrack.uri);
 
     //? 2. Check for adjacent lyric files (`.lrc`).
-    if (!foundLyrics) {
+    if (!foundLyrics?.trim()) {
       const fileSlug = activeTrack.uri.split(".").slice(0, -1).join(".");
       const adjacentLrcFile = new File(getSafeUri(`${fileSlug}.lrc`));
       if (adjacentLrcFile.exists) foundLyrics = await adjacentLrcFile.text();
     }
 
     //? 3. Check for online lyrics.
-    if (!foundLyrics && lyricsProviders.length > 0) {
+    if (!foundLyrics?.trim() && lyricsProviders.length > 0) {
       //? Wait for 2.5s before doing an online search to prevent accidental fires when
       //? spamming the controls. Applies if this gets called within 30s.
       const prevLastRequestAt = lastRequestAt;
@@ -55,7 +55,7 @@ export async function autoDiscoverLyrics(abortController: AbortController) {
     }
 
     // Silently return if no lyrics are found.
-    if (!foundLyrics || abortController.signal.aborted) return;
+    if (!foundLyrics?.trim() || abortController.signal.aborted) return;
 
     const lrcEntryName = [activeTrack.name];
     if (activeTrack.artists)
@@ -64,7 +64,7 @@ export async function autoDiscoverLyrics(abortController: AbortController) {
 
     const newLyric = await createLyric({
       name: lrcEntryName.join(" - "),
-      lyrics: foundLyrics,
+      lyrics: foundLyrics.trim(),
     });
     if (!newLyric) throw new Error("Lyric not returned after insertion.");
     await linkTrackToLyric(

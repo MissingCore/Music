@@ -1,8 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Pause } from "~/resources/icons/Pause";
-import { PlayArrow } from "~/resources/icons/PlayArrow";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 
@@ -41,7 +39,7 @@ export function PlayMediaListButton(props: {
 
   return (
     <FilledIconButton
-      Icon={displayPause ? Pause : PlayArrow}
+      icon={displayPause ? "pause-filled" : "play-arrow-filled"}
       accessibilityLabel={t(`term.${displayPause ? "pause" : "play"}`)}
       onPress={() =>
         displayPause

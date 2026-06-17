@@ -8,8 +8,6 @@ import { db } from "~/db";
 import type { HiddenTrack } from "~/db/schema";
 import { hiddenTracks } from "~/db/schema";
 
-import { VisibilityOff } from "~/resources/icons/VisibilityOff";
-
 import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
 import { FlatList } from "~/components/Base/List";
@@ -147,7 +145,7 @@ function HiddenTrackList(props: {
             </StyledText>
           </View>
           <IconButton
-            Icon={VisibilityOff}
+            icon="visibility-off-filled"
             accessibilityLabel={t("template.entryShow", { name })}
             onPress={() => props.onShowTrack(id)}
           />

@@ -1,10 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { GridView } from "~/resources/icons/GridView";
-import { Sort } from "~/resources/icons/Sort";
-import { ViewAgenda } from "~/resources/icons/ViewAgenda";
-import { ViewModule } from "~/resources/icons/ViewModule";
+import { Icon } from "~/resources/icons";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
 import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
@@ -49,7 +46,7 @@ export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
             props.ref.current?.dismiss();
             sortOrderSheetRef.current?.present();
           }}
-          LeftElement={<Sort />}
+          LeftElement={<Icon name="sort" />}
           className="gap-4"
         />
       </DetachedSheet>
@@ -105,7 +102,7 @@ function ViewOptionsSheetTemplate(props: {
             props.ref.current?.dismiss();
             sortOrderSheetRef.current?.present();
           }}
-          LeftElement={<Sort />}
+          LeftElement={<Icon name="sort" />}
           className="gap-4"
         />
       </DetachedSheet>
@@ -117,9 +114,9 @@ function ViewOptionsSheetTemplate(props: {
 
 //#region Screen Layout
 const LayoutIconMap = {
-  list: ViewAgenda,
-  grid: GridView,
-  compactGrid: ViewModule,
+  list: "view-agenda",
+  grid: "grid-view",
+  compactGrid: "view-module",
 } as const;
 
 function ScreenLayoutSetting({ screen }: { screen: MutableViewLayout }) {
@@ -134,7 +131,7 @@ function ScreenLayoutSetting({ screen }: { screen: MutableViewLayout }) {
           {LayoutOptions.map((layout) => (
             <FilledIconButton
               key={layout}
-              Icon={LayoutIconMap[layout]}
+              icon={LayoutIconMap[layout]}
               accessibilityLabel={t(`feat.modalViewPreference.extra.${layout}`)}
               onPress={() => ViewPreferenceSetters.setLayout(screen, layout)}
               _iconColor={layoutOption === layout ? "primary" : undefined}

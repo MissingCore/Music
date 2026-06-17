@@ -5,9 +5,6 @@ import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
 
 import i18next from "~/modules/i18n";
-import { Add } from "~/resources/icons/Add";
-import { Close } from "~/resources/icons/Close";
-import { CreateNewFolder } from "~/resources/icons/CreateNewFolder";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 
 import { pickDirectory } from "~/lib/file-system";
@@ -54,7 +51,7 @@ export function ScanFilterListSheet(props: {
               <StyledText>{item}</StyledText>
             </Marquee>
             <IconButton
-              Icon={Close}
+              icon="close"
               accessibilityLabel={t("template.entryRemove", { name: item })}
               onPress={() => removePath(props.listType, item)}
             />
@@ -115,7 +112,7 @@ function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
           forSheet
         />
         <IconButton
-          Icon={CreateNewFolder}
+          icon="create-new-folder"
           accessibilityLabel={t("feat.directory.extra.select")}
           onPress={selectDirectory}
           disabled={inputForm.isSubmitting}
@@ -123,7 +120,7 @@ function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
         />
       </View>
       <FilledIconButton
-        Icon={Add}
+        icon="add"
         accessibilityLabel={t("feat.directory.extra.add")}
         onPress={async () => {
           Keyboard.dismiss();

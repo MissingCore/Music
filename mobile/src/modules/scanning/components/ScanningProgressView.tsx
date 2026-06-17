@@ -9,8 +9,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { Save } from "~/resources/icons/Save";
-import { Warning } from "~/resources/icons/Warning";
+import type { SupportedIconName } from "~/resources/icons";
+import { Icon } from "~/resources/icons";
 import { useScanningProgressStore } from "../ScanningProgress";
 
 import { CachedSlider } from "~/components/Form/Slider";
@@ -69,14 +69,14 @@ function TracksSavingProgress() {
         <ProgressLabel textKey="feat.onboarding.extra.saveTracks" />
         <View className="flex-row items-center gap-2">
           <IconStatus
-            Icon={Save}
+            icon="save"
             value={
               scannedTracks + failedTrackScans === modifiedTracks
                 ? scannedTracks
                 : `${scannedTracks}/${modifiedTracks}`
             }
           />
-          <IconStatus Icon={Warning} value={failedTrackScans} />
+          <IconStatus icon="warning" value={failedTrackScans} />
         </View>
       </View>
     </View>
@@ -103,7 +103,7 @@ function ArtworkSavingProgress() {
       <View className="grow flex-row items-center justify-between">
         <ProgressLabel textKey="feat.onboarding.extra.saveImages" />
         <IconStatus
-          Icon={Save}
+          icon="save"
           value={`${checkedArtwork}/${uncheckedArtwork}`}
         />
       </View>
@@ -131,10 +131,13 @@ function ProgressLabel({ textKey }: { textKey: ParseKeys }) {
   );
 }
 
-function IconStatus(props: { Icon: typeof Save; value: string | number }) {
+function IconStatus(props: {
+  icon: SupportedIconName;
+  value: string | number;
+}) {
   return (
     <View className="flex-row items-center gap-1">
-      <props.Icon size={14} color={SystemTheme.onSurface} />
+      <Icon name={props.icon} size={14} color={SystemTheme.onSurface} />
       <Em style={{ color: SystemTheme.onSurface }} className="text-xxs">
         {props.value}
       </Em>

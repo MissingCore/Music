@@ -4,8 +4,6 @@ import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { DragHandle } from "~/resources/icons/DragHandle";
-import { Home } from "~/resources/icons/Home";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { Tabs } from "~/stores/Preference/actions";
 
@@ -73,13 +71,12 @@ const RenderItem = memo(
           disabled={isDragging || isHomeTab}
         />
         <IconButton
-          Icon={Home}
+          icon={`home${isHomeTab ? "-filled" : ""}`}
           accessibilityLabel={t("feat.tabsOrder.extra.setHomeTab", {
             name: tabName,
           })}
           onPress={() => Tabs.setHome(item)}
           disabled={isDragging || !isVisible || isHomeTab}
-          alternative={isHomeTab}
           className={cn({
             "disabled:opacity-100": !isDragging && isHomeTab,
           })}
@@ -91,7 +88,7 @@ const RenderItem = memo(
           className="shrink grow px-2"
         />
         <IconButton
-          Icon={DragHandle}
+          icon="drag-handle"
           accessibilityLabel={t("template.entryMove", { name: tabName })}
           onPressIn={onInitDrag}
           size="md"

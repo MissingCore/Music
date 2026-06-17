@@ -4,17 +4,14 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Edit } from "~/resources/icons/Edit";
-import { Favorite } from "~/resources/icons/Favorite";
-import { FileSave } from "~/resources/icons/FileSave";
 import {
   useFavoritePlaylist,
   usePlaylistForScreen,
 } from "~/data/playlist/queries";
 
-import { useBottomActionsOffset } from "~/navigation/hooks/useBottomActions";
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
 import { PlaylistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
+import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 import type { MenuAction } from "~/navigation/components/CurrentListMenu";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
@@ -48,12 +45,12 @@ export default function Playlist({
   const menuActions = useMemo<MenuAction[]>(
     () => [
       {
-        Icon: Edit,
+        icon: "edit",
         labelKey: "form.edit",
         onPress: () => navigation.navigate("ModifyPlaylist", { id }),
       },
       {
-        Icon: FileSave,
+        icon: "file-save",
         labelKey: "feat.playlist.extra.m3uExport",
         onPress: () => exportSheetRef.current?.present(),
       },
@@ -91,14 +88,13 @@ export default function Playlist({
             <View className="flex-row gap-1">
               {id !== FavoritesPlaylistKey ? (
                 <IconButton
-                  Icon={Favorite}
+                  icon={`favorite${isToggled ? "-filled" : ""}`}
                   accessibilityLabel={t(
                     `term.${isToggled ? "unF" : "f"}avorite`,
                   )}
                   onPress={() =>
                     mutateGuard(favoritePlaylist, !data.isFavorite)
                   }
-                  alternative={isToggled}
                 />
               ) : null}
               <CurrentListMenu

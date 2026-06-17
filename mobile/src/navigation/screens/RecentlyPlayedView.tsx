@@ -5,8 +5,8 @@ import { RECENT_DAY_RANGE } from "~/data/recent/api";
 import { useRecentlyPlayedMedia } from "~/data/recent/queries";
 import { useGetColumn } from "~/hooks/useGetColumn";
 
-import { useBottomActionsOffset } from "../hooks/useBottomActions";
 import { getMediaLinkContext } from "../utils/router";
+import { useBottomActionsOffset } from "../components/BottomActions/useBottomActions";
 import { PagePlaceholder } from "../components/Placeholder";
 
 import { FlatList, getListItemLayout } from "~/components/Base/List";

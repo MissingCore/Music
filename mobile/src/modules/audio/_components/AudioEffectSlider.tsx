@@ -1,6 +1,7 @@
 import { View } from "react-native";
 
-import type { Icon } from "~/resources/icons/type";
+import type { SupportedIconName } from "~/resources/icons";
+import { Icon } from "~/resources/icons";
 
 import { CachedSlider } from "~/components/Form/Slider";
 import { Em } from "~/components/Typography/StyledText";
@@ -11,10 +12,10 @@ interface Props extends Omit<
 > {
   displayedValue: string;
   /** Optional icon that appears before the `displayedValue`. */
-  Icon?: (props: Icon) => React.JSX.Element;
+  icon?: SupportedIconName;
 }
 
-export function AudioEffectSlider({ displayedValue, Icon, ...props }: Props) {
+export function AudioEffectSlider({ displayedValue, icon, ...props }: Props) {
   return (
     <View className="flex-row items-center gap-2">
       <CachedSlider
@@ -26,7 +27,7 @@ export function AudioEffectSlider({ displayedValue, Icon, ...props }: Props) {
         {...props}
       />
       <View className="w-14 flex-row items-center justify-center gap-2">
-        {Icon ? <Icon size={20} /> : null}
+        {icon ? <Icon name={icon} size={20} /> : null}
         <Em style={{ fontVariant: ["tabular-nums"] }}>{displayedValue}</Em>
       </View>
     </View>

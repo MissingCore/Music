@@ -1,7 +1,6 @@
 import { View } from "react-native";
 
-import { KeyboardArrowDown } from "~/resources/icons/KeyboardArrowDown";
-import { OpenInNew } from "~/resources/icons/OpenInNew";
+import { Icon } from "~/resources/icons";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import {
   PreferenceSetters,
@@ -46,7 +45,7 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
         >
           <StyledText>{selectedLanguage?.name}</StyledText>
           <View className={OnRTL.decide("rotate-90", "-rotate-90")}>
-            <KeyboardArrowDown />
+            <Icon name="keyboard-arrow-down" />
           </View>
         </Pressable>
         <View className="gap-1">
@@ -66,7 +65,7 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
         <ExtendedTButton
           textKey="feat.language.extra.contribute"
           onPress={() => openLink(Links.Translations)}
-          RightElement={<OpenInNew size={20} />}
+          RightElement={<Icon name="open-in-new" size={20} />}
           className="rounded-full"
         />
 

@@ -2,12 +2,8 @@ import type { ParseKeys } from "i18next";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import type { Icon } from "~/resources/icons/type";
-import { Image } from "~/resources/icons/Image";
-import { LowPriority } from "~/resources/icons/LowPriority";
-import { MoreHoriz } from "~/resources/icons/MoreHoriz";
-import { QueueMusic } from "~/resources/icons/QueueMusic";
-import { Sort } from "~/resources/icons/Sort";
+import type { SupportedIconName } from "~/resources/icons";
+import { Icon } from "~/resources/icons";
 import { Queue } from "~/stores/Playback/actions";
 
 import { IconButton } from "~/components/Form/Button/Icon";
@@ -15,7 +11,7 @@ import { ListItem } from "~/components/List";
 import { Menu } from "~/components/Menu";
 
 export type MenuAction = {
-  Icon?: (props: Icon) => React.ReactNode;
+  icon?: SupportedIconName;
   labelKey: ParseKeys;
   onPress: VoidFunction;
 };
@@ -34,12 +30,12 @@ export function CurrentListMenu(props: {
   const queueActions = useMemo<MenuAction[]>(
     () => [
       {
-        Icon: QueueMusic,
+        icon: "queue-music",
         labelKey: "feat.queue.extra.playNext",
         onPress: () => Queue.add({ id: props.trackIds, name: props.name }),
       },
       {
-        Icon: LowPriority,
+        icon: "low-priority",
         labelKey: "feat.queue.extra.playLast",
         onPress: () => Queue.addToEnd({ id: props.trackIds, name: props.name }),
       },
@@ -52,7 +48,7 @@ export function CurrentListMenu(props: {
 
     if (props.presentArtworkSheet) {
       actions.push({
-        Icon: Image,
+        icon: "image",
         labelKey: "feat.artwork.extra.change",
         onPress: props.presentArtworkSheet,
       });
@@ -60,7 +56,7 @@ export function CurrentListMenu(props: {
 
     if (props.presentSortOptionsSheet) {
       actions.push({
-        Icon: Sort,
+        icon: "sort",
         labelKey: "feat.modalViewPreference.extra.sort",
         onPress: props.presentSortOptionsSheet,
       });
@@ -79,7 +75,7 @@ export function CurrentListMenu(props: {
       visible={visible}
       anchor={
         <IconButton
-          Icon={MoreHoriz}
+          icon="more-horiz"
           accessibilityLabel={t("term.more")}
           onPress={() => setVisible((prev) => !prev)}
         />
@@ -96,7 +92,7 @@ export function CurrentListMenu(props: {
             item.onPress();
             setVisible(false);
           }}
-          LeftElement={item.Icon ? <item.Icon /> : null}
+          LeftElement={item.icon ? <Icon name={item.icon} /> : null}
           className="px-3"
           _labelTextClassName="text-sm"
           _psuedoClassName="active:bg-surfaceContainer/50"

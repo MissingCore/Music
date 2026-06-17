@@ -3,15 +3,8 @@ import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import type { Icon } from "~/resources/icons/type";
-import { Delete } from "~/resources/icons/Delete";
-import { Edit } from "~/resources/icons/Edit";
-import { Favorite } from "~/resources/icons/Favorite";
-import { Image } from "~/resources/icons/Image";
-import { LowPriority } from "~/resources/icons/LowPriority";
-import { PlaylistAdd } from "~/resources/icons/PlaylistAdd";
-import { QueueMusic } from "~/resources/icons/QueueMusic";
-import { Schedule } from "~/resources/icons/Schedule";
+import type { SupportedIconName } from "~/resources/icons";
+import { Icon } from "~/resources/icons";
 import {
   useHideTrack,
   useToggleTrackInPlaylist,
@@ -136,7 +129,7 @@ function TrackMetadata({ data }: { data: Track }) {
           {abbreviateSize(data.size)}
         </StyledText>
         <View className="flex-row items-center gap-1">
-          <Edit size={14} />
+          <Icon name="edit" size={14} />
           <StyledText className="text-xxs/tight">
             {formatEpoch(data.modificationTime)}
           </StyledText>
@@ -149,7 +142,7 @@ function TrackMetadata({ data }: { data: Track }) {
         </Marquee>
         <View className="flex-row gap-2">
           {data.format ? <Badge>{data.format.toUpperCase()}</Badge> : null}
-          <Badge Icon={Schedule}>{formatSeconds(data.duration)}</Badge>
+          <Badge icon="schedule">{formatSeconds(data.duration)}</Badge>
         </View>
       </View>
     </View>
@@ -172,20 +165,19 @@ function IconActions(props: { data: Track; editArtwork: VoidFunction }) {
   return (
     <View className="flex-row justify-between gap-1 rounded-md bg-surfaceContainerLowest px-1">
       <IconButton
-        Icon={Favorite}
+        icon={`favorite${isFav ? "-filled" : ""}`}
         accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
         onPress={() => mutateGuard(toggleInPlaylist, FavoritesPlaylistKey)}
-        alternative={isFav}
         size="md"
       />
       <IconButton
-        Icon={PlaylistAdd}
+        icon="playlist-add"
         accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
         onPress={sheetAction(() => TrueSheet.present("TrackToPlaylistsSheet"))}
         size="md"
       />
       <IconButton
-        Icon={Edit}
+        icon="edit"
         accessibilityLabel={t("form.edit")}
         onPress={sheetAction(() =>
           navigation.navigate("ModifyTrack", { id: props.data.id }),
@@ -193,13 +185,13 @@ function IconActions(props: { data: Track; editArtwork: VoidFunction }) {
         size="md"
       />
       <IconButton
-        Icon={Image}
+        icon="image"
         accessibilityLabel={t("feat.artwork.extra.change")}
         onPress={sheetAction(props.editArtwork)}
         size="md"
       />
       <IconButton
-        Icon={Delete}
+        icon="delete"
         accessibilityLabel={t("template.entryHide", { name: props.data.name })}
         onPress={sheetAction(() =>
           mutateGuard(hideTrack, { track: props.data }),
@@ -217,12 +209,12 @@ function QueueActions({ id, name }: Record<"id" | "name", string>) {
       leftButton={{
         textKey: "feat.queue.extra.playNext",
         onPress: sheetAction(() => Queue.add({ id, name })),
-        LeftElement: <QueueMusic />,
+        LeftElement: <Icon name="queue-music" />,
       }}
       rightButton={{
         textKey: "feat.queue.extra.playLast",
         onPress: sheetAction(() => Queue.addToEnd({ id, name })),
-        LeftElement: <LowPriority />,
+        LeftElement: <Icon name="low-priority" />,
       }}
     />
   );
@@ -230,13 +222,10 @@ function QueueActions({ id, name }: Record<"id" | "name", string>) {
 //#endregion
 
 //#region Track Sheet Helpers
-function Badge(props: {
-  Icon?: (props: Icon) => React.JSX.Element;
-  children: string;
-}) {
+function Badge(props: { icon?: SupportedIconName; children: string }) {
   return (
     <View className="flex-row items-center gap-1 rounded-[6px] bg-surfaceContainerHigh px-2 py-1">
-      {props.Icon ? <props.Icon size={14} /> : null}
+      {props.icon ? <Icon name={props.icon} size={14} /> : null}
       <StyledText className="text-xxs/tight">{props.children}</StyledText>
     </View>
   );
