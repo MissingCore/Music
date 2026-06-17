@@ -30,7 +30,7 @@
     "settings": "Ustawienia",
     "upcoming": "Następne",
     "playingFrom": "Odtwarzanie z",
-    "instructions": null,
+    "instructions": "Instrukcje",
     "disc": "CD {{count}}"
   },
   "template": {
@@ -64,7 +64,7 @@
     "unsaved": "Masz niezapisane zmiany.",
     "stay": "Zostań",
     "leave": "Wyjdź",
-    "close": null,
+    "close": "Zamknij",
     "create": "Utwórz",
     "delete": "Usuń",
     "edit": "Edytuj",
@@ -118,7 +118,7 @@
       "title": "Wygląd"
     },
     "font": {
-      "title": null,
+      "title": "Czcionki",
       "extra": {
         "accent": "Czcionka tytułów",
         "primary": "Czcionka główna"
@@ -137,7 +137,7 @@
       "brief": "Spersonalizuj kolejność i widoczność zakładek.",
       "extra": {
         "setHomeTab": "Otwórz zakładkę {{- name}} przy uruchomieniu aplikacji.",
-        "showNavbar": null
+        "showNavbar": "Pasek nawigacji"
       }
     },
     "minAlbumLength": {
@@ -164,7 +164,7 @@
       "title": "Język",
       "extra": {
         "contribute": "Rozwijaj tłumaczenia",
-        "useLTR": "Używaj układu LTR z językami RTL. Wymagany restart.",
+        "useLTR": "Wymuś układ LTR. Wymagany restart.",
         "translators": "Tłumacze"
       }
     },
@@ -207,11 +207,11 @@
     "playback": {
       "title": "Odtwarzanie",
       "extra": {
-        "delay": "Opóźnenie pomiędzy utworami",
+        "delay": "Opóźnienie pomiędzy utworami",
         "options": "Opcje odtwarzania",
-        "pitch": null,
+        "pitch": "Wysokość dźwięku",
         "speed": "Prędkość odtwarzania",
-        "restoreVolume": null,
+        "restoreVolume": "Przywracaj głośność aplikacji",
         "volume": "Głośność aplikacji"
       }
     },
@@ -230,10 +230,10 @@
       "title": "Teksty",
       "extra": {
         "useEmbedded": "Użyj osadzonych",
-        "providers": null,
+        "providers": "Dostawca napisów",
         "providersInstructions": {
-          "line1": null,
-          "line2": null
+          "line1": "Ze względów prawnych nie udostępniamy źródeł online do wyświetlania tekstów piosenek, ponieważ nie mamy na to licencji. Zamiast tego wspieramy dostawców, z których możesz skorzystać, aby określić, skąd możemy pobierać teksty.",
+          "line2": "Kliknij, aby dowiedzieć się więcej, jak dodać dostawcę."
         }
       }
     },
@@ -254,11 +254,11 @@
       "brief": "Ignoruje wszystkie reguły pomijania, które przyspieszają standardowe szukanie."
     },
     "optimizedImageSave": {
-      "title": null,
-      "brief": null,
+      "title": "Zoptymalizowane zapisywanie obrazów",
+      "brief": "Utwory używają tej samej okładki, co ich album.",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Wyłączenie tej funkcji spowoduje, że aplikacja będzie wykorzystywać znacznie więcej pamięci, a skanowanie może zostać spowolnione, ponieważ grafiki będą zapisywane lokalnie.",
+        "line2": "Zastosowanie zmian wymaga użycia funkcji `Głębokie skanowanie`."
       }
     },
     "rescanOnLaunch": {
@@ -267,7 +267,7 @@
     },
     "listAllow": {
       "title": "Biała lista",
-      "description": "Określ, gdzie szukać utworów."
+      "description": "Określ, gdzie szukać utworów. Będzie szukać wszędzie, jeśli nie podano."
     },
     "listBlock": {
       "title": "Czarna lista",
@@ -288,7 +288,7 @@
       "title": "Funkcje eksperymentalne"
     },
     "audioEffects": {
-      "title": null
+      "title": "Efekty dźwięku"
     },
     "equalizer": {
       "title": "Equalizer",
@@ -307,12 +307,12 @@
       }
     },
     "replayGain": {
-      "title": null,
+      "title": "Normalizacja głośności",
       "extra": {
-        "preAmp": null,
-        "preAmpDescription": null,
-        "adjustWithTags": null,
-        "adjustWithoutTags": null
+        "preAmp": "Globalna normalizacja głośności",
+        "preAmpDescription": "Dostosowuje głośność, gdy włączona jest funkcja `Normalizacja głośności`. Może powodować skoki głośności na niektórych utworach. Zmiany zostaną zastosowane w następnym utworze.",
+        "adjustWithTags": "Regulacja tagami",
+        "adjustWithoutTags": "Regulacja bez tagów"
       }
     },
     "ignoreInterrupt": {
