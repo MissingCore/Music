@@ -45,7 +45,7 @@ export const NumberStepper = memo(function NumberStepper({
       </Em>
       <FilledIconButton
         icon="add"
-        accessibilityLabel={t("template.entryRemove", {
+        accessibilityLabel={t("template.entryAdd", {
           name: t("plural.second", { count: 1 }),
         })}
         onPress={incrementOnChange}
