@@ -9,7 +9,7 @@ export type LayoutOption = (typeof LayoutOptions)[number];
 //#endregion
 
 //#region Sort
-type SortOption =
+export type SortOption =
   | "name"
   | "artistName"
   | "albumName"

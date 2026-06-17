@@ -21,6 +21,7 @@ import {
   toBaseTrackObject,
   toPlaylistListObject,
 } from "./formatters";
+import { getTracksOrderedBy } from "./utils";
 import {
   albumListsView,
   artistListsView,
@@ -90,7 +91,7 @@ export const LocalMediaAdapter: Adapter = {
 
   //#region getArtist
   async getArtist(id) {
-    const [[details], artistAlbums, artistTracks] = await Promise.all([
+    const [[details], artistAlbums] = await Promise.all([
       throwIfNoResults(
         db.select().from(artistListsView).where(eq(artistListsView.name, id)),
         "err.msg.noArtists",
@@ -103,15 +104,6 @@ export const LocalMediaAdapter: Adapter = {
           albumListsView,
           eq(albumsToArtists.albumId, albumListsView.id),
         ),
-      db
-        .select(sharedTrackColumns)
-        .from(tracksToArtists)
-        .where(eq(tracksToArtists.artistName, id))
-        .innerJoin(
-          structuredTracksView,
-          eq(tracksToArtists.trackId, structuredTracksView.id),
-        )
-        .orderBy(iAsc(structuredTracksView.name)),
     ]);
     if (!details) throw new Error("[getArtist] This check should never run.");
 
@@ -124,13 +116,27 @@ export const LocalMediaAdapter: Adapter = {
     return {
       ...toBaseListObject(details),
       albums: sortedAlbums.map(toAlbumListObject),
-      tracks: artistTracks.map(toBaseTrackObject),
     };
   },
   //#endregion
 
+  //#region getArtistTracks
+  async getArtistTracks(id, sortOptions) {
+    const results = await db
+      .select(sharedTrackColumns)
+      .from(tracksToArtists)
+      .where(eq(tracksToArtists.artistName, id))
+      .innerJoin(
+        structuredTracksView,
+        eq(tracksToArtists.trackId, structuredTracksView.id),
+      )
+      .orderBy(getTracksOrderedBy("artistTracks", sortOptions));
+    return results.map(toBaseTrackObject);
+  },
+  //#endregion
+
   //#region getFolder
-  async getFolder(path) {
+  async getFolder(path, sortOptions) {
     const [details, directories, folderTracks] = await Promise.all([
       path
         ? db.query.fileNodes.findFirst({
@@ -138,18 +144,7 @@ export const LocalMediaAdapter: Adapter = {
           })
         : undefined,
       getFolderDirectories(path),
-      path
-        ? db
-            .select(sharedTrackColumns)
-            .from(structuredTracksView)
-            .where(
-              eq(
-                structuredTracksView.parentFolder,
-                `file:///${addTrailingSlash(path)}`,
-              ),
-            )
-            .orderBy(iAsc(structuredTracksView.name))
-        : [],
+      this.getFolderTracks(path, sortOptions),
     ]);
 
     return {
@@ -159,8 +154,25 @@ export const LocalMediaAdapter: Adapter = {
       artworkSrc: null,
       parent: details?.parentPath,
       subDirs: directories.map(({ name }) => ({ id: name, name })),
-      tracks: folderTracks.map(toBaseTrackObject),
+      tracks: folderTracks,
     };
+  },
+  //#endregion
+
+  //#region getFolderTracks
+  async getFolderTracks(path, sortOptions) {
+    if (!path) return [];
+    const results = await db
+      .select(sharedTrackColumns)
+      .from(structuredTracksView)
+      .where(
+        eq(
+          structuredTracksView.parentFolder,
+          `file:///${addTrailingSlash(path)}`,
+        ),
+      )
+      .orderBy(getTracksOrderedBy("folder", sortOptions));
+    return results.map(toBaseTrackObject);
   },
   //#endregion
 
@@ -173,27 +185,27 @@ export const LocalMediaAdapter: Adapter = {
 
   //#region getGenre
   async getGenre(id) {
-    const [[details], genreTracks] = await Promise.all([
-      throwIfNoResults(
-        db.select().from(genreListsView).where(eq(genreListsView.name, id)),
-        "err.msg.noGenres",
-      ),
-      db
-        .select(sharedTrackColumns)
-        .from(tracksToGenres)
-        .where(eq(tracksToGenres.genreName, id))
-        .innerJoin(
-          structuredTracksView,
-          eq(tracksToGenres.trackId, structuredTracksView.id),
-        )
-        .orderBy(iAsc(structuredTracksView.name)),
-    ]);
+    const [details] = await throwIfNoResults(
+      db.select().from(genreListsView).where(eq(genreListsView.name, id)),
+      "err.msg.noGenres",
+    );
     if (!details) throw new Error("[getGenre] This check should never run.");
+    return toBaseListObject(details);
+  },
+  //#endregion
 
-    return {
-      ...toBaseListObject(details),
-      tracks: genreTracks.map(toBaseTrackObject),
-    };
+  //#region getGenreTracks
+  async getGenreTracks(id, sortOptions) {
+    const results = await db
+      .select(sharedTrackColumns)
+      .from(tracksToGenres)
+      .where(eq(tracksToGenres.genreName, id))
+      .innerJoin(
+        structuredTracksView,
+        eq(tracksToGenres.trackId, structuredTracksView.id),
+      )
+      .orderBy(getTracksOrderedBy("genreTracks", sortOptions));
+    return results.map(toBaseTrackObject);
   },
   //#endregion
 
@@ -236,8 +248,11 @@ export const LocalMediaAdapter: Adapter = {
   //#endregion
 
   //#region getTracks
-  async getTracks() {
-    const results = await db.select().from(structuredTracksView);
+  async getTracks(sortOptions) {
+    const results = await db
+      .select()
+      .from(structuredTracksView)
+      .orderBy(getTracksOrderedBy("track", sortOptions));
     return results.map(toBaseTrackObject);
   },
   //#endregion

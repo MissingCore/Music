@@ -33,9 +33,21 @@ export const ExampleAdapter: Adapter = {
   },
   //#endregion
 
+  //#region getArtistTracks
+  async getArtistTracks() {
+    throw new Error("`getArtistTracks` is unimplemented.");
+  },
+  //#endregion
+
   //#region getFolder
   async getFolder() {
     throw new Error("`getFolder` is unimplemented.");
+  },
+  //#endregion
+
+  //#region getFolderTracks
+  async getFolderTracks() {
+    throw new Error("`getFolderTracks` is unimplemented.");
   },
   //#endregion
 
@@ -48,6 +60,12 @@ export const ExampleAdapter: Adapter = {
   //#region getGenre
   async getGenre() {
     throw new Error("`getGenre` is unimplemented.");
+  },
+  //#endregion
+
+  //#region getGenreTracks
+  async getGenreTracks() {
+    throw new Error("`getGenreTracks` is unimplemented.");
   },
   //#endregion
 

@@ -1,3 +1,4 @@
+import type { TracksSortOptions } from "~/data/types";
 import type { Protocol } from "./constants";
 
 import type { Maybe, ObjectValues } from "~/utils/types";
@@ -38,7 +39,6 @@ export namespace MediaLibrary {
   /** `Artist` with relations. */
   export interface Artist2 extends Artist {
     albums: Album[];
-    tracks: Track[];
   }
 
   export interface Folder extends Omit<SchemaBase, "id"> {
@@ -56,11 +56,6 @@ export namespace MediaLibrary {
 
   /** Basic representation of a genre. */
   export interface Genre extends SchemaBase, ListBase {}
-
-  /** `Genre` with relations. */
-  export interface Genre2 extends Genre {
-    tracks: Track[];
-  }
 
   export interface Playlist extends Omit<SchemaBase, "artworkSrc">, ListBase {
     artworkSrc: Maybe<string> | Array<string | null>;
@@ -117,17 +112,34 @@ export interface Adapter {
   /** Returns a list of artists, sorted by their name in ascending order. */
   getArtists(): Promise<MediaLibrary.Artist[]>;
   getArtist(id: string): Promise<MediaLibrary.Artist2>;
+  getArtistTracks(
+    id: string,
+    sortOptions: TracksSortOptions<"artistTracks">,
+  ): Promise<MediaLibrary.Track[]>;
 
-  getFolder(path: Maybe<string>): Promise<MediaLibrary.Folder>;
+  getFolder(
+    path: Maybe<string>,
+    sortOptions?: TracksSortOptions<"folder">,
+  ): Promise<MediaLibrary.Folder>;
+  getFolderTracks(
+    path: Maybe<string>,
+    sortOptions?: TracksSortOptions<"folder">,
+  ): Promise<MediaLibrary.Track[]>;
 
   getGenres(): Promise<MediaLibrary.Genre[]>;
-  getGenre(id: string): Promise<MediaLibrary.Genre2>;
+  getGenre(id: string): Promise<MediaLibrary.Genre>;
+  getGenreTracks(
+    id: string,
+    sortOptions: TracksSortOptions<"artistTracks">,
+  ): Promise<MediaLibrary.Track[]>;
 
   /** Returns a list of playlists, sorted by their name in ascending order. */
   getPlaylists(): Promise<MediaLibrary.Playlist[]>;
   getPlaylist(id: string): Promise<MediaLibrary.Playlist2>;
 
-  getTracks(): Promise<MediaLibrary.Track[]>;
+  getTracks(
+    sortOptions?: TracksSortOptions<"track">,
+  ): Promise<MediaLibrary.Track[]>;
   getTrack(id: string): Promise<MediaLibrary.Track>;
   getTrackStats(id: string): Promise<MediaLibrary.TrackStats>;
 }
