@@ -47,20 +47,15 @@ export async function getGenres() {
   return Object.entries(mergeMap)
     .map(([name, { data, adapters }]) => ({
       ...data,
-      route: `/${name}?${Object.entries(adapters)
-        .map(([protocol, id]) => `${protocol}=${encodeURIComponent(id)}`)
-        .join("&")}`,
+      // Generates the segment after `/genre`.
+      route: createRouteFromAdapters(name, adapters),
     }))
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 export async function getGenre(route: string) {
-  // `params` should be in the form of: `:screenId?adapter1=value&adapter2=value`
-  const usedAdapters = Array.from(
-    new URLSearchParams(route.split("?").at(-1)).entries(),
-  );
   const results = await Promise.allSettled(
-    usedAdapters.map(([adapterKey, id]) =>
+    extractAdapters(route).map(([adapterKey, id]) =>
       AdapterMap[adapterKey as AdapterProtocol].getGenre(id),
     ),
   );
@@ -84,12 +79,8 @@ export async function getGenreTracks(
   route: string,
   sortOptions?: TracksSortOptions<"genreTracks">,
 ) {
-  // `params` should be in the form of: `:screenId?adapter1=value&adapter2=value`
-  const usedAdapters = Array.from(
-    new URLSearchParams(route.split("?").at(-1)).entries(),
-  );
   const results = await Promise.allSettled(
-    usedAdapters.map(([adapterKey, id]) =>
+    extractAdapters(route).map(([adapterKey, id]) =>
       AdapterMap[adapterKey as AdapterProtocol].getGenreTracks(id, sortOptions),
     ),
   );
@@ -107,3 +98,21 @@ export async function getGenreTracks(
   //! Be extremely lazy and just join the sorted results without sorting.
   return mergedTracks;
 }
+
+//#region Helper Functions
+function createRouteFromAdapters(
+  routeName: string,
+  adapters: Record<AdapterProtocol, string>,
+) {
+  return `/${routeName}?${Object.entries(adapters)
+    .map(([protocol, id]) => `${protocol}=${encodeURIComponent(id)}`)
+    .join("&")}`;
+}
+
+function extractAdapters(route: string): Array<[AdapterProtocol, string]> {
+  // `route` should be in the form of: `:screenId?adapter1=value&adapter2=value`
+  return Array.from(
+    new URLSearchParams(route.split("?").at(-1)).entries(),
+  ) as Array<[AdapterProtocol, string]>;
+}
+//#endregion
