@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { View } from "react-native";
 
-import { Check } from "~/resources/icons/Check";
+import { Icon } from "~/resources/icons";
 
 import { cn } from "~/lib/style";
 import { Pressable } from "../Base/Pressable";
@@ -15,7 +15,7 @@ export function Radio({ selected }: { selected: boolean }) {
         { "border-0 bg-onSurface": selected },
       )}
     >
-      {selected ? <Check size={18} color="surface" /> : null}
+      {selected ? <Icon name="check" size={18} color="surface" /> : null}
     </View>
   );
 }

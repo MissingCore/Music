@@ -1,7 +1,8 @@
 import { memo } from "react";
 import { View } from "react-native";
 
-import type { Icon } from "~/resources/icons/type";
+import type { SupportedIconName } from "~/resources/icons";
+import { Icon } from "~/resources/icons";
 
 import { cn } from "~/lib/style";
 import type { AppColor } from "~/modules/customization/theme/core/constants";
@@ -19,12 +20,10 @@ const ButtonConfig = {
 } as const;
 
 type IconButtonProps = PressProps & {
-  Icon: (props: Icon) => React.JSX.Element;
+  icon: SupportedIconName;
   accessibilityLabel: string;
   /** Defaults to `md`. */
   size?: ButtonSize;
-  /** Use the `alternative` variant on the icon if available. */
-  alternative?: boolean;
   className?: string;
   _iconColor?: AppColor;
   _rippleColor?: AppColor;
@@ -32,9 +31,8 @@ type IconButtonProps = PressProps & {
 
 //#region Default
 export const IconButton = memo(function IconButton({
-  Icon,
+  icon,
   size = "sm",
-  alternative,
   _iconColor,
   _rippleColor,
   ...props
@@ -56,7 +54,7 @@ export const IconButton = memo(function IconButton({
           style={[pressed && { backgroundColor: `${rippleColor}80` }]}
           className="rounded-full p-1.5"
         >
-          <Icon size={iconSize} color={_iconColor} alternative={alternative} />
+          <Icon name={icon} size={iconSize} color={_iconColor} />
         </View>
       )}
     </Pressable>
@@ -66,9 +64,8 @@ export const IconButton = memo(function IconButton({
 
 //#region Filled
 export const FilledIconButton = memo(function FilledIconButton({
-  Icon,
+  icon,
   size = "sm",
-  alternative,
   _iconColor,
   ...props
 }: IconButtonProps) {
@@ -82,7 +79,7 @@ export const FilledIconButton = memo(function FilledIconButton({
         props.className,
       )}
     >
-      <Icon size={iconSize} color={_iconColor} alternative={alternative} />
+      <Icon name={icon} size={iconSize} color={_iconColor} />
     </Pressable>
   );
 });

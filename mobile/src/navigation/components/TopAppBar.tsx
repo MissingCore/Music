@@ -5,8 +5,6 @@ import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { ArrowBack } from "~/resources/icons/ArrowBack";
-
 import { OnRTL } from "~/lib/react";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { SafeContainer } from "~/components/SafeContainer";
@@ -22,7 +20,7 @@ export function TopAppBar({ options, route }: NativeStackHeaderProps) {
     <SafeContainer>
       <View className="h-14 flex-row items-center justify-between gap-4 px-2 py-1">
         <FilledIconButton
-          Icon={ArrowBack}
+          icon="arrow-back"
           accessibilityLabel={t("form.back")}
           onPress={() => navigation.goBack()}
           disabled={!!options.headerLeft}

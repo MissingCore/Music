@@ -4,7 +4,6 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { ArrowBack } from "~/resources/icons/ArrowBack";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
@@ -48,7 +47,7 @@ function AppBarContent() {
   return (
     <>
       <FilledIconButton
-        Icon={ArrowBack}
+        icon="arrow-back"
         accessibilityLabel={t("form.back")}
         onPress={() => navigation.goBack()}
         className={OnRTL._use("rotate-180")}

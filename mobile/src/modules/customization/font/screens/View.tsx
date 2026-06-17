@@ -5,8 +5,6 @@ import { View } from "react-native";
 
 import type { CustomFont } from "~/db/schema";
 
-import { Add } from "~/resources/icons/Add";
-import { Delete } from "~/resources/icons/Delete";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
 
@@ -74,7 +72,7 @@ function FontsScreenBase(props: {
       <ScreenOptions
         headerRight={() => (
           <FilledIconButton
-            Icon={Add}
+            icon="add"
             accessibilityLabel={t("form.create")}
             onPress={() => navigation.navigate("CreateFont")}
           />
@@ -105,7 +103,7 @@ function FontsScreenBase(props: {
               </StyledText>
               {canDeleteFont(font) ? (
                 <IconButton
-                  Icon={Delete}
+                  icon="delete"
                   accessibilityLabel={t("form.delete")}
                   onPress={() => deleteCustomFont(font.id)}
                   _iconColor="error"

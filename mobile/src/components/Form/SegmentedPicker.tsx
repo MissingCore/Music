@@ -5,7 +5,8 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import type { Icon } from "~/resources/icons/type";
+import type { SupportedIconName } from "~/resources/icons";
+import { Icon } from "~/resources/icons";
 
 import { OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
@@ -13,7 +14,7 @@ import { Pressable } from "../Base/Pressable";
 import { Em } from "../Typography/StyledText";
 
 export type PickerOption = {
-  Icon: (props: Icon) => React.JSX.Element;
+  icon: SupportedIconName;
   label: string;
 };
 
@@ -53,13 +54,14 @@ export function SegmentedPicker({
             style={selectedIndicatorStyle}
             className="absolute top-0 left-0 h-full rounded-full bg-onSurface"
           />
-          {options.map(({ Icon }, idx) => (
+          {options.map(({ icon }, idx) => (
             <Pressable
               key={idx}
               onPress={() => onOptionSelected(idx)}
               className="min-h-10 flex-1 items-center justify-center rounded-full active:opacity-50"
             >
               <Icon
+                name={icon}
                 size={20}
                 color={selectedIndex === idx ? "inverseOnSurface" : undefined}
               />

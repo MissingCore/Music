@@ -2,7 +2,7 @@ import { memo, useCallback, useMemo } from "react";
 import { View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 
-import type { Icon } from "~/resources/icons/type";
+import type { SupportedIconName } from "~/resources/icons";
 import { sessionStore, useSessionStore } from "~/stores/Session/store";
 
 import { capitalize } from "~/utils/string";
@@ -17,7 +17,7 @@ export const PlaybackParameterSlider = memo(
   function PlaybackParameterSlider(props: {
     field: "pitch" | "speed";
     onUpdate: (value: number) => void;
-    Icon: (props: Icon) => React.JSX.Element;
+    icon: SupportedIconName;
   }) {
     const fieldName = `playback${capitalize(props.field)}` as const;
     const fieldNameKey = `feat.playback.extra.${props.field}` as const;
@@ -59,7 +59,7 @@ export const PlaybackParameterSlider = memo(
           max={2}
           step={0.05}
           onChange={setField}
-          Icon={props.Icon}
+          icon={props.icon}
           displayedValue={`${numberFormatter.format(storedValue)}x`}
         />
         <View className="flex-row items-center gap-4">{PresetButtons}</View>

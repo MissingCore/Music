@@ -2,9 +2,7 @@ import { useMemo } from "react";
 import { Text, View } from "react-native";
 import Markdown from "react-native-markdown-renderer";
 
-import { Info } from "~/resources/icons/Info";
-import { LogoGitHub } from "~/resources/icons/LogoGitHub";
-import { LogoPlayStore } from "~/resources/icons/LogoPlayStore";
+import { Icon } from "~/resources/icons";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { useHasNewUpdate } from "~/navigation/hooks/useHasNewUpdate";
@@ -83,7 +81,7 @@ export default function AppUpdate() {
                 style={{ backgroundColor: codeBg }}
                 className="gap-1 p-2"
               >
-                <Info size={20} color="onSurfaceVariant" />
+                <Icon name="info" size={20} color="onSurfaceVariant" />
                 {children}
               </SegmentedList.CustomItem>
             ),
@@ -121,13 +119,13 @@ export default function AppUpdate() {
         <SegmentedList.Item
           labelTextKey="feat.appUpdate.extra.downloadAPK"
           onPress={() => openLink(Links.SpecificRelease(release.version))}
-          LeftElement={<LogoGitHub />}
+          LeftElement={<Icon name="logo-github" />}
           className="gap-4"
         />
         <SegmentedList.Item
           labelTextKey="feat.appUpdate.extra.updateGoogle"
           onPress={() => openLink(Links.PlayStore)}
-          LeftElement={<LogoPlayStore />}
+          LeftElement={<Icon name="logo-google-playstore" />}
           className="gap-4"
         />
       </SegmentedList>

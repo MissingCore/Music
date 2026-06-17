@@ -1,11 +1,22 @@
 import Animated from "react-native-reanimated";
 import { Path, Svg } from "react-native-svg";
 
-import type { Icon } from "~/resources/icons/type";
-
+import type { AppColor } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
+
+interface Props {
+  /** Defaults to `24px`. */
+  size?: number;
+  /** Defaults to theme's `onSurface` color. */
+  color?: AppColor;
+  /**
+   * Use the alternative version of the icon if available (ie: filled, animated).
+   * Defaults to `false`.
+   */
+  alternative?: boolean;
+}
 
 /**
  * Create an Icon where setting the `alternative` prop will animate the
@@ -20,7 +31,7 @@ export function createAnimatedMaterialSymbol(
     size = 24,
     color,
     alternative = false,
-  }: Icon) {
+  }: Props) {
     const usedColor = useColor(color, "onSurface");
     return (
       <Svg width={size} height={size} viewBox="0 -960 960 960" fill={usedColor}>

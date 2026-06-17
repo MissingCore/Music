@@ -1,8 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Close } from "~/resources/icons/Close";
-import { Search } from "~/resources/icons/Search";
+import { Icon } from "~/resources/icons";
 
 import { IconButton } from "~/components/Form/Button/Icon";
 import { TextInput, useInputRef } from "~/components/Form/Input";
@@ -18,7 +17,7 @@ export function SearchBar(props: {
 
   return (
     <View className="flex-row items-center gap-2 rounded-full bg-surfaceContainerLowest pl-4">
-      <Search />
+      <Icon name="search" />
       <TextInput
         ref={inputRef}
         autoFocus={props.autoFocus}
@@ -28,7 +27,7 @@ export function SearchBar(props: {
         forSheet
       />
       <IconButton
-        Icon={Close}
+        icon="close"
         accessibilityLabel={t("form.clear")}
         onPress={() => {
           inputRef.current?.clear();

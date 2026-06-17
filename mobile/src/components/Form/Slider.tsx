@@ -20,7 +20,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 
-import type { Icon } from "~/resources/icons/type";
+import type { SupportedIconName } from "~/resources/icons";
+import { Icon } from "~/resources/icons";
 
 import { Colors } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
@@ -360,7 +361,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
 //#region Overlay
 type SliderOverlayProps = {
   accessibilityLabelKey: ParseKeys;
-  Icon: (props: Icon) => React.ReactNode;
+  icon: SupportedIconName;
   formatValue: (val: number) => string;
 };
 
@@ -390,7 +391,7 @@ const SliderOverlay = memo(function SliderOverlay(
         { "flex-row-reverse": props.inverted },
       )}
     >
-      <props.Icon size={20} />
+      <Icon name={props.icon} size={20} />
       <Em className={cn("min-w-10 text-sm", { "text-right": props.inverted })}>
         {formattedValue}
       </Em>

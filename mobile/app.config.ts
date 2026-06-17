@@ -103,6 +103,17 @@ export default (): ExpoConfig => {
       }),
       navigationBarPlugin({ android: { enforceNavigationBarContrast: false } }),
       ["react-native-android-widget", widgetPluginConfig],
+      [
+        "react-native-nano-icons",
+        {
+          iconSets: [
+            {
+              inputDir: "./assets/icons/app-icons",
+              outputDir: "./src/resources/icons",
+            },
+          ],
+        },
+      ],
       ...optionalPlugins,
     ],
   };

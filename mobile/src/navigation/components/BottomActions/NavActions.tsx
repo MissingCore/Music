@@ -12,8 +12,6 @@ import Animated, {
   SlideOutRight,
 } from "react-native-reanimated";
 
-import { Search } from "~/resources/icons/Search";
-import { Settings } from "~/resources/icons/Settings";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTabsByVisibility } from "~/stores/Preference/hooks";
 
@@ -38,7 +36,7 @@ export function SearchButton() {
       exiting={OnRTL.decide(SlideOutRight, SlideOutLeft)}
     >
       <FilledIconButton
-        Icon={Search}
+        icon="search"
         accessibilityLabel={t("feat.search.title")}
         onPress={() => navigation.navigate("Search")}
         size="lg"
@@ -59,7 +57,7 @@ export function SettingsButton() {
       className="relative"
     >
       <FilledIconButton
-        Icon={Settings}
+        icon="settings"
         accessibilityLabel={t("term.settings")}
         onPress={() => navigation.navigate("Settings")}
         size="lg"
