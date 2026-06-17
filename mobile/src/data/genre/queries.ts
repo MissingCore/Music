@@ -21,8 +21,8 @@ export function useGenreTracks(genreName: string) {
   const isAsc = useViewPreferenceStore((s) => s.genreTracksIsAsc);
   const order = useViewPreferenceStore((s) => s.genreTracksOrder);
   return useQuery({
-    ...q.genres.detail(genreName, { isAsc, order }),
-    select: ({ tracks }) =>
+    ...q.genres.detail(genreName)._ctx.tracks({ isAsc, order }),
+    select: (tracks) =>
       tracks.map((track) => ({
         id: track.id,
         protocol: track.protocol,

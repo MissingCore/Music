@@ -1,6 +1,5 @@
 import i18next from "~/modules/i18n";
 import type { TracksSortOptions } from "~/data/types";
-import { viewPreferenceStore } from "~/stores/ViewPreference/store";
 
 import { Protocol } from "./core/constants";
 import type { Adapter, AdapterProtocol, MediaLibrary } from "./core/types";
@@ -55,10 +54,7 @@ export async function getGenres() {
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
-export async function getGenre(
-  route: string,
-  sortOptions?: TracksSortOptions<"genreTracks">,
-) {
+export async function getGenre(route: string) {
   // `params` should be in the form of: `:screenId?adapter1=value&adapter2=value`
   const usedAdapters = Array.from(
     new URLSearchParams(route.split("?").at(-1)).entries(),
@@ -79,37 +75,35 @@ export async function getGenre(
     if (!merged.artworkSrc) merged.artworkSrc = entry.artworkSrc;
     merged.duration += entry.duration;
     merged.trackCount += entry.trackCount;
-    merged.tracks = merged.tracks.concat(entry.tracks);
   }
 
-  // Sort the tracks.
-  const isAsc =
-    sortOptions?.isAsc ?? viewPreferenceStore.getState().genreTracksIsAsc;
-  const order =
-    sortOptions?.order ?? viewPreferenceStore.getState().genreTracksOrder;
-
-  merged.tracks.sort((a, b) => {
-    const aData =
-      a[
-        order === "artistName"
-          ? "artist"
-          : order === "albumName"
-            ? "album"
-            : order
-      ];
-    const bData =
-      b[
-        order === "artistName"
-          ? "artist"
-          : order === "albumName"
-            ? "album"
-            : order
-      ];
-    if (!aData) return -1;
-    if (!bData) return 1;
-    return `${aData}`.localeCompare(`${bData}`);
-  });
-  if (!isAsc) merged.tracks.reverse();
-
   return merged;
+}
+
+export async function getGenreTracks(
+  route: string,
+  sortOptions?: TracksSortOptions<"genreTracks">,
+) {
+  // `params` should be in the form of: `:screenId?adapter1=value&adapter2=value`
+  const usedAdapters = Array.from(
+    new URLSearchParams(route.split("?").at(-1)).entries(),
+  );
+  const results = await Promise.allSettled(
+    usedAdapters.map(([adapterKey, id]) =>
+      AdapterMap[adapterKey as AdapterProtocol].getGenreTracks(id, sortOptions),
+    ),
+  );
+  const adapterResults = results.filter(isFulfilled).map((r) => r.value);
+
+  // If no adapter return results, throw an error.
+  if (adapterResults.length === 0)
+    throw new Error(i18next.t("err.msg.noGenres"));
+
+  let mergedTracks = adapterResults.shift()!;
+  for (const adaptertracks of adapterResults) {
+    mergedTracks = mergedTracks.concat(adaptertracks);
+  }
+
+  //! Be extremely lazy and just join the sorted results without sorting.
+  return mergedTracks;
 }

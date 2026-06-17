@@ -114,7 +114,7 @@ export interface Adapter {
   getArtist(id: string): Promise<MediaLibrary.Artist2>;
   getArtistTracks(
     id: string,
-    sortOptions: TracksSortOptions<"artistTracks">,
+    sortOptions?: TracksSortOptions<"artistTracks">,
   ): Promise<MediaLibrary.Track[]>;
 
   getFolder(
@@ -130,7 +130,7 @@ export interface Adapter {
   getGenre(id: string): Promise<MediaLibrary.Genre>;
   getGenreTracks(
     id: string,
-    sortOptions: TracksSortOptions<"artistTracks">,
+    sortOptions?: TracksSortOptions<"genreTracks">,
   ): Promise<MediaLibrary.Track[]>;
 
   /** Returns a list of playlists, sorted by their name in ascending order. */

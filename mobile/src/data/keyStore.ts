@@ -3,7 +3,7 @@ import { ne } from "drizzle-orm";
 
 import { playlists } from "~/db/schema";
 
-import { getGenre, getGenres } from "~/adapters/consumer";
+import { getGenre, getGenres, getGenreTracks } from "~/adapters/consumer";
 
 import { getAlbum, getAlbumsSummary } from "./album/api";
 import {
@@ -94,11 +94,22 @@ export const queries = {
         queryFn: getGenres,
       });
     },
-    detail(route: string, sortOptions?: TracksSortOptions<"genreTracks">) {
-      return queryOptions({
-        queryKey: [...this._def, "detail", route, sortOptions],
-        queryFn: () => getGenre(route, sortOptions),
+    detail(route: string) {
+      const detail = queryOptions({
+        queryKey: [...this._def, "detail", route],
+        queryFn: () => getGenre(route),
       });
+      return {
+        ...detail,
+        _ctx: {
+          tracks: (sortOptions?: TracksSortOptions<"genreTracks">) =>
+            // eslint-disable-next-line @tanstack/query/exhaustive-deps
+            queryOptions({
+              queryKey: [...detail.queryKey, "tracks", sortOptions],
+              queryFn: () => getGenreTracks(route, sortOptions),
+            }),
+        },
+      };
     },
   },
 
