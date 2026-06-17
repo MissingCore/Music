@@ -65,14 +65,14 @@ export async function getGenre(route: string) {
   if (adapterResults.length === 0)
     throw new Error(i18next.t("err.msg.noGenres"));
 
-  const merged = adapterResults.shift()!;
+  const resultBase = adapterResults.shift()!;
   for (const entry of adapterResults) {
-    if (!merged.artworkSrc) merged.artworkSrc = entry.artworkSrc;
-    merged.duration += entry.duration;
-    merged.trackCount += entry.trackCount;
+    if (!resultBase.artworkSrc) resultBase.artworkSrc = entry.artworkSrc;
+    resultBase.duration += entry.duration;
+    resultBase.trackCount += entry.trackCount;
   }
 
-  return merged;
+  return resultBase;
 }
 
 export async function getGenreTracks(
@@ -91,8 +91,8 @@ export async function getGenreTracks(
     throw new Error(i18next.t("err.msg.noGenres"));
 
   let mergedTracks = adapterResults.shift()!;
-  for (const adaptertracks of adapterResults) {
-    mergedTracks = mergedTracks.concat(adaptertracks);
+  for (const adapterTracks of adapterResults) {
+    mergedTracks = mergedTracks.concat(adapterTracks);
   }
 
   //! Be extremely lazy and just join the sorted results without sorting.
@@ -111,8 +111,10 @@ function createRouteFromAdapters(
 
 function extractAdapters(route: string): Array<[AdapterProtocol, string]> {
   // `route` should be in the form of: `:screenId?adapter1=value&adapter2=value`
-  return Array.from(
+  const entries = Array.from(
     new URLSearchParams(route.split("?").at(-1)).entries(),
-  ) as Array<[AdapterProtocol, string]>;
-}
-//#endregion
+  );
+  return entries.filter(([key]) => key in AdapterMap) as Array<
+    [AdapterProtocol, string]
+  >;
+} //#endregion
