@@ -42,7 +42,8 @@ export function toggleTrackSelection(id: string) {
 
 //#region Supported Multi-Select Actions
 export async function favoriteSelectedTracks() {
-  const isAllFavorited = trackMultiSelectStore.getState().isAllFavorited;
+  const { isAllFavorited, selected } = trackMultiSelectStore.getState();
+  if (selected.size === 0) return;
   try {
     await toggleSelectedTracksToPlaylist(FavoritesPlaylistKey, isAllFavorited);
     clearAllQueries();
