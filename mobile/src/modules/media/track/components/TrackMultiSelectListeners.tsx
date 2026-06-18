@@ -1,7 +1,7 @@
 import { toast } from "@missingcore/ui/toast";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { Portal } from "@rn-primitives/portal";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import Animated, { SlideInUp, SlideOutUp } from "react-native-reanimated";
@@ -31,6 +31,7 @@ import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
+import { FavoritesPlaylistKey } from "../../constants";
 
 export function TrackMultiSelectListeners() {
   const navigation = useNavigation();
@@ -98,24 +99,41 @@ function SelectionCount() {
 //#region Mutli-Select Actions
 function MutliSelectActions() {
   const { t } = useTranslation();
+  const availableRoutes = useNavigationState((s) => s.routes);
   const amountSelected = useTrackMultiSelectStore((s) => s.selected.size);
   const isAllFavorited = useTrackMultiSelectStore((s) => s.isAllFavorited);
   const playlistsSheetRef = useSheetRef();
+
+  const isPlaylistRoute = useMemo(
+    () => availableRoutes.at(-1)?.key.startsWith("Playlist-"),
+    [availableRoutes],
+  );
+  const isFavoriteRoute = useMemo(
+    () =>
+      isPlaylistRoute &&
+      // @ts-expect-error - Should be fine.
+      String(availableRoutes.at(-1)?.params?.id) === FavoritesPlaylistKey,
+    [availableRoutes, isPlaylistRoute],
+  );
 
   return (
     <>
       <TracksToPlaylistSheet ref={playlistsSheetRef} />
       <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
-        <FilledIconButton
-          icon={`favorite${isAllFavorited ? "-filled" : ""}`}
-          accessibilityLabel={t("term.favorite")}
-          onPress={favoriteSelectedTracks}
-        />
-        <FilledIconButton
-          icon="playlist-add"
-          accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
-          onPress={() => playlistsSheetRef.current?.present()}
-        />
+        {!isFavoriteRoute ? (
+          <FilledIconButton
+            icon={`favorite${isAllFavorited ? "-filled" : ""}`}
+            accessibilityLabel={t("term.favorite")}
+            onPress={favoriteSelectedTracks}
+          />
+        ) : null}
+        {isPlaylistRoute ? null : (
+          <FilledIconButton
+            icon="playlist-add"
+            accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
+            onPress={() => playlistsSheetRef.current?.present()}
+          />
+        )}
         <ConfirmableAction
           Component={FilledIconButton}
           componentProps={{
@@ -205,6 +223,5 @@ function getItemLayout(_: unknown, index: number) {
   // 54px Height + 8px Margin Bottom
   return { length: 62, offset: 62 * index, index };
 }
-
 //#endregion
 //#endregion
