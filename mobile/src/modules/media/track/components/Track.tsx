@@ -75,6 +75,7 @@ export function Track({
       {...props}
       className={cn(props.className, {
         "bg-surfaceContainerLowest": isSelected,
+        "pr-4": isMultiSelectEnabled,
       })}
     />
   );
