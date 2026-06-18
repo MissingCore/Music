@@ -34,8 +34,8 @@ import { StyledText } from "~/components/Typography/StyledText";
 import {
   Track,
   useTrackListPlayingIndication,
-} from "~/modules/media/components/Track";
-import type { TrackContent } from "~/modules/media/components/Track.type";
+} from "~/modules/media/track/components/Track";
+import type { TrackContent } from "~/modules/media/track/components/Track.type";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
 type Props = StaticScreenProps<{ path?: string }>;

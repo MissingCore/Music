@@ -31,7 +31,7 @@ import {
   RepeatButton,
   ShuffleButton,
 } from "~/modules/media/components/MediaControls";
-import { FavoriteButton } from "~/modules/media/components/Track";
+import { FavoriteButton } from "~/modules/media/track/components/Track";
 
 export default function NowPlaying() {
   const track = usePlaybackStore((s) => s.activeTrack);

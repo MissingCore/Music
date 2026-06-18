@@ -12,7 +12,7 @@ import {
   ShuffleButton,
 } from "~/modules/media/components/MediaControls";
 import { PlayMediaListButton } from "~/modules/media/components/MediaListControls";
-import { useTrackListPreset } from "~/modules/media/components/Track";
+import { useTrackListPreset } from "~/modules/media/track/components/Track";
 
 // Information about this track list.
 const trackSource = {

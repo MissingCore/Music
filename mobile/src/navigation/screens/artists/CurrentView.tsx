@@ -17,7 +17,7 @@ import { SafeContainer } from "~/components/SafeContainer";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { TEm } from "~/components/Typography/StyledText";
 import { MediaCard } from "~/modules/media/components/MediaCard";
-import { useTrackListPreset } from "~/modules/media/components/Track";
+import { useTrackListPreset } from "~/modules/media/track/components/Track";
 
 type Props = StaticScreenProps<{ id: string }>;
 

@@ -19,9 +19,9 @@ import { SearchResult } from "~/modules/search/components/SearchResult";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import type { PlayFromSource } from "~/stores/Playback/types";
 import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
-import { PlayingIndicator } from "./AnimatedBars";
 import type { TrackContent, TrackProps } from "./Track.type";
-import { FavoritesPlaylistKey } from "../constants";
+import { PlayingIndicator } from "../../components/AnimatedBars";
+import { FavoritesPlaylistKey } from "../../constants";
 
 //#region Track
 /**

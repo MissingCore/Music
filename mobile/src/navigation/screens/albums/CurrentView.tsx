@@ -21,7 +21,7 @@ import { Em, StyledText } from "~/components/Typography/StyledText";
 import {
   Track,
   useTrackListPlayingIndication,
-} from "~/modules/media/components/Track";
+} from "~/modules/media/track/components/Track";
 
 type Props = StaticScreenProps<{ id: string }>;
 
