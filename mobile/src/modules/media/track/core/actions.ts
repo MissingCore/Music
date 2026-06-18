@@ -13,6 +13,6 @@ export function toggleTrackSelection(id: string) {
     const updatedSet = new Set(prev.selected);
     if (updatedSet.has(id)) updatedSet.delete(id);
     else updatedSet.add(id);
-    return { selected: updatedSet };
+    return { enabled: updatedSet.size > 0, selected: updatedSet };
   });
 }
