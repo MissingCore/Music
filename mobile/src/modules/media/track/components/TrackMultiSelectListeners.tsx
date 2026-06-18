@@ -7,7 +7,7 @@ import Animated, { SlideInUp, SlideOutUp } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useTrackMultiSelectStore } from "../core/store";
-import { resetTrackMultiSelect } from "../core/actions";
+import { favoriteSelectedTracks, resetTrackMultiSelect } from "../core/actions";
 
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
@@ -76,13 +76,14 @@ function SelectionCount() {
 
 function MutliSelectActions() {
   const { t } = useTranslation();
+  const isAllFavorited = useTrackMultiSelectStore((s) => s.isAllFavorited);
 
   return (
     <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
       <FilledIconButton
-        icon="favorite"
+        icon={`favorite${isAllFavorited ? "-filled" : ""}`}
         accessibilityLabel={t("term.favorite")}
-        onPress={() => console.log("Favorite selected tracks...")}
+        onPress={favoriteSelectedTracks}
       />
       <FilledIconButton
         icon="playlist-add"
