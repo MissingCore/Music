@@ -1,21 +1,34 @@
+import { toast } from "@missingcore/ui/toast";
 import { useNavigation } from "@react-navigation/native";
 import { Portal } from "@rn-primitives/portal";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import Animated, { SlideInUp, SlideOutUp } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { usePlaylistsNames } from "~/data/playlist/queries";
 import { useTrackMultiSelectStore } from "../core/store";
 import {
   favoriteSelectedTracks,
   hideSelectedTracks,
   resetTrackMultiSelect,
+  toggleSelectedTracksToPlaylist,
 } from "../core/actions";
 
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+
+import { clearAllQueries } from "~/lib/react-query";
+import { FlatList } from "~/components/Base/List";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
+import { CheckboxField } from "~/components/Form/Checkbox";
 import { TopDownGradient } from "~/components/Gradient";
+import { Marquee } from "~/components/Marquee";
 import { ConfirmableAction } from "~/components/Modal";
+import { DetachedSheet } from "~/components/Sheet";
+import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
+import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
+import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
 
 export function TrackMultiSelectListeners() {
@@ -59,6 +72,7 @@ export function TrackMultiSelectMenu() {
   ) : null;
 }
 
+//#region Selection Count
 function SelectionCount() {
   const { t } = useTranslation();
   const amountSelected = useTrackMultiSelectStore((s) => s.selected.size);
@@ -78,41 +92,117 @@ function SelectionCount() {
     </View>
   );
 }
+//#endregion
 
+//#region Mutli-Select Actions
 function MutliSelectActions() {
   const { t } = useTranslation();
   const amountSelected = useTrackMultiSelectStore((s) => s.selected.size);
   const isAllFavorited = useTrackMultiSelectStore((s) => s.isAllFavorited);
+  const playlistsSheetRef = useSheetRef();
 
   return (
-    <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
-      <FilledIconButton
-        icon={`favorite${isAllFavorited ? "-filled" : ""}`}
-        accessibilityLabel={t("term.favorite")}
-        onPress={favoriteSelectedTracks}
-      />
-      <FilledIconButton
-        icon="playlist-add"
-        accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
-        onPress={() => console.log("Opening `Add to Playlist` sheet...")}
-      />
-      <ConfirmableAction
-        Component={FilledIconButton}
-        componentProps={{
-          icon: "visibility-off-filled",
-          accessibilityLabel: t("template.entryHide", {
-            name: t("term.tracks"),
-          }),
-          onPress: hideSelectedTracks,
-        }}
-        modalMessage={[
-          // @ts-expect-error - If we use a non-translation key, it'll be rendered as a string.
-          t("template.entryHide", {
-            name: t("plural.track", { count: amountSelected }),
-          }),
-        ]}
-      />
-    </View>
+    <>
+      <TracksToPlaylistSheet ref={playlistsSheetRef} />
+      <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
+        <FilledIconButton
+          icon={`favorite${isAllFavorited ? "-filled" : ""}`}
+          accessibilityLabel={t("term.favorite")}
+          onPress={favoriteSelectedTracks}
+        />
+        <FilledIconButton
+          icon="playlist-add"
+          accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
+          onPress={() => playlistsSheetRef.current?.present()}
+        />
+        <ConfirmableAction
+          Component={FilledIconButton}
+          componentProps={{
+            icon: "visibility-off-filled",
+            accessibilityLabel: t("template.entryHide", {
+              name: t("term.tracks"),
+            }),
+            onPress: hideSelectedTracks,
+          }}
+          modalMessage={[
+            // @ts-expect-error - If we use a non-translation key, it'll be rendered as a string.
+            t("template.entryHide", {
+              name: t("plural.track", { count: amountSelected }),
+            }),
+          ]}
+        />
+      </View>
+    </>
   );
 }
+
+function TracksToPlaylistSheet(props: { ref: TrueSheetRef }) {
+  const { data: playlistsNames } = usePlaylistsNames();
+  const amountSelected = useTrackMultiSelectStore((s) => s.selected.size);
+  const [inLists, setInLists] = useState(new Set<string>());
+  const sheetListHandlers = useEnableSheetScroll();
+
+  // Reset selection whenever the number of items of selected items change.
+  useEffect(() => {
+    setInLists(new Set());
+  }, [amountSelected]);
+
+  return (
+    <DetachedSheet
+      ref={props.ref}
+      titleKey="feat.modalTrack.extra.addToPlaylist"
+      onCleanup={() => {
+        clearAllQueries();
+        resetTrackMultiSelect();
+      }}
+      snapTop
+    >
+      <FlatList
+        data={playlistsNames}
+        keyExtractor={(name) => name}
+        renderItem={({ item: name }) => {
+          const selected = inLists.has(name);
+          return (
+            <CheckboxField
+              checked={selected}
+              onCheck={async () => {
+                try {
+                  await toggleSelectedTracksToPlaylist(name, selected);
+                  setInLists((prev) => {
+                    const updatedList = new Set(prev);
+                    if (selected) updatedList.delete(name);
+                    else updatedList.add(name);
+                    return updatedList;
+                  });
+                } catch (err) {
+                  console.log(err);
+                  toast.tError("err.flow.generic.title");
+                }
+              }}
+              className="mb-2"
+            >
+              <Marquee color="surfaceBright">
+                <StyledText>{name}</StyledText>
+              </Marquee>
+            </CheckboxField>
+          );
+        }}
+        getItemLayout={getItemLayout}
+        ListEmptyComponent={
+          <ContentPlaceholder errMsgKey="err.msg.noPlaylists" />
+        }
+        {...sheetListHandlers}
+        className="-mb-2"
+        contentContainerClassName="pb-4"
+      />
+    </DetachedSheet>
+  );
+}
+
+function getItemLayout(_: unknown, index: number) {
+  // 54px Height + 8px Margin Bottom
+  return { length: 62, offset: 62 * index, index };
+}
+
+//#endregion
 //#endregion

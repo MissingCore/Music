@@ -42,28 +42,9 @@ export function toggleTrackSelection(id: string) {
 
 //#region Supported Multi-Select Actions
 export async function favoriteSelectedTracks() {
-  const { selected, isAllFavorited } = trackMultiSelectStore.getState();
-  if (selected.size === 0) return;
-
+  const isAllFavorited = trackMultiSelectStore.getState().isAllFavorited;
   try {
-    const prevFavoritedTracksIds = (
-      await db.query.tracksToPlaylists.findMany({
-        where: (fields, { eq }) =>
-          eq(fields.playlistName, FavoritesPlaylistKey),
-        columns: { trackId: true },
-        orderBy: (fields, { asc }) => asc(fields.position),
-      })
-    ).map((t) => t.trackId);
-
-    // Sets preserves insertion order.
-    let favTracksSet = new Set(prevFavoritedTracksIds);
-    if (!isAllFavorited) favTracksSet = new Set([...favTracksSet, ...selected]);
-    else favTracksSet = favTracksSet.difference(selected);
-
-    await updatePlaylist(FavoritesPlaylistKey, {
-      tracks: Array.from(favTracksSet).map((id) => ({ id })),
-    });
-
+    await toggleSelectedTracksToPlaylist(FavoritesPlaylistKey, isAllFavorited);
     clearAllQueries();
     trackMultiSelectStore.setState({ isAllFavorited: !isAllFavorited });
   } catch (err) {
@@ -97,4 +78,31 @@ export async function hideSelectedTracks() {
     toast.tError("err.flow.generic.title");
   }
 }
+
+//#region Helpers
+export async function toggleSelectedTracksToPlaylist(
+  playlistName: string,
+  remove = false,
+) {
+  const selectedIds = trackMultiSelectStore.getState().selected;
+  if (selectedIds.size === 0) return;
+
+  const prevPlaylistTrackIds = (
+    await db.query.tracksToPlaylists.findMany({
+      where: (fields, { eq }) => eq(fields.playlistName, playlistName),
+      columns: { trackId: true },
+      orderBy: (fields, { asc }) => asc(fields.position),
+    })
+  ).map((t) => t.trackId);
+
+  // Sets preserves insertion order.
+  let newTrackListSet = new Set(prevPlaylistTrackIds);
+  if (remove) newTrackListSet = newTrackListSet.difference(selectedIds);
+  else newTrackListSet = new Set([...newTrackListSet, ...selectedIds]);
+
+  return updatePlaylist(playlistName, {
+    tracks: Array.from(newTrackListSet).map((id) => ({ id })),
+  });
+}
+//#endregion
 //#endregion
