@@ -7,10 +7,15 @@ import Animated, { SlideInUp, SlideOutUp } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useTrackMultiSelectStore } from "../core/store";
-import { favoriteSelectedTracks, resetTrackMultiSelect } from "../core/actions";
+import {
+  favoriteSelectedTracks,
+  hideSelectedTracks,
+  resetTrackMultiSelect,
+} from "../core/actions";
 
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
+import { ConfirmableAction } from "~/components/Modal";
 import { StyledText } from "~/components/Typography/StyledText";
 
 export function TrackMultiSelectListeners() {
@@ -76,6 +81,7 @@ function SelectionCount() {
 
 function MutliSelectActions() {
   const { t } = useTranslation();
+  const amountSelected = useTrackMultiSelectStore((s) => s.selected.size);
   const isAllFavorited = useTrackMultiSelectStore((s) => s.isAllFavorited);
 
   return (
@@ -90,10 +96,21 @@ function MutliSelectActions() {
         accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
         onPress={() => console.log("Opening `Add to Playlist` sheet...")}
       />
-      <FilledIconButton
-        icon="visibility-off-filled"
-        accessibilityLabel={t("template.entryHide", { name: t("term.tracks") })}
-        onPress={() => console.log("Opening confirmation modal...")}
+      <ConfirmableAction
+        Component={FilledIconButton}
+        componentProps={{
+          icon: "visibility-off-filled",
+          accessibilityLabel: t("template.entryHide", {
+            name: t("term.tracks"),
+          }),
+          onPress: hideSelectedTracks,
+        }}
+        modalMessage={[
+          // @ts-expect-error - If we use a non-translation key, it'll be rendered as a string.
+          t("template.entryHide", {
+            name: t("plural.track", { count: amountSelected }),
+          }),
+        ]}
       />
     </View>
   );

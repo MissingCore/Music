@@ -1,6 +1,9 @@
 import { db } from "~/db";
+import { hiddenTracks } from "~/db/schema";
 
 import { updatePlaylist } from "~/data/playlist/api";
+import { deleteTracks } from "~/data/track/api";
+import { Queue } from "~/stores/Playback/actions";
 import { trackMultiSelectStore } from "./store";
 
 import { clearAllQueries } from "~/lib/react-query";
@@ -59,5 +62,26 @@ export async function favoriteSelectedTracks() {
 
   clearAllQueries();
   trackMultiSelectStore.setState({ isAllFavorited: !isAllFavorited });
+}
+
+/** Hide selected tracks and then close the multi-select menu. */
+export async function hideSelectedTracks() {
+  const selectedIds = trackMultiSelectStore.getState().selected;
+  resetTrackMultiSelect();
+  if (selectedIds.size === 0) return;
+
+  const tracksToHide = await db.query.tracks.findMany({
+    where: (fields, { inArray }) => inArray(fields.id, Array.from(selectedIds)),
+    columns: { id: true, name: true, uri: true },
+  });
+  if (tracksToHide.length === 0) return;
+
+  await db
+    .insert(hiddenTracks)
+    .values(tracksToHide.map((t) => ({ ...t, hiddenAt: Date.now() })));
+  await deleteTracks(tracksToHide.map((t) => ({ id: t.id })));
+
+  clearAllQueries();
+  await Queue.removeIds(tracksToHide.map((t) => t.id));
 }
 //#endregion
