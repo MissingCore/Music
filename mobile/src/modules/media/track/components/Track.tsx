@@ -9,8 +9,11 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
+import { useTrackMultiSelectStore } from "../core/store";
+import * as TrackMultiSelectActions from "../core/actions";
 
 import { mutateGuard } from "~/lib/react-query";
+import { cn } from "~/lib/style";
 import type { LegendListProps } from "~/components/Base/LegendList";
 import { Pressable } from "~/components/Base/Pressable";
 import type { ButtonSize } from "~/components/Form/Button/Icon";
@@ -35,21 +38,44 @@ export function Track({
   LeftElement,
   ...props
 }: TrackProps) {
+  const isMultiSelectEnabled = useTrackMultiSelectStore((s) => s.enabled);
+  const isSelected = useTrackMultiSelectStore((s) => s.selected.has(id));
+
   const overriddenLeftElement = useMemo(
     () => (showIndicator ? <PlayingIndicator /> : LeftElement),
     [LeftElement, showIndicator],
   );
 
+  const normalActions: Partial<SearchResult.Props> = useMemo(
+    () => ({
+      onPress: () =>
+        PlaybackControls.playFromList({ trackId: id, source: trackSource }),
+      delayLongPress: 1000,
+      onLongPress: TrackMultiSelectActions.enableTrackMultiSelect,
+      RightElement: <TrackAction id={id} title={props.title} />,
+    }),
+    [id, trackSource, props.title],
+  );
+
+  const multiSelectActions: Partial<SearchResult.Props> = useMemo(
+    () => ({
+      //* This will get triggered after releasing long-press action on
+      //* track to enable multi-select.
+      onPress: () => TrackMultiSelectActions.toggleTrackSelection(id),
+    }),
+    [id],
+  );
+
   return (
     <SearchResult
       type="track"
-      onPress={() =>
-        PlaybackControls.playFromList({ trackId: id, source: trackSource })
-      }
       LeftElement={overriddenLeftElement}
-      RightElement={<TrackAction id={id} title={props.title} />}
       poppyLabel={showIndicator}
+      {...(isMultiSelectEnabled ? multiSelectActions : normalActions)}
       {...props}
+      className={cn(props.className, {
+        "bg-surfaceContainerLowest": isSelected,
+      })}
     />
   );
 }
