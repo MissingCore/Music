@@ -19,6 +19,7 @@ import {
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { clearAllQueries } from "~/lib/react-query";
+import { wait } from "~/utils/promise";
 import { FlatList } from "~/components/Base/List";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { CheckboxField } from "~/components/Form/Checkbox";
@@ -151,9 +152,10 @@ function TracksToPlaylistSheet(props: { ref: TrueSheetRef }) {
     <DetachedSheet
       ref={props.ref}
       titleKey="feat.modalTrack.extra.addToPlaylist"
-      onCleanup={() => {
-        clearAllQueries();
+      onCleanup={async () => {
         resetTrackMultiSelect();
+        await wait(1);
+        clearAllQueries();
       }}
       snapTop
     >
