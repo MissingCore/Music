@@ -108,12 +108,14 @@ function MutliSelectActions() {
     () => availableRoutes.at(-1)?.key.startsWith("Playlist-"),
     [availableRoutes],
   );
+  const playlistRouteId = useMemo(
+    // @ts-expect-error - Should be fine.
+    () => String(availableRoutes.at(-1)?.params?.id),
+    [availableRoutes],
+  );
   const isFavoriteRoute = useMemo(
-    () =>
-      isPlaylistRoute &&
-      // @ts-expect-error - Should be fine.
-      String(availableRoutes.at(-1)?.params?.id) === FavoritesPlaylistKey,
-    [availableRoutes, isPlaylistRoute],
+    () => isPlaylistRoute && playlistRouteId === FavoritesPlaylistKey,
+    [isPlaylistRoute, playlistRouteId],
   );
 
   return (
@@ -127,7 +129,20 @@ function MutliSelectActions() {
             onPress={favoriteSelectedTracks}
           />
         ) : null}
-        {isPlaylistRoute ? null : (
+        {isPlaylistRoute ? (
+          <FilledIconButton
+            icon="remove"
+            accessibilityLabel={t("template.entryRemove", {
+              name: t("term.tracks"),
+            })}
+            onPress={() => {
+              toggleSelectedTracksToPlaylist(playlistRouteId, true).then(() =>
+                clearAllQueries(),
+              );
+              resetTrackMultiSelect();
+            }}
+          />
+        ) : (
           <FilledIconButton
             icon="playlist-add"
             accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
