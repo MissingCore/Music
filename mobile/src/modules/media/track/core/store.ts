@@ -1,7 +1,7 @@
 import { useStore } from "zustand";
 import { createStore } from "zustand/vanilla";
 
-interface TrackMutliSelectStore {
+interface TrackMultiSelectStore {
   enabled: boolean;
   /** List of track ids. */
   selected: Set<string>;
@@ -9,7 +9,7 @@ interface TrackMutliSelectStore {
   isAllFavorited: boolean;
 }
 
-export const trackMultiSelectStore = createStore<TrackMutliSelectStore>()(
+export const trackMultiSelectStore = createStore<TrackMultiSelectStore>()(
   () => ({
     enabled: false,
     selected: new Set<string>(),
@@ -18,7 +18,7 @@ export const trackMultiSelectStore = createStore<TrackMutliSelectStore>()(
 );
 
 export function useTrackMultiSelectStore<T>(
-  selector: (state: TrackMutliSelectStore) => T,
+  selector: (state: TrackMultiSelectStore) => T,
 ): T {
   return useStore(trackMultiSelectStore, selector);
 }

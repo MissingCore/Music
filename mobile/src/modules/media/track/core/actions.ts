@@ -1,3 +1,5 @@
+import { toast } from "@missingcore/ui/toast";
+
 import { db } from "~/db";
 import { hiddenTracks } from "~/db/schema";
 
@@ -43,25 +45,31 @@ export async function favoriteSelectedTracks() {
   const { selected, isAllFavorited } = trackMultiSelectStore.getState();
   if (selected.size === 0) return;
 
-  const prevFavoritedTracksIds = (
-    await db.query.tracksToPlaylists.findMany({
-      where: (fields, { eq }) => eq(fields.playlistName, FavoritesPlaylistKey),
-      columns: { trackId: true },
-      orderBy: (fields, { asc }) => asc(fields.position),
-    })
-  ).map((t) => t.trackId);
+  try {
+    const prevFavoritedTracksIds = (
+      await db.query.tracksToPlaylists.findMany({
+        where: (fields, { eq }) =>
+          eq(fields.playlistName, FavoritesPlaylistKey),
+        columns: { trackId: true },
+        orderBy: (fields, { asc }) => asc(fields.position),
+      })
+    ).map((t) => t.trackId);
 
-  // Sets preserves insertion order.
-  let favTracksSet = new Set(prevFavoritedTracksIds);
-  if (!isAllFavorited) favTracksSet = new Set([...favTracksSet, ...selected]);
-  else favTracksSet = favTracksSet.difference(selected);
+    // Sets preserves insertion order.
+    let favTracksSet = new Set(prevFavoritedTracksIds);
+    if (!isAllFavorited) favTracksSet = new Set([...favTracksSet, ...selected]);
+    else favTracksSet = favTracksSet.difference(selected);
 
-  await updatePlaylist(FavoritesPlaylistKey, {
-    tracks: Array.from(favTracksSet).map((id) => ({ id })),
-  });
+    await updatePlaylist(FavoritesPlaylistKey, {
+      tracks: Array.from(favTracksSet).map((id) => ({ id })),
+    });
 
-  clearAllQueries();
-  trackMultiSelectStore.setState({ isAllFavorited: !isAllFavorited });
+    clearAllQueries();
+    trackMultiSelectStore.setState({ isAllFavorited: !isAllFavorited });
+  } catch (err) {
+    console.log(err);
+    toast.tError("err.flow.generic.title");
+  }
 }
 
 /** Hide selected tracks and then close the multi-select menu. */
@@ -76,12 +84,17 @@ export async function hideSelectedTracks() {
   });
   if (tracksToHide.length === 0) return;
 
-  await db
-    .insert(hiddenTracks)
-    .values(tracksToHide.map((t) => ({ ...t, hiddenAt: Date.now() })));
-  await deleteTracks(tracksToHide.map((t) => ({ id: t.id })));
+  try {
+    await deleteTracks(tracksToHide.map((t) => ({ id: t.id })));
+    await db
+      .insert(hiddenTracks)
+      .values(tracksToHide.map((t) => ({ ...t, hiddenAt: Date.now() })));
 
-  clearAllQueries();
-  await Queue.removeIds(tracksToHide.map((t) => t.id));
+    clearAllQueries();
+    await Queue.removeIds(tracksToHide.map((t) => t.id));
+  } catch (err) {
+    console.log(err);
+    toast.tError("err.flow.generic.title");
+  }
 }
 //#endregion
