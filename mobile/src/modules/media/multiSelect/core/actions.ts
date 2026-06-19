@@ -11,22 +11,23 @@ import { TrackMultiSelect, trackMultiSelectStore } from "./store";
 import { clearAllQueries } from "~/lib/react-query";
 import { FavoritesPlaylistKey } from "../../constants";
 
+/** Add tracks to "Favorite Tracks" playlist. Remove them instead of `isAllFavorited = true`. */
 export async function favoriteSelectedTracks() {
-  const { isAllFavorited, selected } = trackMultiSelectStore.getState();
-  if (selected.size === 0) return;
-  try {
-    await toggleSelectedTracksToPlaylist(FavoritesPlaylistKey, isAllFavorited);
-    clearAllQueries();
-    trackMultiSelectStore.setState({ isAllFavorited: !isAllFavorited });
-  } catch (err) {
-    console.log(err);
-    toast.tError("err.flow.generic.title");
+  const { isAllFavorited } = trackMultiSelectStore.getState();
+  const config = { playlistName: FavoritesPlaylistKey, remove: isAllFavorited };
+  switch (await updateTracksInPlaylist(config)) {
+    case "success":
+      clearAllQueries();
+      trackMultiSelectStore.setState({ isAllFavorited: !isAllFavorited });
+    case "error":
+      toast.tError("err.flow.generic.title");
   }
 }
 
 /** Hide selected tracks and then close the multi-select menu. */
 export async function hideSelectedTracks() {
   const selectedIds = trackMultiSelectStore.getState().selected;
+  // Dismiss multi-select menu while we hide the tracks in the background.
   TrackMultiSelect.reset();
   if (selectedIds.size === 0) return;
 
@@ -50,28 +51,51 @@ export async function hideSelectedTracks() {
   }
 }
 
+/** Removes selected track from playlist and then close the multi-select menu. */
+export async function removeSelectedFromPlaylist(playlistName: string) {
+  const trackIds = trackMultiSelectStore.getState().selected;
+  // Dismiss multi-select menu while we remove the tracks from the playlist in the background.
+  TrackMultiSelect.reset();
+  const config = { playlistName, remove: true, trackIds };
+  switch (await updateTracksInPlaylist(config)) {
+    case "success":
+      clearAllQueries();
+    case "error":
+      toast.tError("err.flow.generic.title");
+  }
+}
+
 /** Add or remove selected tracks in playlist. */
-export async function toggleSelectedTracksToPlaylist(
-  playlistName: string,
-  remove = false,
-) {
-  const selectedIds = trackMultiSelectStore.getState().selected;
-  if (selectedIds.size === 0) return;
+export async function updateTracksInPlaylist(config: {
+  playlistName: string;
+  remove?: boolean;
+  trackIds?: Set<string>;
+}): Promise<"success" | "skip" | "error"> {
+  const shouldRemove = config.remove ?? false;
+  const trackIds = config.trackIds ?? trackMultiSelectStore.getState().selected;
+  if (trackIds.size === 0) return "skip";
 
-  const prevPlaylistTrackIds = (
-    await db.query.tracksToPlaylists.findMany({
-      where: (fields, { eq }) => eq(fields.playlistName, playlistName),
-      columns: { trackId: true },
-      orderBy: (fields, { asc }) => asc(fields.position),
-    })
-  ).map((t) => t.trackId);
+  try {
+    // Get the ids of tracks currently in the playlist so we can merge or remove the specified ids.
+    const prevPlaylistTrackIds = (
+      await db.query.tracksToPlaylists.findMany({
+        where: (fields, { eq }) => eq(fields.playlistName, config.playlistName),
+        columns: { trackId: true },
+        orderBy: (fields, { asc }) => asc(fields.position),
+      })
+    ).map((t) => t.trackId);
 
-  // Sets preserves insertion order.
-  let newTrackListSet = new Set(prevPlaylistTrackIds);
-  if (remove) newTrackListSet = newTrackListSet.difference(selectedIds);
-  else newTrackListSet = new Set([...newTrackListSet, ...selectedIds]);
+    // Sets preserves insertion order.
+    let newTrackListSet = new Set(prevPlaylistTrackIds);
+    if (shouldRemove) newTrackListSet = newTrackListSet.difference(trackIds);
+    else newTrackListSet = new Set([...newTrackListSet, ...trackIds]);
 
-  return updatePlaylist(playlistName, {
-    tracks: Array.from(newTrackListSet).map((id) => ({ id })),
-  });
+    await updatePlaylist(config.playlistName, {
+      tracks: Array.from(newTrackListSet).map((id) => ({ id })),
+    });
+    return "success";
+  } catch (err) {
+    console.log(err);
+    return "error";
+  }
 }

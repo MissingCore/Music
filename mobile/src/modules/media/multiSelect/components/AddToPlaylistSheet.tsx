@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { usePlaylistsNames } from "~/data/playlist/queries";
 import { TrackMultiSelect, useTrackMultiSelectStore } from "../core/store";
-import { toggleSelectedTracksToPlaylist } from "../core/actions";
+import { updateTracksInPlaylist } from "../core/actions";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
@@ -24,18 +24,16 @@ export function AddToPlaylistSheet(props: { ref: TrueSheetRef }) {
   const sheetListHandlers = useEnableSheetScroll();
 
   const toggleInPlaylist = useCallback(
-    async (playlistName: string, removeFromList = false) => {
-      try {
-        await toggleSelectedTracksToPlaylist(playlistName, removeFromList);
-        setInLists((prev) => {
-          const updatedList = new Set(prev);
-          if (removeFromList) updatedList.delete(playlistName);
-          else updatedList.add(playlistName);
-          return updatedList;
-        });
-      } catch (err) {
-        console.log(err);
-        toast.tError("err.flow.generic.title");
+    async (playlistName: string, remove = false) => {
+      switch (await updateTracksInPlaylist({ playlistName, remove })) {
+        case "success":
+          setInLists((prev) => {
+            const updatedList = new Set(prev);
+            updatedList[remove ? "delete" : "add"](playlistName);
+            return updatedList;
+          });
+        case "error":
+          toast.tError("err.flow.generic.title");
       }
     },
     [],

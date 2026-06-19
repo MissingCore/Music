@@ -10,10 +10,9 @@ import { TrackMultiSelect, useTrackMultiSelectStore } from "../core/store";
 import {
   favoriteSelectedTracks,
   hideSelectedTracks,
-  toggleSelectedTracksToPlaylist,
+  removeSelectedFromPlaylist,
 } from "../core/actions";
 
-import { clearAllQueries } from "~/lib/react-query";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
 import { ConfirmableAction } from "~/components/Modal";
@@ -117,10 +116,11 @@ function MultiSelectActions(props: {
     () => String(availableRoutes.at(-1)?.params?.id),
     [availableRoutes],
   );
-  const isFavoriteRoute = useMemo(
-    () => isPlaylistRoute && playlistRouteId === FavoritesPlaylistKey,
-    [isPlaylistRoute, playlistRouteId],
-  );
+  const isFavoriteRoute =
+    isPlaylistRoute && playlistRouteId === FavoritesPlaylistKey;
+
+  const trackTerm = t("term.tracks");
+  const trackCount = t("plural.track", { count: amountSelected });
 
   return (
     <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
@@ -136,22 +136,11 @@ function MultiSelectActions(props: {
           Component={FilledIconButton}
           componentProps={{
             icon: "remove",
-            accessibilityLabel: t("template.entryRemove", {
-              name: t("term.tracks"),
-            }),
-            onPress: () => {
-              toggleSelectedTracksToPlaylist(playlistRouteId, true)
-                .then(() => clearAllQueries())
-                .catch((err) => console.log(err));
-              TrackMultiSelect.reset();
-            },
+            accessibilityLabel: t("template.entryRemove", { name: trackTerm }),
+            onPress: () => removeSelectedFromPlaylist(playlistRouteId),
           }}
-          modalMessage={[
-            // @ts-expect-error - If we use a non-translation key, it'll be rendered as a string.
-            t("template.entryRemove", {
-              name: t("plural.track", { count: amountSelected }),
-            }),
-          ]}
+          // @ts-expect-error - If we use a non-translation key, it'll be rendered as a string.
+          modalMessage={[t("template.entryRemove", { name: trackCount })]}
         />
       ) : (
         <FilledIconButton
@@ -171,17 +160,11 @@ function MultiSelectActions(props: {
         Component={FilledIconButton}
         componentProps={{
           icon: "visibility-off-filled",
-          accessibilityLabel: t("template.entryHide", {
-            name: t("term.tracks"),
-          }),
+          accessibilityLabel: t("template.entryHide", { name: trackTerm }),
           onPress: hideSelectedTracks,
         }}
-        modalMessage={[
-          // @ts-expect-error - If we use a non-translation key, it'll be rendered as a string.
-          t("template.entryHide", {
-            name: t("plural.track", { count: amountSelected }),
-          }),
-        ]}
+        // @ts-expect-error - If we use a non-translation key, it'll be rendered as a string.
+        modalMessage={[t("template.entryHide", { name: trackCount })]}
       />
     </View>
   );
