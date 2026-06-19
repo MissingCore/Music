@@ -9,8 +9,8 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
-import { useTrackMultiSelectStore } from "../core/store";
-import * as TrackMultiSelectActions from "../core/actions";
+import { useTrackMultiSelectStore } from "../track/core/store";
+import * as TrackMultiSelectActions from "../track/core/actions";
 
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
@@ -22,9 +22,9 @@ import { SearchResult } from "~/modules/search/components/SearchResult";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import type { PlayFromSource } from "~/stores/Playback/types";
 import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
+import { PlayingIndicator } from "./AnimatedBars";
 import type { TrackContent, TrackProps } from "./Track.type";
-import { PlayingIndicator } from "../../components/AnimatedBars";
-import { FavoritesPlaylistKey } from "../../constants";
+import { FavoritesPlaylistKey } from "../constants";
 
 //#region Track
 /**

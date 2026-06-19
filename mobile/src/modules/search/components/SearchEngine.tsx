@@ -15,7 +15,7 @@ import { Button } from "~/components/Form/Button";
 import { TopDownGradient } from "~/components/Gradient";
 import { TEm } from "~/components/Typography/StyledText";
 import type { ColorRole } from "~/modules/customization/theme/core/constants";
-import { TrackAction } from "~/modules/media/track/components/Track";
+import { TrackAction } from "~/modules/media/components/Track";
 import { SearchBar } from "./SearchBar";
 import { SearchResult } from "./SearchResult";
 import { useSearch } from "../hooks/useSearch";

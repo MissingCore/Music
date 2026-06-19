@@ -13,7 +13,7 @@ import { FlatList, getListItemLayout } from "~/components/Base/List";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
-import { Track } from "~/modules/media/track/components/Track";
+import { Track } from "~/modules/media/components/Track";
 
 // Information about this track list.
 const trackSource = {

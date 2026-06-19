@@ -11,7 +11,7 @@ import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
 import { SafeContainer } from "~/components/SafeContainer";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { useTrackListPreset } from "~/modules/media/track/components/Track";
+import { useTrackListPreset } from "~/modules/media/components/Track";
 
 type Props = StaticScreenProps<{ id: string }>;
 
