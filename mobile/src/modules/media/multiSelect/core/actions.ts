@@ -32,12 +32,12 @@ export async function addSelectedToCreatedPlaylist(playlistName: string) {
 export async function favoriteSelected() {
   const isAllFavorited = trackMultiSelectStore.getState().isAllFavorited;
   const config = { playlistName: FavoritesPlaylistKey, remove: isAllFavorited };
-  switch (await updateTracksInPlaylist(config)) {
-    case "success":
-      clearAllQueries();
-      trackMultiSelectStore.setState({ isAllFavorited: !isAllFavorited });
-    case "error":
-      toast.tError("err.flow.generic.title");
+  const status = await updateTracksInPlaylist(config);
+  if (status === "success") {
+    clearAllQueries();
+    trackMultiSelectStore.setState({ isAllFavorited: !isAllFavorited });
+  } else if (status === "error") {
+    toast.tError("err.flow.generic.title");
   }
 }
 
@@ -74,11 +74,11 @@ export async function removeSelectedFromPlaylist(playlistName: string) {
   // Dismiss multi-select menu while we remove the tracks from the playlist in the background.
   TrackMultiSelect.reset();
   const config = { playlistName, remove: true, trackIds };
-  switch (await updateTracksInPlaylist(config)) {
-    case "success":
-      clearAllQueries();
-    case "error":
-      toast.tError("err.flow.generic.title");
+  const status = await updateTracksInPlaylist(config);
+  if (status === "success") {
+    clearAllQueries();
+  } else if (status === "error") {
+    toast.tError("err.flow.generic.title");
   }
 }
 

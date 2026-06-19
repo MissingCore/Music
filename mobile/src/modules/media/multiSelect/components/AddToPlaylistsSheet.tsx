@@ -25,15 +25,15 @@ export function AddToPlaylistsSheet(props: { ref: TrueSheetRef }) {
 
   const toggleInPlaylist = useCallback(
     async (playlistName: string, remove = false) => {
-      switch (await updateTracksInPlaylist({ playlistName, remove })) {
-        case "success":
-          setInLists((prev) => {
-            const updatedList = new Set(prev);
-            updatedList[remove ? "delete" : "add"](playlistName);
-            return updatedList;
-          });
-        case "error":
-          toast.tError("err.flow.generic.title");
+      const status = await updateTracksInPlaylist({ playlistName, remove });
+      if (status === "success") {
+        setInLists((prev) => {
+          const updatedList = new Set(prev);
+          updatedList[remove ? "delete" : "add"](playlistName);
+          return updatedList;
+        });
+      } else if (status === "error") {
+        toast.tError("err.flow.generic.title");
       }
     },
     [],
