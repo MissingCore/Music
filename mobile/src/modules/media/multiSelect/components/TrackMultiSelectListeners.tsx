@@ -58,7 +58,7 @@ export function TrackMultiSelectMenu() {
         />
         <View className="flex-row items-center justify-between gap-4 p-4">
           <SelectionCount />
-          <MutliSelectActions />
+          <MultiSelectActions />
         </View>
       </Animated.View>
     </Portal>
@@ -88,7 +88,7 @@ function SelectionCount() {
 //#endregion
 
 //#region Mutli-Select Actions
-function MutliSelectActions() {
+function MultiSelectActions() {
   const { t } = useTranslation();
   const availableRoutes = useNavigationState((s) => s.routes);
   const amountSelected = useTrackMultiSelectStore((s) => s.selected.size);
@@ -129,9 +129,9 @@ function MutliSelectActions() {
               name: t("term.tracks"),
             })}
             onPress={() => {
-              toggleSelectedTracksToPlaylist(playlistRouteId, true).then(() =>
-                clearAllQueries(),
-              );
+              toggleSelectedTracksToPlaylist(playlistRouteId, true)
+                .then(() => clearAllQueries())
+                .catch((err) => console.log(err));
               resetTrackMultiSelect();
             }}
           />
