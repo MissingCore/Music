@@ -19,9 +19,9 @@ import { TopDownGradient } from "~/components/Gradient";
 import { ConfirmableAction } from "~/components/Modal";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
-import { FavoritesPlaylistKey } from "../../constants";
 import { AddToPlaylistSheet } from "./AddToPlaylistSheet";
 import { AddToCreatedPlaylistSheet } from "./AddToCreatedPlaylistSheet";
+import { FavoritesPlaylistKey } from "../../constants";
 
 export function TrackMultiSelectListeners() {
   const navigation = useNavigation();
@@ -132,17 +132,26 @@ function MultiSelectActions(props: {
         />
       ) : null}
       {isPlaylistRoute ? (
-        <FilledIconButton
-          icon="remove"
-          accessibilityLabel={t("template.entryRemove", {
-            name: t("term.tracks"),
-          })}
-          onPress={() => {
-            toggleSelectedTracksToPlaylist(playlistRouteId, true)
-              .then(() => clearAllQueries())
-              .catch((err) => console.log(err));
-            TrackMultiSelect.reset();
+        <ConfirmableAction
+          Component={FilledIconButton}
+          componentProps={{
+            icon: "remove",
+            accessibilityLabel: t("template.entryRemove", {
+              name: t("term.tracks"),
+            }),
+            onPress: () => {
+              toggleSelectedTracksToPlaylist(playlistRouteId, true)
+                .then(() => clearAllQueries())
+                .catch((err) => console.log(err));
+              TrackMultiSelect.reset();
+            },
           }}
+          modalMessage={[
+            // @ts-expect-error - If we use a non-translation key, it'll be rendered as a string.
+            t("template.entryRemove", {
+              name: t("plural.track", { count: amountSelected }),
+            }),
+          ]}
         />
       ) : (
         <FilledIconButton

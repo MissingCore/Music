@@ -11,7 +11,6 @@ import { TrackMultiSelect, trackMultiSelectStore } from "./store";
 import { clearAllQueries } from "~/lib/react-query";
 import { FavoritesPlaylistKey } from "../../constants";
 
-//#region Supported Multi-Select Actions
 export async function favoriteSelectedTracks() {
   const { isAllFavorited, selected } = trackMultiSelectStore.getState();
   if (selected.size === 0) return;
@@ -76,4 +75,3 @@ export async function toggleSelectedTracksToPlaylist(
     tracks: Array.from(newTrackListSet).map((id) => ({ id })),
   });
 }
-//#endregion
