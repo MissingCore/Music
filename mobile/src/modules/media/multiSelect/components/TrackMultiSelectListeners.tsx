@@ -41,9 +41,14 @@ const ESTIMATED_MENU_HEIGHT = 100;
 export function TrackMultiSelectMenu() {
   const insets = useSafeAreaInsets();
   const isMultiSelectEnabled = useTrackMultiSelectStore((s) => s.enabled);
+  const addToPlaylistSheetRef = useSheetRef();
+  const addToCreatedPlaylistSheetRef = useSheetRef();
 
   return isMultiSelectEnabled ? (
     <Portal name="track-multi-select-menu-portal">
+      <AddToPlaylistSheet ref={addToPlaylistSheetRef} />
+      <AddToCreatedPlaylistSheet ref={addToCreatedPlaylistSheetRef} />
+
       <Animated.View
         entering={SlideInUp}
         exiting={SlideOutUp}
@@ -58,7 +63,14 @@ export function TrackMultiSelectMenu() {
         />
         <View className="flex-row items-center justify-between gap-4 p-4">
           <SelectionCount />
-          <MultiSelectActions />
+          <MultiSelectActions
+            presentAddToPlaylistSheet={() =>
+              addToPlaylistSheetRef.current?.present()
+            }
+            presentAddToCreatedPlaylistSheet={() =>
+              addToCreatedPlaylistSheetRef.current?.present()
+            }
+          />
         </View>
       </Animated.View>
     </Portal>
@@ -88,13 +100,14 @@ function SelectionCount() {
 //#endregion
 
 //#region Mutli-Select Actions
-function MultiSelectActions() {
+function MultiSelectActions(props: {
+  presentAddToPlaylistSheet: VoidFunction;
+  presentAddToCreatedPlaylistSheet: VoidFunction;
+}) {
   const { t } = useTranslation();
   const availableRoutes = useNavigationState((s) => s.routes);
   const amountSelected = useTrackMultiSelectStore((s) => s.selected.size);
   const isAllFavorited = useTrackMultiSelectStore((s) => s.isAllFavorited);
-  const addToPlaylistSheetRef = useSheetRef();
-  const addToCreatedPlaylistSheetRef = useSheetRef();
 
   const isPlaylistRoute = useMemo(
     () => availableRoutes.at(-1)?.key.startsWith("Playlist-"),
@@ -111,62 +124,58 @@ function MultiSelectActions() {
   );
 
   return (
-    <>
-      <AddToPlaylistSheet ref={addToPlaylistSheetRef} />
-      <AddToCreatedPlaylistSheet ref={addToCreatedPlaylistSheetRef} />
-      <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
-        {!isFavoriteRoute ? (
-          <FilledIconButton
-            icon={`favorite${isAllFavorited ? "-filled" : ""}`}
-            accessibilityLabel={t("term.favorite")}
-            onPress={favoriteSelectedTracks}
-          />
-        ) : null}
-        {isPlaylistRoute ? (
-          <FilledIconButton
-            icon="remove"
-            accessibilityLabel={t("template.entryRemove", {
-              name: t("term.tracks"),
-            })}
-            onPress={() => {
-              toggleSelectedTracksToPlaylist(playlistRouteId, true)
-                .then(() => clearAllQueries())
-                .catch((err) => console.log(err));
-              resetTrackMultiSelect();
-            }}
-          />
-        ) : (
-          <FilledIconButton
-            icon="playlist-add"
-            accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
-            onPress={() => addToPlaylistSheetRef.current?.present()}
-          />
-        )}
-        {!isPlaylistRoute ? (
-          <FilledIconButton
-            icon="add"
-            accessibilityLabel={t("form.create")}
-            onPress={() => addToCreatedPlaylistSheetRef.current?.present()}
-          />
-        ) : null}
-        <ConfirmableAction
-          Component={FilledIconButton}
-          componentProps={{
-            icon: "visibility-off-filled",
-            accessibilityLabel: t("template.entryHide", {
-              name: t("term.tracks"),
-            }),
-            onPress: hideSelectedTracks,
-          }}
-          modalMessage={[
-            // @ts-expect-error - If we use a non-translation key, it'll be rendered as a string.
-            t("template.entryHide", {
-              name: t("plural.track", { count: amountSelected }),
-            }),
-          ]}
+    <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
+      {!isFavoriteRoute ? (
+        <FilledIconButton
+          icon={`favorite${isAllFavorited ? "-filled" : ""}`}
+          accessibilityLabel={t("term.favorite")}
+          onPress={favoriteSelectedTracks}
         />
-      </View>
-    </>
+      ) : null}
+      {isPlaylistRoute ? (
+        <FilledIconButton
+          icon="remove"
+          accessibilityLabel={t("template.entryRemove", {
+            name: t("term.tracks"),
+          })}
+          onPress={() => {
+            toggleSelectedTracksToPlaylist(playlistRouteId, true)
+              .then(() => clearAllQueries())
+              .catch((err) => console.log(err));
+            resetTrackMultiSelect();
+          }}
+        />
+      ) : (
+        <FilledIconButton
+          icon="playlist-add"
+          accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
+          onPress={props.presentAddToPlaylistSheet}
+        />
+      )}
+      {!isPlaylistRoute ? (
+        <FilledIconButton
+          icon="add"
+          accessibilityLabel={t("form.create")}
+          onPress={props.presentAddToCreatedPlaylistSheet}
+        />
+      ) : null}
+      <ConfirmableAction
+        Component={FilledIconButton}
+        componentProps={{
+          icon: "visibility-off-filled",
+          accessibilityLabel: t("template.entryHide", {
+            name: t("term.tracks"),
+          }),
+          onPress: hideSelectedTracks,
+        }}
+        modalMessage={[
+          // @ts-expect-error - If we use a non-translation key, it'll be rendered as a string.
+          t("template.entryHide", {
+            name: t("plural.track", { count: amountSelected }),
+          }),
+        ]}
+      />
+    </View>
   );
 }
 //#endregion
