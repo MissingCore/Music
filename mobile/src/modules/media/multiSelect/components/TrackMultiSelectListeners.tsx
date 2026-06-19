@@ -18,8 +18,8 @@ import { TopDownGradient } from "~/components/Gradient";
 import { ConfirmableAction } from "~/components/Modal";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
-import { AddToPlaylistSheet } from "./AddToPlaylistSheet";
 import { AddToCreatedPlaylistSheet } from "./AddToCreatedPlaylistSheet";
+import { AddToPlaylistsSheet } from "./AddToPlaylistsSheet";
 import { FavoritesPlaylistKey } from "../../constants";
 
 export function TrackMultiSelectListeners() {
@@ -39,13 +39,13 @@ const ESTIMATED_MENU_HEIGHT = 100;
 export function TrackMultiSelectMenu() {
   const insets = useSafeAreaInsets();
   const isMultiSelectEnabled = useTrackMultiSelectStore((s) => s.enabled);
-  const addToPlaylistSheetRef = useSheetRef();
   const addToCreatedPlaylistSheetRef = useSheetRef();
+  const addToPlaylistsSheetRef = useSheetRef();
 
   return isMultiSelectEnabled ? (
     <Portal name="track-multi-select-menu-portal">
-      <AddToPlaylistSheet ref={addToPlaylistSheetRef} />
       <AddToCreatedPlaylistSheet ref={addToCreatedPlaylistSheetRef} />
+      <AddToPlaylistsSheet ref={addToPlaylistsSheetRef} />
 
       <Animated.View
         entering={SlideInUp}
@@ -62,11 +62,11 @@ export function TrackMultiSelectMenu() {
         <View className="flex-row items-center justify-between gap-4 p-4">
           <SelectionCount />
           <MultiSelectActions
-            presentAddToPlaylistSheet={() =>
-              addToPlaylistSheetRef.current?.present()
-            }
             presentAddToCreatedPlaylistSheet={() =>
               addToCreatedPlaylistSheetRef.current?.present()
+            }
+            presentAddToPlaylistsSheet={() =>
+              addToPlaylistsSheetRef.current?.present()
             }
           />
         </View>
@@ -99,8 +99,8 @@ function SelectionCount() {
 
 //#region Mutli-Select Actions
 function MultiSelectActions(props: {
-  presentAddToPlaylistSheet: VoidFunction;
   presentAddToCreatedPlaylistSheet: VoidFunction;
+  presentAddToPlaylistsSheet: VoidFunction;
 }) {
   const { t } = useTranslation();
   const availableRoutes = useNavigationState((s) => s.routes);
@@ -146,7 +146,7 @@ function MultiSelectActions(props: {
         <FilledIconButton
           icon="playlist-add"
           accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
-          onPress={props.presentAddToPlaylistSheet}
+          onPress={props.presentAddToPlaylistsSheet}
         />
       )}
       {!isPlaylistRoute ? (

@@ -17,7 +17,7 @@ import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
 
-export function AddToPlaylistSheet(props: { ref: TrueSheetRef }) {
+export function AddToPlaylistsSheet(props: { ref: TrueSheetRef }) {
   const { data: playlistsNames } = usePlaylistsNames();
   const amountSelected = useTrackMultiSelectStore((s) => s.selected.size);
   const [inLists, setInLists] = useState(new Set<string>());
