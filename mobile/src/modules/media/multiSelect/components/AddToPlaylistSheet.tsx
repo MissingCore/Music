@@ -2,11 +2,8 @@ import { toast } from "@missingcore/ui/toast";
 import { useCallback, useEffect, useState } from "react";
 
 import { usePlaylistsNames } from "~/data/playlist/queries";
-import { useTrackMultiSelectStore } from "../core/store";
-import {
-  resetTrackMultiSelect,
-  toggleSelectedTracksToPlaylist,
-} from "../core/actions";
+import { TrackMultiSelect, useTrackMultiSelectStore } from "../core/store";
+import { toggleSelectedTracksToPlaylist } from "../core/actions";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
@@ -89,7 +86,7 @@ function getItemLayout(_: unknown, index: number) {
 
 /** Dismiss multi-select menu when we finish adding the selected tracks to the playlists. */
 async function resolveAddAction() {
-  resetTrackMultiSelect();
+  TrackMultiSelect.reset();
   await wait(1);
   clearAllQueries();
 }

@@ -7,8 +7,7 @@ import { Icon } from "~/resources/icons";
 import { createPlaylist } from "~/data/playlist/api";
 import { usePlaylistsNames } from "~/data/playlist/queries";
 import { sanitizePlaylistName } from "~/data/playlist/utils";
-import { trackMultiSelectStore } from "../core/store";
-import { resetTrackMultiSelect } from "../core/actions";
+import { TrackMultiSelect, trackMultiSelectStore } from "../core/store";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { cn } from "~/lib/style";
@@ -33,7 +32,7 @@ export function AddToCreatedPlaylistSheet(props: { ref: TrueSheetRef }) {
     onSubmit: async (trimmedName) => {
       const selectedTracks = trackMultiSelectStore.getState().selected;
       props.ref.current?.dismiss();
-      resetTrackMultiSelect();
+      TrackMultiSelect.reset();
       await wait(1);
       await createPlaylist({
         name: trimmedName,

@@ -9,8 +9,10 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
-import { useTrackMultiSelectStore } from "../multiSelect/core/store";
-import * as TrackMultiSelectActions from "../multiSelect/core/actions";
+import {
+  TrackMultiSelect,
+  useTrackMultiSelectStore,
+} from "../multiSelect/core/store";
 
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
@@ -51,7 +53,7 @@ export function Track({
       onPress: () =>
         PlaybackControls.playFromList({ trackId: id, source: trackSource }),
       delayLongPress: 1000,
-      onLongPress: TrackMultiSelectActions.enableTrackMultiSelect,
+      onLongPress: TrackMultiSelect.enable,
       RightElement: <TrackAction id={id} title={props.title} />,
     }),
     [id, trackSource, props.title],
@@ -61,7 +63,7 @@ export function Track({
     () => ({
       //* This will get triggered after releasing long-press action on
       //* track to enable multi-select.
-      onPress: () => TrackMultiSelectActions.toggleTrackSelection(id),
+      onPress: () => TrackMultiSelect.toggleSelection(id),
     }),
     [id],
   );

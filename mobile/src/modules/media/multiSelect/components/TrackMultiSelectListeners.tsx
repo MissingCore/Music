@@ -6,11 +6,10 @@ import { View } from "react-native";
 import Animated, { SlideInUp, SlideOutUp } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { useTrackMultiSelectStore } from "../core/store";
+import { TrackMultiSelect, useTrackMultiSelectStore } from "../core/store";
 import {
   favoriteSelectedTracks,
   hideSelectedTracks,
-  resetTrackMultiSelect,
   toggleSelectedTracksToPlaylist,
 } from "../core/actions";
 
@@ -28,7 +27,7 @@ export function TrackMultiSelectListeners() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("state", resetTrackMultiSelect);
+    const unsubscribe = navigation.addListener("state", TrackMultiSelect.reset);
     return () => unsubscribe();
   }, [navigation]);
 
@@ -87,7 +86,7 @@ function SelectionCount() {
       <FilledIconButton
         icon="close"
         accessibilityLabel={t("form.close")}
-        onPress={resetTrackMultiSelect}
+        onPress={TrackMultiSelect.reset}
         size="xs"
         _iconColor="error"
       />
@@ -142,7 +141,7 @@ function MultiSelectActions(props: {
             toggleSelectedTracksToPlaylist(playlistRouteId, true)
               .then(() => clearAllQueries())
               .catch((err) => console.log(err));
-            resetTrackMultiSelect();
+            TrackMultiSelect.reset();
           }}
         />
       ) : (

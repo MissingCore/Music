@@ -6,39 +6,10 @@ import { hiddenTracks } from "~/db/schema";
 import { updatePlaylist } from "~/data/playlist/api";
 import { deleteTracks } from "~/data/track/api";
 import { Queue } from "~/stores/Playback/actions";
-import { trackMultiSelectStore } from "./store";
+import { TrackMultiSelect, trackMultiSelectStore } from "./store";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { FavoritesPlaylistKey } from "../../constants";
-
-export function enableTrackMultiSelect() {
-  trackMultiSelectStore.setState({ enabled: true, isAllFavorited: false });
-}
-
-export function resetTrackMultiSelect() {
-  trackMultiSelectStore.setState({
-    enabled: false,
-    isAllFavorited: false,
-    selected: new Set(),
-  });
-}
-
-export function toggleTrackSelection(id: string) {
-  trackMultiSelectStore.setState((prev) => {
-    const updatedSet = new Set(prev.selected);
-    let updatedIsAllFavorited = prev.isAllFavorited;
-    if (updatedSet.has(id)) updatedSet.delete(id);
-    else {
-      updatedSet.add(id);
-      updatedIsAllFavorited = false;
-    }
-    return {
-      enabled: updatedSet.size > 0,
-      selected: updatedSet,
-      isAllFavorited: updatedIsAllFavorited,
-    };
-  });
-}
 
 //#region Supported Multi-Select Actions
 export async function favoriteSelectedTracks() {
@@ -57,7 +28,7 @@ export async function favoriteSelectedTracks() {
 /** Hide selected tracks and then close the multi-select menu. */
 export async function hideSelectedTracks() {
   const selectedIds = trackMultiSelectStore.getState().selected;
-  resetTrackMultiSelect();
+  TrackMultiSelect.reset();
   if (selectedIds.size === 0) return;
 
   const tracksToHide = await db.query.tracks.findMany({
@@ -80,7 +51,7 @@ export async function hideSelectedTracks() {
   }
 }
 
-//#region Helpers
+/** Add or remove selected tracks in playlist. */
 export async function toggleSelectedTracksToPlaylist(
   playlistName: string,
   remove = false,
@@ -105,5 +76,4 @@ export async function toggleSelectedTracksToPlaylist(
     tracks: Array.from(newTrackListSet).map((id) => ({ id })),
   });
 }
-//#endregion
 //#endregion
