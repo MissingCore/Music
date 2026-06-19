@@ -1,13 +1,11 @@
-import { toast } from "@missingcore/ui/toast";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { Portal } from "@rn-primitives/portal";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import Animated, { SlideInUp, SlideOutUp } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { usePlaylistsNames } from "~/data/playlist/queries";
 import { useTrackMultiSelectStore } from "../core/store";
 import {
   favoriteSelectedTracks,
@@ -16,22 +14,14 @@ import {
   toggleSelectedTracksToPlaylist,
 } from "../core/actions";
 
-import { ContentPlaceholder } from "~/navigation/components/Placeholder";
-
 import { clearAllQueries } from "~/lib/react-query";
-import { wait } from "~/utils/promise";
-import { FlatList } from "~/components/Base/List";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
-import { CheckboxField } from "~/components/Form/Checkbox";
 import { TopDownGradient } from "~/components/Gradient";
-import { Marquee } from "~/components/Marquee";
 import { ConfirmableAction } from "~/components/Modal";
-import { DetachedSheet } from "~/components/Sheet";
-import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
 import { FavoritesPlaylistKey } from "../../constants";
+import { AddToPlaylistSheet } from "./AddToPlaylistSheet";
 
 export function TrackMultiSelectListeners() {
   const navigation = useNavigation();
@@ -120,7 +110,7 @@ function MutliSelectActions() {
 
   return (
     <>
-      <TracksToPlaylistSheet ref={playlistsSheetRef} />
+      <AddToPlaylistSheet ref={playlistsSheetRef} />
       <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
         {!isFavoriteRoute ? (
           <FilledIconButton
@@ -168,75 +158,6 @@ function MutliSelectActions() {
       </View>
     </>
   );
-}
-
-function TracksToPlaylistSheet(props: { ref: TrueSheetRef }) {
-  const { data: playlistsNames } = usePlaylistsNames();
-  const amountSelected = useTrackMultiSelectStore((s) => s.selected.size);
-  const [inLists, setInLists] = useState(new Set<string>());
-  const sheetListHandlers = useEnableSheetScroll();
-
-  // Reset selection whenever the number of items of selected items change.
-  useEffect(() => {
-    setInLists(new Set());
-  }, [amountSelected]);
-
-  return (
-    <DetachedSheet
-      ref={props.ref}
-      titleKey="feat.modalTrack.extra.addToPlaylist"
-      onCleanup={async () => {
-        resetTrackMultiSelect();
-        await wait(1);
-        clearAllQueries();
-      }}
-      snapTop
-    >
-      <FlatList
-        data={playlistsNames}
-        keyExtractor={(name) => name}
-        renderItem={({ item: name }) => {
-          const selected = inLists.has(name);
-          return (
-            <CheckboxField
-              checked={selected}
-              onCheck={async () => {
-                try {
-                  await toggleSelectedTracksToPlaylist(name, selected);
-                  setInLists((prev) => {
-                    const updatedList = new Set(prev);
-                    if (selected) updatedList.delete(name);
-                    else updatedList.add(name);
-                    return updatedList;
-                  });
-                } catch (err) {
-                  console.log(err);
-                  toast.tError("err.flow.generic.title");
-                }
-              }}
-              className="mb-2"
-            >
-              <Marquee color="surfaceBright">
-                <StyledText>{name}</StyledText>
-              </Marquee>
-            </CheckboxField>
-          );
-        }}
-        getItemLayout={getItemLayout}
-        ListEmptyComponent={
-          <ContentPlaceholder errMsgKey="err.msg.noPlaylists" />
-        }
-        {...sheetListHandlers}
-        className="-mb-2"
-        contentContainerClassName="pb-4"
-      />
-    </DetachedSheet>
-  );
-}
-
-function getItemLayout(_: unknown, index: number) {
-  // 54px Height + 8px Margin Bottom
-  return { length: 62, offset: 62 * index, index };
 }
 //#endregion
 //#endregion
