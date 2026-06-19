@@ -9,8 +9,8 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
-import { useTrackMultiSelectStore } from "../track/core/store";
-import * as TrackMultiSelectActions from "../track/core/actions";
+import { useTrackMultiSelectStore } from "../multiSelect/core/store";
+import * as TrackMultiSelectActions from "../multiSelect/core/actions";
 
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
