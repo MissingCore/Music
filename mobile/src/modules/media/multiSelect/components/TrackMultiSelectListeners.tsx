@@ -22,6 +22,7 @@ import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
 import { FavoritesPlaylistKey } from "../../constants";
 import { AddToPlaylistSheet } from "./AddToPlaylistSheet";
+import { AddToCreatedPlaylistSheet } from "./AddToCreatedPlaylistSheet";
 
 export function TrackMultiSelectListeners() {
   const navigation = useNavigation();
@@ -92,7 +93,8 @@ function MutliSelectActions() {
   const availableRoutes = useNavigationState((s) => s.routes);
   const amountSelected = useTrackMultiSelectStore((s) => s.selected.size);
   const isAllFavorited = useTrackMultiSelectStore((s) => s.isAllFavorited);
-  const playlistsSheetRef = useSheetRef();
+  const addToPlaylistSheetRef = useSheetRef();
+  const addToCreatedPlaylistSheetRef = useSheetRef();
 
   const isPlaylistRoute = useMemo(
     () => availableRoutes.at(-1)?.key.startsWith("Playlist-"),
@@ -110,7 +112,8 @@ function MutliSelectActions() {
 
   return (
     <>
-      <AddToPlaylistSheet ref={playlistsSheetRef} />
+      <AddToPlaylistSheet ref={addToPlaylistSheetRef} />
+      <AddToCreatedPlaylistSheet ref={addToCreatedPlaylistSheetRef} />
       <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
         {!isFavoriteRoute ? (
           <FilledIconButton
@@ -136,9 +139,16 @@ function MutliSelectActions() {
           <FilledIconButton
             icon="playlist-add"
             accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
-            onPress={() => playlistsSheetRef.current?.present()}
+            onPress={() => addToPlaylistSheetRef.current?.present()}
           />
         )}
+        {!isPlaylistRoute ? (
+          <FilledIconButton
+            icon="add"
+            accessibilityLabel={t("form.create")}
+            onPress={() => addToCreatedPlaylistSheetRef.current?.present()}
+          />
+        ) : null}
         <ConfirmableAction
           Component={FilledIconButton}
           componentProps={{
