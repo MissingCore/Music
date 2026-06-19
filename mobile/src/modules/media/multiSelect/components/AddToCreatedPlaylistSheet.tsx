@@ -1,17 +1,13 @@
-import { toast } from "@missingcore/ui/toast";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { Icon } from "~/resources/icons";
-import { createPlaylist } from "~/data/playlist/api";
 import { usePlaylistsNames } from "~/data/playlist/queries";
 import { sanitizePlaylistName } from "~/data/playlist/utils";
-import { TrackMultiSelect, trackMultiSelectStore } from "../core/store";
+import { addSelectedToCreatedPlaylist } from "../core/actions";
 
-import { clearAllQueries } from "~/lib/react-query";
 import { cn } from "~/lib/style";
-import { wait } from "~/utils/promise";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import { DetachedSheet } from "~/components/Sheet";
@@ -30,18 +26,8 @@ export function AddToCreatedPlaylistSheet(props: { ref: TrueSheetRef }) {
 
   const inputForm = useInputForm({
     onSubmit: async (trimmedName) => {
-      const selectedTracks = trackMultiSelectStore.getState().selected;
       props.ref.current?.dismiss();
-      TrackMultiSelect.reset();
-      await wait(1);
-      await createPlaylist({
-        name: trimmedName,
-        tracks: Array.from(selectedTracks).map((id) => ({ id })),
-      });
-      clearAllQueries();
-    },
-    onError: () => {
-      toast.tError("err.flow.generic.title");
+      await addSelectedToCreatedPlaylist(trimmedName);
     },
     onConstraints: (trimmedName) => {
       // Checks to see if playlist name is unique.

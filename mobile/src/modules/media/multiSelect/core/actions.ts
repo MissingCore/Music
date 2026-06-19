@@ -3,7 +3,7 @@ import { toast } from "@missingcore/ui/toast";
 import { db } from "~/db";
 import { hiddenTracks } from "~/db/schema";
 
-import { updatePlaylist } from "~/data/playlist/api";
+import { createPlaylist, updatePlaylist } from "~/data/playlist/api";
 import { deleteTracks } from "~/data/track/api";
 import { Queue } from "~/stores/Playback/actions";
 import { TrackMultiSelect, trackMultiSelectStore } from "./store";
@@ -11,9 +11,26 @@ import { TrackMultiSelect, trackMultiSelectStore } from "./store";
 import { clearAllQueries } from "~/lib/react-query";
 import { FavoritesPlaylistKey } from "../../constants";
 
-/** Add tracks to "Favorite Tracks" playlist. Remove them instead of `isAllFavorited = true`. */
-export async function favoriteSelectedTracks() {
-  const { isAllFavorited } = trackMultiSelectStore.getState();
+/** Create new playlist with selected tracks and then close the multi-select menu. */
+export async function addSelectedToCreatedPlaylist(playlistName: string) {
+  const selectedIds = trackMultiSelectStore.getState().selected;
+  // Dismiss multi-select menu while we create the playlist in the background.
+  TrackMultiSelect.reset();
+  try {
+    await createPlaylist({
+      name: playlistName,
+      tracks: Array.from(selectedIds).map((id) => ({ id })),
+    });
+    clearAllQueries();
+  } catch (err) {
+    console.log(err);
+    toast.tError("err.flow.generic.title");
+  }
+}
+
+/** Add selected tracks to "Favorite Tracks" playlist. Remove them instead of `isAllFavorited = true`. */
+export async function favoriteSelected() {
+  const isAllFavorited = trackMultiSelectStore.getState().isAllFavorited;
   const config = { playlistName: FavoritesPlaylistKey, remove: isAllFavorited };
   switch (await updateTracksInPlaylist(config)) {
     case "success":
@@ -25,7 +42,7 @@ export async function favoriteSelectedTracks() {
 }
 
 /** Hide selected tracks and then close the multi-select menu. */
-export async function hideSelectedTracks() {
+export async function hideSelected() {
   const selectedIds = trackMultiSelectStore.getState().selected;
   // Dismiss multi-select menu while we hide the tracks in the background.
   TrackMultiSelect.reset();

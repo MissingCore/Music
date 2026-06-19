@@ -8,8 +8,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { TrackMultiSelect, useTrackMultiSelectStore } from "../core/store";
 import {
-  favoriteSelectedTracks,
-  hideSelectedTracks,
+  favoriteSelected,
+  hideSelected,
   removeSelectedFromPlaylist,
 } from "../core/actions";
 
@@ -128,7 +128,7 @@ function MultiSelectActions(props: {
         <FilledIconButton
           icon={`favorite${isAllFavorited ? "-filled" : ""}`}
           accessibilityLabel={t("term.favorite")}
-          onPress={favoriteSelectedTracks}
+          onPress={favoriteSelected}
         />
       ) : null}
       {isPlaylistRoute ? (
@@ -161,7 +161,7 @@ function MultiSelectActions(props: {
         componentProps={{
           icon: "visibility-off-filled",
           accessibilityLabel: t("template.entryHide", { name: trackTerm }),
-          onPress: hideSelectedTracks,
+          onPress: hideSelected,
         }}
         // @ts-expect-error - If we use a non-translation key, it'll be rendered as a string.
         modalMessage={[t("template.entryHide", { name: trackCount })]}
