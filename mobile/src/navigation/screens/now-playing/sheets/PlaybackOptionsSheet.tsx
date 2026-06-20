@@ -9,8 +9,6 @@ import {
   PreferenceSetters,
   PreferenceTogglers,
 } from "~/stores/Preference/actions";
-import { useLyricStore } from "~/modules/lyric/core/store";
-import { toggleLyricVisibility } from "~/modules/lyric/core/actions";
 
 import { getMediaLinkContext } from "~/navigation/utils/router";
 import { AppearanceSheet } from "./AppearanceSheet";
@@ -37,7 +35,6 @@ export function PlaybackOptionsSheet(props: {
   const playingSource = usePlaybackStore((s) => s.playingFrom);
   const sourceName = usePlaybackStore((s) => s.playingFromName);
   const playbackDelay = usePreferenceStore((s) => s.playbackDelay);
-  const showLyrics = useLyricStore((s) => s.visible);
   const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
   const volume = usePlaybackStore((s) => s.volume);
   const appearanceSheetRef = useSheetRef();
@@ -102,17 +99,6 @@ export function PlaybackOptionsSheet(props: {
                 max={10}
                 suffix="s"
               />
-            }
-          />
-          <SheetLabelAction
-            labelKey="feat.lyrics.title"
-            RightElement={
-              <Pressable
-                onPress={toggleLyricVisibility}
-                className="h-8 justify-center"
-              >
-                <Switch enabled={showLyrics} />
-              </Pressable>
             }
           />
           <SheetLabelAction
