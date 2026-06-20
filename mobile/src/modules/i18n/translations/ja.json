@@ -46,6 +46,7 @@
     "entryHide": "｢{{- name}}｣を非表示",
     "entryEnable": "「{{- name}}」を有効化",
     "entryDisable": "「{{- name}}」を無効化",
+    "countSelected": null,
     "noContentFound": "「{{- name}}」が見つかりません"
   },
   "plural": {
@@ -238,7 +239,11 @@
       }
     },
     "scanning": {
-      "title": "音楽のスキャン"
+      "title": "音楽のスキャン",
+      "extra": {
+        "useMediaStore": null,
+        "useMediaStoreBrief": null
+      }
     },
     "rescan": {
       "title": "再スキャン",

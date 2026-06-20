@@ -46,6 +46,7 @@
     "entryHide": "隐藏 `{{- name}}`",
     "entryEnable": "启用`{{- name}}`",
     "entryDisable": "禁用`{{- name}}`",
+    "countSelected": null,
     "noContentFound": null
   },
   "plural": {
@@ -238,7 +239,11 @@
       }
     },
     "scanning": {
-      "title": "扫描"
+      "title": "扫描",
+      "extra": {
+        "useMediaStore": null,
+        "useMediaStoreBrief": null
+      }
     },
     "rescan": {
       "title": "重新扫描",

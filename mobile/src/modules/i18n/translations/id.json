@@ -46,6 +46,7 @@
     "entryHide": "Sembunyikan `{{- name}}`",
     "entryEnable": "Aktifkan `{{- name}}`",
     "entryDisable": "Nonaktifkan `{{- name}}`",
+    "countSelected": null,
     "noContentFound": "{{- name}} tidak ditemukan."
   },
   "plural": {
@@ -238,7 +239,11 @@
       }
     },
     "scanning": {
-      "title": "Memindai"
+      "title": "Memindai",
+      "extra": {
+        "useMediaStore": null,
+        "useMediaStoreBrief": null
+      }
     },
     "rescan": {
       "title": "Memindai Ulang",

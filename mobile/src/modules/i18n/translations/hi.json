@@ -46,6 +46,7 @@
     "entryHide": "`{{- name}}` छुपाएँ",
     "entryEnable": "`{{- name}}` सक्षम करें",
     "entryDisable": "`{{- name}}` अक्षम करें",
+    "countSelected": null,
     "noContentFound": "कोई {{- name}} नहीं मिला।"
   },
   "plural": {
@@ -238,7 +239,11 @@
       }
     },
     "scanning": {
-      "title": "स्कैनिंग"
+      "title": "स्कैनिंग",
+      "extra": {
+        "useMediaStore": null,
+        "useMediaStoreBrief": null
+      }
     },
     "rescan": {
       "title": "पुनः स्कैन करें",

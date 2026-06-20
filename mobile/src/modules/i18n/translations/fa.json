@@ -46,6 +46,7 @@
     "entryHide": "مخفی کردن `{{- name}}`",
     "entryEnable": "فعال کردن `{{- name}}`",
     "entryDisable": "غیرفعال کردن `{{- name}}`",
+    "countSelected": null,
     "noContentFound": "{{- name}} یافت نشد."
   },
   "plural": {
@@ -238,7 +239,11 @@
       }
     },
     "scanning": {
-      "title": "اسکن موسیقی"
+      "title": "اسکن موسیقی",
+      "extra": {
+        "useMediaStore": null,
+        "useMediaStoreBrief": null
+      }
     },
     "rescan": {
       "title": "اسکن مجدد",

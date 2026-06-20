@@ -46,6 +46,7 @@
     "entryHide": "Ukryj `{{- name}}`",
     "entryEnable": "Włącz `{{- name}}`",
     "entryDisable": "Wyłącz `{{- name}}`",
+    "countSelected": null,
     "noContentFound": "Nie znaleziono {{- name}}."
   },
   "plural": {
@@ -238,7 +239,11 @@
       }
     },
     "scanning": {
-      "title": "Skanowanie"
+      "title": "Skanowanie",
+      "extra": {
+        "useMediaStore": null,
+        "useMediaStoreBrief": null
+      }
     },
     "rescan": {
       "title": "Ponowne skanowanie",

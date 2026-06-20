@@ -46,6 +46,7 @@
     "entryHide": "Nascondi `{{- name}}`",
     "entryEnable": "Attiva `{{- name}}`",
     "entryDisable": "Disattiva `{{- name}}`",
+    "countSelected": null,
     "noContentFound": null
   },
   "plural": {
@@ -238,7 +239,11 @@
       }
     },
     "scanning": {
-      "title": "Scansione in corso"
+      "title": "Scansione in corso",
+      "extra": {
+        "useMediaStore": null,
+        "useMediaStoreBrief": null
+      }
     },
     "rescan": {
       "title": "Ripeti scansione",

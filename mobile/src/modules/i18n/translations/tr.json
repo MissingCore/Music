@@ -46,6 +46,7 @@
     "entryHide": "`{{- name}}` öğesini gizle",
     "entryEnable": "`{{- name}}` öğesini etkinleştir",
     "entryDisable": "`{{- name}}` öğesini devre dışı bırak",
+    "countSelected": null,
     "noContentFound": "Hiçbir {{- name}} bulunamadı."
   },
   "plural": {
@@ -238,7 +239,11 @@
       }
     },
     "scanning": {
-      "title": "Tarama"
+      "title": "Tarama",
+      "extra": {
+        "useMediaStore": null,
+        "useMediaStoreBrief": null
+      }
     },
     "rescan": {
       "title": "Yeniden Tara",

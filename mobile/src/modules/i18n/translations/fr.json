@@ -46,6 +46,7 @@
     "entryHide": "Cacher `{{- name}}`",
     "entryEnable": "Activer `{{- name}}`",
     "entryDisable": "Désactiver `{{- name}}`",
+    "countSelected": null,
     "noContentFound": "Aucun {{- name}} trouvé."
   },
   "plural": {
@@ -238,7 +239,11 @@
       }
     },
     "scanning": {
-      "title": "Recherche de musique"
+      "title": "Recherche de musique",
+      "extra": {
+        "useMediaStore": "🧪 Utiliser MediaStore Scanner",
+        "useMediaStoreBrief": "Extrêmement rapide, mais peut-être moins précis. Nécessite Android 11 ou une version ultérieure."
+      }
     },
     "rescan": {
       "title": "Lancer une nouvelle recherche",
