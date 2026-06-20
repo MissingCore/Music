@@ -141,7 +141,7 @@ function BottomAppBar({ trackId }: { trackId: string }) {
           />
           <FilledIconButton
             icon="lyrics"
-            accessibilityLabel={t("feat.sleepTimer.title")}
+            accessibilityLabel={t("feat.lyrics.title")}
             onPress={toggleLyricVisibility}
             size="lg"
           />
