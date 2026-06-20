@@ -46,6 +46,7 @@
     "entryHide": "Amaga `{{- name}}`",
     "entryEnable": "Activar `{{- name}}`",
     "entryDisable": "Desactivar `{{- name}}`",
+    "countSelected": null,
     "noContentFound": "No s'ha trobat {{- name}}."
   },
   "plural": {
@@ -238,7 +239,11 @@
       }
     },
     "scanning": {
-      "title": "Escanejant"
+      "title": "Escanejant",
+      "extra": {
+        "useMediaStore": null,
+        "useMediaStoreBrief": null
+      }
     },
     "rescan": {
       "title": "Reescanejar",

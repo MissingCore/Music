@@ -46,6 +46,7 @@
     "entryHide": "إخفاء `{{- name}}`",
     "entryEnable": "تفعيل `{{- name}}`",
     "entryDisable": "تعطيل `{{- name}}`",
+    "countSelected": null,
     "noContentFound": null
   },
   "plural": {
@@ -238,7 +239,11 @@
       }
     },
     "scanning": {
-      "title": "المسح"
+      "title": "المسح",
+      "extra": {
+        "useMediaStore": null,
+        "useMediaStoreBrief": null
+      }
     },
     "rescan": {
       "title": "إعادة المسح",

@@ -46,6 +46,7 @@
     "entryHide": "Ocultar `{{- name}}`",
     "entryEnable": "Activar `{{- name}}`",
     "entryDisable": "Desactivar `{{- name}}`",
+    "countSelected": null,
     "noContentFound": "No se encontró {{- name}}."
   },
   "plural": {
@@ -238,7 +239,11 @@
       }
     },
     "scanning": {
-      "title": "Escaneo"
+      "title": "Escaneo",
+      "extra": {
+        "useMediaStore": null,
+        "useMediaStoreBrief": null
+      }
     },
     "rescan": {
       "title": "Reescaneo",

@@ -46,6 +46,7 @@
     "entryHide": "Скрыть `{{- name}}`",
     "entryEnable": "Включить `{{- name}}`",
     "entryDisable": "Отключить `{{- name}}`",
+    "countSelected": null,
     "noContentFound": null
   },
   "plural": {
@@ -238,7 +239,11 @@
       }
     },
     "scanning": {
-      "title": "Сканирование"
+      "title": "Сканирование",
+      "extra": {
+        "useMediaStore": null,
+        "useMediaStoreBrief": null
+      }
     },
     "rescan": {
       "title": "Пересканирование",

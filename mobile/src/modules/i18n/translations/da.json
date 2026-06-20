@@ -46,6 +46,7 @@
     "entryHide": "Gem \"{{- name}}\"",
     "entryEnable": "Aktivér \"{{- name}}\"",
     "entryDisable": "Deaktivér \"{{- name}}\"",
+    "countSelected": null,
     "noContentFound": "\"{{- name}}\" blev ikke fundet."
   },
   "plural": {
@@ -238,7 +239,11 @@
       }
     },
     "scanning": {
-      "title": "Scanning"
+      "title": "Scanning",
+      "extra": {
+        "useMediaStore": null,
+        "useMediaStoreBrief": null
+      }
     },
     "rescan": {
       "title": "Scan igen",
