@@ -7,7 +7,6 @@ import type { Track } from "~/data/track/types";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
-import { useLyricStore } from "~/modules/lyric/core/store";
 import { toggleLyricVisibility } from "~/modules/lyric/core/actions";
 
 import { Back } from "~/navigation/components/Back";
@@ -136,11 +135,16 @@ function BottomAppBar({ trackId }: { trackId: string }) {
 
       <View className="flex-row items-center justify-between gap-4 p-4 pt-2">
         <BackButton />
-        <View className="flex-row items-center rounded-full bg-surfaceContainerLowest">
+        <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
           <SleepTimerButton
             present={() => sleepTimerSheetRef.current?.present()}
           />
-          <LyricsButton />
+          <FilledIconButton
+            icon="lyrics"
+            accessibilityLabel={t("feat.sleepTimer.title")}
+            onPress={toggleLyricVisibility}
+            size="lg"
+          />
           <FilledIconButton
             icon="view-agenda"
             accessibilityLabel={t("term.upcoming")}
@@ -172,24 +176,6 @@ function SleepTimerButton(props: { present: VoidFunction }) {
       }
       size="lg"
       _iconColor={sleepTimerActive ? "onSecondary" : undefined}
-    />
-  );
-}
-
-function LyricsButton() {
-  const { t } = useTranslation();
-  const lyricsActive = useLyricStore((s) => s.visible);
-  return (
-    <FilledIconButton
-      icon="lyrics"
-      accessibilityLabel={t("feat.sleepTimer.title")}
-      onPress={toggleLyricVisibility}
-      className={
-        lyricsActive
-          ? "bg-surfaceContainer active:bg-surfaceContainerHigh"
-          : undefined
-      }
-      size="lg"
     />
   );
 }
