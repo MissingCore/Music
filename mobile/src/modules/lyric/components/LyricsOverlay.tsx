@@ -6,12 +6,14 @@ import { usePolledProgress } from "react-native-audio-browser";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useLyricForTrack } from "~/data/lyric/queries";
+import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
 import type { FlatListProps, FlatListRef } from "~/components/Base/List";
 import { FlatList, useFlatListRef } from "~/components/Base/List";
+import { Pressable } from "~/components/Base/Pressable";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
@@ -227,24 +229,24 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
   // on every render.
   const renderedLines = useMemo(
     () =>
-      parsedLines.map(({ words }, index) => {
-        if (index !== activeLineIndex) {
-          return words.reduce((prev, { word }) => prev + word, "");
-        } else {
-          return words.reduce(
-            (prev, { word }, index) => {
-              if (
-                inActiveWordStartIndex === -1 ||
-                index < inActiveWordStartIndex
-              ) {
-                prev[0] += word;
-              } else prev[1] += word;
-              return prev;
-            },
-            ["", ""] as [string, string],
-          );
-        }
-      }),
+      parsedLines.map(({ timeMS, words }, index) => ({
+        timeMS,
+        line:
+          index !== activeLineIndex
+            ? words.reduce((prev, { word }) => prev + word, "")
+            : words.reduce(
+                (prev, { word }, index) => {
+                  if (
+                    inActiveWordStartIndex === -1 ||
+                    index < inActiveWordStartIndex
+                  ) {
+                    prev[0] += word;
+                  } else prev[1] += word;
+                  return prev;
+                },
+                ["", ""] as [string, string],
+              ),
+      })),
     [parsedLines, activeLineIndex, inActiveWordStartIndex],
   );
 
@@ -262,10 +264,15 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
 }
 
 //#region Memoized Lyric List
+type FormattedSynchronizedLine = {
+  timeMS: number;
+  line: string | [string, string];
+};
+
 const MemoLyricList = memo(
   function MemoLyricList(
-    props: Omit<FlatListProps<string | [string, string]>, "renderItem"> & {
-      ref: FlatListRef<string | [string, string]>;
+    props: Omit<FlatListProps<FormattedSynchronizedLine>, "renderItem"> & {
+      ref: FlatListRef<FormattedSynchronizedLine>;
       offset: number;
     },
   ) {
@@ -273,15 +280,19 @@ const MemoLyricList = memo(
       <FlatList
         {...props}
         keyExtractor={(_, index) => `${index}`}
-        renderItem={({ item }) => {
-          if (typeof item === "string") {
-            return <Em className="text-xl text-onSurfaceVariant/50">{item}</Em>;
+        renderItem={({ item: { timeMS, line } }) => {
+          if (typeof line === "string") {
+            return (
+              <Pressable onPress={() => PlaybackControls.seekTo(timeMS / 1000)}>
+                <Em className="text-xl text-onSurfaceVariant/50">{line}</Em>
+              </Pressable>
+            );
           } else {
             return (
               <Em className="text-xl">
-                {item[0]}
-                {item[1].length > 0 && (
-                  <Text className="text-onSurfaceVariant/50">{item[1]}</Text>
+                {line[0]}
+                {line[1].length > 0 && (
+                  <Text className="text-onSurfaceVariant/50">{line[1]}</Text>
                 )}
               </Em>
             );
