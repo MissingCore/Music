@@ -7,6 +7,7 @@ import type { Track } from "~/data/track/types";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
+import { toggleLyricVisibility } from "~/modules/lyric/core/actions";
 
 import { Back } from "~/navigation/components/Back";
 import { SeekbarContext } from "./helpers/Seekbar.context";
@@ -137,6 +138,12 @@ function BottomAppBar({ trackId }: { trackId: string }) {
         <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
           <SleepTimerButton
             present={() => sleepTimerSheetRef.current?.present()}
+          />
+          <FilledIconButton
+            icon="lyrics"
+            accessibilityLabel={t("feat.lyrics.title")}
+            onPress={toggleLyricVisibility}
+            size="lg"
           />
           <FilledIconButton
             icon="view-agenda"

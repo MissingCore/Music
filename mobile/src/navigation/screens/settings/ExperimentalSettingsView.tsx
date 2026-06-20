@@ -1,5 +1,4 @@
 import { toast } from "@missingcore/ui/toast";
-import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
 import { db } from "~/db";
@@ -19,7 +18,6 @@ import { Switch } from "~/components/UI/Switch";
 
 export default function ExperimentalSettings() {
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const queueAwareNext = usePreferenceStore((s) => s.queueAwareNext);
   const downsamplingProcessor = usePreferenceStore(
     (s) => s.downsamplingProcessor,
@@ -55,13 +53,6 @@ export default function ExperimentalSettings() {
         labelText="Android Auto"
         onPress={() => openLink(Links.AndroidAuto)}
         RightElement={<Icon name="open-in-new" />}
-      />
-
-      <SegmentedList.Item
-        labelTextKey="feat.lyrics.extra.providers"
-        onPress={() => navigation.navigate("LyricsProviders")}
-        LeftElement={<Icon name="search" />}
-        className="gap-4"
       />
     </ListLayout>
   );
