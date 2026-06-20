@@ -13,6 +13,7 @@ val ASSET_PROJECTION = arrayOf(
   MediaStore.Audio.Media.DATA,
   MediaStore.Audio.Media.MIME_TYPE,
   MediaStore.Audio.Media.DATE_MODIFIED,
+  // API docs mention that `DURATION` is only supported on API 29, but it's probably a mistake.
   MediaStore.Audio.Media.DURATION,
   MediaStore.Audio.Media.SIZE,
 )
@@ -38,5 +39,4 @@ val AUDIO_METADATA_ASSET_PROJECTION = arrayOf(
   MediaStore.Audio.Media.DISC_NUMBER,
   MediaStore.Audio.Media.TRACK,
   MediaStore.Audio.Media.BITRATE,
-  MediaStore.Audio.Media.SAMPLERATE,
 )
