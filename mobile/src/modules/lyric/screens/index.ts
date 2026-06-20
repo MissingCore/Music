@@ -4,6 +4,7 @@ import Lyric from "./CurrentView";
 import ModifyLyricProvider from "./ModifyProviderView";
 import ModifyLyric from "./ModifyView";
 import LyricsProviders from "./ProviderView";
+import LyricsSettings from "./SettingsView";
 import Lyrics from "./View";
 
 const LyricScreenGroup = {
@@ -11,6 +12,11 @@ const LyricScreenGroup = {
     animation: "fade",
   },
   screens: {
+    LyricsSettings: {
+      screen: LyricsSettings,
+      options: { title: "feat.lyrics.title" },
+    },
+
     Lyrics: {
       screen: Lyrics,
       options: { title: "feat.lyrics.title" },
