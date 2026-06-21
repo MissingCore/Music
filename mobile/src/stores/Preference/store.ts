@@ -114,7 +114,8 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     minSeconds: 15,
     separators: [],
 
-    checkForUpdates: false,
+    //? Conditionally change default value based on distribution method.
+    checkForUpdates: process.env.EXPO_PUBLIC_CHECK_FOR_UPDATES === "true",
     rcNotification: false,
 
     //! Experimental Features

@@ -40,7 +40,7 @@ jobs:
       - name: Add config to enable Sentry
         run: |
           echo -e "\nmusic.WITH_SENTRY=true" >> android/gradle.properties
-          echo "EXPO_PUBLIC_WITH_SENTRY=true" >> .env
+          echo -e "EXPO_PUBLIC_CHECK_FOR_UPDATES=true\nEXPO_PUBLIC_WITH_SENTRY=true" >> .env
 
       - name: Create `sentry.properties` file
         run: |
@@ -100,7 +100,7 @@ jobs:
       - name: Add config to enable Sentry
         run: |
           echo -e "\nmusic.WITH_SENTRY=true" >> android/gradle.properties
-          echo "EXPO_PUBLIC_WITH_SENTRY=true" >> .env
+          echo -e "EXPO_PUBLIC_CHECK_FOR_UPDATES=true\nEXPO_PUBLIC_WITH_SENTRY=true" >> .env
 
       - name: Create `sentry.properties` file
         run: |
