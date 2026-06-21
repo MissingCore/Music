@@ -28,7 +28,7 @@
     "@lodev09/react-native-true-sheet": "3.4.2",
     "@missingcore/react-native-actual-path": "0.1.0",
     "@missingcore/react-native-audio-analyzer": "3.2.0-beta.4",
-    "@missingcore/react-native-metadata-retriever": "3.2.0",
+    "@missingcore/react-native-metadata-retriever": "3.2.1",
     "@paralleldrive/cuid2": "3.3.0",
     "@react-navigation/material-top-tabs": "7.6.2",
     "@react-navigation/native": "7.3.3",
