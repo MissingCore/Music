@@ -49,14 +49,19 @@ export const AppCleanUp = {
       .flat()
       .map(({ artwork }) => artwork!);
 
+    // Artwork that's currently being used.
+    const usedArtwork = new Set(usedUris);
+    // Artwork stored on-device.
+    const storedArtworkURIs = new Set(
+      // There shouldn't be any directories in the "Image Directory".
+      new Directory(ImageDirectory).list().map((file) => file.uri),
+    );
+
     // Get & delete all unused images.
     let deletedCount = 0;
     await batch({
-      data: new Directory(ImageDirectory)
-        .list()
-        // There shouldn't be any directories in the "Image Directory".
-        .filter((file) => !usedUris.some((uri) => file.uri === uri)),
-      callback: (image) => deleteImage(image.uri),
+      data: Array.from(storedArtworkURIs.difference(usedArtwork)),
+      callback: (imgUri) => deleteImage(imgUri),
       onBatchComplete: (isFulfilled) => {
         deletedCount += isFulfilled.length;
       },
