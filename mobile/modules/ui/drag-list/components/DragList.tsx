@@ -76,7 +76,7 @@ export function DragList<TData>(props: DragListProps<TData>) {
 
 function DragListImpl<TData>({
   data,
-  keyExtractor,
+  keyExtractor: _keyExtractor,
   renderItem,
   estimatedItemSize,
   alwaysKeyRenderedItems = false,
@@ -224,6 +224,15 @@ function DragListImpl<TData>({
   // The "Native" gesture allows for scroll to work.
   const nativeGesture = useNativeGesture({});
   const gestures = useSimultaneousGestures(nativeGesture, panListenerGesture);
+
+  //? Need to include the `index` in the key as if an item is removed, it
+  //? might not get re-rendered, resulting it in using the original `index`
+  //? value that it was rendered with. This becomes an issue where our
+  //? rendered items use `index` for `useDragListState()`.
+  const keyExtractor = useCallback(
+    (item: TData, index: number) => `${index}__${_keyExtractor(item, index)}`,
+    [_keyExtractor],
+  );
 
   const renderDragItem = useCallback(
     ({ item, index, extraData }: LegendListRenderItemProps<TData>) => (
