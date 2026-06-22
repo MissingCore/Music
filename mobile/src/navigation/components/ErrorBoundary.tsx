@@ -4,12 +4,13 @@ import { View } from "react-native";
 import Bootsplash from "react-native-bootsplash";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { CAN_SENTRY_REPORT } from "~/env";
 import { playbackStore } from "~/stores/Playback/store";
 import { useFloatingContent } from "../hooks/useFloatingContent";
 import { ListLayout } from "../layouts/ListLayout";
 import { AppProvider } from "../providers/AppProvider";
 
-import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
+import { Sentry } from "~/lib/sentry";
 import { Links, openLink } from "~/lib/web-browser";
 import { Button } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
@@ -57,7 +58,7 @@ function ErrorLayout({ error }: { error: Error }) {
     playbackStore.getState().resetOnCrash();
 
     // Send error message to Sentry.
-    if (SENTRY_ENABLED && !__DEV__) Sentry.captureException(error);
+    if (CAN_SENTRY_REPORT) Sentry.captureException(error);
 
     return () => {};
   }, [error]);

@@ -9,6 +9,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 
+import { INITIALIZE_SENTRY } from "~/env";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { useLoadResources } from "~/modules/scanning/hooks/useLoadResources";
 import { useScanning } from "~/modules/scanning/hooks/useScanning";
@@ -20,10 +21,10 @@ import { OnboardingConfiguration } from "~/modules/scanning/components/Onboardin
 import { ScanningProgress } from "~/modules/scanning/components/ScanningProgressView";
 
 import "~/modules/i18n"; // Make sure translations are bundled.
-import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
+import { Sentry } from "~/lib/sentry";
 import { bgWait } from "~/utils/promise";
 
-if (SENTRY_ENABLED) {
+if (INITIALIZE_SENTRY) {
   const RemovedIntegrations = new Set(["ConsoleLogs", "MobileReplay"]);
 
   Sentry.init({

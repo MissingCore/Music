@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import AudioBrowser from "react-native-audio-browser";
 
+import { CAN_SENTRY_REPORT } from "~/env";
 import { addPlayedMediaList } from "~/data/recent/api";
 import { onAppStartUpInit } from "~/initServices";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
@@ -18,7 +19,7 @@ import { loadCustomFont } from "~/modules/customization/font/utils";
 import { useLyricStore } from "~/modules/lyric/core/store";
 
 import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
-import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
+import { Sentry } from "~/lib/sentry";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
 
@@ -59,7 +60,7 @@ export function useSetup() {
           savedCustomFonts.map((f) => loadCustomFont(f.uri)),
         );
       } catch (err) {
-        if (SENTRY_ENABLED && !__DEV__) Sentry.captureException(err);
+        if (CAN_SENTRY_REPORT) Sentry.captureException(err);
       }
 
       // Initial Equalizer store values after we ensure AudioBrowser is initialized.

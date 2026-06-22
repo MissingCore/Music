@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { db, expoSQLiteDB } from "~/db";
 import migrations from "~/db/drizzle/migrations";
 
+import { IS_DEV } from "~/env";
 import { useSetup } from "./useSetup";
 import { checkForMigrations } from "../helpers/migrations";
 
@@ -51,6 +52,6 @@ export function useLoadResources() {
 
 /** Only run Expo dev tools plugins during development. */
 function useDevOnly(db: SQLiteDatabase | null) {
-  const hook = __DEV__ ? useDrizzleStudio : () => {};
+  const hook = IS_DEV ? useDrizzleStudio : () => {};
   return hook(db);
 }

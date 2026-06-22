@@ -1,8 +1,7 @@
 let Sentry: any;
-const SENTRY_ENABLED = process.env.EXPO_PUBLIC_WITH_SENTRY === "true";
 
 /*
-  We can't use `SENTRY_ENABLED` to dynamically import Sentry as tree-shaking
+  We can't use `INCLUDE_SENTRY` to dynamically import Sentry as tree-shaking
   won't work due to exporting that variable (causing the bundle size to be
   ~350KB larger).
 */
@@ -12,4 +11,4 @@ if (process.env.EXPO_PUBLIC_WITH_SENTRY === "true") {
   Sentry = require("@sentry/react-native");
 }
 
-export { SENTRY_ENABLED, Sentry };
+export { Sentry };

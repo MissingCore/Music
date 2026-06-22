@@ -2,10 +2,11 @@ import { I18nManager } from "react-native";
 import { Uniwind } from "uniwind";
 import { useStore } from "zustand";
 
+import { CAN_SENTRY_REPORT, CHECK_FOR_UPDATES } from "~/env";
 import i18next from "~/modules/i18n";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
-import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
+import { Sentry } from "~/lib/sentry";
 import { createPersistedStore } from "~/lib/zustand";
 import { getCustomTheme } from "~/modules/customization/theme/core/data";
 import {
@@ -33,7 +34,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
         }
       } catch (err) {
         //! FIXME: Temporary to see if we get a `no such table: custom_themes` error.
-        if (SENTRY_ENABLED && !__DEV__) Sentry.captureException(err);
+        if (CAN_SENTRY_REPORT) Sentry.captureException(err);
 
         // Reset custom theme if it no longer exists in the database.
         Uniwind.setTheme(state.theme);
@@ -115,7 +116,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     separators: [],
 
     //? Conditionally change default value based on distribution method.
-    checkForUpdates: process.env.EXPO_PUBLIC_CHECK_FOR_UPDATES === "true",
+    checkForUpdates: CHECK_FOR_UPDATES,
     rcNotification: false,
 
     //! Experimental Features
