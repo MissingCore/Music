@@ -37,14 +37,15 @@ jobs:
           echo "COMMIT_TAG=${COMMIT_TAG}" >> $GITHUB_ENV
           echo "Commit Tag: $COMMIT_TAG"
 
-      - name: Add config to enable Sentry
+      - name: Add configs to enable Sentry
         run: |
           echo -e "\nmusic.WITH_SENTRY=true" >> android/gradle.properties
-          echo -e "EXPO_PUBLIC_CHECK_FOR_UPDATES=true\nEXPO_PUBLIC_WITH_SENTRY=true" >> .env
-
-      - name: Create `sentry.properties` file
-        run: |
           echo "${{ secrets.SENTRY_PROPERTIES }}" > android/sentry.properties
+          echo "EXPO_PUBLIC_WITH_SENTRY=true" > .env
+
+      - name: Add any additional environment variables
+        run: |
+          echo "EXPO_PUBLIC_CHECK_FOR_UPDATES=true" >> .env
 
       - name: Add upload key secrets for signing APKs
         run: |
@@ -97,14 +98,15 @@ jobs:
       - name: Setup Gradle action for optimized execution and caching
         uses: gradle/actions/setup-gradle@v5
 
-      - name: Add config to enable Sentry
+      - name: Add configs to enable Sentry
         run: |
           echo -e "\nmusic.WITH_SENTRY=true" >> android/gradle.properties
-          echo -e "EXPO_PUBLIC_CHECK_FOR_UPDATES=true\nEXPO_PUBLIC_WITH_SENTRY=true" >> .env
-
-      - name: Create `sentry.properties` file
-        run: |
           echo "${{ secrets.SENTRY_PROPERTIES }}" > android/sentry.properties
+          echo "EXPO_PUBLIC_WITH_SENTRY=true" > .env
+
+      - name: Add any additional environment variables
+        run: |
+          echo "EXPO_PUBLIC_CHECK_FOR_UPDATES=true" >> .env
 
       - name: Add upload key secrets for signing APKs
         run: |
