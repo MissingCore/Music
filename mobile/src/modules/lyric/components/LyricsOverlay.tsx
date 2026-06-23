@@ -20,6 +20,7 @@ import { TopDownGradient } from "~/components/Gradient";
 import { Em, TEm } from "~/components/Typography/StyledText";
 import { useTheme } from "~/modules/customization/theme/hooks";
 import { autoDiscoverLyrics } from "../helpers/autoDiscoverLyrics";
+import { removeSynchronizedLyricsJunk } from "../helpers/cleanUpLyricsJunk";
 
 const SCROLL_OFFSET = 64;
 const LINE_GAP = 16;
@@ -62,6 +63,7 @@ function LyricsContent(props: { trackId: string; offset: number }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { isPending, data, error } = useLyricForTrack(props.trackId);
+  const cleanupInProgress = useRef<Set<string>>(new Set());
 
   const lyricsLines = useMemo(() => {
     if (!data?.lyrics) return [];
@@ -75,6 +77,18 @@ function LyricsContent(props: { trackId: string; offset: number }) {
       ),
     [lyricsLines],
   );
+
+  //! TODO: Remove in `v4.0.0`.
+  //! Temporary "hack" to clean up cached lyrics with "junk" in front, which
+  //! was fixed in `v3.3.0`.
+  useEffect(() => {
+    if (isSynchronized || !data?.id || lyricsLines.length === 0) return;
+    if (cleanupInProgress.current.has(data.id)) return;
+    cleanupInProgress.current.add(data.id);
+    removeSynchronizedLyricsJunk(data.id)
+      .catch((err) => console.log(`[LRC_CLEANUP_ERR]`, err))
+      .finally(() => cleanupInProgress.current.delete(data.id));
+  }, [props.trackId, data?.id, lyricsLines, isSynchronized]);
 
   if (isPending) return null;
   else if (error || !data) {
