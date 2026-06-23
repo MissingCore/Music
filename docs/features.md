@@ -23,7 +23,7 @@ This enables playback to continue after removing the app from "Recent Tasks".
 
 ## Multi-Select
 
-We support a range of multi-select actions when long-pressing on a track for `~1s`:
+We support a range of multi-select actions when long-pressing on a track for `~0.5s`:
 
 - `Favorite/Unfavorite` (not available on "Favorite Tracks" playlist screen)
 - `Add Selected To Playlists` (not available on "Current Playlist" screens)
@@ -41,8 +41,9 @@ Multi-select is only supported on the following screens:
 The multi-select menu will automatically be closed in the following situations:
 
 - Having no tracks selected.
+- Using a "back" action (gesture or button).
 - Switching to a different screen.
-  - Switching between folders is the exception.
+  - Switching between folders is the exception, unless you use the "back" action to go to the previous folder.
 - Clicking the `x` next to the selection count indicator.
 - After closing the `Add Selected To Playlists` sheet.
 - After successfully using `Create & Add To Playlist`, `Remove From Playlist`, or `Hide Selected` options.

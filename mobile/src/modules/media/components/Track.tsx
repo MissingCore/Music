@@ -52,7 +52,6 @@ export function Track({
     () => ({
       onPress: () =>
         PlaybackControls.playFromList({ trackId: id, source: trackSource }),
-      delayLongPress: 1000,
       onLongPress: TrackMultiSelect.enable,
       RightElement: <TrackAction id={id} title={props.title} />,
     }),

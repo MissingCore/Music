@@ -2,7 +2,7 @@ import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { Portal } from "@rn-primitives/portal";
 import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { BackHandler, View } from "react-native";
 import Animated, { SlideInUp, SlideOutUp } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -41,6 +41,21 @@ export function TrackMultiSelectMenu() {
   const isMultiSelectEnabled = useTrackMultiSelectStore((s) => s.enabled);
   const addToCreatedPlaylistSheetRef = useSheetRef();
   const addToPlaylistsSheetRef = useSheetRef();
+
+  useEffect(() => {
+    if (!isMultiSelectEnabled) return;
+    // Close multi-select menu when a "back" action is detected. If there
+    // are multiple `BackHandler` listeners on the given screen, this should
+    // fire first due to being created last.
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        TrackMultiSelect.reset();
+        return true;
+      },
+    );
+    return () => subscription.remove();
+  }, [isMultiSelectEnabled]);
 
   return isMultiSelectEnabled ? (
     <Portal name="track-multi-select-menu-portal">
