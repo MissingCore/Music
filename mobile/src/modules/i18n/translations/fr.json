@@ -46,7 +46,7 @@
     "entryHide": "Cacher `{{- name}}`",
     "entryEnable": "Activer `{{- name}}`",
     "entryDisable": "Désactiver `{{- name}}`",
-    "countSelected": null,
+    "countSelected": "{{count}} sélectionnés",
     "noContentFound": "Aucun {{- name}} trouvé."
   },
   "plural": {
@@ -69,7 +69,7 @@
     "create": "Créer",
     "delete": "Supprimer",
     "edit": "Modifier",
-    "clear": "Réinitialiser",
+    "clear": "Effacer",
     "reset": "Réinitialiser",
     "validation": {
       "unique": "Unique"
@@ -82,7 +82,7 @@
         "brief": "Vous avez rencontré une erreur inattendue."
       },
       "report": {
-        "title": "Rapporter le problème",
+        "title": "Signaler un problème",
         "brief": "Incluez une capture d'écran de cette page."
       }
     },
@@ -142,7 +142,7 @@
       }
     },
     "minAlbumLength": {
-      "title": "Filtre de Durée d'Album"
+      "title": "Durée minimale d'un album"
     },
     "miniplayerGestures": {
       "title": "Gestes du mini-lecteur",
@@ -165,7 +165,7 @@
       "title": "Langue",
       "extra": {
         "contribute": "Contribuer aux traductions",
-        "useLTR": "Utilisez la disposition LTR avec un langage RTL. Redémarrage requis.",
+        "useLTR": "Utilisez la mise en page LTR. Un redémarrage est nécessaire.",
         "translators": "Traducteurs"
       }
     },
@@ -208,7 +208,7 @@
     "playback": {
       "title": "Lecture",
       "extra": {
-        "delay": "Délai de lecture naturel",
+        "delay": "Délai de lecture",
         "options": "Options de Lecture",
         "pitch": "Hauteur de lecture",
         "speed": "Vitesse de lecture",

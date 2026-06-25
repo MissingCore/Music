@@ -8,7 +8,7 @@
     "folder": "Папка",
     "folders": "Папки",
     "genre": null,
-    "genres": null,
+    "genres": "Жанры",
     "playlist": "Плейлист",
     "playlists": "Плейлисты",
     "track": "Трек",
@@ -25,29 +25,29 @@
     "unFavorite": "Убрать из любимых",
     "favoriteTracks": "Любимые Треки",
     "all": "Всё",
-    "more": null,
+    "more": "Ещё",
     "home": "Главная",
     "settings": "Настройки",
     "upcoming": "Предстоящее",
     "playingFrom": "Играет с",
-    "instructions": null,
+    "instructions": "Инструкция",
     "disc": "Диск {{count}}"
   },
   "template": {
-    "entryAdd": null,
+    "entryAdd": "Добавить`{{- name}}`.",
     "entryAdded": "`{{- name}}` Добавлен.",
     "entryRemove": "Удалить `{{- name}}`.",
     "entryRemoved": "`{{- name}}` удалён.",
     "entryManage": null,
     "entrySeeMore": "Узнать больше о `{{- name}}`.",
     "notFound": "`{{- name}}` не существует.",
-    "entryMove": null,
+    "entryMove": "Переместить`{{- name}}`",
     "entryShow": "Показать `{{- name}}`",
     "entryHide": "Скрыть `{{- name}}`",
     "entryEnable": "Включить `{{- name}}`",
     "entryDisable": "Отключить `{{- name}}`",
-    "countSelected": null,
-    "noContentFound": null
+    "countSelected": "{{count}} Выбрать",
+    "noContentFound": "{{- name}} не найдено."
   },
   "plural": {
     "entry_one": "{{count}} запись",
@@ -65,10 +65,10 @@
     "unsaved": "У вас могут быть несохраненные изменения.",
     "stay": "Остаться",
     "leave": "Выйти",
-    "close": null,
-    "create": null,
-    "delete": null,
-    "edit": null,
+    "close": "Закрыть",
+    "create": "Создать",
+    "delete": "Удалить",
+    "edit": "Редактировать",
     "clear": "Очистить",
     "reset": "Сброс",
     "validation": {
@@ -96,7 +96,7 @@
       "noResults": "Результаты не найдены.",
       "noAlbums": "Альбомы не найдены.",
       "noArtists": "Артисты не найдены.",
-      "noGenres": null,
+      "noGenres": "Жанр не найден",
       "noPlaylists": "Плейлисты не найдены.",
       "noTracks": "Треки не найдены.",
       "noHiddenTracks": "Нет скрытых треков.",
@@ -111,7 +111,7 @@
         "downloadAPK": "Скачать последний APK",
         "updateGoogle": "Обновить через Play Store",
         "version": "Версия",
-        "checkUpdates": null,
+        "checkUpdates": "Проверить обновление",
         "rcNotification": "Предрелизные уведомления"
       }
     },
@@ -119,7 +119,7 @@
       "title": "Внешний вид"
     },
     "font": {
-      "title": null,
+      "title": "Шрифт",
       "extra": {
         "accent": "Шрифт",
         "primary": "Основной шрифт"

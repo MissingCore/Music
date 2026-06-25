@@ -45,6 +45,7 @@
 - [Artem Yakovlev (socutezyy)](https://crowdin.com/profile/socutezyy)
 - [Да Угу (Tytocka)](https://crowdin.com/profile/tytocka)
 - [fraffrog (zfraaaaa)](https://crowdin.com/profile/zfraaaaa)
+- [Julia (julia5656try)](https://crowdin.com/profile/julia5656try)
 
 ## [Türkçe] Turkish
 

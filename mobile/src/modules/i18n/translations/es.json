@@ -46,7 +46,7 @@
     "entryHide": "Ocultar `{{- name}}`",
     "entryEnable": "Activar `{{- name}}`",
     "entryDisable": "Desactivar `{{- name}}`",
-    "countSelected": null,
+    "countSelected": "{{count}} Seleccionado",
     "noContentFound": "No se encontró {{- name}}."
   },
   "plural": {
@@ -241,8 +241,8 @@
     "scanning": {
       "title": "Escaneo",
       "extra": {
-        "useMediaStore": null,
-        "useMediaStoreBrief": null
+        "useMediaStore": "🧪 Usar Escáner MediaStore",
+        "useMediaStoreBrief": "Muy rápido, pero puede no ser tan preciso. Requiere Android 11+."
       }
     },
     "rescan": {
