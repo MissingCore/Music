@@ -17,7 +17,7 @@ export const Links = {
   SpecificRelease: (version: string) => getReleaseNotesLink(version),
   Issues: `${GITHUB}/issues`,
   License: `${GITHUB}?tab=readme-ov-file#legal`,
-  PrivacyPolicy: "https://missingcore.vercel.app/music/privacy-policy",
+  PrivacyPolicy: "https://missingcore.cyanchill.com/music/privacy-policy",
   Translations: "https://crowdin.com/project/missingcore-music",
   AndroidAuto: `${GITHUB}/blob/dev/docs/android-auto.md`,
   LyricsProviders: `${GITHUB}/blob/dev/docs/lyrics.md#-experimental-lyrics-providers`,
