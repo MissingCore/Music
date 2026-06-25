@@ -132,6 +132,7 @@ export const LANGUAGES = [
       },
       { display: "Да Угу", link: "https://crowdin.com/profile/tytocka" },
       { display: "fraffrog", link: "https://crowdin.com/profile/zfraaaaa" },
+      { display: "Julia", link: "https://crowdin.com/profile/julia5656try" },
     ],
   },
   {
