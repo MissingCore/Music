@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import ar from "./ar.json";
 import ca from "./ca.json";
 import da from "./da.json";

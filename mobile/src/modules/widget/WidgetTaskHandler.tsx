@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { launchAppViaIntent } from "@missingcore/native-utils";
 import type { WidgetTaskHandlerProps } from "react-native-android-widget";
 

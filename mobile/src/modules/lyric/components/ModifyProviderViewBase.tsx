@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { z } from "zod/mini";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";

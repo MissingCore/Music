@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { useState } from "react";
 import AudioBrowser from "react-native-audio-browser";
 import { useAnimatedReaction, useSharedValue } from "react-native-reanimated";

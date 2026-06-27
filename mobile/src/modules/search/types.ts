@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import type { Album, FileNode } from "~/db/schema";
 
 import type { PlaylistSummary } from "~/data/playlist/types";

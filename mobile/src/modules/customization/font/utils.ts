@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { loadAsync as loadFontsAsync } from "expo-font";
 
 import { toLowerCase, removeFileExtension } from "~/utils/string";
