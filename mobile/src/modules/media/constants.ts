@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 export const FavoritesPlaylistKey = "favorites";
 
 /** Names of playlists a user can't create. */

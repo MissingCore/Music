@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { cn } from "~/lib/style";
 import type { ScrollViewProps } from "~/components/Base/ScrollView";
 import { ScrollView } from "~/components/Base/ScrollView";

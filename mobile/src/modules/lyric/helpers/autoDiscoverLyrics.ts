@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { getLyric } from "@missingcore/react-native-metadata-retriever";
 import { File } from "expo-file-system";
 

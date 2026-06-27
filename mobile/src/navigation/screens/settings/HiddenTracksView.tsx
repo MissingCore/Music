@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { useQuery } from "@tanstack/react-query";
 import { inArray } from "drizzle-orm";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";

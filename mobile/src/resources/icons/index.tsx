@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { createNanoIconSet } from "react-native-nano-icons";
 
 import type { AppColor } from "~/modules/customization/theme/core/constants";

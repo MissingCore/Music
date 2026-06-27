@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 /** Convert bit rate to kbit/s. */
 export function abbreviateBitRate(rate: number) {
   return `${(rate / 1000).toFixed(2).replace(".00", "")} kbit/s`;

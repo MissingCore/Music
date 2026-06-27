@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import navigationBarPlugin from "@zoontek/react-native-navigation-bar/expo";
 import type { ExpoConfig } from "expo/config";
 import fontPlugin from "expo-font/plugin";

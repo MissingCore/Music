@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { neatJSON } from "neatjson";
 import fs from "node:fs";
 import path from "node:path";

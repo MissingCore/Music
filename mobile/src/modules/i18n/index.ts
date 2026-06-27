@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
 

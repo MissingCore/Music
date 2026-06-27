@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import Animated from "react-native-reanimated";
 import { Path, Svg } from "react-native-svg";
 

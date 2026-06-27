@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { eq } from "drizzle-orm";
 
 import { albums, playlists } from "~/db/schema";

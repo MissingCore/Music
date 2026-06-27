@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import type { PositionChangeEvent } from "@lodev09/react-native-true-sheet";
 import { useMemo } from "react";
 import type { SharedValue } from "react-native-reanimated";

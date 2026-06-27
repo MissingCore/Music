@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import type { MediaImage } from "~/modules/media/components/MediaImage";
 
 export type PlaylistSummary = {

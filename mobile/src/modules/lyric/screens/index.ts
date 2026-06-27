@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import CreateLyricProvider from "./CreateProviderView";
 import CreateLyric from "./CreateView";
 import Lyric from "./CurrentView";

@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import type { Asset } from "@missingcore/native-utils/media";
 import { getAudioAssets } from "@missingcore/native-utils/media";
 import {

@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { and, eq, exists, isNull, like, sql } from "drizzle-orm";
 
 import { db } from "~/db";

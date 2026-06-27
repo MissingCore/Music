@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 /** Help track performance of code. */
 export class Stopwatch {
   laps: number[] = [];

@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { getActualPath } from "@missingcore/react-native-actual-path";
 import { toast } from "@missingcore/ui/toast";
 import { Directory } from "expo-file-system";

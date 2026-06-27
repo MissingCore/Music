@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { viewPreferenceStore } from "../store";
 import type { LayoutOption, ScreenSortOptions } from "../constants";
 import type { MutableViewLayout, MutableViewOrder } from "../types";

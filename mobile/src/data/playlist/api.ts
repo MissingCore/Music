@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { and, count, eq, getTableColumns, sql, sum } from "drizzle-orm";
 
 import { db } from "~/db";

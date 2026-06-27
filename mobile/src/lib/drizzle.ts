@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import type { ColumnsSelection, SQLWrapper } from "drizzle-orm";
 import { sql } from "drizzle-orm";
 import { toSnakeCase } from "drizzle-orm/casing";

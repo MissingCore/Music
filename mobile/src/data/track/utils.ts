@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 /**
  * Merge 2 lists of tracks. Tracks that appear in both lists will result
  * in the latest instance of the track being merged so that there'll be

@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { playbackStore } from "~/stores/Playback/store";
 import { getArtistsString } from "~/data/artist/utils";
 
