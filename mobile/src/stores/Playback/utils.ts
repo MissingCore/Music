@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import i18next from "~/modules/i18n";
 import { getAlbumDetails, getAlbumTracks } from "~/data/album/api";
 import { getSortedArtistTracks } from "~/data/artist/api";

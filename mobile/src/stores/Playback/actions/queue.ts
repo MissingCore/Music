@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { toast } from "@missingcore/ui/toast";
 import { createId } from "@paralleldrive/cuid2";
 import AudioBrowser from "react-native-audio-browser";

@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { getMetadata } from "@missingcore/react-native-metadata-retriever";
 import type { NavigationProp } from "@react-navigation/native";

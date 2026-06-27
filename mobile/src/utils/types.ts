@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 /** Get a partial of an object with some required fields. */
 export type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>;
 

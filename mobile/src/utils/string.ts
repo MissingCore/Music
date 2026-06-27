@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 /** Ensure a path ends with a trailing forward slash. */
 export function addTrailingSlash(path: string) {
   return path.endsWith("/") ? path : `${path}/`;
