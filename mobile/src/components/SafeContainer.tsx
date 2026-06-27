@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import type { ViewProps } from "react-native";
 import { View } from "react-native";
 import type { AnimatedProps } from "react-native-reanimated";

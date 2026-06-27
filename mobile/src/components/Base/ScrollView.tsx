@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { memo, useRef } from "react";
 import type { KeyboardAwareScrollViewProps } from "react-native-keyboard-controller";
 import { KeyboardAwareScrollView as RawKeyboardAwareScrollView } from "react-native-keyboard-controller";

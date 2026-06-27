@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import type { ParseKeys } from "i18next";
 import { useState } from "react";
 import { Modal as RNModal, View } from "react-native";

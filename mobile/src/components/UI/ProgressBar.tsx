@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { useState } from "react";
 import { View } from "react-native";
 import Animated from "react-native-reanimated";
