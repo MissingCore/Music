@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import AsyncStorage from "expo-sqlite/kv-store";
 import type { StateCreator } from "zustand";
 import type { PersistOptions } from "zustand/middleware";
