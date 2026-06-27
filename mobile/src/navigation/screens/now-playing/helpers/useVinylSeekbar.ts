@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { useAtomValue, useSetAtom } from "jotai";
 import { useCallback, useMemo, useRef } from "react";
 import { usePanGesture } from "react-native-gesture-handler";

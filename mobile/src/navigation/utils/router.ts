@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { createNavigationContainerRef } from "@react-navigation/native";
 
 import { ReservedPlaylists } from "~/modules/media/constants";

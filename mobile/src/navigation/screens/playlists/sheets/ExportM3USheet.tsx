@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { toast } from "@missingcore/ui/toast";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";

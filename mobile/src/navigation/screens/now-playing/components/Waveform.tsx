@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { computeAmplitude } from "@missingcore/react-native-audio-analyzer";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { View, useWindowDimensions } from "react-native";

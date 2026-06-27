@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { DetachedSheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { SearchEngine } from "~/modules/search/components/SearchEngine";
