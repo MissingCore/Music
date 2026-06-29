@@ -30,6 +30,7 @@ import { AppCleanUp } from "~/modules/scanning/helpers/cleanup";
 import { router } from "~/navigation/utils/router";
 
 import {
+  getImageUri,
   ImageDirectory,
   PlaceholderDirectory,
   PlaceholderImageFile,
@@ -287,7 +288,7 @@ async function initServices() {
             item.artistName ||
             i18next.t("plural.track", { count: item.trackCount }),
           artwork:
-            (Array.isArray(artwork) ? artwork[0] : artwork) ||
+            getImageUri(Array.isArray(artwork) ? artwork[0] : artwork) ||
             PlaceholderImageFile,
         };
       }),
@@ -315,7 +316,7 @@ async function initServices() {
           src: getSafeUri(track.uri),
           title: track.name,
           artist: getArtistsString(track.artists),
-          artwork: track.artwork || PlaceholderImageFile,
+          artwork: getImageUri(track.artwork) || PlaceholderImageFile,
           duration: track.duration,
           groupTitle:
             hasDiscLabel && typeof track.disc === "number"

@@ -10,6 +10,7 @@ import { Icon } from "~/resources/icons";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { cn } from "~/lib/style";
+import { getImageUri } from "~/lib/file-system";
 import type { MediaType } from "~/stores/Playback/types";
 import { ReservedNames } from "../constants";
 
@@ -96,7 +97,7 @@ export function getUsedImage(args: {
     if (args.type === "artist") return FaceGlyph;
     return MusicGlyph;
   }
-  return args.source;
+  return getImageUri(args.source);
 }
 
 /** Only used to represent a playlist. */
@@ -116,7 +117,7 @@ function CollageImage({
       {sources.slice(0, 4).map((source, idx) => (
         <Image
           key={idx}
-          source={source}
+          source={getImageUri(source)}
           placeholder={noPlaceholder ? undefined : MusicGlyph}
           className="size-1/2"
         />
