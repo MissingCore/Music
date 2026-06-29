@@ -1,7 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { inArray, isNotNull, lt } from "drizzle-orm";
+import { inArray, isNotNull, lt, notInArray } from "drizzle-orm";
 import { Directory } from "expo-file-system";
 
 import { db } from "~/db";
@@ -10,6 +10,7 @@ import {
   albumsToArtists,
   artists,
   genres,
+  hashedImages,
   hiddenTracks,
   invalidTracks,
   playedMediaLists,
@@ -21,7 +22,7 @@ import { RECENT_RANGE_MS } from "~/data/recent/api";
 import { TrackRelationTables } from "~/data/track/constants";
 import { Queue } from "~/stores/Playback/actions";
 
-import { ImageDirectory, deleteImage } from "~/lib/file-system";
+import { ImageDirectory, deleteImage, getImageUri } from "~/lib/file-system";
 import { batch } from "~/utils/promise";
 
 /** Helper functions for cleaning up content stored by the app. */
@@ -54,6 +55,14 @@ export const AppCleanUp = {
 
     // Artwork that's currently being used.
     const usedArtwork = new Set(usedUris);
+    const usedHashes = new Set<string>();
+    for (const hash of Array.from(usedArtwork)) {
+      if (hash.startsWith("file://")) continue;
+      usedHashes.add(hash);
+      // Add derived image URI from hash to list of used artwork.
+      usedArtwork.add(getImageUri(hash) || hash);
+    }
+
     // Artwork stored on-device.
     const storedArtworkURIs = new Set(
       // There shouldn't be any directories in the "Image Directory".
@@ -69,6 +78,16 @@ export const AppCleanUp = {
         deletedCount += isFulfilled.length;
       },
     });
+
+    // Delete unused `hashImages` entries.
+    if (usedHashes.size > 0) {
+      await db
+        .delete(hashedImages)
+        .where(notInArray(hashedImages.hash, Array.from(usedHashes)));
+    } else {
+      // eslint-disable-next-line drizzle/enforce-delete-with-where
+      await db.delete(hashedImages);
+    }
 
     console.log(`Deleted ${deletedCount} unlinked images.`);
   },
