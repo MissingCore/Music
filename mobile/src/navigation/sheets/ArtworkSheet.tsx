@@ -136,12 +136,15 @@ function BaseArtworkSheetContent(props: {
     width - 96 > height - 256 ? height - 256 : width - 96,
   );
 
-  const onSubmit = async (artwork: Promise<string> | null) => {
+  const onSubmit = async (artwork: Promise<string | undefined> | null) => {
     setDisabled(true);
     try {
       await wait(1);
-      await props.onUpdateArtwork(await artwork);
-      await props.onSuccess();
+      const res = await artwork;
+      if (res !== undefined) {
+        await props.onUpdateArtwork(res);
+        await props.onSuccess();
+      }
     } catch {}
     setDisabled(false);
   };
