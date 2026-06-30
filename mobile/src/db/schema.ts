@@ -424,4 +424,6 @@ export type PlayedMediaList = Prettify<
 export type WaveformSample = InferSelectModel<typeof waveformSamples>;
 
 export type CustomFont = InferSelectModel<typeof customFonts>;
+
+export type HashedImage = InferSelectModel<typeof hashedImages>;
 //#endregion

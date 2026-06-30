@@ -3,13 +3,13 @@
 
 import {
   SaveFormat,
-  saveArtwork,
+  saveHashedArtwork,
 } from "@missingcore/react-native-metadata-retriever";
-import { createId } from "@paralleldrive/cuid2";
 import { eq, inArray, isNotNull, or } from "drizzle-orm";
 
 import { db } from "~/db";
-import { albums, tracks } from "~/db/schema";
+import type { HashedImage } from "~/db/schema";
+import { albums, hashedImages, tracks } from "~/db/schema";
 
 import { getAlbumsSummary, updateAlbum } from "~/data/album/api";
 import { getTracks, updateTrack } from "~/data/track/api";
@@ -70,12 +70,16 @@ export async function findAndSaveArtwork() {
   let checkedFiles = 0;
   let prevRemainder = 0;
 
+  const prevHashedImages = await db.query.hashedImages.findMany();
+  const knownHashes = new Set(prevHashedImages.map((h) => h.hash));
+
   // Get artwork for albums.
   for (const [albumId, values] of Object.entries(albumTracks)) {
     await saveSinglesArtwork(
       values,
-      async ({ trackId, artworkUri }) => {
-        const data = { embeddedArtwork: artworkUri };
+      knownHashes,
+      async ({ trackId, hashedImage }) => {
+        const data = { embeddedArtwork: hashedImage.hash };
         await updateAlbum(albumId, data);
         if (!optimizedImageSave) await updateTrack(trackId, data);
         newArtworkCount++;
@@ -94,8 +98,9 @@ export async function findAndSaveArtwork() {
   // Get artwork for tracks.
   await saveSinglesArtwork(
     singles,
-    async ({ artworkUri, trackId }) => {
-      await updateTrack(trackId, { embeddedArtwork: artworkUri });
+    knownHashes,
+    async ({ hashedImage, trackId }) => {
+      await updateTrack(trackId, { embeddedArtwork: hashedImage.hash });
       newArtworkCount++;
     },
     {
@@ -114,21 +119,27 @@ export async function findAndSaveArtwork() {
 
 //#region Helpers
 /**
- * Create a uri associated with the artwork on the track.
+ * Returns the hash + uri associated with the track's embedded artwork.
  *
  * **Note:** Will not throw an error.
  */
-export async function getArtworkUri(uri: string) {
+export async function getArtworkUri(uri: string, knownHashes: Set<string>) {
   try {
-    const artworkUri = await saveArtwork(uri, {
+    const hashedImage = await saveHashedArtwork(uri, {
+      knownHashes: Array.from(knownHashes),
+      saveDirectory: ImageDirectory,
       compress: 0.85,
       format: SaveFormat.WEBP,
-      saveUri: `${ImageDirectory}/${createId()}.webp`,
     });
-    return { error: false, uri: artworkUri };
+    if (hashedImage) {
+      if (!knownHashes.has(hashedImage.hash))
+        await db.insert(hashedImages).values(hashedImage).onConflictDoNothing();
+      knownHashes.add(hashedImage.hash);
+    }
+    return { error: false, hashedImage };
   } catch {
     console.log(`[Error] Failed to save image for "${uri}".`);
-    return { error: true, uri: null };
+    return { error: true, hashedImage: null };
   }
 }
 //#endregion
@@ -137,7 +148,11 @@ export async function getArtworkUri(uri: string) {
 /** Iterate over a list of tracks, finding and saving its artwork. */
 async function saveSinglesArtwork(
   singles: PartialTrack[],
-  onSave: (info: { artworkUri: string; trackId: string }) => Promise<void>,
+  knownHashes: Set<string>,
+  onSave: (info: {
+    hashedImage: HashedImage;
+    trackId: string;
+  }) => Promise<void>,
   options?: { endEarly?: boolean; onEndIteration?: VoidFunction },
 ) {
   for (const { id: trackId, uri } of singles) {
@@ -145,9 +160,9 @@ async function saveSinglesArtwork(
     // physically attempting to save the artwork in case an OOM error occurs,
     // in which the app will essentially become "bricked".
     await updateTrack(trackId, { fetchedArt: true });
-    const { uri: artworkUri } = await getArtworkUri(uri);
-    if (artworkUri) {
-      await onSave({ artworkUri, trackId });
+    const { hashedImage } = await getArtworkUri(uri, knownHashes);
+    if (hashedImage) {
+      await onSave({ hashedImage, trackId });
       if (options?.endEarly) return;
     }
     if (options?.onEndIteration) options.onEndIteration();
