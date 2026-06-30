@@ -103,7 +103,7 @@ export async function findAndSaveArtwork() {
   // Get artwork for albums.
   const skipAlbumUpdates = new Set(idsWithCover);
   for (const [albumId, values] of Object.entries(albumTracks)) {
-    const batchedTrackUpdates: UpsertedTrack[] = [];
+    const batchedTrackUpdates: EmbeddedTrackArtwork[] = [];
 
     await saveSinglesArtwork(
       values,
@@ -125,7 +125,7 @@ export async function findAndSaveArtwork() {
       { endEarly: optimizedImageSave, markFetched: hasOOMed },
     );
 
-    await upsertTracks(batchedTrackUpdates);
+    await upsertEmbeddedTrackArtwork(batchedTrackUpdates);
 
     // Prevent excessive `setState` on Zustand store which may cause an
     // "Warning: Maximum update depth exceeded.".
@@ -139,7 +139,7 @@ export async function findAndSaveArtwork() {
   // Get artwork for tracks.
   const unsavedTrackArtworkChunks = chunkArray(singles, 50);
   for (const trackChunks of unsavedTrackArtworkChunks) {
-    const batchedTrackUpdates: UpsertedTrack[] = [];
+    const batchedTrackUpdates: EmbeddedTrackArtwork[] = [];
 
     await saveSinglesArtwork(
       trackChunks,
@@ -161,7 +161,7 @@ export async function findAndSaveArtwork() {
       },
     );
 
-    await upsertTracks(batchedTrackUpdates);
+    await upsertEmbeddedTrackArtwork(batchedTrackUpdates);
   }
 
   //? Reset attempts & mark all tracks as having their artworks found.
@@ -229,10 +229,10 @@ async function saveSinglesArtwork(
   }
 }
 
-type UpsertedTrack = { id: string; embeddedArtwork: string };
+type EmbeddedTrackArtwork = { id: string; embeddedArtwork: string };
 
 /** Updates the `embeddedArtwork` & `fetchedArt` status of multiple tracks. */
-async function upsertTracks(entries: UpsertedTrack[]) {
+async function upsertEmbeddedTrackArtwork(entries: EmbeddedTrackArtwork[]) {
   if (entries.length === 0) return;
 
   // Ref: https://orm.drizzle.team/docs/sqlite/guides/update-many-with-different-value
