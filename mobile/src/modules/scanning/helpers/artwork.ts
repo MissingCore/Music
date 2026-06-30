@@ -8,7 +8,6 @@ import {
 import { eq, inArray, isNotNull, or } from "drizzle-orm";
 
 import { db } from "~/db";
-import type { HashedImage } from "~/db/schema";
 import { albums, hashedImages, tracks } from "~/db/schema";
 
 import { getAlbumsSummary, updateAlbum } from "~/data/album/api";
@@ -78,8 +77,8 @@ export async function findAndSaveArtwork() {
     await saveSinglesArtwork(
       values,
       knownHashes,
-      async ({ trackId, hashedImage }) => {
-        const data = { embeddedArtwork: hashedImage.hash };
+      async ({ trackId, artworkHash }) => {
+        const data = { embeddedArtwork: artworkHash };
         await updateAlbum(albumId, data);
         if (!optimizedImageSave) await updateTrack(trackId, data);
         newArtworkCount++;
@@ -99,8 +98,8 @@ export async function findAndSaveArtwork() {
   await saveSinglesArtwork(
     singles,
     knownHashes,
-    async ({ hashedImage, trackId }) => {
-      await updateTrack(trackId, { embeddedArtwork: hashedImage.hash });
+    async ({ artworkHash, trackId }) => {
+      await updateTrack(trackId, { embeddedArtwork: artworkHash });
       newArtworkCount++;
     },
     {
@@ -119,11 +118,11 @@ export async function findAndSaveArtwork() {
 
 //#region Helpers
 /**
- * Returns the hash + uri associated with the track's embedded artwork.
+ * Returns the hash associated with the track's embedded artwork.
  *
  * **Note:** Will not throw an error.
  */
-export async function getArtworkUri(uri: string, knownHashes: Set<string>) {
+export async function getArtworkHash(uri: string, knownHashes: Set<string>) {
   try {
     const hashedImage = await saveHashedArtwork(uri, {
       knownHashes: Array.from(knownHashes),
@@ -136,10 +135,10 @@ export async function getArtworkUri(uri: string, knownHashes: Set<string>) {
         await db.insert(hashedImages).values(hashedImage).onConflictDoNothing();
       knownHashes.add(hashedImage.hash);
     }
-    return { error: false, hashedImage };
+    return { error: false, artworkHash: hashedImage?.hash || null };
   } catch {
     console.log(`[Error] Failed to save image for "${uri}".`);
-    return { error: true, hashedImage: null };
+    return { error: true, artworkHash: null };
   }
 }
 //#endregion
@@ -149,10 +148,7 @@ export async function getArtworkUri(uri: string, knownHashes: Set<string>) {
 async function saveSinglesArtwork(
   singles: PartialTrack[],
   knownHashes: Set<string>,
-  onSave: (info: {
-    hashedImage: HashedImage;
-    trackId: string;
-  }) => Promise<void>,
+  onSave: (info: { artworkHash: string; trackId: string }) => Promise<void>,
   options?: { endEarly?: boolean; onEndIteration?: VoidFunction },
 ) {
   for (const { id: trackId, uri } of singles) {
@@ -160,9 +156,9 @@ async function saveSinglesArtwork(
     // physically attempting to save the artwork in case an OOM error occurs,
     // in which the app will essentially become "bricked".
     await updateTrack(trackId, { fetchedArt: true });
-    const { hashedImage } = await getArtworkUri(uri, knownHashes);
-    if (hashedImage) {
-      await onSave({ hashedImage, trackId });
+    const { artworkHash } = await getArtworkHash(uri, knownHashes);
+    if (artworkHash) {
+      await onSave({ artworkHash, trackId });
       if (options?.endEarly) return;
     }
     if (options?.onEndIteration) options.onEndIteration();

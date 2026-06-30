@@ -48,13 +48,6 @@ export async function createImageDirectory() {
   }
 }
 
-/** Helper to contruct an image URI from a hash. */
-export function getImageUri(uri: Maybe<string>) {
-  if (typeof uri !== "string") return null;
-  if (uri.startsWith("file://")) return uri;
-  return `${ImageDirectory}/${uri}.webp`;
-}
-
 /** Helper to delete an internal image file if it's defined. */
 export function deleteImage(uri: Maybe<string>) {
   if (typeof uri !== "string" || !uri.startsWith(ImageDirectory)) return;
@@ -62,6 +55,13 @@ export function deleteImage(uri: Maybe<string>) {
   // require special permissions.
   const file = new File(uri);
   if (file.exists) file.delete();
+}
+
+/** Helper to contruct an image URI from a hash. */
+export function getImageUri(uri: Maybe<string>) {
+  if (typeof uri !== "string") return null;
+  if (uri.startsWith("file://")) return uri;
+  return `${ImageDirectory}/${uri}.webp`;
 }
 
 /** Easily join path components together to create a file. */
