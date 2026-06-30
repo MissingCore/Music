@@ -5,7 +5,9 @@ import {
   SaveFormat,
   saveHashedArtwork,
 } from "@missingcore/react-native-metadata-retriever";
-import { eq, inArray, isNotNull, or } from "drizzle-orm";
+import type { SQL } from "drizzle-orm";
+import { eq, inArray, isNotNull, or, sql } from "drizzle-orm";
+import AsyncStorage from "expo-sqlite/kv-store";
 
 import { db } from "~/db";
 import { albums, hashedImages, tracks } from "~/db/schema";
@@ -18,7 +20,29 @@ import { scanningProgressStore } from "../ScanningProgress";
 
 import { ImageDirectory } from "~/lib/file-system";
 import { Stopwatch } from "~/utils/debug";
+import { chunkArray } from "~/utils/object";
 import { BATCH_PRESETS } from "~/utils/promise";
+
+//#region Attempts Tracking
+/**
+ * A "bail out" in the situation where we encounter an OOM error while
+ * batching requests.
+ */
+const Attempts = {
+  key: "ARTWORK_SAVING_ATTEMPTS",
+  /** Increment & return the amount of artwork save attempts. */
+  async increment(): Promise<number> {
+    const _count = await AsyncStorage.getItem(this.key);
+    const count = (Number(_count) || 0) + 1;
+    await AsyncStorage.setItem(this.key, String(count));
+    return count;
+  },
+  /** Reset the number of artwork save attempts. */
+  async reset() {
+    await AsyncStorage.removeItem(this.key);
+  },
+};
+//#endregion
 
 type PartialTrack = {
   id: string;
@@ -32,12 +56,16 @@ export async function findAndSaveArtwork() {
   const { optimizedImageSave } = preferenceStore.getState();
   const stopwatch = new Stopwatch();
 
+  const saveAttempts = await Attempts.increment();
+  const hasOOMed = saveAttempts > 2;
+
   // Ensure we don't unnecessarily search for artwork.
+  const albumsWithCovers = await getAlbumsSummary(false, [
+    isNotNull(albums.artwork),
+  ]);
+  const idsWithCover = albumsWithCovers.map(({ id }) => id);
+
   if (optimizedImageSave) {
-    const albumsWithCovers = await getAlbumsSummary(false, [
-      isNotNull(albums.artwork),
-    ]);
-    const idsWithCover = albumsWithCovers.map(({ id }) => id);
     await db
       .update(tracks)
       .set({ fetchedArt: true })
@@ -73,18 +101,32 @@ export async function findAndSaveArtwork() {
   const knownHashes = new Set(prevHashedImages.map((h) => h.hash));
 
   // Get artwork for albums.
+  const skipAlbumUpdates = new Set(idsWithCover);
   for (const [albumId, values] of Object.entries(albumTracks)) {
+    const batchedTrackUpdates: UpsertedTrack[] = [];
+
     await saveSinglesArtwork(
       values,
       knownHashes,
       async ({ trackId, artworkHash }) => {
         const data = { embeddedArtwork: artworkHash };
-        await updateAlbum(albumId, data);
-        if (!optimizedImageSave) await updateTrack(trackId, data);
+        // Have album image be the 1st image found.
+        if (!skipAlbumUpdates.has(albumId)) {
+          skipAlbumUpdates.add(albumId);
+          await updateAlbum(albumId, data);
+        }
+        // Prioritize batching track updates unless we OOMed 2 times.
+        if (!optimizedImageSave) {
+          if (hasOOMed) await updateTrack(trackId, data);
+          else batchedTrackUpdates.push({ id: trackId, ...data });
+        }
         newArtworkCount++;
       },
-      { endEarly: optimizedImageSave },
+      { endEarly: optimizedImageSave, markFetched: hasOOMed },
     );
+
+    await upsertTracks(batchedTrackUpdates);
+
     // Prevent excessive `setState` on Zustand store which may cause an
     // "Warning: Maximum update depth exceeded.".
     prevRemainder = checkedFiles % BATCH_PRESETS.PROGRESS;
@@ -95,22 +137,40 @@ export async function findAndSaveArtwork() {
   }
 
   // Get artwork for tracks.
-  await saveSinglesArtwork(
-    singles,
-    knownHashes,
-    async ({ artworkHash, trackId }) => {
-      await updateTrack(trackId, { embeddedArtwork: artworkHash });
-      newArtworkCount++;
-    },
-    {
-      onEndIteration: () => {
-        checkedFiles++;
-        if (checkedFiles % BATCH_PRESETS.PROGRESS === 0) {
-          scanningProgressStore.setState({ checkedArtwork: checkedFiles });
-        }
+  const unsavedTrackArtworkChunks = chunkArray(singles, 50);
+  for (const trackChunks of unsavedTrackArtworkChunks) {
+    const batchedTrackUpdates: UpsertedTrack[] = [];
+
+    await saveSinglesArtwork(
+      trackChunks,
+      knownHashes,
+      async ({ artworkHash, trackId }) => {
+        const data = { embeddedArtwork: artworkHash };
+        if (hasOOMed) await updateTrack(trackId, data);
+        else batchedTrackUpdates.push({ id: trackId, ...data });
+        newArtworkCount++;
       },
-    },
-  );
+      {
+        markFetched: hasOOMed,
+        onEndIteration: () => {
+          checkedFiles++;
+          if (checkedFiles % BATCH_PRESETS.PROGRESS === 0) {
+            scanningProgressStore.setState({ checkedArtwork: checkedFiles });
+          }
+        },
+      },
+    );
+
+    await upsertTracks(batchedTrackUpdates);
+  }
+
+  //? Reset attempts & mark all tracks as having their artworks found.
+  await Attempts.reset();
+  await db
+    .update(tracks)
+    .set({ fetchedArt: true })
+    .where(eq(tracks.fetchedArt, false));
+
   console.log(
     `Finished saving ${newArtworkCount} new cover images in ${stopwatch.lapTime()}.`,
   );
@@ -149,13 +209,17 @@ async function saveSinglesArtwork(
   singles: PartialTrack[],
   knownHashes: Set<string>,
   onSave: (info: { artworkHash: string; trackId: string }) => Promise<void>,
-  options?: { endEarly?: boolean; onEndIteration?: VoidFunction },
+  options?: {
+    endEarly?: boolean;
+    markFetched?: boolean;
+    onEndIteration?: VoidFunction;
+  },
 ) {
   for (const { id: trackId, uri } of singles) {
     // Indicate we attempted to find artwork for a track. Do this before
     // physically attempting to save the artwork in case an OOM error occurs,
     // in which the app will essentially become "bricked".
-    await updateTrack(trackId, { fetchedArt: true });
+    if (options?.markFetched) await updateTrack(trackId, { fetchedArt: true });
     const { artworkHash } = await getArtworkHash(uri, knownHashes);
     if (artworkHash) {
       await onSave({ artworkHash, trackId });
@@ -163,5 +227,36 @@ async function saveSinglesArtwork(
     }
     if (options?.onEndIteration) options.onEndIteration();
   }
+}
+
+type UpsertedTrack = { id: string; embeddedArtwork: string };
+
+/** Updates the `embeddedArtwork` & `fetchedArt` status of multiple tracks. */
+async function upsertTracks(entries: UpsertedTrack[]) {
+  if (entries.length === 0) return;
+
+  // Ref: https://orm.drizzle.team/docs/sqlite/guides/update-many-with-different-value
+  const sqlChunks: SQL[] = [];
+
+  sqlChunks.push(sql`(case`);
+  for (const entry of entries) {
+    sqlChunks.push(
+      sql`when ${tracks.id} = ${entry.id} then ${entry.embeddedArtwork}`,
+    );
+  }
+  sqlChunks.push(sql`end)`);
+
+  await db
+    .update(tracks)
+    .set({
+      embeddedArtwork: sql.join(sqlChunks, sql.raw(" ")),
+      fetchedArt: true,
+    })
+    .where(
+      inArray(
+        tracks.id,
+        entries.map((entry) => entry.id),
+      ),
+    );
 }
 //#endregion
