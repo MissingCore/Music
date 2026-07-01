@@ -29,8 +29,8 @@ import { batch } from "~/utils/promise";
 export const AppCleanUp = {
   /** Clean up images stored by the app but are no longer referenced.  */
   async images() {
-    // Get all the uris of images saved in the database.
-    const usedUris = (
+    // Get all the hashes & uris of images saved in the database.
+    const _usedArtwork = (
       await Promise.all([
         ...[artists, genres, playlists].map((schema) =>
           db
@@ -54,13 +54,13 @@ export const AppCleanUp = {
       .map(({ artwork }) => artwork!);
 
     // Artwork that's currently being used.
-    const usedArtwork = new Set(usedUris);
+    const usedArtwork = new Set(_usedArtwork);
     const usedHashes = new Set<string>();
-    for (const hash of Array.from(usedArtwork)) {
-      if (hash.startsWith("file://")) continue;
-      usedHashes.add(hash);
-      // Add derived image URI from hash to list of used artwork.
-      usedArtwork.add(getImageUri(hash) || hash);
+    const usedUris = new Set<string>();
+
+    for (const artworkKey of usedArtwork) {
+      if (!artworkKey.startsWith("file://")) usedHashes.add(artworkKey);
+      usedUris.add(getImageUri(artworkKey) || artworkKey);
     }
 
     // Artwork stored on-device.
@@ -72,7 +72,7 @@ export const AppCleanUp = {
     // Get & delete all unused images.
     let deletedCount = 0;
     await batch({
-      data: Array.from(storedArtworkURIs.difference(usedArtwork)),
+      data: Array.from(storedArtworkURIs.difference(usedUris)),
       callback: (imgUri) => deleteImage(imgUri),
       onBatchComplete: (isFulfilled) => {
         deletedCount += isFulfilled.length;
