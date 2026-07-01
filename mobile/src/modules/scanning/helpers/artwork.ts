@@ -188,7 +188,7 @@ export async function getArtworkHash(uri: string, knownHashes: Set<string>) {
       knownHashes: Array.from(knownHashes),
       saveDirectory: ImageDirectory,
       compress: 0.85,
-      format: SaveFormat.WEBP,
+      format: SaveFormat.JPEG,
     });
     if (hashedImage) {
       if (!knownHashes.has(hashedImage.hash))

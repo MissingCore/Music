@@ -61,7 +61,7 @@ export function deleteImage(uri: Maybe<string>) {
 export function getImageUri(uri: Maybe<string>) {
   if (typeof uri !== "string") return null;
   if (uri.startsWith("file://")) return uri;
-  return `${ImageDirectory}/${uri}.webp`;
+  return `${ImageDirectory}/${uri}.jpg`;
 }
 
 /** Easily join path components together to create a file. */
@@ -137,13 +137,13 @@ async function saveImage({ hash, uri }: { hash: string; uri: string }) {
   // Apply any manipulations (we did none).
   const img = await ImageManipulator.manipulate(uri).renderAsync();
   // Saves image to cache directory.
-  const { uri: webpUri } = await img.saveAsync({
+  const { uri: imgUri } = await img.saveAsync({
     compress: 0.85, // Preserve 85% of original image quality.
-    format: SaveFormat.WEBP,
+    format: SaveFormat.JPEG,
   });
   // Move cached image to final location.
-  const finalLocation = new File(webpUri);
+  const finalLocation = new File(imgUri);
   await finalLocation.move(new Directory(ImageDirectory));
-  finalLocation.rename(`${hash}.webp`);
+  finalLocation.rename(`${hash}.jpg`);
   return finalLocation.uri;
 }
