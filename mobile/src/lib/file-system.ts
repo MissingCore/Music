@@ -7,6 +7,9 @@ import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import { launchImageLibraryAsync } from "expo-image-picker";
 import { Image } from "react-native";
 
+import { db } from "~/db";
+import { hashedImages } from "~/db/schema";
+
 import i18next from "~/modules/i18n";
 
 import { addTrailingSlash, removeLeadingSlash } from "~/utils/string";
@@ -54,6 +57,13 @@ export function deleteImage(uri: Maybe<string>) {
   if (file.exists) file.delete();
 }
 
+/** Helper to contruct an image URI from a hash. */
+export function getImageUri(uri: Maybe<string>) {
+  if (typeof uri !== "string") return null;
+  if (uri.startsWith("file://")) return uri;
+  return `${ImageDirectory}/${uri}.webp`;
+}
+
 /** Easily join path components together to create a file. */
 export function joinPaths(dirPath: string, relativeFilePath: string) {
   // Ensure `dirPath` starts with `file:///` and ends with a trailing slash.
@@ -95,16 +105,35 @@ export async function pickImage() {
   if (result.canceled) throw new Error("Action cancelled.");
   if (!result.assets[0]) throw new Error("Nothing selected.");
   const cachedImg = new File(result.assets[0].uri);
-  const fileUri = await saveImage(cachedImg.uri);
+
+  //! We require a MD5 hash.
+  const pickedImgHash = cachedImg.md5;
+  if (!pickedImgHash) return undefined;
+
+  //? Check to see if we've previously saved this image.
+  const storedHashedImg = await db.query.hashedImages.findFirst({
+    where: (fields, { eq }) => eq(fields.hash, pickedImgHash),
+  });
+  if (storedHashedImg) {
+    cachedImg.delete();
+    return storedHashedImg.hash;
+  }
+
+  //? Optimize & save image, then create `hashedImages` entry.
+  await saveImage({ hash: pickedImgHash, uri: cachedImg.uri });
+  await db
+    .insert(hashedImages)
+    .values({ hash: pickedImgHash, uri: getImageUri(pickedImgHash)! })
+    .onConflictDoNothing();
   cachedImg.delete();
-  return fileUri;
+  return pickedImgHash;
 }
 
 /**
  * Helper to save image to device. `uri` can be an actual uri or a
  * base64 image string.
  */
-export async function saveImage(uri: string) {
+async function saveImage({ hash, uri }: { hash: string; uri: string }) {
   // Apply any manipulations (we did none).
   const img = await ImageManipulator.manipulate(uri).renderAsync();
   // Saves image to cache directory.
@@ -115,5 +144,6 @@ export async function saveImage(uri: string) {
   // Move cached image to final location.
   const finalLocation = new File(webpUri);
   await finalLocation.move(new Directory(ImageDirectory));
+  finalLocation.rename(`${hash}.webp`);
   return finalLocation.uri;
 }

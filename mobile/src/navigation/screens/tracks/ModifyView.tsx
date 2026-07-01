@@ -26,7 +26,7 @@ import { updateTrack } from "~/data/track/api";
 import { useTrack, useTrackGenres } from "~/data/track/queries";
 import { Resynchronize } from "~/stores/Playback/actions";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
-import { getArtworkUri } from "~/modules/scanning/helpers/artwork";
+import { getArtworkHash } from "~/modules/scanning/helpers/artwork";
 import { AppCleanUp } from "~/modules/scanning/helpers/cleanup";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
@@ -275,7 +275,11 @@ async function onEditTrack(data: TrackMetadata) {
       ...genres.map((name) => createGenres([{ name }])),
     ]);
 
-    const { uri: artworkUri } = await getArtworkUri(uri);
+    const prevHashedImages = await db.query.hashedImages.findMany();
+    const { artworkHash } = await getArtworkHash(
+      uri,
+      new Set(prevHashedImages.map((h) => h.hash)),
+    );
 
     // Add new album to the database.
     let albumId: string | null = null;
@@ -284,13 +288,13 @@ async function onEditTrack(data: TrackMetadata) {
         {
           name: updatedAlbum.name,
           artistsKey: updatedAlbum.artistsKey,
-          embeddedArtwork: artworkUri,
+          embeddedArtwork: artworkHash,
         },
       ]);
       if (newAlbum) albumId = newAlbum.id;
     }
     if (!albumId || !preferenceStore.getState().optimizedImageSave) {
-      updatedTrack.embeddedArtwork = artworkUri;
+      updatedTrack.embeddedArtwork = artworkHash;
     }
 
     // Replace old artist relations.

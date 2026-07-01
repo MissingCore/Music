@@ -1,7 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { inArray, isNotNull, lt } from "drizzle-orm";
+import { inArray, isNotNull, lt, notInArray } from "drizzle-orm";
 import { Directory } from "expo-file-system";
 
 import { db } from "~/db";
@@ -10,6 +10,7 @@ import {
   albumsToArtists,
   artists,
   genres,
+  hashedImages,
   hiddenTracks,
   invalidTracks,
   playedMediaLists,
@@ -21,15 +22,15 @@ import { RECENT_RANGE_MS } from "~/data/recent/api";
 import { TrackRelationTables } from "~/data/track/constants";
 import { Queue } from "~/stores/Playback/actions";
 
-import { ImageDirectory, deleteImage } from "~/lib/file-system";
+import { ImageDirectory, deleteImage, getImageUri } from "~/lib/file-system";
 import { batch } from "~/utils/promise";
 
 /** Helper functions for cleaning up content stored by the app. */
 export const AppCleanUp = {
   /** Clean up images stored by the app but are no longer referenced.  */
   async images() {
-    // Get all the uris of images saved in the database.
-    const usedUris = (
+    // Get all the hashes & uris of images saved in the database.
+    const _usedArtwork = (
       await Promise.all([
         ...[artists, genres, playlists].map((schema) =>
           db
@@ -53,7 +54,15 @@ export const AppCleanUp = {
       .map(({ artwork }) => artwork!);
 
     // Artwork that's currently being used.
-    const usedArtwork = new Set(usedUris);
+    const usedArtwork = new Set(_usedArtwork);
+    const usedHashes = new Set<string>();
+    const usedUris = new Set<string>();
+
+    for (const artworkKey of usedArtwork) {
+      if (!artworkKey.startsWith("file://")) usedHashes.add(artworkKey);
+      usedUris.add(getImageUri(artworkKey) || artworkKey);
+    }
+
     // Artwork stored on-device.
     const storedArtworkURIs = new Set(
       // There shouldn't be any directories in the "Image Directory".
@@ -63,12 +72,22 @@ export const AppCleanUp = {
     // Get & delete all unused images.
     let deletedCount = 0;
     await batch({
-      data: Array.from(storedArtworkURIs.difference(usedArtwork)),
+      data: Array.from(storedArtworkURIs.difference(usedUris)),
       callback: (imgUri) => deleteImage(imgUri),
       onBatchComplete: (isFulfilled) => {
         deletedCount += isFulfilled.length;
       },
     });
+
+    // Delete unused `hashImages` entries.
+    if (usedHashes.size > 0) {
+      await db
+        .delete(hashedImages)
+        .where(notInArray(hashedImages.hash, Array.from(usedHashes)));
+    } else {
+      // eslint-disable-next-line drizzle/enforce-delete-with-where
+      await db.delete(hashedImages);
+    }
 
     console.log(`Deleted ${deletedCount} unlinked images.`);
   },

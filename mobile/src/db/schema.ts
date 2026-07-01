@@ -394,6 +394,18 @@ export const customThemes = sqliteTable("custom_themes", {
 });
 //#endregion
 
+//#region Hashed Images
+export const hashedImages = sqliteTable("hashed_images", {
+  /** MD5 Hash for the image stored in `ImageDirectory`. */
+  hash: text().primaryKey(),
+  /**
+   * Essentially `${ImageDirectory}/${hash}.webp`. This field is mainly
+   * for formalities.
+   */
+  uri: text().notNull(),
+});
+//#endregion
+
 //#region Types
 export type Artist = InferSelectModel<typeof artists>;
 
@@ -412,4 +424,6 @@ export type PlayedMediaList = Prettify<
 export type WaveformSample = InferSelectModel<typeof waveformSamples>;
 
 export type CustomFont = InferSelectModel<typeof customFonts>;
+
+export type HashedImage = InferSelectModel<typeof hashedImages>;
 //#endregion

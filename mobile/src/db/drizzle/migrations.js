@@ -15,6 +15,7 @@ import m0010 from "./0010_spooky_blue_marvel.sql";
 import m0011 from "./0011_awesome_gateway.sql";
 import m0012 from "./0012_organic_mordo.sql";
 import m0013 from "./0013_gigantic_senator_kelly.sql";
+import m0014 from "./0014_cold_the_executioner.sql";
 
 export default {
   journal,
@@ -33,5 +34,6 @@ export default {
     m0011,
     m0012,
     m0013,
+    m0014,
   },
 };

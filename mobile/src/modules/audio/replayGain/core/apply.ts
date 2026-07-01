@@ -8,7 +8,7 @@ import type { Track } from "~/data/track/types";
 import { getArtistsString } from "~/data/artist/utils";
 import { playbackStore } from "~/stores/Playback/store";
 
-import { PlaceholderImageFile } from "~/lib/file-system";
+import { getImageUri, PlaceholderImageFile } from "~/lib/file-system";
 import { getSafeUri } from "~/utils/string";
 import { isNumber } from "~/utils/validation";
 
@@ -28,7 +28,7 @@ export async function applyReplayGainToTrack(track: Track, apply = true) {
 
   return {
     src: getSafeUri(track.uri),
-    artwork: track.artwork || PlaceholderImageFile,
+    artwork: getImageUri(track.artwork) || PlaceholderImageFile,
     title: track.name,
     artist: getArtistsString(track.artists, "No Artist"),
     album: track.albumName || undefined,
