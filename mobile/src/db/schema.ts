@@ -399,8 +399,8 @@ export const hashedImages = sqliteTable("hashed_images", {
   /** MD5 Hash for the image stored in `ImageDirectory`. */
   hash: text().primaryKey(),
   /**
-   * Essentially `file://${ImageDirectory}/${hash}.webp`. This field is
-   * mainly for formalities.
+   * Essentially `${ImageDirectory}/${hash}.webp`. This field is mainly
+   * for formalities.
    */
   uri: text().notNull(),
 });
