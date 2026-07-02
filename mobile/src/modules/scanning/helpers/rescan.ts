@@ -43,7 +43,7 @@ export async function rescanForTracks(deepScan = false) {
     await db
       .update(tracks)
       .set({ fetchedArt: false })
-      .where(and(eq(tracks.fetchedArt, true), isNull(tracks.artwork)));
+      .where(and(eq(tracks.fetchedArt, true), isNull(tracks.embeddedArtwork)));
 
     // Update all tracks whose metadata hasn't been manually changed by
     // the user, even if its `modificationTime` hasn't changed.

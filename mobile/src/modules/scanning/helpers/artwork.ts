@@ -61,7 +61,7 @@ export async function findAndSaveArtwork() {
 
   // Ensure we don't unnecessarily search for artwork.
   const albumsWithCovers = await getAlbumsSummary(false, [
-    isNotNull(albums.artwork),
+    isNotNull(albums.embeddedArtwork),
   ]);
   const idsWithCover = albumsWithCovers.map(({ id }) => id);
 
@@ -70,7 +70,10 @@ export async function findAndSaveArtwork() {
       .update(tracks)
       .set({ fetchedArt: true })
       .where(
-        or(inArray(tracks.albumId, idsWithCover), isNotNull(tracks.artwork)),
+        or(
+          inArray(tracks.albumId, idsWithCover),
+          isNotNull(tracks.embeddedArtwork),
+        ),
       );
   }
 
