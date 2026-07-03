@@ -20,7 +20,6 @@ import { scheduleOnRN } from "react-native-worklets";
 
 import { Icon } from "~/resources/icons";
 
-import { OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
 
 const DRAG_TOSS = 0.02;
@@ -221,11 +220,6 @@ export function Swipeable({
 //#region Swipe Indicator
 type Direction = "left" | "right";
 
-const IconPosition: Record<Direction, [string, string]> = {
-  left: ["right", "left"],
-  right: ["left", "right"],
-};
-
 const InterpolateOptions: Record<
   Direction,
   (
@@ -273,7 +267,6 @@ function SwipeIconWrapper({
   const wrapperStyles = useAnimatedStyle(() => ({ maxWidth: maxWidth.get() }));
 
   const iconWrapperStyles = useAnimatedStyle(() => ({
-    [OnRTLWorklet.decide(...IconPosition[direction])]: 0,
     transform: [
       {
         translateX: interpolate(
@@ -292,7 +285,10 @@ function SwipeIconWrapper({
       <Animated.View
         onLayout={onIconLayout}
         style={iconWrapperStyles}
-        className="absolute"
+        className={cn("absolute", {
+          "ltr:left-0 rtl:right-0": direction === "left",
+          "ltr:right-0 rtl:left-0": direction === "right",
+        })}
       >
         {props.Icon}
       </Animated.View>
