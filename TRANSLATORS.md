@@ -46,6 +46,7 @@
 - [Да Угу (Tytocka)](https://crowdin.com/profile/tytocka)
 - [fraffrog (zfraaaaa)](https://crowdin.com/profile/zfraaaaa)
 - [Julia (julia5656try)](https://crowdin.com/profile/julia5656try)
+- [Smashik](https://crowdin.com/profile/smashik)
 
 ## [Türkçe] Turkish
 
@@ -55,6 +56,7 @@
 
 - [@T-K-Y-M](https://www.github.com/T-K-Y-M)
 - [@MiquelRoca08](https://github.com/MiquelRoca08)
+- [Jaume Valero (jaumevalerom13)](https://crowdin.com/profile/jaumevalerom13)
 
 ## [हिंदी] Hindi
 
