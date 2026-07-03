@@ -7,7 +7,7 @@
     "artists": "Исполнители",
     "folder": "Папка",
     "folders": "Папки",
-    "genre": null,
+    "genre": "Жанр",
     "genres": "Жанры",
     "playlist": "Плейлист",
     "playlists": "Плейлисты",
@@ -38,7 +38,7 @@
     "entryAdded": "`{{- name}}` Добавлен.",
     "entryRemove": "Удалить `{{- name}}`.",
     "entryRemoved": "`{{- name}}` удалён.",
-    "entryManage": null,
+    "entryManage": "Управлять {{- name}}",
     "entrySeeMore": "Узнать больше о `{{- name}}`.",
     "notFound": "`{{- name}}` не существует.",
     "entryMove": "Переместить`{{- name}}`",
@@ -100,7 +100,7 @@
       "noPlaylists": "Плейлисты не найдены.",
       "noTracks": "Треки не найдены.",
       "noHiddenTracks": "Нет скрытых треков.",
-      "noLyrics": null
+      "noLyrics": "Текст песни не найден."
     }
   },
   "feat": {
@@ -138,16 +138,16 @@
       "brief": "Настроить порядок и видимость вкладок.",
       "extra": {
         "setHomeTab": "Откройте вкладку {{- name}} при запуске.",
-        "showNavbar": null
+        "showNavbar": "Показывать панель навигации"
       }
     },
     "minAlbumLength": {
-      "title": null
+      "title": "Минимальная длина альбома"
     },
     "miniplayerGestures": {
-      "title": null,
+      "title": "Жесты мини-плеера",
       "extra": {
-        "dragClearPlayback": null
+        "dragClearPlayback": "Перетащите мини-плеер вниз, чтобы очистить очередь"
       }
     },
     "nowPlayingDesign": {
@@ -158,15 +158,15 @@
       }
     },
     "quickScroll": {
-      "title": null,
-      "brief": null
+      "title": "Быстрая прокрутка",
+      "brief": "Отображать полосу прокрутки в стиле Nothing на поддерживаемых устройствах."
     },
     "language": {
       "title": "Язык",
       "extra": {
         "contribute": "Внести вклад в перевод",
-        "useLTR": null,
-        "translators": null
+        "useLTR": "Использовать LTR-интерфейс. Требуется перезапуск.",
+        "translators": "Переводчики"
       }
     },
     "backup": {
@@ -174,9 +174,9 @@
       "description": "Передавать данные из этого приложения на другие устройства через файл music_backup.json.",
       "extra": {
         "export": "Экспорт",
-        "exportSuccess": null,
+        "exportSuccess": "Экспорт выполнен успешно.",
         "import": "Импорт",
-        "importSuccess": null
+        "importSuccess": "Импорт выполнен успешно."
       }
     },
     "insights": {
@@ -191,10 +191,10 @@
       }
     },
     "mostPlayed": {
-      "title": null,
-      "brief": null,
+      "title": "Часто воспроизводимые",
+      "brief": "Рейтинг треков за всё время.",
       "extra": {
-        "playCount": null
+        "playCount": "Прослушиваний: {{count}}"
       }
     },
     "hiddenTracks": {
@@ -208,11 +208,11 @@
     "playback": {
       "title": "Воспроизведение",
       "extra": {
-        "delay": null,
+        "delay": "Задержка воспроизведения",
         "options": "Параметры воспроизведения",
-        "pitch": null,
+        "pitch": "Тон воспроизведения",
         "speed": "Скорость воспроизведения",
-        "restoreVolume": null,
+        "restoreVolume": "Восстановить громкость приложения",
         "volume": "Громкость приложения"
       }
     },
@@ -228,21 +228,21 @@
       "title": "Сохранить на последнем остановившемся моменте"
     },
     "lyrics": {
-      "title": null,
+      "title": "Текст песни",
       "extra": {
-        "useEmbedded": null,
-        "providers": null,
+        "useEmbedded": "Встроенный текст песни",
+        "providers": "Источники текстов песен",
         "providersInstructions": {
-          "line1": null,
-          "line2": null
+          "line1": "По юридическим причинам мы не предоставляем автоматические онлайн-источники для отображения текстов песен, так как у нас нет на это лицензии. Вместо этого мы поддерживаем провайдеров (источники), которые вы можете указать, чтобы приложение могло загружать тексты песен.",
+          "line2": "Нажмите, чтобы узнать больше о том, как можно создать провайдера."
         }
       }
     },
     "scanning": {
       "title": "Сканирование",
       "extra": {
-        "useMediaStore": null,
-        "useMediaStoreBrief": null
+        "useMediaStore": "🧪 Использовать сканер MediaStore",
+        "useMediaStoreBrief": "Очень быстро, но точность может быть ниже. Требуется Android 11+."
       }
     },
     "rescan": {
@@ -259,20 +259,20 @@
       "brief": "Игнорирует любые средства пропуска, которые ускоряют нормальный процесс сканирования."
     },
     "optimizedImageSave": {
-      "title": null,
-      "brief": null,
+      "title": "Оптимизация сохранения изображения",
+      "brief": "Треки используют обложку своего альбома.",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Отключение этой функции значительно увеличит объем занимаемой памяти и может замедлить сканирование, так как обложки сохраняются локально.",
+        "line2": "Для применения изменений требуется запустить глубокое сканирование."
       }
     },
     "rescanOnLaunch": {
-      "title": null,
-      "brief": null
+      "title": "Сканировать при запуске",
+      "brief": "Если отключено, используйте функцию повторного сканирования для обнаружения новых, обновленных и удаленных треков."
     },
     "listAllow": {
       "title": "Белый список",
-      "description": null
+      "description": "Укажите, где треки могут быть найдены. Если оставить поле пустым, поиск будет выполняться везде."
     },
     "listBlock": {
       "title": "Черный список",
@@ -283,41 +283,41 @@
       "description": "Длительность аудио в секундах, которую мы не сохраняем."
     },
     "separators": {
-      "title": null,
+      "title": "Разделители нескольких значений",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Применяется к новым трекам. Используйте функцию глубокого сканирования, чтобы обновить существующие треки.",
+        "line2": "Предупреждение: это может привести к неверному определению некоторых тегов как содержащих несколько значений. Настройка не применяется к трекам, измененным вручную."
       }
     },
     "experimental": {
       "title": "Экспериментальные функции"
     },
     "audioEffects": {
-      "title": null
+      "title": "Аудиоэффекты"
     },
     "equalizer": {
-      "title": null,
+      "title": "Эквалайзер",
       "extra": {
-        "Custom": null,
-        "Normal": null,
-        "Classical": null,
-        "Dance": null,
-        "Flat": null,
-        "Folk": null,
-        "Heavy Metal": null,
-        "Hip Hop": null,
-        "Jazz": null,
-        "Pop": null,
-        "Rock": null
+        "Custom": "Пользовательское",
+        "Normal": "Обычный",
+        "Classical": "Классика",
+        "Dance": "Танцевальная",
+        "Flat": "Линейный",
+        "Folk": "Фолк",
+        "Heavy Metal": "Хэви-метал",
+        "Hip Hop": "Хип-хоп",
+        "Jazz": "Джаз",
+        "Pop": "Поп",
+        "Rock": "Рок"
       }
     },
     "replayGain": {
-      "title": null,
+      "title": "Нормализация громкости",
       "extra": {
-        "preAmp": null,
-        "preAmpDescription": null,
-        "adjustWithTags": null,
-        "adjustWithoutTags": null
+        "preAmp": "Предусилитель ReplayGain",
+        "preAmpDescription": "Регулирует громкость при включённом ReplayGain. Может вызвать перегруз на некоторых треках. Изменения применяются к следующему треку.",
+        "adjustWithTags": "При наличии тегов",
+        "adjustWithoutTags": "При отсутствии тегов"
       }
     },
     "ignoreInterrupt": {
@@ -330,15 +330,15 @@
       "extra": {
         "start": "Начать",
         "stopTime": "Музыка перестанет играть в {{- time}}.",
-        "extend": null
+        "extend": "Продлить таймер до завершения трека"
       }
     },
     "waveformSlider": {
-      "title": null,
+      "title": "Ползунок аудиограммы",
       "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
+        "purgeCache": "Очистить кэш аудиограмм",
+        "purgeCacheBrief": "Освобождает место для пересчета аудиограмм воспроизведенных треков.",
+        "purgeCacheToast": "Кэш аудиограмм очищен."
       }
     },
     "code": {
@@ -357,8 +357,8 @@
     },
     "onboarding": {
       "extra": {
-        "configureSettings": null,
-        "startScan": null,
+        "configureSettings": "Настройки",
+        "startScan": "Начать сканирование треков",
         "saveTracks": "Сохранённые треки",
         "saveImages": "Сохранение изображений"
       }
@@ -379,7 +379,7 @@
       "extra": {
         "change": "Изменить обложку",
         "remove": "Удалить обложку",
-        "square": null
+        "square": "Квадратная обложка"
       }
     },
     "directory": {
@@ -390,10 +390,10 @@
     },
     "playlist": {
       "extra": {
-        "m3uImport": null,
-        "m3uExport": null,
-        "absolute": null,
-        "relative": null
+        "m3uImport": "Импорт M3U-плейлиста",
+        "m3uExport": "Экспорт в M3U",
+        "absolute": "Абсолютный",
+        "relative": "Относительно"
       }
     },
     "trackMetadata": {
@@ -410,18 +410,18 @@
       }
     },
     "modalViewPreference": {
-      "title": null,
+      "title": "Параметры экрана",
       "extra": {
-        "layout": null,
-        "list": null,
-        "grid": null,
-        "compactGrid": null,
+        "layout": "Макет",
+        "list": "Список",
+        "grid": "Сетка",
+        "compactGrid": "Компактная сетка",
         "sort": "Порядок сортировки",
         "asc": "По возрастанию",
         "discover": "Время на прослушивание музыки",
-        "duration": null,
+        "duration": "Длительность",
         "modified": "Последнее изменение",
-        "trackCount": null
+        "trackCount": "Число треков"
       }
     },
     "modalTrack": {
@@ -430,18 +430,18 @@
         "filePath": "Путь к файлу",
         "sampleRate": "Частота",
         "size": "Размер",
-        "trackQuickActions": null,
+        "trackQuickActions": "Быстрые действия с треками",
         "addToPlaylist": "Добавить в плейлист"
       }
     },
     "queue": {
       "extra": {
         "add": "Добавить в очередь",
-        "playNext": null,
-        "playLast": null,
+        "playNext": "Воспроизвести следующим",
+        "playLast": "Воспроизвести последним",
         "toast": "`{{- name}}` добавлен в очередь.",
-        "queueAwareNext": null,
-        "queueAwareNextBrief": null
+        "queueAwareNext": "Учитывать очередь при воспроизведении следующим",
+        "queueAwareNextBrief": "Добавляет трек после последней песни, добавленной через «Воспроизвести следующим»."
       }
     }
   }

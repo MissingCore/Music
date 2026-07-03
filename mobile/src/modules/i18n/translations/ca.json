@@ -30,7 +30,7 @@
     "settings": "Ajusts",
     "upcoming": "Pròxima",
     "playingFrom": "Reproduint des de",
-    "instructions": null,
+    "instructions": "Instruccions",
     "disc": "Disc {{count}}"
   },
   "template": {
@@ -46,7 +46,7 @@
     "entryHide": "Amaga `{{- name}}`",
     "entryEnable": "Activar `{{- name}}`",
     "entryDisable": "Desactivar `{{- name}}`",
-    "countSelected": null,
+    "countSelected": "{{count}} Seleccionat",
     "noContentFound": "No s'ha trobat {{- name}}."
   },
   "plural": {
@@ -119,7 +119,7 @@
       "title": "Aparença"
     },
     "font": {
-      "title": null,
+      "title": "Fonts",
       "extra": {
         "accent": "Font d'accent",
         "primary": "Font principal"
@@ -210,7 +210,7 @@
       "extra": {
         "delay": "Retard natural",
         "options": "Ajusts de reproducció",
-        "pitch": null,
+        "pitch": "To de reproducció",
         "speed": "Velocitat de reproducció",
         "restoreVolume": null,
         "volume": "Volum de l'aplicació"

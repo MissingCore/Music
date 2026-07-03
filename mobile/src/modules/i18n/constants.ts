@@ -24,6 +24,10 @@ export const LANGUAGES = [
     translators: [
       { display: "JPQ", link: "https://www.github.com/T-K-Y-M" },
       { display: "Miquel Roca", link: "https://github.com/MiquelRoca08" },
+      {
+        display: "Jaume Valero",
+        link: "https://crowdin.com/profile/jaumevalerom13",
+      },
     ],
   },
   {
@@ -136,6 +140,7 @@ export const LANGUAGES = [
       { display: "Да Угу", link: "https://crowdin.com/profile/tytocka" },
       { display: "fraffrog", link: "https://crowdin.com/profile/zfraaaaa" },
       { display: "Julia", link: "https://crowdin.com/profile/julia5656try" },
+      { display: "Smashik", link: "https://crowdin.com/profile/smashik" },
     ],
   },
   {
