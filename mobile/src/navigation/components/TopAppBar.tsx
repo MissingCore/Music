@@ -8,7 +8,6 @@ import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { OnRTL } from "~/lib/react";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { SafeContainer } from "~/components/SafeContainer";
 import { TEm } from "~/components/Typography/StyledText";
@@ -27,7 +26,7 @@ export function TopAppBar({ options, route }: NativeStackHeaderProps) {
           accessibilityLabel={t("form.back")}
           onPress={() => navigation.goBack()}
           disabled={!!options.headerLeft}
-          className={OnRTL._use("rotate-180")}
+          className="rtl:rotate-180"
         />
 
         {title ? (

@@ -96,7 +96,6 @@ export function Marquee({
       offset.get() === OnRTLWorklet.decide(contentWidth - containerWidth, 0)
         ? "none"
         : "flex",
-    [OnRTLWorklet.decide("right", "left")]: 0,
   }));
   const isRightVisible = useAnimatedStyle(() => ({
     display:
@@ -104,7 +103,6 @@ export function Marquee({
       offset.get() !== OnRTLWorklet.decide(0, contentWidth - containerWidth)
         ? "flex"
         : "none",
-    [OnRTLWorklet.decide("left", "right")]: 0,
   }));
 
   return (
@@ -134,14 +132,18 @@ export function Marquee({
       <Animated.View
         pointerEvents="none"
         style={isLeftVisible}
-        className={cn("absolute h-full", { hidden: isStatic })}
+        className={cn("absolute h-full ltr:left-0 rtl:right-0", {
+          hidden: isStatic,
+        })}
       >
         <LinearGradient colors={[endColor, startColor]} {...ShadowProps} />
       </Animated.View>
       <Animated.View
         pointerEvents="none"
         style={isRightVisible}
-        className={cn("absolute h-full", { hidden: isStatic })}
+        className={cn("absolute h-full ltr:right-0 rtl:left-0", {
+          hidden: isStatic,
+        })}
       >
         <LinearGradient colors={[startColor, endColor]} {...ShadowProps} />
       </Animated.View>

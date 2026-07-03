@@ -12,7 +12,6 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { getMediaLinkContext } from "~/navigation/utils/router";
 
-import { OnRTL } from "~/lib/react";
 import { Pressable } from "~/components/Base/Pressable";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { Marquee } from "~/components/Marquee";
@@ -53,7 +52,7 @@ function AppBarContent() {
         icon="arrow-back"
         accessibilityLabel={t("form.back")}
         onPress={() => navigation.goBack()}
-        className={OnRTL._use("rotate-180")}
+        className="rtl:rotate-180"
       />
       <Pressable
         onPress={() =>
