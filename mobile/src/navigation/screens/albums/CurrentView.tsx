@@ -46,7 +46,7 @@ export default function Album({
     if (!listData) return [];
 
     // Skip rendering disc number if the album has an assigned disc, but it's just `Disc 1`.
-    const skipDiscs = listData.at(-1)?.disc === 1;
+    const skipDiscs = listData[0]?.disc === 1 && listData.at(-1)?.disc === 1;
 
     const foundDisc = new Set<number>();
     const sectionListTracks = [];
