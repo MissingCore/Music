@@ -11,7 +11,7 @@
   "@react-navigation/native-stack@7.17.7": {
     "repository": "https://github.com/react-navigation/react-navigation/tree/main/packages/native-stack"
   },
-  "@rn-primitives/portal@1.4.0": {
+  "@rn-primitives/portal@1.5.2": {
     "repository": "https://github.com/roninoss/rn-primitives/tree/main/packages/portal"
   },
   "drizzle-orm@0.45.2": {
