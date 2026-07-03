@@ -6,7 +6,6 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 
 export function Switch({ enabled }: { enabled: boolean }) {
@@ -23,8 +22,8 @@ export function Switch({ enabled }: { enabled: boolean }) {
       )}
     >
       <Animated.View
-        style={[{ [OnRTL.decide("right", "left")]: 2 }, thumbStyle]}
-        className="absolute top-0.5 size-5 rounded-full bg-onPrimary"
+        style={thumbStyle}
+        className="absolute top-0.5 size-5 rounded-full bg-onPrimary ltr:left-0.5 rtl:right-0.5"
       />
     </Animated.View>
   );

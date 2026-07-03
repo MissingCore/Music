@@ -15,7 +15,6 @@ import {
   renderedPositionAtom,
 } from "../helpers/Seekbar.context";
 
-import { OnRTL } from "~/lib/react";
 import { clamp, formatSeconds } from "~/utils/number";
 import { CachedSlider } from "~/components/Form/Slider";
 import { Em } from "~/components/Typography/StyledText";
@@ -73,10 +72,7 @@ export function SeekBar(props: SeekBarProps) {
           roundedEndStop
         />
       )}
-      <View
-        style={{ flexDirection: OnRTL.decide("row-reverse", "row") }}
-        className="justify-between"
-      >
+      <View className="flex-row justify-between rtl:flex-row-reverse">
         <Em>{formatSeconds(clampedPos)}</Em>
         <Em>{formatSeconds(props.trackLength)}</Em>
       </View>

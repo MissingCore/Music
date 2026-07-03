@@ -141,15 +141,13 @@ export function Navbar() {
         pointerEvents="none"
         colors={[`${surfaceContainerLowest}E6`, `${surfaceContainerLowest}00`]}
         {...ShadowProps}
-        style={{ [OnRTL.decide("right", "left")]: 0 }}
-        className="absolute h-full w-4"
+        className="absolute h-full w-4 ltr:left-0 rtl:right-0"
       />
       <LinearGradient
         pointerEvents="none"
         colors={[`${surfaceContainerLowest}00`, `${surfaceContainerLowest}E6`]}
         {...ShadowProps}
-        style={{ [OnRTL.decide("left", "right")]: 0 }}
-        className="absolute h-full w-4"
+        className="absolute h-full w-4 ltr:right-0 rtl:left-0"
       />
     </Animated.View>
   );

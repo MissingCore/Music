@@ -25,7 +25,6 @@ import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { BottomActionsOffset } from "./useBottomActions";
 
-import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { Pressable } from "~/components/Base/Pressable";
 import { IconButton } from "~/components/Form/Button/Icon";
@@ -146,8 +145,7 @@ export function MiniPlayer() {
 
           <Animated.View
             layout={LinearTransition}
-            style={{ flexDirection: OnRTL.decide("row-reverse", "row") }}
-            className="items-center"
+            className="flex-row items-center rtl:flex-row-reverse"
           >
             {!gestureUI ? <PreviousButton /> : null}
             <IconButton

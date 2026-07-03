@@ -9,7 +9,6 @@ import { useEqualizerSettings } from "react-native-audio-browser";
 import { useEqualizerStore } from "../core/store";
 import { toggleEQ, setEQPreset } from "../core/actions";
 
-import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { Button } from "~/components/Form/Button";
 import { SegmentedList } from "~/components/List/Segmented";
@@ -50,10 +49,7 @@ export function EqualizerSettings() {
         >
           <EQGraph points={eqDataPoints} />
 
-          <View
-            style={{ flexDirection: OnRTL.decide("row-reverse", "row") }}
-            className="justify-evenly gap-2"
-          >
+          <View className="flex-row justify-evenly gap-2 rtl:flex-row-reverse">
             {currEQ?.bandLevels.map((level, index) => (
               <FrequencySlider
                 key={`${currEQ.activePreset}_${index}`}

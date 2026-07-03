@@ -10,7 +10,6 @@ import {
   PreferenceTogglers,
 } from "~/stores/Preference/actions";
 
-import { OnRTL } from "~/lib/react";
 import { Links, openLink } from "~/lib/web-browser";
 import { FlatList } from "~/components/Base/List";
 import { Pressable } from "~/components/Base/Pressable";
@@ -47,7 +46,7 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
           className="min-h-10 flex-row items-center justify-between gap-1 border-b border-outline active:opacity-50"
         >
           <StyledText>{selectedLanguage?.name}</StyledText>
-          <View className={OnRTL.decide("rotate-90", "-rotate-90")}>
+          <View className="ltr:-rotate-90 rtl:rotate-90">
             <Icon name="keyboard-arrow-down" />
           </View>
         </Pressable>

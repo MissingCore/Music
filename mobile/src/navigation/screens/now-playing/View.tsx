@@ -20,7 +20,6 @@ import { PlaybackOptionsSheet } from "./sheets/PlaybackOptionsSheet";
 import { SleepTimerSheet } from "./sheets/SleepTimerSheet";
 import { useSleepTimerStore } from "./sheets/SleepTimerSheet/store";
 
-import { OnRTL } from "~/lib/react";
 import { Pressable } from "~/components/Base/Pressable";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { Marquee } from "~/components/Marquee";
@@ -110,10 +109,7 @@ function Metadata({ track }: { track: Track }) {
 //#region Playback Controls
 function PlaybackControls() {
   return (
-    <View
-      style={{ flexDirection: OnRTL.decide("row-reverse", "row") }}
-      className="mx-auto w-full max-w-96 items-center justify-between gap-2"
-    >
+    <View className="mx-auto w-full max-w-96 flex-row items-center justify-between gap-2 rtl:flex-row-reverse">
       <ShuffleButton />
       <PreviousButton />
       <PlayToggleButton />
