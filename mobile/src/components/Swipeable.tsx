@@ -1,17 +1,27 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
-import { Animated, View } from "react-native";
+import { View } from "react-native";
 import { GestureDetector, usePanGesture } from "react-native-gesture-handler";
-import { useSharedValue } from "react-native-reanimated";
+import type { SharedValue } from "react-native-reanimated";
+import Animated, {
+  cancelAnimation,
+  clamp,
+  interpolate,
+  useAnimatedReaction,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+} from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
 
 import { Icon } from "~/resources/icons";
 
-import { OnRTL } from "~/lib/react";
+import { OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
-import { clamp } from "~/utils/number";
 
 const DRAG_TOSS = 0.02;
 
@@ -56,39 +66,42 @@ export function Swipeable({
   overshootSwipe = true,
   RightIcon = <SwipeIcon />,
   LeftIcon = <SwipeIcon rotate />,
+  //! Since Reanimated 4.5, calling `props.*` inside of a worklet function will throw
+  //! the following in dev mode: `[Worklets] Cannot copy value of type 'FiberNode'.`
+  //!   - https://github.com/software-mansion/react-native-reanimated/pull/9532
+  onSwipeLeft,
+  onSwipeRight,
   ...props
 }: SwipeableProps) {
-  const rowWidth = useRef(0);
+  const rowWidth = useSharedValue(0);
   // Need to be state to trigger re-render for indicator styles.
   const [swipeAmount, setSwipeAmount] = useState(0);
 
-  const dragX = useRef(new Animated.Value(0)).current;
-  const animationRef = useSharedValue<Animated.CompositeAnimation | null>(null);
+  const dragX = useSharedValue(0);
 
-  useEffect(() => {
-    const listener = dragX.addListener(({ value }) => setSwipeAmount(value));
-    return () => dragX.removeListener(listener);
-  }, [dragX]);
+  useAnimatedReaction(
+    () => dragX.get(),
+    (currVal) => scheduleOnRN(setSwipeAmount, currVal),
+  );
 
   const clampSwipeAmount = useCallback(
-    (translateX: number) =>
-      clamp(
-        props.onSwipeLeft ? -rowWidth.current : 0,
+    (translateX: number) => {
+      "worklet";
+      return clamp(
         translateX,
-        props.onSwipeRight ? rowWidth.current : 0,
-      ),
-    [props.onSwipeLeft, props.onSwipeRight],
+        onSwipeLeft ? -rowWidth.get() : 0,
+        onSwipeRight ? rowWidth.get() : 0,
+      );
+    },
+    [onSwipeLeft, onSwipeRight, rowWidth],
   );
 
   const swipeGesture = usePanGesture({
-    // Since we're not using `react-native-reanimated`.
-    runOnJS: true,
     // Allows scrolling to work without triggering gesture.
     activeOffsetX: [-10, 10],
     enabled: !disabled,
-    onActivate: () => animationRef.get()?.stop(),
-    onUpdate: ({ translationX }) =>
-      dragX.setValue(clampSwipeAmount(translationX)),
+    onActivate: () => cancelAnimation(dragX),
+    onUpdate: ({ translationX }) => dragX.set(clampSwipeAmount(translationX)),
     onDeactivate: ({ translationX, velocityX }) => {
       // Include velocity in final translated amount if overshoot is enabled.
       const velocityDistance = (overshootSwipe ? 1 : 0) * velocityX * DRAG_TOSS;
@@ -99,7 +112,7 @@ export function Swipeable({
         Math.abs(clampedTranslation) >=
         Math.min(
           activationThreshold,
-          rowWidth.current * activationThresholdRatio,
+          rowWidth.get() * activationThresholdRatio,
         );
       const swipedLeft = clampedTranslation < 0;
 
@@ -107,65 +120,49 @@ export function Swipeable({
       // as it includes a change in distance that isn't rendered).
       if (clampSwipeAmount(translationX) === 0) return;
 
-      // Create animation the swiped item will translate to.
-      const pendingAnimation = overshootSwipe
-        ? Animated.spring(dragX, {
-            toValue: metThreshold
-              ? (swipedLeft ? -1 : 1) * rowWidth.current
-              : 0,
-            bounciness: 0, // This prevents it from bouncing below `toValue`.
-            overshootClamping: !metThreshold, // Prevents bouncing on failed swipe.
-            restDisplacementThreshold: 0.4,
-            restSpeedThreshold: 1.7,
-            velocity: velocityX * 2,
-            useNativeDriver: true,
-          })
-        : Animated.timing(dragX, {
-            duration: 125,
-            toValue: 0,
-            useNativeDriver: true,
-          });
-
       // Run callback before the animation starts if we met the threshold.
       if (fireCallbackBeforeCompletion && metThreshold) {
-        if (swipedLeft) props.onSwipeLeft!();
-        else props.onSwipeRight!();
+        if (swipedLeft) scheduleOnRN(onSwipeLeft!);
+        else scheduleOnRN(onSwipeRight!);
       }
 
-      //! With RNGH's hook-based API, setting a ref value and accessing it
-      //! later in the same callback will not result in returning that set
-      //! value.
-      animationRef.set(pendingAnimation);
-      pendingAnimation.start(async ({ finished }) => {
+      const onFinished = (finished?: boolean) => {
         // Run callback after the animation finishes successfully and if
         // we met the threshold.
         if (!fireCallbackBeforeCompletion && finished && metThreshold) {
-          if (swipedLeft) props.onSwipeLeft!();
-          else props.onSwipeRight!();
+          if (swipedLeft) scheduleOnRN(onSwipeLeft!);
+          else scheduleOnRN(onSwipeRight!);
         }
+        // Ensure we reset back to the "rest" position.
+        dragX.set(0);
+      };
 
-        // Reset to prevent the recycled item being stuck in the swiped state.
-        //  - Use `Animated.timing()` instead of `setValue()` due to the animation
-        //  resolving before the UI removes the item on the New Architecture.
-        Animated.timing(dragX, {
-          duration: 0,
-          toValue: 0,
-          useNativeDriver: true,
-        });
-      });
+      dragX.set(
+        overshootSwipe
+          ? withSpring(
+              metThreshold ? (swipedLeft ? -1 : 1) * rowWidth.get() : 0,
+              {
+                clamp: { min: -rowWidth.get(), max: rowWidth.get() },
+                overshootClamping: !metThreshold, // Prevents bouncing on failed swipe.
+              },
+              onFinished,
+            )
+          : withTiming(0, { duration: 125 }, onFinished),
+      );
     },
   });
 
-  const onRowLayout = useCallback((e: LayoutChangeEvent) => {
-    rowWidth.current = e.nativeEvent.layout.width;
-  }, []);
+  const onRowLayout = useCallback(
+    (e: LayoutChangeEvent) => rowWidth.set(e.nativeEvent.layout.width),
+    [rowWidth],
+  );
 
   const leftIndicator = useMemo(() => {
-    if (!props.onSwipeRight || swipeAmount <= 0) return null;
+    if (!onSwipeRight || swipeAmount <= 0) return null;
     return (
       <SwipeIconWrapper
         direction="left"
-        maxWidth={rowWidth.current}
+        maxWidth={rowWidth}
         Icon={LeftIcon}
         dragAmount={dragX}
         className={props.leftIconContainerClassName}
@@ -173,18 +170,19 @@ export function Swipeable({
     );
   }, [
     LeftIcon,
+    onSwipeRight,
     props.leftIconContainerClassName,
-    props.onSwipeRight,
+    rowWidth,
     dragX,
     swipeAmount,
   ]);
 
   const rightIndicator = useMemo(() => {
-    if (!props.onSwipeLeft || swipeAmount >= 0) return null;
+    if (!onSwipeLeft || swipeAmount >= 0) return null;
     return (
       <SwipeIconWrapper
         direction="right"
-        maxWidth={rowWidth.current}
+        maxWidth={rowWidth}
         Icon={RightIcon}
         dragAmount={dragX}
         className={props.rightIconContainerClassName}
@@ -192,11 +190,16 @@ export function Swipeable({
     );
   }, [
     RightIcon,
+    onSwipeLeft,
     props.rightIconContainerClassName,
-    props.onSwipeLeft,
+    rowWidth,
     dragX,
     swipeAmount,
   ]);
+
+  const swipeContainerStyles = useAnimatedStyle(() => ({
+    transform: [{ translateX: dragX.get() }],
+  }));
 
   return (
     <View className={cn("relative", props.wrapperClassName)}>
@@ -205,7 +208,7 @@ export function Swipeable({
       <GestureDetector gesture={swipeGesture}>
         <Animated.View
           onLayout={onRowLayout}
-          style={{ transform: [{ translateX: dragX }] }}
+          style={swipeContainerStyles}
           className={props.className}
         >
           {props.children}
@@ -225,58 +228,75 @@ const IconPosition: Record<Direction, [string, string]> = {
 
 const InterpolateOptions: Record<
   Direction,
-  (maxWidth: number, iconWidth: number) => Animated.InterpolationConfigType
+  (
+    maxWidth: SharedValue<number>,
+    iconWidth: SharedValue<number>,
+  ) => [readonly number[], readonly number[]]
 > = {
-  left: (maxWidth: number, iconWidth: number) => ({
-    inputRange: [0, 1],
-    // When `dragX = maxWidth`, we want the icon to be at the half-way point.
-    //  - Do things in terms of percent (include offset for icon width).
-    outputRange: [0, (maxWidth - iconWidth) / (2 * maxWidth)],
-  }),
-  right: (maxWidth: number, iconWidth: number) => ({
-    inputRange: [-1, 0],
-    outputRange: [-(maxWidth - iconWidth) / (2 * maxWidth), 0],
-  }),
+  left: (maxWidth, iconWidth) => {
+    "worklet";
+    return [
+      [0, 1],
+      // When `dragX = maxWidth`, we want the icon to be at the half-way point.
+      //  - Do things in terms of percent (include offset for icon width).
+      [0, (maxWidth.get() - iconWidth.get()) / (2 * maxWidth.get())],
+    ];
+  },
+  right: (maxWidth, iconWidth) => {
+    "worklet";
+    return [
+      [-1, 0],
+      [-(maxWidth.get() - iconWidth.get()) / (2 * maxWidth.get()), 0],
+    ];
+  },
 };
 
-function SwipeIconWrapper(props: {
+function SwipeIconWrapper({
+  direction,
+  maxWidth,
+  dragAmount,
+  ...props
+}: {
   direction: Direction;
-  maxWidth: number;
+  maxWidth: SharedValue<number>;
   Icon: React.ReactNode;
-  dragAmount: Animated.Value;
+  dragAmount: SharedValue<number>;
   className?: string;
 }) {
-  const iconWidth = useRef(0);
+  const iconWidth = useSharedValue(0);
 
-  const onIconLayout = useCallback((e: LayoutChangeEvent) => {
-    iconWidth.current = e.nativeEvent.layout.width;
-  }, []);
+  const onIconLayout = useCallback(
+    (e: LayoutChangeEvent) => iconWidth.set(e.nativeEvent.layout.width),
+    [iconWidth],
+  );
+
+  const wrapperStyles = useAnimatedStyle(() => ({ maxWidth: maxWidth.get() }));
+
+  const iconWrapperStyles = useAnimatedStyle(() => ({
+    [OnRTLWorklet.decide(...IconPosition[direction])]: 0,
+    transform: [
+      {
+        translateX: interpolate(
+          dragAmount.get(),
+          ...InterpolateOptions[direction](maxWidth, iconWidth),
+        ),
+      },
+    ],
+  }));
 
   return (
-    <View
-      style={{ maxWidth: props.maxWidth }}
+    <Animated.View
+      style={wrapperStyles}
       className={cn("absolute h-full w-full justify-center", props.className)}
     >
       <Animated.View
         onLayout={onIconLayout}
-        style={{
-          [OnRTL.decide(...IconPosition[props.direction])]: 0,
-          transform: [
-            {
-              translateX: props.dragAmount.interpolate(
-                InterpolateOptions[props.direction](
-                  props.maxWidth,
-                  iconWidth.current,
-                ),
-              ),
-            },
-          ],
-        }}
+        style={iconWrapperStyles}
         className="absolute"
       >
         {props.Icon}
       </Animated.View>
-    </View>
+    </Animated.View>
   );
 }
 

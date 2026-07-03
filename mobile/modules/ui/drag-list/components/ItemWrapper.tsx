@@ -13,7 +13,10 @@ type Props = {
   children: React.ReactNode;
 };
 
-export const ItemWrapper = memo(function ItemWrapper(props: Props) {
+export const ItemWrapper = memo(function ItemWrapper({
+  index,
+  children,
+}: Props) {
   const estimatedItemSize = useDragListStore((s) => s.estimatedItemSize);
   const activeIndex = useDragListStore((s) => s.activeIndex);
   const pan = useDragListStore((s) => s.pan);
@@ -24,16 +27,16 @@ export const ItemWrapper = memo(function ItemWrapper(props: Props) {
     () => pan.get(),
     (currVal) => {
       if (activeIndex.get() === INACTIVE) itemPan.set(0);
-      else if (props.index === activeIndex.get()) itemPan.set(currVal);
+      else if (index === activeIndex.get()) itemPan.set(currVal);
       else {
         // Direction item will be moved.
         const dir = currVal < 0 ? 1 : -1;
 
         //? If we get a negative number, item is in path of current pan direction.
-        const relToOGPos = dir * (props.index - activeIndex.get());
+        const relToOGPos = dir * (index - activeIndex.get());
         //? If we get a non-negative number, item may have been moved.
         const relToShiftedPos =
-          dir * (props.index - (activeIndex.get() + shifted.get()));
+          dir * (index - (activeIndex.get() + shifted.get()));
 
         itemPan.set(
           relToOGPos < 0 && relToShiftedPos >= 0
@@ -45,9 +48,9 @@ export const ItemWrapper = memo(function ItemWrapper(props: Props) {
   );
 
   const styles = useAnimatedStyle(() => ({
-    zIndex: props.index === activeIndex.get() ? 100 : 0,
+    zIndex: index === activeIndex.get() ? 100 : 0,
     transform: [{ translateY: itemPan.get() }],
   }));
 
-  return <Animated.View style={styles}>{props.children}</Animated.View>;
+  return <Animated.View style={styles}>{children}</Animated.View>;
 });

@@ -12,7 +12,7 @@ allowBuilds:
   unrs-resolver: false
 
 minimumReleaseAgeExclude:
-  - "@missingcore/react-native-metadata-retriever@3.2.1"
+  - react-native-reanimated@4.5.1
 
 patchedDependencies:
   "@lodev09/react-native-true-sheet": "patches/@lodev09__react-native-true-sheet.patch"
