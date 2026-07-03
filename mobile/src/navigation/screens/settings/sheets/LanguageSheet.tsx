@@ -46,7 +46,7 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
           className="min-h-10 flex-row items-center justify-between gap-1 border-b border-outline active:opacity-50"
         >
           <StyledText>{selectedLanguage?.name}</StyledText>
-          <View className="ltr:-rotate-90 rtl:rotate-90">
+          <View className="-rotate-90 rtl:rotate-90">
             <Icon name="keyboard-arrow-down" />
           </View>
         </Pressable>
