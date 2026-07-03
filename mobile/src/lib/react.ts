@@ -4,10 +4,6 @@
 import { I18nManager } from "react-native";
 
 export const OnRTL = {
-  _use<T>(val: T) {
-    if (I18nManager.isRTL) return val;
-  },
-
   decide<T, U>(valIfTrue: T, valIfFalse: U) {
     return I18nManager.isRTL ? valIfTrue : valIfFalse;
   },
