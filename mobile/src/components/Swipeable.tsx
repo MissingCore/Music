@@ -66,8 +66,8 @@ export function Swipeable({
   overshootSwipe = true,
   RightIcon = <SwipeIcon />,
   LeftIcon = <SwipeIcon rotate />,
-  //! Since Reanimated 4.5, calling `props.*` inside of a worklet function
-  //! will throw: `[Worklets] Cannot copy value of type 'FiberNode'.`
+  //! Since Reanimated 4.5, calling `props.*` inside of a worklet function will throw
+  //! the following in dev mode: `[Worklets] Cannot copy value of type 'FiberNode'.`
   //!   - https://github.com/software-mansion/react-native-reanimated/pull/9532
   onSwipeLeft,
   onSwipeRight,
