@@ -3,6 +3,7 @@
 
 import navigationBarPlugin from "@zoontek/react-native-navigation-bar/expo";
 import type { ExpoConfig } from "expo/config";
+import buildPropertiesPlugin from "expo-build-properties/plugin";
 import fontPlugin from "expo-font/plugin";
 import imagePickerPlugin from "expo-image-picker/plugin";
 import type { WithAndroidWidgetsParams } from "react-native-android-widget";
@@ -75,16 +76,21 @@ export default (): ExpoConfig => {
       ],
     },
     plugins: [
-      [
-        "expo-build-properties",
-        {
-          android: {
-            enableBundleCompression: true,
-            enableMinifyInReleaseBuilds: true,
-            enableShrinkResourcesInReleaseBuilds: true,
+      buildPropertiesPlugin({
+        android: {
+          cmakeVersion: "3.31.6",
+          enableBundleCompression: true,
+          enableMinifyInReleaseBuilds: true,
+          enableShrinkResourcesInReleaseBuilds: true,
+          packagingOptions: {
+            //? This is to fix the following error after adding `cmakeVersion`:
+            //?   "2 files found with path 'lib/arm64-v8a/libNitroModules.so' from inputs"
+            //?
+            //? Ref: https://github.com/mrousavy/react-native-mmkv/issues/979#issuecomment-3705749982
+            pickFirst: ["lib/*/libNitroModules.so"],
           },
         },
-      ],
+      }),
       fontPlugin({
         fonts: [
           "assets/fonts/Roboto-Regular.ttf",
