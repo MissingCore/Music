@@ -4,7 +4,6 @@ minimumReleaseAge: 1440
 nodeLinker: "hoisted"
 
 allowBuilds:
-  "@missingcore/react-native-metadata-retriever@https://codeload.github.com/MissingCore/react-native-metadata-retriever/tar.gz/1e80ada9b199026bf47d3cf23187b5384368a622": true
   "@sentry/cli": true
   esbuild: false
   msgpackr-extract: false
@@ -12,6 +11,7 @@ allowBuilds:
   unrs-resolver: false
 
 minimumReleaseAgeExclude:
+  - "@missingcore/react-native-metadata-retriever@4.0.0-beta.1"
   - react-native-reanimated@4.5.1
 
 patchedDependencies:
