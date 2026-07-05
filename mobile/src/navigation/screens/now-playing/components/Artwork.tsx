@@ -39,6 +39,11 @@ export function ArtworkPicker(props: ArtworkProps) {
 function PlainArtwork(props: ArtworkProps) {
   const { t } = useTranslation();
   const isPlaying = usePlaybackStore((s) => s.isPlaying);
+  const enableTapGesture = usePreferenceStore(
+    (s) => s.nowPlayingArtworkControls,
+  );
+
+  if (!enableTapGesture) return <MediaImage type="track" {...props} />;
   return (
     <Pressable
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
@@ -52,12 +57,20 @@ function PlainArtwork(props: ArtworkProps) {
 /** Seekbar variant that uses the vinyl artwork. */
 function VinylSeekBar(props: ArtworkProps) {
   const isSeeking = useAtomValue(isSeekingAtom);
+  const enableTapGesture = usePreferenceStore(
+    (s) => s.nowPlayingArtworkControls,
+  );
   const { seekGesture, vinylWrapperArgs } = useVinylSeekbar();
+
   return (
     <GestureDetector gesture={seekGesture}>
       <Animated.View {...vinylWrapperArgs}>
         <Vinyl
-          onPress={!isSeeking ? PlaybackControls.playToggle : undefined}
+          onPress={
+            !isSeeking && enableTapGesture
+              ? PlaybackControls.playToggle
+              : undefined
+          }
           {...props}
         />
       </Animated.View>
