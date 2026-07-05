@@ -5,9 +5,17 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
+import {
+  Directions,
+  GestureDetector,
+  useCompetingGestures,
+  useFlingGesture,
+} from "react-native-gesture-handler";
+import { scheduleOnRN } from "react-native-worklets";
 
 import type { Track } from "~/data/track/types";
 import { usePlaybackStore } from "~/stores/Playback/store";
+import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
 import { toggleLyricVisibility } from "~/modules/lyric/core/actions";
@@ -38,17 +46,40 @@ import { FavoriteButton } from "~/modules/media/components/Track";
 
 export default function NowPlaying() {
   const track = usePlaybackStore((s) => s.activeTrack);
+
+  //#region Swipe Control Gestures
+  const enableSwipeGesture = usePreferenceStore((s) => s.nowPlayingGestures);
+
+  const swipeLeftGesture = useFlingGesture({
+    enabled: enableSwipeGesture,
+    direction: Directions.LEFT,
+    onActivate: () => scheduleOnRN(PlaybackControls.next),
+  });
+  const swipeRightGesture = useFlingGesture({
+    enabled: enableSwipeGesture,
+    direction: Directions.RIGHT,
+    onActivate: () => scheduleOnRN(PlaybackControls.prev),
+  });
+  const gestures = useCompetingGestures(swipeLeftGesture, swipeRightGesture);
+  //#endregion
+
   if (!track) return <Back />;
   return (
     <SeekbarContext>
       <SafeContainer additionalTopOffset={56} className="flex-1 gap-8">
-        <ArtworkSlot artwork={track.artwork} trackId={track.id} />
-        <View className="-mt-8 gap-6 px-4">
-          <Metadata track={track} />
-          <SeekBar id={track.id} uri={track.uri} trackLength={track.duration} />
-          <PlaybackControls />
-        </View>
-        <BottomAppBar trackId={track.id} />
+        <GestureDetector gesture={gestures}>
+          <ArtworkSlot artwork={track.artwork} trackId={track.id} />
+          <View className="-mt-8 gap-6 px-4">
+            <Metadata track={track} />
+            <SeekBar
+              id={track.id}
+              uri={track.uri}
+              trackLength={track.duration}
+            />
+            <PlaybackMediaControls />
+          </View>
+          <BottomAppBar trackId={track.id} />
+        </GestureDetector>
       </SafeContainer>
     </SeekbarContext>
   );
@@ -107,7 +138,7 @@ function Metadata({ track }: { track: Track }) {
 //#endregion
 
 //#region Playback Controls
-function PlaybackControls() {
+function PlaybackMediaControls() {
   return (
     <View className="mx-auto w-full max-w-96 flex-row items-center justify-between gap-2 rtl:flex-row-reverse">
       <ShuffleButton />
