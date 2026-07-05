@@ -4,18 +4,16 @@
 import { useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { getAPIVersionCode } from "~/lib/device";
+
 /** Returns height of screen excluding system decoration (status & navigation bar). */
 export function useSafeAreaHeight() {
   const insets = useSafeAreaInsets();
   const { height: screenHeight } = useWindowDimensions();
 
-  //? As of React Native 0.86, height returned by `useWindowDimensions()`,
-  //? `Dimensions.get("window")`, and `Dimensions.get("screen")` will be
-  //? the same.
-  //?  - https://github.com/react/react-native/pull/53254
-  //?
-  //? This is a breaking change for Android APIs older than 35 due to the "height"
-  //? including the system decoration (status & navigation bar heights).
-  //?  - https://github.com/facebook/react-native/issues/47080#issuecomment-2421914957
+  // In Android API 35+, the "height" now includes the system decoration
+  // areas and display cutout (status & navigation bar heights).
+  //  - https://github.com/facebook/react-native/issues/47080#issuecomment-2421914957
+  if (getAPIVersionCode() < 35) return screenHeight;
   return screenHeight - insets.top - insets.bottom;
 }
