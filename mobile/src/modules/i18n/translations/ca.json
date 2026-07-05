@@ -144,12 +144,6 @@
     "minAlbumLength": {
       "title": "Filtrar per mida d'àlbum"
     },
-    "miniplayerGestures": {
-      "title": "Gestos del mini reproductor",
-      "extra": {
-        "dragClearPlayback": "Lliscar cap a baix per detenir la reproducció"
-      }
-    },
     "nowPlayingDesign": {
       "extra": {
         "plain": "Pla",

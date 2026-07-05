@@ -144,12 +144,6 @@
     "minAlbumLength": {
       "title": "Durée minimale d'un album"
     },
-    "miniplayerGestures": {
-      "title": "Gestes du mini-lecteur",
-      "extra": {
-        "dragClearPlayback": "Faites glisser le mini-lecteur vers le bas pour effacer l'historique de lecture"
-      }
-    },
     "nowPlayingDesign": {
       "extra": {
         "plain": "Classique",

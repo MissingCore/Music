@@ -144,12 +144,6 @@
     "minAlbumLength": {
       "title": "アルバムの再生時間でフィルター"
     },
-    "miniplayerGestures": {
-      "title": "ミニプレーヤージェスチャー",
-      "extra": {
-        "dragClearPlayback": "ミニプレーヤーを下にドラッグで再生を消去"
-      }
-    },
     "nowPlayingDesign": {
       "extra": {
         "plain": "プレーン",

@@ -47,14 +47,15 @@ export default function PlaybackSettings() {
         RightElement={<Switch enabled={repeatOnSkip} />}
       />
 
+      <TEm textKey="feat.miniplayer.title" className="-mb-4" />
       <SegmentedList>
         <SegmentedList.Item
-          labelTextKey="feat.miniplayerGestures.title"
+          labelTextKey="feat.miniplayer.extra.swipeControls"
           onPress={PreferenceTogglers.toggleKey("miniplayerGestures")}
           RightElement={<Switch enabled={miniplayerGestures} />}
         />
         <SegmentedList.Item
-          labelTextKey="feat.miniplayerGestures.extra.dragClearPlayback"
+          labelTextKey="feat.miniplayer.extra.dragToDismiss"
           onPress={PreferenceTogglers.toggleKey("dragClearPlayback")}
           RightElement={<Switch enabled={dragClearPlayback} />}
         />

@@ -144,12 +144,6 @@
     "minAlbumLength": {
       "title": "Panjang Album Minimal"
     },
-    "miniplayerGestures": {
-      "title": "Gestur Pemutar mini",
-      "extra": {
-        "dragClearPlayback": "Seret Pemutar mini Bawah untuk Membersihkan Pemutaran"
-      }
-    },
     "nowPlayingDesign": {
       "extra": {
         "plain": "Plain",

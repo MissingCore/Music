@@ -144,12 +144,6 @@
     "minAlbumLength": {
       "title": "Mindst mulige albumlængde"
     },
-    "miniplayerGestures": {
-      "title": "Swipe-styring i miniplayer",
-      "extra": {
-        "dragClearPlayback": "Træk miniplayer ned for at stoppe afspilning"
-      }
-    },
     "nowPlayingDesign": {
       "extra": {
         "plain": "Kun cover",

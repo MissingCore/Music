@@ -144,12 +144,6 @@
     "minAlbumLength": {
       "title": "Albumlängen-Filter"
     },
-    "miniplayerGestures": {
-      "title": "Miniplayer Gesten",
-      "extra": {
-        "dragClearPlayback": "Ziehen Sie den Mini-Player nach unten, um die Wiedergabe zu beenden"
-      }
-    },
     "nowPlayingDesign": {
       "extra": {
         "plain": "Einfach",
