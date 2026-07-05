@@ -262,7 +262,10 @@ export const RootStack = createNativeStackNavigator({
       },
       layout: ({ children }) => children,
       options: {
-        animation: "slide_from_bottom",
+        presentation: "formSheet",
+        sheetCornerRadius: 24,
+        sheetElevation: 0,
+        sheetShouldOverflowTopInset: true,
         header: NowPlayingTopAppBar,
         headerTransparent: true,
       },
@@ -274,7 +277,13 @@ export const RootStack = createNativeStackNavigator({
     },
     Upcoming: {
       screen: Upcoming,
-      options: { title: "term.upcoming" },
+      options: {
+        title: "term.upcoming",
+        presentation: "formSheet",
+        sheetCornerRadius: 24,
+        sheetElevation: 0,
+        sheetShouldOverflowTopInset: true,
+      },
     },
   },
   groups: {
