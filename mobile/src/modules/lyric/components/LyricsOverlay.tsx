@@ -111,6 +111,7 @@ function LyricsContent(props: { trackId: string; offset: number }) {
           data={lyricsLines}
           keyExtractor={(_, index) => `${index}`}
           renderItem={({ item }) => <Em className="text-xl">{item}</Em>}
+          nestedScrollEnabled
           contentContainerStyle={{
             paddingTop: props.offset,
             paddingBottom: SCROLL_OFFSET,
@@ -315,6 +316,7 @@ const MemoLyricList = memo(
             );
           }
         }}
+        nestedScrollEnabled
         // Suppresses error when `scrollToIndex` fails.
         onScrollToIndexFailed={() => {}}
         contentContainerStyle={{
