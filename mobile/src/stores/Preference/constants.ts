@@ -51,20 +51,25 @@ export interface PreferenceStore {
 
   /** Minimum number of tracks for album to show in Albums screen. */
   minAlbumLength: number;
+
   /** If we want swipe controls on the miniplayer. */
   miniplayerGestures: boolean;
   /** If dragging the miniplayer down will reset the playback store. */
   dragClearPlayback: boolean;
+
   /** Design used for the Now Playing screen. */
   nowPlayingDesign: NowPlayingDesign;
+  /** If tapping on the artwork on the Now Playing screen will play/pause the track. */
+  nowPlayingArtworkControls: boolean;
+  /** If swipe gestures for next/prev is enabled on the Now Playing screen. */
+  nowPlayingGestures: boolean;
+  /** Delay before next track is naturally played. */
+  playbackDelay: number;
 
   /** Show functional Nothing-styled scrollbar on supported screens. */
   quickScroll: boolean;
   /** If we use `contentFit="cover"` for artwork. */
   squareArtwork: boolean;
-
-  /** Delay before next track is naturally played. */
-  playbackDelay: number;
 
   /** If playback will continue when we dismiss the app. */
   continuePlaybackOnDismiss: boolean;

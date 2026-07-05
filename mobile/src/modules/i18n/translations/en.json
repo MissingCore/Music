@@ -465,6 +465,12 @@
         "swipeControls": "Swipe Controls"
       }
     },
+    "nowPlaying": {
+      "title": "Now Playing",
+      "extra": {
+        "artworkPlaybackToggle": "Artwork Playback Toggle"
+      }
+    },
     "queue": {
       "extra": {
         "add": "Add to Queue",
