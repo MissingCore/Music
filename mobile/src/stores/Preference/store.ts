@@ -95,14 +95,17 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     },
 
     minAlbumLength: 0,
+
     miniplayerGestures: false,
     dragClearPlayback: false,
+
     nowPlayingDesign: "vinyl",
+    nowPlayingArtworkControls: false,
+    nowPlayingGestures: false,
+    playbackDelay: 0,
 
     quickScroll: true,
     squareArtwork: true,
-
-    playbackDelay: 0,
 
     continuePlaybackOnDismiss: false,
     repeatOnSkip: false,

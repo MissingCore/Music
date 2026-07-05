@@ -21,6 +21,8 @@ type ToggleableKey =
   | "quickScroll"
   | "mediaStoreScanner"
   | "miniplayerGestures"
+  | "nowPlayingArtworkControls"
+  | "nowPlayingGestures"
   | "optimizedImageSave"
   | "rcNotification"
   | "rescanOnLaunch"

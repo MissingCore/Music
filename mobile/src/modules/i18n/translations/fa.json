@@ -144,12 +144,6 @@
     "minAlbumLength": {
       "title": "فیتر اندازه آلبوم"
     },
-    "miniplayerGestures": {
-      "title": "انیمیشن های مینی پلیر",
-      "extra": {
-        "dragClearPlayback": "برای حذف پخش ، مینی پلیر را به پایین بکشید"
-      }
-    },
     "nowPlayingDesign": {
       "extra": {
         "plain": "ساده",

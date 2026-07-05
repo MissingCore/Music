@@ -144,12 +144,6 @@
     "minAlbumLength": {
       "title": "न्यूनतम एल्बम लंबाई"
     },
-    "miniplayerGestures": {
-      "title": "मिनीप्लेयर जेस्चर",
-      "extra": {
-        "dragClearPlayback": null
-      }
-    },
     "nowPlayingDesign": {
       "extra": {
         "plain": "साधारण",

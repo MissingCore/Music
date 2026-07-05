@@ -144,12 +144,6 @@
     "minAlbumLength": {
       "title": "Minimum Albüm Uzunluğu"
     },
-    "miniplayerGestures": {
-      "title": "Mini Oynatıcı Hareketleri",
-      "extra": {
-        "dragClearPlayback": "Oynatmayı Temizlemek için Mini Oynatıcıyı Aşağı Sürükle"
-      }
-    },
     "nowPlayingDesign": {
       "extra": {
         "plain": "Düz",

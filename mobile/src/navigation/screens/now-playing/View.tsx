@@ -34,6 +34,7 @@ import {
   RepeatButton,
   ShuffleButton,
 } from "~/modules/media/components/MediaControls";
+import { PlaybackControlGestureWrapper } from "./components/PlaybackControlGestureWrapper";
 import { FavoriteButton } from "~/modules/media/components/Track";
 
 export default function NowPlaying() {
@@ -42,13 +43,19 @@ export default function NowPlaying() {
   return (
     <SeekbarContext>
       <SafeContainer additionalTopOffset={56} className="flex-1 gap-8">
-        <ArtworkSlot artwork={track.artwork} trackId={track.id} />
-        <View className="-mt-8 gap-6 px-4">
-          <Metadata track={track} />
-          <SeekBar id={track.id} uri={track.uri} trackLength={track.duration} />
-          <PlaybackControls />
-        </View>
-        <BottomAppBar trackId={track.id} />
+        <PlaybackControlGestureWrapper>
+          <ArtworkSlot artwork={track.artwork} trackId={track.id} />
+          <View className="-mt-8 gap-6 px-4">
+            <Metadata track={track} />
+            <SeekBar
+              id={track.id}
+              uri={track.uri}
+              trackLength={track.duration}
+            />
+            <PlaybackControls />
+          </View>
+          <BottomAppBar trackId={track.id} />
+        </PlaybackControlGestureWrapper>
       </SafeContainer>
     </SeekbarContext>
   );

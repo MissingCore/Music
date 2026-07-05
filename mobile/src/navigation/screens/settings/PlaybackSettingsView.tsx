@@ -19,6 +19,10 @@ export default function PlaybackSettings() {
   );
   const dragClearPlayback = usePreferenceStore((s) => s.dragClearPlayback);
   const miniplayerGestures = usePreferenceStore((s) => s.miniplayerGestures);
+  const nowPlayingArtworkControls = usePreferenceStore(
+    (s) => s.nowPlayingArtworkControls,
+  );
+  const nowPlayingGestures = usePreferenceStore((s) => s.nowPlayingGestures);
   const quickAddQueue = usePreferenceStore((s) => s.quickAddQueue);
   const quickFavorite = usePreferenceStore((s) => s.quickFavorite);
   const repeatOnSkip = usePreferenceStore((s) => s.repeatOnSkip);
@@ -47,16 +51,31 @@ export default function PlaybackSettings() {
         RightElement={<Switch enabled={repeatOnSkip} />}
       />
 
+      <TEm textKey="feat.miniplayer.title" className="-mb-4" />
       <SegmentedList>
         <SegmentedList.Item
-          labelTextKey="feat.miniplayerGestures.title"
+          labelTextKey="feat.miniplayer.extra.swipeControls"
           onPress={PreferenceTogglers.toggleKey("miniplayerGestures")}
           RightElement={<Switch enabled={miniplayerGestures} />}
         />
         <SegmentedList.Item
-          labelTextKey="feat.miniplayerGestures.extra.dragClearPlayback"
+          labelTextKey="feat.miniplayer.extra.dragToDismiss"
           onPress={PreferenceTogglers.toggleKey("dragClearPlayback")}
           RightElement={<Switch enabled={dragClearPlayback} />}
+        />
+      </SegmentedList>
+
+      <TEm textKey="feat.nowPlaying.title" className="-mb-4" />
+      <SegmentedList>
+        <SegmentedList.Item
+          labelTextKey="feat.nowPlaying.extra.artworkPlaybackToggle"
+          onPress={PreferenceTogglers.toggleKey("nowPlayingArtworkControls")}
+          RightElement={<Switch enabled={nowPlayingArtworkControls} />}
+        />
+        <SegmentedList.Item
+          labelTextKey="feat.miniplayer.extra.swipeControls"
+          onPress={PreferenceTogglers.toggleKey("nowPlayingGestures")}
+          RightElement={<Switch enabled={nowPlayingGestures} />}
         />
       </SegmentedList>
 

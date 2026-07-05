@@ -144,12 +144,6 @@
     "minAlbumLength": {
       "title": null
     },
-    "miniplayerGestures": {
-      "title": null,
-      "extra": {
-        "dragClearPlayback": null
-      }
-    },
     "nowPlayingDesign": {
       "extra": {
         "plain": "普通封面",

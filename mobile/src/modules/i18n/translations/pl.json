@@ -144,12 +144,6 @@
     "minAlbumLength": {
       "title": "Filtr długości albumu"
     },
-    "miniplayerGestures": {
-      "title": "Gesty w miniodtwarzaczu",
-      "extra": {
-        "dragClearPlayback": "Przeciągnięcie Miniodtwarzacza w dół resetuje odtwarzanie"
-      }
-    },
     "nowPlayingDesign": {
       "extra": {
         "plain": "Zwykły",

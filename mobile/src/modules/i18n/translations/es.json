@@ -144,12 +144,6 @@
     "minAlbumLength": {
       "title": "Filtro por tamaño de álbum"
     },
-    "miniplayerGestures": {
-      "title": "Gestos del mini reproductor",
-      "extra": {
-        "dragClearPlayback": "Desliza hacia abajo para detener la reproducción"
-      }
-    },
     "nowPlayingDesign": {
       "extra": {
         "plain": "Simple",

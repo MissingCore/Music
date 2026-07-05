@@ -167,12 +167,6 @@
     "minAlbumLength": {
       "title": "Minimum Album Length"
     },
-    "miniplayerGestures": {
-      "title": "Miniplayer Gestures",
-      "extra": {
-        "dragClearPlayback": "Drag Miniplayer Down to Clear Playback"
-      }
-    },
     "nowPlayingDesign": {
       "extra": {
         "plain": "Plain",
@@ -462,6 +456,19 @@
         "trackQuickActions": "Track Quick Actions",
 
         "addToPlaylist": "Add to Playlist"
+      }
+    },
+    "miniplayer": {
+      "title": "Miniplayer",
+      "extra": {
+        "dragToDismiss": "Drag to Dismiss",
+        "swipeControls": "Swipe Controls"
+      }
+    },
+    "nowPlaying": {
+      "title": "Now Playing",
+      "extra": {
+        "artworkPlaybackToggle": "Artwork Playback Toggle"
       }
     },
     "queue": {

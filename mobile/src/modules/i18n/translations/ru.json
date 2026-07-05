@@ -144,12 +144,6 @@
     "minAlbumLength": {
       "title": "Минимальная длина альбома"
     },
-    "miniplayerGestures": {
-      "title": "Жесты мини-плеера",
-      "extra": {
-        "dragClearPlayback": "Перетащите мини-плеер вниз, чтобы очистить очередь"
-      }
-    },
     "nowPlayingDesign": {
       "extra": {
         "plain": "Обычный",
