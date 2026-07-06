@@ -52,28 +52,24 @@ export function ArtworkPlayerWidget(props: WidgetProps) {
 // Hex Opacities.
 const bgOpacities = ["4D", "40"]; // 30%, 25%
 
-function SVGOverlay({
-  size,
-  svgName,
-  opacityState,
-}: {
+function SVGOverlay(props: {
   size: number;
   svgName: "play" | "pause";
   opacityState: number;
 }) {
-  const svgSize = size / 3;
+  const svgSize = props.size / 3;
   return (
     <FlexWidget
       style={{
-        height: size,
-        width: size,
+        height: props.size,
+        width: props.size,
         alignItems: "center",
         justifyContent: "center",
         // To fake a fade effect.
-        backgroundColor: `${Colors.neutral0}${bgOpacities[opacityState]}`,
+        backgroundColor: `${Colors.neutral0}${bgOpacities[props.opacityState]}`,
       }}
     >
-      <WidgetSVG name={svgName} size={svgSize} />
+      <WidgetSVG name={props.svgName} size={svgSize} color="#FFFFFF" />
     </FlexWidget>
   );
 }

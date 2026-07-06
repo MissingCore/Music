@@ -3,8 +3,6 @@
 
 export const Styles = {
   color: {
-    /** Nothing widget color from color picker. */
-    background: "#1A1B21",
     /** Can't pass `transparent` to `backgroundColor`. */
     transparent: "#00000000",
   },

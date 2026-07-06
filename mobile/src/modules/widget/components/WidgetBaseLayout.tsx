@@ -19,6 +19,7 @@ export function WidgetBaseLayout({
   width,
   transparent,
   style,
+  stylingConfig,
   ...props
 }: WidgetDefinition<
   ClickActionProps & {
@@ -41,9 +42,10 @@ export function WidgetBaseLayout({
           overflow: "hidden",
           height,
           width,
-          backgroundColor: transparent
-            ? Styles.color.transparent
-            : Styles.color.background,
+          backgroundColor:
+            transparent || stylingConfig.transparent
+              ? Styles.color.transparent
+              : stylingConfig.bgColor,
           borderRadius: Styles.radius,
           ...style,
         }}

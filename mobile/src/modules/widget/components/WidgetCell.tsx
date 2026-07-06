@@ -4,19 +4,20 @@
 import type {
   ClickActionProps,
   FlexWidgetStyle,
+  HexColor,
 } from "react-native-android-widget";
 import { FlexWidget } from "react-native-android-widget";
-
-import { Styles } from "../constants/Styles";
 
 /** Styling for a 1×1 cell. */
 export function WidgetCell({
   size,
+  bgColor,
   style,
   ...props
 }: ClickActionProps & {
   size: number;
   children: React.ReactNode;
+  bgColor: HexColor;
   style?: FlexWidgetStyle;
 }) {
   return (
@@ -27,7 +28,7 @@ export function WidgetCell({
         width: size,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: Styles.color.background,
+        backgroundColor: bgColor,
         // By default, shape is circular.
         borderRadius: 999,
         ...style,
