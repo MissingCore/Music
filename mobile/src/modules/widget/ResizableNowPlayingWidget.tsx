@@ -55,7 +55,7 @@ export function ResizableNowPlayingWidget(props: WidgetProps) {
         <WidgetCell
           size={widgetHeight}
           bgColor={clrs.inactiveColor}
-          style={{ borderRadius: 0 }}
+          style={{ borderRadius: clrs.transparent ? Styles.radius : 0 }}
         >
           <WidgetArtwork
             size={widgetHeight}
