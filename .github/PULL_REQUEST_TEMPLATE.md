@@ -16,6 +16,7 @@ Please describe how you tested this change and how a reviewer could reproduce yo
 Please check the appropriate items below if they apply to your diff.
 -->
 
+- [ ] New files have the SPDX license identifier at the top of the file.
 - [ ] Documentation is up to date to reflect these changes.
 - [ ] Ensure dependency licenses are up-to-date by running `pnpm sync:licenses`.
 - [ ] This diff will work correctly for `pnpm android:prod`.
