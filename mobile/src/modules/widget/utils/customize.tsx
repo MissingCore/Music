@@ -38,19 +38,22 @@ export const widgetConfigCache = createStore<Record<string, WidgetConfig>>()(
 //#endregion
 
 //#region Helpers
-export function getWidgetConfigKey(id: string, type: string) {
+export function getWidgetConfigKey(id: string | number, type: string) {
   return `WIDGET_${type}_${id}`;
 }
 
-export function getWidgetConfig(widgetConfigKey: string): WidgetConfig {
+export async function getWidgetConfig(
+  widgetConfigKey: string,
+): Promise<WidgetConfig> {
   // First check to see if it's cached.
   const cachedConfig = widgetConfigCache.getState()[widgetConfigKey];
   if (cachedConfig) return cachedConfig;
 
-  const config = Storage.getItemSync(widgetConfigKey);
+  const config = await Storage.getItemAsync(widgetConfigKey);
   if (config) {
     try {
       const storedConfig = JSON.parse(config);
+      // Verify we're storing an object.
       if (typeof storedConfig === "object" && storedConfig !== null) {
         const formattedConfig = { ...DEFAULT_WIDGET_CONFIG, ...storedConfig };
         widgetConfigCache.setState({ [widgetConfigKey]: formattedConfig });
@@ -64,7 +67,12 @@ export function getWidgetConfig(widgetConfigKey: string): WidgetConfig {
 }
 
 export function deleteWidgetConfig(widgetConfigKey: string) {
-  Storage.removeItemSync(widgetConfigKey);
+  //? We get the following error if we use the sync method:
+  //?   - "Error: Call to function 'NativeDatabase.prepareAsync' has been rejected."
+  //?
+  //? This method might get called on a previously deleted widget due to
+  //? weird behavior that appeared with New Architecture implementation.
+  Storage.removeItemAsync(widgetConfigKey);
 }
 
 export function updateWidgetConfig(
@@ -75,7 +83,7 @@ export function updateWidgetConfig(
     widgetConfigCache.setState({ [widgetConfigKey]: config });
 
     const stringifiedConfig = JSON.stringify(config);
-    Storage.setItemSync(widgetConfigKey, stringifiedConfig);
+    Storage.setItemAsync(widgetConfigKey, stringifiedConfig);
   } catch {}
 }
 //#endregion

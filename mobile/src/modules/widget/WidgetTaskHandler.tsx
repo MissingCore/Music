@@ -11,6 +11,7 @@ import { bgWait } from "~/utils/promise";
 import { Action } from "./constants/Action";
 import { nameToWidget } from "./constants/Widgets";
 import { getWidgetData } from "./utils";
+import { deleteWidgetConfig, getWidgetConfigKey } from "./utils/customize";
 import { updateWidgets } from "./utils/update";
 
 export async function widgetTaskHandler({
@@ -36,7 +37,10 @@ export async function widgetTaskHandler({
       break;
 
     case "WIDGET_DELETED":
-      // Do nothing
+      // Delete stored widget instance config.
+      deleteWidgetConfig(
+        getWidgetConfigKey(widgetInfo.widgetId, widgetInfo.widgetName),
+      );
       break;
 
     case "WIDGET_CLICK":
