@@ -50,7 +50,7 @@ export async function getWidgetConfig(
   return DEFAULT_WIDGET_CONFIG;
 }
 
-export function deleteWidgetConfig(widgetConfigKey: string) {
+export async function deleteWidgetConfig(widgetConfigKey: string) {
   if (!isWidgetConfigSupported(widgetConfigKey)) return;
 
   //? We get the following error if we use the sync method:
@@ -58,10 +58,10 @@ export function deleteWidgetConfig(widgetConfigKey: string) {
   //?
   //? This method might get called on a previously deleted widget due to
   //? weird behavior that appeared with New Architecture implementation.
-  Storage.removeItemAsync(widgetConfigKey);
+  await Storage.removeItemAsync(widgetConfigKey);
 }
 
-export function updateWidgetConfig(
+export async function updateWidgetConfig(
   widgetConfigKey: string,
   config: WidgetConfig,
 ) {
@@ -71,7 +71,7 @@ export function updateWidgetConfig(
     widgetConfigCache.setState({ [widgetConfigKey]: config });
 
     const stringifiedConfig = JSON.stringify(config);
-    Storage.setItemAsync(widgetConfigKey, stringifiedConfig);
+    await Storage.setItemAsync(widgetConfigKey, stringifiedConfig);
   } catch {}
 }
 //#endregion

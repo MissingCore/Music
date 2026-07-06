@@ -42,6 +42,18 @@ export function AppProvider(props: { children: React.ReactNode }) {
   );
 }
 
+export function MinimumAppProvider(props: { children: React.ReactNode }) {
+  return (
+    <SafeAreaProvider>
+      <KeyboardProvider>
+        <GestureHandlerRootView>
+          <ChildrenWrapper {...props} />
+        </GestureHandlerRootView>
+      </KeyboardProvider>
+    </SafeAreaProvider>
+  );
+}
+
 //#region Edge-To-Edge
 function SystemBars() {
   const currentTheme = useCurrentScheme();
