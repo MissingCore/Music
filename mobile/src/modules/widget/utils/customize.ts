@@ -13,7 +13,7 @@ export function getWidgetConfigKey(id: string | number, type: string) {
 }
 
 export function isWidgetConfigSupported(widgetConfigKey: string) {
-  return widgetConfigKey.startsWith("WIDGET_ResizableNowPlaying");
+  return !widgetConfigKey.startsWith("WIDGET_ArtworkPlayer");
 }
 //#endregion
 

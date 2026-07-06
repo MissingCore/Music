@@ -14,7 +14,8 @@
     android:initialLayout="@layout/rn_widget"
     android:previewImage="@drawable/nowplaying_preview"
 
-
+    android:configure="com.cyanchill.missingcore.music.WidgetConfigurationActivity"
+    android:widgetFeatures="reconfigurable"
 
     android:updatePeriodMillis="0"
     android:widgetCategory="home_screen">

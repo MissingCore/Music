@@ -16,8 +16,8 @@ import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import { AccentText } from "~/components/Typography/AccentText";
 import { Switch } from "~/components/UI/Switch";
 import { ColorPickerInput } from "~/modules/customization/theme/components/ColorPickerInput";
-import { ResizableNowPlayingWidget } from "./ResizableNowPlayingWidget";
 import { DEFAULT_WIDGET_CONFIG } from "./constants/Config";
+import { nameToWidget } from "./constants/Widgets";
 import type { WidgetConfig } from "./types";
 import { getWidgetData } from "./utils";
 import {
@@ -56,8 +56,11 @@ function WidgetConfigurationScreenPropsImpl({
         // Ensure customizations are applied to newly created widget.
         const widgetData = { ...widgetInfo, ...getWidgetData() };
         const shouldOpen = !(await isAudioBrowserSetUp());
+
+        const Widget =
+          nameToWidget[widgetInfo.widgetName as keyof typeof nameToWidget];
         renderWidget(
-          <ResizableNowPlayingWidget
+          <Widget
             {...widgetData}
             stylingConfig={config}
             openApp={shouldOpen}
