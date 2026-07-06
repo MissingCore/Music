@@ -157,6 +157,7 @@ const widgetPluginConfig: WithAndroidWidgetsParams = {
       targetCellHeight: 2,
       description: "[Experimental] Quick access to your media controls.",
       previewImage: "./assets/widget/now-playing.png",
+      widgetFeatures: "reconfigurable",
     },
     {
       name: "ResizableNowPlaying",
@@ -168,6 +169,7 @@ const widgetPluginConfig: WithAndroidWidgetsParams = {
       description: "[Experimental] Quick access to your media controls.",
       previewImage: "./assets/widget/resizable-now-playing.png",
       resizeMode: "horizontal",
+      widgetFeatures: "reconfigurable",
     },
   ],
 };

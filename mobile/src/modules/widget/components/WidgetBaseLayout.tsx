@@ -7,7 +7,7 @@ import type {
 } from "react-native-android-widget";
 import { FlexWidget } from "react-native-android-widget";
 
-import type { WithDimensions } from "../types";
+import type { WidgetDefinition } from "../types";
 import { Styles } from "../constants/Styles";
 
 /**
@@ -19,8 +19,9 @@ export function WidgetBaseLayout({
   width,
   transparent,
   style,
+  stylingConfig,
   ...props
-}: WithDimensions<
+}: WidgetDefinition<
   ClickActionProps & {
     children: React.ReactNode;
     transparent?: boolean;
@@ -41,9 +42,10 @@ export function WidgetBaseLayout({
           overflow: "hidden",
           height,
           width,
-          backgroundColor: transparent
-            ? Styles.color.transparent
-            : Styles.color.background,
+          backgroundColor:
+            transparent || stylingConfig.transparent
+              ? Styles.color.transparent
+              : stylingConfig.bgColor,
           borderRadius: Styles.radius,
           ...style,
         }}

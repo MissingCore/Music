@@ -3,8 +3,7 @@
 
 import { OverlapWidget } from "react-native-android-widget";
 
-import { Colors } from "~/constants/Styles";
-import type { PlayerWidgetData, WithDimensions } from "./types";
+import type { PlayerWidgetData, WidgetDefinition } from "./types";
 import { Action, withAction } from "./constants/Action";
 import { Styles } from "./constants/Styles";
 import { WidgetArtwork } from "./components/WidgetArtwork";
@@ -12,7 +11,7 @@ import { WidgetBaseLayout } from "./components/WidgetBaseLayout";
 import { WidgetCell } from "./components/WidgetCell";
 import { WidgetSVG } from "./components/WidgetSVG";
 
-type WidgetProps = WithDimensions<PlayerWidgetData & { openApp?: boolean }>;
+type WidgetProps = WidgetDefinition<PlayerWidgetData>;
 
 export function NowPlayingWidget(props: WidgetProps) {
   const size = Math.min(props.width, props.height);
@@ -23,12 +22,20 @@ export function NowPlayingWidget(props: WidgetProps) {
   const positionOffset = cellSize + Styles.layoutGap;
   const openApp = props.openApp || props.track === undefined;
 
+  const clrs = props.stylingConfig;
+
   return (
-    <WidgetBaseLayout height={size} width={size} transparent>
+    <WidgetBaseLayout
+      height={size}
+      width={size}
+      stylingConfig={clrs}
+      transparent
+    >
       <OverlapWidget>
         <WidgetCell
           clickAction={Action.Open}
           size={cellSize}
+          bgColor={clrs.bgColor}
           style={{ borderRadius: Styles.radius }}
         >
           <WidgetArtwork
@@ -40,28 +47,32 @@ export function NowPlayingWidget(props: WidgetProps) {
         <WidgetCell
           clickAction={withAction(Action.PlayPause, openApp)}
           size={cellSize}
-          style={{
-            marginLeft: positionOffset,
-            ...(!props.isPlaying ? { backgroundColor: Colors.red } : {}),
-          }}
+          bgColor={clrs[props.isPlaying ? "inactiveColor" : "activeColor"]}
+          style={{ marginLeft: positionOffset }}
         >
-          <WidgetSVG name={props.isPlaying ? "pause" : "play"} size={svgSize} />
+          <WidgetSVG
+            name={props.isPlaying ? "pause" : "play"}
+            size={svgSize}
+            color={clrs[props.isPlaying ? "onInactiveColor" : "onActiveColor"]}
+          />
         </WidgetCell>
 
         <WidgetCell
           clickAction={withAction(Action.Prev, openApp)}
           size={cellSize}
+          bgColor={clrs.bgColor}
           style={{ marginTop: positionOffset }}
         >
-          <WidgetSVG name="prev" size={svgSize} />
+          <WidgetSVG name="prev" size={svgSize} color={clrs.textColor} />
         </WidgetCell>
 
         <WidgetCell
           clickAction={withAction(Action.Next, openApp)}
           size={cellSize}
+          bgColor={clrs.bgColor}
           style={{ marginLeft: positionOffset, marginTop: positionOffset }}
         >
-          <WidgetSVG name="next" size={svgSize} />
+          <WidgetSVG name="next" size={svgSize} color={clrs.textColor} />
         </WidgetCell>
       </OverlapWidget>
     </WidgetBaseLayout>

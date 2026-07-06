@@ -4,14 +4,14 @@
 import { FlexWidget, OverlapWidget } from "react-native-android-widget";
 
 import { Colors } from "~/constants/Styles";
-import type { PlayerWidgetData, WithDimensions } from "./types";
+import type { PlayerWidgetData, WidgetDefinition } from "./types";
 import { Action, withAction } from "./constants/Action";
 import { WidgetArtwork } from "./components/WidgetArtwork";
 import { WidgetBaseLayout } from "./components/WidgetBaseLayout";
 import { WidgetSVG } from "./components/WidgetSVG";
 
-type WidgetProps = WithDimensions<
-  PlayerWidgetData & { overlayState?: number; openApp?: boolean }
+type WidgetProps = WidgetDefinition<
+  PlayerWidgetData & { overlayState?: number }
 >;
 
 export function ArtworkPlayerWidget(props: WidgetProps) {
@@ -25,6 +25,7 @@ export function ArtworkPlayerWidget(props: WidgetProps) {
       height={size}
       width={size}
       style={{ alignItems: "center", justifyContent: "center" }}
+      stylingConfig={props.stylingConfig}
     >
       <OverlapWidget>
         <WidgetArtwork
@@ -51,28 +52,24 @@ export function ArtworkPlayerWidget(props: WidgetProps) {
 // Hex Opacities.
 const bgOpacities = ["4D", "40"]; // 30%, 25%
 
-function SVGOverlay({
-  size,
-  svgName,
-  opacityState,
-}: {
+function SVGOverlay(props: {
   size: number;
   svgName: "play" | "pause";
   opacityState: number;
 }) {
-  const svgSize = size / 3;
+  const svgSize = props.size / 3;
   return (
     <FlexWidget
       style={{
-        height: size,
-        width: size,
+        height: props.size,
+        width: props.size,
         alignItems: "center",
         justifyContent: "center",
         // To fake a fade effect.
-        backgroundColor: `${Colors.neutral0}${bgOpacities[opacityState]}`,
+        backgroundColor: `${Colors.neutral0}${bgOpacities[props.opacityState]}`,
       }}
     >
-      <WidgetSVG name={svgName} size={svgSize} />
+      <WidgetSVG name={props.svgName} size={svgSize} color="#FFFFFF" />
     </FlexWidget>
   );
 }

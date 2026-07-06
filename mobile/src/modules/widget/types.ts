@@ -1,6 +1,8 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import type { HexColor } from "react-native-android-widget";
+
 type WidgetTrackData = {
   title: string;
   artist: string | null;
@@ -14,4 +16,21 @@ export type PlayerWidgetData = {
   openApp?: boolean;
 };
 
-export type WithDimensions<T> = T & { height: number; width: number };
+export type WidgetDefinition<T> = T & {
+  height: number;
+  width: number;
+  stylingConfig: WidgetConfig;
+};
+
+export interface WidgetConfig {
+  transparent: boolean;
+
+  bgColor: HexColor;
+  textColor: HexColor;
+  mutedTextColor: HexColor;
+
+  activeColor: HexColor;
+  onActiveColor: HexColor;
+  inactiveColor: HexColor;
+  onInactiveColor: HexColor;
+}

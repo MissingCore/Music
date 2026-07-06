@@ -3,6 +3,7 @@
 
 import { requestWidgetUpdate } from "react-native-android-widget";
 
+import { getWidgetConfig, getWidgetConfigKey } from "./customize";
 import type { PlayerWidgetData } from "../types";
 import type { WidgetName } from "../constants/Widgets";
 import { nameToWidget } from "../constants/Widgets";
@@ -25,9 +26,14 @@ export async function updateWidgets({
     updatedWidgets.map((name) =>
       requestWidgetUpdate({
         widgetName: name,
-        renderWidget: (props) => {
+        renderWidget: async (widgetInfo) => {
           const Widget = nameToWidget[name];
-          return <Widget {...props} {...args} />;
+          const configStyle = await getWidgetConfig(
+            getWidgetConfigKey(widgetInfo),
+          );
+          return (
+            <Widget {...widgetInfo} stylingConfig={configStyle} {...args} />
+          );
         },
       }),
     ),

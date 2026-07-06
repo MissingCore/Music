@@ -9,8 +9,14 @@ import { PlaybackControls } from "~/stores/Playback/actions";
 import { isAudioBrowserSetUp } from "~/lib/react-native-audio-browser";
 import { bgWait } from "~/utils/promise";
 import { Action } from "./constants/Action";
+import { DEFAULT_WIDGET_CONFIG } from "./constants/Config";
 import { nameToWidget } from "./constants/Widgets";
 import { getWidgetData } from "./utils";
+import {
+  deleteWidgetConfig,
+  getWidgetConfig,
+  getWidgetConfigKey,
+} from "./utils/customize";
 import { updateWidgets } from "./utils/update";
 
 export async function widgetTaskHandler({
@@ -24,6 +30,8 @@ export async function widgetTaskHandler({
     nameToWidget[widgetInfo.widgetName as keyof typeof nameToWidget];
   const widgetData = { ...widgetInfo, ...getWidgetData() };
 
+  const widgetKey = getWidgetConfigKey(widgetInfo);
+
   switch (widgetAction) {
     case "WIDGET_ADDED":
     case "WIDGET_UPDATE":
@@ -32,11 +40,19 @@ export async function widgetTaskHandler({
       // prevent things breaking due to the Playback store requiring a AudioBrowser
       // service active (or else the data will get cleared).
       const shouldOpen = !(await isAudioBrowserSetUp());
-      renderWidget(<Widget {...widgetData} openApp={shouldOpen} />);
+      const styleConfig = await getWidgetConfig(widgetKey);
+      renderWidget(
+        <Widget
+          {...widgetData}
+          stylingConfig={styleConfig}
+          openApp={shouldOpen}
+        />,
+      );
       break;
 
     case "WIDGET_DELETED":
-      // Do nothing
+      // Delete stored widget instance config.
+      deleteWidgetConfig(widgetKey);
       break;
 
     case "WIDGET_CLICK":
@@ -61,10 +77,18 @@ export async function widgetTaskHandler({
         if (widgetInfo.widgetName === "ArtworkPlayer") {
           // Briefly indicate that we switched "states" in the widget.
           for (let i = 0; i < 2; i++) {
-            renderWidget(<Widget {...widgetData} overlayState={i} />);
+            renderWidget(
+              <Widget
+                {...widgetData}
+                stylingConfig={DEFAULT_WIDGET_CONFIG}
+                overlayState={i}
+              />,
+            );
             await bgWait(i === 0 ? 500 : 50);
           }
-          renderWidget(<Widget {...widgetData} />);
+          renderWidget(
+            <Widget {...widgetData} stylingConfig={DEFAULT_WIDGET_CONFIG} />,
+          );
         }
       } else {
         if (clickAction === Action.Prev) await PlaybackControls.prev();
