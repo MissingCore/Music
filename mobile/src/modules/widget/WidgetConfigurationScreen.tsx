@@ -115,7 +115,7 @@ function WidgetConfigForm(props: {
   useEffect(() => {
     getWidgetConfig(props.widgetKey)
       .then(setData)
-      .catch(() => setData(DEFAULT_WIDGET_CONFIG));
+      .catch(() => setData({ ...DEFAULT_WIDGET_CONFIG }));
   }, [props.widgetKey]);
 
   if (data === undefined) return null;

@@ -28,7 +28,8 @@ export const widgetConfigCache = createStore<Record<string, WidgetConfig>>()(
 export async function getWidgetConfig(
   widgetConfigKey: string,
 ): Promise<WidgetConfig> {
-  if (!isWidgetConfigSupported(widgetConfigKey)) return DEFAULT_WIDGET_CONFIG;
+  const baseConfig = { ...DEFAULT_WIDGET_CONFIG };
+  if (!isWidgetConfigSupported(widgetConfigKey)) return baseConfig;
 
   // First check to see if it's cached.
   const cachedConfig = widgetConfigCache.getState()[widgetConfigKey];
@@ -40,15 +41,15 @@ export async function getWidgetConfig(
       const storedConfig = JSON.parse(config);
       // Verify we're storing an object.
       if (typeof storedConfig === "object" && storedConfig !== null) {
-        const formattedConfig = { ...DEFAULT_WIDGET_CONFIG, ...storedConfig };
+        const formattedConfig = { ...baseConfig, ...storedConfig };
         widgetConfigCache.setState({ [widgetConfigKey]: formattedConfig });
         return formattedConfig;
       }
     } catch {}
   }
 
-  widgetConfigCache.setState({ [widgetConfigKey]: DEFAULT_WIDGET_CONFIG });
-  return DEFAULT_WIDGET_CONFIG;
+  widgetConfigCache.setState({ [widgetConfigKey]: baseConfig });
+  return baseConfig;
 }
 
 export async function deleteWidgetConfig(widgetConfigKey: string) {
