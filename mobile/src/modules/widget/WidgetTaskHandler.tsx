@@ -11,7 +11,11 @@ import { bgWait } from "~/utils/promise";
 import { Action } from "./constants/Action";
 import { nameToWidget } from "./constants/Widgets";
 import { getWidgetData } from "./utils";
-import { deleteWidgetConfig, getWidgetConfigKey } from "./utils/customize";
+import {
+  deleteWidgetConfig,
+  getWidgetConfig,
+  getWidgetConfigKey,
+} from "./utils/customize";
 import { updateWidgets } from "./utils/update";
 
 export async function widgetTaskHandler({
@@ -25,6 +29,11 @@ export async function widgetTaskHandler({
     nameToWidget[widgetInfo.widgetName as keyof typeof nameToWidget];
   const widgetData = { ...widgetInfo, ...getWidgetData() };
 
+  const widgetKey = getWidgetConfigKey(
+    widgetInfo.widgetId,
+    widgetInfo.widgetName,
+  );
+
   switch (widgetAction) {
     case "WIDGET_ADDED":
     case "WIDGET_UPDATE":
@@ -33,7 +42,14 @@ export async function widgetTaskHandler({
       // prevent things breaking due to the Playback store requiring a AudioBrowser
       // service active (or else the data will get cleared).
       const shouldOpen = !(await isAudioBrowserSetUp());
-      renderWidget(<Widget {...widgetData} openApp={shouldOpen} />);
+      const styleConfig = await getWidgetConfig(widgetKey);
+      renderWidget(
+        <Widget
+          {...widgetData}
+          stylingConfig={styleConfig}
+          openApp={shouldOpen}
+        />,
+      );
       break;
 
     case "WIDGET_DELETED":
@@ -63,12 +79,19 @@ export async function widgetTaskHandler({
 
         // Run special animation for `ArtworkPlayer` widget.
         if (widgetInfo.widgetName === "ArtworkPlayer") {
+          const styleConfig = await getWidgetConfig(widgetKey);
           // Briefly indicate that we switched "states" in the widget.
           for (let i = 0; i < 2; i++) {
-            renderWidget(<Widget {...widgetData} overlayState={i} />);
+            renderWidget(
+              <Widget
+                {...widgetData}
+                stylingConfig={styleConfig}
+                overlayState={i}
+              />,
+            );
             await bgWait(i === 0 ? 500 : 50);
           }
-          renderWidget(<Widget {...widgetData} />);
+          renderWidget(<Widget {...widgetData} stylingConfig={styleConfig} />);
         }
       } else {
         if (clickAction === Action.Prev) await PlaybackControls.prev();

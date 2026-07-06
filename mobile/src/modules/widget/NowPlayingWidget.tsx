@@ -4,7 +4,7 @@
 import { OverlapWidget } from "react-native-android-widget";
 
 import { Colors } from "~/constants/Styles";
-import type { PlayerWidgetData, WithDimensions } from "./types";
+import type { PlayerWidgetData, WidgetDefinition } from "./types";
 import { Action, withAction } from "./constants/Action";
 import { Styles } from "./constants/Styles";
 import { WidgetArtwork } from "./components/WidgetArtwork";
@@ -12,7 +12,7 @@ import { WidgetBaseLayout } from "./components/WidgetBaseLayout";
 import { WidgetCell } from "./components/WidgetCell";
 import { WidgetSVG } from "./components/WidgetSVG";
 
-type WidgetProps = WithDimensions<PlayerWidgetData & { openApp?: boolean }>;
+type WidgetProps = WidgetDefinition<PlayerWidgetData>;
 
 export function NowPlayingWidget(props: WidgetProps) {
   const size = Math.min(props.width, props.height);
@@ -24,7 +24,12 @@ export function NowPlayingWidget(props: WidgetProps) {
   const openApp = props.openApp || props.track === undefined;
 
   return (
-    <WidgetBaseLayout height={size} width={size} transparent>
+    <WidgetBaseLayout
+      height={size}
+      width={size}
+      stylingConfig={props.stylingConfig}
+      transparent
+    >
       <OverlapWidget>
         <WidgetCell
           clickAction={Action.Open}

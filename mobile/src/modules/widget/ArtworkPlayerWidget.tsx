@@ -4,14 +4,14 @@
 import { FlexWidget, OverlapWidget } from "react-native-android-widget";
 
 import { Colors } from "~/constants/Styles";
-import type { PlayerWidgetData, WithDimensions } from "./types";
+import type { PlayerWidgetData, WidgetDefinition } from "./types";
 import { Action, withAction } from "./constants/Action";
 import { WidgetArtwork } from "./components/WidgetArtwork";
 import { WidgetBaseLayout } from "./components/WidgetBaseLayout";
 import { WidgetSVG } from "./components/WidgetSVG";
 
-type WidgetProps = WithDimensions<
-  PlayerWidgetData & { overlayState?: number; openApp?: boolean }
+type WidgetProps = WidgetDefinition<
+  PlayerWidgetData & { overlayState?: number }
 >;
 
 export function ArtworkPlayerWidget(props: WidgetProps) {
@@ -25,6 +25,7 @@ export function ArtworkPlayerWidget(props: WidgetProps) {
       height={size}
       width={size}
       style={{ alignItems: "center", justifyContent: "center" }}
+      stylingConfig={props.stylingConfig}
     >
       <OverlapWidget>
         <WidgetArtwork

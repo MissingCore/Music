@@ -7,7 +7,7 @@ import type {
 } from "react-native-android-widget";
 import { FlexWidget } from "react-native-android-widget";
 
-import type { WithDimensions } from "../types";
+import type { WidgetDefinition } from "../types";
 import { Styles } from "../constants/Styles";
 
 /**
@@ -20,7 +20,7 @@ export function WidgetBaseLayout({
   transparent,
   style,
   ...props
-}: WithDimensions<
+}: WidgetDefinition<
   ClickActionProps & {
     children: React.ReactNode;
     transparent?: boolean;

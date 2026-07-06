@@ -2,36 +2,10 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import Storage from "expo-sqlite/kv-store";
-import type { HexColor } from "react-native-android-widget";
 import { createStore } from "zustand/vanilla";
 
-//#region Types
-export interface WidgetConfig {
-  transparent: boolean;
-
-  bgColor: HexColor;
-  textColor: HexColor;
-  mutedTextColor: HexColor;
-
-  activeColor: HexColor;
-  onActiveColor: HexColor;
-  inactiveColor: HexColor;
-  onInactiveColor: HexColor;
-}
-
-const DEFAULT_WIDGET_CONFIG: WidgetConfig = {
-  transparent: false,
-
-  bgColor: "#121212",
-  textColor: "#FFFFFF",
-  mutedTextColor: "#ADADAD",
-
-  activeColor: "#D71921",
-  onActiveColor: "#FFFFFF",
-  inactiveColor: "#323232",
-  onInactiveColor: "#FFFFFF",
-};
-//#endregion
+import { DEFAULT_WIDGET_CONFIG } from "../constants/Config";
+import type { WidgetConfig } from "../types";
 
 //#region Helpers
 export function getWidgetConfigKey(id: string | number, type: string) {
