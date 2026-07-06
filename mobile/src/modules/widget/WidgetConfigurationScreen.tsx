@@ -9,19 +9,22 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { MinimumAppProvider } from "~/navigation/providers/AppProvider";
 
+import { isAudioBrowserSetUp } from "~/lib/react-native-audio-browser";
 import { Pressable } from "~/components/Base/Pressable";
 import { ModalActions } from "~/components/Modal";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import { AccentText } from "~/components/Typography/AccentText";
 import { Switch } from "~/components/UI/Switch";
 import { ColorPickerInput } from "~/modules/customization/theme/components/ColorPickerInput";
+import { ResizableNowPlayingWidget } from "./ResizableNowPlayingWidget";
+import { DEFAULT_WIDGET_CONFIG } from "./constants/Config";
 import type { WidgetConfig } from "./types";
+import { getWidgetData } from "./utils";
 import {
   getWidgetConfig,
   getWidgetConfigKey,
   updateWidgetConfig,
 } from "./utils/customize";
-import { DEFAULT_WIDGET_CONFIG } from "./constants/Config";
 
 export function WidgetConfigurationScreen(
   props: WidgetConfigurationScreenProps,
@@ -36,6 +39,7 @@ export function WidgetConfigurationScreen(
 function WidgetConfigurationScreenPropsImpl({
   widgetInfo,
   setResult,
+  renderWidget,
 }: WidgetConfigurationScreenProps) {
   const insets = useSafeAreaInsets();
 
@@ -48,13 +52,24 @@ function WidgetConfigurationScreenPropsImpl({
     async (config: WidgetConfig) => {
       try {
         await updateWidgetConfig(widgetKey, config);
+
+        // Ensure customizations are applied to newly created widget.
+        const widgetData = { ...widgetInfo, ...getWidgetData() };
+        const shouldOpen = !(await isAudioBrowserSetUp());
+        renderWidget(
+          <ResizableNowPlayingWidget
+            {...widgetData}
+            stylingConfig={config}
+            openApp={shouldOpen}
+          />,
+        );
       } catch (err) {
         console.log(err);
       } finally {
         setResult("ok");
       }
     },
-    [setResult, widgetKey],
+    [widgetInfo, setResult, renderWidget, widgetKey],
   );
 
   const onCancel = useCallback(() => {
