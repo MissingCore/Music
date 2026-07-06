@@ -5,7 +5,7 @@ import { playbackStore } from "~/stores/Playback/store";
 import { getArtistsString } from "~/data/artist/utils";
 
 import { updateWidgets } from "./update";
-import type { WidgetName } from "../constants/Widgets";
+import type { WidgetName } from "../impl";
 import type { PlayerWidgetData } from "../types";
 
 export function getWidgetData(): PlayerWidgetData {

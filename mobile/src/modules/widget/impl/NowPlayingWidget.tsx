@@ -3,13 +3,13 @@
 
 import { OverlapWidget } from "react-native-android-widget";
 
-import type { PlayerWidgetData, WidgetDefinition } from "./types";
-import { Action, withAction } from "./constants/Action";
-import { Styles } from "./constants/Styles";
-import { WidgetArtwork } from "./components/WidgetArtwork";
-import { WidgetBaseLayout } from "./components/WidgetBaseLayout";
-import { WidgetCell } from "./components/WidgetCell";
-import { WidgetSVG } from "./components/WidgetSVG";
+import { Action, withAction } from "../constants/Action";
+import { Styles } from "../constants/Styles";
+import { WidgetArtwork } from "../components/WidgetArtwork";
+import { WidgetBaseLayout } from "../components/WidgetBaseLayout";
+import { WidgetCell } from "../components/WidgetCell";
+import { WidgetSVG } from "../components/WidgetSVG";
+import type { PlayerWidgetData, WidgetDefinition } from "../types";
 
 type WidgetProps = WidgetDefinition<PlayerWidgetData>;
 

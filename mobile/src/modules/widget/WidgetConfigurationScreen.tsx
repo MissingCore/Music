@@ -17,7 +17,8 @@ import { AccentText } from "~/components/Typography/AccentText";
 import { Switch } from "~/components/UI/Switch";
 import { ColorPickerInput } from "~/modules/customization/theme/components/ColorPickerInput";
 import { DEFAULT_WIDGET_CONFIG } from "./constants/Config";
-import { nameToWidget } from "./constants/Widgets";
+import type { WidgetName } from "./impl";
+import { nameToWidget } from "./impl";
 import type { WidgetConfig } from "./types";
 import { getWidgetData } from "./utils";
 import {
@@ -54,8 +55,7 @@ function WidgetConfigurationScreenPropsImpl({
         const widgetData = { ...widgetInfo, ...getWidgetData() };
         const shouldOpen = !(await isAudioBrowserSetUp());
 
-        const Widget =
-          nameToWidget[widgetInfo.widgetName as keyof typeof nameToWidget];
+        const Widget = nameToWidget[widgetInfo.widgetName as WidgetName];
         renderWidget(
           <Widget
             {...widgetData}

@@ -8,13 +8,17 @@ import {
   TextWidget,
 } from "react-native-android-widget";
 
-import type { PlayerWidgetData, WidgetConfig, WidgetDefinition } from "./types";
-import { Action, withAction } from "./constants/Action";
-import { Styles } from "./constants/Styles";
-import { WidgetArtwork } from "./components/WidgetArtwork";
-import { WidgetBaseLayout } from "./components/WidgetBaseLayout";
-import { WidgetCell } from "./components/WidgetCell";
-import { WidgetSVG } from "./components/WidgetSVG";
+import { Action, withAction } from "../constants/Action";
+import { Styles } from "../constants/Styles";
+import { WidgetArtwork } from "../components/WidgetArtwork";
+import { WidgetBaseLayout } from "../components/WidgetBaseLayout";
+import { WidgetCell } from "../components/WidgetCell";
+import { WidgetSVG } from "../components/WidgetSVG";
+import type {
+  PlayerWidgetData,
+  WidgetConfig,
+  WidgetDefinition,
+} from "../types";
 
 type WidgetProps = WidgetDefinition<PlayerWidgetData>;
 
