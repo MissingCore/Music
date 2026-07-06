@@ -36,6 +36,16 @@ Offers quick access to media controls (Play/Pause, Prev, Next). Clicking on the 
 
 Offers quick access to media controls (Play/Pause, Prev, Next). Clicking anywhere but the media controls will open the app.
 
+## Customizations
+
+We support customizing the colors used by our widgets. **These are applied per-widget-instance.** This is currently supported on the following widgets:
+
+- `[2×2] Now Playing`
+- `[4×2] Now Playing`
+
+> [!NOTE]
+> Not all of the options that can be configured will be applied as they aren't used.
+
 ## Known Issues
 
 - The widget when placed might be initially invisible (launching the app at least once should fix it).
