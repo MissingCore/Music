@@ -30,21 +30,28 @@ const DEFAULT_WIDGET_CONFIG: WidgetConfig = {
 };
 //#endregion
 
-//#region Cache Store
-/** Local cache of widget configs so we don't overload calling the database. */
-export const widgetConfigCache = createStore<Record<string, WidgetConfig>>()(
-  () => ({}),
-);
-//#endregion
-
 //#region Helpers
 export function getWidgetConfigKey(id: string | number, type: string) {
   return `WIDGET_${type}_${id}`;
 }
 
+export function isWidgetConfigSupported(widgetConfigKey: string) {
+  return widgetConfigKey.startsWith("WIDGET_ResizableNowPlaying");
+}
+//#endregion
+
+//#region Config Persistence
+
+/** Local cache of widget configs so we don't overload calling the database. */
+export const widgetConfigCache = createStore<Record<string, WidgetConfig>>()(
+  () => ({}),
+);
+
 export async function getWidgetConfig(
   widgetConfigKey: string,
 ): Promise<WidgetConfig> {
+  if (!isWidgetConfigSupported(widgetConfigKey)) return DEFAULT_WIDGET_CONFIG;
+
   // First check to see if it's cached.
   const cachedConfig = widgetConfigCache.getState()[widgetConfigKey];
   if (cachedConfig) return cachedConfig;
@@ -67,6 +74,8 @@ export async function getWidgetConfig(
 }
 
 export function deleteWidgetConfig(widgetConfigKey: string) {
+  if (!isWidgetConfigSupported(widgetConfigKey)) return;
+
   //? We get the following error if we use the sync method:
   //?   - "Error: Call to function 'NativeDatabase.prepareAsync' has been rejected."
   //?
@@ -79,6 +88,8 @@ export function updateWidgetConfig(
   widgetConfigKey: string,
   config: WidgetConfig,
 ) {
+  if (!isWidgetConfigSupported(widgetConfigKey)) return;
+
   try {
     widgetConfigCache.setState({ [widgetConfigKey]: config });
 
