@@ -143,14 +143,14 @@ function MediaControls(props: {
           paddingHorizontal: paddingX,
           paddingVertical: paddingY,
           backgroundColor:
-            clrs[!props.isPlaying ? "activeColor" : "inactiveColor"],
+            clrs[props.isPlaying ? "inactiveColor" : "activeColor"],
           borderRadius: 999,
         }}
       >
         <WidgetSVG
           name={props.isPlaying ? "pause" : "play"}
           size={svgSize}
-          color={clrs[!props.isPlaying ? "onActiveColor" : "onInactiveColor"]}
+          color={clrs[props.isPlaying ? "onInactiveColor" : "onActiveColor"]}
         />
       </FlexWidget>
       <WidgetSVG

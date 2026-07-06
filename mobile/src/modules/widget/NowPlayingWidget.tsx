@@ -28,7 +28,7 @@ export function NowPlayingWidget(props: WidgetProps) {
     <WidgetBaseLayout
       height={size}
       width={size}
-      stylingConfig={props.stylingConfig}
+      stylingConfig={clrs}
       transparent
     >
       <OverlapWidget>
@@ -47,13 +47,13 @@ export function NowPlayingWidget(props: WidgetProps) {
         <WidgetCell
           clickAction={withAction(Action.PlayPause, openApp)}
           size={cellSize}
-          bgColor={clrs[!props.isPlaying ? "activeColor" : "inactiveColor"]}
+          bgColor={clrs[props.isPlaying ? "inactiveColor" : "activeColor"]}
           style={{ marginLeft: positionOffset }}
         >
           <WidgetSVG
             name={props.isPlaying ? "pause" : "play"}
             size={svgSize}
-            color={clrs[!props.isPlaying ? "onActiveColor" : "onInactiveColor"]}
+            color={clrs[props.isPlaying ? "onInactiveColor" : "onActiveColor"]}
           />
         </WidgetCell>
 

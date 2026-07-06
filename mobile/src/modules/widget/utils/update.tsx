@@ -26,12 +26,14 @@ export async function updateWidgets({
     updatedWidgets.map((name) =>
       requestWidgetUpdate({
         widgetName: name,
-        renderWidget: async (props) => {
+        renderWidget: async (widgetInfo) => {
           const Widget = nameToWidget[name];
           const configStyle = await getWidgetConfig(
-            getWidgetConfigKey(props.widgetId, props.widgetName),
+            getWidgetConfigKey(widgetInfo),
           );
-          return <Widget {...props} stylingConfig={configStyle} {...args} />;
+          return (
+            <Widget {...widgetInfo} stylingConfig={configStyle} {...args} />
+          );
         },
       }),
     ),

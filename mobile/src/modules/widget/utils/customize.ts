@@ -2,14 +2,15 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import Storage from "expo-sqlite/kv-store";
+import type { WidgetInfo } from "react-native-android-widget";
 import { createStore } from "zustand/vanilla";
 
 import { DEFAULT_WIDGET_CONFIG } from "../constants/Config";
 import type { WidgetConfig } from "../types";
 
 //#region Helpers
-export function getWidgetConfigKey(id: string | number, type: string) {
-  return `WIDGET_${type}_${id}`;
+export function getWidgetConfigKey(args: WidgetInfo) {
+  return `WIDGET_${args.widgetName}_${args.widgetId}`;
 }
 
 export function isWidgetConfigSupported(widgetConfigKey: string) {

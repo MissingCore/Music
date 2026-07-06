@@ -43,10 +43,7 @@ function WidgetConfigurationScreenPropsImpl({
 }: WidgetConfigurationScreenProps) {
   const insets = useSafeAreaInsets();
 
-  const widgetKey = getWidgetConfigKey(
-    widgetInfo.widgetId,
-    widgetInfo.widgetName,
-  );
+  const widgetKey = getWidgetConfigKey(widgetInfo);
 
   const onSubmit = useCallback(
     async (config: WidgetConfig) => {
