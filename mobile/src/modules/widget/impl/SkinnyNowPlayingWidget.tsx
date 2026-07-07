@@ -14,11 +14,13 @@ import type { PlayerWidgetData, WidgetDefinition } from "../types";
 
 type WidgetProps = WidgetDefinition<PlayerWidgetData>;
 
+const SMALL_GAP = 8;
+
 export function SkinnyNowPlayingWidget(props: WidgetProps) {
   const rowHeight = props.height / 2;
 
   // Calculate scaled font size for text.
-  const maxTextHeight = rowHeight * 0.75;
+  const maxTextHeight = rowHeight * 0.7;
   const textFontSize = maxTextHeight / 3;
 
   // Calculate size of actions.
@@ -36,23 +38,25 @@ export function SkinnyNowPlayingWidget(props: WidgetProps) {
     >
       <FlexWidget
         clickAction={Action.Open}
-        style={{
-          height: rowHeight,
-          flexDirection: "row",
-          flexGap: Styles.layoutGap,
-        }}
+        style={{ height: rowHeight, flexDirection: "row" }}
       >
         <WidgetCell
           size={rowHeight}
           bgColor={clrs.inactiveColor}
-          style={{ borderRadius: clrs.transparent ? 8 : 0 }}
+          style={{ borderRadius: clrs.transparent ? SMALL_GAP : 0 }}
         >
           <WidgetArtwork
             size={props.height}
             artwork={props.track?.artwork ?? null}
           />
         </WidgetCell>
-        <FlexWidget style={{ height: rowHeight, justifyContent: "center" }}>
+        <FlexWidget
+          style={{
+            height: rowHeight,
+            justifyContent: "center",
+            paddingHorizontal: SMALL_GAP,
+          }}
+        >
           <WidgetText
             text={props.track?.title}
             color={clrs.textColor}
@@ -73,7 +77,8 @@ export function SkinnyNowPlayingWidget(props: WidgetProps) {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-evenly",
-          flexGap: Styles.layoutGap,
+          flexGap: SMALL_GAP,
+          paddingHorizontal: SMALL_GAP,
         }}
       >
         <WidgetSVG
