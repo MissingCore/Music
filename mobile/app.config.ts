@@ -179,7 +179,7 @@ const widgetPluginConfig: WithAndroidWidgetsParams = {
       targetCellWidth: 2,
       targetCellHeight: 1,
       description: "[Experimental] Quick access to your media controls.",
-      previewImage: "./assets/widget/now-playing.png",
+      previewImage: "./assets/widget/skinny-now-playing.png",
       resizeMode: "horizontal",
       widgetFeatures: "reconfigurable",
     },
