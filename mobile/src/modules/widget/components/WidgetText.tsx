@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import type { HexColor, TextWidgetProps } from "react-native-android-widget";
 import { TextWidget } from "react-native-android-widget";
 
