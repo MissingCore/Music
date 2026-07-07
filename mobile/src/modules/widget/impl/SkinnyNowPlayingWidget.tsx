@@ -34,6 +34,8 @@ export function SkinnyNowPlayingWidget(props: WidgetProps) {
     (widgetHeight * 2) / 3,
   );
 
+  const openApp = props.openApp || props.track === undefined;
+
   const clrs = props.stylingConfig;
 
   return (
@@ -70,21 +72,21 @@ export function SkinnyNowPlayingWidget(props: WidgetProps) {
       >
         {showAdditionalActions ? (
           <WidgetSVG
-            clickAction={withAction(Action.Prev, props.openApp)}
+            clickAction={withAction(Action.Prev, openApp)}
             name="prev"
             size={svgSize}
             color={clrs.textColor}
           />
         ) : null}
         <WidgetSVG
-          clickAction={withAction(Action.PlayPause, props.openApp)}
+          clickAction={withAction(Action.PlayPause, openApp)}
           name={props.isPlaying ? "pause" : "play"}
           size={svgSize}
           color={clrs.textColor}
         />
         {showAdditionalActions ? (
           <WidgetSVG
-            clickAction={withAction(Action.Next, props.openApp)}
+            clickAction={withAction(Action.Next, openApp)}
             name="next"
             size={svgSize}
             color={clrs.textColor}
