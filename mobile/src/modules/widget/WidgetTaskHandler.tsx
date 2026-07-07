@@ -10,7 +10,8 @@ import { isAudioBrowserSetUp } from "~/lib/react-native-audio-browser";
 import { bgWait } from "~/utils/promise";
 import { Action } from "./constants/Action";
 import { DEFAULT_WIDGET_CONFIG } from "./constants/Config";
-import { nameToWidget } from "./constants/Widgets";
+import type { WidgetName } from "./impl";
+import { nameToWidget } from "./impl";
 import { getWidgetData } from "./utils";
 import {
   deleteWidgetConfig,
@@ -26,8 +27,7 @@ export async function widgetTaskHandler({
   clickActionData,
   renderWidget,
 }: WidgetTaskHandlerProps) {
-  const Widget =
-    nameToWidget[widgetInfo.widgetName as keyof typeof nameToWidget];
+  const Widget = nameToWidget[widgetInfo.widgetName as WidgetName];
   const widgetData = { ...widgetInfo, ...getWidgetData() };
 
   const widgetKey = getWidgetConfigKey(widgetInfo);

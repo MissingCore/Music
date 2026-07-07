@@ -20,19 +20,25 @@ There's no indicator for playback progress as I don't want to trigger a widget u
 
 ### [2×2] Artwork Player
 
-<img src="../mobile/assets/widget/artwork-player.png" alt="Artwork Player widget preview image" height="128" width="128" />
+<img src="../mobile/assets/widget/artwork-player.png" alt="Artwork Player widget preview image" height="128" />
 
 Displays the current playing track artwork. Clicking on the widget will play/pause the current track.
 
+### [2×1] Now Playing
+
+<img src="../mobile/assets/widget/skinny-now-playing.png" alt="Now Playing widget preview image" height="128" />
+
+Offers quick access to media controls (Play/Pause). **When the widget is wide enough, it also offers Prev & Next controls.** Clicking anywhere but the media controls will open the app.
+
 ### [2×2] Now Playing
 
-<img src="../mobile/assets/widget/now-playing.png" alt="Now Playing widget preview image" height="128" width="128" />
+<img src="../mobile/assets/widget/now-playing.png" alt="Now Playing widget preview image" height="128" />
 
 Offers quick access to media controls (Play/Pause, Prev, Next). Clicking on the artwork will open the app.
 
 ### [4×2] Now Playing
 
-<img src="../mobile/assets/widget/resizable-now-playing.png" alt="Resizable Now Playing widget preview image" height="128" width="274" />
+<img src="../mobile/assets/widget/resizable-now-playing.png" alt="Resizable Now Playing widget preview image" height="128" />
 
 Offers quick access to media controls (Play/Pause, Prev, Next). Clicking anywhere but the media controls will open the app.
 
@@ -40,6 +46,7 @@ Offers quick access to media controls (Play/Pause, Prev, Next). Clicking anywher
 
 We support customizing the colors used by our widgets. **These are applied per-widget-instance.** This is currently supported on the following widgets:
 
+- `[2×1] Now Playing`
 - `[2×2] Now Playing`
 - `[4×2] Now Playing`
 

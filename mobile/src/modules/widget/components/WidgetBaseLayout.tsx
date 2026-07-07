@@ -15,19 +15,22 @@ import { Styles } from "../constants/Styles";
  * a `1x1` area isn't necessarily square.
  */
 export function WidgetBaseLayout({
-  height,
-  width,
+  height = "match_parent",
+  width = "match_parent",
   transparent,
   style,
   stylingConfig,
   ...props
-}: WidgetDefinition<
-  ClickActionProps & {
-    children: React.ReactNode;
-    transparent?: boolean;
-    style?: FlexWidgetStyle;
-  }
->) {
+}: Omit<
+  WidgetDefinition<
+    ClickActionProps & {
+      children: React.ReactNode;
+      transparent?: boolean;
+      style?: FlexWidgetStyle;
+    }
+  >,
+  "height" | "width"
+> & { height?: number | "match_parent"; width?: number | "match_parent" }) {
   return (
     <FlexWidget
       style={{

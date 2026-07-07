@@ -1,20 +1,20 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import type { TextWidgetProps } from "react-native-android-widget";
-import {
-  FlexWidget,
-  OverlapWidget,
-  TextWidget,
-} from "react-native-android-widget";
+import { FlexWidget, OverlapWidget } from "react-native-android-widget";
 
-import type { PlayerWidgetData, WidgetConfig, WidgetDefinition } from "./types";
-import { Action, withAction } from "./constants/Action";
-import { Styles } from "./constants/Styles";
-import { WidgetArtwork } from "./components/WidgetArtwork";
-import { WidgetBaseLayout } from "./components/WidgetBaseLayout";
-import { WidgetCell } from "./components/WidgetCell";
-import { WidgetSVG } from "./components/WidgetSVG";
+import { Action, withAction } from "../constants/Action";
+import { Styles } from "../constants/Styles";
+import { WidgetArtwork } from "../components/WidgetArtwork";
+import { WidgetBaseLayout } from "../components/WidgetBaseLayout";
+import { WidgetCell } from "../components/WidgetCell";
+import { WidgetText } from "../components/WidgetText";
+import { WidgetSVG } from "../components/WidgetSVG";
+import type {
+  PlayerWidgetData,
+  WidgetConfig,
+  WidgetDefinition,
+} from "../types";
 
 type WidgetProps = WidgetDefinition<PlayerWidgetData>;
 
@@ -48,7 +48,6 @@ export function ResizableNowPlayingWidget(props: WidgetProps) {
     <WidgetBaseLayout
       clickAction={Action.Open}
       height={widgetHeight}
-      width={props.width}
       stylingConfig={clrs}
     >
       <OverlapWidget>
@@ -71,18 +70,16 @@ export function ResizableNowPlayingWidget(props: WidgetProps) {
           }}
         >
           <WidgetText
-            text={props.track?.title ?? "—"}
+            text={props.track?.title}
             maxLines={2}
-            style={{ fontSize: textFontSize, color: clrs.textColor }}
+            color={clrs.textColor}
+            fontSize={textFontSize}
           />
           <WidgetText
-            text={props.track?.artist ?? "—"}
-            maxLines={1}
-            style={{
-              fontSize: textFontSize,
-              color: clrs.mutedTextColor,
-              paddingBottom: contentPadding,
-            }}
+            text={props.track?.artist}
+            color={clrs.mutedTextColor}
+            fontSize={textFontSize}
+            style={{ paddingBottom: contentPadding }}
           />
           <MediaControls
             maxWidth={contentWidth}
@@ -98,17 +95,6 @@ export function ResizableNowPlayingWidget(props: WidgetProps) {
 }
 
 //#region Layout Helpers
-function WidgetText({ style, ...props }: TextWidgetProps) {
-  return (
-    <TextWidget
-      truncate="END"
-      allowFontScaling={false}
-      style={{ fontFamily: "Inter-Regular", ...style }}
-      {...props}
-    />
-  );
-}
-
 function MediaControls(props: {
   maxWidth: number;
   maxHeight: number;

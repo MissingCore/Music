@@ -4,9 +4,9 @@
 import { requestWidgetUpdate } from "react-native-android-widget";
 
 import { getWidgetConfig, getWidgetConfigKey } from "./customize";
+import type { WidgetName } from "../impl";
+import { nameToWidget } from "../impl";
 import type { PlayerWidgetData } from "../types";
-import type { WidgetName } from "../constants/Widgets";
-import { nameToWidget } from "../constants/Widgets";
 
 /** Have widget render "not found" state which opens the app on click. */
 export async function resetWidgets() {

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="110dp"
+    android:minHeight="50dp"
+    android:targetCellWidth="2"
+    android:targetCellHeight="1"
+
+
+
+    android:resizeMode="horizontal"
+
+    android:description="@string/widget_nowplaying_description"
+
+    android:initialLayout="@layout/rn_widget"
+    android:previewImage="@drawable/skinnynowplaying_preview"
+
+    android:configure="com.cyanchill.missingcore.music.WidgetConfigurationActivity"
+    android:widgetFeatures="reconfigurable"
+
+    android:updatePeriodMillis="0"
+    android:widgetCategory="home_screen">
+</appwidget-provider>

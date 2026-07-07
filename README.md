@@ -44,7 +44,7 @@ A Nothing inspired **local** music player.
 - [Community translations](#translations)
 - **`[🧪 Experimental]`** Sleep timer support
 - **`[🧪 Experimental]`** Importing/Exporting playlists from/as M3U files
-- **`[🧪 Experimental]`** [3 widget variants](./docs/widgets.md)
+- **`[🧪 Experimental]`** [4 widget variants](./docs/widgets.md)
 - **`[🧪 Experimental]`** [Android Auto support](./docs/android-auto.md)
 - **`[🧪 Experimental]`** 5-band Equalizer support
 
