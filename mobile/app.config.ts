@@ -171,6 +171,18 @@ const widgetPluginConfig: WithAndroidWidgetsParams = {
       resizeMode: "horizontal",
       widgetFeatures: "reconfigurable",
     },
+    {
+      name: "SkinnyNowPlaying",
+      label: "🧪 Now Playing",
+      minWidth: "180dp",
+      minHeight: "50dp",
+      targetCellWidth: 3,
+      targetCellHeight: 1,
+      description: "[Experimental] Quick access to your media controls.",
+      previewImage: "./assets/widget/now-playing.png",
+      resizeMode: "horizontal",
+      widgetFeatures: "reconfigurable",
+    },
   ],
 };
 //#endregion

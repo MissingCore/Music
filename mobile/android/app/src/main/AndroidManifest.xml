@@ -95,6 +95,13 @@
       </intent-filter>
       <meta-data android:name="android.appwidget.provider" android:resource="@xml/widgetprovider_resizablenowplaying"/>
     </receiver>
+    <receiver android:name=".widget.SkinnyNowPlaying" android:exported="false" android:label="@string/widget_nowplaying_name">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+        <action android:name="com.cyanchill.missingcore.music.WIDGET_CLICK"/>
+      </intent-filter>
+      <meta-data android:name="android.appwidget.provider" android:resource="@xml/widgetprovider_skinnynowplaying"/>
+    </receiver>
 
     <!-- Disable Sentry's ANR feature. -->
     <meta-data android:name="io.sentry.anr.enable" android:value="false" />
