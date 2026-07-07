@@ -4,11 +4,13 @@
 import { ArtworkPlayerWidget } from "./ArtworkPlayerWidget";
 import { NowPlayingWidget } from "./NowPlayingWidget";
 import { ResizableNowPlayingWidget } from "./ResizableNowPlayingWidget";
+import { SkinnyNowPlayingWidget } from "./SkinnyNowPlayingWidget";
 
 export const nameToWidget = {
   ArtworkPlayer: ArtworkPlayerWidget,
   NowPlaying: NowPlayingWidget,
   ResizableNowPlaying: ResizableNowPlayingWidget,
+  SkinnyNowPlaying: SkinnyNowPlayingWidget,
 } as const;
 
 export type WidgetName = keyof typeof nameToWidget;
