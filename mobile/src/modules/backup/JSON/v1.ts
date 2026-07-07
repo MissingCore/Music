@@ -1,8 +1,6 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { toast } from "@missingcore/ui/toast";
-import { useMutation } from "@tanstack/react-query";
 import { eq, inArray } from "drizzle-orm";
 import { z } from "zod/mini";
 
@@ -21,7 +19,6 @@ import { getTracks } from "~/data/track/api";
 import { mergeTracks } from "~/data/track/utils";
 
 import { pickDirectory, pickFile } from "~/lib/file-system";
-import { clearAllQueries } from "~/lib/react-query";
 import { ZSchema } from "~/modules/form/utils";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
@@ -99,7 +96,7 @@ async function findExistingTracksFactory() {
  * @deprecated We plan on updating the backup schema, so this old export
  * code will be replaced while the old import code will stay for a while.
  */
-async function exportBackup() {
+export async function exportBackup() {
   // Get favorited values.
   const [favAlbums, favPlaylists] = await Promise.all([
     getAlbumsSummary(false, [eq(albums.isFavorite, true)]),
@@ -137,7 +134,7 @@ async function exportBackup() {
 //#endregion
 
 //#region Import
-async function importBackup() {
+export async function importBackup() {
   const backupFile = await pickFile([
     "application/json",
     "application/octet-stream",
@@ -199,31 +196,4 @@ async function importBackup() {
       ),
   ]);
 }
-//#endregion
-
-//#region Mutation Hooks
-export const useExportBackup = () => {
-  return useMutation({
-    mutationFn: exportBackup,
-    onSuccess: () => {
-      toast.t("feat.backup.extra.exportSuccess");
-    },
-    onError: (err) => {
-      toast.error(err.message);
-    },
-  });
-};
-
-export const useImportBackup = () => {
-  return useMutation({
-    mutationFn: importBackup,
-    onSuccess: () => {
-      clearAllQueries();
-      toast.t("feat.backup.extra.importSuccess");
-    },
-    onError: (err) => {
-      toast.error(err.message);
-    },
-  });
-};
 //#endregion
