@@ -17,8 +17,13 @@ import {
 
 import i18next from "~/modules/i18n";
 import { getAlbumsSummary, upsertAlbums } from "~/data/album/api";
-import { getPlaylistsSummary } from "~/data/playlist/api";
+import {
+  createPlaylist,
+  getPlaylistsSummary,
+  updatePlaylist,
+} from "~/data/playlist/api";
 import { sanitizePlaylistName } from "~/data/playlist/utils";
+import { mergeTracks } from "~/data/track/utils";
 import { fromJSONArrayString } from "~/data/utils";
 import { structuredTracksView } from "~/data/views";
 
@@ -189,6 +194,19 @@ export async function importBackupV2(jsonContent: Record<string, any>) {
     else albumIdLookUpTable[artistsKey] = { [name]: id };
   });
 
+  const allPlaylists = await db.query.playlists.findMany({
+    columns: { name: true },
+    with: {
+      tracksToPlaylists: {
+        orderBy: (fields, { asc }) => asc(fields.position),
+      },
+    },
+  });
+  const playlistLookupTable: Record<string, string[]> = {};
+  allPlaylists.map(({ name, tracksToPlaylists }) => {
+    playlistLookupTable[name] = tracksToPlaylists.map((t) => t.trackId);
+  });
+
   //? 1. Update track metadata.
   //? 1a. Create album entries before we do anything else.
   const albumEntries = backupContents.trackMetadata
@@ -292,7 +310,46 @@ export async function importBackupV2(jsonContent: Record<string, any>) {
   }
 
   //? 2. Import playlists.
+  await Promise.allSettled(
+    backupContents.playlists.map(async ({ name, tracks: plTracks }) => {
+      const exists = playlistLookupTable[name];
+      const _playlistTracks = plTracks
+        .map(({ uri }) => trackIdLookUpTable[uri])
+        .filter((id) => id !== undefined);
+      // Remove any duplicates.
+      const playlistTracks = Array.from(new Set(_playlistTracks)).map(
+        (tId) => ({ id: tId }),
+      );
 
-  //? 3. Favorite albums & playlists.
+      // Create or update playlist to have the current track order.
+      if (exists) {
+        await updatePlaylist(name, {
+          tracks: mergeTracks(
+            exists.map((tId) => ({ id: tId })),
+            playlistTracks,
+          ),
+        });
+      } else await createPlaylist({ name, tracks: playlistTracks });
+    }),
+  );
+
+  //? 3. Favorite albums, playlists, and tracks (via `favorites` playlist).
+  const albumsToFavorite: string[] = [];
+  for (const { name, artistsKey } of backupContents.favorites.albums) {
+    const albumId = albumIdLookUpTable[artistsKey]?.[name];
+    if (albumId) albumsToFavorite.push(albumId);
+  }
+
+  if (albumsToFavorite.length > 0)
+    await db
+      .update(albums)
+      .set({ isFavorite: true })
+      .where(inArray(albums.id, albumsToFavorite));
+
+  if (backupContents.favorites.playlists.length > 0)
+    await db
+      .update(playlists)
+      .set({ isFavorite: true })
+      .where(inArray(playlists.name, backupContents.favorites.playlists));
 }
 //#endregion
