@@ -5,14 +5,7 @@ import { eq, isNotNull, sql } from "drizzle-orm";
 import { z } from "zod/mini";
 
 import { db } from "~/db";
-import {
-  albums,
-  lyrics,
-  playlists,
-  tracks,
-  tracksToGenres,
-  tracksToLyrics,
-} from "~/db/schema";
+import { albums, playlists, tracksToGenres } from "~/db/schema";
 
 import { getAlbumsSummary } from "~/data/album/api";
 import { getPlaylistsSummary } from "~/data/playlist/api";
@@ -53,19 +46,12 @@ const TrackMetadataSchema = z.object({
   genres: z.array(ZSchema.NonEmptyString),
 });
 
-const LyricSchema = z.object({
-  name: ZSchema.NonEmptyString,
-  lyrics: ZSchema.NonEmptyString,
-  linkedTracks: z.array(TrackSchema),
-});
-
 const BackupSchema = z.object({
   version: ZSchema.RealNumber,
   exportedAt: ZSchema.NonEmptyString,
 
   backup: z.object({
     trackMetadata: z.array(TrackMetadataSchema),
-    lyrics: z.array(LyricSchema),
     // "Favorited Tracks" will be exported as a playlist.
     playlists: z.array(
       z.object({
@@ -83,7 +69,7 @@ const BackupSchema = z.object({
 
 //#region Export
 export async function exportBackupV2() {
-  const [favAlbums, favPlaylists, allPlaylists, editedTracks, allLinkedLyrics] =
+  const [favAlbums, favPlaylists, allPlaylists, editedTracks] =
     await Promise.all([
       // Get favorited values.
       getAlbumsSummary(false, [eq(albums.isFavorite, true)]),
@@ -126,30 +112,6 @@ export async function exportBackupV2() {
           genres: fromJSONArrayString(genres) ?? [],
         }));
       })(),
-      // Get all lyrics linked to tracks.
-      (async () => {
-        const results = await db
-          .select({
-            name: lyrics.name,
-            lyrics: lyrics.lyrics,
-            /** We need to unencode these fields. */
-            linkedTracks: sql<
-              string | null
-            >`NULLIF(json_group_array(${tracks.uri}), '[null]')`.as(
-              "derived_linked_tracks",
-            ),
-          })
-          .from(lyrics)
-          .innerJoin(tracksToLyrics, eq(lyrics.id, tracksToLyrics.lyricId))
-          .innerJoin(tracks, eq(tracksToLyrics.trackId, tracks.id))
-          .groupBy(lyrics.id);
-
-        return results.map(({ linkedTracks, ...rest }) => ({
-          ...rest,
-          linkedTracks:
-            fromJSONArrayString(linkedTracks)?.map((uri) => ({ uri })) ?? [],
-        }));
-      })(),
     ]);
 
   // User selects location to save this backup file.
@@ -173,7 +135,6 @@ export async function exportBackupV2() {
                 : null,
           }),
         ),
-        lyrics: allLinkedLyrics,
         playlists: allPlaylists.map(({ id, tracks }) => ({
           name: id,
           tracks: tracks.map(({ uri }) => ({ uri })),
