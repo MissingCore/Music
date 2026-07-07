@@ -20,4 +20,5 @@ export type PlaylistSummaryTrack = {
   /** @deprecated */
   rawArtistName: string | null;
   albumName: string | null;
+  uri: string;
 };

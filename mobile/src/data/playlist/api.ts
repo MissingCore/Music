@@ -98,6 +98,7 @@ export async function getPlaylistsSummary<
       albumName: structuredTracksView.albumName,
       duration: structuredTracksView.duration,
       artwork: structuredTracksView.artwork,
+      uri: structuredTracksView.uri,
     })
     .from(tracksToPlaylists)
     .innerJoin(
@@ -128,7 +129,8 @@ export async function getPlaylistsSummary<
                   'id', ${orderedPlaylistTracks.id},
                   'name', ${orderedPlaylistTracks.name},
                   'rawArtistName', ${orderedPlaylistTracks.rawArtistName},
-                  'albumName', ${orderedPlaylistTracks.albumName}
+                  'albumName', ${orderedPlaylistTracks.albumName},
+                  'uri', ${orderedPlaylistTracks.uri}
                 )
               )`.as("grouped_tracks"),
           }
