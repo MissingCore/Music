@@ -48,7 +48,6 @@ export function ResizableNowPlayingWidget(props: WidgetProps) {
     <WidgetBaseLayout
       clickAction={Action.Open}
       height={widgetHeight}
-      width={props.width}
       stylingConfig={clrs}
     >
       <OverlapWidget>
