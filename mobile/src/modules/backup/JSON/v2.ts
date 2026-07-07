@@ -28,6 +28,7 @@ const TrackSchema = z.object({
 
 const TrackMetadataSchema = z.object({
   ...TrackSchema.shape,
+  editedMetadata: ZSchema.RealNumber,
   name: ZSchema.NonEmptyString,
   artists: z.array(ZSchema.NonEmptyString),
   album: z.nullable(AlbumSchema),
