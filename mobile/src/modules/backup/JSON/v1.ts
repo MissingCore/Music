@@ -18,7 +18,6 @@ import { sanitizePlaylistName } from "~/data/playlist/utils";
 import { getTracks } from "~/data/track/api";
 import { mergeTracks } from "~/data/track/utils";
 
-import { pickFile } from "~/lib/file-system";
 import { ZSchema } from "~/modules/form/utils";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
@@ -92,17 +91,12 @@ async function findExistingTracksFactory() {
 //#endregion
 
 //#region Import
-export async function importBackup() {
-  const backupFile = await pickFile([
-    "application/json",
-    "application/octet-stream",
-  ]);
-
+export async function importBackup(jsonContent: Record<string, any>) {
   // Read, parse, and validate file contents.
   let backupContents;
   try {
     // Validate the data structure.
-    backupContents = MusicBackup.parse(await backupFile.json());
+    backupContents = MusicBackup.parse(jsonContent);
   } catch {
     throw new Error(i18next.t("err.msg.invalidStructure"));
   }

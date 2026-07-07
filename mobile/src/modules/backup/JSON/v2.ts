@@ -189,3 +189,7 @@ export async function exportBackupV2() {
   );
 }
 //#endregion
+
+//#region Import
+export async function importBackupV2(jsonContent: Record<string, any>) {}
+//#endregion
