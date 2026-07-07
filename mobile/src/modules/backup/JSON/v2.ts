@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { z } from "zod/mini";
 
 import { sanitizePlaylistName } from "~/data/playlist/utils";
@@ -41,18 +44,23 @@ const LyricSchema = z.object({
 });
 
 const BackupSchema = z.object({
-  trackMetadata: z.array(TrackMetadataSchema),
-  lyrics: z.array(LyricSchema),
-  // "Favorited Tracks" will be exported as a playlist.
-  playlists: z.array(
-    z.object({
-      name: PlaylistNameSchema,
-      tracks: z.array(TrackSchema),
+  version: ZSchema.RealNumber,
+  exportedAt: ZSchema.NonEmptyString,
+
+  backup: z.object({
+    trackMetadata: z.array(TrackMetadataSchema),
+    lyrics: z.array(LyricSchema),
+    // "Favorited Tracks" will be exported as a playlist.
+    playlists: z.array(
+      z.object({
+        name: PlaylistNameSchema,
+        tracks: z.array(TrackSchema),
+      }),
+    ),
+    favorites: z.object({
+      albums: z.array(AlbumSchema),
+      playlists: z.array(PlaylistNameSchema),
     }),
-  ),
-  favorites: z.object({
-    albums: z.array(AlbumSchema),
-    playlists: z.array(PlaylistNameSchema),
   }),
 });
 //#endregion
