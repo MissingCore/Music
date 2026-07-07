@@ -5,11 +5,12 @@ import { toast } from "@missingcore/ui/toast";
 import { useMutation } from "@tanstack/react-query";
 
 import { clearAllQueries } from "~/lib/react-query";
-import { importBackup, exportBackup } from "./v1";
+import { importBackup } from "./v1";
+import { exportBackupV2 } from "./v2";
 
 export const useExportBackup = () => {
   return useMutation({
-    mutationFn: exportBackup,
+    mutationFn: exportBackupV2,
     onSuccess: () => {
       toast.t("feat.backup.extra.exportSuccess");
     },
