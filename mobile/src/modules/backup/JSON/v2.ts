@@ -1,13 +1,22 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { eq, isNotNull, sql } from "drizzle-orm";
+import { eq, inArray, isNotNull, sql } from "drizzle-orm";
 import { z } from "zod/mini";
 
 import { db } from "~/db";
-import { albums, playlists, tracksToGenres } from "~/db/schema";
+import {
+  albums,
+  artists,
+  genres,
+  playlists,
+  tracks,
+  tracksToArtists,
+  tracksToGenres,
+} from "~/db/schema";
 
-import { getAlbumsSummary } from "~/data/album/api";
+import i18next from "~/modules/i18n";
+import { getAlbumsSummary, upsertAlbums } from "~/data/album/api";
 import { getPlaylistsSummary } from "~/data/playlist/api";
 import { sanitizePlaylistName } from "~/data/playlist/utils";
 import { fromJSONArrayString } from "~/data/utils";
@@ -152,5 +161,138 @@ export async function exportBackupV2() {
 //#endregion
 
 //#region Import
-export async function importBackupV2(jsonContent: Record<string, any>) {}
+export async function importBackupV2(jsonContent: Record<string, any>) {
+  // Read, parse, and validate file contents.
+  let _backupContents;
+  try {
+    // Validate the data structure.
+    _backupContents = BackupSchema.parse(jsonContent);
+  } catch {
+    throw new Error(i18next.t("err.msg.invalidStructure"));
+  }
+  const backupContents = _backupContents.backup;
+
+  const allTracks = await db.query.tracks.findMany({
+    columns: { id: true, uri: true },
+  });
+  const trackIdLookUpTable = Object.fromEntries(
+    allTracks.map((t) => [t.uri, t.id]),
+  );
+
+  const allAlbums = await db.query.albums.findMany({
+    columns: { id: true, name: true, artistsKey: true },
+  });
+  const albumIdLookUpTable: Record<string, Record<string, string>> = {};
+  allAlbums.map(({ id, name, artistsKey }) => {
+    if (albumIdLookUpTable[artistsKey])
+      albumIdLookUpTable[artistsKey][name] = id;
+    else albumIdLookUpTable[artistsKey] = { [name]: id };
+  });
+
+  //? 1. Update track metadata.
+  //? 1a. Create album entries before we do anything else.
+  const albumEntries = backupContents.trackMetadata
+    .map((t) => t.album)
+    .filter((al) => al !== null);
+  if (albumEntries.length > 0) {
+    const createdAlbums = await upsertAlbums(albumEntries);
+    createdAlbums.map(({ id, name, artistsKey }) => {
+      if (albumIdLookUpTable[artistsKey])
+        albumIdLookUpTable[artistsKey][name] = id;
+      else albumIdLookUpTable[artistsKey] = { [name]: id };
+    });
+  }
+
+  //? 1b. Find the things we need to insert.
+  const artistNames = new Set<string>();
+  const genreNames = new Set<string>();
+
+  const trackArtistRels: Array<{ trackId: string; artistName: string }> = [];
+  const trackGenreRels: Array<{ trackId: string; genreName: string }> = [];
+
+  const trackEntries: Array<{
+    id: string;
+    name: string;
+    albumId: string | null;
+    disc: number | null;
+    track: number | null;
+    year: number | null;
+    editedMetadata: number;
+  }> = [];
+
+  for (const metadata of backupContents.trackMetadata) {
+    const trackId = trackIdLookUpTable[metadata.uri];
+    if (!trackId) continue;
+
+    // We handle album-to-artists relations in `upsertAlbums()`.
+    let albumId: string | undefined;
+    if (metadata.album) {
+      const { artistsKey, name } = metadata.album;
+      albumId = albumIdLookUpTable[artistsKey]?.[name];
+    }
+
+    metadata.artists.map((artistName) => {
+      artistNames.add(artistName);
+      trackArtistRels.push({ trackId, artistName });
+    });
+
+    metadata.genres.map((genreName) => {
+      genreNames.add(genreName);
+      trackGenreRels.push({ trackId, genreName });
+    });
+
+    trackEntries.push({
+      id: trackId,
+      name: metadata.name,
+      albumId: albumId || null,
+      disc: metadata.disc,
+      track: metadata.track,
+      year: metadata.year,
+      editedMetadata: metadata.editedMetadata,
+    });
+  }
+
+  //? 1c. Insert relations.
+  if (artistNames.size > 0)
+    await db
+      .insert(artists)
+      .values(Array.from(artistNames).map((name) => ({ name })))
+      .onConflictDoNothing();
+
+  if (genreNames.size > 0)
+    await db
+      .insert(genres)
+      .values(Array.from(genreNames).map((name) => ({ name })))
+      .onConflictDoNothing();
+
+  if (trackArtistRels.length > 0) {
+    const oldRels = trackArtistRels.map((rel) => rel.trackId);
+    await db
+      .delete(tracksToArtists)
+      .where(inArray(tracksToArtists.trackId, oldRels));
+    await db
+      .insert(tracksToArtists)
+      .values(trackArtistRels)
+      .onConflictDoNothing();
+  }
+
+  if (trackGenreRels.length > 0) {
+    const oldRels = trackGenreRels.map((rel) => rel.trackId);
+    await db
+      .delete(tracksToGenres)
+      .where(inArray(tracksToGenres.trackId, oldRels));
+    await db
+      .insert(tracksToGenres)
+      .values(trackGenreRels)
+      .onConflictDoNothing();
+  }
+
+  for (const { id: trackId, ...trackEntry } of trackEntries) {
+    await db.update(tracks).set(trackEntry).where(eq(tracks.id, trackId));
+  }
+
+  //? 2. Import playlists.
+
+  //? 3. Favorite albums & playlists.
+}
 //#endregion

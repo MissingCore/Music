@@ -183,7 +183,7 @@ export function upsertAlbums(entries: InsertedAlbum[]) {
       await tx
         .delete(albumsToArtists)
         .where(inArray(albumsToArtists.albumId, albumIds));
-      await tx.insert(albumsToArtists).values(newRels);
+      await tx.insert(albumsToArtists).values(newRels).onConflictDoNothing();
     }
 
     return results;
