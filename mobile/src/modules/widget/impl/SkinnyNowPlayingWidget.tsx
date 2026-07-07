@@ -8,42 +8,68 @@ import { Styles } from "../constants/Styles";
 import { WidgetArtwork } from "../components/WidgetArtwork";
 import { WidgetBaseLayout } from "../components/WidgetBaseLayout";
 import { WidgetCell } from "../components/WidgetCell";
+import { WidgetText } from "../components/WidgetText";
 import { WidgetSVG } from "../components/WidgetSVG";
 import type { PlayerWidgetData, WidgetDefinition } from "../types";
 
 type WidgetProps = WidgetDefinition<PlayerWidgetData>;
 
 export function SkinnyNowPlayingWidget(props: WidgetProps) {
-  const size = Math.min(props.width, props.height);
+  const rowHeight = props.height / 2;
 
-  const contentWidth = props.width - size - Styles.layoutGap;
+  // Calculate scaled font size for text.
+  const maxTextHeight = rowHeight * 0.75;
+  const textFontSize = maxTextHeight / 3;
 
-  const svgSize = Math.min(contentWidth / 7, (props.height * 2) / 3);
-  const paddingY = svgSize / 9;
-  const paddingX = paddingY * 5;
+  // Calculate size of actions.
+  const contentWidth = props.width - 2 * Styles.layoutGap;
+  const svgSize = Math.min(contentWidth / 5, (rowHeight * 2) / 3);
 
   const clrs = props.stylingConfig;
 
   return (
     <WidgetBaseLayout
-      clickAction={Action.Open}
-      height={props.height}
-      width={props.width}
+      height="match_parent"
+      width="match_parent"
       stylingConfig={clrs}
+      style={{ borderRadius: 0 }}
     >
-      <WidgetCell
-        size={props.height}
-        bgColor={clrs.inactiveColor}
-        style={{ borderRadius: clrs.transparent ? Styles.radius : 0 }}
+      <FlexWidget
+        clickAction={Action.Open}
+        style={{
+          height: rowHeight,
+          flexDirection: "row",
+          flexGap: Styles.layoutGap,
+        }}
       >
-        <WidgetArtwork
-          size={props.height}
-          artwork={props.track?.artwork ?? null}
-        />
-      </WidgetCell>
+        <WidgetCell
+          size={rowHeight}
+          bgColor={clrs.inactiveColor}
+          style={{ borderRadius: clrs.transparent ? 8 : 0 }}
+        >
+          <WidgetArtwork
+            size={props.height}
+            artwork={props.track?.artwork ?? null}
+          />
+        </WidgetCell>
+        <FlexWidget style={{ height: rowHeight, justifyContent: "center" }}>
+          <WidgetText
+            text={props.track?.title}
+            color={clrs.textColor}
+            fontSize={textFontSize}
+          />
+          <WidgetText
+            text={props.track?.artist}
+            color={clrs.mutedTextColor}
+            fontSize={textFontSize}
+          />
+        </FlexWidget>
+      </FlexWidget>
 
       <FlexWidget
         style={{
+          height: rowHeight,
+          width: "match_parent",
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-evenly",
@@ -56,22 +82,12 @@ export function SkinnyNowPlayingWidget(props: WidgetProps) {
           size={svgSize}
           color={clrs.textColor}
         />
-        <FlexWidget
+        <WidgetSVG
           clickAction={withAction(Action.PlayPause, props.openApp)}
-          style={{
-            paddingHorizontal: paddingX,
-            paddingVertical: paddingY,
-            backgroundColor:
-              clrs[props.isPlaying ? "inactiveColor" : "activeColor"],
-            borderRadius: 999,
-          }}
-        >
-          <WidgetSVG
-            name={props.isPlaying ? "pause" : "play"}
-            size={svgSize}
-            color={clrs[props.isPlaying ? "onInactiveColor" : "onActiveColor"]}
-          />
-        </FlexWidget>
+          name={props.isPlaying ? "pause" : "play"}
+          size={svgSize}
+          color={clrs.textColor}
+        />
         <WidgetSVG
           clickAction={withAction(Action.Next, props.openApp)}
           name="next"

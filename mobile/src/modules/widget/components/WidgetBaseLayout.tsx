@@ -21,13 +21,17 @@ export function WidgetBaseLayout({
   style,
   stylingConfig,
   ...props
-}: WidgetDefinition<
-  ClickActionProps & {
-    children: React.ReactNode;
-    transparent?: boolean;
-    style?: FlexWidgetStyle;
-  }
->) {
+}: Omit<
+  WidgetDefinition<
+    ClickActionProps & {
+      children: React.ReactNode;
+      transparent?: boolean;
+      style?: FlexWidgetStyle;
+    }
+  >,
+  "height" | "width"
+> &
+  Record<"height" | "width", number | "match_parent">) {
   return (
     <FlexWidget
       style={{
