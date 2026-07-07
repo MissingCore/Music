@@ -26,9 +26,11 @@ Displays the current playing track artwork. Clicking on the widget will play/pau
 
 ### [2×1] Now Playing
 
-<img src="../mobile/assets/widget/skinny-now-playing.png" alt="Now Playing widget preview image" height="128" />
+<img src="../mobile/assets/widget/skinny-now-playing.png" alt="Skinny Now Playing widget preview image" height="128" />
 
 Offers quick access to media controls (Play/Pause). **When the widget is wide enough, it also offers Prev & Next controls.** Clicking anywhere but the media controls will open the app.
+
+> **Supports:** Customizations, Resizing
 
 ### [2×2] Now Playing
 
@@ -36,11 +38,15 @@ Offers quick access to media controls (Play/Pause). **When the widget is wide en
 
 Offers quick access to media controls (Play/Pause, Prev, Next). Clicking on the artwork will open the app.
 
+> **Supports:** Customizations
+
 ### [4×2] Now Playing
 
 <img src="../mobile/assets/widget/resizable-now-playing.png" alt="Resizable Now Playing widget preview image" height="128" />
 
 Offers quick access to media controls (Play/Pause, Prev, Next). Clicking anywhere but the media controls will open the app.
+
+> **Supports:** Customizations, Resizing
 
 ## Customizations
 
