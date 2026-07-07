@@ -174,9 +174,9 @@ const widgetPluginConfig: WithAndroidWidgetsParams = {
     {
       name: "SkinnyNowPlaying",
       label: "🧪 Now Playing",
-      minWidth: "180dp",
+      minWidth: "110dp",
       minHeight: "50dp",
-      targetCellWidth: 3,
+      targetCellWidth: 2,
       targetCellHeight: 1,
       description: "[Experimental] Quick access to your media controls.",
       previewImage: "./assets/widget/now-playing.png",
