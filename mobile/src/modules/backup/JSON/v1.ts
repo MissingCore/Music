@@ -1,9 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { toast } from "@missingcore/ui/toast";
-import { useMutation } from "@tanstack/react-query";
-import { eq, inArray } from "drizzle-orm";
+import { inArray } from "drizzle-orm";
 import { z } from "zod/mini";
 
 import { db } from "~/db";
@@ -20,8 +18,6 @@ import { sanitizePlaylistName } from "~/data/playlist/utils";
 import { getTracks } from "~/data/track/api";
 import { mergeTracks } from "~/data/track/utils";
 
-import { pickDirectory, pickFile } from "~/lib/file-system";
-import { clearAllQueries } from "~/lib/react-query";
 import { ZSchema } from "~/modules/form/utils";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
@@ -94,60 +90,13 @@ async function findExistingTracksFactory() {
 }
 //#endregion
 
-//#region Export
-/**
- * @deprecated We plan on updating the backup schema, so this old export
- * code will be replaced while the old import code will stay for a while.
- */
-async function exportBackup() {
-  // Get favorited values.
-  const [favAlbums, favPlaylists] = await Promise.all([
-    getAlbumsSummary(false, [eq(albums.isFavorite, true)]),
-    getPlaylistsSummary(false, [eq(playlists.isFavorite, true)]),
-  ]);
-  // Get all user-generated playlists.
-  const allPlaylists = await getPlaylistsSummary(true);
-
-  // User selects location to save this backup file.
-  const dir = await pickDirectory();
-
-  // Create a new file in specified directory & write contents.
-  const backupFile = dir.createFile("music_backup", "application/json");
-  backupFile.write(
-    JSON.stringify({
-      favorites: {
-        playlists: favPlaylists.map(({ id }) => id),
-        albums: favAlbums.map(({ name, artistsKey }) => {
-          return { name, artistName: artistsKey };
-        }),
-        //! [Deprecated] For backwards compatibility.
-        tracks: [],
-      },
-      playlists: allPlaylists.map(({ id, tracks }) => ({
-        name: id,
-        tracks: tracks.map((t) => ({
-          name: t.name,
-          artistName: t.rawArtistName,
-          albumName: t.albumName,
-        })),
-      })),
-    }),
-  );
-}
-//#endregion
-
 //#region Import
-async function importBackup() {
-  const backupFile = await pickFile([
-    "application/json",
-    "application/octet-stream",
-  ]);
-
+export async function importBackup(jsonContent: Record<string, any>) {
   // Read, parse, and validate file contents.
   let backupContents;
   try {
     // Validate the data structure.
-    backupContents = MusicBackup.parse(await backupFile.json());
+    backupContents = MusicBackup.parse(jsonContent);
   } catch {
     throw new Error(i18next.t("err.msg.invalidStructure"));
   }
@@ -199,31 +148,4 @@ async function importBackup() {
       ),
   ]);
 }
-//#endregion
-
-//#region Mutation Hooks
-export const useExportBackup = () => {
-  return useMutation({
-    mutationFn: exportBackup,
-    onSuccess: () => {
-      toast.t("feat.backup.extra.exportSuccess");
-    },
-    onError: (err) => {
-      toast.error(err.message);
-    },
-  });
-};
-
-export const useImportBackup = () => {
-  return useMutation({
-    mutationFn: importBackup,
-    onSuccess: () => {
-      clearAllQueries();
-      toast.t("feat.backup.extra.importSuccess");
-    },
-    onError: (err) => {
-      toast.error(err.message);
-    },
-  });
-};
 //#endregion

@@ -5,6 +5,7 @@ import Storage from "expo-sqlite/kv-store";
 import type { WidgetInfo } from "react-native-android-widget";
 import { createStore } from "zustand/vanilla";
 
+import { isRecord } from "~/utils/validation";
 import { DEFAULT_WIDGET_CONFIG } from "../constants/Config";
 import type { WidgetConfig } from "../types";
 
@@ -40,7 +41,7 @@ export async function getWidgetConfig(
     try {
       const storedConfig = JSON.parse(config);
       // Verify we're storing an object.
-      if (typeof storedConfig === "object" && storedConfig !== null) {
+      if (isRecord<WidgetConfig>(storedConfig)) {
         const formattedConfig = { ...baseConfig, ...storedConfig };
         widgetConfigCache.setState({ [widgetConfigKey]: formattedConfig });
         return formattedConfig;

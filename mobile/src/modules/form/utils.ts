@@ -12,5 +12,6 @@ export const ZSchema = {
       z.transform((str) => (str === "" ? null : str)),
     ),
   ),
+  RealNumber: z.number().check(z.int(), z.gt(0)),
   NullableRealNumber: z.nullable(z.number().check(z.int(), z.gt(0))),
 };
