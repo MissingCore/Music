@@ -1,7 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { eq, inArray } from "drizzle-orm";
+import { inArray } from "drizzle-orm";
 import { Image } from "expo-image";
 import AsyncStorage from "expo-sqlite/kv-store";
 
@@ -9,9 +9,7 @@ import { db } from "~/db";
 import type { HiddenTrack } from "~/db/schema";
 import {
   albumsToArtists,
-  fileNodes,
   hiddenTracks,
-  playedMediaLists,
   playlists,
   tracks,
   tracksToArtists,
@@ -19,12 +17,10 @@ import {
   waveformSamples,
 } from "~/db/schema";
 
-import { createFolders } from "~/data/folder/api";
 import { updatePlaylist } from "~/data/playlist/api";
 import { playbackStore } from "~/stores/Playback/store";
 import { preferenceStore } from "~/stores/Preference/store";
 
-import type { PlayFromSource } from "~/stores/Playback/types";
 import type { Tab } from "~/stores/Preference/types";
 import type { MigrationOption } from "../constants";
 import { MigrationHistory } from "../constants";
@@ -75,51 +71,6 @@ const MigrationFunctionMap: Record<
   MigrationOption,
   (lastMigrationCode: number) => Promise<void>
 > = {
-  //? v2.3.0
-  "fileNodes-adjustment": async () => {
-    const oldRootNodes = await db.query.fileNodes.findMany({
-      where: (fields, { isNull }) => isNull(fields.parentPath),
-    });
-    // Delete these old "shortcut"s.
-    await db.delete(fileNodes).where(
-      inArray(
-        fileNodes.path,
-        oldRootNodes.map((node) => node.path),
-      ),
-    );
-    // The "placeholder" portion won't get saved.
-    await createFolders(
-      oldRootNodes.map((node) => "file:///" + node.path + "placeholder"),
-    );
-  },
-
-  //? v2.4.0
-  "discover-time-field": async () => {
-    await db
-      .update(tracks)
-      .set({ discoverTime: tracks.modificationTime })
-      .where(eq(tracks.discoverTime, -1));
-  },
-  "recent-list-db-migration": async () => {
-    const storeKey = "music::recent-list-store";
-    try {
-      const recentListStore = await AsyncStorage.getItem(storeKey);
-      if (!recentListStore) return;
-      // Structure currently is: `{ state: <Recent List store>, version: 0 }`.
-      const formattedData = JSON.parse(recentListStore).state
-        .sources as PlayFromSource[];
-      const currentTime = Date.now();
-      // Have `lastPlayedAt` reflect the current order.
-      await db.insert(playedMediaLists).values(
-        formattedData.map((list, idx) => {
-          return { ...list, lastPlayedAt: currentTime - idx };
-        }),
-      );
-      // Delete data at old key when finished.
-      await AsyncStorage.removeItem(storeKey);
-    } catch {}
-  },
-
   //? v2.6.0
   "hide-home-tab": async () => {
     preferenceStore.setState((prev) => {
