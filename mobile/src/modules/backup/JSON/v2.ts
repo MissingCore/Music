@@ -190,7 +190,7 @@ export async function importBackupV2(jsonContent: Record<string, any>) {
     columns: { id: true, name: true, artistsKey: true },
   });
   const albumIdLookUpTable: Record<string, Record<string, string>> = {};
-  allAlbums.map(({ id, name, artistsKey }) => {
+  allAlbums.forEach(({ id, name, artistsKey }) => {
     if (albumIdLookUpTable[artistsKey])
       albumIdLookUpTable[artistsKey][name] = id;
     else albumIdLookUpTable[artistsKey] = { [name]: id };
@@ -205,7 +205,7 @@ export async function importBackupV2(jsonContent: Record<string, any>) {
     },
   });
   const playlistLookupTable: Record<string, string[]> = {};
-  allPlaylists.map(({ name, tracksToPlaylists }) => {
+  allPlaylists.forEach(({ name, tracksToPlaylists }) => {
     playlistLookupTable[name] = tracksToPlaylists.map((t) => t.trackId);
   });
 
@@ -217,7 +217,7 @@ export async function importBackupV2(jsonContent: Record<string, any>) {
   let createdAlbums: Album[] = [];
   if (albumEntries.length > 0) {
     createdAlbums = await upsertAlbums(albumEntries);
-    createdAlbums.map(({ id, name, artistsKey }) => {
+    createdAlbums.forEach(({ id, name, artistsKey }) => {
       if (albumIdLookUpTable[artistsKey])
         albumIdLookUpTable[artistsKey][name] = id;
       else albumIdLookUpTable[artistsKey] = { [name]: id };
@@ -252,12 +252,12 @@ export async function importBackupV2(jsonContent: Record<string, any>) {
       albumId = albumIdLookUpTable[artistsKey]?.[name];
     }
 
-    metadata.artists.map((artistName) => {
+    metadata.artists.forEach((artistName) => {
       artistNames.add(artistName);
       trackArtistRels.push({ trackId, artistName });
     });
 
-    metadata.genres.map((genreName) => {
+    metadata.genres.forEach((genreName) => {
       genreNames.add(genreName);
       trackGenreRels.push({ trackId, genreName });
     });
