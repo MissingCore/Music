@@ -428,6 +428,19 @@
         "addToPlaylist": "اضافه به لیست پخش"
       }
     },
+    "miniplayer": {
+      "title": null,
+      "extra": {
+        "dragToDismiss": null,
+        "swipeControls": null
+      }
+    },
+    "nowPlaying": {
+      "title": null,
+      "extra": {
+        "artworkPlaybackToggle": null
+      }
+    },
     "queue": {
       "extra": {
         "add": "اضافه به صف",
