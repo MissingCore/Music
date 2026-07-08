@@ -5,6 +5,7 @@ import { eq, inArray, isNotNull, sql } from "drizzle-orm";
 import { z } from "zod/mini";
 
 import { db } from "~/db";
+import type { Album } from "~/db/schema";
 import {
   albums,
   artists,
@@ -16,7 +17,7 @@ import {
 } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import { getAlbumsSummary, upsertAlbums } from "~/data/album/api";
+import { getAlbumsSummary, updateAlbum, upsertAlbums } from "~/data/album/api";
 import {
   createPlaylist,
   getPlaylistsSummary,
@@ -31,6 +32,7 @@ import { getSubqueryFields } from "~/lib/drizzle";
 import { pickDirectory } from "~/lib/file-system";
 import { pickKeys } from "~/utils/object";
 import { ZSchema } from "~/modules/form/utils";
+import { getArtworkHash } from "~/modules/scanning/helpers/artwork";
 
 //#region Schemas
 const PlaylistNameSchema = z.pipe(
@@ -212,8 +214,9 @@ export async function importBackupV2(jsonContent: Record<string, any>) {
   const albumEntries = backupContents.trackMetadata
     .map((t) => t.album)
     .filter((al) => al !== null);
+  let createdAlbums: Album[] = [];
   if (albumEntries.length > 0) {
-    const createdAlbums = await upsertAlbums(albumEntries);
+    createdAlbums = await upsertAlbums(albumEntries);
     createdAlbums.map(({ id, name, artistsKey }) => {
       if (albumIdLookUpTable[artistsKey])
         albumIdLookUpTable[artistsKey][name] = id;
@@ -351,5 +354,41 @@ export async function importBackupV2(jsonContent: Record<string, any>) {
       .update(playlists)
       .set({ isFavorite: true })
       .where(inArray(playlists.name, backupContents.favorites.playlists));
+
+  //? 4. Since we may have created new albums, ensure they have artwork.
+  const albumsWithoutArtwork = createdAlbums
+    .filter((a) => a.embeddedArtwork === null)
+    .map((a) => a.id);
+
+  if (albumsWithoutArtwork.length > 0) {
+    // Determine list of tracks we can infer the album artwork from.
+    const albumArtworkSources = await db.query.tracks.findMany({
+      columns: { albumId: true, uri: true },
+      where: (fields, { inArray }) =>
+        inArray(fields.albumId, albumsWithoutArtwork),
+    });
+    const albumTrackMap: Record<string, string[]> = {};
+    for (const { albumId, uri } of albumArtworkSources) {
+      if (!albumId) continue;
+      if (albumTrackMap[albumId]) albumTrackMap[albumId].push(uri);
+      else albumTrackMap[albumId] = [uri];
+    }
+
+    // Get list of previously hashed images.
+    const prevHashedImages = await db.query.hashedImages.findMany();
+    const knownHashes = new Set(prevHashedImages.map((h) => h.hash));
+
+    for (const [albumId, albumTracks] of Object.entries(albumTrackMap)) {
+      // This inner loop will most likely iterate once.
+      for (const trackUri of albumTracks) {
+        const { artworkHash } = await getArtworkHash(trackUri, knownHashes);
+        if (artworkHash) {
+          const data = { embeddedArtwork: artworkHash };
+          await updateAlbum(albumId, data);
+          break;
+        }
+      }
+    }
+  }
 }
 //#endregion
