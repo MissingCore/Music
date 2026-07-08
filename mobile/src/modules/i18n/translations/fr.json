@@ -428,6 +428,19 @@
         "addToPlaylist": "Ajouter à une playlist"
       }
     },
+    "miniplayer": {
+      "title": "Mini-lecteur",
+      "extra": {
+        "dragToDismiss": "Glisser pour fermer",
+        "swipeControls": "Commandes par glissement"
+      }
+    },
+    "nowPlaying": {
+      "title": "En cours de lecture",
+      "extra": {
+        "artworkPlaybackToggle": "Activer/désactiver l'affichage des illustrations"
+      }
+    },
     "queue": {
       "extra": {
         "add": "Mettre à la suite",

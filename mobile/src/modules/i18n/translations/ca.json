@@ -428,6 +428,19 @@
         "addToPlaylist": "Afegir a la llista"
       }
     },
+    "miniplayer": {
+      "title": null,
+      "extra": {
+        "dragToDismiss": null,
+        "swipeControls": null
+      }
+    },
+    "nowPlaying": {
+      "title": null,
+      "extra": {
+        "artworkPlaybackToggle": null
+      }
+    },
     "queue": {
       "extra": {
         "add": "Afegir a la cua",

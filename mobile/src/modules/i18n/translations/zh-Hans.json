@@ -428,6 +428,19 @@
         "addToPlaylist": "添加到播放列表"
       }
     },
+    "miniplayer": {
+      "title": null,
+      "extra": {
+        "dragToDismiss": null,
+        "swipeControls": null
+      }
+    },
+    "nowPlaying": {
+      "title": null,
+      "extra": {
+        "artworkPlaybackToggle": null
+      }
+    },
     "queue": {
       "extra": {
         "add": "添加到队列",

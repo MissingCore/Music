@@ -428,6 +428,19 @@
         "addToPlaylist": "प्लेलिस्ट में जोड़ें"
       }
     },
+    "miniplayer": {
+      "title": null,
+      "extra": {
+        "dragToDismiss": null,
+        "swipeControls": null
+      }
+    },
+    "nowPlaying": {
+      "title": null,
+      "extra": {
+        "artworkPlaybackToggle": null
+      }
+    },
     "queue": {
       "extra": {
         "add": "कतार में जोड़ें",
