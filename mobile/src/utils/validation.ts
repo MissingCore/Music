@@ -12,7 +12,7 @@ export function isNumber(item: any): item is number {
 export function isRecord<
   TData extends Record<string, any> = Record<string, any>,
 >(item: any): item is TData {
-  return typeof item === "object" && item !== null;
+  return typeof item === "object" && item !== null && !Array.isArray(item);
 }
 
 export function isString(item: any): item is string {
