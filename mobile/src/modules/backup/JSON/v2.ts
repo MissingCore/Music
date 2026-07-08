@@ -288,24 +288,28 @@ export async function importBackupV2(jsonContent: Record<string, any>) {
 
   if (trackArtistRels.length > 0) {
     const oldRels = trackArtistRels.map((rel) => rel.trackId);
-    await db
-      .delete(tracksToArtists)
-      .where(inArray(tracksToArtists.trackId, oldRels));
-    await db
-      .insert(tracksToArtists)
-      .values(trackArtistRels)
-      .onConflictDoNothing();
+    await db.transaction(async (tx) => {
+      await tx
+        .delete(tracksToArtists)
+        .where(inArray(tracksToArtists.trackId, oldRels));
+      await tx
+        .insert(tracksToArtists)
+        .values(trackArtistRels)
+        .onConflictDoNothing();
+    });
   }
 
   if (trackGenreRels.length > 0) {
     const oldRels = trackGenreRels.map((rel) => rel.trackId);
-    await db
-      .delete(tracksToGenres)
-      .where(inArray(tracksToGenres.trackId, oldRels));
-    await db
-      .insert(tracksToGenres)
-      .values(trackGenreRels)
-      .onConflictDoNothing();
+    await db.transaction(async (tx) => {
+      await tx
+        .delete(tracksToGenres)
+        .where(inArray(tracksToGenres.trackId, oldRels));
+      await tx
+        .insert(tracksToGenres)
+        .values(trackGenreRels)
+        .onConflictDoNothing();
+    });
   }
 
   for (const { id: trackId, ...trackEntry } of trackEntries) {
