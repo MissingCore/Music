@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { eq, inArray } from "drizzle-orm";
+import { Image } from "expo-image";
 import AsyncStorage from "expo-sqlite/kv-store";
 
 import { db } from "~/db";
@@ -248,5 +249,10 @@ const MigrationFunctionMap: Record<
     } catch (err) {
       console.log("[Failed to migrate favorite tracks]", err);
     }
+  },
+
+  //? v3.4.0-rc.0
+  "clear-image-cache": async () => {
+    await Image.clearDiskCache();
   },
 };
