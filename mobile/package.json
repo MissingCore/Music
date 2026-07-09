@@ -102,6 +102,11 @@
       ]
     }
   },
+  "react-navigation": {
+    "material-symbols": {
+      "fonts": []
+    }
+  },
   "reanimated": {
     "staticFeatureFlags": {
       "ANDROID_SYNCHRONOUSLY_UPDATE_UI_PROPS": false,
