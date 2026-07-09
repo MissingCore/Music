@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useNavigation } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -19,7 +18,7 @@ const searchScope = ["album", "artist", "folder", "playlist", "track"] as const;
 
 export default function Search() {
   const { t } = useTranslation();
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const navigation = useNavigation("Search");
 
   /* Actions that we want to run when we click on a search item. */
   const searchCallbacks: SearchCallbacks = useMemo(

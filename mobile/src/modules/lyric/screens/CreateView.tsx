@@ -4,7 +4,6 @@
 import { toast } from "@missingcore/ui/toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { queries as q } from "~/data/keyStore";
@@ -22,7 +21,7 @@ export default function CreateLyric({
     params: { linkTo },
   },
 }: Props) {
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const navigation = useNavigation("CreateLyric");
   const queryClient = useQueryClient();
 
   return (

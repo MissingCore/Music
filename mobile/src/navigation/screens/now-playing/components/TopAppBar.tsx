@@ -35,7 +35,7 @@ export function NowPlayingTopAppBar() {
 /** Conditionally render the header content depending on the design used. */
 function AppBarContent() {
   const { t } = useTranslation();
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const navigation = useNavigation() as NativeStackNavigationProp<any>;
   const playingSource = usePlaybackStore((s) => s.playingFrom);
   const listName = usePlaybackStore((s) => s.playingFromName);
   const usedDesign = usePreferenceStore((s) => s.nowPlayingDesign);

@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useNavigation } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -64,7 +63,7 @@ export default function NowPlaying() {
 //#region Metadata
 function Metadata({ track }: { track: Track }) {
   const { t } = useTranslation();
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const navigation = useNavigation("NowPlaying");
 
   return (
     <View className="flex-row items-center gap-4">
@@ -80,7 +79,7 @@ function Metadata({ track }: { track: Track }) {
         {track.albumName ? (
           <Marquee>
             <Pressable
-              onPress={() => navigation.popTo("Album", { id: track.albumId })}
+              onPress={() => navigation.popTo("Album", { id: track.albumId! })}
             >
               <StyledText dim className="text-sm/[1.125]">
                 {track.albumName}

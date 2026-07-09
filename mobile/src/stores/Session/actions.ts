@@ -3,7 +3,10 @@
 
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { getMetadata } from "@missingcore/react-native-metadata-retriever";
-import type { NavigationProp } from "@react-navigation/native";
+import type {
+  GenericNavigation,
+  RootParamList,
+} from "@react-navigation/native";
 
 import { db } from "~/db";
 
@@ -64,7 +67,7 @@ export async function presentArtistsSheet(
 }
 
 export function navigateToArtist(
-  navigation: Omit<NavigationProp<ReactNavigation.RootParamList>, "getState">,
+  navigation: Omit<GenericNavigation<RootParamList>, "getState">,
   id: string,
   popStrategy?: PopStrategy,
 ) {
