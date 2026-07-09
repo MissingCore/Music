@@ -13,11 +13,8 @@ import { DEFAULT_WIDGET_CONFIG } from "./constants/Config";
 import type { WidgetName } from "./impl";
 import { nameToWidget } from "./impl";
 import { getWidgetData } from "./utils";
-import {
-  deleteWidgetConfig,
-  getWidgetConfig,
-  getWidgetConfigKey,
-} from "./utils/customize.core";
+import { getWidgetConfigKey } from "./utils/customize";
+import { deleteWidgetConfig, getWidgetConfig } from "./utils/customize.core";
 import { updateWidgets } from "./utils/update";
 
 export async function widgetTaskHandler({
