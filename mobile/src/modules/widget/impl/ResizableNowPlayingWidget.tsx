@@ -127,15 +127,20 @@ function MediaControls({
         style={{
           paddingHorizontal: paddingX,
           paddingVertical: paddingY,
-          backgroundColor:
-            config[props.isPlaying ? "inactiveColor" : "activeColor"],
+          backgroundColor: config.transparent
+            ? Styles.color.transparent
+            : config[props.isPlaying ? "inactiveColor" : "activeColor"],
           borderRadius: 999,
         }}
       >
         <WidgetSVG
           name={props.isPlaying ? "pause" : "play"}
           size={svgSize}
-          color={config[props.isPlaying ? "onInactiveColor" : "onActiveColor"]}
+          color={
+            config.transparent
+              ? config.textColor
+              : config[props.isPlaying ? "onInactiveColor" : "onActiveColor"]
+          }
         />
       </FlexWidget>
       <WidgetSVG
