@@ -36,11 +36,11 @@ export function SkinnyNowPlayingWidget(props: WidgetProps) {
 
   const openApp = props.openApp || props.track === undefined;
 
-  const clrs = props.stylingConfig;
+  const clrs = props.config;
 
   return (
     <WidgetBaseLayout
-      stylingConfig={clrs}
+      config={clrs}
       height={widgetHeight}
       style={{
         flexDirection: "row",

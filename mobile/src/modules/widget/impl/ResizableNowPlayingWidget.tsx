@@ -42,13 +42,13 @@ export function ResizableNowPlayingWidget(props: WidgetProps) {
 
   const openApp = props.openApp || props.track === undefined;
 
-  const clrs = props.stylingConfig;
+  const clrs = props.config;
 
   return (
     <WidgetBaseLayout
       clickAction={Action.Open}
       height={widgetHeight}
-      stylingConfig={clrs}
+      config={clrs}
     >
       <OverlapWidget>
         <WidgetCell

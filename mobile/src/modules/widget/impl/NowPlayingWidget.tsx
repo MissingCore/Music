@@ -22,15 +22,10 @@ export function NowPlayingWidget(props: WidgetProps) {
   const positionOffset = cellSize + Styles.layoutGap;
   const openApp = props.openApp || props.track === undefined;
 
-  const clrs = props.stylingConfig;
+  const clrs = props.config;
 
   return (
-    <WidgetBaseLayout
-      height={size}
-      width={size}
-      stylingConfig={clrs}
-      transparent
-    >
+    <WidgetBaseLayout height={size} width={size} config={clrs} transparent>
       <OverlapWidget>
         <WidgetCell
           clickAction={Action.Open}

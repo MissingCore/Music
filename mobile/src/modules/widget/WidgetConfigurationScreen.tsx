@@ -57,11 +57,7 @@ function WidgetConfigurationScreenPropsImpl({
 
         const Widget = nameToWidget[widgetInfo.widgetName as WidgetName];
         renderWidget(
-          <Widget
-            {...widgetData}
-            stylingConfig={config}
-            openApp={shouldOpen}
-          />,
+          <Widget {...widgetData} config={config} openApp={shouldOpen} />,
         );
       } catch (err) {
         console.log(err);

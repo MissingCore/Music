@@ -19,7 +19,7 @@ export type PlayerWidgetData = {
 export type WidgetDefinition<T> = T & {
   height: number;
   width: number;
-  stylingConfig: WidgetConfig;
+  config: WidgetConfig;
 };
 
 export interface WidgetConfig {

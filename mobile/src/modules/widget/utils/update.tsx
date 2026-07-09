@@ -31,9 +31,7 @@ export async function updateWidgets({
           const configStyle = await getWidgetConfig(
             getWidgetConfigKey(widgetInfo),
           );
-          return (
-            <Widget {...widgetInfo} stylingConfig={configStyle} {...args} />
-          );
+          return <Widget {...widgetInfo} config={configStyle} {...args} />;
         },
       }),
     ),

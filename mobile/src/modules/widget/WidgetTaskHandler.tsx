@@ -42,11 +42,7 @@ export async function widgetTaskHandler({
       const shouldOpen = !(await isAudioBrowserSetUp());
       const styleConfig = await getWidgetConfig(widgetKey);
       renderWidget(
-        <Widget
-          {...widgetData}
-          stylingConfig={styleConfig}
-          openApp={shouldOpen}
-        />,
+        <Widget {...widgetData} config={styleConfig} openApp={shouldOpen} />,
       );
       break;
 
@@ -80,14 +76,14 @@ export async function widgetTaskHandler({
             renderWidget(
               <Widget
                 {...widgetData}
-                stylingConfig={DEFAULT_WIDGET_CONFIG}
+                config={DEFAULT_WIDGET_CONFIG}
                 overlayState={i}
               />,
             );
             await bgWait(i === 0 ? 500 : 50);
           }
           renderWidget(
-            <Widget {...widgetData} stylingConfig={DEFAULT_WIDGET_CONFIG} />,
+            <Widget {...widgetData} config={DEFAULT_WIDGET_CONFIG} />,
           );
         }
       } else {

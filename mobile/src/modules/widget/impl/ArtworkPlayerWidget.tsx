@@ -25,7 +25,7 @@ export function ArtworkPlayerWidget(props: WidgetProps) {
       height={size}
       width={size}
       style={{ alignItems: "center", justifyContent: "center" }}
-      stylingConfig={props.stylingConfig}
+      config={props.config}
     >
       <OverlapWidget>
         <WidgetArtwork

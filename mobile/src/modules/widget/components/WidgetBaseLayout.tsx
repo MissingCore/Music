@@ -19,7 +19,7 @@ export function WidgetBaseLayout({
   width = "match_parent",
   transparent,
   style,
-  stylingConfig,
+  config,
   ...props
 }: Omit<
   WidgetDefinition<
@@ -46,9 +46,9 @@ export function WidgetBaseLayout({
           height,
           width,
           backgroundColor:
-            transparent || stylingConfig.transparent
+            transparent || config.transparent
               ? Styles.color.transparent
-              : stylingConfig.bgColor,
+              : config.bgColor,
           borderRadius: Styles.radius,
           ...style,
         }}
