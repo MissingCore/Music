@@ -2,11 +2,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 export const Styles = {
-  color: {
-    /** Can't pass `transparent` to `backgroundColor`. */
-    transparent: "#00000000",
-  },
-
   /** Estimated radius used by Nothing widgets from experimentation. */
   radius: 20,
 

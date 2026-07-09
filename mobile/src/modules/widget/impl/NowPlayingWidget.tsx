@@ -10,6 +10,7 @@ import { WidgetBaseLayout } from "../components/WidgetBaseLayout";
 import { WidgetCell } from "../components/WidgetCell";
 import { WidgetSVG } from "../components/WidgetSVG";
 import type { PlayerWidgetData, WidgetDefinition } from "../types";
+import { applyColor, applyTextColor } from "../utils/customize";
 
 type WidgetProps = WidgetDefinition<PlayerWidgetData>;
 
@@ -40,30 +41,26 @@ export function NowPlayingWidget({ config, ...props }: WidgetProps) {
         <WidgetCell
           clickAction={withAction(Action.PlayPause, openApp)}
           size={cellSize}
-          bgColor={
-            config.transparent
-              ? Styles.color.transparent
-              : config[props.isPlaying ? "inactiveColor" : "activeColor"]
-          }
+          bgColor={applyColor(
+            config,
+            props.isPlaying ? "inactiveColor" : "activeColor",
+          )}
           style={{ marginLeft: positionOffset }}
         >
           <WidgetSVG
             name={props.isPlaying ? "pause" : "play"}
             size={svgSize}
-            color={
-              config.transparent
-                ? config.textColor
-                : config[props.isPlaying ? "onInactiveColor" : "onActiveColor"]
-            }
+            color={applyTextColor(
+              config,
+              props.isPlaying ? "onInactiveColor" : "onActiveColor",
+            )}
           />
         </WidgetCell>
 
         <WidgetCell
           clickAction={withAction(Action.Prev, openApp)}
           size={cellSize}
-          bgColor={
-            config.transparent ? Styles.color.transparent : config.bgColor
-          }
+          bgColor={applyColor(config, "bgColor")}
           style={{ marginTop: positionOffset }}
         >
           <WidgetSVG name="prev" size={svgSize} color={config.textColor} />
@@ -72,9 +69,7 @@ export function NowPlayingWidget({ config, ...props }: WidgetProps) {
         <WidgetCell
           clickAction={withAction(Action.Next, openApp)}
           size={cellSize}
-          bgColor={
-            config.transparent ? Styles.color.transparent : config.bgColor
-          }
+          bgColor={applyColor(config, "bgColor")}
           style={{ marginLeft: positionOffset, marginTop: positionOffset }}
         >
           <WidgetSVG name="next" size={svgSize} color={config.textColor} />

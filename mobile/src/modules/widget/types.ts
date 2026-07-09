@@ -34,3 +34,9 @@ export interface WidgetConfig {
   inactiveColor: HexColor;
   onInactiveColor: HexColor;
 }
+
+type ExtractColorKeys<T> = {
+  [K in keyof T]: K extends `${string}Color` ? K : never;
+}[keyof T];
+
+export type WidgetConfigColors = ExtractColorKeys<WidgetConfig>;

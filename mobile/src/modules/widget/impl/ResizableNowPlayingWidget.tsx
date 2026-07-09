@@ -15,6 +15,7 @@ import type {
   WidgetConfig,
   WidgetDefinition,
 } from "../types";
+import { applyColor, applyTextColor } from "../utils/customize";
 
 type WidgetProps = WidgetDefinition<PlayerWidgetData>;
 
@@ -127,20 +128,20 @@ function MediaControls({
         style={{
           paddingHorizontal: paddingX,
           paddingVertical: paddingY,
-          backgroundColor: config.transparent
-            ? Styles.color.transparent
-            : config[props.isPlaying ? "inactiveColor" : "activeColor"],
+          backgroundColor: applyColor(
+            config,
+            props.isPlaying ? "inactiveColor" : "activeColor",
+          ),
           borderRadius: 999,
         }}
       >
         <WidgetSVG
           name={props.isPlaying ? "pause" : "play"}
           size={svgSize}
-          color={
-            config.transparent
-              ? config.textColor
-              : config[props.isPlaying ? "onInactiveColor" : "onActiveColor"]
-          }
+          color={applyTextColor(
+            config,
+            props.isPlaying ? "onInactiveColor" : "onActiveColor",
+          )}
         />
       </FlexWidget>
       <WidgetSVG
