@@ -17,7 +17,7 @@ import {
   deleteWidgetConfig,
   getWidgetConfig,
   getWidgetConfigKey,
-} from "./utils/customize";
+} from "./utils/customize.core";
 import { updateWidgets } from "./utils/update";
 
 export async function widgetTaskHandler({
