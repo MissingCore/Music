@@ -18,7 +18,7 @@ import type {
 
 type WidgetProps = WidgetDefinition<PlayerWidgetData>;
 
-export function ResizableNowPlayingWidget(props: WidgetProps) {
+export function ResizableNowPlayingWidget({ config, ...props }: WidgetProps) {
   const canUseFullArea = props.width - props.height > 2 * props.height;
   let widgetHeight = props.height;
 
@@ -42,19 +42,17 @@ export function ResizableNowPlayingWidget(props: WidgetProps) {
 
   const openApp = props.openApp || props.track === undefined;
 
-  const clrs = props.config;
-
   return (
     <WidgetBaseLayout
       clickAction={Action.Open}
       height={widgetHeight}
-      config={clrs}
+      config={config}
     >
       <OverlapWidget>
         <WidgetCell
           size={widgetHeight}
-          bgColor={clrs.inactiveColor}
-          style={{ borderRadius: clrs.transparent ? Styles.radius : 0 }}
+          bgColor={config.inactiveColor}
+          style={{ borderRadius: config.transparent ? Styles.radius : 0 }}
         >
           <WidgetArtwork
             size={widgetHeight}
@@ -72,12 +70,12 @@ export function ResizableNowPlayingWidget(props: WidgetProps) {
           <WidgetText
             text={props.track?.title}
             maxLines={2}
-            color={clrs.textColor}
+            color={config.textColor}
             fontSize={textFontSize}
           />
           <WidgetText
             text={props.track?.artist}
-            color={clrs.mutedTextColor}
+            color={config.mutedTextColor}
             fontSize={textFontSize}
             style={{ paddingBottom: contentPadding }}
           />
@@ -86,7 +84,7 @@ export function ResizableNowPlayingWidget(props: WidgetProps) {
             maxHeight={widgetHeight / 4}
             openApp={openApp}
             isPlaying={props.isPlaying}
-            stylingConfig={clrs}
+            config={config}
           />
         </FlexWidget>
       </OverlapWidget>
@@ -95,18 +93,19 @@ export function ResizableNowPlayingWidget(props: WidgetProps) {
 }
 
 //#region Layout Helpers
-function MediaControls(props: {
+function MediaControls({
+  config,
+  ...props
+}: {
   maxWidth: number;
   maxHeight: number;
   openApp: boolean;
   isPlaying: boolean;
-  stylingConfig: WidgetConfig;
+  config: WidgetConfig;
 }) {
   const svgSize = Math.min(props.maxWidth / 7, (props.maxHeight * 2) / 3);
   const paddingY = svgSize / 9;
   const paddingX = paddingY * 5;
-
-  const clrs = props.stylingConfig;
 
   return (
     <FlexWidget
@@ -121,7 +120,7 @@ function MediaControls(props: {
         clickAction={withAction(Action.Prev, props.openApp)}
         name="prev"
         size={svgSize}
-        color={clrs.textColor}
+        color={config.textColor}
       />
       <FlexWidget
         clickAction={withAction(Action.PlayPause, props.openApp)}
@@ -129,21 +128,21 @@ function MediaControls(props: {
           paddingHorizontal: paddingX,
           paddingVertical: paddingY,
           backgroundColor:
-            clrs[props.isPlaying ? "inactiveColor" : "activeColor"],
+            config[props.isPlaying ? "inactiveColor" : "activeColor"],
           borderRadius: 999,
         }}
       >
         <WidgetSVG
           name={props.isPlaying ? "pause" : "play"}
           size={svgSize}
-          color={clrs[props.isPlaying ? "onInactiveColor" : "onActiveColor"]}
+          color={config[props.isPlaying ? "onInactiveColor" : "onActiveColor"]}
         />
       </FlexWidget>
       <WidgetSVG
         clickAction={withAction(Action.Next, props.openApp)}
         name="next"
         size={svgSize}
-        color={clrs.textColor}
+        color={config.textColor}
       />
     </FlexWidget>
   );

@@ -13,7 +13,7 @@ import type { PlayerWidgetData, WidgetDefinition } from "../types";
 
 type WidgetProps = WidgetDefinition<PlayerWidgetData>;
 
-export function NowPlayingWidget(props: WidgetProps) {
+export function NowPlayingWidget({ config, ...props }: WidgetProps) {
   const size = Math.min(props.width, props.height);
 
   const cellSize = (size - Styles.layoutGap) / 2;
@@ -22,15 +22,13 @@ export function NowPlayingWidget(props: WidgetProps) {
   const positionOffset = cellSize + Styles.layoutGap;
   const openApp = props.openApp || props.track === undefined;
 
-  const clrs = props.config;
-
   return (
-    <WidgetBaseLayout height={size} width={size} config={clrs} transparent>
+    <WidgetBaseLayout height={size} width={size} config={config} transparent>
       <OverlapWidget>
         <WidgetCell
           clickAction={Action.Open}
           size={cellSize}
-          bgColor={clrs.bgColor}
+          bgColor={config.bgColor}
           style={{ borderRadius: Styles.radius }}
         >
           <WidgetArtwork
@@ -42,32 +40,34 @@ export function NowPlayingWidget(props: WidgetProps) {
         <WidgetCell
           clickAction={withAction(Action.PlayPause, openApp)}
           size={cellSize}
-          bgColor={clrs[props.isPlaying ? "inactiveColor" : "activeColor"]}
+          bgColor={config[props.isPlaying ? "inactiveColor" : "activeColor"]}
           style={{ marginLeft: positionOffset }}
         >
           <WidgetSVG
             name={props.isPlaying ? "pause" : "play"}
             size={svgSize}
-            color={clrs[props.isPlaying ? "onInactiveColor" : "onActiveColor"]}
+            color={
+              config[props.isPlaying ? "onInactiveColor" : "onActiveColor"]
+            }
           />
         </WidgetCell>
 
         <WidgetCell
           clickAction={withAction(Action.Prev, openApp)}
           size={cellSize}
-          bgColor={clrs.bgColor}
+          bgColor={config.bgColor}
           style={{ marginTop: positionOffset }}
         >
-          <WidgetSVG name="prev" size={svgSize} color={clrs.textColor} />
+          <WidgetSVG name="prev" size={svgSize} color={config.textColor} />
         </WidgetCell>
 
         <WidgetCell
           clickAction={withAction(Action.Next, openApp)}
           size={cellSize}
-          bgColor={clrs.bgColor}
+          bgColor={config.bgColor}
           style={{ marginLeft: positionOffset, marginTop: positionOffset }}
         >
-          <WidgetSVG name="next" size={svgSize} color={clrs.textColor} />
+          <WidgetSVG name="next" size={svgSize} color={config.textColor} />
         </WidgetCell>
       </OverlapWidget>
     </WidgetBaseLayout>
