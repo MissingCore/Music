@@ -2,13 +2,13 @@
   "@paralleldrive/cuid2@3.3.0": {
     "repository": "https://github.com/paralleldrive/cuid2"
   },
-  "@react-navigation/material-top-tabs@8.0.0-alpha.38": {
+  "@react-navigation/material-top-tabs@8.0.0-alpha.40": {
     "repository": "https://github.com/react-navigation/react-navigation/tree/main/packages/material-top-tabs"
   },
-  "@react-navigation/native@8.0.0-alpha.33": {
+  "@react-navigation/native@8.0.0-alpha.35": {
     "repository": "https://github.com/react-navigation/react-navigation/tree/main/packages/native"
   },
-  "@react-navigation/native-stack@8.0.0-alpha.40": {
+  "@react-navigation/native-stack@8.0.0-alpha.42": {
     "repository": "https://github.com/react-navigation/react-navigation/tree/main/packages/native-stack"
   },
   "@rn-primitives/portal@1.5.2": {
