@@ -15,7 +15,7 @@ type WidgetProps = WidgetDefinition<PlayerWidgetData>;
 const SMALL_GAP = 8;
 const FULL_ROUNDED = 999;
 
-export function SkinnyNowPlayingWidget(props: WidgetProps) {
+export function SkinnyNowPlayingWidget({ config, ...props }: WidgetProps) {
   const showAdditionalActions = props.width > props.height * 2.5;
 
   // Calculate height of widget if we only support showing the play/pause action.
@@ -36,11 +36,9 @@ export function SkinnyNowPlayingWidget(props: WidgetProps) {
 
   const openApp = props.openApp || props.track === undefined;
 
-  const clrs = props.stylingConfig;
-
   return (
     <WidgetBaseLayout
-      stylingConfig={clrs}
+      config={config}
       height={widgetHeight}
       style={{
         flexDirection: "row",
@@ -51,7 +49,7 @@ export function SkinnyNowPlayingWidget(props: WidgetProps) {
       <WidgetCell
         clickAction={Action.Open}
         size={widgetHeight}
-        bgColor={clrs.inactiveColor}
+        bgColor={config.inactiveColor}
         style={{ borderRadius: FULL_ROUNDED }}
       >
         <WidgetArtwork
@@ -75,21 +73,21 @@ export function SkinnyNowPlayingWidget(props: WidgetProps) {
             clickAction={withAction(Action.Prev, openApp)}
             name="prev"
             size={svgSize}
-            color={clrs.textColor}
+            color={config.textColor}
           />
         ) : null}
         <WidgetSVG
           clickAction={withAction(Action.PlayPause, openApp)}
           name={props.isPlaying ? "pause" : "play"}
           size={svgSize}
-          color={clrs.textColor}
+          color={config.textColor}
         />
         {showAdditionalActions ? (
           <WidgetSVG
             clickAction={withAction(Action.Next, openApp)}
             name="next"
             size={svgSize}
-            color={clrs.textColor}
+            color={config.textColor}
           />
         ) : null}
       </FlexWidget>

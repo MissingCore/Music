@@ -7,8 +7,9 @@ import type {
 } from "react-native-android-widget";
 import { FlexWidget } from "react-native-android-widget";
 
-import type { WidgetDefinition } from "../types";
 import { Styles } from "../constants/Styles";
+import type { WidgetDefinition } from "../types";
+import { applyColor } from "../utils/customize";
 
 /**
  * General layout for widget while also center-aligning it on devices where
@@ -19,7 +20,7 @@ export function WidgetBaseLayout({
   width = "match_parent",
   transparent,
   style,
-  stylingConfig,
+  config,
   ...props
 }: Omit<
   WidgetDefinition<
@@ -45,10 +46,7 @@ export function WidgetBaseLayout({
           overflow: "hidden",
           height,
           width,
-          backgroundColor:
-            transparent || stylingConfig.transparent
-              ? Styles.color.transparent
-              : stylingConfig.bgColor,
+          backgroundColor: applyColor(config, "bgColor", transparent),
           borderRadius: Styles.radius,
           ...style,
         }}
