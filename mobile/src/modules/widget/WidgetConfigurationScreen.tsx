@@ -21,11 +21,8 @@ import type { WidgetName } from "./impl";
 import { nameToWidget } from "./impl";
 import type { WidgetConfig } from "./types";
 import { getWidgetData } from "./utils";
-import {
-  getWidgetConfig,
-  getWidgetConfigKey,
-  updateWidgetConfig,
-} from "./utils/customize";
+import { getWidgetConfigKey } from "./utils/customize";
+import { getWidgetConfig, updateWidgetConfig } from "./utils/customize.core";
 
 export function WidgetConfigurationScreen(
   props: WidgetConfigurationScreenProps,
@@ -57,11 +54,7 @@ function WidgetConfigurationScreenPropsImpl({
 
         const Widget = nameToWidget[widgetInfo.widgetName as WidgetName];
         renderWidget(
-          <Widget
-            {...widgetData}
-            stylingConfig={config}
-            openApp={shouldOpen}
-          />,
+          <Widget {...widgetData} config={config} openApp={shouldOpen} />,
         );
       } catch (err) {
         console.log(err);

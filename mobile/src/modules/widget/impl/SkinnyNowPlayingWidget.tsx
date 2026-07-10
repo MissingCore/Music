@@ -3,19 +3,21 @@
 
 import { FlexWidget } from "react-native-android-widget";
 
-import { Action, withAction } from "../constants/Action";
+import { Action } from "../constants/Action";
 import { WidgetArtwork } from "../components/WidgetArtwork";
 import { WidgetBaseLayout } from "../components/WidgetBaseLayout";
 import { WidgetCell } from "../components/WidgetCell";
 import { WidgetSVG } from "../components/WidgetSVG";
 import type { PlayerWidgetData, WidgetDefinition } from "../types";
+import type { MediaActionKey } from "../utils/customize";
+import { getMediaActionConfigFactory } from "../utils/customize";
 
 type WidgetProps = WidgetDefinition<PlayerWidgetData>;
 
 const SMALL_GAP = 8;
 const FULL_ROUNDED = 999;
 
-export function SkinnyNowPlayingWidget(props: WidgetProps) {
+export function SkinnyNowPlayingWidget({ config, ...props }: WidgetProps) {
   const showAdditionalActions = props.width > props.height * 2.5;
 
   // Calculate height of widget if we only support showing the play/pause action.
@@ -34,13 +36,23 @@ export function SkinnyNowPlayingWidget(props: WidgetProps) {
     (widgetHeight * 2) / 3,
   );
 
-  const openApp = props.openApp || props.track === undefined;
-
-  const clrs = props.stylingConfig;
+  // Get reuseable configs for "Now Playing" type widgets.
+  const getMediaActionConfg = getMediaActionConfigFactory({ config, ...props });
+  const renderMediaControl = (key: MediaActionKey) => {
+    const { action, icon } = getMediaActionConfg(key);
+    return (
+      <WidgetSVG
+        clickAction={action}
+        name={icon}
+        size={svgSize}
+        color={config.textColor}
+      />
+    );
+  };
 
   return (
     <WidgetBaseLayout
-      stylingConfig={clrs}
+      config={config}
       height={widgetHeight}
       style={{
         flexDirection: "row",
@@ -51,7 +63,7 @@ export function SkinnyNowPlayingWidget(props: WidgetProps) {
       <WidgetCell
         clickAction={Action.Open}
         size={widgetHeight}
-        bgColor={clrs.inactiveColor}
+        bgColor={config.inactiveColor}
         style={{ borderRadius: FULL_ROUNDED }}
       >
         <WidgetArtwork
@@ -70,28 +82,9 @@ export function SkinnyNowPlayingWidget(props: WidgetProps) {
           paddingHorizontal: SMALL_GAP,
         }}
       >
-        {showAdditionalActions ? (
-          <WidgetSVG
-            clickAction={withAction(Action.Prev, openApp)}
-            name="prev"
-            size={svgSize}
-            color={clrs.textColor}
-          />
-        ) : null}
-        <WidgetSVG
-          clickAction={withAction(Action.PlayPause, openApp)}
-          name={props.isPlaying ? "pause" : "play"}
-          size={svgSize}
-          color={clrs.textColor}
-        />
-        {showAdditionalActions ? (
-          <WidgetSVG
-            clickAction={withAction(Action.Next, openApp)}
-            name="next"
-            size={svgSize}
-            color={clrs.textColor}
-          />
-        ) : null}
+        {showAdditionalActions ? renderMediaControl("prev") : null}
+        {renderMediaControl("playToggle")}
+        {showAdditionalActions ? renderMediaControl("next") : null}
       </FlexWidget>
     </WidgetBaseLayout>
   );

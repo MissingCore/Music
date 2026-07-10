@@ -1,24 +1,22 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { FlexWidget, OverlapWidget } from "react-native-android-widget";
+import { FlexWidget } from "react-native-android-widget";
 
-import { Action, withAction } from "../constants/Action";
+import { Action } from "../constants/Action";
 import { Styles } from "../constants/Styles";
 import { WidgetArtwork } from "../components/WidgetArtwork";
 import { WidgetBaseLayout } from "../components/WidgetBaseLayout";
 import { WidgetCell } from "../components/WidgetCell";
 import { WidgetText } from "../components/WidgetText";
 import { WidgetSVG } from "../components/WidgetSVG";
-import type {
-  PlayerWidgetData,
-  WidgetConfig,
-  WidgetDefinition,
-} from "../types";
+import type { PlayerWidgetData, WidgetDefinition } from "../types";
+import type { MediaActionKey } from "../utils/customize";
+import { getMediaActionConfigFactory } from "../utils/customize";
 
 type WidgetProps = WidgetDefinition<PlayerWidgetData>;
 
-export function ResizableNowPlayingWidget(props: WidgetProps) {
+export function ResizableNowPlayingWidget({ config, ...props }: WidgetProps) {
   const canUseFullArea = props.width - props.height > 2 * props.height;
   let widgetHeight = props.height;
 
@@ -40,112 +38,79 @@ export function ResizableNowPlayingWidget(props: WidgetProps) {
   const maxTextHeight = widgetHeight * 0.55 - 3 * contentPadding;
   const textFontSize = maxTextHeight / 4;
 
-  const openApp = props.openApp || props.track === undefined;
+  // Calculate size of actions.
+  const svgSize = Math.min(contentWidth / 7, widgetHeight / 6);
+  const paddingY = svgSize / 9;
+  const paddingX = paddingY * 5;
 
-  const clrs = props.stylingConfig;
+  // Get reuseable configs for "Now Playing" type widgets.
+  const getMediaActionConfg = getMediaActionConfigFactory({ config, ...props });
+  const renderMediaControl = (key: MediaActionKey) => {
+    const { action, color, icon } = getMediaActionConfg(key);
+    return (
+      <FlexWidget
+        clickAction={action}
+        style={{
+          paddingHorizontal: paddingX,
+          paddingVertical: paddingY,
+          backgroundColor: color.bg,
+          borderRadius: 999,
+        }}
+      >
+        <WidgetSVG name={icon} size={svgSize} color={color.onBg} />
+      </FlexWidget>
+    );
+  };
 
   return (
     <WidgetBaseLayout
       clickAction={Action.Open}
       height={widgetHeight}
-      stylingConfig={clrs}
+      config={config}
+      style={{ flexDirection: "row" }}
     >
-      <OverlapWidget>
-        <WidgetCell
+      <WidgetCell
+        size={widgetHeight}
+        bgColor={config.inactiveColor}
+        style={{ borderRadius: config.transparent ? Styles.radius : 0 }}
+      >
+        <WidgetArtwork
           size={widgetHeight}
-          bgColor={clrs.inactiveColor}
-          style={{ borderRadius: clrs.transparent ? Styles.radius : 0 }}
-        >
-          <WidgetArtwork
-            size={widgetHeight}
-            artwork={props.track?.artwork ?? null}
-          />
-        </WidgetCell>
+          artwork={props.track?.artwork ?? null}
+        />
+      </WidgetCell>
+      <FlexWidget
+        style={{
+          height: widgetHeight,
+          justifyContent: "flex-end",
+          padding: contentPadding,
+        }}
+      >
+        <WidgetText
+          text={props.track?.title}
+          maxLines={2}
+          color={config.textColor}
+          fontSize={textFontSize}
+        />
+        <WidgetText
+          text={props.track?.artist}
+          color={config.mutedTextColor}
+          fontSize={textFontSize}
+          style={{ paddingBottom: contentPadding }}
+        />
         <FlexWidget
           style={{
-            height: widgetHeight,
-            justifyContent: "flex-end",
-            padding: contentPadding,
-            marginLeft: widgetHeight,
+            width: contentWidth,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
           }}
         >
-          <WidgetText
-            text={props.track?.title}
-            maxLines={2}
-            color={clrs.textColor}
-            fontSize={textFontSize}
-          />
-          <WidgetText
-            text={props.track?.artist}
-            color={clrs.mutedTextColor}
-            fontSize={textFontSize}
-            style={{ paddingBottom: contentPadding }}
-          />
-          <MediaControls
-            maxWidth={contentWidth}
-            maxHeight={widgetHeight / 4}
-            openApp={openApp}
-            isPlaying={props.isPlaying}
-            stylingConfig={clrs}
-          />
+          {renderMediaControl("prev")}
+          {renderMediaControl("playToggle")}
+          {renderMediaControl("next")}
         </FlexWidget>
-      </OverlapWidget>
+      </FlexWidget>
     </WidgetBaseLayout>
   );
 }
-
-//#region Layout Helpers
-function MediaControls(props: {
-  maxWidth: number;
-  maxHeight: number;
-  openApp: boolean;
-  isPlaying: boolean;
-  stylingConfig: WidgetConfig;
-}) {
-  const svgSize = Math.min(props.maxWidth / 7, (props.maxHeight * 2) / 3);
-  const paddingY = svgSize / 9;
-  const paddingX = paddingY * 5;
-
-  const clrs = props.stylingConfig;
-
-  return (
-    <FlexWidget
-      style={{
-        width: props.maxWidth,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-evenly",
-      }}
-    >
-      <WidgetSVG
-        clickAction={withAction(Action.Prev, props.openApp)}
-        name="prev"
-        size={svgSize}
-        color={clrs.textColor}
-      />
-      <FlexWidget
-        clickAction={withAction(Action.PlayPause, props.openApp)}
-        style={{
-          paddingHorizontal: paddingX,
-          paddingVertical: paddingY,
-          backgroundColor:
-            clrs[props.isPlaying ? "inactiveColor" : "activeColor"],
-          borderRadius: 999,
-        }}
-      >
-        <WidgetSVG
-          name={props.isPlaying ? "pause" : "play"}
-          size={svgSize}
-          color={clrs[props.isPlaying ? "onInactiveColor" : "onActiveColor"]}
-        />
-      </FlexWidget>
-      <WidgetSVG
-        clickAction={withAction(Action.Next, props.openApp)}
-        name="next"
-        size={svgSize}
-        color={clrs.textColor}
-      />
-    </FlexWidget>
-  );
-}
-//#endregion

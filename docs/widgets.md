@@ -30,7 +30,7 @@ Displays the current playing track artwork. Clicking on the widget will play/pau
 
 Offers quick access to media controls (Play/Pause). **When the widget is wide enough, it also offers Prev & Next controls.** Clicking anywhere but the media controls will open the app.
 
-> **Supports:** Customizations, Resizing
+> **Supports:** Customizations, Resizing (Horizontal)
 
 ### [2×2] Now Playing
 
@@ -46,7 +46,7 @@ Offers quick access to media controls (Play/Pause, Prev, Next). Clicking on the 
 
 Offers quick access to media controls (Play/Pause, Prev, Next). Clicking anywhere but the media controls will open the app.
 
-> **Supports:** Customizations, Resizing
+> **Supports:** Customizations, Resizing (Horizontal)
 
 ## Customizations
 
@@ -55,9 +55,6 @@ We support customizing the colors used by our widgets. **These are applied per-w
 - `[2×1] Now Playing`
 - `[2×2] Now Playing`
 - `[4×2] Now Playing`
-
-> [!NOTE]
-> Not all of the options that can be configured will be applied as they aren't used.
 
 ## Known Issues
 
