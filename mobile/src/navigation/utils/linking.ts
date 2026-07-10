@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { getActualPath } from "@missingcore/react-native-actual-path";
-import type { LinkingOptions, ParamListBase } from "@react-navigation/native";
+import type { LinkingOptions, RootParamList } from "@react-navigation/native";
 import { getActionFromState } from "@react-navigation/native";
 import { Linking } from "react-native";
 
@@ -14,7 +14,7 @@ import { addTrailingSlash } from "~/utils/string";
 
 let handledInitialURL = false;
 
-export const linking: LinkingOptions<ParamListBase> = {
+export const linking: LinkingOptions<RootParamList> = {
   prefixes: ["music://"],
 
   // Have deep links use essentially `NAVIGATE_DEPRECATED`.
