@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import type { WidgetInfo } from "react-native-android-widget";
 
 import type { WidgetConfig, WidgetConfigColors } from "../types";
