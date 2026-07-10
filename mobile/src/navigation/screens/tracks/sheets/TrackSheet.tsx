@@ -72,9 +72,9 @@ export function TrackSheet() {
 //#region Introduction
 function TrackIntro({ data }: { data: Track }) {
   const navigation = useNavigation();
-  const currNavRoutes = useNavigationState((s) => s.routes);
-
-  const onNowPlaying = currNavRoutes.at(-1)?.name === "NowPlaying";
+  const onNowPlaying = useNavigationState(
+    (s) => s.routes.at(-1)?.name === "NowPlaying",
+  );
 
   return (
     <View className="flex-row items-end gap-2">

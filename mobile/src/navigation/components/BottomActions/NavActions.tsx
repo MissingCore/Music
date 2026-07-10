@@ -90,14 +90,11 @@ export function Navbar() {
     [displayedTabs, homeTab],
   );
 
-  const homeScreensRoute = useNavigationState((s) =>
-    s.routes.find((r) => r.name === "HomeScreens"),
-  );
-  const activeIndex = useMemo(() => {
-    if (typeof homeScreensRoute?.state?.index !== "number")
-      return initialTabIndex;
-    return homeScreensRoute.state.index ?? initialTabIndex;
-  }, [initialTabIndex, homeScreensRoute]);
+  const activeIndex = useNavigationState((s) => {
+    const homeScreensRoute = s.routes.find((r) => r.name === "HomeScreens");
+    const index = homeScreensRoute?.state?.index;
+    return typeof index === "number" ? index : initialTabIndex;
+  });
 
   useEffect(() => {
     if (!listRef.current || !mounted || activeIndex < 0) return;

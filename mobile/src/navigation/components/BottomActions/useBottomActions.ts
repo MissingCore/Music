@@ -1,7 +1,6 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import type { NavigationRoute, ParamListBase } from "@react-navigation/native";
 import { useNavigationState } from "@react-navigation/native";
 import { useMemo } from "react";
 
@@ -16,29 +15,25 @@ const miniPlayerRoutes = [
   "Playlist-",
 ];
 
-function showMiniPlayerOnRoute(
-  routes: Array<NavigationRoute<ParamListBase, string>>,
-) {
-  return miniPlayerRoutes.some((key) => routes.at(-1)?.key.startsWith(key));
+function showMiniPlayerOnRoute(routeKey: string | undefined) {
+  return miniPlayerRoutes.some((key) => routeKey?.startsWith(key));
 }
 
 /** Determines if we should render the navbar and/or miniplayer. */
 export function useRenderBottomActions() {
-  // Wanted structure of `availableRoutes` should be:
-  //  - [{ key: "HomeScreens-*"}, { key: miniPlayerVisibleRoutes[number] }]
-  const availableRoutes = useNavigationState((s) => s.routes);
+  const mostRecentRouteKey = useNavigationState((s) => s.routes.at(-1)?.key);
   const activeTrack = usePlaybackStore((s) => s.activeTrack);
 
   const canRenderMiniPlayer = !!activeTrack;
-  const isMiniPlayerShown = showMiniPlayerOnRoute(availableRoutes);
+  const isMiniPlayerShown = showMiniPlayerOnRoute(mostRecentRouteKey);
   // Show navbar when displaying `HomeScreens` navigator. This is only
   // true when the returned routes only contain this entry.
-  const onHomeScreen = availableRoutes.at(-1)?.key.startsWith("HomeScreens-");
+  const onHomeScreen = Boolean(mostRecentRouteKey?.startsWith("HomeScreens-"));
 
   return useMemo(
     () => ({
       miniPlayer: canRenderMiniPlayer && (onHomeScreen || isMiniPlayerShown),
-      navBar: Boolean(onHomeScreen),
+      navBar: onHomeScreen,
     }),
     [canRenderMiniPlayer, isMiniPlayerShown, onHomeScreen],
   );
