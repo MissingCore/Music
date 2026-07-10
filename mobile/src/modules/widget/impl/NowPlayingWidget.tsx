@@ -3,14 +3,15 @@
 
 import { FlexWidget } from "react-native-android-widget";
 
-import { Action, withAction } from "../constants/Action";
+import { Action } from "../constants/Action";
 import { Styles } from "../constants/Styles";
 import { WidgetArtwork } from "../components/WidgetArtwork";
 import { WidgetBaseLayout } from "../components/WidgetBaseLayout";
 import { WidgetCell } from "../components/WidgetCell";
 import { WidgetSVG } from "../components/WidgetSVG";
 import type { PlayerWidgetData, WidgetDefinition } from "../types";
-import { applyColor, applyTextColor } from "../utils/customize";
+import type { MediaActionKey } from "../utils/customize";
+import { getMediaActionConfigFactory } from "../utils/customize";
 
 type WidgetProps = WidgetDefinition<PlayerWidgetData>;
 
@@ -20,7 +21,16 @@ export function NowPlayingWidget({ config, ...props }: WidgetProps) {
   const cellSize = (size - Styles.layoutGap) / 2;
   const svgSize = cellSize / 2;
 
-  const openApp = props.openApp || props.track === undefined;
+  // Get reuseable configs for "Now Playing" type widgets.
+  const getMediaActionConfg = getMediaActionConfigFactory({ config, ...props });
+  const renderMediaControl = (key: MediaActionKey) => {
+    const { action, color, icon } = getMediaActionConfg(key);
+    return (
+      <WidgetCell clickAction={action} size={cellSize} bgColor={color.bg}>
+        <WidgetSVG name={icon} size={svgSize} color={color.onBg} />
+      </WidgetCell>
+    );
+  };
 
   return (
     <WidgetBaseLayout
@@ -42,40 +52,11 @@ export function NowPlayingWidget({ config, ...props }: WidgetProps) {
             artwork={props.track?.artwork ?? null}
           />
         </WidgetCell>
-        <WidgetCell
-          clickAction={withAction(Action.PlayPause, openApp)}
-          size={cellSize}
-          bgColor={applyColor(
-            config,
-            props.isPlaying ? "inactiveColor" : "activeColor",
-          )}
-        >
-          <WidgetSVG
-            name={props.isPlaying ? "pause" : "play"}
-            size={svgSize}
-            color={applyTextColor(
-              config,
-              props.isPlaying ? "onInactiveColor" : "onActiveColor",
-            )}
-          />
-        </WidgetCell>
+        {renderMediaControl("playToggle")}
       </FlexWidget>
       <FlexWidget style={{ flexDirection: "row", flexGap: Styles.layoutGap }}>
-        <WidgetCell
-          clickAction={withAction(Action.Prev, openApp)}
-          size={cellSize}
-          bgColor={applyColor(config, "bgColor")}
-        >
-          <WidgetSVG name="prev" size={svgSize} color={config.textColor} />
-        </WidgetCell>
-
-        <WidgetCell
-          clickAction={withAction(Action.Next, openApp)}
-          size={cellSize}
-          bgColor={applyColor(config, "bgColor")}
-        >
-          <WidgetSVG name="next" size={svgSize} color={config.textColor} />
-        </WidgetCell>
+        {renderMediaControl("prev")}
+        {renderMediaControl("next")}
       </FlexWidget>
     </WidgetBaseLayout>
   );

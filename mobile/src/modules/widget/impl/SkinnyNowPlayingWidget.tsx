@@ -3,12 +3,14 @@
 
 import { FlexWidget } from "react-native-android-widget";
 
-import { Action, withAction } from "../constants/Action";
+import { Action } from "../constants/Action";
 import { WidgetArtwork } from "../components/WidgetArtwork";
 import { WidgetBaseLayout } from "../components/WidgetBaseLayout";
 import { WidgetCell } from "../components/WidgetCell";
 import { WidgetSVG } from "../components/WidgetSVG";
 import type { PlayerWidgetData, WidgetDefinition } from "../types";
+import type { MediaActionKey } from "../utils/customize";
+import { getMediaActionConfigFactory } from "../utils/customize";
 
 type WidgetProps = WidgetDefinition<PlayerWidgetData>;
 
@@ -34,7 +36,19 @@ export function SkinnyNowPlayingWidget({ config, ...props }: WidgetProps) {
     (widgetHeight * 2) / 3,
   );
 
-  const openApp = props.openApp || props.track === undefined;
+  // Get reuseable configs for "Now Playing" type widgets.
+  const getMediaActionConfg = getMediaActionConfigFactory({ config, ...props });
+  const renderMediaControl = (key: MediaActionKey) => {
+    const { action, icon } = getMediaActionConfg(key);
+    return (
+      <WidgetSVG
+        clickAction={action}
+        name={icon}
+        size={svgSize}
+        color={config.textColor}
+      />
+    );
+  };
 
   return (
     <WidgetBaseLayout
@@ -68,28 +82,9 @@ export function SkinnyNowPlayingWidget({ config, ...props }: WidgetProps) {
           paddingHorizontal: SMALL_GAP,
         }}
       >
-        {showAdditionalActions ? (
-          <WidgetSVG
-            clickAction={withAction(Action.Prev, openApp)}
-            name="prev"
-            size={svgSize}
-            color={config.textColor}
-          />
-        ) : null}
-        <WidgetSVG
-          clickAction={withAction(Action.PlayPause, openApp)}
-          name={props.isPlaying ? "pause" : "play"}
-          size={svgSize}
-          color={config.textColor}
-        />
-        {showAdditionalActions ? (
-          <WidgetSVG
-            clickAction={withAction(Action.Next, openApp)}
-            name="next"
-            size={svgSize}
-            color={config.textColor}
-          />
-        ) : null}
+        {showAdditionalActions ? renderMediaControl("prev") : null}
+        {renderMediaControl("playToggle")}
+        {showAdditionalActions ? renderMediaControl("next") : null}
       </FlexWidget>
     </WidgetBaseLayout>
   );

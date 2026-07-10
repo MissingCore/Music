@@ -3,7 +3,13 @@
 
 import type { WidgetInfo } from "react-native-android-widget";
 
-import type { WidgetConfig, WidgetConfigColors } from "../types";
+import { Action, withAction } from "../constants/Action";
+import type {
+  PlayerWidgetData,
+  WidgetConfig,
+  WidgetConfigColors,
+  WidgetDefinition,
+} from "../types";
 
 export function getWidgetConfigKey(args: WidgetInfo) {
   return `WIDGET_${args.widgetName}_${args.widgetId}`;
@@ -31,4 +37,39 @@ export function applyTextColor(
 ) {
   const isTransparent = overrideIsTransparent || config.transparent;
   return isTransparent ? config.textColor : config[color];
+}
+
+export type MediaActionKey = "playToggle" | "prev" | "next";
+
+/** Factory function to help determine action, colors, and icon used for media control. */
+export function getMediaActionConfigFactory(
+  args: WidgetDefinition<PlayerWidgetData>,
+) {
+  const openApp = args.openApp || args.track === undefined;
+  const getColor = (clr: WidgetConfigColors) => applyColor(args.config, clr);
+  const getTextColor = (clr: WidgetConfigColors) =>
+    applyTextColor(args.config, clr);
+
+  return (key: MediaActionKey) => {
+    if (key === "playToggle") {
+      return {
+        action: withAction(Action.PlayPause, openApp),
+        color: {
+          bg: getColor(args.isPlaying ? "inactiveColor" : "activeColor"),
+          onBg: getTextColor(
+            args.isPlaying ? "onInactiveColor" : "onActiveColor",
+          ),
+        },
+        icon: args.isPlaying ? "pause" : "play",
+      };
+    }
+    return {
+      action: withAction(key === "prev" ? Action.Prev : Action.Next, openApp),
+      color: {
+        bg: getColor("bgColor"),
+        onBg: getTextColor("textColor"),
+      },
+      icon: key,
+    };
+  };
 }

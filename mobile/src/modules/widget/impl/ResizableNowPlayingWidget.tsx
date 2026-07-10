@@ -3,19 +3,16 @@
 
 import { FlexWidget } from "react-native-android-widget";
 
-import { Action, withAction } from "../constants/Action";
+import { Action } from "../constants/Action";
 import { Styles } from "../constants/Styles";
 import { WidgetArtwork } from "../components/WidgetArtwork";
 import { WidgetBaseLayout } from "../components/WidgetBaseLayout";
 import { WidgetCell } from "../components/WidgetCell";
 import { WidgetText } from "../components/WidgetText";
 import { WidgetSVG } from "../components/WidgetSVG";
-import type {
-  PlayerWidgetData,
-  WidgetConfig,
-  WidgetDefinition,
-} from "../types";
-import { applyColor, applyTextColor } from "../utils/customize";
+import type { PlayerWidgetData, WidgetDefinition } from "../types";
+import type { MediaActionKey } from "../utils/customize";
+import { getMediaActionConfigFactory } from "../utils/customize";
 
 type WidgetProps = WidgetDefinition<PlayerWidgetData>;
 
@@ -41,7 +38,29 @@ export function ResizableNowPlayingWidget({ config, ...props }: WidgetProps) {
   const maxTextHeight = widgetHeight * 0.55 - 3 * contentPadding;
   const textFontSize = maxTextHeight / 4;
 
-  const openApp = props.openApp || props.track === undefined;
+  // Calculate size of actions.
+  const svgSize = Math.min(contentWidth / 7, widgetHeight / 6);
+  const paddingY = svgSize / 9;
+  const paddingX = paddingY * 5;
+
+  // Get reuseable configs for "Now Playing" type widgets.
+  const getMediaActionConfg = getMediaActionConfigFactory({ config, ...props });
+  const renderMediaControl = (key: MediaActionKey) => {
+    const { action, color, icon } = getMediaActionConfg(key);
+    return (
+      <FlexWidget
+        clickAction={action}
+        style={{
+          paddingHorizontal: paddingX,
+          paddingVertical: paddingY,
+          backgroundColor: color.bg,
+          borderRadius: 999,
+        }}
+      >
+        <WidgetSVG name={icon} size={svgSize} color={color.onBg} />
+      </FlexWidget>
+    );
+  };
 
   return (
     <WidgetBaseLayout
@@ -79,76 +98,19 @@ export function ResizableNowPlayingWidget({ config, ...props }: WidgetProps) {
           fontSize={textFontSize}
           style={{ paddingBottom: contentPadding }}
         />
-        <MediaControls
-          maxWidth={contentWidth}
-          maxHeight={widgetHeight / 4}
-          openApp={openApp}
-          isPlaying={props.isPlaying}
-          config={config}
-        />
+        <FlexWidget
+          style={{
+            width: contentWidth,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+          }}
+        >
+          {renderMediaControl("prev")}
+          {renderMediaControl("playToggle")}
+          {renderMediaControl("next")}
+        </FlexWidget>
       </FlexWidget>
     </WidgetBaseLayout>
   );
 }
-
-//#region Layout Helpers
-function MediaControls({
-  config,
-  ...props
-}: {
-  maxWidth: number;
-  maxHeight: number;
-  openApp: boolean;
-  isPlaying: boolean;
-  config: WidgetConfig;
-}) {
-  const svgSize = Math.min(props.maxWidth / 7, (props.maxHeight * 2) / 3);
-  const paddingY = svgSize / 9;
-  const paddingX = paddingY * 5;
-
-  return (
-    <FlexWidget
-      style={{
-        width: props.maxWidth,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-evenly",
-      }}
-    >
-      <WidgetSVG
-        clickAction={withAction(Action.Prev, props.openApp)}
-        name="prev"
-        size={svgSize}
-        color={config.textColor}
-      />
-      <FlexWidget
-        clickAction={withAction(Action.PlayPause, props.openApp)}
-        style={{
-          paddingHorizontal: paddingX,
-          paddingVertical: paddingY,
-          backgroundColor: applyColor(
-            config,
-            props.isPlaying ? "inactiveColor" : "activeColor",
-          ),
-          borderRadius: 999,
-        }}
-      >
-        <WidgetSVG
-          name={props.isPlaying ? "pause" : "play"}
-          size={svgSize}
-          color={applyTextColor(
-            config,
-            props.isPlaying ? "onInactiveColor" : "onActiveColor",
-          )}
-        />
-      </FlexWidget>
-      <WidgetSVG
-        clickAction={withAction(Action.Next, props.openApp)}
-        name="next"
-        size={svgSize}
-        color={config.textColor}
-      />
-    </FlexWidget>
-  );
-}
-//#endregion
