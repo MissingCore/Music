@@ -1,7 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { OverlapWidget } from "react-native-android-widget";
+import { FlexWidget } from "react-native-android-widget";
 
 import { Action, withAction } from "../constants/Action";
 import { Styles } from "../constants/Styles";
@@ -20,12 +20,17 @@ export function NowPlayingWidget({ config, ...props }: WidgetProps) {
   const cellSize = (size - Styles.layoutGap) / 2;
   const svgSize = cellSize / 2;
 
-  const positionOffset = cellSize + Styles.layoutGap;
   const openApp = props.openApp || props.track === undefined;
 
   return (
-    <WidgetBaseLayout height={size} width={size} config={config} transparent>
-      <OverlapWidget>
+    <WidgetBaseLayout
+      height={size}
+      width={size}
+      config={config}
+      transparent
+      style={{ flexGap: Styles.layoutGap }}
+    >
+      <FlexWidget style={{ flexDirection: "row", flexGap: Styles.layoutGap }}>
         <WidgetCell
           clickAction={Action.Open}
           size={cellSize}
@@ -37,7 +42,6 @@ export function NowPlayingWidget({ config, ...props }: WidgetProps) {
             artwork={props.track?.artwork ?? null}
           />
         </WidgetCell>
-
         <WidgetCell
           clickAction={withAction(Action.PlayPause, openApp)}
           size={cellSize}
@@ -45,7 +49,6 @@ export function NowPlayingWidget({ config, ...props }: WidgetProps) {
             config,
             props.isPlaying ? "inactiveColor" : "activeColor",
           )}
-          style={{ marginLeft: positionOffset }}
         >
           <WidgetSVG
             name={props.isPlaying ? "pause" : "play"}
@@ -56,12 +59,12 @@ export function NowPlayingWidget({ config, ...props }: WidgetProps) {
             )}
           />
         </WidgetCell>
-
+      </FlexWidget>
+      <FlexWidget style={{ flexDirection: "row", flexGap: Styles.layoutGap }}>
         <WidgetCell
           clickAction={withAction(Action.Prev, openApp)}
           size={cellSize}
           bgColor={applyColor(config, "bgColor")}
-          style={{ marginTop: positionOffset }}
         >
           <WidgetSVG name="prev" size={svgSize} color={config.textColor} />
         </WidgetCell>
@@ -70,11 +73,10 @@ export function NowPlayingWidget({ config, ...props }: WidgetProps) {
           clickAction={withAction(Action.Next, openApp)}
           size={cellSize}
           bgColor={applyColor(config, "bgColor")}
-          style={{ marginLeft: positionOffset, marginTop: positionOffset }}
         >
           <WidgetSVG name="next" size={svgSize} color={config.textColor} />
         </WidgetCell>
-      </OverlapWidget>
+      </FlexWidget>
     </WidgetBaseLayout>
   );
 }

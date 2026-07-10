@@ -1,7 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { FlexWidget, OverlapWidget } from "react-native-android-widget";
+import { FlexWidget } from "react-native-android-widget";
 
 import { Action, withAction } from "../constants/Action";
 import { Styles } from "../constants/Styles";
@@ -48,47 +48,45 @@ export function ResizableNowPlayingWidget({ config, ...props }: WidgetProps) {
       clickAction={Action.Open}
       height={widgetHeight}
       config={config}
+      style={{ flexDirection: "row" }}
     >
-      <OverlapWidget>
-        <WidgetCell
+      <WidgetCell
+        size={widgetHeight}
+        bgColor={config.inactiveColor}
+        style={{ borderRadius: config.transparent ? Styles.radius : 0 }}
+      >
+        <WidgetArtwork
           size={widgetHeight}
-          bgColor={config.inactiveColor}
-          style={{ borderRadius: config.transparent ? Styles.radius : 0 }}
-        >
-          <WidgetArtwork
-            size={widgetHeight}
-            artwork={props.track?.artwork ?? null}
-          />
-        </WidgetCell>
-        <FlexWidget
-          style={{
-            height: widgetHeight,
-            justifyContent: "flex-end",
-            padding: contentPadding,
-            marginLeft: widgetHeight,
-          }}
-        >
-          <WidgetText
-            text={props.track?.title}
-            maxLines={2}
-            color={config.textColor}
-            fontSize={textFontSize}
-          />
-          <WidgetText
-            text={props.track?.artist}
-            color={config.mutedTextColor}
-            fontSize={textFontSize}
-            style={{ paddingBottom: contentPadding }}
-          />
-          <MediaControls
-            maxWidth={contentWidth}
-            maxHeight={widgetHeight / 4}
-            openApp={openApp}
-            isPlaying={props.isPlaying}
-            config={config}
-          />
-        </FlexWidget>
-      </OverlapWidget>
+          artwork={props.track?.artwork ?? null}
+        />
+      </WidgetCell>
+      <FlexWidget
+        style={{
+          height: widgetHeight,
+          justifyContent: "flex-end",
+          padding: contentPadding,
+        }}
+      >
+        <WidgetText
+          text={props.track?.title}
+          maxLines={2}
+          color={config.textColor}
+          fontSize={textFontSize}
+        />
+        <WidgetText
+          text={props.track?.artist}
+          color={config.mutedTextColor}
+          fontSize={textFontSize}
+          style={{ paddingBottom: contentPadding }}
+        />
+        <MediaControls
+          maxWidth={contentWidth}
+          maxHeight={widgetHeight / 4}
+          openApp={openApp}
+          isPlaying={props.isPlaying}
+          config={config}
+        />
+      </FlexWidget>
     </WidgetBaseLayout>
   );
 }
