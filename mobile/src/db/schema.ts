@@ -391,6 +391,9 @@ export const customThemes = sqliteTable("custom_themes", {
 
   inverseSurface: text().notNull(),
   inverseOnSurface: text().notNull(),
+
+  // Color used by our placeholder image.
+  placeholder: text().notNull().default("#FFFFFF"),
 });
 //#endregion
 

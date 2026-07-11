@@ -134,7 +134,11 @@ function PlaceholderImage(props: {
       style={fullSize ? undefined : { padding: size / 4 }}
       className={props.className}
     >
-      <Icon name={props.icon} size={size / (fullSize ? 1 : 2)} />
+      <Icon
+        name={props.icon}
+        size={size / (fullSize ? 1 : 2)}
+        color="placeholder"
+      />
     </View>
   );
 }
