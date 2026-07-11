@@ -19,7 +19,7 @@ export function WidgetArtwork({
   placeholderColor: HexColor;
 }) {
   const imgUri = getImageUri(artwork);
-  const imageSize = !artwork ? (size * 5) / 6 : size;
+  const imageSize = !imgUri ? (size * 5) / 6 : size;
 
   if (!imgUri) {
     return (

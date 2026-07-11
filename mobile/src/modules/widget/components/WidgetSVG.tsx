@@ -26,7 +26,7 @@ const SVGMap: Record<string, (color: HexColor) => string> = {
     </svg>
   `,
   placeholder: (color) => `
-    <svg width="450" height="450" viewBox="0 0 450 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="100%" height="100%" viewBox="0 0 450 450" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="312" cy="347" r="15" fill="${color}" />
       <circle cx="277" cy="347" r="15" fill="${color}" />
       <circle cx="137" cy="347" r="15" fill="${color}" />
