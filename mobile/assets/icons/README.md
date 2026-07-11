@@ -13,5 +13,6 @@
 
 **Custom Icons**
 
+- `glyph-face`, `glyph-music`
 - `nothing-arrow-right`
 - `repeat-one` is a custom icon based on Ionicons' `repeat` & `calendar-number` icons.

@@ -49,7 +49,8 @@ export function NowPlayingWidget({ config, ...props }: WidgetProps) {
         >
           <WidgetArtwork
             size={cellSize}
-            artwork={props.track?.artwork ?? null}
+            artwork={props.track?.artwork}
+            placeholderColor={config.textColor}
           />
         </WidgetCell>
         {renderMediaControl("playToggle")}

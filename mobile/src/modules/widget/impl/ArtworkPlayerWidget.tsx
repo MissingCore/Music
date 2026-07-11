@@ -34,7 +34,8 @@ export function ArtworkPlayerWidget(props: WidgetProps) {
             openApp,
           )}
           size={size}
-          artwork={props.track?.artwork ?? null}
+          artwork={props.track?.artwork}
+          placeholderColor="#FFFFFF"
         />
         {overlayShown ? (
           <SVGOverlay

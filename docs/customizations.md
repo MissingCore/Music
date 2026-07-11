@@ -51,7 +51,9 @@ You can customize the theme the app uses (light/dark/system). As of `v3.1.0`, yo
     "outlineVariant": "#C4A55A",
 
     "inverseSurface": "#2E1F00",
-    "inverseOnSurface": "#FFF8E1"
+    "inverseOnSurface": "#FFF8E1",
+
+    "placeholder": "#FFFFFF"
   }
 }
 ```
