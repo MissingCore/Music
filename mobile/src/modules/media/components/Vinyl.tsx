@@ -32,9 +32,11 @@ export function Vinyl(props: {
   const { surface } = useTheme();
 
   const renderIndicator = useMemo(() => {
-    if (Array.isArray(props.source) && props.source.length > 0) return false;
     // Render indicator if we have an empty array or no defined image.
-    return Array.isArray(props.source) || props.source === null;
+    return (
+      (Array.isArray(props.source) && props.source.length === 0) ||
+      props.source === null
+    );
   }, [props.source]);
 
   return (
