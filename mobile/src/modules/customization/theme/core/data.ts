@@ -13,6 +13,7 @@ import i18next from "~/modules/i18n";
 import { throwIfNoResults } from "~/lib/drizzle";
 import { pickDirectory, pickFile } from "~/lib/file-system";
 import { queryClient } from "~/lib/react-query";
+import { isRecord } from "~/utils/validation";
 import { ZSchema } from "~/modules/form/utils";
 import type { CustomTheme, ResolvedTheme } from "./constants";
 import { ColorSchemeOptions } from "./constants";
@@ -39,6 +40,17 @@ export async function pickTheme() {
   ]);
   try {
     const fileContents = await themeFile.json();
+
+    //! FIXME: Temporary compatibility layer to support importing old theme
+    //! files as our schema is "strict" (requires all colors to be defined).
+    if (
+      isRecord(fileContents) &&
+      fileContents.colors &&
+      !fileContents.colors.placeholder
+    ) {
+      fileContents.colors.placeholder = "#FFFFFF";
+    }
+
     return ThemeExportSchema.parse(fileContents);
   } catch {
     throw new Error(i18next.t("err.msg.invalidStructure"));
