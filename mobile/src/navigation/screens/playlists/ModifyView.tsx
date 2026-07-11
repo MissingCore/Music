@@ -35,14 +35,21 @@ export default function ModifyPlaylist({
 
   if (
     preloadFormDataQuery.isPending ||
+    preloadFormDataQuery.isRefetching ||
     preloadFormDataQuery.error ||
     playlistQuery.isPending ||
+    playlistQuery.isRefetching ||
     playlistQuery.error ||
     !playlistQuery.data
   ) {
     return (
       <PagePlaceholder
-        isPending={preloadFormDataQuery.isPending || playlistQuery.isPending}
+        isPending={
+          preloadFormDataQuery.isPending ||
+          preloadFormDataQuery.isRefetching ||
+          playlistQuery.isPending ||
+          playlistQuery.isRefetching
+        }
       />
     );
   }

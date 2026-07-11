@@ -67,13 +67,20 @@ export default function ModifyTrack({
 
   if (
     trackQuery.isPending ||
+    trackQuery.isRefetching ||
     trackQuery.error ||
     trackGenresQuery.isPending ||
+    trackGenresQuery.isRefetching ||
     trackGenresQuery.error
   ) {
     return (
       <PagePlaceholder
-        isPending={trackQuery.isPending || trackGenresQuery.isPending}
+        isPending={
+          trackQuery.isPending ||
+          trackQuery.isRefetching ||
+          trackGenresQuery.isPending ||
+          trackGenresQuery.isRefetching
+        }
       />
     );
   }
