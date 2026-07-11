@@ -8,7 +8,7 @@ import Svg, { Circle, Defs, Mask, Rect } from "react-native-svg";
 
 import { Colors } from "~/constants/Styles";
 import { useTheme } from "~/modules/customization/theme/hooks";
-import { MediaImage, getUsedImage } from "./MediaImage";
+import { MediaImage } from "./MediaImage";
 
 const CENTER = { cx: 384, cy: 384 };
 const GROOVES = {
@@ -33,13 +33,8 @@ export function Vinyl(props: {
 
   const renderIndicator = useMemo(() => {
     if (Array.isArray(props.source) && props.source.length > 0) return false;
-    return (
-      getUsedImage({
-        type: "playlist",
-        source: props.source,
-        noPlaceholder: true,
-      }) === null
-    );
+    // Render indicator if we have an empty array or no defined image.
+    return Array.isArray(props.source) || props.source === null;
   }, [props.source]);
 
   return (
