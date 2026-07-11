@@ -68,7 +68,8 @@ export function SkinnyNowPlayingWidget({ config, ...props }: WidgetProps) {
       >
         <WidgetArtwork
           size={widgetHeight}
-          artwork={props.track?.artwork ?? null}
+          artwork={props.track?.artwork}
+          placeholderColor={config.textColor}
         />
       </WidgetCell>
 

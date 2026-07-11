@@ -39,6 +39,7 @@ export const ColorRoleOptions = [
   "outlineVariant",
   "inverseSurface",
   "inverseOnSurface",
+  "placeholder",
 ] as const;
 
 export type ColorRole = (typeof ColorRoleOptions)[number];
@@ -104,6 +105,8 @@ export const Themes = {
 
     inverseSurface: Colors.neutral0,
     inverseOnSurface: Colors.neutral100,
+
+    placeholder: Colors.neutral100,
   },
   dark: {
     scheme: "dark",
@@ -129,6 +132,8 @@ export const Themes = {
 
     inverseSurface: Colors.neutral100,
     inverseOnSurface: Colors.neutral0,
+
+    placeholder: Colors.neutral100,
   },
 } as const satisfies Record<ColorScheme, ResolvedTheme>;
 

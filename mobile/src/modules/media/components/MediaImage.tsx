@@ -2,22 +2,18 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { Image as ExpoImage } from "expo-image";
-import { useMemo } from "react";
 import { View } from "react-native";
 import { withUniwind } from "uniwind";
 
+import type { SupportedIconName } from "~/resources/icons";
 import { Icon } from "~/resources/icons";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { cn } from "~/lib/style";
 import { getImageUri } from "~/lib/file-system";
 import type { MediaType } from "~/stores/Playback/types";
-import { ReservedNames } from "../constants";
 
 const Image = withUniwind(ExpoImage);
-
-const MusicGlyph = require("~/resources/images/music-glyph.png");
-const FaceGlyph = require("~/resources/images/face-glyph.png");
 
 export namespace MediaImage {
   export type ImageSource = string | null | Array<string | null>;
@@ -42,16 +38,9 @@ export function MediaImage({
   noPlaceholder,
 }: MediaImage.Props) {
   const squareArtwork = usePreferenceStore((s) => s.squareArtwork);
-  const usedClasses = cn("rounded-lg bg-surfaceContainerHigh", className);
-
-  const [RenderedEl, additionalProps] = useMemo(() => {
-    const imgSource = getUsedImage({ source, type, noPlaceholder });
-    if (!imgSource && noPlaceholder) return [View, {}];
-
-    let placeholder = type === "artist" ? FaceGlyph : MusicGlyph;
-    if (noPlaceholder) placeholder = undefined;
-    return [Image, { source: imgSource, placeholder }];
-  }, [source, type, noPlaceholder]);
+  const usedClasses = cn("rounded-lg bg-surfaceContainerHigh", className, {
+    "rounded-full": type === "artist",
+  });
 
   //? We shouldn't ever recieve an empty array due to our API function handling this case for us.
   if (type === "playlist" && Array.isArray(source)) {
@@ -65,39 +54,37 @@ export function MediaImage({
     );
   } else if (type === "folder") {
     return (
-      <View style={{ padding: size / 4 }} className={usedClasses}>
-        <Icon name="folder" size={size / 2} color="#FFFFFF" />
-      </View>
+      <PlaceholderImage
+        icon="folder"
+        size={size}
+        fullSize={false}
+        className={usedClasses}
+      />
     );
+  } else if (source === null) {
+    if (noPlaceholder) {
+      return (
+        <View style={{ width: size, height: size }} className={usedClasses} />
+      );
+    } else {
+      return (
+        <PlaceholderImage
+          icon={`glyph-${type === "artist" ? "face" : "music"}`}
+          size={size}
+          className={usedClasses}
+        />
+      );
+    }
   }
 
   return (
-    <RenderedEl
-      {...additionalProps}
+    <Image
+      source={Array.isArray(source) ? null : getImageUri(source)}
       contentFit={squareArtwork ? "cover" : "contain"}
-      placeholderContentFit="cover"
       style={{ width: size, height: size }}
-      className={cn(usedClasses, { "rounded-full": type === "artist" })}
+      className={usedClasses}
     />
   );
-}
-
-/** Helper to return the correct image displayed in `<MediaImage />`. */
-export function getUsedImage(args: {
-  source: MediaImage.ImageSource;
-  type: MediaType;
-  noPlaceholder?: boolean;
-}) {
-  if (
-    Array.isArray(args.source) ||
-    args.source === null ||
-    ReservedNames.has(args.source)
-  ) {
-    if (args.noPlaceholder) return null;
-    if (args.type === "artist") return FaceGlyph;
-    return MusicGlyph;
-  }
-  return getImageUri(args.source);
 }
 
 /** Only used to represent a playlist. */
@@ -114,14 +101,44 @@ function CollageImage({
       style={{ width: size, height: size }}
       className={cn("flex-row flex-wrap overflow-hidden", className)}
     >
-      {sources.slice(0, 4).map((source, idx) => (
-        <Image
-          key={idx}
-          source={getImageUri(source)}
-          placeholder={noPlaceholder ? undefined : MusicGlyph}
-          className="size-1/2"
-        />
-      ))}
+      {sources
+        .slice(0, 4)
+        .map((source, idx) =>
+          source === null ? (
+            noPlaceholder ? (
+              <View key={idx} style={{ height: size / 2, width: size / 2 }} />
+            ) : (
+              <PlaceholderImage key={idx} icon="glyph-music" size={size / 2} />
+            )
+          ) : (
+            <Image
+              key={idx}
+              source={getImageUri(source)}
+              className="size-1/2"
+            />
+          ),
+        )}
+    </View>
+  );
+}
+
+function PlaceholderImage(props: {
+  icon: SupportedIconName;
+  size: number;
+  fullSize?: boolean;
+  className?: string;
+}) {
+  const { size, fullSize = true } = props;
+  return (
+    <View
+      style={fullSize ? undefined : { padding: size / 4 }}
+      className={props.className}
+    >
+      <Icon
+        name={props.icon}
+        size={size / (fullSize ? 1 : 2)}
+        color="placeholder"
+      />
     </View>
   );
 }

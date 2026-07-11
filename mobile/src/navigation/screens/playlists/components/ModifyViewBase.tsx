@@ -370,6 +370,7 @@ export function usePreloadReferenceData() {
 
   return {
     isPending: playlistNamesQuery.isPending || allMediaQuery.isPending,
+    isRefetching: playlistNamesQuery.isRefetching || allMediaQuery.isRefetching,
     error: playlistNamesQuery.error || allMediaQuery.error,
     data: {
       playlistNames: playlistNamesQuery.data,

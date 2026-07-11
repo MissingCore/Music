@@ -24,10 +24,10 @@ export default function ModifyLyric({
 }: Props) {
   const navigation = useNavigation();
   const queryClient = useQueryClient();
-  const { isPending, error, data } = useLyric(lyricId);
+  const { isPending, isRefetching, error, data } = useLyric(lyricId);
 
-  if (isPending || error || !data)
-    return <PagePlaceholder isPending={isPending} />;
+  if (isPending || isRefetching || error || !data)
+    return <PagePlaceholder isPending={isPending || isRefetching} />;
 
   const initData = { name: data.name, lyrics: data.lyrics };
 

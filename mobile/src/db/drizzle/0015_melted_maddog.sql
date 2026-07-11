@@ -1,0 +1,1 @@
+ALTER TABLE `custom_themes` ADD `placeholder` text DEFAULT '#FFFFFF' NOT NULL;
