@@ -48,7 +48,22 @@ export function Waveform(props: WaveformProps) {
         const barHeight = Math.max(MIN_BAR_HEIGHT, props.height * amplitude);
         const x = (BAR_WIDTH + BAR_GAP) * index;
         const y = (props.height - barHeight) / 2;
-        return `M${x} ${y}H${x + BAR_WIDTH}V${y + barHeight}H${x}Z`;
+        const rr = Math.min(1, BAR_WIDTH / 2, barHeight / 2);
+
+        if (rr <= 0) {
+          return `M${x} ${y}H${x + BAR_WIDTH}V${y + barHeight}H${x}Z`;
+        }
+        return [
+          `M${x} ${y + rr}`,
+          `A${rr} ${rr} 0 0 1 ${x + rr} ${y}`,
+          `H${x + BAR_WIDTH - rr}`,
+          `A${rr} ${rr} 0 0 1 ${x + BAR_WIDTH} ${y + rr}`,
+          `V${y + barHeight - rr}`,
+          `A${rr} ${rr} 0 0 1 ${x + BAR_WIDTH - rr} ${y + barHeight}`,
+          `H${x + rr}`,
+          `A${rr} ${rr} 0 0 1 ${x} ${y + barHeight - rr}`,
+          `Z`,
+        ].join(" ");
       })
       .join(" ");
   }, [props.amplitudes, props.height, width]);
