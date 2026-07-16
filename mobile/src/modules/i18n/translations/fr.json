@@ -273,8 +273,8 @@
       "description": "Possède la priorité sur la liste d'autorisation."
     },
     "minTrackDuration": {
-      "title": "Ignorer les audios courts",
-      "description": "Durée en seconde des audios à ignorer."
+      "title": "Durée minimale d'un morceau",
+      "description": "La durée minimale, en secondes, qu'un morceau doit avoir pour pouvoir être enregistré."
     },
     "separators": {
       "title": "Séparateurs à valeurs multiples",

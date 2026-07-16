@@ -429,16 +429,16 @@
       }
     },
     "miniplayer": {
-      "title": null,
+      "title": "Miniplayer",
       "extra": {
-        "dragToDismiss": null,
-        "swipeControls": null
+        "dragToDismiss": "Arrastra para descartar",
+        "swipeControls": "Controles de deslizado"
       }
     },
     "nowPlaying": {
-      "title": null,
+      "title": "Reproduciendo Ahora",
       "extra": {
-        "artworkPlaybackToggle": null
+        "artworkPlaybackToggle": "Alternar carátula durante la reproducción"
       }
     },
     "queue": {
