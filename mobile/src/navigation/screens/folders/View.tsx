@@ -22,8 +22,7 @@ import Animated, {
 import type { FileNode } from "~/db/schema";
 
 import { useFolderContent } from "~/data/folder/queries";
-import type { GCWProps } from "~/hooks/useGetColumn";
-import { useGetColumn } from "~/hooks/useGetColumn";
+import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
 
 import { NScrollListLayout } from "~/navigation/layouts/NScrollLayout";
 import { FoldersViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
@@ -44,13 +43,6 @@ import type { TrackContent } from "~/modules/media/components/Track.type";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
 type Props = StaticScreenProps<{ path?: string }>;
-
-const listLayoutOptions: GCWProps = {
-  cols: 1,
-  gap: 8,
-  gutters: 32,
-  minWidth: 300,
-};
 
 export default function Folders({
   route: {
@@ -115,7 +107,7 @@ export default function Folders({
   );
   //#endregion
 
-  const listLayout = useGetColumn(listLayoutOptions);
+  const listLayout = useGetColumn(ColumnPresets.listLayout);
   const renderItem = useCallback(
     ({ item }: { item: MergedData }) =>
       isTrackContent(item) ? (

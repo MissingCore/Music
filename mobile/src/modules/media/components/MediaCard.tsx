@@ -4,7 +4,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
 
-import { useGetColumn } from "~/hooks/useGetColumn";
+import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
 import { getMediaLinkContext } from "~/navigation/utils/router";
 
 import { cn } from "~/lib/style";
@@ -55,12 +55,7 @@ export function useMediaCardListPreset(
   },
 ) {
   const navigation = useNavigation();
-  const { count, width } = useGetColumn({
-    cols: 2,
-    gap: 12,
-    gutters: 32,
-    minWidth: 144,
-  });
+  const { count, width } = useGetColumn(ColumnPresets.gridLayout);
 
   return useMemo(
     () => ({

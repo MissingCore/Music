@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { useArtistDetails, useArtistTracks } from "~/data/artist/queries";
 import type { ArtistAlbum } from "~/data/artist/types";
-import { useGetColumn } from "~/hooks/useGetColumn";
+import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
 
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
 import { ArtistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
@@ -87,12 +87,7 @@ export default function Artist({
  */
 function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
   const navigation = useNavigation();
-  const { width } = useGetColumn({
-    cols: 1,
-    gap: 0,
-    gutters: 32,
-    minWidth: 100,
-  });
+  const { width } = useGetColumn(ColumnPresets.horizontalList);
 
   if (!albums) return null;
   return (

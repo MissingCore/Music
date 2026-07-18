@@ -4,8 +4,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
 
-import type { GCWProps } from "~/hooks/useGetColumn";
-import { useGetColumn } from "~/hooks/useGetColumn";
+import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
 import { useViewPreferenceStore } from "../store";
 import type { LayoutItem, MutableViewLayout } from "../types";
 
@@ -15,25 +14,6 @@ import { cn } from "~/lib/style";
 import type { LegendListProps } from "~/components/Base/LegendList";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import { SearchResult } from "~/modules/search/components/SearchResult";
-
-const listLayoutOptions: GCWProps = {
-  cols: 1,
-  gap: 8,
-  gutters: 32,
-  minWidth: 300,
-};
-const gridLayoutOptions: GCWProps = {
-  cols: 2,
-  gap: 12,
-  gutters: 32,
-  minWidth: 144,
-};
-const compactGridLayoutOptions: GCWProps = {
-  cols: 3,
-  gap: 8,
-  gutters: 32,
-  minWidth: 72,
-};
 
 /** Formats data to pass into `LegendList`. */
 export function useViewLayout<TData extends Record<string, any>>(
@@ -49,9 +29,9 @@ export function useViewLayout<TData extends Record<string, any>>(
   );
 
   //#region Layout Configs
-  const listLayout = useGetColumn(listLayoutOptions);
-  const gridLayout = useGetColumn(gridLayoutOptions);
-  const compactGridLayout = useGetColumn(compactGridLayoutOptions);
+  const listLayout = useGetColumn(ColumnPresets.listLayout);
+  const gridLayout = useGetColumn(ColumnPresets.gridLayout);
+  const compactGridLayout = useGetColumn(ColumnPresets.compactGridLayout);
   const layoutOption = useViewPreferenceStore((s) => s[`${screen}Layout`]);
 
   const listLayoutArgs = useMemo(

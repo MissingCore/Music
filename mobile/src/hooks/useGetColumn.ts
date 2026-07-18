@@ -3,6 +3,7 @@
 
 import { useWindowDimensions } from "react-native";
 
+//#region useGetColumn
 export type GCWProps = {
   /**
    * Number of columns we want — if `minWidth` is provided, this becomes
@@ -42,8 +43,22 @@ export function useGetColumn({ cols, gap, gutters, minWidth }: GCWProps) {
     width: getColSize(width, newColCount, gap, gutters),
   };
 }
+//#endregion
 
+//#region Preset
+export const ColumnPresets = {
+  // "Recently Played" & "Current Artist"
+  horizontalList: { cols: 1, gap: 0, gutters: 32, minWidth: 100 },
+  listLayout: { cols: 1, gap: 8, gutters: 32, minWidth: 300 },
+  // `<MediaCard />` & Grid Layout
+  gridLayout: { cols: 2, gap: 12, gutters: 32, minWidth: 144 },
+  compactGridLayout: { cols: 3, gap: 8, gutters: 32, minWidth: 72 },
+};
+//#endregion
+
+//#region Internal Helpers
 /** `useGetColumnsWidth` helper function for calculating the column size. */
 function getColSize(width: number, cols: number, gap: number, gutters: number) {
   return (width - gutters - gap * (cols - 1)) / cols;
 }
+//#endregion
