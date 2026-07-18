@@ -16,6 +16,12 @@ import type { LegendListProps } from "~/components/Base/LegendList";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
+const listLayoutOptions: GCWProps = {
+  cols: 1,
+  gap: 8,
+  gutters: 32,
+  minWidth: 300,
+};
 const gridLayoutOptions: GCWProps = {
   cols: 2,
   gap: 12,
@@ -43,6 +49,7 @@ export function useViewLayout<TData extends Record<string, any>>(
   );
 
   //#region Layout Configs
+  const listLayout = useGetColumn(listLayoutOptions);
   const gridLayout = useGetColumn(gridLayoutOptions);
   const compactGridLayout = useGetColumn(compactGridLayoutOptions);
   const layoutOption = useViewPreferenceStore((s) => s[`${screen}Layout`]);
@@ -50,6 +57,7 @@ export function useViewLayout<TData extends Record<string, any>>(
   const listLayoutArgs = useMemo(
     () =>
       ({
+        numColumns: listLayout.count,
         estimatedItemSize: 56, // 48px Height + 8px Margin Bottom
         renderItem: ({ item: { id, ...item } }) => (
           <SearchResult
@@ -58,12 +66,14 @@ export function useViewLayout<TData extends Record<string, any>>(
             onPress={() =>
               navigation.navigate(...getMediaLinkContext({ id, type: screen }))
             }
-            className={cn("mb-2 pr-4", { "rounded-full": screen === "artist" })}
+            className={cn("mx-1 mb-2 pr-4", {
+              "rounded-full": screen === "artist",
+            })}
           />
         ),
-        className: "-mb-2",
+        className: "-mx-1 -mb-2",
       }) satisfies LegendListProps<LayoutItem>,
-    [navigation, screen],
+    [navigation, screen, listLayout],
   );
 
   // Handle both `grid` & `compactGrid` options.
