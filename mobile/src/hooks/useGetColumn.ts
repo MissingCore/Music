@@ -59,7 +59,7 @@ export function useGetColumn({
 export const ColumnPresets = {
   // "Recently Played" & "Current Artist"
   horizontalList: { cols: 1, gap: 0, gutters: 32, minWidth: 100 },
-  listLayout: { cols: 1, gap: 8, gutters: 32, minWidth: 300 },
+  listLayout: { cols: 1, gap: 8, gutters: 32, minWidth: 272 },
   // `<MediaCard />` & Grid Layout
   gridLayout: { cols: 2, gap: 12, gutters: 32, minWidth: 144 },
   compactGridLayout: { cols: 3, gap: 8, gutters: 32, minWidth: 72 },
