@@ -12,11 +12,13 @@ import { getMediaLinkContext } from "../utils/router";
 import { useBottomActionsOffset } from "../components/BottomActions/useBottomActions";
 import { PagePlaceholder } from "../components/Placeholder";
 
-import { FlatList, getListItemLayout } from "~/components/Base/List";
+import { LegendList } from "~/components/Base/LegendList";
+import { FlatList } from "~/components/Base/List";
+import { HorizontalScrollGradient } from "~/components/Gradient";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
-import { Track } from "~/modules/media/components/Track";
+import { useTrackListPreset } from "~/modules/media/components/Track";
 
 // Information about this track list.
 const trackSource = {
@@ -28,6 +30,13 @@ export default function RecentlyPlayed() {
   const { t } = useTranslation();
   const bottomOffset = useBottomActionsOffset(16);
   const { isPending, error, data } = useRecentlyPlayedMedia();
+
+  const presets = useTrackListPreset({
+    data: data?.tracks,
+    isPending,
+    trackSource,
+    contentWidthDeduction: 0,
+  });
 
   const hasNoContent = data?.lists?.length === 0 && data?.tracks?.length === 0;
 
@@ -43,16 +52,10 @@ export default function RecentlyPlayed() {
   }
 
   return (
-    <FlatList
-      data={data.tracks}
-      keyExtractor={({ id }) => id}
-      renderItem={({ item }) => (
-        <Track {...item} trackSource={trackSource} className="mb-2" />
-      )}
-      getItemLayout={getListItemLayout}
+    <LegendList
+      {...presets}
       ListHeaderComponent={<RecentlyPlayedLists data={data.lists} />}
-      className="-mb-2"
-      contentContainerClassName="px-4 pt-4"
+      contentContainerClassName="p-4"
       contentContainerStyle={{ paddingBottom: bottomOffset }}
     />
   );
@@ -64,25 +67,26 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
 
   if (props.data?.length === 0) return null;
   return (
-    <FlatList
-      horizontal
-      data={props.data}
-      keyExtractor={({ id, type }) => `${type}_${id}`}
-      renderItem={({ item, index }) => (
-        <MediaCard
-          {...item}
-          size={width}
-          onPress={() => {
-            const linkInfo = getMediaLinkContext(item);
-            // @ts-expect-error - The following is valid.
-            if (linkInfo[0] === "HomeScreens") navigation.popTo(...linkInfo);
-            else navigation.navigate(...linkInfo);
-          }}
-          className={index > 0 ? "ml-3" : undefined}
-        />
-      )}
-      className="-mx-4"
-      contentContainerClassName="px-4 pb-6"
-    />
+    <HorizontalScrollGradient gutter={16}>
+      <FlatList
+        horizontal
+        data={props.data}
+        keyExtractor={({ id, type }) => `${type}_${id}`}
+        renderItem={({ item, index }) => (
+          <MediaCard
+            {...item}
+            size={width}
+            onPress={() => {
+              const linkInfo = getMediaLinkContext(item);
+              // @ts-expect-error - The following is valid.
+              if (linkInfo[0] === "HomeScreens") navigation.popTo(...linkInfo);
+              else navigation.navigate(...linkInfo);
+            }}
+            className={index > 0 ? "ml-3" : undefined}
+          />
+        )}
+        contentContainerClassName="px-4 pb-6"
+      />
+    </HorizontalScrollGradient>
   );
 }
