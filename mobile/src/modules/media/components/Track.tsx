@@ -156,8 +156,8 @@ export function useTrackListPlayingIndication<T extends TrackContent>(
 
 //#region useTrackListPreset
 /** Presets used to render a list of `<Track />`. */
-export function useTrackListPreset(args: {
-  data?: readonly TrackContent[];
+export function useTrackListPreset<TData extends TrackContent>(args: {
+  data?: readonly TData[];
   trackSource: PlayFromSource;
   isPending?: boolean;
   /** Corresponds to the `deduction` argument in `useGetColumn()`. Defaults to `320`. */
@@ -190,6 +190,6 @@ export function useTrackListPreset(args: {
       className: "-mx-1 -mb-2",
     }),
     [args, count, data],
-  ) satisfies LegendListProps<TrackContent>;
+  ) satisfies LegendListProps<TData>;
 }
 //#endregion

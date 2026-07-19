@@ -169,6 +169,11 @@ export function TabletLayout<TData>({
 }: Props<TData>) {
   const contentStartOffset = useHeaderGradientHeight();
 
+  const overrideItemLayout = useMemo(
+    () => overrideItemLayoutFactory(props.numColumns ?? 1),
+    [props.numColumns],
+  );
+
   const containerStyles = useMemo(
     () => [props.contentContainerStyle, { paddingTop: contentStartOffset }],
     [props.contentContainerStyle, contentStartOffset],
@@ -197,6 +202,7 @@ export function TabletLayout<TData>({
         estimatedItemSize={56}
         data={data}
         getItemType={getItemType}
+        overrideItemLayout={overrideItemLayout}
         ListHeaderComponent={SubHeader ? <View>{SubHeader}</View> : undefined}
         contentContainerStyle={containerStyles}
         contentContainerClassName={cn(
@@ -348,5 +354,11 @@ function AnimatedVinyl(
 function getItemType(item: any) {
   if (typeof item === "number" || typeof item === "string") return "label";
   return "row";
+}
+
+function overrideItemLayoutFactory(numColumns: number) {
+  return (layout: { span?: number }, item: any) => {
+    if (typeof item === "number") layout.span = numColumns;
+  };
 }
 //#endregion
