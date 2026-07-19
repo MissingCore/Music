@@ -168,11 +168,18 @@ export function TabletLayout<TData>({
   ...props
 }: Props<TData>) {
   const contentStartOffset = useHeaderGradientHeight();
+
+  const containerStyles = useMemo(
+    () => [props.contentContainerStyle, { paddingTop: contentStartOffset }],
+    [props.contentContainerStyle, contentStartOffset],
+  );
+
   return (
     <View className="grow flex-row">
       <ScrollView
-        className="relative w-full max-w-80 justify-center"
-        contentContainerClassName="gap-4 px-4 py-16"
+        className="relative my-auto w-full max-w-80 shrink-0"
+        contentContainerStyle={containerStyles}
+        contentContainerClassName="gap-4 p-4"
       >
         <DeferredArtwork
           size={192}
@@ -190,9 +197,12 @@ export function TabletLayout<TData>({
         estimatedItemSize={56}
         data={data}
         getItemType={getItemType}
-        ListHeaderComponent={<View>{SubHeader}</View>}
-        style={[props.style, { paddingTop: contentStartOffset }]}
-        contentContainerClassName={cn("p-4", props.contentContainerClassName)}
+        ListHeaderComponent={SubHeader ? <View>{SubHeader}</View> : undefined}
+        contentContainerStyle={containerStyles}
+        contentContainerClassName={cn(
+          "my-auto p-4",
+          props.contentContainerClassName,
+        )}
       />
     </View>
   );
