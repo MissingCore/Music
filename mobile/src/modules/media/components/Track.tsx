@@ -12,6 +12,7 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
+import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
 import {
   TrackMultiSelect,
   useTrackMultiSelectStore,
@@ -159,16 +160,24 @@ export function useTrackListPreset(args: {
   data?: readonly TrackContent[];
   trackSource: PlayFromSource;
   isPending?: boolean;
+  multiColumn?: boolean;
 }) {
+  const { count } = useGetColumn(ColumnPresets.listLayout);
   // @ts-expect-error - Readonly is fine.
   const data = useTrackListPlayingIndication(args.trackSource, args.data);
+
   return useMemo(
     () => ({
+      numColumns: args.multiColumn ? count : undefined,
       estimatedItemSize: 56, // 48px Height + 8px Margin Bottom
       data,
       keyExtractor: ({ id }) => id,
       renderItem: ({ item }) => (
-        <Track {...item} trackSource={args.trackSource} className="mb-2" />
+        <Track
+          {...item}
+          trackSource={args.trackSource}
+          className={cn("mb-2", { "mx-1": args.multiColumn })}
+        />
       ),
       ListEmptyComponent: (
         <ContentPlaceholder
@@ -176,9 +185,9 @@ export function useTrackListPreset(args: {
           errMsgKey="err.msg.noTracks"
         />
       ),
-      className: "-mb-2",
+      className: cn("-mb-2", { "-mx-1": args.multiColumn }),
     }),
-    [args, data],
+    [args, count, data],
   ) satisfies LegendListProps<TrackContent>;
 }
 //#endregion

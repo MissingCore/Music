@@ -44,6 +44,7 @@ export default function Tracks() {
     data: formattedData,
     isPending,
     trackSource,
+    multiColumn: true,
   });
 
   return (
