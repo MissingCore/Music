@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useNavigation, useNavigationState } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -26,8 +25,8 @@ import { capitalize } from "~/utils/string";
 import { FlatList, useFlatListRef } from "~/components/Base/List";
 import { Pressable } from "~/components/Base/Pressable";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
+import { HorizontalScrollGradient } from "~/components/Gradient";
 import { TStyledText } from "~/components/Typography/StyledText";
-import { useTheme } from "~/modules/customization/theme/hooks";
 import type { Tab } from "~/stores/Preference/types";
 
 export function SearchButton() {
@@ -76,7 +75,6 @@ export function SettingsButton() {
 //#region Navbar
 export function Navbar() {
   const navigation = useNavigation();
-  const { surfaceContainerLowest } = useTheme();
   const homeTab = usePreferenceStore((s) => s.homeTab);
   const { displayedTabs } = useTabsByVisibility();
   const listRef = useFlatListRef();
@@ -105,10 +103,11 @@ export function Navbar() {
   }, [listRef, activeIndex, mounted]);
 
   return (
-    <Animated.View
+    <HorizontalScrollGradient
       entering={SlideInDown}
       exiting={SlideOutDown}
-      className="relative h-14 w-full shrink grow overflow-hidden rounded-full bg-surfaceContainerLowest"
+      color="surfaceContainerLowest"
+      className="h-14 w-full shrink grow overflow-hidden rounded-full bg-surfaceContainerLowest"
     >
       <FlatList
         ref={listRef}
@@ -136,24 +135,9 @@ export function Navbar() {
         onScrollToIndexFailed={() => {}}
         contentContainerClassName="gap-4 px-4"
       />
-      {/* Scroll Shadow */}
-      <LinearGradient
-        pointerEvents="none"
-        colors={[`${surfaceContainerLowest}E6`, `${surfaceContainerLowest}00`]}
-        {...ShadowProps}
-        className="absolute h-full w-4 ltr:left-0 rtl:right-0"
-      />
-      <LinearGradient
-        pointerEvents="none"
-        colors={[`${surfaceContainerLowest}00`, `${surfaceContainerLowest}E6`]}
-        {...ShadowProps}
-        className="absolute h-full w-4 ltr:right-0 rtl:left-0"
-      />
-    </Animated.View>
+    </HorizontalScrollGradient>
   );
 }
-
-const ShadowProps = { start: { x: 0.0, y: 1.0 }, end: { x: 1.0, y: 1.0 } };
 
 function getHomeScreenRoute(tabKey: Tab) {
   if (tabKey === "home") return { term: "term.home", screen: "Home" } as const;
