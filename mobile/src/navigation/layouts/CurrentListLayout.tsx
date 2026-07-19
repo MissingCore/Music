@@ -358,7 +358,9 @@ function getItemType(item: any) {
 
 function overrideItemLayoutFactory(numColumns: number) {
   return (layout: { span?: number }, item: any) => {
-    if (typeof item === "number") layout.span = numColumns;
+    if (typeof item === "number" || typeof item === "string") {
+      layout.span = numColumns;
+    }
   };
 }
 //#endregion
