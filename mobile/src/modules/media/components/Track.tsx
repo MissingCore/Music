@@ -160,7 +160,6 @@ export function useTrackListPreset(args: {
   data?: readonly TrackContent[];
   trackSource: PlayFromSource;
   isPending?: boolean;
-  multiColumn?: boolean;
 }) {
   const { count } = useGetColumn(ColumnPresets.listLayout);
   // @ts-expect-error - Readonly is fine.
@@ -168,16 +167,12 @@ export function useTrackListPreset(args: {
 
   return useMemo(
     () => ({
-      numColumns: args.multiColumn ? count : undefined,
+      numColumns: count,
       estimatedItemSize: 56, // 48px Height + 8px Margin Bottom
       data,
       keyExtractor: ({ id }) => id,
       renderItem: ({ item }) => (
-        <Track
-          {...item}
-          trackSource={args.trackSource}
-          className={cn("mb-2", { "mx-1": args.multiColumn })}
-        />
+        <Track {...item} trackSource={args.trackSource} className="mx-1 mb-2" />
       ),
       ListEmptyComponent: (
         <ContentPlaceholder
@@ -185,7 +180,7 @@ export function useTrackListPreset(args: {
           errMsgKey="err.msg.noTracks"
         />
       ),
-      className: cn("-mb-2", { "-mx-1": args.multiColumn }),
+      className: "-mx-1 -mb-2",
     }),
     [args, count, data],
   ) satisfies LegendListProps<TrackContent>;
