@@ -1,7 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { View, useWindowDimensions } from "react-native";
 import type { SharedValue } from "react-native-reanimated";
@@ -16,12 +16,14 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Icon } from "~/resources/icons";
 import { useInForeground } from "~/stores/ListenerState";
 import { usePlaybackStore } from "~/stores/Playback/store";
+import { useAlternativeLayout } from "~/hooks/useAlternativeLayout";
 import { useDelayedReady } from "~/hooks/useDelayedReady";
 
 import { cn } from "~/lib/style";
 import { clamp } from "~/utils/number";
 import type { LegendListProps } from "~/components/Base/LegendList";
 import { LegendList } from "~/components/Base/LegendList";
+import { ScrollView } from "~/components/Base/ScrollView";
 import { TopDownGradient } from "~/components/Gradient";
 import { Marquee } from "~/components/Marquee";
 import { Em, StyledText } from "~/components/Typography/StyledText";
@@ -37,18 +39,35 @@ type MediaListSource = { type: SupportedMedia; id: string };
 const ESTIMATED_TOPAPPBAR_HEIGHT = 56;
 const ESTIMATED_TOPAPPBAR_YPAD = 8;
 
-//#region Layout
-export function CurrentListLayout<TData>({
+interface Props<TData>
+  extends LegendListProps<TData>, Omit<ListArtworkProps, "size"> {
+  listInfo: ListInfoProps;
+  SubHeader?: React.ReactNode;
+}
+
+export function CurrentListLayout<TData>(props: Props<TData>) {
+  const isLargeScreen = useAlternativeLayout();
+  const UsedLayout = useMemo(
+    () => (isLargeScreen ? TabletLayout : MobileLayout),
+    [isLargeScreen],
+  );
+  return (
+    <>
+      <UsedLayout {...props} />
+      <HeaderTransitionGradient />
+    </>
+  );
+}
+
+//#region Mobile Layout
+export function MobileLayout<TData>({
   data = [],
   listSource,
   imageSource,
   listInfo,
   SubHeader,
   ...props
-}: LegendListProps<TData> & {
-  listInfo: ListInfoProps;
-  SubHeader?: React.ReactNode;
-} & Omit<ListArtworkProps, "size">) {
+}: Props<TData>) {
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
 
@@ -56,7 +75,7 @@ export function CurrentListLayout<TData>({
   // How far from the top edge of the screen the media controls will be sticked to.
   const minStickyTopOffset = insets.top + ESTIMATED_TOPAPPBAR_YPAD;
   // How far from the top edge of the screen the artwork will start from.
-  const contentStartOffset = insets.top + ESTIMATED_TOPAPPBAR_HEIGHT + 16;
+  const contentStartOffset = useHeaderGradientHeight();
 
   //#region Header Height Calculations
   const headerHeight = useSharedValue(-1);
@@ -92,13 +111,6 @@ export function CurrentListLayout<TData>({
   }));
   //#endregion
 
-  //#region Layout Estimations
-  const getItemType = useCallback((item: any) => {
-    if (typeof item === "number" || typeof item === "string") return "label";
-    return "row";
-  }, []);
-  //#endregion
-
   return (
     <>
       <LegendList
@@ -119,7 +131,7 @@ export function CurrentListLayout<TData>({
             <View
               onLayout={setHeaderHeight}
               style={{ paddingTop: contentStartOffset, paddingBottom: 72 }}
-              className="items-center gap-4"
+              className="gap-4"
             >
               <DeferredArtwork
                 size={imageSize}
@@ -134,11 +146,6 @@ export function CurrentListLayout<TData>({
         contentContainerClassName={cn("px-4", props.contentContainerClassName)}
       />
 
-      <TopDownGradient
-        height={contentStartOffset}
-        startFrom={insets.top}
-        className="absolute top-0 left-0"
-      />
       <Animated.View
         pointerEvents="box-none"
         style={stickyStyles}
@@ -147,6 +154,69 @@ export function CurrentListLayout<TData>({
         <MediaListControls trackSource={listSource} />
       </Animated.View>
     </>
+  );
+}
+//#endregion
+
+//#region Tablet Layout
+export function TabletLayout<TData>({
+  data = [],
+  listSource,
+  imageSource,
+  listInfo,
+  SubHeader,
+  ...props
+}: Props<TData>) {
+  const contentStartOffset = useHeaderGradientHeight();
+  return (
+    <View className="grow flex-row">
+      <ScrollView
+        className="relative w-full max-w-80 justify-center"
+        contentContainerClassName="gap-4 px-4 py-16"
+      >
+        <DeferredArtwork
+          size={192}
+          listSource={listSource}
+          imageSource={imageSource}
+        />
+        <ListInfo {...listInfo} />
+        <View className="self-end">
+          <MediaListControls trackSource={listSource} />
+        </View>
+      </ScrollView>
+
+      <LegendList
+        {...props}
+        estimatedItemSize={56}
+        data={data}
+        getItemType={getItemType}
+        ListHeaderComponent={<View>{SubHeader}</View>}
+        style={[props.style, { paddingTop: contentStartOffset }]}
+        contentContainerClassName={cn("p-4", props.contentContainerClassName)}
+      />
+    </View>
+  );
+}
+//#endregion
+
+//#region Header Transition Gradient
+/** Returns the height of the transition gradient for a smoother scroll effect. */
+function useHeaderGradientHeight() {
+  const insets = useSafeAreaInsets();
+  // How far from the top edge of the screen the artwork will start from.
+  return insets.top + ESTIMATED_TOPAPPBAR_HEIGHT + 16;
+}
+
+/** Header gradient to smoothly fade content as it gets scrolled under the status bar. */
+function HeaderTransitionGradient() {
+  const insets = useSafeAreaInsets();
+  const contentStartOffset = useHeaderGradientHeight();
+  return (
+    <TopDownGradient
+      height={contentStartOffset}
+      startFrom={insets.top}
+      className="absolute top-0 left-0"
+    />
   );
 }
 //#endregion
@@ -207,7 +277,7 @@ function DeferredArtwork(props: ListArtworkProps) {
   }));
 
   return (
-    <Animated.View style={coverStyle} className="relative">
+    <Animated.View style={coverStyle} className="relative mx-auto">
       {isReady && props.listSource.type !== "artist" ? (
         <AnimatedVinyl {...props} horizTranslation={horizTranslation} />
       ) : null}
@@ -261,5 +331,12 @@ function AnimatedVinyl(
       </Animated.View>
     </Animated.View>
   );
+}
+//#endregion
+
+//#region Internal Helpers
+function getItemType(item: any) {
+  if (typeof item === "number" || typeof item === "string") return "label";
+  return "row";
 }
 //#endregion
