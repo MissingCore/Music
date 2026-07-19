@@ -22,12 +22,22 @@ export type GCWProps = {
    * space, additional columns will be added.
    */
   minWidth?: number;
+
+  /** Amount removed from global "width" in calculations. */
+  deduction?: number;
 };
 
 /** Determine the width a column will take up based on parameters. */
-export function useGetColumn({ cols, gap, gutters, minWidth }: GCWProps) {
-  const { width } = useWindowDimensions();
+export function useGetColumn({
+  cols,
+  gap,
+  gutters,
+  minWidth,
+  deduction = 0,
+}: GCWProps) {
+  const { width: screenWidth } = useWindowDimensions();
 
+  const width = screenWidth - deduction;
   const initColSize = getColSize(width, cols, gap, gutters);
   // If no `minWidth` is provided, don't do CSS Grid `auto-fill` behavior.
   if (!minWidth) return { count: cols, width: initColSize };
