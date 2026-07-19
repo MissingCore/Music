@@ -164,7 +164,7 @@ async function getRecentListEntry(source: PlayFromSource) {
       if (source.id === ReservedPlaylists.tracks) {
         const numTracks = await db.$count(tracks);
         entry.title = i18next.t("term.tracks");
-        entry.source = source.id;
+        entry.source = null;
         entry.description = i18next.t("plural.track", { count: numTracks });
       } else {
         const data = await getPlaylist(source.id, true);
