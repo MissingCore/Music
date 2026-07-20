@@ -23,7 +23,11 @@ import { Pressable } from "~/components/Base/Pressable";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import { Vinyl } from "~/modules/media/components/Vinyl";
 
-type ArtworkProps = { source: string | null; size: number };
+type ArtworkProps = {
+  source: string | null;
+  size: number;
+  dimensions: { height: number; width: number };
+};
 
 /** Determines which artwork is rendered. */
 export function ArtworkPicker(props: ArtworkProps) {
@@ -80,10 +84,21 @@ function VinylSeekBar(props: ArtworkProps) {
 
 /** Similar artwork design seen in v1, but with the new features. */
 function VinylLegacy(props: ArtworkProps) {
+  const alternativeLayout =
+    props.dimensions.width > props.dimensions.height * 1.5;
+
   const coverPosition = useSharedValue(0);
-  const coverStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: coverPosition.get() }],
-  }));
+  const coverStyle = useAnimatedStyle(() => {
+    if (alternativeLayout)
+      return { transform: [{ translateX: coverPosition.get() / 2 }] };
+    return { transform: [{ translateY: coverPosition.get() }] };
+  });
+  const vinylStyle = useAnimatedStyle(() => {
+    if (alternativeLayout)
+      return { transform: [{ translateX: -coverPosition.get() / 2 }] };
+    return {};
+  });
+
   return (
     <View
       onLayout={() =>
@@ -93,7 +108,9 @@ function VinylLegacy(props: ArtworkProps) {
       }
       className="relative"
     >
-      <VinylSeekBar {...props} />
+      <Animated.View style={vinylStyle}>
+        <VinylSeekBar {...props} />
+      </Animated.View>
       <Animated.View
         pointerEvents="none"
         style={coverStyle}
