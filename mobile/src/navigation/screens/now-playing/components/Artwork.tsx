@@ -109,7 +109,9 @@ function VinylLegacy(props: ArtworkProps) {
           withDelay(
             50,
             withTiming(-props.size / 2, { duration: 500 }, (finished) => {
-              if (finished) scheduleOnRN(setAnimationCompleted, Date.now());
+              if (finished && alternativeLayout) {
+                scheduleOnRN(setAnimationCompleted, Date.now());
+              }
             }),
           ),
         )
