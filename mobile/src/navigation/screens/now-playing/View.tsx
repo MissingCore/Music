@@ -8,7 +8,6 @@ import { View } from "react-native";
 
 import type { Track } from "~/data/track/types";
 import { usePlaybackStore } from "~/stores/Playback/store";
-import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
 import { toggleLyricVisibility } from "~/modules/lyric/core/actions";
 import { useAlternativeLayout } from "~/hooks/useAlternativeLayout";
@@ -18,7 +17,6 @@ import Upcoming from "./UpcomingView";
 import { SeekbarContext } from "./helpers/Seekbar.context";
 import { ArtworkSlot } from "./components/ArtworkSlot";
 import { SeekBar } from "./components/SeekBar";
-import { NowPlayingTopAppBar } from "./components/TopAppBar";
 import { PlaybackOptionsSheet } from "./sheets/PlaybackOptionsSheet";
 import { SleepTimerSheet } from "./sheets/SleepTimerSheet";
 import { useSleepTimerStore } from "./sheets/SleepTimerSheet/store";
@@ -48,7 +46,6 @@ export default function NowPlaying() {
   return (
     <View className="flex-1 flex-row">
       <SafeContainer className="flex-1 gap-8">
-        <NowPlayingTopAppBar />
         <SeekbarContext>
           <PlaybackControlGestureWrapper>
             <ArtworkSlot artwork={track.artwork} trackId={track.id} />
@@ -205,9 +202,6 @@ function SleepTimerButton(props: { present: VoidFunction }) {
 function BackButton() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const usedDesign = usePreferenceStore((s) => s.nowPlayingDesign);
-
-  if (usedDesign !== "vinylOld") return <View />;
   return (
     <FilledIconButton
       icon="keyboard-arrow-down"
