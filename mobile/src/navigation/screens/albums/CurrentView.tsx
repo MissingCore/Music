@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { useAlbumForScreen, useFavoriteAlbum } from "~/data/album/queries";
+import { TABLET_SIDEBAR_WIDTH_RATIO } from "~/hooks/useAlternativeLayout";
 import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
 
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
@@ -31,7 +32,7 @@ type Props = StaticScreenProps<{ id: string }>;
 
 const ColumnLayoutConfig = {
   ...ColumnPresets.listLayout,
-  percentDeduction: 0.4,
+  percentDeduction: TABLET_SIDEBAR_WIDTH_RATIO,
 };
 
 export default function Album({

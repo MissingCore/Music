@@ -16,7 +16,10 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Icon } from "~/resources/icons";
 import { useInForeground } from "~/stores/ListenerState";
 import { usePlaybackStore } from "~/stores/Playback/store";
-import { useAlternativeLayout } from "~/hooks/useAlternativeLayout";
+import {
+  TABLET_SIDEBAR_WIDTH_RATIO,
+  useAlternativeLayout,
+} from "~/hooks/useAlternativeLayout";
 import { useDelayedReady } from "~/hooks/useDelayedReady";
 
 import { cn } from "~/lib/style";
@@ -169,7 +172,11 @@ export function TabletLayout<TData>({
 }: Props<TData>) {
   const { width } = useWindowDimensions();
 
-  const imageSize = clamp(0, ((width * 0.4 - 32) * 2) / 3, 384);
+  const imageSize = clamp(
+    0,
+    ((width * TABLET_SIDEBAR_WIDTH_RATIO - 32) * 2) / 3,
+    384,
+  );
   // How far from the top edge of the screen the artwork will start from.
   const contentStartOffset = useHeaderGradientHeight();
 
