@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useAtomValue } from "jotai";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { GestureDetector } from "react-native-gesture-handler";
@@ -11,6 +12,7 @@ import Animated, {
   withDelay,
   withTiming,
 } from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
 
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
@@ -84,6 +86,7 @@ function VinylSeekBar(props: ArtworkProps) {
 
 /** Similar artwork design seen in v1, but with the new features. */
 function VinylLegacy(props: ArtworkProps) {
+  const [animationCompleted, setAnimationCompleted] = useState(0);
   const alternativeLayout =
     props.dimensions.width > props.dimensions.height * 1.5;
 
@@ -103,13 +106,23 @@ function VinylLegacy(props: ArtworkProps) {
     <View
       onLayout={() =>
         coverPosition.set(
-          withDelay(50, withTiming(-props.size / 2, { duration: 500 })),
+          withDelay(
+            50,
+            withTiming(-props.size / 2, { duration: 500 }, (finished) => {
+              if (finished) scheduleOnRN(setAnimationCompleted, Date.now());
+            }),
+          ),
         )
       }
       className="relative"
     >
       <Animated.View style={vinylStyle}>
-        <VinylSeekBar {...props} />
+        <VinylSeekBar
+          //? Key is to ensure that gesture measurements doesn't use "initial"
+          //? position (ie: vinyl position before translation).
+          key={animationCompleted}
+          {...props}
+        />
       </Animated.View>
       <Animated.View
         pointerEvents="none"
