@@ -29,7 +29,10 @@ import {
 
 type Props = StaticScreenProps<{ id: string }>;
 
-const ColumnLayoutConfig = { ...ColumnPresets.listLayout, deduction: 320 };
+const ColumnLayoutConfig = {
+  ...ColumnPresets.listLayout,
+  percentDeduction: 0.4,
+};
 
 export default function Album({
   route: {

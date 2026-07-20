@@ -23,8 +23,8 @@ export type GCWProps = {
    */
   minWidth?: number;
 
-  /** Amount removed from global "width" in calculations. */
-  deduction?: number;
+  /** Percentage removed from global "width" in calculations. */
+  percentDeduction?: number;
 };
 
 /** Determine the width a column will take up based on parameters. */
@@ -33,11 +33,11 @@ export function useGetColumn({
   gap,
   gutters,
   minWidth,
-  deduction = 0,
+  percentDeduction = 0,
 }: GCWProps) {
   const { width: screenWidth } = useWindowDimensions();
 
-  const width = screenWidth - deduction;
+  const width = screenWidth * (1 - percentDeduction);
   const initColSize = getColSize(width, cols, gap, gutters);
   // If no `minWidth` is provided, don't do CSS Grid `auto-fill` behavior.
   if (!minWidth) return { count: cols, width: initColSize };

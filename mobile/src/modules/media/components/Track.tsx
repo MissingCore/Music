@@ -160,14 +160,14 @@ export function useTrackListPreset<TData extends TrackContent>(args: {
   data?: readonly TData[];
   trackSource: PlayFromSource;
   isPending?: boolean;
-  /** Corresponds to the `deduction` argument in `useGetColumn()`. Defaults to `320`. */
+  /** Corresponds to the `percentDeduction` argument in `useGetColumn()`. Defaults to `0.4`. */
   contentWidthDeduction?: number;
 }) {
   const { count } = useGetColumn({
     ...ColumnPresets.listLayout,
     //? Defaults to the width of the "artwork + metadata" section on the
     //? tablet layout of the "Current List" screen.
-    deduction: args.contentWidthDeduction ?? 320,
+    percentDeduction: args.contentWidthDeduction ?? 0.4,
   });
   // @ts-expect-error - Readonly is fine.
   const data = useTrackListPlayingIndication(args.trackSource, args.data);

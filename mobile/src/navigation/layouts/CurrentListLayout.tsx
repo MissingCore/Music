@@ -167,6 +167,10 @@ export function TabletLayout<TData>({
   SubHeader,
   ...props
 }: Props<TData>) {
+  const { width } = useWindowDimensions();
+
+  const imageSize = clamp(0, ((width * 0.4 - 32) * 2) / 3, 384);
+  // How far from the top edge of the screen the artwork will start from.
   const contentStartOffset = useHeaderGradientHeight();
 
   const overrideItemLayout = useMemo(
@@ -182,12 +186,12 @@ export function TabletLayout<TData>({
   return (
     <View className="grow flex-row">
       <ScrollView
-        className="relative my-auto w-full max-w-80 shrink-0"
+        className="relative my-auto w-full max-w-2/5 shrink-0"
         contentContainerStyle={containerStyles}
         contentContainerClassName="gap-4 p-4"
       >
         <DeferredArtwork
-          size={192}
+          size={imageSize}
           listSource={listSource}
           imageSource={imageSource}
         />
