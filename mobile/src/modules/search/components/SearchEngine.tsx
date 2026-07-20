@@ -8,12 +8,14 @@ import { View } from "react-native";
 import { AlbumArtistsKey } from "~/data/album/utils";
 import { getArtistsString } from "~/data/artist/utils";
 import type { CommonTrack } from "~/data/types";
+import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { cn } from "~/lib/style";
 import { isString } from "~/utils/validation";
-import { FlatList, useFlatListRef } from "~/components/Base/List";
+import { LegendList, useLegendListRef } from "~/components/Base/LegendList";
+import { FlatList } from "~/components/Base/List";
 import { Button } from "~/components/Form/Button";
 import { TopDownGradient } from "~/components/Gradient";
 import { TEm } from "~/components/Typography/StyledText";
@@ -62,10 +64,16 @@ type SearchResultsListProps<TScope extends SearchCategories> = {
 function SearchResultsList<TScope extends SearchCategories>(
   props: SearchResultsListProps<TScope> & { query: string },
 ) {
+  const listLayout = useGetColumn(ColumnPresets.listLayout);
   const results = useSearch(props.searchScope, props.query);
   const [selectedTab, setSelectedTab] = useState<TScope[number] | "all">("all");
   const [filterHeight, setFilterHeight] = useState(53); // Height will be ~53px
-  const listRef = useFlatListRef();
+  const listRef = useLegendListRef();
+
+  const overrideItemLayout = useMemo(
+    () => overrideItemLayoutFactory(listLayout.count),
+    [listLayout.count],
+  );
 
   // Reset tab if we're on a tab with no results or clear the query.
   if (
@@ -101,8 +109,10 @@ function SearchResultsList<TScope extends SearchCategories>(
         onSelectTab={setSelectedTab}
         getHeight={setFilterHeight}
       />
-      <FlatList
+      <LegendList
         ref={listRef}
+        numColumns={props.forSheets ? undefined : listLayout.count}
+        estimatedItemSize={56}
         data={data}
         // Note: We use `index` instead of the `id` or `name` field on the
         // `entry` due to there being potentially shared values (ie: between
@@ -112,7 +122,7 @@ function SearchResultsList<TScope extends SearchCategories>(
           isString(item) ? (
             <TEm
               textKey={`term.${item}`}
-              className={cn("mb-2", { "mt-2": index > 0 })}
+              className={cn("mx-1 mb-2", { "mt-2": index > 0 })}
             />
           ) : (
             <SearchResult
@@ -127,20 +137,22 @@ function SearchResultsList<TScope extends SearchCategories>(
                   />
                 ) : undefined
               }
-              className={cn("mb-2", {
+              className={cn("mx-1 mb-2", {
                 "pr-4": !props.withTrackActions || item.type !== "track",
                 "rounded-full": item.type === "artist",
               })}
             />
           )
         }
+        getItemType={getItemType}
+        overrideItemLayout={overrideItemLayout}
         ListEmptyComponent={
           props.query.length > 0 && data !== undefined ? (
             <ContentPlaceholder errMsgKey="err.msg.noResults" />
           ) : undefined
         }
         nestedScrollEnabled={props.forSheets}
-        className="-mb-2"
+        className="-mx-1 -mb-2"
         contentContainerClassName="pb-4"
         contentContainerStyle={{
           paddingTop: tabsWithData.length > 0 ? filterHeight : 24,
@@ -195,6 +207,17 @@ function SearchFilters(props: {
 }
 
 //#region Helpers
+function getItemType(item: any) {
+  if (typeof item === "string") return "label";
+  return "row";
+}
+
+function overrideItemLayoutFactory(numColumns: number) {
+  return (layout: { span?: number }, item: any) => {
+    if (typeof item === "string") layout.span = numColumns;
+  };
+}
+
 /**
  * Flatten results to be used in a list that functions like a `<SectionList />`.
  * Ensure the "sections" are in alphabetical order and remove any groups with

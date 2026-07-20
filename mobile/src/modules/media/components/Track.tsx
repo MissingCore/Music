@@ -12,6 +12,8 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
+import { TABLET_SIDEBAR_WIDTH_RATIO } from "~/hooks/useAlternativeLayout";
+import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
 import {
   TrackMultiSelect,
   useTrackMultiSelectStore,
@@ -155,20 +157,33 @@ export function useTrackListPlayingIndication<T extends TrackContent>(
 
 //#region useTrackListPreset
 /** Presets used to render a list of `<Track />`. */
-export function useTrackListPreset(args: {
-  data?: readonly TrackContent[];
+export function useTrackListPreset<TData extends TrackContent>(args: {
+  data?: readonly TData[];
   trackSource: PlayFromSource;
   isPending?: boolean;
+  /**
+   * Corresponds to the `percentDeduction` argument in `useGetColumn()`.
+   * Defaults to `TABLET_SIDEBAR_WIDTH_RATIO`.
+   */
+  contentWidthDeduction?: number;
 }) {
+  const { count } = useGetColumn({
+    ...ColumnPresets.listLayout,
+    //? Defaults to the width of the "artwork + metadata" section on the
+    //? tablet layout of the "Current List" screen.
+    percentDeduction: args.contentWidthDeduction ?? TABLET_SIDEBAR_WIDTH_RATIO,
+  });
   // @ts-expect-error - Readonly is fine.
   const data = useTrackListPlayingIndication(args.trackSource, args.data);
+
   return useMemo(
     () => ({
+      numColumns: count,
       estimatedItemSize: 56, // 48px Height + 8px Margin Bottom
       data,
       keyExtractor: ({ id }) => id,
       renderItem: ({ item }) => (
-        <Track {...item} trackSource={args.trackSource} className="mb-2" />
+        <Track {...item} trackSource={args.trackSource} className="mx-1 mb-2" />
       ),
       ListEmptyComponent: (
         <ContentPlaceholder
@@ -176,9 +191,9 @@ export function useTrackListPreset(args: {
           errMsgKey="err.msg.noTracks"
         />
       ),
-      className: "-mb-2",
+      className: "-mx-1 -mb-2",
     }),
-    [args, data],
-  ) satisfies LegendListProps<TrackContent>;
+    [args, count, data],
+  ) satisfies LegendListProps<TData>;
 }
 //#endregion

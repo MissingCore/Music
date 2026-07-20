@@ -22,6 +22,7 @@ import Animated, {
 import type { FileNode } from "~/db/schema";
 
 import { useFolderContent } from "~/data/folder/queries";
+import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
 
 import { NScrollListLayout } from "~/navigation/layouts/NScrollLayout";
 import { FoldersViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
@@ -106,16 +107,17 @@ export default function Folders({
   );
   //#endregion
 
+  const listLayout = useGetColumn(ColumnPresets.listLayout);
   const renderItem = useCallback(
     ({ item }: { item: MergedData }) =>
       isTrackContent(item) ? (
-        <Track {...item} trackSource={trackSource} className="mb-2" />
+        <Track {...item} trackSource={trackSource} className="mx-1 mb-2" />
       ) : (
         <SearchResult
           type="folder"
           title={item.name}
           onPress={() => setDirSegments((prev) => [...prev, item.name])}
-          className="mb-2 pr-4"
+          className="mx-1 mb-2 pr-4"
         />
       ),
     [trackSource, setDirSegments],
@@ -125,6 +127,7 @@ export default function Folders({
     <NScrollListLayout
       listRef={listRef}
       titleKey="term.folders"
+      numColumns={listLayout.count}
       estimatedItemSize={56} // 48px Height + 8px Margin Bottom
       data={renderedData}
       keyExtractor={keyExtractor}
@@ -139,7 +142,7 @@ export default function Folders({
         />
       }
       estimatedSubheaderHeight={56}
-      className="-mb-2"
+      className="-mx-1 -mb-2"
     />
   );
 }

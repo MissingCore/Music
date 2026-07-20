@@ -16,7 +16,7 @@ export function ArtworkSlot(props: {
   trackId: string;
 }) {
   const showLyrics = useLyricStore((s) => s.visible);
-  const { containerProps, size } = useArtworkSize();
+  const { containerProps, size, dimensions } = useArtworkSize();
 
   return (
     <View {...containerProps} className="flex-1">
@@ -24,7 +24,11 @@ export function ArtworkSlot(props: {
         pointerEvents={showLyrics ? "none" : undefined}
         className="flex-1 items-center justify-center"
       >
-        <ArtworkPicker source={props.artwork} size={size} />
+        <ArtworkPicker
+          source={props.artwork}
+          size={size}
+          dimensions={dimensions}
+        />
       </View>
       {showLyrics ? (
         <LyricsOverlay size={size} trackId={props.trackId} />
@@ -35,6 +39,7 @@ export function ArtworkSlot(props: {
 
 //#region Helpers
 function useArtworkSize() {
+  const [dimensions, setDimensions] = useState({ height: 0, width: 0 });
   const [size, setSize] = useState(0);
   const containerRef = useRef<View>(null);
 
@@ -43,6 +48,7 @@ function useArtworkSize() {
     containerRef.current?.measure((_x, _y, width, height) => {
       // Exclude the padding around the image depending on which measurement is used.
       setSize(Math.min(height, width) - 32);
+      setDimensions({ height, width });
     });
   }, []);
 
@@ -52,11 +58,15 @@ function useArtworkSize() {
       onLayout: (e: LayoutChangeEvent) => {
         const { height, width } = e.nativeEvent.layout;
         setSize(Math.min(height, width) - 32);
+        setDimensions({ height, width });
       },
     }),
     [],
   );
 
-  return useMemo(() => ({ containerProps, size }), [containerProps, size]);
+  return useMemo(
+    () => ({ containerProps, size, dimensions }),
+    [containerProps, size, dimensions],
+  );
 }
 //#endregion

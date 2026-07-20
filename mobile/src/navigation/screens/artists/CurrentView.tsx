@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { useArtistDetails, useArtistTracks } from "~/data/artist/queries";
 import type { ArtistAlbum } from "~/data/artist/types";
-import { useGetColumn } from "~/hooks/useGetColumn";
+import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
 
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
 import { ArtistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
@@ -16,6 +16,7 @@ import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
 import { FlatList } from "~/components/Base/List";
+import { HorizontalScrollGradient } from "~/components/Gradient";
 import { SafeContainer } from "~/components/SafeContainer";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { TEm } from "~/components/Typography/StyledText";
@@ -87,38 +88,34 @@ export default function Artist({
  */
 function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
   const navigation = useNavigation();
-  const { width } = useGetColumn({
-    cols: 1,
-    gap: 0,
-    gutters: 32,
-    minWidth: 100,
-  });
+  const { width } = useGetColumn(ColumnPresets.horizontalList);
 
   if (!albums) return null;
   return (
     <>
       <TEm textKey="term.albums" className="mb-2" />
-      <FlatList
-        horizontal
-        data={albums}
-        keyExtractor={({ id }) => id}
-        renderItem={({ item, index }) => (
-          <MediaCard
-            type="album"
-            id={item.id}
-            size={width}
-            source={item.artwork}
-            title={item.name}
-            description={item.year}
-            onPress={() =>
-              navigation.navigate("Album", { id: item.id }, { pop: true })
-            }
-            className={index > 0 ? "ml-3" : undefined}
-          />
-        )}
-        className="-mx-4"
-        contentContainerClassName="px-4"
-      />
+      <HorizontalScrollGradient gutter={16}>
+        <FlatList
+          horizontal
+          data={albums}
+          keyExtractor={({ id }) => id}
+          renderItem={({ item, index }) => (
+            <MediaCard
+              type="album"
+              id={item.id}
+              size={width}
+              source={item.artwork}
+              title={item.name}
+              description={item.year}
+              onPress={() =>
+                navigation.navigate("Album", { id: item.id }, { pop: true })
+              }
+              className={index > 0 ? "ml-3" : undefined}
+            />
+          )}
+          contentContainerClassName="px-4"
+        />
+      </HorizontalScrollGradient>
       <TEm textKey="term.tracks" className="mt-4 mb-2" />
     </>
   );

@@ -7,6 +7,8 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { useAlbumForScreen, useFavoriteAlbum } from "~/data/album/queries";
+import { TABLET_SIDEBAR_WIDTH_RATIO } from "~/hooks/useAlternativeLayout";
+import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
 
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
 import { AlbumArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
@@ -28,12 +30,18 @@ import {
 
 type Props = StaticScreenProps<{ id: string }>;
 
+const ColumnLayoutConfig = {
+  ...ColumnPresets.listLayout,
+  percentDeduction: TABLET_SIDEBAR_WIDTH_RATIO,
+};
+
 export default function Album({
   route: {
     params: { id: albumId },
   },
 }: Props) {
   const { t } = useTranslation();
+  const listLayout = useGetColumn(ColumnLayoutConfig);
   const bottomOffset = useBottomActionsOffset(16);
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
@@ -102,11 +110,12 @@ export default function Album({
         listSource={trackSource}
         imageSource={data.imageSource}
         // FlatList Props
+        numColumns={listLayout.count}
         data={formattedData}
         keyExtractor={(item) => (isNumber(item) ? `${item}` : item.id)}
         renderItem={({ item, index }) =>
           isNumber(item) ? (
-            <Em className={cn("mb-2", { "mt-2": index > 0 })}>
+            <Em className={cn("mx-1 mb-2", { "mt-2": index > 0 })}>
               {t("term.disc", { count: item })}
             </Em>
           ) : (
@@ -114,11 +123,11 @@ export default function Album({
               {...item}
               trackSource={trackSource}
               LeftElement={<TrackNumber track={item.track} />}
-              className="mb-2"
+              className="mx-1 mb-2"
             />
           )
         }
-        className="-mb-2"
+        className="-mx-1 -mb-2"
         contentContainerStyle={{ paddingBottom: bottomOffset }}
       />
     </>

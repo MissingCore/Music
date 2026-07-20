@@ -65,7 +65,6 @@ import { TrackMultiSelectListeners } from "~/modules/media/multiSelect/component
 import { BottomActions } from "./components/BottomActions";
 import { DeferredRender } from "./components/DeferredRender";
 import { TopAppBar } from "./components/TopAppBar";
-import { NowPlayingTopAppBar } from "./screens/now-playing/components/TopAppBar";
 
 //#region Root Screens
 type TabState = EventArg<
@@ -262,12 +261,11 @@ export const RootStack = createNativeStackNavigator({
       },
       layout: ({ children }) => children,
       options: {
+        headerShown: false,
         presentation: "formSheet",
         sheetCornerRadius: 24,
         sheetElevation: 0,
         sheetShouldOverflowTopInset: true,
-        header: NowPlayingTopAppBar,
-        headerTransparent: true,
       },
     },
     Search,
@@ -278,7 +276,7 @@ export const RootStack = createNativeStackNavigator({
     Upcoming: {
       screen: Upcoming,
       options: {
-        title: "term.upcoming",
+        headerShown: false,
         presentation: "formSheet",
         sheetCornerRadius: 24,
         sheetElevation: 0,
