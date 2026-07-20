@@ -95,17 +95,13 @@ export default function Upcoming({ renderAsScreen = true }) {
   );
   //#endregion
 
-  if (isPending || error || cachedData.length === 0) {
-    return (
-      <SafeContainer additionalTopOffset={56} className="flex-1">
-        <PagePlaceholder isPending={isPending || cachedData.length === 0} />
-      </SafeContainer>
-    );
-  }
+  const isDataPending = isPending || error || cachedData.length === 0;
 
   return (
     <SafeContainer
-      className={cn("flex-1", { "max-w-96 min-w-80": !renderAsScreen })}
+      className={cn("flex-1", {
+        "max-w-96 min-w-80 bg-surfaceContainerLow": !renderAsScreen,
+      })}
     >
       <TopAppBarTemplate
         title="term.upcoming"
@@ -128,16 +124,20 @@ export default function Upcoming({ renderAsScreen = true }) {
           />
         }
       />
-      <DragList
-        initialScrollIndex={listIndex}
-        estimatedItemSize={56}
-        data={modifiedData}
-        keyExtractor={keyExtractor}
-        renderItem={renderItem}
-        onReordered={onMove}
-        className="-mb-2"
-        contentContainerClassName="p-4"
-      />
+      {isDataPending ? (
+        <PagePlaceholder isPending={isPending || cachedData.length === 0} />
+      ) : (
+        <DragList
+          initialScrollIndex={listIndex}
+          estimatedItemSize={56}
+          data={modifiedData}
+          keyExtractor={keyExtractor}
+          renderItem={renderItem}
+          onReordered={onMove}
+          className="-mb-2"
+          contentContainerClassName="p-4"
+        />
+      )}
     </SafeContainer>
   );
 }
