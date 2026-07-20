@@ -1,6 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { useMemo } from "react";
 import { useWindowDimensions } from "react-native";
 
 //#region useGetColumn
@@ -39,19 +40,23 @@ export function useGetColumn({
 
   const width = screenWidth * (1 - percentDeduction);
   const initColSize = getColSize(width, cols, gap, gutters);
-  // If no `minWidth` is provided, don't do CSS Grid `auto-fill` behavior.
-  if (!minWidth) return { count: cols, width: initColSize };
-  // Get the number of excess space used in each column
-  const excessSpace = cols * (initColSize - minWidth);
-  // If `excessSpace` is negative or is less than adding another column
-  // w/ gap, we do `auto-fill` behavior.
-  if (excessSpace <= minWidth + gap) return { count: cols, width: initColSize };
-  const newColCount = Math.floor(excessSpace / (minWidth + gap)) + cols;
 
-  return {
-    count: newColCount,
-    width: getColSize(width, newColCount, gap, gutters),
-  };
+  return useMemo(() => {
+    // If no `minWidth` is provided, don't do CSS Grid `auto-fill` behavior.
+    if (!minWidth) return { count: cols, width: initColSize };
+    // Get the number of excess space used in each column
+    const excessSpace = cols * (initColSize - minWidth);
+    // If `excessSpace` is negative or is less than adding another column
+    // w/ gap, we do `auto-fill` behavior.
+    if (excessSpace <= minWidth + gap)
+      return { count: cols, width: initColSize };
+    const newColCount = Math.floor(excessSpace / (minWidth + gap)) + cols;
+
+    return {
+      count: newColCount,
+      width: getColSize(width, newColCount, gap, gutters),
+    };
+  }, [width, cols, gap, gutters, minWidth, initColSize]);
 }
 //#endregion
 
