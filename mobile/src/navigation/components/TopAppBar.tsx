@@ -20,25 +20,44 @@ export function TopAppBar({ options, route }: NativeStackHeaderProps) {
 
   return (
     <SafeContainer>
-      <View className="h-14 flex-row items-center justify-between gap-4 px-2 py-1">
-        <FilledIconButton
-          icon="arrow-back"
-          accessibilityLabel={t("form.back")}
-          onPress={() => navigation.goBack()}
-          disabled={!!options.headerLeft}
-          className="rtl:rotate-180"
-        />
-
-        {title ? (
-          <TEm textKey={title} numberOfLines={1} className="shrink text-base" />
-        ) : null}
-
-        {options.headerRight ? (
-          options.headerRight({ canGoBack: true })
-        ) : (
-          <View pointerEvents="none" className="size-10" />
-        )}
-      </View>
+      <TopAppBarTemplate
+        title={title}
+        headerLeftAction={
+          <FilledIconButton
+            icon="arrow-back"
+            accessibilityLabel={t("form.back")}
+            onPress={() => navigation.goBack()}
+            disabled={!!options.headerLeft}
+            className="rtl:rotate-180"
+          />
+        }
+        headerRightAction={options.headerRight?.({ canGoBack: true })}
+      />
     </SafeContainer>
   );
+}
+
+/** `<TopAppBar />` component without the safe-area handling. */
+export function TopAppBarTemplate({
+  title,
+  headerLeftAction,
+  headerRightAction,
+}: {
+  title?: ParseKeys;
+  headerLeftAction?: React.ReactNode;
+  headerRightAction?: React.ReactNode;
+}) {
+  return (
+    <View className="h-14 flex-row items-center justify-between gap-4 px-2 py-1">
+      {headerLeftAction || <HeaderActionPlaceholder />}
+      {title ? (
+        <TEm textKey={title} numberOfLines={1} className="shrink text-base" />
+      ) : null}
+      {headerRightAction || <HeaderActionPlaceholder />}
+    </View>
+  );
+}
+
+function HeaderActionPlaceholder() {
+  return <View pointerEvents="none" className="size-10" />;
 }

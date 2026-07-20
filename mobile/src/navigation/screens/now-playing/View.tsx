@@ -11,11 +11,14 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
 import { toggleLyricVisibility } from "~/modules/lyric/core/actions";
+import { useAlternativeLayout } from "~/hooks/useAlternativeLayout";
 
 import { Back } from "~/navigation/components/Back";
+import Upcoming from "./UpcomingView";
 import { SeekbarContext } from "./helpers/Seekbar.context";
 import { ArtworkSlot } from "./components/ArtworkSlot";
 import { SeekBar } from "./components/SeekBar";
+import { NowPlayingTopAppBar } from "./components/TopAppBar";
 import { PlaybackOptionsSheet } from "./sheets/PlaybackOptionsSheet";
 import { SleepTimerSheet } from "./sheets/SleepTimerSheet";
 import { useSleepTimerStore } from "./sheets/SleepTimerSheet/store";
@@ -38,26 +41,32 @@ import { PlaybackControlGestureWrapper } from "./components/PlaybackControlGestu
 import { FavoriteButton } from "~/modules/media/components/Track";
 
 export default function NowPlaying() {
+  const isLargeScreen = useAlternativeLayout();
   const track = usePlaybackStore((s) => s.activeTrack);
+
   if (!track) return <Back />;
   return (
-    <SeekbarContext>
-      <SafeContainer additionalTopOffset={56} className="flex-1 gap-8">
-        <PlaybackControlGestureWrapper>
-          <ArtworkSlot artwork={track.artwork} trackId={track.id} />
-          <View className="-mt-8 gap-6 px-4">
-            <Metadata track={track} />
-            <SeekBar
-              id={track.id}
-              uri={track.uri}
-              trackLength={track.duration}
-            />
-            <PlaybackControls />
-          </View>
-          <BottomAppBar trackId={track.id} />
-        </PlaybackControlGestureWrapper>
+    <View className="flex-1 flex-row">
+      <SafeContainer className="flex-1 gap-8">
+        <NowPlayingTopAppBar />
+        <SeekbarContext>
+          <PlaybackControlGestureWrapper>
+            <ArtworkSlot artwork={track.artwork} trackId={track.id} />
+            <View className="-mt-8 gap-6 px-4">
+              <Metadata track={track} />
+              <SeekBar
+                id={track.id}
+                uri={track.uri}
+                trackLength={track.duration}
+              />
+              <PlaybackControls />
+            </View>
+            <BottomAppBar trackId={track.id} />
+          </PlaybackControlGestureWrapper>
+        </SeekbarContext>
       </SafeContainer>
-    </SeekbarContext>
+      {isLargeScreen ? <Upcoming renderAsScreen={false} /> : null}
+    </View>
   );
 }
 
@@ -131,6 +140,7 @@ function PlaybackControls() {
 function BottomAppBar({ trackId }: { trackId: string }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const isLargeScreen = useAlternativeLayout();
   const sleepTimerSheetRef = useSheetRef();
   const playbackOptionsSheetRef = useSheetRef();
 
@@ -151,12 +161,14 @@ function BottomAppBar({ trackId }: { trackId: string }) {
             onPress={toggleLyricVisibility}
             size="lg"
           />
-          <FilledIconButton
-            icon="view-agenda"
-            accessibilityLabel={t("term.upcoming")}
-            onPress={() => navigation.navigate("Upcoming")}
-            size="lg"
-          />
+          {!isLargeScreen ? (
+            <FilledIconButton
+              icon="view-agenda"
+              accessibilityLabel={t("term.upcoming")}
+              onPress={() => navigation.navigate("Upcoming")}
+              size="lg"
+            />
+          ) : null}
           <FilledIconButton
             icon="more-horiz"
             accessibilityLabel={t("feat.playback.extra.options")}

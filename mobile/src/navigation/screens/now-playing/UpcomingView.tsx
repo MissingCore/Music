@@ -3,6 +3,7 @@
 
 import type { DragListRenderItemInfo } from "@missingcore/ui/drag-list";
 import { DragList, useDragListState } from "@missingcore/ui/drag-list";
+import { useNavigation } from "@react-navigation/native";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { inArray } from "drizzle-orm";
 import { memo, useCallback, useMemo, useRef, useState } from "react";
@@ -15,20 +16,22 @@ import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
-import { ScreenOptions } from "~/navigation/components/ScreenOptions";
+import { TopAppBarTemplate } from "~/navigation/components/TopAppBar";
 
 import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
 import { wait } from "~/utils/promise";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { RemovableItem } from "~/components/List/RemovableItem";
+import { SafeContainer } from "~/components/SafeContainer";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { RepeatModes } from "~/stores/Playback/constants";
 import { extractTrackId } from "~/stores/Playback/utils";
 
-export default function Upcoming() {
+export default function Upcoming({ renderAsScreen = true }) {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const queryClient = useQueryClient();
   const { isPending, error, data } = useQueueTracks();
   const listIndex = usePlaybackStore((s) => s.queuePosition);
@@ -93,20 +96,37 @@ export default function Upcoming() {
   //#endregion
 
   if (isPending || error || cachedData.length === 0) {
-    return <PagePlaceholder isPending={isPending || cachedData.length === 0} />;
+    return (
+      <SafeContainer additionalTopOffset={56} className="flex-1">
+        <PagePlaceholder isPending={isPending || cachedData.length === 0} />
+      </SafeContainer>
+    );
   }
 
   return (
-    <>
-      <ScreenOptions
-        headerRight={() => (
+    <SafeContainer
+      className={cn("flex-1", { "max-w-96 min-w-80": !renderAsScreen })}
+    >
+      <TopAppBarTemplate
+        title="term.upcoming"
+        headerLeftAction={
+          renderAsScreen ? (
+            <FilledIconButton
+              icon="arrow-back"
+              accessibilityLabel={t("form.back")}
+              onPress={() => navigation.goBack()}
+              className="rtl:rotate-180"
+            />
+          ) : undefined
+        }
+        headerRightAction={
           <FilledIconButton
             icon="cached"
             accessibilityLabel={t("form.reset")}
             onPress={onSynchronizeQueue}
             disabled={isSynchronizing}
           />
-        )}
+        }
       />
       <DragList
         initialScrollIndex={listIndex}
@@ -118,7 +138,7 @@ export default function Upcoming() {
         className="-mb-2"
         contentContainerClassName="p-4"
       />
-    </>
+    </SafeContainer>
   );
 }
 

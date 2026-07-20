@@ -15,7 +15,6 @@ import { getMediaLinkContext } from "~/navigation/utils/router";
 import { Pressable } from "~/components/Base/Pressable";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { Marquee } from "~/components/Marquee";
-import { SafeContainer } from "~/components/SafeContainer";
 import { StyledText } from "~/components/Typography/StyledText";
 
 /**
@@ -23,17 +22,6 @@ import { StyledText } from "~/components/Typography/StyledText";
  * the list being played without setting the `title` prop.
  */
 export function NowPlayingTopAppBar() {
-  return (
-    <SafeContainer>
-      <View className="h-14 flex-row items-center justify-between gap-4 px-2 py-1">
-        <AppBarContent />
-      </View>
-    </SafeContainer>
-  );
-}
-
-/** Conditionally render the header content depending on the design used. */
-function AppBarContent() {
   const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const playingSource = usePlaybackStore((s) => s.playingFrom);
@@ -47,7 +35,7 @@ function AppBarContent() {
 
   if (usedDesign === "vinylOld") return null;
   return (
-    <>
+    <View className="z-100 -mb-8 h-14 flex-row items-center justify-between gap-4 px-2 py-1">
       <FilledIconButton
         icon="arrow-back"
         accessibilityLabel={t("form.back")}
@@ -71,6 +59,6 @@ function AppBarContent() {
         </Marquee>
       </Pressable>
       <View className="size-10" />
-    </>
+    </View>
   );
 }
