@@ -121,7 +121,7 @@ function GridColumnSizeSetting() {
         initValue={gridColumnSize}
         liveValue={cachedValue}
         {...GridColumnSizeConfig.bound}
-        onChange={PreferenceSetters.setGridColumnSize}
+        onComplete={PreferenceSetters.setGridColumnSize}
         displayedValue={String(_gridColumnSize)}
       />
       <StyledText dim className="-mt-2">
