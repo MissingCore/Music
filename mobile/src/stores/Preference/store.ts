@@ -94,8 +94,6 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
       track: true,
     },
 
-    gridColumnSize: 144,
-
     minAlbumLength: 0,
 
     miniplayerGestures: false,

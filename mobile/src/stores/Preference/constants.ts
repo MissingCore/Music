@@ -49,9 +49,6 @@ export interface PreferenceStore {
   /** Visibility of the tabs on the Home screen. */
   tabsVisibility: Record<Tab, boolean>;
 
-  /** Minimum size of grid column. */
-  gridColumnSize: number;
-
   /** Minimum number of tracks for album to show in Albums screen. */
   minAlbumLength: number;
 

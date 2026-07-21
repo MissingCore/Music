@@ -4,7 +4,7 @@
 import { useMemo } from "react";
 import { useWindowDimensions } from "react-native";
 
-import { usePreferenceStore } from "~/stores/Preference/store";
+import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 
 //#region useGetColumn
 /** Determine the width a column will take up based on parameters. */
@@ -123,7 +123,7 @@ interface ColumnOptions {
 /** Derive values to be passed to `calculateColumnParameters()`. */
 function useDerviedArgs(args: ColumnOptions = {}) {
   const { width: screenWidth } = useWindowDimensions();
-  const gridColumnSize = usePreferenceStore((s) => s.gridColumnSize);
+  const gridColumnSize = useViewPreferenceStore((s) => s.gridSize);
 
   const width = screenWidth * (1 - (args.percentDeduction || 0));
   const minWidth = args.minWidth ?? gridColumnSize;

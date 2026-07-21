@@ -8,7 +8,6 @@ import i18next from "~/modules/i18n";
 import { preferenceStore } from "../store";
 import type { NowPlayingDesign } from "../constants";
 import {
-  GridColumnSizeConfig,
   MinAlbumLengthConfig,
   PlaybackDelayConfig,
   resolveLanguageConfigs,
@@ -27,12 +26,6 @@ import {
 
 export function setAccentFont(accentFont: Font) {
   preferenceStore.setState({ accentFont });
-}
-
-export function setGridColumnSize(gridColumnSize: number) {
-  preferenceStore.setState({
-    gridColumnSize: GridColumnSizeConfig.clamp(gridColumnSize),
-  });
 }
 
 export async function setLanguage(languageCode: string) {

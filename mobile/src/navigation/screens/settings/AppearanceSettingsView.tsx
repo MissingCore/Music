@@ -4,24 +4,29 @@
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 import { useAnimatedReaction, useSharedValue } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
-import {
-  PreferenceSetters,
-  PreferenceTogglers,
-} from "~/stores/Preference/actions";
-import { GridColumnSizeConfig } from "~/stores/Preference/utils";
+import { PreferenceTogglers } from "~/stores/Preference/actions";
+import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
+import { ViewPreferenceSetters } from "~/stores/ViewPreference/actions";
+import { GridColumnSizeConfig } from "~/stores/ViewPreference/utils";
 import { useGridLayoutConfig } from "~/hooks/useGetColumn";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { TabOrderSheet } from "./sheets/TabOrderSheet";
 
+import { Divider } from "~/components/Divider";
 import { LabeledSlider } from "~/components/Form/Slider.variant";
 import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import {
+  StyledText,
+  TEm,
+  TStyledText,
+} from "~/components/Typography/StyledText";
 import { Switch } from "~/components/UI/Switch";
 import { getFontDisplayName } from "~/modules/customization/font/utils";
 
@@ -95,35 +100,50 @@ export default function AppearanceSettings() {
   );
 }
 
+//#region Grid Column Size Settings
 function GridColumnSizeSetting() {
-  const { t } = useTranslation();
-  const gridColumnSize = usePreferenceStore((s) => s.gridColumnSize);
-  const cachedValue = useSharedValue(gridColumnSize);
-  const [_gridColumnSize, _setGridColumnSize] = useState(gridColumnSize);
-
-  useAnimatedReaction(
-    () => cachedValue.get(),
-    (currVal) => scheduleOnRN(_setGridColumnSize, currVal),
-  );
-
-  const { count } = useGridLayoutConfig({ minWidth: _gridColumnSize });
-
   return (
-    <SegmentedList.CustomItem className="gap-4 p-4">
+    <SegmentedList.CustomItem className="gap-6 p-4">
       <TStyledText
         textKey="feat.modalViewPreference.extra.gridColumnSize"
         className="text-sm"
       />
-      <LabeledSlider
-        initValue={gridColumnSize}
-        liveValue={cachedValue}
-        {...GridColumnSizeConfig.bound}
-        onComplete={PreferenceSetters.setGridColumnSize}
-        displayedValue={String(_gridColumnSize)}
-      />
-      <StyledText dim className="-mt-2">
-        {t("feat.modalViewPreference.extra.gridColumnCount", { count })}
-      </StyledText>
+      <Divider className="-my-2" />
+      <ColumnSizeSlider field="grid" />
+      <ColumnSizeSlider field="compactGrid" />
     </SegmentedList.CustomItem>
   );
 }
+
+function ColumnSizeSlider({ field }: { field: "grid" | "compactGrid" }) {
+  const fieldName = `${field}Size` as const;
+
+  const { t } = useTranslation();
+  const columnSize = useViewPreferenceStore((s) => s[fieldName]);
+  const cachedValue = useSharedValue(columnSize);
+  const [_columnSize, _setColumnSize] = useState(columnSize);
+
+  useAnimatedReaction(
+    () => cachedValue.get(),
+    (currVal) => scheduleOnRN(_setColumnSize, currVal),
+  );
+
+  const { count } = useGridLayoutConfig({ minWidth: _columnSize });
+
+  return (
+    <View className="gap-2">
+      <TEm textKey={`feat.modalViewPreference.extra.${field}`} />
+      <LabeledSlider
+        initValue={columnSize}
+        liveValue={cachedValue}
+        {...GridColumnSizeConfig.bound}
+        onComplete={ViewPreferenceSetters.setColumnSize(fieldName)}
+        displayedValue={String(_columnSize)}
+      />
+      <StyledText dim className="-mt-3">
+        {t("feat.modalViewPreference.extra.gridColumnCount", { count })}
+      </StyledText>
+    </View>
+  );
+}
+//#endregion
