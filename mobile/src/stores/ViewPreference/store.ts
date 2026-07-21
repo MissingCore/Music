@@ -14,6 +14,9 @@ export const viewPreferenceStore = createPersistedStore<ViewPreferenceStore>(
       set({ _hasHydrated: true });
     },
 
+    gridSize: 144,
+    compactGridSize: 72,
+
     albumLayout: "grid",
     albumIsAsc: true,
     albumOrder: "name",
