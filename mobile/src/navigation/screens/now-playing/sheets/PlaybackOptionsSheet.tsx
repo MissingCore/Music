@@ -19,7 +19,7 @@ import { AppearanceSheet } from "./AppearanceSheet";
 import { Pressable } from "~/components/Base/Pressable";
 import { ScrollView } from "~/components/Base/ScrollView";
 import { NumberStepper } from "~/components/Form/NumberStepper";
-import { CachedSlider } from "~/components/Form/Slider";
+import { NothingSlider } from "~/components/Form/Slider.variant";
 import { SegmentedList } from "~/components/List/Segmented";
 import { DetachedSheet } from "~/components/Sheet";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
@@ -86,7 +86,7 @@ export function PlaybackOptionsSheet(props: {
             className="py-2 pl-2"
             _overflow={false}
           />
-          <CachedSlider
+          <NothingSlider
             initValue={volume}
             getInteractionStatus={setStopDrag}
             {...VolumeSliderOptions}
@@ -141,7 +141,6 @@ const VolumeSliderOptions = {
   min: 0,
   max: 1,
   step: 0.01,
-  thickness: 48,
   onChange: (volume: number) => {
     playbackStore.setState({ volume });
     AudioBrowser.setVolume(volume);

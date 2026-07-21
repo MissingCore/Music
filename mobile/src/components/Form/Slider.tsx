@@ -1,10 +1,8 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import type { ParseKeys } from "i18next";
 import type { Dispatch, SetStateAction } from "react";
-import { memo, useCallback, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { memo, useCallback, useMemo, useRef } from "react";
 import type { LayoutChangeEvent, ViewStyle } from "react-native";
 import { I18nManager, View } from "react-native";
 import {
@@ -16,15 +14,11 @@ import {
 import type { SharedValue } from "react-native-reanimated";
 import Animated, {
   clamp,
-  useAnimatedReaction,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
 } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
-
-import type { SupportedIconName } from "~/resources/icons";
-import { Icon } from "~/resources/icons";
 
 import { Colors } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
@@ -32,7 +26,6 @@ import { cn } from "~/lib/style";
 import { countDecimals } from "~/utils/number";
 import type { AppColor } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
-import { Em } from "../Typography/StyledText";
 
 const ACTIVE_OFFSET: [number, number] = [-10, 10];
 
@@ -71,11 +64,6 @@ export const CachedSlider = memo(function CachedSlider(props: {
   progressColor?: AppColor;
   /** If the progress indicator will have a rounded end stop. */
   roundedEndStop?: boolean;
-  /**
-   * Optionally display an overlay on top of the slider. Should be used
-   * with tall sliders.
-   */
-  overlay?: SliderOverlayProps;
   /** How much we should debounce calling `onChange` based on `step`. Defaults to `5`. */
   _debounceMultiplier?: number;
   /** Add additional styles to the slider wrapper. */
@@ -300,14 +288,6 @@ export const CachedSlider = memo(function CachedSlider(props: {
             { "flex-row-reverse": shouldInvertStyle },
           )}
         >
-          {props.overlay && !props.vertical ? (
-            <SliderOverlay
-              {...props.overlay}
-              value={currVal}
-              inverted={shouldInvertStyle}
-            />
-          ) : null}
-
           <Animated.View
             style={toMinProgressWrapperStyle}
             className={cn("justify-end", {
@@ -360,48 +340,6 @@ export const CachedSlider = memo(function CachedSlider(props: {
     </GestureDetector>
   );
 });
-
-//#region Overlay
-type SliderOverlayProps = {
-  accessibilityLabelKey: ParseKeys;
-  icon: SupportedIconName;
-  formatValue: (val: number) => string;
-};
-
-const SliderOverlay = memo(function SliderOverlay(
-  props: SliderOverlayProps & {
-    value: SharedValue<number>;
-    inverted?: boolean;
-  },
-) {
-  const { t } = useTranslation();
-  const [currentValue, setCurrentValue] = useState(() => props.value.get());
-
-  useAnimatedReaction(
-    () => props.value.get(),
-    (currVal) => scheduleOnRN(setCurrentValue, currVal),
-  );
-
-  const formattedValue = props.formatValue(currentValue);
-
-  return (
-    <View
-      accessible
-      accessibilityLabel={`${t(props.accessibilityLabelKey)}: ${formattedValue}`}
-      pointerEvents="none"
-      className={cn(
-        "absolute top-1/2 z-10 w-full -translate-y-1/2 flex-row items-center justify-center gap-1",
-        { "flex-row-reverse": props.inverted },
-      )}
-    >
-      <Icon name={props.icon} size={20} />
-      <Em className={cn("min-w-10 text-sm", { "text-right": props.inverted })}>
-        {formattedValue}
-      </Em>
-    </View>
-  );
-});
-//#endregion
 
 //#region Utils
 /** Round number to nearest step. */
