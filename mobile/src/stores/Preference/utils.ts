@@ -17,6 +17,13 @@ export async function resolveLanguageConfigs(
   I18nManager.forceRTL(forceLTR ? false : i18next.dir() === "rtl");
 }
 
+export const GridColumnSizeConfig = {
+  bound: { min: 50, max: 200 },
+  clamp(value: number) {
+    return clamp(this.bound.min, value, this.bound.max);
+  },
+};
+
 export const MinAlbumLengthConfig = {
   bound: { min: 1, max: 20 },
   clamp(value: number) {

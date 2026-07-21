@@ -8,6 +8,7 @@ import i18next from "~/modules/i18n";
 import { preferenceStore } from "../store";
 import type { NowPlayingDesign } from "../constants";
 import {
+  GridColumnSizeConfig,
   MinAlbumLengthConfig,
   PlaybackDelayConfig,
   resolveLanguageConfigs,
@@ -81,6 +82,12 @@ export async function setTheme(theme: DefaultTheme | (string & {})) {
       activeCustomTheme: customTheme,
     });
   }
+}
+
+export function updateGridColumnSizeByDelta(delta: number) {
+  preferenceStore.setState((prev) => ({
+    gridColumnSize: GridColumnSizeConfig.clamp(prev.gridColumnSize + delta),
+  }));
 }
 
 export function updateMinAlbumLengthByDelta(delta: number) {
