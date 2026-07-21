@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { useArtistDetails, useArtistTracks } from "~/data/artist/queries";
 import type { ArtistAlbum } from "~/data/artist/types";
-import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
+import { useHorizontalListLayoutConfig } from "~/hooks/useLayoutConfigs";
 
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
 import { ArtistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
@@ -88,7 +88,7 @@ export default function Artist({
  */
 function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
   const navigation = useNavigation();
-  const { width } = useGetColumn(ColumnPresets.horizontalList);
+  const { width } = useHorizontalListLayoutConfig();
 
   if (!albums) return null;
   return (
@@ -110,7 +110,7 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
               onPress={() =>
                 navigation.navigate("Album", { id: item.id }, { pop: true })
               }
-              className={index > 0 ? "ml-3" : undefined}
+              className={index > 0 ? "ml-2" : undefined}
             />
           )}
           contentContainerClassName="px-4"

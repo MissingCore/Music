@@ -4,6 +4,15 @@
 import { viewPreferenceStore } from "../store";
 import type { LayoutOption, ScreenSortOptions } from "../constants";
 import type { MutableViewLayout, MutableViewOrder } from "../types";
+import { GridColumnSizeConfig } from "../utils";
+
+export function setColumnSize(key: "gridSize" | "compactGridSize") {
+  return (columnSize: number) => {
+    viewPreferenceStore.setState({
+      [key]: GridColumnSizeConfig.clamp(columnSize),
+    });
+  };
+}
 
 export function setLayout(screen: MutableViewLayout, layout: LayoutOption) {
   viewPreferenceStore.setState({ [`${screen}Layout`]: layout });

@@ -4,14 +4,15 @@
 import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
 
-import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
+import { useGridLayoutConfig } from "~/hooks/useLayoutConfigs";
+
 import { getMediaLinkContext } from "~/navigation/utils/router";
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { cn } from "~/lib/style";
 import type { LegendListProps } from "~/components/Base/LegendList";
 import { Pressable } from "~/components/Base/Pressable";
 import { StyledText } from "~/components/Typography/StyledText";
-import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import type { MediaCardContent, MediaCardProps } from "./MediaCard.type";
 import { MediaImage } from "./MediaImage";
 
@@ -55,13 +56,13 @@ export function useMediaCardListPreset(
   },
 ) {
   const navigation = useNavigation();
-  const { count, width } = useGetColumn(ColumnPresets.gridLayout);
+  const { count, width } = useGridLayoutConfig();
 
   return useMemo(
     () => ({
       numColumns: count,
-      // ~40px for text content under `<MediaImage />` + 12px Margin Bottom
-      estimatedItemSize: width + 40 + 12,
+      // ~40px for text content under `<MediaImage />` + 8px Margin Bottom
+      estimatedItemSize: width + 40 + 8,
       data: args.data,
       // Use this as the key instead of just `id` in case `data` is mixed.
       keyExtractor: ({ id, type }) => `${type}_${id}`,
@@ -74,7 +75,7 @@ export function useMediaCardListPreset(
           {...item}
           size={width}
           onPress={() => navigation.navigate(...getMediaLinkContext(item))}
-          className="mx-1.5 mb-3"
+          className="mx-1 mb-2"
         />
       ),
       ListEmptyComponent: (
@@ -84,7 +85,7 @@ export function useMediaCardListPreset(
         />
       ),
       ListHeaderComponentStyle: { paddingHorizontal: 8 },
-      className: "-mx-1.5 -mb-3",
+      className: "-mx-1 -mb-2",
     }),
     [args, navigation, count, width],
   ) satisfies LegendListProps<MediaCardContent>;

@@ -10,9 +10,9 @@ import { sessionStore, useSessionStore } from "~/stores/Session/store";
 
 import { capitalize } from "~/utils/string";
 import { Button } from "~/components/Form/Button";
+import { LabeledSlider } from "~/components/Form/Slider.variant";
 import { SegmentedList } from "~/components/List/Segmented";
 import { Em, TStyledText } from "~/components/Typography/StyledText";
-import { AudioEffectSlider } from "./AudioEffectSlider";
 
 const PRESET_OPTIONS = [1, 1.25, 1.5, 2] as const;
 
@@ -55,7 +55,7 @@ export const PlaybackParameterSlider = memo(
     return (
       <SegmentedList.CustomItem className="gap-4 p-4">
         <TStyledText textKey={fieldNameKey} className="text-sm" />
-        <AudioEffectSlider
+        <LabeledSlider
           initValue={storedValue}
           liveValue={cachedValue}
           min={0.25}

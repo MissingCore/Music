@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import { RECENT_DAY_RANGE } from "~/data/recent/api";
 import { useRecentlyPlayedMedia } from "~/data/recent/queries";
-import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
+import { useHorizontalListLayoutConfig } from "~/hooks/useLayoutConfigs";
 
 import { getMediaLinkContext } from "../utils/router";
 import { useBottomActionsOffset } from "../components/BottomActions/useBottomActions";
@@ -63,7 +63,7 @@ export default function RecentlyPlayed() {
 
 function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
   const navigation = useNavigation();
-  const { width } = useGetColumn(ColumnPresets.horizontalList);
+  const { width } = useHorizontalListLayoutConfig();
 
   if (props.data?.length === 0) return null;
   return (
@@ -82,7 +82,7 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
               if (linkInfo[0] === "HomeScreens") navigation.popTo(...linkInfo);
               else navigation.navigate(...linkInfo);
             }}
-            className={index > 0 ? "ml-3" : undefined}
+            className={index > 0 ? "ml-2" : undefined}
           />
         )}
         contentContainerClassName="px-4 pb-6"

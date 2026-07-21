@@ -4,7 +4,11 @@
 import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
 
-import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
+import {
+  useCompactGridLayoutConfig,
+  useGridLayoutConfig,
+  useListLayoutConfig,
+} from "~/hooks/useLayoutConfigs";
 import { useViewPreferenceStore } from "../store";
 import type { LayoutItem, MutableViewLayout } from "../types";
 
@@ -29,9 +33,9 @@ export function useViewLayout<TData extends Record<string, any>>(
   );
 
   //#region Layout Configs
-  const listLayout = useGetColumn(ColumnPresets.listLayout);
-  const gridLayout = useGetColumn(ColumnPresets.gridLayout);
-  const compactGridLayout = useGetColumn(ColumnPresets.compactGridLayout);
+  const listLayout = useListLayoutConfig();
+  const gridLayout = useGridLayoutConfig();
+  const compactGridLayout = useCompactGridLayoutConfig();
   const layoutOption = useViewPreferenceStore((s) => s[`${screen}Layout`]);
 
   const listLayoutArgs = useMemo(
@@ -60,11 +64,10 @@ export function useViewLayout<TData extends Record<string, any>>(
   const gridLayoutArgs = useMemo(() => {
     const isGrid = layoutOption === "grid";
     const gridOpts = isGrid ? gridLayout : compactGridLayout;
-    const usedGap = isGrid ? 12 : 8;
     return {
       numColumns: gridOpts.count,
-      // ~40px for text content under `<MediaImage />` + 8/12px Margin Bottom
-      estimatedItemSize: gridOpts.width + 40 + usedGap,
+      // ~40px for text content under `<MediaImage />` + 8px Margin Bottom
+      estimatedItemSize: gridOpts.width + 40 + 8,
       renderItem: ({ item }) => (
         <MediaCard
           type={screen}
@@ -76,10 +79,10 @@ export function useViewLayout<TData extends Record<string, any>>(
               ...getMediaLinkContext({ id: item.id, type: screen }),
             )
           }
-          className={cn("mx-1.5 mb-3", { "mx-1 mb-2": !isGrid })}
+          className="mx-1 mb-2"
         />
       ),
-      className: isGrid ? "-mx-1.5 -mb-3" : "-mx-1 -mb-2",
+      className: "-mx-1 -mb-2",
     } satisfies LegendListProps<LayoutItem>;
   }, [navigation, layoutOption, screen, gridLayout, compactGridLayout]);
   //#endregion

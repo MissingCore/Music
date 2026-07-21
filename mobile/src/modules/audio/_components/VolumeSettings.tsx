@@ -8,10 +8,10 @@ import { scheduleOnRN } from "react-native-worklets";
 
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 
+import { LabeledSlider } from "~/components/Form/Slider.variant";
 import { SegmentedList } from "~/components/List/Segmented";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { Switch } from "~/components/UI/Switch";
-import { AudioEffectSlider } from "./AudioEffectSlider";
 
 export function VolumeSettings() {
   const restoreVolume = usePlaybackStore((s) => s.restoreVolume);
@@ -33,7 +33,7 @@ export function VolumeSettings() {
       />
       <SegmentedList.CustomItem className="gap-4 p-4">
         <TStyledText textKey="feat.playback.extra.volume" className="text-sm" />
-        <AudioEffectSlider
+        <LabeledSlider
           initValue={volume}
           liveValue={cachedValue}
           min={0}

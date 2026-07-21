@@ -437,6 +437,8 @@
         "list": "List",
         "grid": "Grid",
         "compactGrid": "Compact Grid",
+        "gridColumnSize": "Grid Column Size",
+        "gridColumnCount": "Column Count: {{count}}",
 
         "sort": "Sort Order",
         "asc": "Ascending Order",

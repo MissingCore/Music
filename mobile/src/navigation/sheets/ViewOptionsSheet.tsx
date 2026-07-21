@@ -7,6 +7,7 @@ import { View } from "react-native";
 import { Icon } from "~/resources/icons";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
+import { MinAlbumLengthConfig } from "~/stores/Preference/utils";
 import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { ViewPreferenceSetters } from "~/stores/ViewPreference/actions";
 
@@ -37,8 +38,7 @@ export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
             <NumberStepper
               value={minAlbumLength}
               onChange={PreferenceSetters.updateMinAlbumLengthByDelta}
-              min={1}
-              max={20}
+              {...MinAlbumLengthConfig.bound}
             />
           }
         />
