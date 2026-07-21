@@ -2,16 +2,26 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAnimatedReaction, useSharedValue } from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { PreferenceTogglers } from "~/stores/Preference/actions";
+import {
+  PreferenceSetters,
+  PreferenceTogglers,
+} from "~/stores/Preference/actions";
+import { GridColumnSizeConfig } from "~/stores/Preference/utils";
+import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { TabOrderSheet } from "./sheets/TabOrderSheet";
 
+import { LabeledSlider } from "~/components/Form/Slider.variant";
 import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { Switch } from "~/components/UI/Switch";
 import { getFontDisplayName } from "~/modules/customization/font/utils";
 
@@ -78,7 +88,45 @@ export default function AppearanceSettings() {
             RightElement={<Switch enabled={squareArtwork} />}
           />
         </SegmentedList>
+
+        <GridColumnSizeSetting />
       </ListLayout>
     </>
+  );
+}
+
+function GridColumnSizeSetting() {
+  const { t } = useTranslation();
+  const gridColumnSize = usePreferenceStore((s) => s.gridColumnSize);
+  const cachedValue = useSharedValue(gridColumnSize);
+  const [_gridColumnSize, _setGridColumnSize] = useState(gridColumnSize);
+
+  useAnimatedReaction(
+    () => cachedValue.get(),
+    (currVal) => scheduleOnRN(_setGridColumnSize, currVal),
+  );
+
+  const { count } = useGetColumn({
+    ...ColumnPresets.gridLayout,
+    minWidth: _gridColumnSize,
+  });
+
+  return (
+    <SegmentedList.CustomItem className="gap-4 p-4">
+      <TStyledText
+        textKey="feat.modalViewPreference.extra.gridColumnSize"
+        className="text-sm"
+      />
+      <LabeledSlider
+        initValue={gridColumnSize}
+        liveValue={cachedValue}
+        {...GridColumnSizeConfig.bound}
+        onChange={PreferenceSetters.setGridColumnSize}
+        displayedValue={String(_gridColumnSize)}
+      />
+      <StyledText dim className="-mt-2">
+        {t("feat.modalViewPreference.extra.gridColumnCount", { count })}
+      </StyledText>
+    </SegmentedList.CustomItem>
   );
 }

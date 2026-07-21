@@ -29,6 +29,12 @@ export function setAccentFont(accentFont: Font) {
   preferenceStore.setState({ accentFont });
 }
 
+export function setGridColumnSize(gridColumnSize: number) {
+  preferenceStore.setState({
+    gridColumnSize: GridColumnSizeConfig.clamp(gridColumnSize),
+  });
+}
+
 export async function setLanguage(languageCode: string) {
   preferenceStore.setState({ language: languageCode });
 
@@ -82,12 +88,6 @@ export async function setTheme(theme: DefaultTheme | (string & {})) {
       activeCustomTheme: customTheme,
     });
   }
-}
-
-export function updateGridColumnSizeByDelta(delta: number) {
-  preferenceStore.setState((prev) => ({
-    gridColumnSize: GridColumnSizeConfig.clamp(prev.gridColumnSize + delta),
-  }));
 }
 
 export function updateMinAlbumLengthByDelta(delta: number) {
