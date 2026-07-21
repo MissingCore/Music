@@ -61,8 +61,8 @@ export function useMediaCardListPreset(
   return useMemo(
     () => ({
       numColumns: count,
-      // ~40px for text content under `<MediaImage />` + 12px Margin Bottom
-      estimatedItemSize: width + 40 + 12,
+      // ~40px for text content under `<MediaImage />` + 8px Margin Bottom
+      estimatedItemSize: width + 40 + 8,
       data: args.data,
       // Use this as the key instead of just `id` in case `data` is mixed.
       keyExtractor: ({ id, type }) => `${type}_${id}`,

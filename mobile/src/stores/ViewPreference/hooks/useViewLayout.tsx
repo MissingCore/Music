@@ -64,11 +64,10 @@ export function useViewLayout<TData extends Record<string, any>>(
   const gridLayoutArgs = useMemo(() => {
     const isGrid = layoutOption === "grid";
     const gridOpts = isGrid ? gridLayout : compactGridLayout;
-    const usedGap = isGrid ? 12 : 8;
     return {
       numColumns: gridOpts.count,
-      // ~40px for text content under `<MediaImage />` + 8/12px Margin Bottom
-      estimatedItemSize: gridOpts.width + 40 + usedGap,
+      // ~40px for text content under `<MediaImage />` + 8px Margin Bottom
+      estimatedItemSize: gridOpts.width + 40 + 8,
       renderItem: ({ item }) => (
         <MediaCard
           type={screen}
