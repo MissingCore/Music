@@ -4,7 +4,11 @@
 import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
 
-import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
+import {
+  ColumnPresets,
+  useGetColumn,
+  useGridLayoutConfig,
+} from "~/hooks/useGetColumn";
 import { useViewPreferenceStore } from "../store";
 import type { LayoutItem, MutableViewLayout } from "../types";
 
@@ -30,7 +34,7 @@ export function useViewLayout<TData extends Record<string, any>>(
 
   //#region Layout Configs
   const listLayout = useGetColumn(ColumnPresets.listLayout);
-  const gridLayout = useGetColumn(ColumnPresets.gridLayout);
+  const gridLayout = useGridLayoutConfig();
   const compactGridLayout = useGetColumn(ColumnPresets.compactGridLayout);
   const layoutOption = useViewPreferenceStore((s) => s[`${screen}Layout`]);
 

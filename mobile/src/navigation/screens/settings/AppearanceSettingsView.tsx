@@ -13,7 +13,7 @@ import {
   PreferenceTogglers,
 } from "~/stores/Preference/actions";
 import { GridColumnSizeConfig } from "~/stores/Preference/utils";
-import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
+import { useGridLayoutConfig } from "~/hooks/useGetColumn";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { TabOrderSheet } from "./sheets/TabOrderSheet";
@@ -106,10 +106,7 @@ function GridColumnSizeSetting() {
     (currVal) => scheduleOnRN(_setGridColumnSize, currVal),
   );
 
-  const { count } = useGetColumn({
-    ...ColumnPresets.gridLayout,
-    minWidth: _gridColumnSize,
-  });
+  const { count } = useGridLayoutConfig({ minWidth: _gridColumnSize });
 
   return (
     <SegmentedList.CustomItem className="gap-4 p-4">

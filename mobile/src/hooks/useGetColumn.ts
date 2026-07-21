@@ -4,6 +4,15 @@
 import { useMemo } from "react";
 import { useWindowDimensions } from "react-native";
 
+import { usePreferenceStore } from "~/stores/Preference/store";
+
+interface ColumnOptions {
+  /** Minimum width of column before we can auto-add more. */
+  minWidth?: number;
+  /** Percentage removed from global "width" in calculations. */
+  percentDeduction?: number;
+}
+
 //#region useGetColumn
 /** Determine the width a column will take up based on parameters. */
 export function useGetColumn({
@@ -21,6 +30,28 @@ export function useGetColumn({
   return useMemo(
     () => calculateColumnParameters(width, { minCols, minWidth, gap, gutters }),
     [width, minCols, minWidth, gap, gutters],
+  );
+}
+//#endregion
+
+//#region useGridLayoutConfig
+/** Get column configurations for "cards" in a grid. */
+export function useGridLayoutConfig(args?: ColumnOptions) {
+  const { minWidth: _overrideMinWidth, percentDeduction = 0 } = args || {};
+
+  const { width: screenWidth } = useWindowDimensions();
+  const gridColumnSize = usePreferenceStore((s) => s.gridColumnSize);
+
+  const width = screenWidth * (1 - percentDeduction);
+  const minWidth = _overrideMinWidth ?? gridColumnSize;
+
+  return useMemo(
+    () =>
+      calculateColumnParameters(width, {
+        ...ColumnPresets.gridLayout,
+        minWidth,
+      }),
+    [width, minWidth],
   );
 }
 //#endregion
