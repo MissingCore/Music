@@ -8,8 +8,8 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import * as ReplayGain from "../core/actions";
 import { DB_OFFSET } from "../core/constants";
 
+import { LabeledSlider } from "~/components/Form/Slider.variant";
 import { TEm } from "~/components/Typography/StyledText";
-import { AudioEffectSlider } from "../../_components/AudioEffectSlider";
 
 export const PreAmpSlider = memo(function PreAmpSlider(props: {
   field: "preAmpWTags" | "preAmpWOTags";
@@ -21,7 +21,7 @@ export const PreAmpSlider = memo(function PreAmpSlider(props: {
       <TEm
         textKey={`feat.replayGain.extra.${props.field === "preAmpWTags" ? "adjustWithTags" : "adjustWithoutTags"}`}
       />
-      <AudioEffectSlider
+      <LabeledSlider
         initValue={preAmpValue}
         min={DB_OFFSET.min}
         max={DB_OFFSET.max}

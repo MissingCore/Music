@@ -6,10 +6,11 @@ import { View } from "react-native";
 import type { SupportedIconName } from "~/resources/icons";
 import { Icon } from "~/resources/icons";
 
-import { CachedSlider } from "~/components/Form/Slider";
-import { Em } from "~/components/Typography/StyledText";
+import { CachedSlider } from "./Slider";
+import { Em } from "../Typography/StyledText";
 
-interface Props extends Omit<
+//#region Labeled Slider
+interface LabeledSliderProps extends Omit<
   React.ComponentProps<typeof CachedSlider>,
   "_className"
 > {
@@ -18,7 +19,12 @@ interface Props extends Omit<
   icon?: SupportedIconName;
 }
 
-export function AudioEffectSlider({ displayedValue, icon, ...props }: Props) {
+/** Slider which displays an optional icon followed by the value. */
+export function LabeledSlider({
+  displayedValue,
+  icon,
+  ...props
+}: LabeledSliderProps) {
   return (
     <View className="flex-row items-center gap-2">
       <CachedSlider
@@ -36,3 +42,4 @@ export function AudioEffectSlider({ displayedValue, icon, ...props }: Props) {
     </View>
   );
 }
+//#endregion
