@@ -108,7 +108,7 @@ function GridColumnSizeSetting() {
   return (
     <SegmentedList.CustomItem className="gap-6 p-4">
       <TStyledText
-        textKey="feat.modalViewPreference.extra.gridColumnSize"
+        textKey="feat.modalViewPreference.extra.columnSize"
         className="text-sm"
       />
       <Divider className="-my-2" />
@@ -147,7 +147,7 @@ function ColumnSizeSlider({ field }: { field: "grid" | "compactGrid" }) {
         displayedValue={String(_columnSize)}
       />
       <StyledText dim className="-mt-3">
-        {t("feat.modalViewPreference.extra.gridColumnCount", { count })}
+        {t("feat.modalViewPreference.extra.columnCount", { count })}
       </StyledText>
     </View>
   );
