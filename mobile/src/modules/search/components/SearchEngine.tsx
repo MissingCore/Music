@@ -8,7 +8,7 @@ import { View } from "react-native";
 import { AlbumArtistsKey } from "~/data/album/utils";
 import { getArtistsString } from "~/data/artist/utils";
 import type { CommonTrack } from "~/data/types";
-import { useListLayoutConfig } from "~/hooks/useGetColumn";
+import { useListLayoutConfig } from "~/hooks/useLayoutConfigs";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 

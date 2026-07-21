@@ -13,7 +13,7 @@ import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
 import { TABLET_SIDEBAR_WIDTH_RATIO } from "~/hooks/useAlternativeLayout";
-import { useListLayoutConfig } from "~/hooks/useGetColumn";
+import { useListLayoutConfig } from "~/hooks/useLayoutConfigs";
 import {
   TrackMultiSelect,
   useTrackMultiSelectStore,

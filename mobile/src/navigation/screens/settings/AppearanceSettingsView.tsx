@@ -16,7 +16,7 @@ import { GridColumnSizeConfig } from "~/stores/ViewPreference/utils";
 import {
   useCompactGridLayoutConfig,
   useGridLayoutConfig,
-} from "~/hooks/useGetColumn";
+} from "~/hooks/useLayoutConfigs";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { TabOrderSheet } from "./sheets/TabOrderSheet";

@@ -8,7 +8,7 @@ import { View } from "react-native";
 
 import { useAlbumForScreen, useFavoriteAlbum } from "~/data/album/queries";
 import { TABLET_SIDEBAR_WIDTH_RATIO } from "~/hooks/useAlternativeLayout";
-import { useListLayoutConfig } from "~/hooks/useGetColumn";
+import { useListLayoutConfig } from "~/hooks/useLayoutConfigs";
 
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
 import { AlbumArtworkSheet } from "~/navigation/sheets/ArtworkSheet";

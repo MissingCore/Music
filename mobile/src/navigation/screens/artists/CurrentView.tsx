@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { useArtistDetails, useArtistTracks } from "~/data/artist/queries";
 import type { ArtistAlbum } from "~/data/artist/types";
-import { useHorizontalListLayoutConfig } from "~/hooks/useGetColumn";
+import { useHorizontalListLayoutConfig } from "~/hooks/useLayoutConfigs";
 
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
 import { ArtistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";

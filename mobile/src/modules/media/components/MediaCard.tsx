@@ -4,7 +4,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
 
-import { useGridLayoutConfig } from "~/hooks/useGetColumn";
+import { useGridLayoutConfig } from "~/hooks/useLayoutConfigs";
 
 import { getMediaLinkContext } from "~/navigation/utils/router";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";

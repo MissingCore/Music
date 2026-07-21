@@ -8,7 +8,7 @@ import {
   useCompactGridLayoutConfig,
   useGridLayoutConfig,
   useListLayoutConfig,
-} from "~/hooks/useGetColumn";
+} from "~/hooks/useLayoutConfigs";
 import { useViewPreferenceStore } from "../store";
 import type { LayoutItem, MutableViewLayout } from "../types";
 

@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import { RECENT_DAY_RANGE } from "~/data/recent/api";
 import { useRecentlyPlayedMedia } from "~/data/recent/queries";
-import { useHorizontalListLayoutConfig } from "~/hooks/useGetColumn";
+import { useHorizontalListLayoutConfig } from "~/hooks/useLayoutConfigs";
 
 import { getMediaLinkContext } from "../utils/router";
 import { useBottomActionsOffset } from "../components/BottomActions/useBottomActions";

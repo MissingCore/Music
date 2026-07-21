@@ -22,7 +22,7 @@ import Animated, {
 import type { FileNode } from "~/db/schema";
 
 import { useFolderContent } from "~/data/folder/queries";
-import { useListLayoutConfig } from "~/hooks/useGetColumn";
+import { useListLayoutConfig } from "~/hooks/useLayoutConfigs";
 
 import { NScrollListLayout } from "~/navigation/layouts/NScrollLayout";
 import { FoldersViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
