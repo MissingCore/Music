@@ -12,6 +12,7 @@ import {
   PreferenceSetters,
   PreferenceTogglers,
 } from "~/stores/Preference/actions";
+import { PlaybackDelayConfig } from "~/stores/Preference/utils";
 
 import { getMediaLinkContext } from "~/navigation/utils/router";
 import { AppearanceSheet } from "./AppearanceSheet";
@@ -98,8 +99,7 @@ export function PlaybackOptionsSheet(props: {
               <NumberStepper
                 value={playbackDelay}
                 onChange={PreferenceSetters.updatePlaybackDelayByDelta}
-                min={0}
-                max={10}
+                {...PlaybackDelayConfig.bound}
                 suffix="s"
               />
             }

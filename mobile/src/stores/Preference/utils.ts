@@ -17,10 +17,16 @@ export async function resolveLanguageConfigs(
   I18nManager.forceRTL(forceLTR ? false : i18next.dir() === "rtl");
 }
 
-export function clampMinAlbumLength(value: number) {
-  return clamp(1, value, 20);
-}
+export const MinAlbumLengthConfig = {
+  bound: { min: 1, max: 20 },
+  clamp(value: number) {
+    return clamp(this.bound.min, value, this.bound.max);
+  },
+};
 
-export function clampPlaybackDelay(value: number) {
-  return clamp(0, value, 10);
-}
+export const PlaybackDelayConfig = {
+  bound: { min: 0, max: 10 },
+  clamp(value: number) {
+    return clamp(this.bound.min, value, this.bound.max);
+  },
+};

@@ -8,8 +8,8 @@ import i18next from "~/modules/i18n";
 import { preferenceStore } from "../store";
 import type { NowPlayingDesign } from "../constants";
 import {
-  clampMinAlbumLength,
-  clampPlaybackDelay,
+  MinAlbumLengthConfig,
+  PlaybackDelayConfig,
   resolveLanguageConfigs,
 } from "../utils";
 import { playbackStore } from "../../Playback/store";
@@ -85,12 +85,12 @@ export async function setTheme(theme: DefaultTheme | (string & {})) {
 
 export function updateMinAlbumLengthByDelta(delta: number) {
   preferenceStore.setState((prev) => ({
-    minAlbumLength: clampMinAlbumLength(prev.minAlbumLength + delta),
+    minAlbumLength: MinAlbumLengthConfig.clamp(prev.minAlbumLength + delta),
   }));
 }
 
 export function updatePlaybackDelayByDelta(delta: number) {
   preferenceStore.setState((prev) => ({
-    playbackDelay: clampPlaybackDelay(prev.playbackDelay + delta),
+    playbackDelay: PlaybackDelayConfig.clamp(prev.playbackDelay + delta),
   }));
 }
