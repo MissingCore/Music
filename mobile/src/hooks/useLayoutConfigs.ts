@@ -23,7 +23,7 @@ interface ColumnOptions extends ClampOptions {
 //#region Layout Config Hooks
 /** Get column configurations for "cards" in a compact grid. */
 export function useCompactGridLayoutConfig(args: ColumnOptions = {}) {
-  return useGetLayoutConfig({ compact: true, ...args, minCols: 3 });
+  return useGetLayoutConfig({ fallback: "compactGrid", ...args, minCols: 3 });
 }
 
 /** Get column configurations for "cards" in a grid. */
@@ -37,8 +37,8 @@ export function useHorizontalListLayoutConfig(args: ClampOptions = {}) {
 }
 
 /** Get column configurations for "items" in a list. */
-export function useListLayoutConfig(args?: ClampOptions) {
-  return useGetLayoutConfig({ ...args, minWidth: 272 });
+export function useListLayoutConfig(args: ClampOptions = {}) {
+  return useGetLayoutConfig({ fallback: "list", ...args });
 }
 //#endregion
 
@@ -54,14 +54,17 @@ function getColSize(width: number, cols: number, gap: number) {
 }
 
 /** Determine the width a column will take up based on parameters. */
-function useGetLayoutConfig(args: ColumnOptions & { compact?: boolean }) {
+function useGetLayoutConfig(
+  args: ColumnOptions & { fallback?: "compactGrid" | "grid" | "list" },
+) {
   const { width: screenWidth } = useWindowDimensions();
-  const compactGridSize = useViewPreferenceStore((s) => s.compactGridSize);
-  const gridSize = useViewPreferenceStore((s) => s.gridSize);
+  const fallbackWidth = useViewPreferenceStore(
+    (s) => s[`${args.fallback || "grid"}Size`],
+  );
 
   const width = screenWidth * (1 - (args.percentDeduction || 0));
   const minCols = args.minCols ?? 1;
-  const minWidth = args.minWidth ?? (args.compact ? compactGridSize : gridSize);
+  const minWidth = args.minWidth ?? fallbackWidth;
   const gap = args.gap ?? CONTENT_GAP;
 
   return useMemo(() => {
