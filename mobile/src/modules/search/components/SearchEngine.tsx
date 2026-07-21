@@ -8,7 +8,7 @@ import { View } from "react-native";
 import { AlbumArtistsKey } from "~/data/album/utils";
 import { getArtistsString } from "~/data/artist/utils";
 import type { CommonTrack } from "~/data/types";
-import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
+import { useListLayoutConfig } from "~/hooks/useGetColumn";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
@@ -64,7 +64,7 @@ type SearchResultsListProps<TScope extends SearchCategories> = {
 function SearchResultsList<TScope extends SearchCategories>(
   props: SearchResultsListProps<TScope> & { query: string },
 ) {
-  const listLayout = useGetColumn(ColumnPresets.listLayout);
+  const listLayout = useListLayoutConfig();
   const results = useSearch(props.searchScope, props.query);
   const [selectedTab, setSelectedTab] = useState<TScope[number] | "all">("all");
   const [filterHeight, setFilterHeight] = useState(53); // Height will be ~53px

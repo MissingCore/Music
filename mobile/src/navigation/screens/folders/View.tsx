@@ -22,7 +22,7 @@ import Animated, {
 import type { FileNode } from "~/db/schema";
 
 import { useFolderContent } from "~/data/folder/queries";
-import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
+import { useListLayoutConfig } from "~/hooks/useGetColumn";
 
 import { NScrollListLayout } from "~/navigation/layouts/NScrollLayout";
 import { FoldersViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
@@ -107,7 +107,7 @@ export default function Folders({
   );
   //#endregion
 
-  const listLayout = useGetColumn(ColumnPresets.listLayout);
+  const listLayout = useListLayoutConfig();
   const renderItem = useCallback(
     ({ item }: { item: MergedData }) =>
       isTrackContent(item) ? (

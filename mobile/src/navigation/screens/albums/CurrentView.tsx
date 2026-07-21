@@ -8,7 +8,7 @@ import { View } from "react-native";
 
 import { useAlbumForScreen, useFavoriteAlbum } from "~/data/album/queries";
 import { TABLET_SIDEBAR_WIDTH_RATIO } from "~/hooks/useAlternativeLayout";
-import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
+import { useListLayoutConfig } from "~/hooks/useGetColumn";
 
 import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
 import { AlbumArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
@@ -30,10 +30,7 @@ import {
 
 type Props = StaticScreenProps<{ id: string }>;
 
-const ColumnLayoutConfig = {
-  ...ColumnPresets.listLayout,
-  percentDeduction: TABLET_SIDEBAR_WIDTH_RATIO,
-};
+const ColumnLayoutConfig = { percentDeduction: TABLET_SIDEBAR_WIDTH_RATIO };
 
 export default function Album({
   route: {
@@ -41,7 +38,7 @@ export default function Album({
   },
 }: Props) {
   const { t } = useTranslation();
-  const listLayout = useGetColumn(ColumnLayoutConfig);
+  const listLayout = useListLayoutConfig(ColumnLayoutConfig);
   const bottomOffset = useBottomActionsOffset(16);
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);

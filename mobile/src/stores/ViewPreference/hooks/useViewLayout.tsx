@@ -8,6 +8,7 @@ import {
   ColumnPresets,
   useGetColumn,
   useGridLayoutConfig,
+  useListLayoutConfig,
 } from "~/hooks/useGetColumn";
 import { useViewPreferenceStore } from "../store";
 import type { LayoutItem, MutableViewLayout } from "../types";
@@ -33,7 +34,7 @@ export function useViewLayout<TData extends Record<string, any>>(
   );
 
   //#region Layout Configs
-  const listLayout = useGetColumn(ColumnPresets.listLayout);
+  const listLayout = useListLayoutConfig();
   const gridLayout = useGridLayoutConfig();
   const compactGridLayout = useGetColumn(ColumnPresets.compactGridLayout);
   const layoutOption = useViewPreferenceStore((s) => s[`${screen}Layout`]);

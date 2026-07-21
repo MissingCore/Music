@@ -13,7 +13,7 @@ import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
 import { TABLET_SIDEBAR_WIDTH_RATIO } from "~/hooks/useAlternativeLayout";
-import { ColumnPresets, useGetColumn } from "~/hooks/useGetColumn";
+import { useListLayoutConfig } from "~/hooks/useGetColumn";
 import {
   TrackMultiSelect,
   useTrackMultiSelectStore,
@@ -167,8 +167,7 @@ export function useTrackListPreset<TData extends TrackContent>(args: {
    */
   contentWidthDeduction?: number;
 }) {
-  const { count } = useGetColumn({
-    ...ColumnPresets.listLayout,
+  const { count } = useListLayoutConfig({
     //? Defaults to the width of the "artwork + metadata" section on the
     //? tablet layout of the "Current List" screen.
     percentDeduction: args.contentWidthDeduction ?? TABLET_SIDEBAR_WIDTH_RATIO,
