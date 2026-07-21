@@ -110,7 +110,7 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
               onPress={() =>
                 navigation.navigate("Album", { id: item.id }, { pop: true })
               }
-              className={index > 0 ? "ml-3" : undefined}
+              className={index > 0 ? "ml-2" : undefined}
             />
           )}
           contentContainerClassName="px-4"

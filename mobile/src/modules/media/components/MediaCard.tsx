@@ -75,7 +75,7 @@ export function useMediaCardListPreset(
           {...item}
           size={width}
           onPress={() => navigation.navigate(...getMediaLinkContext(item))}
-          className="mx-1.5 mb-3"
+          className="mx-1 mb-2"
         />
       ),
       ListEmptyComponent: (
@@ -85,7 +85,7 @@ export function useMediaCardListPreset(
         />
       ),
       ListHeaderComponentStyle: { paddingHorizontal: 8 },
-      className: "-mx-1.5 -mb-3",
+      className: "-mx-1 -mb-2",
     }),
     [args, navigation, count, width],
   ) satisfies LegendListProps<MediaCardContent>;

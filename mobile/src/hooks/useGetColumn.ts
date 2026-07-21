@@ -96,7 +96,7 @@ export const ColumnPresets = {
   horizontalList: { minCols: 1, minWidth: 100, gap: 0, gutters: 32 },
   listLayout: { minCols: 1, minWidth: 272, gap: 8, gutters: 32 },
   // `<MediaCard />` & Grid Layout
-  gridLayout: { minCols: 2, minWidth: 144, gap: 12, gutters: 32 },
+  gridLayout: { minCols: 2, minWidth: 144, gap: 8, gutters: 32 },
   compactGridLayout: { minCols: 3, minWidth: 72, gap: 8, gutters: 32 },
 } as const satisfies Record<string, ColumnParameters>;
 //#endregion

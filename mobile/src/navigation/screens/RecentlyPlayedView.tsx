@@ -82,7 +82,7 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
               if (linkInfo[0] === "HomeScreens") navigation.popTo(...linkInfo);
               else navigation.navigate(...linkInfo);
             }}
-            className={index > 0 ? "ml-3" : undefined}
+            className={index > 0 ? "ml-2" : undefined}
           />
         )}
         contentContainerClassName="px-4 pb-6"

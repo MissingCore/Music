@@ -80,10 +80,10 @@ export function useViewLayout<TData extends Record<string, any>>(
               ...getMediaLinkContext({ id: item.id, type: screen }),
             )
           }
-          className={cn("mx-1.5 mb-3", { "mx-1 mb-2": !isGrid })}
+          className="mx-1 mb-2"
         />
       ),
-      className: isGrid ? "-mx-1.5 -mb-3" : "-mx-1 -mb-2",
+      className: "-mx-1 -mb-2",
     } satisfies LegendListProps<LayoutItem>;
   }, [navigation, layoutOption, screen, gridLayout, compactGridLayout]);
   //#endregion
