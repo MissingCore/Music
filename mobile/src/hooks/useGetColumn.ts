@@ -5,74 +5,73 @@ import { useMemo } from "react";
 import { useWindowDimensions } from "react-native";
 
 //#region useGetColumn
-export type GCWProps = {
-  /**
-   * Number of columns we want — if `minWidth` is provided, this becomes
-   * the minimum number of columns (ie: CSS Grid `auto-fill` behavior).
-   */
-  cols: number;
-  /** Gap between columns. */
-  gap: number;
-  /**
-   * Any extra width that should be removed from the overall screen size
-   * (ie: horizontal margin).
-   */
-  gutters: number;
-  /**
-   * **[Optional]** Specifies the minimum column width — if we have enough
-   * space, additional columns will be added.
-   */
-  minWidth?: number;
-
-  /** Percentage removed from global "width" in calculations. */
-  percentDeduction?: number;
-};
-
 /** Determine the width a column will take up based on parameters. */
 export function useGetColumn({
-  cols,
+  minCols,
+  minWidth,
   gap,
   gutters,
-  minWidth,
   percentDeduction = 0,
-}: GCWProps) {
+}: ColumnParameters & {
+  /** Percentage removed from global "width" in calculations. */
+  percentDeduction?: number;
+}) {
   const { width: screenWidth } = useWindowDimensions();
-
   const width = screenWidth * (1 - percentDeduction);
-  const initColSize = getColSize(width, cols, gap, gutters);
+  return useMemo(
+    () => calculateColumnParameters(width, { minCols, minWidth, gap, gutters }),
+    [width, minCols, minWidth, gap, gutters],
+  );
+}
+//#endregion
 
-  return useMemo(() => {
-    // If no `minWidth` is provided, don't do CSS Grid `auto-fill` behavior.
-    if (!minWidth) return { count: cols, width: initColSize };
-    // Get the number of excess space used in each column
-    const excessSpace = cols * (initColSize - minWidth);
-    // If `excessSpace` is negative or is less than adding another column
-    // w/ gap, we do `auto-fill` behavior.
-    if (excessSpace <= minWidth + gap)
-      return { count: cols, width: initColSize };
-    const newColCount = Math.floor(excessSpace / (minWidth + gap)) + cols;
+//#region calculateColumnParameters
+interface ColumnParameters {
+  /** Minimum number of columns to return. */
+  minCols: number;
+  /** Minimum width of column before we can auto-add more. */
+  minWidth: number;
+  /** Gap between columns. */
+  gap: number;
+  /** Space in provided width reserved for horizontal margin. */
+  gutters: number;
+}
 
-    return {
-      count: newColCount,
-      width: getColSize(width, newColCount, gap, gutters),
-    };
-  }, [width, cols, gap, gutters, minWidth, initColSize]);
+/** Core logic for calculating the number of columns and their width. */
+export function calculateColumnParameters(
+  width: number,
+  { minCols, minWidth, gap, gutters }: ColumnParameters,
+) {
+  const initColSize = getColSize(width, minCols, gap, gutters);
+
+  // Get the number of excess space used in each column
+  const excessSpace = minCols * (initColSize - minWidth);
+  // If `excessSpace` is negative or is less than adding another column
+  // w/ gap, we do `auto-fill` behavior.
+  if (excessSpace <= minWidth + gap)
+    return { count: minCols, width: initColSize };
+  const newColCount = Math.floor(excessSpace / (minWidth + gap)) + minCols;
+
+  return {
+    count: newColCount,
+    width: getColSize(width, newColCount, gap, gutters),
+  };
 }
 //#endregion
 
 //#region Preset
 export const ColumnPresets = {
   // "Recently Played" & "Current Artist"
-  horizontalList: { cols: 1, gap: 0, gutters: 32, minWidth: 100 },
-  listLayout: { cols: 1, gap: 8, gutters: 32, minWidth: 272 },
+  horizontalList: { minCols: 1, minWidth: 100, gap: 0, gutters: 32 },
+  listLayout: { minCols: 1, minWidth: 272, gap: 8, gutters: 32 },
   // `<MediaCard />` & Grid Layout
-  gridLayout: { cols: 2, gap: 12, gutters: 32, minWidth: 144 },
-  compactGridLayout: { cols: 3, gap: 8, gutters: 32, minWidth: 72 },
-};
+  gridLayout: { minCols: 2, minWidth: 144, gap: 12, gutters: 32 },
+  compactGridLayout: { minCols: 3, minWidth: 72, gap: 8, gutters: 32 },
+} as const satisfies Record<string, ColumnParameters>;
 //#endregion
 
 //#region Internal Helpers
-/** `useGetColumnsWidth` helper function for calculating the column size. */
+/** Helper for calculating the column size. */
 function getColSize(width: number, cols: number, gap: number, gutters: number) {
   return (width - gutters - gap * (cols - 1)) / cols;
 }
