@@ -13,7 +13,10 @@ import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { ViewPreferenceSetters } from "~/stores/ViewPreference/actions";
 import { GridColumnSizeConfig } from "~/stores/ViewPreference/utils";
-import { useGridLayoutConfig } from "~/hooks/useGetColumn";
+import {
+  useCompactGridLayoutConfig,
+  useGridLayoutConfig,
+} from "~/hooks/useGetColumn";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { TabOrderSheet } from "./sheets/TabOrderSheet";
@@ -128,7 +131,10 @@ function ColumnSizeSlider({ field }: { field: "grid" | "compactGrid" }) {
     (currVal) => scheduleOnRN(_setColumnSize, currVal),
   );
 
-  const { count } = useGridLayoutConfig({ minWidth: _columnSize });
+  //? Column calculation is different based on the grid layout.
+  const { count } = (
+    field === "grid" ? useGridLayoutConfig : useCompactGridLayoutConfig
+  )({ minWidth: _columnSize });
 
   return (
     <View className="gap-2">

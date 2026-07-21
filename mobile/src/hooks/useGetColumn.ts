@@ -6,68 +6,40 @@ import { useWindowDimensions } from "react-native";
 
 import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 
-//#region useGetColumn
-/** Determine the width a column will take up based on parameters. */
-export function useGetColumn({
-  minCols,
-  minWidth,
-  gap,
-  percentDeduction = 0,
-}: ColumnParameters & {
+interface ClampOptions {
   /** Percentage removed from global "width" in calculations. */
   percentDeduction?: number;
-}) {
-  const { width: screenWidth } = useWindowDimensions();
-  const width = screenWidth * (1 - percentDeduction);
-  return useMemo(
-    () => calculateColumnParameters(width, { minCols, minWidth, gap }),
-    [width, minCols, minWidth, gap],
-  );
 }
-//#endregion
 
-//#region useGridLayoutConfig
+interface ColumnOptions extends ClampOptions {
+  /** Minimum number of columns to return. */
+  minCols?: number;
+  /** Minimum width of column before we can auto-add more. */
+  minWidth?: number;
+  /** Gap between columns. */
+  gap?: number;
+}
+
+//#region Layout Config Hooks
+/** Get column configurations for "cards" in a compact grid. */
+export function useCompactGridLayoutConfig(args: ColumnOptions = {}) {
+  return useGetLayoutConfig({ compact: true, ...args, minCols: 3 });
+}
+
 /** Get column configurations for "cards" in a grid. */
-export function useGridLayoutConfig(args?: ColumnOptions) {
-  const { width, minWidth, gap } = useDerviedArgs(args);
-  return useMemo(
-    () => calculateColumnParameters(width, { minCols: 2, minWidth, gap }),
-    [width, minWidth, gap],
-  );
+export function useGridLayoutConfig(args: ColumnOptions = {}) {
+  return useGetLayoutConfig({ ...args, minCols: 2 });
 }
-//#endregion
 
-//#region useHorizontalListLayoutConfig
-/** Get column configurations for "items" in a horizontal list. */
-export function useHorizontalListLayoutConfig(
-  args?: Pick<ColumnOptions, "percentDeduction">,
-) {
-  const { width } = useDerviedArgs(args);
-  return useMemo(
-    () =>
-      calculateColumnParameters(width, { minCols: 1, minWidth: 100, gap: 0 }),
-    [width],
-  );
+/** Get column configurations for "cards" in a horizontal list. */
+export function useHorizontalListLayoutConfig(args: ClampOptions = {}) {
+  return useGetLayoutConfig({ ...args, minWidth: 100, gap: 0 });
 }
-//#endregion
 
-//#region useListLayoutConfig
 /** Get column configurations for "items" in a list. */
-export function useListLayoutConfig(
-  args?: Pick<ColumnOptions, "percentDeduction">,
-) {
-  const { width, gap } = useDerviedArgs(args);
-  return useMemo(
-    () => calculateColumnParameters(width, { minCols: 1, minWidth: 272, gap }),
-    [width, gap],
-  );
+export function useListLayoutConfig(args?: ClampOptions) {
+  return useGetLayoutConfig({ ...args, minWidth: 272 });
 }
-//#endregion
-
-//#region Preset
-export const ColumnPresets = {
-  compactGridLayout: { minCols: 3, minWidth: 72, gap: 8 },
-} as const satisfies Record<string, ColumnParameters>;
 //#endregion
 
 //#region Internal Helpers
@@ -76,59 +48,37 @@ const CONTENT_GAP = 8;
 /** Space reserved for horizontal margin on screen. */
 const SCREEN_GUTTERS = 32;
 
-interface ColumnParameters {
-  /** Minimum number of columns to return. */
-  minCols: number;
-  /** Minimum width of column before we can auto-add more. */
-  minWidth: number;
-  /** Gap between columns. */
-  gap: number;
-}
-
-/** Core logic for calculating the number of columns and their width. */
-function calculateColumnParameters(
-  width: number,
-  { minCols, minWidth, gap }: ColumnParameters,
-) {
-  const initColSize = getColSize(width, minCols, gap);
-
-  // Get the number of excess space used in each column
-  const excessSpace = minCols * (initColSize - minWidth);
-  // If `excessSpace` is negative or is less than adding another column
-  // w/ gap, we do `auto-fill` behavior.
-  if (excessSpace <= minWidth + gap)
-    return { count: minCols, width: initColSize };
-  const newColCount = Math.floor(excessSpace / (minWidth + gap)) + minCols;
-
-  return {
-    count: newColCount,
-    width: getColSize(width, newColCount, gap),
-  };
-}
-
 /** Helper for calculating the column size. */
 function getColSize(width: number, cols: number, gap: number) {
   return (width - SCREEN_GUTTERS - gap * (cols - 1)) / cols;
 }
 
-interface ColumnOptions {
-  /** Gap between columns. */
-  gap?: number;
-  /** Minimum width of column before we can auto-add more. */
-  minWidth?: number;
-  /** Percentage removed from global "width" in calculations. */
-  percentDeduction?: number;
-}
-
-/** Derive values to be passed to `calculateColumnParameters()`. */
-function useDerviedArgs(args: ColumnOptions = {}) {
+/** Determine the width a column will take up based on parameters. */
+function useGetLayoutConfig(args: ColumnOptions & { compact?: boolean }) {
   const { width: screenWidth } = useWindowDimensions();
-  const gridColumnSize = useViewPreferenceStore((s) => s.gridSize);
+  const compactGridSize = useViewPreferenceStore((s) => s.compactGridSize);
+  const gridSize = useViewPreferenceStore((s) => s.gridSize);
 
   const width = screenWidth * (1 - (args.percentDeduction || 0));
-  const minWidth = args.minWidth ?? gridColumnSize;
+  const minCols = args.minCols ?? 1;
+  const minWidth = args.minWidth ?? (args.compact ? compactGridSize : gridSize);
   const gap = args.gap ?? CONTENT_GAP;
 
-  return useMemo(() => ({ width, minWidth, gap }), [width, minWidth, gap]);
+  return useMemo(() => {
+    const initColSize = getColSize(width, minCols, gap);
+
+    // Get the number of excess space used in each column
+    const excessSpace = minCols * (initColSize - minWidth);
+    // If `excessSpace` is negative or is less than adding another column
+    // w/ gap, we do `auto-fill` behavior.
+    if (excessSpace <= minWidth + gap)
+      return { count: minCols, width: initColSize };
+    const newColCount = Math.floor(excessSpace / (minWidth + gap)) + minCols;
+
+    return {
+      count: newColCount,
+      width: getColSize(width, newColCount, gap),
+    };
+  }, [width, minCols, minWidth, gap]);
 }
 //#endregion

@@ -5,8 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
 
 import {
-  ColumnPresets,
-  useGetColumn,
+  useCompactGridLayoutConfig,
   useGridLayoutConfig,
   useListLayoutConfig,
 } from "~/hooks/useGetColumn";
@@ -36,7 +35,7 @@ export function useViewLayout<TData extends Record<string, any>>(
   //#region Layout Configs
   const listLayout = useListLayoutConfig();
   const gridLayout = useGridLayoutConfig();
-  const compactGridLayout = useGetColumn(ColumnPresets.compactGridLayout);
+  const compactGridLayout = useCompactGridLayoutConfig();
   const layoutOption = useViewPreferenceStore((s) => s[`${screen}Layout`]);
 
   const listLayoutArgs = useMemo(
