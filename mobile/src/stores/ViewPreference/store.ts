@@ -14,6 +14,7 @@ export const viewPreferenceStore = createPersistedStore<ViewPreferenceStore>(
       set({ _hasHydrated: true });
     },
 
+    listSize: 272,
     gridSize: 144,
     compactGridSize: 72,
 
