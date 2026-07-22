@@ -178,8 +178,8 @@ const RenderItem = memo(
           title={item.name}
           description={getArtistsString(item.artists)}
           imageSource={item.artwork}
-          LeftElement={item.active ? <PlayingIndicator /> : undefined}
-          RightElement={
+          Leading={item.active ? <PlayingIndicator /> : undefined}
+          Trailing={
             <IconButton
               icon="drag-handle"
               accessibilityLabel={t("template.entryMove", { name: item.name })}

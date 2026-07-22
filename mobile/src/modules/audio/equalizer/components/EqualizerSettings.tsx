@@ -37,9 +37,9 @@ export function EqualizerSettings() {
   return (
     <SegmentedList>
       <SegmentedList.Item
-        labelTextKey="feat.equalizer.title"
+        labelText="feat.equalizer.title"
         onPress={toggleEQ}
-        RightElement={<Switch enabled={isEQEnabled} />}
+        Trailing={<Switch enabled={isEQEnabled} />}
       />
       <SegmentedList.CustomItem className="p-4">
         <View

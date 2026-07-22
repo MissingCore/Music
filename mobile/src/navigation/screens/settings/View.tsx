@@ -37,10 +37,10 @@ export default function Settings() {
       <ListLayout>
         {hasNewUpdate && (
           <SegmentedList.Item
-            labelTextKey="feat.appUpdate.title"
+            labelText="feat.appUpdate.title"
             supportingText={t("feat.appUpdate.brief")}
             onPress={() => navigation.navigate("AppUpdate")}
-            LeftElement={<Icon name="mobile-arrow-down" color="onSecondary" />}
+            Leading={<Icon name="mobile-arrow-down" color="onSecondary" />}
             className="gap-4 rounded-full bg-secondary"
             rippleColor="secondaryDim"
             _textColor="onSecondary"
@@ -49,86 +49,86 @@ export default function Settings() {
 
         <SegmentedList>
           <SegmentedList.Item
-            labelTextKey="feat.appearance.title"
+            labelText="feat.appearance.title"
             onPress={() => navigation.navigate("AppearanceSettings")}
-            LeftElement={<Icon name="format-paint" />}
+            Leading={<Icon name="format-paint" />}
             className="gap-4"
           />
           <SegmentedList.Item
-            labelTextKey="feat.language.title"
+            labelText="feat.language.title"
             onPress={() => languageSheetRef.current?.present()}
-            LeftElement={<Icon name="translate" />}
+            Leading={<Icon name="translate" />}
             className="gap-4"
           />
         </SegmentedList>
 
         <SegmentedList>
           <SegmentedList.Item
-            labelTextKey="feat.backup.title"
+            labelText="feat.backup.title"
             onPress={() => backupSheetRef.current?.present()}
-            LeftElement={<Icon name="archive" />}
+            Leading={<Icon name="archive" />}
             className="gap-4"
           />
           <SegmentedList.Item
-            labelTextKey="feat.insights.title"
+            labelText="feat.insights.title"
             onPress={() => navigation.navigate("Insights")}
-            LeftElement={<Icon name="bar-chart-4-bars" />}
+            Leading={<Icon name="bar-chart-4-bars" />}
             className="gap-4"
           />
         </SegmentedList>
         <SegmentedList>
           <SegmentedList.Item
-            labelTextKey="feat.audioEffects.title"
+            labelText="feat.audioEffects.title"
             onPress={() => navigation.navigate("AudioEffects", {})}
-            LeftElement={<Icon name="graphic-eq" />}
+            Leading={<Icon name="graphic-eq" />}
             className="gap-4"
           />
           <SegmentedList.Item
-            labelTextKey="feat.lyrics.title"
+            labelText="feat.lyrics.title"
             onPress={() => navigation.navigate("LyricsSettings")}
-            LeftElement={<Icon name="lyrics" />}
+            Leading={<Icon name="lyrics" />}
             className="gap-4"
           />
           <SegmentedList.Item
-            labelTextKey="feat.playback.title"
+            labelText="feat.playback.title"
             onPress={() => navigation.navigate("PlaybackSettings")}
-            LeftElement={<Icon name="autoplay" />}
+            Leading={<Icon name="autoplay" />}
             className="gap-4"
           />
           <SegmentedList.Item
-            labelTextKey="feat.scanning.title"
+            labelText="feat.scanning.title"
             onPress={() => navigation.navigate("ScanningSettings")}
-            LeftElement={<Icon name="document-search" />}
+            Leading={<Icon name="document-search" />}
             className="gap-4"
           />
         </SegmentedList>
 
         <SegmentedList.Item
-          labelTextKey="feat.experimental.title"
+          labelText="feat.experimental.title"
           onPress={() => navigation.navigate("ExperimentalSettings")}
-          LeftElement={<Icon name="flask-filled" />}
+          Leading={<Icon name="flask-filled" />}
           className="gap-4"
         />
 
         <SegmentedList>
           <SegmentedList.Item
-            labelTextKey="feat.code.title"
+            labelText="feat.code.title"
             supportingText={t("feat.code.brief")}
             onPress={() => openLink(Links.GitHub)}
-            RightElement={<Icon name="open-in-new" />}
+            Trailing={<Icon name="open-in-new" />}
           />
           <SegmentedList.Item
-            labelTextKey="feat.license.title"
+            labelText="feat.license.title"
             onPress={() => openLink(Links.License)}
-            RightElement={<Icon name="open-in-new" />}
+            Trailing={<Icon name="open-in-new" />}
           />
           <SegmentedList.Item
-            labelTextKey="feat.privacy.title"
+            labelText="feat.privacy.title"
             onPress={() => openLink(Links.PrivacyPolicy)}
-            RightElement={<Icon name="open-in-new" />}
+            Trailing={<Icon name="open-in-new" />}
           />
           <SegmentedList.Item
-            labelTextKey="feat.thirdParty.title"
+            labelText="feat.thirdParty.title"
             supportingText={t("feat.thirdParty.brief")}
             onPress={() => navigation.navigate("ThirdParty")}
           />
@@ -136,25 +136,25 @@ export default function Settings() {
 
         <SegmentedList.CustomItem>
           <SegmentedList.Item
-            labelTextKey="feat.appUpdate.extra.version"
+            labelText="feat.appUpdate.extra.version"
             supportingText={APP_VERSION}
             onPress={() => openLink(Links.CurrentRelease)}
-            RightElement={<Icon name="open-in-new" />}
+            Trailing={<Icon name="open-in-new" />}
             className="rounded-none"
           />
           <Divider className="mx-4" />
           <SegmentedList.Item
-            labelTextKey="feat.appUpdate.extra.checkUpdates"
+            labelText="feat.appUpdate.extra.checkUpdates"
             onPress={PreferenceTogglers.toggleKey("checkForUpdates")}
-            RightElement={<Switch enabled={checkForUpdates} />}
+            Trailing={<Switch enabled={checkForUpdates} />}
             className="rounded-none"
           />
           <Divider className="mx-4" />
           <SegmentedList.Item
-            labelTextKey="feat.appUpdate.extra.rcNotification"
+            labelText="feat.appUpdate.extra.rcNotification"
             onPress={PreferenceTogglers.toggleKey("rcNotification")}
             disabled={!checkForUpdates}
-            RightElement={<Switch enabled={showRCNotification} />}
+            Trailing={<Switch enabled={showRCNotification} />}
             className="rounded-none"
           />
         </SegmentedList.CustomItem>

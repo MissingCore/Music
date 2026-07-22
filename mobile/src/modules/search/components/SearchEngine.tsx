@@ -129,7 +129,7 @@ function SearchResultsList<TScope extends SearchCategories>(
               {...item}
               /* @ts-expect-error - `type` should be limited to our scope. */
               onPress={() => props.callbacks[item.type](item.entry)}
-              RightElement={
+              Trailing={
                 props.withTrackActions && item.type === "track" ? (
                   <TrackAction
                     id={(item.entry as CommonTrack).id}

@@ -79,11 +79,11 @@ export function PlaybackOptionsSheet(props: {
           contentContainerClassName="gap-6 pb-4"
         >
           <SegmentedList.Item
-            labelTextKey="term.playingFrom"
+            labelText="term.playingFrom"
             supportingText={sourceName || "—"}
             onPress={navigateToList}
             disabled={!sourceName}
-            LeftElement={<PlayingIndicator />}
+            Leading={<PlayingIndicator />}
             className="py-2 pl-2"
             _overflow={false}
           />
@@ -118,15 +118,15 @@ export function PlaybackOptionsSheet(props: {
 
           <SegmentedList>
             <SegmentedList.Item
-              labelTextKey="feat.appearance.title"
+              labelText="feat.appearance.title"
               onPress={presentAppearanceSheet}
-              LeftElement={<Icon name="activity-zone" />}
+              Leading={<Icon name="activity-zone" />}
               className="gap-4"
             />
             <SegmentedList.Item
-              labelTextKey="feat.audioEffects.title"
+              labelText="feat.audioEffects.title"
               onPress={navigateToAudioEffectsScreen}
-              LeftElement={<Icon name="graphic-eq" />}
+              Leading={<Icon name="graphic-eq" />}
               className="gap-4"
             />
           </SegmentedList>

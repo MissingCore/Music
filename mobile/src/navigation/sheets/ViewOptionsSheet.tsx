@@ -44,12 +44,12 @@ export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
         />
 
         <SegmentedList.Item
-          labelTextKey="feat.modalViewPreference.extra.sort"
+          labelText="feat.modalViewPreference.extra.sort"
           onPress={() => {
             props.ref.current?.dismiss();
             sortOrderSheetRef.current?.present();
           }}
-          LeftElement={<Icon name="sort" />}
+          Leading={<Icon name="sort" />}
           className="gap-4"
         />
       </DetachedSheet>
@@ -100,12 +100,12 @@ function ViewOptionsSheetTemplate(props: {
       <DetachedSheet ref={props.ref}>
         <ScreenLayoutSetting screen={props.screen} />
         <SegmentedList.Item
-          labelTextKey="feat.modalViewPreference.extra.sort"
+          labelText="feat.modalViewPreference.extra.sort"
           onPress={() => {
             props.ref.current?.dismiss();
             sortOrderSheetRef.current?.present();
           }}
-          LeftElement={<Icon name="sort" />}
+          Leading={<Icon name="sort" />}
           className="gap-4"
         />
       </DetachedSheet>

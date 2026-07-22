@@ -308,7 +308,7 @@ const RenderItem = memo(
           title={track.name}
           description={getArtistsString(track.artists)}
           imageSource={track.artwork}
-          RightElement={
+          Trailing={
             <IconButton
               icon="drag-handle"
               accessibilityLabel={t("template.entryMove", { name: track.name })}

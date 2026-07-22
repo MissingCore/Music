@@ -13,7 +13,7 @@ export namespace SearchResult {
     type: MediaType;
     imageSource?: MediaImage.ImageSource;
     /** Renders this instead of the image if provided. */
-    LeftElement?: React.JSX.Element;
+    Leading?: React.JSX.Element;
     className?: string;
   };
 
@@ -21,7 +21,7 @@ export namespace SearchResult {
     PressProps & {
       /** Make this stand out more. */
       poppyLabel?: boolean;
-      RightElement?: React.JSX.Element;
+      Trailing?: React.JSX.Element;
     };
 }
 
@@ -32,9 +32,9 @@ export function SearchResult(props: SearchResult.Props) {
       {...props}
       labelText={props.title}
       supportingText={props.description}
-      LeftElement={
-        props.LeftElement ? (
-          props.LeftElement
+      Leading={
+        props.Leading ? (
+          props.Leading
         ) : (
           <MediaImage
             type={props.type}

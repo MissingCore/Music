@@ -75,7 +75,7 @@ export function Track({
   return (
     <SearchResult
       type="track"
-      LeftElement={overriddenLeftElement}
+      Leading={overriddenLeftElement}
       poppyLabel={showIndicator}
       {...(isMultiSelectEnabled ? multiSelectActions : normalActions)}
       {...props}

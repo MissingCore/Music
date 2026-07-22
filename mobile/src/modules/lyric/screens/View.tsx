@@ -52,7 +52,7 @@ export default function Lyrics({
           <SegmentedList.Item
             labelText={item.name}
             supportingText={t("plural.track", { count: item.trackCount })}
-            RightElement={<Icon name="edit" />}
+            Trailing={<Icon name="edit" />}
             onPress={() => navigation.navigate("Lyric", { id: item.id })}
             className={cn({
               "mt-0.75 rounded-t-xs": index > 0,
