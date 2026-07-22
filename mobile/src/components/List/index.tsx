@@ -69,7 +69,7 @@ const ListItemSlots = memo(function ListItemSlots(props: ListItemSlotsProps) {
       <View className="shrink grow gap-0.5">
         <StyledText
           numberOfLines={lineCount}
-          style={{ color: labelColor }}
+          style={labelColor ? { color: labelColor } : undefined}
           className={cn(
             "text-sm",
             { "text-base": !!props.Leading && !props.supportingText },
@@ -83,7 +83,7 @@ const ListItemSlots = memo(function ListItemSlots(props: ListItemSlotsProps) {
           <StyledText
             numberOfLines={lineCount}
             dim
-            style={{ color: supportingColor }}
+            style={supportingColor ? { color: supportingColor } : undefined}
           >
             {props.supportingText}
           </StyledText>
