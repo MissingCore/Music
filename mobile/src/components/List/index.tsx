@@ -8,23 +8,18 @@ import { View } from "react-native";
 import { cn } from "~/lib/style";
 import type { ListItemContentProps } from "./ListItemContent";
 import { ListItemContent } from "./ListItemContent";
-import type { PressProps } from "../Base/Pressable";
-import { Pressable } from "../Base/Pressable";
+import type { RipplePressProps } from "../Base/Pressable";
+import { Ripple } from "../Base/Pressable";
 
 export type ListItemProps = ListItemContentProps &
-  PressProps & {
+  RipplePressProps & {
     className?: string;
     style?: StyleProp<ViewStyle>;
-    /** Used internally to set the default pressed & disabled styles. */
-    _psuedoClassName?: string;
   };
 
-export const ListItem = memo(function StandardListItem({
-  _psuedoClassName = "active:bg-surfaceContainerLowest/50",
-  ...props
-}: ListItemProps) {
+export const ListItem = memo(function StandardListItem(props: ListItemProps) {
   const Wrapper = useMemo(
-    () => (!props.onPress ? View : Pressable),
+    () => (!props.onPress ? View : Ripple),
     [props.onPress],
   );
   return (
@@ -32,7 +27,6 @@ export const ListItem = memo(function StandardListItem({
       {...props}
       className={cn(
         "min-h-12 flex-row items-center gap-2 rounded-xs",
-        _psuedoClassName,
         props.className,
       )}
     >

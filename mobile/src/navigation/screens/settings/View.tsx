@@ -42,7 +42,7 @@ export default function Settings() {
             onPress={() => navigation.navigate("AppUpdate")}
             LeftElement={<Icon name="mobile-arrow-down" color="onSecondary" />}
             className="gap-4 rounded-full bg-secondary"
-            _psuedoClassName="active:bg-secondaryDim"
+            rippleColor="secondaryDim"
             _textColor="onSecondary"
           />
         )}

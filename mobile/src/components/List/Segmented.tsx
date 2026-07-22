@@ -69,15 +69,12 @@ function SegmentedListItem(props: ListItemProps) {
   const { first, last } = use(ListItemPositionContext);
   return (
     <ListItem
+      rippleColor="surfaceContainerLow"
       {...props}
       className={cn(
-        "rounded-md bg-surfaceContainerLowest p-4",
+        "rounded-md bg-surfaceContainerLowest p-4 disabled:opacity-25",
         { "rounded-t-xs": !first, "rounded-b-xs": !last },
         props.className,
-      )}
-      _psuedoClassName={cn(
-        "active:bg-surfaceContainerLow disabled:opacity-25",
-        props._psuedoClassName,
       )}
       _overflow={props._overflow !== undefined ? props._overflow : true}
     />
