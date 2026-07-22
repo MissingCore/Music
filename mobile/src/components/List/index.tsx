@@ -8,8 +8,8 @@ import { View } from "react-native";
 import { cn } from "~/lib/style";
 import type { ListItemContentProps } from "./ListItemContent";
 import { ListItemContent } from "./ListItemContent";
+import type { PressProps } from "../Base/Pressable";
 import { Pressable } from "../Base/Pressable";
-import type { PressProps } from "../Form/Button/types";
 
 export type ListItemProps = ListItemContentProps &
   PressProps & {

@@ -1,7 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import type { PressProps } from "~/components/Form/Button/types";
+import type { PressProps } from "~/components/Base/Pressable";
 import { ListItem } from "~/components/List";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import type { MediaType } from "~/stores/Playback/types";

@@ -10,7 +10,7 @@ import { Icon } from "~/resources/icons";
 import { cn } from "~/lib/style";
 import type { AppColor } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
-import type { PressProps } from "./types";
+import type { PressProps } from "../../Base/Pressable";
 import { Pressable } from "../../Base/Pressable";
 
 export type ButtonSize = "xs" | "sm" | "md" | "lg";
