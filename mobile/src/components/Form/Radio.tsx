@@ -7,7 +7,7 @@ import { View } from "react-native";
 import { Icon } from "~/resources/icons";
 
 import { cn } from "~/lib/style";
-import { Pressable } from "../Base/Pressable";
+import { Ripple } from "../Base/Pressable";
 
 //#region Base
 export function Radio({ selected }: { selected: boolean }) {
@@ -34,20 +34,20 @@ type RadioFieldProps = {
 
 export const RadioField = memo(function RadioField(props: RadioFieldProps) {
   return (
-    <Pressable
+    <Ripple
       accessibilityRole="radio"
       accessibilityState={{ selected: props.selected }}
       onPress={props.onSelect}
       // `<Radio />` utilizes the `disabled` prop to prevent togglability.
       disabled={props.selected}
       className={cn(
-        "min-h-12 flex-row items-center justify-between gap-4 px-2 active:opacity-50",
+        "min-h-12 flex-row items-center justify-between gap-4 rounded-md px-2",
         props.className,
       )}
     >
       {props.children}
       <Radio selected={props.selected} />
-    </Pressable>
+    </Ripple>
   );
 });
 //#endregion

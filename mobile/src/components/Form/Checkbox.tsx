@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import type { ParseKeys } from "i18next";
-import { memo } from "react";
+import React, { memo } from "react";
 import { View } from "react-native";
 
 import { Icon } from "~/resources/icons";
 
 import { cn } from "~/lib/style";
-import { Pressable } from "../Base/Pressable";
+import { Pressable, Ripple } from "../Base/Pressable";
 import { TStyledText } from "../Typography/StyledText";
 
 //#region Base
@@ -56,16 +56,36 @@ const CheckboxFieldBase = memo(function CheckboxFieldBase(
 //#endregion
 
 //#region Field
-export const CheckboxField = memo(function CheckboxField({
-  children,
-  ...props
-}: CheckboxFieldBaseProps & { children?: React.ReactNode }) {
+export const CheckboxField = memo(function CheckboxField(
+  props: CheckboxFieldBaseProps & { children: React.ReactNode },
+) {
+  return (
+    <Ripple
+      accessibilityRole="checkbox"
+      accessibilityState={{ checked: props.checked, disabled: props.disabled }}
+      onPress={props.onCheck}
+      disabled={props.disabled}
+      className={cn(
+        "min-h-12 flex-row items-center justify-between gap-4 rounded-md px-2",
+        props.className,
+      )}
+    >
+      {props.children}
+      <Checkbox checked={props.checked} />
+    </Ripple>
+  );
+});
+//#endregion
+
+//#region Checkbox Input
+export const CheckboxInput = memo(function CheckboxInput(
+  props: CheckboxFieldBaseProps & { accessibilityLabel: string },
+) {
   return (
     <CheckboxFieldBase
       {...props}
-      className={cn("min-h-12 justify-between gap-4 px-2", props.className)}
+      className={cn("min-h-12 px-2", props.className)}
     >
-      {children}
       <Checkbox checked={props.checked} />
     </CheckboxFieldBase>
   );

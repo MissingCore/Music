@@ -12,7 +12,7 @@ import { Tabs } from "~/stores/Preference/actions";
 
 import { cn } from "~/lib/style";
 import { IconButton } from "~/components/Form/Button/Icon";
-import { CheckboxField } from "~/components/Form/Checkbox";
+import { CheckboxInput } from "~/components/Form/Checkbox";
 import { DetachedSheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";
@@ -64,7 +64,7 @@ const RenderItem = memo(
           "bg-surfaceContainerLowest!": isActive,
         })}
       >
-        <CheckboxField
+        <CheckboxInput
           accessibilityLabel={t(
             isVisible ? "template.entryHide" : "template.entryShow",
             { name: tabName },
