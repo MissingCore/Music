@@ -52,10 +52,11 @@ export function PlayToggleButton() {
       icon={isPlaying ? "pause-filled" : "play-arrow-filled"}
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
       onPress={() => PlaybackControls.playToggle()}
-      className={cn("bg-primary px-6 py-2 active:bg-primaryDim", {
-        "bg-surfaceContainerHigh active:bg-surfaceContainerHighest": isPlaying,
+      className={cn("bg-primary px-6 py-2", {
+        "bg-surfaceContainerHigh": isPlaying,
       })}
       size="lg"
+      rippleColor={isPlaying ? "surfaceContainerHighest" : "primaryDim"}
       _iconColor="onPrimary"
     />
   );

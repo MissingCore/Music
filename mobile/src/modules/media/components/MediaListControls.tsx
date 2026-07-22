@@ -50,13 +50,11 @@ export function PlayMediaListButton(props: {
           : PlaybackControls.playFromList({ source: props.trackSource })
       }
       className={cn(
-        "rounded-full bg-primary active:bg-primaryDim",
-        {
-          "bg-surfaceContainerHigh active:bg-surfaceContainerHighest":
-            displayPause,
-        },
+        "rounded-full bg-primary",
+        { "bg-surfaceContainerHigh": displayPause },
         props.className,
       )}
+      rippleColor={displayPause ? "surfaceContainerHighest" : "primaryDim"}
       _iconColor="onPrimary"
     />
   );

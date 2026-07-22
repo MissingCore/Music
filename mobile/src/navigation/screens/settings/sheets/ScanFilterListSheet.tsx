@@ -130,8 +130,9 @@ function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
           await inputForm.onSubmit();
         }}
         disabled={!inputForm.canSubmit || inputForm.isSubmitting}
-        className="rounded-md bg-primary active:bg-primaryDim"
+        className="rounded-md bg-primary"
         size="md"
+        rippleColor="primaryDim"
         _iconColor="onPrimary"
       />
     </View>

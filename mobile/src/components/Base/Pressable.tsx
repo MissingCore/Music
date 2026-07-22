@@ -23,12 +23,11 @@ export type PressProps = Pick<
   | "onPressOut"
 >;
 
-export type RippleProps = Omit<PressableProps, "android_ripple"> & {
-  rippleColor?: AppColor;
-  rippleRadius?: number;
-};
+type RippleConfig = { rippleColor?: AppColor; rippleRadius?: number };
 
-export type RipplePressProps = PressProps & { rippleColor?: AppColor };
+export type RippleProps = Omit<PressableProps, "android_ripple"> & RippleConfig;
+
+export type RipplePressProps = PressProps & RippleConfig;
 
 export const Ripple = memo(function Ripple({
   rippleColor,

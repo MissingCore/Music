@@ -9,7 +9,7 @@ import { Icon } from "~/resources/icons";
 import { cn } from "~/lib/style";
 import type { AppColor } from "~/modules/customization/theme/core/constants";
 import type { RipplePressProps } from "../../Base/Pressable";
-import { Pressable, Ripple } from "../../Base/Pressable";
+import { Ripple } from "../../Base/Pressable";
 
 export type ButtonSize = "xs" | "sm" | "md" | "lg";
 
@@ -26,6 +26,7 @@ type IconButtonProps = RipplePressProps & {
   /** Defaults to `md`. */
   size?: ButtonSize;
   className?: string;
+  _fullRipple?: boolean;
   _iconColor?: AppColor;
 };
 
@@ -33,6 +34,7 @@ type IconButtonProps = RipplePressProps & {
 export const IconButton = memo(function IconButton({
   icon,
   size = "sm",
+  _fullRipple = false,
   _iconColor,
   ...props
 }: IconButtonProps) {
@@ -40,7 +42,7 @@ export const IconButton = memo(function IconButton({
   return (
     <Ripple
       {...props}
-      rippleRadius={(iconSize + 12) / 2}
+      rippleRadius={_fullRipple ? undefined : (iconSize + 12) / 2}
       className={cn(
         "items-center justify-center rounded-full disabled:opacity-25",
         buttonSize,
@@ -54,24 +56,15 @@ export const IconButton = memo(function IconButton({
 //#endregion
 
 //#region Filled
-export const FilledIconButton = memo(function FilledIconButton({
-  icon,
-  size = "sm",
-  _iconColor,
-  ...props
-}: IconButtonProps) {
-  const { buttonSize, iconSize } = ButtonConfig[size];
+export const FilledIconButton = memo(function FilledIconButton(
+  props: IconButtonProps,
+) {
   return (
-    <Pressable
+    <IconButton
       {...props}
-      className={cn(
-        "items-center justify-center rounded-full bg-surfaceContainerLowest active:bg-surfaceContainer disabled:opacity-25",
-        buttonSize,
-        props.className,
-      )}
-    >
-      <Icon name={icon} size={iconSize} color={_iconColor} />
-    </Pressable>
+      className={cn("bg-surfaceContainerLowest", props.className)}
+      _fullRipple
+    />
   );
 });
 //#endregion
