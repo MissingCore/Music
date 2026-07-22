@@ -41,7 +41,7 @@ export default function Settings() {
             supportingText={t("feat.appUpdate.brief")}
             onPress={() => navigation.navigate("AppUpdate")}
             Leading={<Icon name="mobile-arrow-down" color="onSecondary" />}
-            className="gap-4 rounded-full bg-secondary"
+            className="rounded-full bg-secondary"
             rippleColor="secondaryDim"
             _textColor="onSecondary"
           />
@@ -52,13 +52,11 @@ export default function Settings() {
             labelText="feat.appearance.title"
             onPress={() => navigation.navigate("AppearanceSettings")}
             Leading={<Icon name="format-paint" />}
-            className="gap-4"
           />
           <SegmentedList.Item
             labelText="feat.language.title"
             onPress={() => languageSheetRef.current?.present()}
             Leading={<Icon name="translate" />}
-            className="gap-4"
           />
         </SegmentedList>
 
@@ -67,13 +65,11 @@ export default function Settings() {
             labelText="feat.backup.title"
             onPress={() => backupSheetRef.current?.present()}
             Leading={<Icon name="archive" />}
-            className="gap-4"
           />
           <SegmentedList.Item
             labelText="feat.insights.title"
             onPress={() => navigation.navigate("Insights")}
             Leading={<Icon name="bar-chart-4-bars" />}
-            className="gap-4"
           />
         </SegmentedList>
         <SegmentedList>
@@ -81,25 +77,21 @@ export default function Settings() {
             labelText="feat.audioEffects.title"
             onPress={() => navigation.navigate("AudioEffects", {})}
             Leading={<Icon name="graphic-eq" />}
-            className="gap-4"
           />
           <SegmentedList.Item
             labelText="feat.lyrics.title"
             onPress={() => navigation.navigate("LyricsSettings")}
             Leading={<Icon name="lyrics" />}
-            className="gap-4"
           />
           <SegmentedList.Item
             labelText="feat.playback.title"
             onPress={() => navigation.navigate("PlaybackSettings")}
             Leading={<Icon name="autoplay" />}
-            className="gap-4"
           />
           <SegmentedList.Item
             labelText="feat.scanning.title"
             onPress={() => navigation.navigate("ScanningSettings")}
             Leading={<Icon name="document-search" />}
-            className="gap-4"
           />
         </SegmentedList>
 
@@ -107,7 +99,6 @@ export default function Settings() {
           labelText="feat.experimental.title"
           onPress={() => navigation.navigate("ExperimentalSettings")}
           Leading={<Icon name="flask-filled" />}
-          className="gap-4"
         />
 
         <SegmentedList>

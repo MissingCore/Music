@@ -25,7 +25,6 @@ export default function LyricsSettings() {
           labelText="feat.lyrics.extra.providers"
           onPress={() => navigation.navigate("LyricsProviders")}
           Leading={<Icon name="search" />}
-          className="gap-4"
         />
         <SegmentedList.Item
           labelText={t("template.entryManage", {
@@ -33,7 +32,6 @@ export default function LyricsSettings() {
           })}
           onPress={() => navigation.navigate("Lyrics", {})}
           Leading={<Icon name="lyrics" />}
-          className="gap-4"
         />
       </SegmentedList>
 

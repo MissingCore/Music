@@ -50,7 +50,6 @@ export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
             sortOrderSheetRef.current?.present();
           }}
           Leading={<Icon name="sort" />}
-          className="gap-4"
         />
       </DetachedSheet>
       <SortSheet ref={sortOrderSheetRef} screen="album" />
@@ -106,7 +105,6 @@ function ViewOptionsSheetTemplate(props: {
             sortOrderSheetRef.current?.present();
           }}
           Leading={<Icon name="sort" />}
-          className="gap-4"
         />
       </DetachedSheet>
       <SortSheet ref={sortOrderSheetRef} screen={props.screen} />

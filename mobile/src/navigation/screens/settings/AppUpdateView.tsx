@@ -123,13 +123,11 @@ export default function AppUpdate() {
           labelText="feat.appUpdate.extra.downloadAPK"
           onPress={() => openLink(Links.SpecificRelease(release.version))}
           Leading={<Icon name="logo-github" />}
-          className="gap-4"
         />
         <SegmentedList.Item
           labelText="feat.appUpdate.extra.updateGoogle"
           onPress={() => openLink(Links.PlayStore)}
           Leading={<Icon name="logo-google-playstore" />}
-          className="gap-4"
         />
       </SegmentedList>
     </ListLayout>

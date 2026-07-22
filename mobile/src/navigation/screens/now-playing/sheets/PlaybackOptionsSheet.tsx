@@ -121,13 +121,11 @@ export function PlaybackOptionsSheet(props: {
               labelText="feat.appearance.title"
               onPress={presentAppearanceSheet}
               Leading={<Icon name="activity-zone" />}
-              className="gap-4"
             />
             <SegmentedList.Item
               labelText="feat.audioEffects.title"
               onPress={navigateToAudioEffectsScreen}
               Leading={<Icon name="graphic-eq" />}
-              className="gap-4"
             />
           </SegmentedList>
         </ScrollView>

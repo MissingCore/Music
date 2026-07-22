@@ -72,7 +72,7 @@ function SegmentedListItem(props: ListItemProps) {
       rippleColor="surfaceContainerLow"
       {...props}
       className={cn(
-        "rounded-md bg-surfaceContainerLowest p-4 disabled:opacity-25",
+        "gap-4 rounded-md bg-surfaceContainerLowest p-4 disabled:opacity-25",
         { "rounded-t-xs": !first, "rounded-b-xs": !last },
         props.className,
       )}
