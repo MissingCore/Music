@@ -77,6 +77,8 @@ export interface ViewPreferenceStore {
   /** Get a more accurate initial state. */
   _init: (state: ViewPreferenceStore) => Promise<void>;
 
+  /** Min width of columns in "List" layout. */
+  listSize: number;
   /** Min width of columns in "Grid" layout. */
   gridSize: number;
   /** Min width of columns in "Compact Grid" layout. */

@@ -4,13 +4,15 @@
 import { viewPreferenceStore } from "../store";
 import type { LayoutOption, ScreenSortOptions } from "../constants";
 import type { MutableViewLayout, MutableViewOrder } from "../types";
-import { GridColumnSizeConfig } from "../utils";
+import { GridColumnSizeConfig, ListColumnSizeConfig } from "../utils";
 
-export function setColumnSize(key: "gridSize" | "compactGridSize") {
+export function setColumnSize(
+  key: "listSize" | "gridSize" | "compactGridSize",
+) {
+  const ConfigProvider =
+    key === "listSize" ? ListColumnSizeConfig : GridColumnSizeConfig;
   return (columnSize: number) => {
-    viewPreferenceStore.setState({
-      [key]: GridColumnSizeConfig.clamp(columnSize),
-    });
+    viewPreferenceStore.setState({ [key]: ConfigProvider.clamp(columnSize) });
   };
 }
 

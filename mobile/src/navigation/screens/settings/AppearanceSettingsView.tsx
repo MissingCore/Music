@@ -12,10 +12,14 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { ViewPreferenceSetters } from "~/stores/ViewPreference/actions";
-import { GridColumnSizeConfig } from "~/stores/ViewPreference/utils";
+import {
+  GridColumnSizeConfig,
+  ListColumnSizeConfig,
+} from "~/stores/ViewPreference/utils";
 import {
   useCompactGridLayoutConfig,
   useGridLayoutConfig,
+  useListLayoutConfig,
 } from "~/hooks/useLayoutConfigs";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
@@ -108,18 +112,28 @@ function GridColumnSizeSetting() {
   return (
     <SegmentedList.CustomItem className="gap-6 p-4">
       <TStyledText
-        textKey="feat.modalViewPreference.extra.gridColumnSize"
+        textKey="feat.modalViewPreference.extra.columnSize"
         className="text-sm"
       />
       <Divider className="-my-2" />
+      <ColumnSizeSlider field="list" />
       <ColumnSizeSlider field="grid" />
       <ColumnSizeSlider field="compactGrid" />
     </SegmentedList.CustomItem>
   );
 }
 
-function ColumnSizeSlider({ field }: { field: "grid" | "compactGrid" }) {
-  const fieldName = `${field}Size` as const;
+const ColumnConfig = {
+  list: { bound: ListColumnSizeConfig.bound, hook: useListLayoutConfig },
+  grid: { bound: GridColumnSizeConfig.bound, hook: useGridLayoutConfig },
+  compactGrid: {
+    bound: GridColumnSizeConfig.bound,
+    hook: useCompactGridLayoutConfig,
+  },
+} as const;
+
+function ColumnSizeSlider(props: { field: keyof typeof ColumnConfig }) {
+  const fieldName = `${props.field}Size` as const;
 
   const { t } = useTranslation();
   const columnSize = useViewPreferenceStore((s) => s[fieldName]);
@@ -131,23 +145,23 @@ function ColumnSizeSlider({ field }: { field: "grid" | "compactGrid" }) {
     (currVal) => scheduleOnRN(_setColumnSize, currVal),
   );
 
+  const Config = ColumnConfig[props.field];
+
   //? Column calculation is different based on the grid layout.
-  const { count } = (
-    field === "grid" ? useGridLayoutConfig : useCompactGridLayoutConfig
-  )({ minWidth: _columnSize });
+  const { count } = Config.hook({ minWidth: _columnSize });
 
   return (
     <View className="gap-2">
-      <TEm textKey={`feat.modalViewPreference.extra.${field}`} />
+      <TEm textKey={`feat.modalViewPreference.extra.${props.field}`} />
       <LabeledSlider
         initValue={columnSize}
         liveValue={cachedValue}
-        {...GridColumnSizeConfig.bound}
+        {...Config.bound}
         onComplete={ViewPreferenceSetters.setColumnSize(fieldName)}
         displayedValue={String(_columnSize)}
       />
       <StyledText dim className="-mt-3">
-        {t("feat.modalViewPreference.extra.gridColumnCount", { count })}
+        {t("feat.modalViewPreference.extra.columnCount", { count })}
       </StyledText>
     </View>
   );

@@ -9,3 +9,10 @@ export const GridColumnSizeConfig = {
     return clamp(this.bound.min, value, this.bound.max);
   },
 };
+
+export const ListColumnSizeConfig = {
+  bound: { min: 150, max: 400 },
+  clamp(value: number) {
+    return clamp(this.bound.min, value, this.bound.max);
+  },
+};
