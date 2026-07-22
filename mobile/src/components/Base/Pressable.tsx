@@ -25,19 +25,21 @@ export type PressProps = Pick<
 
 export type RippleProps = Omit<PressableProps, "android_ripple"> & {
   rippleColor?: AppColor;
+  rippleRadius?: number;
 };
 
 export type RipplePressProps = PressProps & { rippleColor?: AppColor };
 
 export const Ripple = memo(function Ripple({
   rippleColor,
+  rippleRadius,
   ...props
 }: RippleProps) {
   const color = useColor(rippleColor, "surfaceContainerHigh");
   return (
     <Pressable
       {...props}
-      android_ripple={{ color, foreground: true }}
+      android_ripple={{ color, foreground: true, radius: rippleRadius }}
       className={cn("overflow-hidden", props.className)}
     />
   );

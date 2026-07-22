@@ -113,8 +113,8 @@ export default function Themes() {
                     onPress={() =>
                       navigation.navigate("ModifyTheme", { id: themeId })
                     }
+                    rippleColor={themeColors.surfaceContainerHigh as HexColor}
                     _iconColor={themeColors.onSurface as HexColor}
-                    _rippleColor={themeColors.surfaceContainerHigh as HexColor}
                   />
                   <IconButton
                     icon="file-save"
@@ -122,8 +122,8 @@ export default function Themes() {
                     onPress={() =>
                       onExportTheme(formatCustomTheme(themeMap[themeId]!))
                     }
+                    rippleColor={themeColors.surfaceContainerHigh as HexColor}
                     _iconColor={themeColors.onSurface as HexColor}
-                    _rippleColor={themeColors.surfaceContainerHigh as HexColor}
                   />
                 </View>
               ) : null}
