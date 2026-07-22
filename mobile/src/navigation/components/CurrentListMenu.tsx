@@ -97,7 +97,6 @@ export function CurrentListMenu(props: {
           }}
           Leading={item.icon ? <Icon name={item.icon} /> : null}
           className="px-3"
-          rippleColor="surfaceContainer"
           _labelTextClassName="text-sm"
         />
       ))}

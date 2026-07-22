@@ -33,7 +33,7 @@ export const Ripple = memo(function Ripple({
   rippleColor,
   ...props
 }: RippleProps) {
-  const color = useColor(rippleColor, "surfaceContainerLowest");
+  const color = useColor(rippleColor, "surfaceContainerHigh");
   return (
     <Pressable
       {...props}
