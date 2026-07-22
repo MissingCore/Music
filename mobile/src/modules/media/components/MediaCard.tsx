@@ -3,6 +3,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
+import { View } from "react-native";
 
 import { useGridLayoutConfig } from "~/hooks/useLayoutConfigs";
 
@@ -11,7 +12,7 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { cn } from "~/lib/style";
 import type { LegendListProps } from "~/components/Base/LegendList";
-import { Pressable } from "~/components/Base/Pressable";
+import { Ripple } from "~/components/Base/Pressable";
 import { StyledText } from "~/components/Typography/StyledText";
 import type { MediaCardContent, MediaCardProps } from "./MediaCard.type";
 import { MediaImage } from "./MediaImage";
@@ -30,20 +31,31 @@ export function MediaCard({
   ...imgProps
 }: MediaCardProps) {
   return (
-    <Pressable
+    <Ripple
       onPress={onPress}
-      style={{ maxWidth: imgProps.size }}
+      style={[
+        { maxWidth: imgProps.size },
+        //? Conditionally applying `rounded-t-full` will break the border
+        //? radius applied to the bottom.
+        //?   - https://github.com/tailwindlabs/tailwindcss/issues/16902#issuecomment-2692698264
+        imgProps.type === "artist" && {
+          borderTopStartRadius: imgProps.size / 2,
+          borderEndStartRadius: imgProps.size / 2,
+        },
+      ]}
       // Using `grow` instead of `w-full` because only 1 item gets shown otherwise.
-      className={cn("grow active:opacity-75", className)}
+      className={cn("grow rounded-t-lg rounded-b-md", className)}
     >
       <MediaImage {...imgProps} />
-      <StyledText numberOfLines={1} className="mt-1 text-sm">
-        {title}
-      </StyledText>
-      <StyledText dim numberOfLines={1}>
-        {description}
-      </StyledText>
-    </Pressable>
+      <View className="px-1.5 py-1">
+        <StyledText numberOfLines={1} className="text-sm">
+          {title}
+        </StyledText>
+        <StyledText dim numberOfLines={1}>
+          {description}
+        </StyledText>
+      </View>
+    </Ripple>
   );
 }
 //#endregion
@@ -61,8 +73,8 @@ export function useMediaCardListPreset(
   return useMemo(
     () => ({
       numColumns: count,
-      // ~40px for text content under `<MediaImage />` + 8px Margin Bottom
-      estimatedItemSize: width + 40 + 8,
+      // ~44px for text content under `<MediaImage />` + 8px Margin Bottom
+      estimatedItemSize: width + 44 + 8,
       data: args.data,
       // Use this as the key instead of just `id` in case `data` is mixed.
       keyExtractor: ({ id, type }) => `${type}_${id}`,
