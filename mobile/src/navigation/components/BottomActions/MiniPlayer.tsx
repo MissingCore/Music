@@ -3,7 +3,7 @@
 
 import BackgroundTimer from "@boterop/react-native-background-timer";
 import { useNavigation } from "@react-navigation/native";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { GestureDetector, usePanGesture } from "react-native-gesture-handler";
@@ -25,8 +25,7 @@ import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { BottomActionsOffset } from "./useBottomActions";
 
-import { cn } from "~/lib/style";
-import { Pressable } from "~/components/Base/Pressable";
+import { Ripple } from "~/components/Base/Pressable";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { Marquee } from "~/components/Marquee";
 import { Swipeable } from "~/components/Swipeable";
@@ -50,7 +49,6 @@ export function MiniPlayer() {
   const track = usePlaybackStore((s) => s.activeTrack);
   const gestureUI = usePreferenceStore((s) => s.miniplayerGestures);
   const dragClearPlayback = usePreferenceStore((s) => s.dragClearPlayback);
-  const [isPressed, setIsPressed] = useState(false);
 
   const TextWrapper = useMemo(
     () => (gestureUI ? Swipeable : View),
@@ -92,10 +90,7 @@ export function MiniPlayer() {
   }));
   //#endregion
 
-  if (!track) {
-    if (isPressed) setIsPressed(false); // Since `onPressOut` won't get called if this gets hidden.
-    return null;
-  }
+  if (!track) return null;
   return (
     <GestureDetector gesture={panGesture}>
       <Animated.View
@@ -103,16 +98,11 @@ export function MiniPlayer() {
         entering={SlideInDown}
         exiting={SlideOutDown}
         style={animatedStyles}
-        className={cn(
-          "relative z-10 h-14 w-full shrink grow overflow-hidden rounded-full bg-surfaceContainerLowest",
-          { "bg-surfaceContainerLow": isPressed },
-        )}
+        className="z-10 w-full overflow-hidden rounded-full bg-surfaceContainerLowest"
       >
-        <Pressable
-          onPressIn={() => setIsPressed(true)}
+        <Ripple
           onPress={() => navigation.navigate("NowPlaying")}
-          onPressOut={() => setIsPressed(false)}
-          className="h-14 flex-row items-center px-1"
+          className="relative h-14 flex-row items-center px-1"
         >
           <MediaImage
             type="track"
@@ -127,16 +117,12 @@ export function MiniPlayer() {
             onSwipeLeft={PlaybackControls.next}
             onSwipeRight={PlaybackControls.prev}
             wrapperClassName="shrink grow justify-center overflow-hidden"
-            className={cn({
-              "mx-1.5 shrink grow": !gestureUI,
-              "bg-surfaceContainerLowest px-1.5": gestureUI,
-              "bg-surfaceContainerLow": gestureUI && isPressed,
-            })}
+            className="w-full shrink bg-surfaceContainerLowest px-1.5"
           >
-            <Marquee color={`surfaceContainerLow${!isPressed ? "est" : ""}`}>
+            <Marquee color="surfaceContainerLowest">
               <StyledText className="text-sm">{track.name}</StyledText>
             </Marquee>
-            <Marquee color={`surfaceContainerLow${!isPressed ? "est" : ""}`}>
+            <Marquee color="surfaceContainerLowest">
               <StyledText dim className="text-xxs">
                 {getArtistsString(track.artists)}
               </StyledText>
@@ -157,8 +143,9 @@ export function MiniPlayer() {
             />
             {!gestureUI ? <NextButton /> : null}
           </Animated.View>
-        </Pressable>
-        <TrackProgress duration={track.duration} />
+
+          <TrackProgress duration={track.duration} />
+        </Ripple>
       </Animated.View>
     </GestureDetector>
   );
