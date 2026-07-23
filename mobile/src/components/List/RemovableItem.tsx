@@ -41,7 +41,7 @@ export const RemovableItem = memo(function RemovableItem(
   return (
     <Wrapper
       {...wrapperProps}
-      className={cn("flex-row justify-start gap-1", props.className)}
+      className={cn("min-h-12 flex-row items-center gap-1", props.className)}
     >
       <IconButton
         icon="do-not-disturb-on"

@@ -28,7 +28,10 @@ export const ListItem = memo(function StandardListItem(props: ListItemProps) {
   return (
     <Wrapper
       {...props}
-      className={cn("flex-row justify-start rounded-xs", props.className)}
+      className={cn(
+        "min-h-12 flex-row items-center gap-2 rounded-xs",
+        props.className,
+      )}
     >
       <ListItemSlots {...props} />
     </Wrapper>
