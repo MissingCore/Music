@@ -40,7 +40,7 @@ export function MediaCard({
         //?   - https://github.com/tailwindlabs/tailwindcss/issues/16902#issuecomment-2692698264
         imgProps.type === "artist" && {
           borderTopStartRadius: imgProps.size / 2,
-          borderEndStartRadius: imgProps.size / 2,
+          borderTopEndRadius: imgProps.size / 2,
         },
       ]}
       // Using `grow` instead of `w-full` because only 1 item gets shown otherwise.

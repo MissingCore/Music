@@ -41,7 +41,10 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
   return (
     <>
       <DetachedSheet ref={props.ref} titleKey="feat.language.title">
-        <Ripple className="min-h-10 flex-row items-center justify-between gap-1 border-b border-outline">
+        <Ripple
+          onPress={() => languageSelectionSheetRef.current?.present()}
+          className="min-h-10 flex-row items-center justify-between gap-1 border-b border-outline"
+        >
           <StyledText className="pl-1">{selectedLanguage?.name}</StyledText>
           <View className="-rotate-90 rtl:rotate-90">
             <Icon name="keyboard-arrow-down" />

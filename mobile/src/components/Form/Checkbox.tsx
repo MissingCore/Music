@@ -61,6 +61,7 @@ export const CheckboxField = memo(function CheckboxField(
 ) {
   return (
     <Ripple
+      accessibilityLabel={props.accessibilityLabel}
       accessibilityRole="checkbox"
       accessibilityState={{ checked: props.checked, disabled: props.disabled }}
       onPress={props.onCheck}

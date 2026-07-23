@@ -37,6 +37,8 @@ export function SwitchInput(props: {
 }) {
   return (
     <Pressable
+      accessibilityRole="switch"
+      accessibilityState={{ checked: props.enabled, disabled: props.disabled }}
       onPress={props.onPress}
       disabled={props.disabled}
       className="h-8 justify-center"

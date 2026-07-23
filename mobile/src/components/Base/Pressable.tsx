@@ -3,14 +3,14 @@
 
 import { memo } from "react";
 import type { PressableProps as RNPressableProps } from "react-native";
-import { Pressable as RNPresasble } from "react-native";
+import { Pressable as RNPressable } from "react-native";
 
 import { cn } from "~/lib/style";
 import type { AppColor } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
 
 export type PressableProps = RNPressableProps;
-export const Pressable = RNPresasble;
+export const Pressable = RNPressable;
 
 /** The most "used" action props used on `<Pressable />`. */
 export type PressProps = Pick<
