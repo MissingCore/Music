@@ -4,7 +4,7 @@
 import type { ParseKeys } from "i18next";
 import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import type { StyleProp, ViewStyle } from "react-native";
+import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import { View } from "react-native";
 
 import { cn } from "~/lib/style";
@@ -52,6 +52,7 @@ interface ListItemSlotsProps {
   /** Use a different color for the text. */
   _textColor?: VariantColor;
   _labelTextClassName?: string;
+  _labelTextStyle?: StyleProp<TextStyle>;
 }
 
 const ListItemSlots = memo(function ListItemSlots(props: ListItemSlotsProps) {
@@ -69,7 +70,7 @@ const ListItemSlots = memo(function ListItemSlots(props: ListItemSlotsProps) {
       <View className="shrink grow gap-0.5">
         <StyledText
           numberOfLines={lineCount}
-          style={labelColor ? { color: labelColor } : undefined}
+          style={[labelColor && { color: labelColor }, props._labelTextStyle]}
           className={cn(
             "text-sm",
             { "text-base": !!props.Leading && !props.supportingText },

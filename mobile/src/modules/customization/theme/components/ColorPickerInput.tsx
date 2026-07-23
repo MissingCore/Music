@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { View } from "react-native";
 
-import { Pressable } from "~/components/Base/Pressable";
+import { Ripple } from "~/components/Base/Pressable";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import { Modal } from "~/components/Modal";
@@ -35,11 +35,11 @@ export function ColorPickerInput(props: {
 
   return (
     <View className="flex-1">
-      <Pressable
+      <Ripple
         accessibilityLabel={`Pick ${props.label} color`}
         onPress={() => setShowPicker(true)}
         disabled={props.disabled}
-        className="min-h-14 flex-row items-center overflow-hidden rounded-sm border border-outline active:opacity-50"
+        className="min-h-14 flex-row items-center overflow-hidden rounded-sm border border-outline"
       >
         <View
           className="aspect-square h-full"
@@ -52,7 +52,7 @@ export function ColorPickerInput(props: {
             {props.value}
           </StyledText>
         </View>
-      </Pressable>
+      </Ripple>
 
       <Modal visible={showPicker}>
         <View className="gap-4">

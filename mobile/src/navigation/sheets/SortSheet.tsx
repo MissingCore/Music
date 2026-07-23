@@ -8,8 +8,8 @@ import {
 } from "~/stores/ViewPreference/actions";
 
 import { FlatList } from "~/components/Base/List";
-import { Pressable } from "~/components/Base/Pressable";
 import { RadioField } from "~/components/Form/Radio";
+import { SegmentedList } from "~/components/List/Segmented";
 import { DetachedSheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";
@@ -29,13 +29,12 @@ export function SortSheet(props: {
 
   return (
     <DetachedSheet ref={props.ref}>
-      <Pressable
+      <SegmentedList.Item
+        labelText="feat.modalViewPreference.extra.asc"
         onPress={() => ViewPreferenceTogglers.toggleIsAsc(props.screen)}
-        className="flex-row items-center justify-between gap-4 rounded-md bg-surfaceContainerLowest p-4 active:bg-surfaceContainerLow"
-      >
-        <TStyledText textKey="feat.modalViewPreference.extra.asc" />
-        <Switch enabled={isAsc} />
-      </Pressable>
+        Trailing={<Switch enabled={isAsc} />}
+        _labelTextClassName="text-base"
+      />
       <FlatList
         accessibilityRole="radiogroup"
         data={SortOptions[props.screen]}

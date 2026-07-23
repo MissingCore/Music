@@ -7,7 +7,6 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Icon } from "~/resources/icons";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
 
@@ -16,10 +15,10 @@ import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
 import { cn } from "~/lib/style";
 import { FlatList } from "~/components/Base/List";
-import { Pressable } from "~/components/Base/Pressable";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
-import { StyledText } from "~/components/Typography/StyledText";
-import type { CustomTheme, HexColor } from "../core/constants";
+import { Radio } from "~/components/Form/Radio";
+import { SegmentedList } from "~/components/List/Segmented";
+import type { CustomTheme, ResolvedTheme } from "../core/constants";
 import {
   DefaultThemeOptions,
   Themes as DefaultThemes,
@@ -70,64 +69,58 @@ export default function Themes() {
         keyExtractor={(id) => id}
         renderItem={({ item: themeId, index }) => {
           const selected = selectedTheme === themeId;
-          const themeColors = isDefaultTheme(themeId)
-            ? DefaultThemeMap[themeId]
-            : themeMap[themeId]!;
+          const { onSurface, surfaceContainerLowest, surfaceContainerHigh } =
+            isDefaultTheme(themeId)
+              ? DefaultThemeMap[themeId]
+              : (themeMap[themeId]! as ResolvedTheme);
 
           return (
-            <Pressable
-              onPress={() => PreferenceSetters.setTheme(themeId)}
-              className={cn(
-                "min-h-14 flex-row items-center gap-2 rounded-md p-2 pl-4 active:opacity-75",
-                {
-                  "mt-0.75 rounded-t-xs": index > 0,
-                  "rounded-b-xs": index < themeOptions.length - 1,
-                },
-              )}
-              style={{ backgroundColor: themeColors.surfaceContainerLowest }}
-            >
-              <View
-                className={cn(
-                  "size-5 items-center justify-center rounded-full border",
-                  { "border-0 bg-onSurface": selected },
-                )}
-                style={{ borderColor: themeColors.onSurface }}
-              >
-                {selected ? (
-                  <Icon name="check" size={18} color="surface" />
-                ) : null}
-              </View>
-              <StyledText
-                style={{ color: themeColors.onSurface }}
-                className="shrink grow"
-              >
-                {isDefaultTheme(themeId)
+            <SegmentedList.Item
+              labelText={
+                isDefaultTheme(themeId)
                   ? t(`feat.theme.extra.${themeId}`)
-                  : themeMap[themeId]!.name}
-              </StyledText>
-              {!isDefaultTheme(themeId) ? (
-                <View className="flex-row items-center">
-                  <IconButton
-                    icon="edit"
-                    accessibilityLabel={t("form.edit")}
-                    onPress={() =>
-                      navigation.navigate("ModifyTheme", { id: themeId })
-                    }
-                    rippleColor={themeColors.surfaceContainerHigh as HexColor}
-                    _iconColor={themeColors.onSurface as HexColor}
-                  />
-                  <IconButton
-                    icon="file-save"
-                    accessibilityLabel={t("feat.backup.extra.export")}
-                    onPress={() =>
-                      onExportTheme(formatCustomTheme(themeMap[themeId]!))
-                    }
-                    rippleColor={themeColors.surfaceContainerHigh as HexColor}
-                    _iconColor={themeColors.onSurface as HexColor}
-                  />
-                </View>
-              ) : null}
-            </Pressable>
+                  : themeMap[themeId]!.name
+              }
+              onPress={
+                !selected
+                  ? () => PreferenceSetters.setTheme(themeId)
+                  : undefined
+              }
+              Leading={
+                <Radio selected={selected} style={{ borderColor: onSurface }} />
+              }
+              Trailing={
+                !isDefaultTheme(themeId) ? (
+                  <View className="flex-row items-center">
+                    <IconButton
+                      icon="edit"
+                      accessibilityLabel={t("form.edit")}
+                      onPress={() =>
+                        navigation.navigate("ModifyTheme", { id: themeId })
+                      }
+                      rippleColor={surfaceContainerHigh}
+                      _iconColor={onSurface}
+                    />
+                    <IconButton
+                      icon="file-save"
+                      accessibilityLabel={t("feat.backup.extra.export")}
+                      onPress={() =>
+                        onExportTheme(formatCustomTheme(themeMap[themeId]!))
+                      }
+                      rippleColor={surfaceContainerHigh}
+                      _iconColor={onSurface}
+                    />
+                  </View>
+                ) : null
+              }
+              className={cn("min-h-14 p-2 pl-4", {
+                "mt-0.75 rounded-t-xs": index > 0,
+                "rounded-b-xs": index < themeOptions.length - 1,
+              })}
+              style={{ backgroundColor: surfaceContainerLowest }}
+              rippleColor={surfaceContainerHigh}
+              _labelTextStyle={{ color: onSurface }}
+            />
           );
         }}
         contentContainerClassName="p-4"
