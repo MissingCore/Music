@@ -74,7 +74,7 @@ export function ColorPickerInput(props: {
           <ExtendedTButton
             textKey="form.close"
             onPress={() => setShowPicker(false)}
-            className="bg-surfaceContainer active:bg-surfaceContainerHigh"
+            className="bg-surfaceContainer"
           />
         </View>
       </Modal>

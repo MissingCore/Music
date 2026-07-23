@@ -51,8 +51,9 @@ export function OnboardingConfiguration() {
           onPress={() =>
             preferenceStore.setState({ completedOnboarding: true })
           }
-          className="mt-auto rounded-full bg-secondary active:bg-secondaryDim"
+          className="mt-auto rounded-full bg-secondary"
           textClassName="text-onSecondary"
+          rippleColor="secondaryDim"
         />
       </ListLayout>
     </Animated.View>

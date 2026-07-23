@@ -27,7 +27,7 @@ export const Button = memo(function Button({
 //#endregion
 
 //#region Extended Translated
-export type ExtendTButtonProps = Omit<RippleProps, "children"> & {
+export type ExtendedTButtonProps = Omit<RippleProps, "children"> & {
   textKey: ParseKeys;
   /** **Note:** Text will be left-aligned if provided. */
   LeftElement?: React.ReactNode;
@@ -36,7 +36,7 @@ export type ExtendTButtonProps = Omit<RippleProps, "children"> & {
 };
 
 export const ExtendedTButton = memo(function ExtendedTButton(
-  props: ExtendTButtonProps,
+  props: ExtendedTButtonProps,
 ) {
   return (
     <Button
