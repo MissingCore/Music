@@ -44,10 +44,10 @@ export function MediaCard({
         },
       ]}
       // Using `grow` instead of `w-full` because only 1 item gets shown otherwise.
-      className={cn("grow rounded-t-lg rounded-b-md", className)}
+      className={cn("grow gap-0 rounded-t-lg", className)}
     >
       <MediaImage {...imgProps} />
-      <View className="px-1.5 py-1">
+      <View className="w-full px-1.5 py-1">
         <StyledText numberOfLines={1} className="text-sm">
           {title}
         </StyledText>

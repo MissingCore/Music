@@ -45,7 +45,7 @@ export const IconButton = memo(function IconButton({
       {...props}
       rippleRadius={_fullRipple ? undefined : (iconSize + 12) / 2}
       className={cn(
-        "items-center justify-center rounded-full disabled:opacity-25",
+        "rounded-full disabled:opacity-25",
         buttonSize,
         props.className,
       )}

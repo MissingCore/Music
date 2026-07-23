@@ -39,7 +39,10 @@ export const Ripple = memo(function Ripple({
     <Pressable
       {...props}
       android_ripple={{ color, foreground: true, radius: rippleRadius }}
-      className={cn("overflow-hidden", props.className)}
+      className={cn(
+        "min-h-12 items-center justify-center gap-2 overflow-hidden rounded-md",
+        props.className,
+      )}
     />
   );
 });

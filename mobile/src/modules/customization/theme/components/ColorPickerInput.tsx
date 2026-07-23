@@ -39,14 +39,14 @@ export function ColorPickerInput(props: {
         accessibilityLabel={`Pick ${props.label} color`}
         onPress={() => setShowPicker(true)}
         disabled={props.disabled}
-        className="min-h-14 flex-row items-center overflow-hidden rounded-sm border border-outline"
+        className="min-h-14 flex-row gap-0 rounded-sm border border-outline"
       >
         <View
           className="aspect-square h-full"
           //? Suppress warning that thinks we're using a SharedValue in inline styles.
           style={{ backgroundColor: `${props.value}` }}
         />
-        <View className="p-2">
+        <View className="shrink grow p-2">
           <Em>{props.label}</Em>
           <StyledText className="text-sm text-onSurfaceVariant">
             {props.value}

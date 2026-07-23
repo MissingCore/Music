@@ -47,10 +47,7 @@ export const RadioField = memo(function RadioField(props: RadioFieldProps) {
       onPress={props.onSelect}
       // `<Radio />` utilizes the `disabled` prop to prevent togglability.
       disabled={props.selected}
-      className={cn(
-        "min-h-12 flex-row items-center justify-between gap-4 rounded-md px-2",
-        props.className,
-      )}
+      className={cn("flex-row justify-between gap-4 px-2", props.className)}
     >
       {props.children}
       <Radio selected={props.selected} />

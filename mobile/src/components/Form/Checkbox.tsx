@@ -66,10 +66,7 @@ export const CheckboxField = memo(function CheckboxField(
       accessibilityState={{ checked: props.checked, disabled: props.disabled }}
       onPress={props.onCheck}
       disabled={props.disabled}
-      className={cn(
-        "min-h-12 flex-row items-center justify-between gap-4 rounded-md px-2",
-        props.className,
-      )}
+      className={cn("flex-row justify-between gap-4 px-2", props.className)}
     >
       {props.children}
       <Checkbox checked={props.checked} />

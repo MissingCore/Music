@@ -102,7 +102,7 @@ export function MiniPlayer() {
       >
         <Ripple
           onPress={() => navigation.navigate("NowPlaying")}
-          className="relative h-14 flex-row items-center px-1"
+          className="relative h-14 flex-row gap-0 px-1"
         >
           <MediaImage
             type="track"
