@@ -40,7 +40,7 @@ export const ListItem = memo(function StandardListItem(props: ListItemProps) {
 
 //#region List Item Slots
 interface ListItemSlotsProps {
-  /** Will be larger if `supportingText` is omitted. */
+  /** Will be larger if `Leading` is provided & `supportingText` is omitted. */
   labelText: ParseKeys | (string & {});
   supportingText?: string;
 
