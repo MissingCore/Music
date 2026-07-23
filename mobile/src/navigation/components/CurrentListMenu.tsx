@@ -90,15 +90,14 @@ export function CurrentListMenu(props: {
       {menuActions.map((item) => (
         <ListItem
           key={item.labelKey}
-          labelTextKey={item.labelKey}
+          labelText={item.labelKey}
           onPress={() => {
             item.onPress();
             setVisible(false);
           }}
-          LeftElement={item.icon ? <Icon name={item.icon} /> : null}
+          Leading={item.icon ? <Icon name={item.icon} /> : null}
           className="px-3"
           _labelTextClassName="text-sm"
-          _psuedoClassName="active:bg-surfaceContainer/50"
         />
       ))}
     </Menu>

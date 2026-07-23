@@ -77,8 +77,7 @@ function FontForm() {
         <ExtendedTButton
           textKey="feat.backup.extra.import"
           onPress={onImportFont}
-          className="bg-secondary active:bg-secondaryDim"
-          textClassName="text-onSecondary"
+          theme="secondary"
         />
       ) : (
         <View className="flex-row items-center gap-4">

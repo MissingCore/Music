@@ -42,19 +42,19 @@ export default function Insights() {
       </SegmentedList>
 
       <SegmentedList.Item
-        labelTextKey="feat.mostPlayed.title"
+        labelText="feat.mostPlayed.title"
         supportingText={t("feat.mostPlayed.brief")}
         onPress={() => navigation.navigate("MostPlayed")}
       />
 
       <SegmentedList>
         <SegmentedList.Item
-          labelTextKey="feat.hiddenTracks.title"
+          labelText="feat.hiddenTracks.title"
           supportingText={t("feat.hiddenTracks.brief")}
           onPress={() => navigation.navigate("HiddenTracks")}
         />
         <SegmentedList.Item
-          labelTextKey="feat.saveErrors.title"
+          labelText="feat.saveErrors.title"
           supportingText={t("feat.saveErrors.brief")}
           onPress={() => navigation.navigate("SaveErrors")}
         />

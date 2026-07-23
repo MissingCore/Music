@@ -42,15 +42,15 @@ export function Track({
   id,
   trackSource,
   showIndicator,
-  LeftElement,
+  Leading,
   ...props
 }: TrackProps) {
   const isMultiSelectEnabled = useTrackMultiSelectStore((s) => s.enabled);
   const isSelected = useTrackMultiSelectStore((s) => s.selected.has(id));
 
-  const overriddenLeftElement = useMemo(
-    () => (showIndicator ? <PlayingIndicator /> : LeftElement),
-    [LeftElement, showIndicator],
+  const overriddenLeadingElement = useMemo(
+    () => (showIndicator ? <PlayingIndicator /> : Leading),
+    [Leading, showIndicator],
   );
 
   const normalActions: Partial<SearchResult.Props> = useMemo(
@@ -58,7 +58,7 @@ export function Track({
       onPress: () =>
         PlaybackControls.playFromList({ trackId: id, source: trackSource }),
       onLongPress: TrackMultiSelect.enable,
-      RightElement: <TrackAction id={id} title={props.title} />,
+      Trailing: <TrackAction id={id} title={props.title} />,
     }),
     [id, trackSource, props.title],
   );
@@ -75,7 +75,7 @@ export function Track({
   return (
     <SearchResult
       type="track"
-      LeftElement={overriddenLeftElement}
+      Leading={overriddenLeadingElement}
       poppyLabel={showIndicator}
       {...(isMultiSelectEnabled ? multiSelectActions : normalActions)}
       {...props}

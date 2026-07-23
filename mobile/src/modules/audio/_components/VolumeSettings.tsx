@@ -27,9 +27,9 @@ export function VolumeSettings() {
   return (
     <SegmentedList>
       <SegmentedList.Item
-        labelTextKey="feat.playback.extra.restoreVolume"
+        labelText="feat.playback.extra.restoreVolume"
         onPress={toggleRestoreVolume}
-        RightElement={<Switch enabled={restoreVolume} />}
+        Trailing={<Switch enabled={restoreVolume} />}
       />
       <SegmentedList.CustomItem className="gap-4 p-4">
         <TStyledText textKey="feat.playback.extra.volume" className="text-sm" />

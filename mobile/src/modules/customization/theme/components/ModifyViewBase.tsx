@@ -7,10 +7,9 @@ import { z } from "zod/mini";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 
-import { Pressable } from "~/components/Base/Pressable";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
-import { Switch } from "~/components/UI/Switch";
+import { SwitchInput } from "~/components/UI/Switch";
 import type { FABWorkflowConfig } from "~/modules/form/FormState";
 import {
   FABWorkflow,
@@ -84,18 +83,16 @@ function ThemeForm({ bottomOffset }: { bottomOffset: number }) {
       <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
       <SheetLabelAction
         labelKey="feat.theme.extra.dark"
-        RightElement={
-          <Pressable
+        Trailing={
+          <SwitchInput
+            enabled={data.scheme === "dark"}
             onPress={() =>
               setFields((prev) => ({
                 scheme: prev.scheme === "dark" ? "light" : "dark",
               }))
             }
             disabled={isSubmitting}
-            className="h-8 justify-center"
-          >
-            <Switch enabled={data.scheme === "dark"} />
-          </Pressable>
+          />
         }
       />
 

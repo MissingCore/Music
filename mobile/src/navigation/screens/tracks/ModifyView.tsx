@@ -188,7 +188,7 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
         <View className="flex-1">
           <InputLabel
             labelKey="term.album"
-            RightElement={
+            Trailing={
               <IconButton
                 icon="color-wand"
                 accessibilityLabel={t("template.entryAdd", {

@@ -42,23 +42,23 @@ export default function ExperimentalSettings() {
   return (
     <ListLayout>
       <SegmentedList.Item
-        labelTextKey="feat.queue.extra.queueAwareNext"
+        labelText="feat.queue.extra.queueAwareNext"
         supportingText={t("feat.queue.extra.queueAwareNextBrief")}
         onPress={PreferenceTogglers.toggleQueueAwareNext}
-        RightElement={<Switch enabled={queueAwareNext} />}
+        Trailing={<Switch enabled={queueAwareNext} />}
       />
 
       <SegmentedList.Item
         labelText="Downsample High Sample Rate Audio (192kHz+)"
         supportingText="Downsamples high sample rate audio files to 192kHz so that they can be played instead of throwing an error. This will eventually be the default behavior. Disable this feature if you encounter issues."
         onPress={PreferenceTogglers.toggleDownsamplingProcessor}
-        RightElement={<Switch enabled={downsamplingProcessor} />}
+        Trailing={<Switch enabled={downsamplingProcessor} />}
       />
 
       <ConfirmableAction
         Component={SegmentedList.Item}
         componentProps={{
-          labelTextKey: "feat.waveformSlider.extra.purgeCache",
+          labelText: "feat.waveformSlider.extra.purgeCache",
           supportingText: t("feat.waveformSlider.extra.purgeCacheBrief"),
           onPress: purgeWaveformCache,
         }}
@@ -68,7 +68,7 @@ export default function ExperimentalSettings() {
       <SegmentedList.Item
         labelText="Android Auto"
         onPress={() => openLink(Links.AndroidAuto)}
-        RightElement={<Icon name="open-in-new" />}
+        Trailing={<Icon name="open-in-new" />}
       />
 
       {unhashedImagesCount !== undefined && unhashedImagesCount !== 0 ? (

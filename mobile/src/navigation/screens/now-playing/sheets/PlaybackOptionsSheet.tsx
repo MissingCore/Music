@@ -17,7 +17,6 @@ import { PlaybackDelayConfig } from "~/stores/Preference/utils";
 import { getMediaLinkContext } from "~/navigation/utils/router";
 import { AppearanceSheet } from "./AppearanceSheet";
 
-import { Pressable } from "~/components/Base/Pressable";
 import { ScrollView } from "~/components/Base/ScrollView";
 import { NumberStepper } from "~/components/Form/NumberStepper";
 import { NothingSlider } from "~/components/Form/Slider.variant";
@@ -27,7 +26,7 @@ import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { Switch } from "~/components/UI/Switch";
+import { SwitchInput } from "~/components/UI/Switch";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 
 export function PlaybackOptionsSheet(props: {
@@ -79,11 +78,11 @@ export function PlaybackOptionsSheet(props: {
           contentContainerClassName="gap-6 pb-4"
         >
           <SegmentedList.Item
-            labelTextKey="term.playingFrom"
+            labelText="term.playingFrom"
             supportingText={sourceName || "—"}
             onPress={navigateToList}
             disabled={!sourceName}
-            LeftElement={<PlayingIndicator />}
+            Leading={<PlayingIndicator />}
             className="py-2 pl-2"
             _overflow={false}
           />
@@ -95,7 +94,7 @@ export function PlaybackOptionsSheet(props: {
 
           <SheetLabelAction
             labelKey="feat.playback.extra.delay"
-            RightElement={
+            Trailing={
               <NumberStepper
                 value={playbackDelay}
                 onChange={PreferenceSetters.updatePlaybackDelayByDelta}
@@ -106,28 +105,24 @@ export function PlaybackOptionsSheet(props: {
           />
           <SheetLabelAction
             labelKey="feat.waveformSlider.title"
-            RightElement={
-              <Pressable
+            Trailing={
+              <SwitchInput
+                enabled={waveformSlider}
                 onPress={PreferenceTogglers.toggleWaveformSlider}
-                className="h-8 justify-center"
-              >
-                <Switch enabled={waveformSlider} />
-              </Pressable>
+              />
             }
           />
 
           <SegmentedList>
             <SegmentedList.Item
-              labelTextKey="feat.appearance.title"
+              labelText="feat.appearance.title"
               onPress={presentAppearanceSheet}
-              LeftElement={<Icon name="activity-zone" />}
-              className="gap-4"
+              Leading={<Icon name="activity-zone" />}
             />
             <SegmentedList.Item
-              labelTextKey="feat.audioEffects.title"
+              labelText="feat.audioEffects.title"
               onPress={navigateToAudioEffectsScreen}
-              LeftElement={<Icon name="graphic-eq" />}
-              className="gap-4"
+              Leading={<Icon name="graphic-eq" />}
             />
           </SegmentedList>
         </ScrollView>

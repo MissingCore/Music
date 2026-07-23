@@ -72,7 +72,7 @@ function RenderItem({ item, index }: DragListRenderItemInfo<LyricProvider>) {
       collapsable={false}
       labelText={item.name}
       supportingText={item.endpoint}
-      RightElement={
+      Trailing={
         <View className="flex-row">
           <IconButton
             icon="edit"

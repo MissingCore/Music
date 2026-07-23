@@ -18,9 +18,9 @@ export function ReplayGainSettings() {
   return (
     <SegmentedList>
       <SegmentedList.Item
-        labelTextKey="feat.replayGain.title"
+        labelText="feat.replayGain.title"
         onPress={toggleStatus}
-        RightElement={<Switch enabled={isReplayGainEnabled} />}
+        Trailing={<Switch enabled={isReplayGainEnabled} />}
       />
       <SegmentedList.CustomItem className="p-4">
         <View

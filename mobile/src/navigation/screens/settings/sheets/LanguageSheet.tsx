@@ -12,7 +12,7 @@ import {
 
 import { Links, openLink } from "~/lib/web-browser";
 import { FlatList } from "~/components/Base/List";
-import { Pressable } from "~/components/Base/Pressable";
+import { Ripple } from "~/components/Base/Pressable";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { ClickwrapCheckbox } from "~/components/Form/Checkbox";
 import { RadioField } from "~/components/Form/Radio";
@@ -41,15 +41,17 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
   return (
     <>
       <DetachedSheet ref={props.ref} titleKey="feat.language.title">
-        <Pressable
+        <Ripple
           onPress={() => languageSelectionSheetRef.current?.present()}
-          className="min-h-10 flex-row items-center justify-between gap-1 border-b border-outline active:opacity-50"
+          className="min-h-10 flex-row gap-1 rounded-none border-b border-outline"
         >
-          <StyledText>{selectedLanguage?.name}</StyledText>
+          <StyledText className="shrink grow pl-1">
+            {selectedLanguage?.name}
+          </StyledText>
           <View className="-rotate-90 rtl:rotate-90">
             <Icon name="keyboard-arrow-down" />
           </View>
-        </Pressable>
+        </Ripple>
         <View className="gap-1">
           <TEm textKey="feat.language.extra.translators" dim />
           <Marquee color="surfaceBright">
@@ -67,7 +69,7 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
         <ExtendedTButton
           textKey="feat.language.extra.contribute"
           onPress={() => openLink(Links.Translations)}
-          RightElement={<Icon name="open-in-new" size={20} />}
+          Trailing={<Icon name="open-in-new" size={20} />}
           className="rounded-full"
         />
 

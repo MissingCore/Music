@@ -61,6 +61,7 @@ export function SegmentedPicker({
             <Pressable
               key={idx}
               onPress={() => onOptionSelected(idx)}
+              disabled={selectedIndex === idx}
               className="min-h-10 flex-1 items-center justify-center rounded-full active:opacity-50"
             >
               <Icon

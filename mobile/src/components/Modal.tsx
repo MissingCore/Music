@@ -7,7 +7,7 @@ import { Modal as RNModal, View } from "react-native";
 
 import { cn } from "~/lib/style";
 import { GestureHandlerRootView } from "./Base/GestureHandlerRootView";
-import type { PressableProps } from "./Base/Pressable";
+import type { RipplePressProps } from "./Base/Pressable";
 import { ExtendedTButton } from "./Form/Button";
 import { TStyledText } from "./Typography/StyledText";
 
@@ -44,7 +44,7 @@ export function ModalTemplate(
 }
 
 //#region Modal Actions
-type ActionOptions = Omit<PressableProps, "children"> & { textKey: ParseKeys };
+type ActionOptions = RipplePressProps & { textKey: ParseKeys };
 type ModalActionsProp = {
   topAction: ActionOptions & {
     /** Defaults to `true`. */
@@ -58,18 +58,12 @@ export function ModalActions(props: ModalActionsProp) {
     <View className="gap-0.75">
       <ExtendedTButton
         {...props.topAction}
-        className={cn(
-          "rounded-b-xs bg-surfaceContainer active:bg-surfaceContainerHigh",
-          props.topAction.className,
-        )}
+        className="rounded-b-xs bg-surfaceContainer"
         textClassName={cn({ "text-error": props.topAction.danger ?? true })}
       />
       <ExtendedTButton
         {...props.bottomAction}
-        className={cn(
-          "rounded-t-xs bg-surfaceContainer active:bg-surfaceContainerHigh",
-          props.bottomAction.className,
-        )}
+        className="rounded-t-xs bg-surfaceContainer"
       />
     </View>
   );

@@ -33,7 +33,7 @@ export default function ScanningSettings() {
       <ListLayout>
         <SegmentedList>
           <SegmentedList.Item
-            labelTextKey="feat.rescan.title"
+            labelText="feat.rescan.title"
             supportingText={t("feat.rescan.brief")}
             disabled={rescan.isPending}
             onPress={() => mutateGuard(rescan, undefined)}
@@ -41,7 +41,7 @@ export default function ScanningSettings() {
           <ConfirmableAction
             Component={SegmentedList.Item}
             componentProps={{
-              labelTextKey: "feat.deepRescan.title",
+              labelText: "feat.deepRescan.title",
               supportingText: t("feat.deepRescan.brief"),
               disabled: rescan.isPending,
               onPress: () => mutateGuard(rescan, true),
@@ -52,10 +52,10 @@ export default function ScanningSettings() {
 
         <SegmentedList>
           <SegmentedList.Item
-            labelTextKey="feat.rescanOnLaunch.title"
+            labelText="feat.rescanOnLaunch.title"
             supportingText={t("feat.rescanOnLaunch.brief")}
             onPress={PreferenceTogglers.toggleKey("rescanOnLaunch")}
-            RightElement={<Switch enabled={rescanOnLaunch} />}
+            Trailing={<Switch enabled={rescanOnLaunch} />}
           />
           <OptimizedImageSavingSetting />
         </SegmentedList>
@@ -77,10 +77,10 @@ export function OptimizedImageSavingSetting() {
     <ConfirmableAction
       Component={SegmentedList.Item}
       componentProps={{
-        labelTextKey: "feat.optimizedImageSave.title",
+        labelText: "feat.optimizedImageSave.title",
         supportingText: t("feat.optimizedImageSave.brief"),
         onPress: PreferenceTogglers.toggleKey("optimizedImageSave"),
-        RightElement: <Switch enabled={optimizedImageSave} />,
+        Trailing: <Switch enabled={optimizedImageSave} />,
       }}
       modalMessage={[
         "feat.optimizedImageSave.description.line1",
@@ -99,10 +99,10 @@ export function MediaStoreScannerSetting() {
 
   return getAPIVersionCode() >= 30 ? (
     <SegmentedList.Item
-      labelTextKey="feat.scanning.extra.useMediaStore"
+      labelText="feat.scanning.extra.useMediaStore"
       supportingText={t("feat.scanning.extra.useMediaStoreBrief")}
       onPress={PreferenceTogglers.toggleKey("mediaStoreScanner")}
-      RightElement={<Switch enabled={mediaStoreScanner} />}
+      Trailing={<Switch enabled={mediaStoreScanner} />}
     />
   ) : null;
 }
@@ -129,24 +129,24 @@ export const ScanningConfigurations = {
       <>
         <SegmentedList>
           <SegmentedList.Item
-            labelTextKey="feat.listAllow.title"
+            labelText="feat.listAllow.title"
             supportingText={t("plural.entry", { count: allowList.length })}
             onPress={() => props.allowListSheetRef.current?.present()}
           />
           <SegmentedList.Item
-            labelTextKey="feat.listBlock.title"
+            labelText="feat.listBlock.title"
             supportingText={t("plural.entry", { count: blockList.length })}
             onPress={() => props.blockListSheetRef.current?.present()}
           />
           <SegmentedList.Item
-            labelTextKey="feat.minTrackDuration.title"
+            labelText="feat.minTrackDuration.title"
             supportingText={t("plural.second", { count: ignoreDuration })}
             onPress={() => props.minDurationSheetRef.current?.present()}
           />
         </SegmentedList>
 
         <SegmentedList.Item
-          labelTextKey="feat.separators.title"
+          labelText="feat.separators.title"
           supportingText={t("plural.entry", { count: delimiters.length })}
           onPress={() => props.separatorsSheetRef.current?.present()}
         />

@@ -258,7 +258,7 @@ function ListHeaderComponent(props: {
       <PlaylistNameField isFavoritesList={props.isFavoritesList} />
       <InputLabel
         labelKey="term.tracks"
-        RightElement={
+        Trailing={
           <IconButton
             icon="add"
             accessibilityLabel={t("template.entryAdd", {
@@ -297,7 +297,7 @@ const RenderItem = memo(
         label={track.name}
         onRemove={() => onRemove(track.id)}
         disableRemove={isDragging}
-        //! `bg-surface` is there to prevent collapsing the View.
+        //! `bg-surface` is there to prevent collapsing this View.
         className={cn("mb-2 rounded-xs bg-surface", {
           "bg-surfaceContainerLowest": isActive,
           "opacity-25": isSubmitting,
@@ -308,7 +308,7 @@ const RenderItem = memo(
           title={track.name}
           description={getArtistsString(track.artists)}
           imageSource={track.artwork}
-          RightElement={
+          Trailing={
             <IconButton
               icon="drag-handle"
               accessibilityLabel={t("template.entryMove", { name: track.name })}

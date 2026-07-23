@@ -16,10 +16,9 @@ import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
 import { cn } from "~/lib/style";
 import { FlatList } from "~/components/Base/List";
-import { Pressable } from "~/components/Base/Pressable";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { Radio } from "~/components/Form/Radio";
-import { StyledText } from "~/components/Typography/StyledText";
+import { SegmentedList } from "~/components/List/Segmented";
 import type { Font } from "../core/constants";
 import { BundledFontOptions } from "../core/constants";
 import { deleteCustomFont, useCustomFonts } from "../core/data";
@@ -87,34 +86,28 @@ function FontsScreenBase(props: {
         renderItem={({ item: font, index }) => {
           const selected = areFontEqual(props.selectedFont, font);
           return (
-            <Pressable
-              onPress={() => props.updateFont(font)}
-              className={cn(
-                "min-h-14 flex-row items-center gap-2 rounded-md bg-surfaceContainerLowest p-2 pl-4 active:opacity-75",
-                {
-                  "mt-0.75 rounded-t-xs": index > 0,
-                  "rounded-b-xs": index < fontOptions.length - 1,
-                },
-              )}
-            >
-              <Radio selected={selected} />
-              <StyledText
-                style={{ fontFamily: getFont(font, { headline }) }}
-                className="shrink grow"
-              >
-                {getFontDisplayName(font)}
-              </StyledText>
-              {canDeleteFont(font) ? (
-                <IconButton
-                  icon="delete"
-                  accessibilityLabel={t("form.delete")}
-                  onPress={() => deleteCustomFont(font.id)}
-                  _iconColor="error"
-                />
-              ) : (
-                <View className="size-10" />
-              )}
-            </Pressable>
+            <SegmentedList.Item
+              labelText={getFontDisplayName(font)}
+              onPress={!selected ? () => props.updateFont(font) : undefined}
+              Leading={<Radio selected={selected} />}
+              Trailing={
+                canDeleteFont(font) ? (
+                  <IconButton
+                    icon="delete"
+                    accessibilityLabel={t("form.delete")}
+                    onPress={() => deleteCustomFont(font.id)}
+                    _iconColor="error"
+                  />
+                ) : (
+                  <View className="size-10" />
+                )
+              }
+              className={cn("min-h-14 p-2 pl-4", {
+                "mt-0.75 rounded-t-xs": index > 0,
+                "rounded-b-xs": index < fontOptions.length - 1,
+              })}
+              _labelTextStyle={{ fontFamily: getFont(font, { headline }) }}
+            />
           );
         }}
         contentContainerClassName="p-4"

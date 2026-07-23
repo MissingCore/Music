@@ -66,8 +66,8 @@ export function useViewLayout<TData extends Record<string, any>>(
     const gridOpts = isGrid ? gridLayout : compactGridLayout;
     return {
       numColumns: gridOpts.count,
-      // ~40px for text content under `<MediaImage />` + 8px Margin Bottom
-      estimatedItemSize: gridOpts.width + 40 + 8,
+      // ~44px for text content under `<MediaImage />` + 8px Margin Bottom
+      estimatedItemSize: gridOpts.width + 44 + 8,
       renderItem: ({ item }) => (
         <MediaCard
           type={screen}

@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { cn } from "~/lib/style";
-import { Pressable } from "../Base/Pressable";
+import { Ripple } from "../Base/Pressable";
 import { IconButton } from "../Form/Button/Icon";
 
 type RemovableItemProps = {
@@ -17,7 +17,7 @@ type RemovableItemProps = {
   children: React.ReactNode;
   className?: string;
 
-  /** Providing this prop will change the wrapper to a `Pressable`. */
+  /** Providing this prop will change the wrapper to a `Ripple`. */
   onPress?: VoidFunction;
   disabled?: boolean;
 };
@@ -29,7 +29,7 @@ export const RemovableItem = memo(function RemovableItem(
   const { t } = useTranslation();
 
   const Wrapper = useMemo(
-    () => (props.onPress ? Pressable : View),
+    () => (props.onPress ? Ripple : View),
     [props.onPress],
   );
 

@@ -198,12 +198,7 @@ export function FABWorkflow(
           textKey={props.label}
           onPress={() => (props.danger ? setLastChance(true) : triggerAction())}
           disabled={lastChance || isSubmitting}
-          className={
-            props.danger
-              ? "bg-error active:bg-errorDim"
-              : "bg-secondary active:bg-secondaryDim"
-          }
-          textClassName={props.danger ? "text-onError" : "text-onSecondary"}
+          theme={props.danger ? "error" : "secondary"}
         />
       </View>
       {props.danger ? (

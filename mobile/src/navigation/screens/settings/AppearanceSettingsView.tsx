@@ -56,17 +56,17 @@ export default function AppearanceSettings() {
       <ListLayout>
         <SegmentedList>
           <SegmentedList.Item
-            labelTextKey="feat.font.extra.accent"
+            labelText="feat.font.extra.accent"
             supportingText={getFontDisplayName(accentFont)}
             onPress={() => navigation.navigate("AccentFonts")}
           />
           <SegmentedList.Item
-            labelTextKey="feat.font.extra.primary"
+            labelText="feat.font.extra.primary"
             supportingText={getFontDisplayName(primaryFont)}
             onPress={() => navigation.navigate("PrimaryFonts")}
           />
           <SegmentedList.Item
-            labelTextKey="feat.theme.title"
+            labelText="feat.theme.title"
             supportingText={
               activeCustomTheme?.name ?? t(`feat.theme.extra.${theme}`)
             }
@@ -76,12 +76,12 @@ export default function AppearanceSettings() {
 
         <SegmentedList>
           <SegmentedList.Item
-            labelTextKey="feat.tabsOrder.extra.showNavbar"
+            labelText="feat.tabsOrder.extra.showNavbar"
             onPress={PreferenceTogglers.toggleKey("showNavbar")}
-            RightElement={<Switch enabled={showNavbar} />}
+            Trailing={<Switch enabled={showNavbar} />}
           />
           <SegmentedList.Item
-            labelTextKey="feat.tabsOrder.title"
+            labelText="feat.tabsOrder.title"
             supportingText={t("feat.tabsOrder.brief")}
             onPress={() => tabOrderSheetRef.current?.present()}
           />
@@ -89,15 +89,15 @@ export default function AppearanceSettings() {
 
         <SegmentedList>
           <SegmentedList.Item
-            labelTextKey="feat.quickScroll.title"
+            labelText="feat.quickScroll.title"
             supportingText={t("feat.quickScroll.brief")}
             onPress={PreferenceTogglers.toggleKey("quickScroll")}
-            RightElement={<Switch enabled={quickScroll} />}
+            Trailing={<Switch enabled={quickScroll} />}
           />
           <SegmentedList.Item
-            labelTextKey="feat.artwork.extra.square"
+            labelText="feat.artwork.extra.square"
             onPress={PreferenceTogglers.toggleKey("squareArtwork")}
-            RightElement={<Switch enabled={squareArtwork} />}
+            Trailing={<Switch enabled={squareArtwork} />}
           />
         </SegmentedList>
 

@@ -2,23 +2,30 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { memo } from "react";
+import type { StyleProp, ViewStyle } from "react-native";
 import { View } from "react-native";
 
 import { Icon } from "~/resources/icons";
 
 import { cn } from "~/lib/style";
-import { Pressable } from "../Base/Pressable";
+import { Ripple } from "../Base/Pressable";
 
 //#region Base
-export function Radio({ selected }: { selected: boolean }) {
+export function Radio(props: {
+  selected: boolean;
+  className?: string;
+  style?: StyleProp<ViewStyle>;
+}) {
   return (
     <View
+      style={props.style}
       className={cn(
         "size-5 items-center justify-center rounded-full border border-onSurface",
-        { "border-0 bg-onSurface": selected },
+        { "border-0 bg-onSurface": props.selected },
+        props.className,
       )}
     >
-      {selected ? <Icon name="check" size={18} color="surface" /> : null}
+      {props.selected ? <Icon name="check" size={18} color="surface" /> : null}
     </View>
   );
 }
@@ -34,20 +41,17 @@ type RadioFieldProps = {
 
 export const RadioField = memo(function RadioField(props: RadioFieldProps) {
   return (
-    <Pressable
+    <Ripple
       accessibilityRole="radio"
       accessibilityState={{ selected: props.selected }}
       onPress={props.onSelect}
       // `<Radio />` utilizes the `disabled` prop to prevent togglability.
       disabled={props.selected}
-      className={cn(
-        "min-h-12 flex-row items-center justify-between gap-4 px-2 active:opacity-50",
-        props.className,
-      )}
+      className={cn("flex-row justify-between gap-4 px-2", props.className)}
     >
       {props.children}
       <Radio selected={props.selected} />
-    </Pressable>
+    </Ripple>
   );
 });
 //#endregion

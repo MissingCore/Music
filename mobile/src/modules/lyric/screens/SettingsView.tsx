@@ -22,25 +22,23 @@ export default function LyricsSettings() {
     <ListLayout>
       <SegmentedList>
         <SegmentedList.Item
-          labelTextKey="feat.lyrics.extra.providers"
+          labelText="feat.lyrics.extra.providers"
           onPress={() => navigation.navigate("LyricsProviders")}
-          LeftElement={<Icon name="search" />}
-          className="gap-4"
+          Leading={<Icon name="search" />}
         />
         <SegmentedList.Item
           labelText={t("template.entryManage", {
             name: t("feat.lyrics.title"),
           })}
           onPress={() => navigation.navigate("Lyrics", {})}
-          LeftElement={<Icon name="lyrics" />}
-          className="gap-4"
+          Leading={<Icon name="lyrics" />}
         />
       </SegmentedList>
 
       <SegmentedList.Item
-        labelTextKey="feat.lyrics.extra.useEmbedded"
+        labelText="feat.lyrics.extra.useEmbedded"
         onPress={toggleCheckEmbeddedLyrics}
-        RightElement={<Switch enabled={checkEmbeddedLyrics} />}
+        Trailing={<Switch enabled={checkEmbeddedLyrics} />}
       />
     </ListLayout>
   );

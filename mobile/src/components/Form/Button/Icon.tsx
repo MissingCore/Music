@@ -2,16 +2,15 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { memo } from "react";
-import { View } from "react-native";
 
 import type { SupportedIconName } from "~/resources/icons";
 import { Icon } from "~/resources/icons";
 
 import { cn } from "~/lib/style";
+import { capitalize } from "~/utils/string";
 import type { AppColor } from "~/modules/customization/theme/core/constants";
-import { useColor } from "~/modules/customization/theme/hooks";
-import type { PressProps } from "./types";
-import { Pressable } from "../../Base/Pressable";
+import type { RipplePressProps } from "../../Base/Pressable";
+import { Ripple } from "../../Base/Pressable";
 
 export type ButtonSize = "xs" | "sm" | "md" | "lg";
 
@@ -22,68 +21,63 @@ const ButtonConfig = {
   lg: { buttonSize: "min-h-12 min-w-12", iconSize: 32 },
 } as const;
 
-type IconButtonProps = PressProps & {
+type IconButtonProps = RipplePressProps & {
   icon: SupportedIconName;
   accessibilityLabel: string;
   /** Defaults to `md`. */
   size?: ButtonSize;
   className?: string;
+  _fullRipple?: boolean;
   _iconColor?: AppColor;
-  _rippleColor?: AppColor;
 };
 
 //#region Default
 export const IconButton = memo(function IconButton({
   icon,
   size = "sm",
-  _iconColor,
-  _rippleColor,
-  ...props
-}: IconButtonProps) {
-  const rippleColor = useColor(_rippleColor, "surfaceContainerHigh");
-  const { buttonSize, iconSize } = ButtonConfig[size];
-  return (
-    <Pressable
-      {...props}
-      className={cn(
-        "items-center justify-center rounded-full disabled:opacity-25",
-        buttonSize,
-        props.className,
-      )}
-    >
-      {({ pressed }) => (
-        <View
-          collapsable={false} // Prevents view flattening.
-          style={[pressed && { backgroundColor: `${rippleColor}80` }]}
-          className="rounded-full p-1.5"
-        >
-          <Icon name={icon} size={iconSize} color={_iconColor} />
-        </View>
-      )}
-    </Pressable>
-  );
-});
-//#endregion
-
-//#region Filled
-export const FilledIconButton = memo(function FilledIconButton({
-  icon,
-  size = "sm",
+  _fullRipple = false,
   _iconColor,
   ...props
 }: IconButtonProps) {
   const { buttonSize, iconSize } = ButtonConfig[size];
   return (
-    <Pressable
+    <Ripple
       {...props}
+      rippleRadius={_fullRipple ? undefined : (iconSize + 12) / 2}
       className={cn(
-        "items-center justify-center rounded-full bg-surfaceContainerLowest active:bg-surfaceContainer disabled:opacity-25",
+        "rounded-full disabled:opacity-25",
         buttonSize,
         props.className,
       )}
     >
       <Icon name={icon} size={iconSize} color={_iconColor} />
-    </Pressable>
+    </Ripple>
+  );
+});
+//#endregion
+
+//#region Filled
+const ButtonTheme = {
+  primary: "bg-primary",
+  secondary: "bg-secondary",
+  error: "bg-error",
+} as const;
+
+export const FilledIconButton = memo(function FilledIconButton(
+  props: IconButtonProps & { theme?: keyof typeof ButtonTheme },
+) {
+  return (
+    <IconButton
+      rippleColor={props.theme ? `${props.theme}Dim` : undefined}
+      _iconColor={props.theme ? `on${capitalize(props.theme)}` : undefined}
+      {...props}
+      className={cn(
+        "bg-surfaceContainerLowest",
+        props.theme ? ButtonTheme[props.theme] : undefined,
+        props.className,
+      )}
+      _fullRipple
+    />
   );
 });
 //#endregion

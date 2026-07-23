@@ -37,9 +37,9 @@ export function EqualizerSettings() {
   return (
     <SegmentedList>
       <SegmentedList.Item
-        labelTextKey="feat.equalizer.title"
+        labelText="feat.equalizer.title"
         onPress={toggleEQ}
-        RightElement={<Switch enabled={isEQEnabled} />}
+        Trailing={<Switch enabled={isEQEnabled} />}
       />
       <SegmentedList.CustomItem className="p-4">
         <View
@@ -67,10 +67,10 @@ export function EqualizerSettings() {
                 <Button
                   key={preset}
                   onPress={() => setEQPreset(preset)}
-                  disabled={!currEQ?.enabled}
+                  disabled={!currEQ?.enabled || isActive}
                   className={cn(
-                    "min-h-auto rounded-full bg-surfaceContainerLow py-2 active:bg-surfaceContainer disabled:opacity-100",
-                    { "bg-primary active:bg-primaryDim": isActive },
+                    "min-h-auto rounded-full bg-surfaceContainerLow py-2 disabled:opacity-100",
+                    { "bg-primary": isActive },
                   )}
                 >
                   <TStyledText

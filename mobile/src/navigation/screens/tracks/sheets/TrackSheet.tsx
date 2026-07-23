@@ -212,12 +212,12 @@ function QueueActions({ id, name }: Record<"id" | "name", string>) {
       leftButton={{
         textKey: "feat.queue.extra.playNext",
         onPress: sheetAction(() => Queue.add({ id, name })),
-        LeftElement: <Icon name="queue-music" />,
+        Leading: <Icon name="queue-music" />,
       }}
       rightButton={{
         textKey: "feat.queue.extra.playLast",
         onPress: sheetAction(() => Queue.addToEnd({ id, name })),
-        LeftElement: <Icon name="low-priority" />,
+        Leading: <Icon name="low-priority" />,
       }}
     />
   );

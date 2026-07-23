@@ -4,12 +4,12 @@
 import { View } from "react-native";
 
 import { cn } from "~/lib/style";
-import type { ExtendTButtonProps } from "../Form/Button";
+import type { ExtendedTButtonProps } from "../Form/Button";
 import { ExtendedTButton } from "../Form/Button";
 
 export function SheetButtonGroup(props: {
-  leftButton: ExtendTButtonProps;
-  rightButton: ExtendTButtonProps;
+  leftButton: ExtendedTButtonProps;
+  rightButton: ExtendedTButtonProps;
   className?: string;
 }) {
   return (

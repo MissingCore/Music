@@ -101,9 +101,9 @@ function SeparatorForm() {
           await inputForm.onSubmit();
         }}
         disabled={!inputForm.canSubmit || inputForm.isSubmitting}
-        className="rounded-md bg-primary active:bg-primaryDim"
+        className="rounded-md"
         size="md"
-        _iconColor="onPrimary"
+        theme="primary"
       />
     </View>
   );

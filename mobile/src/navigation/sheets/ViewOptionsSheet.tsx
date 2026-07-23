@@ -34,7 +34,7 @@ export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
         <ScreenLayoutSetting screen="album" />
         <SheetLabelAction
           labelKey="feat.minAlbumLength.title"
-          RightElement={
+          Trailing={
             <NumberStepper
               value={minAlbumLength}
               onChange={PreferenceSetters.updateMinAlbumLengthByDelta}
@@ -44,13 +44,12 @@ export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
         />
 
         <SegmentedList.Item
-          labelTextKey="feat.modalViewPreference.extra.sort"
+          labelText="feat.modalViewPreference.extra.sort"
           onPress={() => {
             props.ref.current?.dismiss();
             sortOrderSheetRef.current?.present();
           }}
-          LeftElement={<Icon name="sort" />}
-          className="gap-4"
+          Leading={<Icon name="sort" />}
         />
       </DetachedSheet>
       <SortSheet ref={sortOrderSheetRef} screen="album" />
@@ -100,13 +99,12 @@ function ViewOptionsSheetTemplate(props: {
       <DetachedSheet ref={props.ref}>
         <ScreenLayoutSetting screen={props.screen} />
         <SegmentedList.Item
-          labelTextKey="feat.modalViewPreference.extra.sort"
+          labelText="feat.modalViewPreference.extra.sort"
           onPress={() => {
             props.ref.current?.dismiss();
             sortOrderSheetRef.current?.present();
           }}
-          LeftElement={<Icon name="sort" />}
-          className="gap-4"
+          Leading={<Icon name="sort" />}
         />
       </DetachedSheet>
       <SortSheet ref={sortOrderSheetRef} screen={props.screen} />
@@ -129,7 +127,7 @@ function ScreenLayoutSetting({ screen }: { screen: MutableViewLayout }) {
   return (
     <SheetLabelAction
       labelKey="feat.modalViewPreference.extra.layout"
-      RightElement={
+      Trailing={
         <View className="flex-row gap-2 rounded-full bg-surfaceContainerLowest">
           {LayoutOptions.map((layout) => (
             <FilledIconButton

@@ -60,8 +60,7 @@ function PlaylistActions() {
       icon="add"
       accessibilityLabel={t("form.create")}
       onPress={() => navigation.navigate("CreatePlaylist")}
-      className="bg-primary active:bg-primaryDim"
-      _iconColor="onPrimary"
+      theme="primary"
     />
   );
 }
