@@ -10,11 +10,10 @@ import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { MinimumAppProvider } from "~/navigation/providers/AppProvider";
 
 import { isAudioBrowserSetUp } from "~/lib/react-native-audio-browser";
-import { Pressable } from "~/components/Base/Pressable";
 import { ModalActions } from "~/components/Modal";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import { AccentText } from "~/components/Typography/AccentText";
-import { Switch } from "~/components/UI/Switch";
+import { SwitchInput } from "~/components/UI/Switch";
 import { ColorPickerInput } from "~/modules/customization/theme/components/ColorPickerInput";
 import { DEFAULT_WIDGET_CONFIG } from "./constants/Config";
 import type { WidgetName } from "./impl";
@@ -117,7 +116,8 @@ function WidgetConfigForm(props: {
       <SheetLabelAction
         label="Transparent"
         RightElement={
-          <Pressable
+          <SwitchInput
+            enabled={data.transparent}
             onPress={() =>
               setData((_prev) => {
                 const prev = _prev as WidgetConfig;
@@ -125,10 +125,7 @@ function WidgetConfigForm(props: {
               })
             }
             disabled={isSubmitting}
-            className="h-8 justify-center"
-          >
-            <Switch enabled={data.transparent} />
-          </Pressable>
+          />
         }
       />
 

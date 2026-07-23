@@ -17,7 +17,6 @@ import { PlaybackDelayConfig } from "~/stores/Preference/utils";
 import { getMediaLinkContext } from "~/navigation/utils/router";
 import { AppearanceSheet } from "./AppearanceSheet";
 
-import { Pressable } from "~/components/Base/Pressable";
 import { ScrollView } from "~/components/Base/ScrollView";
 import { NumberStepper } from "~/components/Form/NumberStepper";
 import { NothingSlider } from "~/components/Form/Slider.variant";
@@ -27,7 +26,7 @@ import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { Switch } from "~/components/UI/Switch";
+import { SwitchInput } from "~/components/UI/Switch";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 
 export function PlaybackOptionsSheet(props: {
@@ -107,12 +106,10 @@ export function PlaybackOptionsSheet(props: {
           <SheetLabelAction
             labelKey="feat.waveformSlider.title"
             RightElement={
-              <Pressable
+              <SwitchInput
+                enabled={waveformSlider}
                 onPress={PreferenceTogglers.toggleWaveformSlider}
-                className="h-8 justify-center"
-              >
-                <Switch enabled={waveformSlider} />
-              </Pressable>
+              />
             }
           />
 

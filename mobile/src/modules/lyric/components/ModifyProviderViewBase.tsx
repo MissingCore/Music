@@ -5,10 +5,9 @@ import { z } from "zod/mini";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 
-import { Pressable } from "~/components/Base/Pressable";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
-import { Switch } from "~/components/UI/Switch";
+import { SwitchInput } from "~/components/UI/Switch";
 import { ZSchema } from "~/modules/form/utils";
 import type { FABWorkflowConfig } from "~/modules/form/FormState";
 import {
@@ -74,15 +73,13 @@ function LyricProviderForm({ bottomOffset }: { bottomOffset: number }) {
       <SheetLabelAction
         label="isJSONResponse"
         RightElement={
-          <Pressable
+          <SwitchInput
+            enabled={data.isJSONResponse}
             onPress={() =>
               setFields((prev) => ({ isJSONResponse: !prev.isJSONResponse }))
             }
             disabled={isSubmitting}
-            className="h-8 justify-center"
-          >
-            <Switch enabled={data.isJSONResponse} />
-          </Pressable>
+          />
         }
       />
       <Textarea label="Headers" field="headers" />
