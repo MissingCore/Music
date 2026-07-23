@@ -34,7 +34,7 @@ export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
         <ScreenLayoutSetting screen="album" />
         <SheetLabelAction
           labelKey="feat.minAlbumLength.title"
-          RightElement={
+          Trailing={
             <NumberStepper
               value={minAlbumLength}
               onChange={PreferenceSetters.updateMinAlbumLengthByDelta}
@@ -127,7 +127,7 @@ function ScreenLayoutSetting({ screen }: { screen: MutableViewLayout }) {
   return (
     <SheetLabelAction
       labelKey="feat.modalViewPreference.extra.layout"
-      RightElement={
+      Trailing={
         <View className="flex-row gap-2 rounded-full bg-surfaceContainerLowest">
           {LayoutOptions.map((layout) => (
             <FilledIconButton

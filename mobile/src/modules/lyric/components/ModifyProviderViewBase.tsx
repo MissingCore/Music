@@ -72,7 +72,7 @@ function LyricProviderForm({ bottomOffset }: { bottomOffset: number }) {
       <ArrayFormInput label="Traversed Fields" field="traversedFields" />
       <SheetLabelAction
         label="isJSONResponse"
-        RightElement={
+        Trailing={
           <SwitchInput
             enabled={data.isJSONResponse}
             onPress={() =>

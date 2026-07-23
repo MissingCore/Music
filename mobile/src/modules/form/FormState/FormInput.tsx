@@ -19,7 +19,7 @@ import { Em, TEm } from "~/components/Typography/StyledText";
 export function InputLabel(props: {
   labelKey?: ParseKeys;
   label?: string;
-  RightElement?: React.ReactNode;
+  Trailing?: React.ReactNode;
 }) {
   return (
     <View className="mb-1 min-h-8 flex-row items-center justify-between gap-4">
@@ -28,7 +28,7 @@ export function InputLabel(props: {
       ) : (
         <Em>{props.label}</Em>
       )}
-      {props.RightElement}
+      {props.Trailing}
     </View>
   );
 }
@@ -91,7 +91,7 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
         <InputLabel
           labelKey={props.labelKey}
           label={props.label}
-          RightElement={
+          Trailing={
             <IconButton
               icon="add"
               accessibilityLabel={t("template.entryAdd", {

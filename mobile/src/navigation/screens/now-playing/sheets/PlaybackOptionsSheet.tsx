@@ -94,7 +94,7 @@ export function PlaybackOptionsSheet(props: {
 
           <SheetLabelAction
             labelKey="feat.playback.extra.delay"
-            RightElement={
+            Trailing={
               <NumberStepper
                 value={playbackDelay}
                 onChange={PreferenceSetters.updatePlaybackDelayByDelta}
@@ -105,7 +105,7 @@ export function PlaybackOptionsSheet(props: {
           />
           <SheetLabelAction
             labelKey="feat.waveformSlider.title"
-            RightElement={
+            Trailing={
               <SwitchInput
                 enabled={waveformSlider}
                 onPress={PreferenceTogglers.toggleWaveformSlider}

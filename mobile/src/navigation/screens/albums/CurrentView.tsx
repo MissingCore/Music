@@ -119,7 +119,7 @@ export default function Album({
             <Track
               {...item}
               trackSource={trackSource}
-              LeftElement={<TrackNumber track={item.track} />}
+              Leading={<TrackNumber track={item.track} />}
               className="mx-1 mb-2"
             />
           )

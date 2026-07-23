@@ -36,8 +36,8 @@ const ButtonTheme = {
 export type ExtendedTButtonProps = Omit<RippleProps, "children"> & {
   textKey: ParseKeys;
   /** **Note:** Text will be left-aligned if provided. */
-  LeftElement?: React.ReactNode;
-  RightElement?: React.ReactNode;
+  Leading?: React.ReactNode;
+  Trailing?: React.ReactNode;
   textClassName?: string;
   theme?: keyof typeof ButtonTheme;
 };
@@ -52,22 +52,22 @@ export const ExtendedTButton = memo(function ExtendedTButton(
       {...props}
       className={cn(
         "flex-row",
-        { "justify-start": !!props.LeftElement },
+        { "justify-start": !!props.Leading },
         bg,
         props.className,
       )}
     >
-      {props.LeftElement}
+      {props.Leading}
       <TEm
         textKey={props.textKey}
         className={cn(
           "shrink text-sm",
-          { "text-center": !props.LeftElement },
+          { "text-center": !props.Leading },
           text,
           props.textClassName,
         )}
       />
-      {props.RightElement}
+      {props.Trailing}
     </Button>
   );
 });

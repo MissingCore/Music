@@ -115,7 +115,7 @@ function WidgetConfigForm(props: {
     <>
       <SheetLabelAction
         label="Transparent"
-        RightElement={
+        Trailing={
           <SwitchInput
             enabled={data.transparent}
             onPress={() =>

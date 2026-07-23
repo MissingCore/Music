@@ -10,7 +10,7 @@ import { Em, TEm } from "../Typography/StyledText";
 export function SheetLabelAction(props: {
   labelKey?: ParseKeys;
   label?: string;
-  RightElement: React.ReactNode;
+  Trailing: React.ReactNode;
 }) {
   return (
     <View className="min-h-8 flex-row items-center justify-between gap-2">
@@ -21,7 +21,7 @@ export function SheetLabelAction(props: {
           <Em className="text-sm">{props.label}</Em>
         )}
       </Marquee>
-      {props.RightElement}
+      {props.Trailing}
     </View>
   );
 }

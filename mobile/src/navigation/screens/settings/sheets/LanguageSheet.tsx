@@ -69,7 +69,7 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
         <ExtendedTButton
           textKey="feat.language.extra.contribute"
           onPress={() => openLink(Links.Translations)}
-          RightElement={<Icon name="open-in-new" size={20} />}
+          Trailing={<Icon name="open-in-new" size={20} />}
           className="rounded-full"
         />
 

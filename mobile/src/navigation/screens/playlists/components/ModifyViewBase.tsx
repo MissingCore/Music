@@ -258,7 +258,7 @@ function ListHeaderComponent(props: {
       <PlaylistNameField isFavoritesList={props.isFavoritesList} />
       <InputLabel
         labelKey="term.tracks"
-        RightElement={
+        Trailing={
           <IconButton
             icon="add"
             accessibilityLabel={t("template.entryAdd", {

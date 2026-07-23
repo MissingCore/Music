@@ -14,7 +14,7 @@ export type TrackProps = Prettify<
     /** Indicate that this track is being played. */
     showIndicator?: boolean;
     trackSource: PlayFromSource;
-    LeftElement?: React.JSX.Element;
+    Leading?: React.JSX.Element;
     /** Note: Maps to `wrapperClassName` on `<SearchResult />`. */
     className?: string;
   }

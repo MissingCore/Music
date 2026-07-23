@@ -83,7 +83,7 @@ function ThemeForm({ bottomOffset }: { bottomOffset: number }) {
       <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
       <SheetLabelAction
         labelKey="feat.theme.extra.dark"
-        RightElement={
+        Trailing={
           <SwitchInput
             enabled={data.scheme === "dark"}
             onPress={() =>
