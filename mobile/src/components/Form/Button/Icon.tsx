@@ -7,6 +7,7 @@ import type { SupportedIconName } from "~/resources/icons";
 import { Icon } from "~/resources/icons";
 
 import { cn } from "~/lib/style";
+import { capitalize } from "~/utils/string";
 import type { AppColor } from "~/modules/customization/theme/core/constants";
 import type { RipplePressProps } from "../../Base/Pressable";
 import { Ripple } from "../../Base/Pressable";
@@ -56,13 +57,25 @@ export const IconButton = memo(function IconButton({
 //#endregion
 
 //#region Filled
+const ButtonTheme = {
+  primary: "bg-primary",
+  secondary: "bg-secondary",
+  error: "bg-error",
+} as const;
+
 export const FilledIconButton = memo(function FilledIconButton(
-  props: IconButtonProps,
+  props: IconButtonProps & { theme?: keyof typeof ButtonTheme },
 ) {
   return (
     <IconButton
+      rippleColor={props.theme ? `${props.theme}Dim` : undefined}
+      _iconColor={props.theme ? `on${capitalize(props.theme)}` : undefined}
       {...props}
-      className={cn("bg-surfaceContainerLowest", props.className)}
+      className={cn(
+        "bg-surfaceContainerLowest",
+        props.theme ? ButtonTheme[props.theme] : undefined,
+        props.className,
+      )}
       _fullRipple
     />
   );

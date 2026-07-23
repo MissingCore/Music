@@ -186,10 +186,8 @@ function SleepTimerButton(props: { present: VoidFunction }) {
       icon="timer"
       accessibilityLabel={t("feat.sleepTimer.title")}
       onPress={props.present}
-      className={sleepTimerActive ? "bg-secondary" : undefined}
       size="lg"
-      rippleColor={sleepTimerActive ? "secondaryDim" : undefined}
-      _iconColor={sleepTimerActive ? "onSecondary" : undefined}
+      theme={sleepTimerActive ? "secondary" : undefined}
     />
   );
 }
