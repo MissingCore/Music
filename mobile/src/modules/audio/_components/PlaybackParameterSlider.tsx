@@ -45,7 +45,7 @@ export const PlaybackParameterSlider = memo(
             setField(preset);
             cachedValue.set(preset);
           }}
-          className="min-h-8 flex-1 rounded-full bg-surfaceContainerLow py-2 active:bg-surfaceContainer"
+          className="min-h-8 flex-1 rounded-full bg-surfaceContainerLow py-2"
         >
           <Em>{formatValue(preset)}</Em>
         </Button>

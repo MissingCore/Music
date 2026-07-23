@@ -184,20 +184,20 @@ function SearchFilters(props: {
       renderItem={({ item: tab }) => {
         const selected = props.selectedTab === tab;
         return (
-          <View className="rounded-sm bg-surface">
-            <Button
-              onPress={() => props.onSelectTab(tab)}
-              className={cn("min-h-0 rounded-sm px-3 py-1.5", {
-                "bg-primary active:bg-primaryDim": selected,
-              })}
-            >
-              <TEm
-                textKey={`term.${tab}`}
-                className={cn({ "text-onPrimary": selected })}
-                bold={false}
-              />
-            </Button>
-          </View>
+          <Button
+            onPress={() => props.onSelectTab(tab)}
+            disabled={selected}
+            className={cn(
+              "min-h-0 rounded-sm px-3 py-1.5 disabled:opacity-100",
+              { "bg-primary": selected },
+            )}
+          >
+            <TEm
+              textKey={`term.${tab}`}
+              className={cn({ "text-onPrimary": selected })}
+              bold={false}
+            />
+          </Button>
         );
       }}
       className="absolute top-0 left-0 z-10 -mx-4 py-3"

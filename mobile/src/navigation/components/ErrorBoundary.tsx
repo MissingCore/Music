@@ -98,7 +98,8 @@ function ErrorLayout({ error }: { error: Error }) {
         <View {...floatingContentProps}>
           <Button
             onPress={() => openLink(Links.Issues)}
-            className="w-full bg-error active:bg-errorDim"
+            className="w-full bg-error"
+            rippleColor="errorDim"
           >
             <TStyledText
               textKey="err.flow.report.title"
