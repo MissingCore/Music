@@ -168,8 +168,8 @@ const RenderItem = memo(
             : PlaybackControls.playAtIndex(index)
         }
         disabled={isDragging}
-        className={cn("mb-2 rounded-xs active:bg-surfaceContainerLowest/50", {
-          "bg-surfaceContainerLowest!": isActive,
+        className={cn("mb-2 rounded-xs", {
+          "bg-surfaceContainerLowest": isActive,
           "opacity-25 active:opacity-100": index < disableAfter && !isActive,
         })}
       >

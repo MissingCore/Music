@@ -297,7 +297,7 @@ const RenderItem = memo(
         label={track.name}
         onRemove={() => onRemove(track.id)}
         disableRemove={isDragging}
-        //! `bg-surface` is there to prevent collapsing the View.
+        //! `bg-surface` is there to prevent collapsing this View.
         className={cn("mb-2 rounded-xs bg-surface", {
           "bg-surfaceContainerLowest": isActive,
           "opacity-25": isSubmitting,
