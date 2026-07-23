@@ -17,7 +17,7 @@ type RemovableItemProps = {
   children: React.ReactNode;
   className?: string;
 
-  /** Providing this prop will change the wrapper to a `Pressable`. */
+  /** Providing this prop will change the wrapper to a `Ripple`. */
   onPress?: VoidFunction;
   disabled?: boolean;
 };
