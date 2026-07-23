@@ -73,9 +73,8 @@ export function AddToCreatedPlaylistSheet(props: { ref: TrueSheetRef }) {
         textKey="form.create"
         onPress={inputForm.onSubmit}
         disabled={!inputForm.canSubmit || inputForm.isSubmitting}
-        className="rounded-full bg-secondary"
-        textClassName="text-onSecondary"
-        rippleColor="secondaryDim"
+        className="rounded-full"
+        theme="secondary"
       />
     </DetachedSheet>
   );
