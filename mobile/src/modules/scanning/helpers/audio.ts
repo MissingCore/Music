@@ -334,7 +334,7 @@ class MediaStoreQuerier {
       /** @deprecated Do not use this field directly. */
       rawArtistName: trimmedArtistName,
       artistNames: trimmedArtistName
-        ? splitOn(trimmedArtistName, this.delimiters)
+        ? parseTrackArtistNames(trimmedArtistName, this.delimiters)
         : [],
       album: newAlbum,
       track: metadata.trackNumber,
@@ -445,7 +445,7 @@ class MetadataRetrieverQuerier {
       /** @deprecated Do not use this field directly. */
       rawArtistName: trimmedArtistName,
       artistNames: trimmedArtistName
-        ? splitOn(trimmedArtistName, this.delimiters)
+        ? parseTrackArtistNames(trimmedArtistName, this.delimiters)
         : [],
       album: newAlbum,
       track: t.trackNumber,
@@ -464,7 +464,19 @@ class MetadataRetrieverQuerier {
   }
 }
 //#endregion
-
+/**
+ * Split track artist credits on commas and user-configured separators.
+ */
+function parseTrackArtistNames(
+  artistName: string,
+  configuredSeparators: string[],
+) {
+  const separators = [
+    ",",
+    ...configuredSeparators.filter((separator) => separator !== ","),
+  ];
+  return splitOn(artistName, separators);
+}
 //#region Internal Helpers
 const UpsertInvalidTrackFields = getExcludedColumns([
   "uri",
