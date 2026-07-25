@@ -108,7 +108,7 @@ export default function ModifyPlaylist({
 
           if (newName) {
             await Resynchronize.onRename({
-              oldSource: { type: "playlist", id: playlistName },
+              oldSource: { type: "playlist", id },
               newSource: { type: "playlist", id: newName },
             });
           }
