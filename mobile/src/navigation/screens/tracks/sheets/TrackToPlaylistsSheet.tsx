@@ -1,17 +1,16 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useMemo } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useCallback, useEffect, useState } from "react";
 
+import { queries as q } from "~/data/keyStore";
 import { usePlaylistsNames } from "~/data/playlist/queries";
-import {
-  useToggleTrackInPlaylist,
-  useTrackPlaylists,
-} from "~/data/track/queries";
+import { toggleTrackInPlaylist } from "~/data/track/api";
+import { useTrackPlaylists } from "~/data/track/queries";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
-import { mutateGuard } from "~/lib/react-query";
 import { FlatList } from "~/components/Base/List";
 import { CheckboxField } from "~/components/Form/Checkbox";
 import { Marquee } from "~/components/Marquee";
@@ -22,17 +21,40 @@ import { StyledText } from "~/components/Typography/StyledText";
 const GLOBAL_SHEET_KEY = "TrackToPlaylistsSheet";
 
 export function TrackToPlaylistsSheet({ id }: { id: string }) {
+  const queryClient = useQueryClient();
   const { data: playlistsNames } = usePlaylistsNames();
   const { data: inList } = useTrackPlaylists(id);
-  const toggleInPlaylist = useToggleTrackInPlaylist(id);
+  const [inListSet, setInListSet] = useState(new Set<string>());
   const sheetListHandlers = useEnableSheetScroll();
 
-  const inListSet = useMemo(() => new Set(inList ?? []), [inList]);
+  const toggleInPlaylist = useCallback(
+    async (playlistName: string) => {
+      await toggleTrackInPlaylist({ trackId: id, playlistName });
+      setInListSet((prev) => {
+        const updatedList = new Set(prev);
+        const remove = updatedList.has(playlistName);
+        updatedList[remove ? "delete" : "add"](playlistName);
+        return updatedList;
+      });
+    },
+    [id],
+  );
+
+  useEffect(() => {
+    setInListSet(new Set(inList ?? []));
+  }, [inList]);
+
+  const handleSheetClose = useCallback(async () => {
+    queryClient.invalidateQueries({ queryKey: q.tracks.detail(id).queryKey });
+    queryClient.invalidateQueries({ queryKey: q.playlists._def });
+    queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
+  }, [queryClient, id]);
 
   return (
     <DetachedSheet
       globalKey={GLOBAL_SHEET_KEY}
       titleKey="feat.modalTrack.extra.addToPlaylist"
+      onCleanup={handleSheetClose}
       snapTop
     >
       <FlatList
@@ -42,7 +64,7 @@ export function TrackToPlaylistsSheet({ id }: { id: string }) {
         renderItem={({ item: name }) => (
           <CheckboxField
             checked={inListSet.has(name)}
-            onCheck={() => mutateGuard(toggleInPlaylist, name)}
+            onCheck={() => toggleInPlaylist(name)}
             className="mb-2"
           >
             <Marquee color="surfaceBright">
