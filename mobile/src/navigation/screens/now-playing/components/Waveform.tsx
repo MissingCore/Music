@@ -4,7 +4,7 @@
 import { computeAmplitude } from "@missingcore/react-native-audio-analyzer";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { View, useWindowDimensions } from "react-native";
-import { Defs, G, LinearGradient, Rect, Stop, Svg } from "react-native-svg";
+import { Defs, LinearGradient, Path, Stop, Svg } from "react-native-svg";
 
 import { db } from "~/db";
 import { waveformSamples } from "~/db/schema";
@@ -32,7 +32,7 @@ export function Waveform(props: WaveformProps) {
   const { primary, surfaceContainerHigh } = useTheme();
   const [width, setWidth] = useState(0);
 
-  const bars = useMemo(() => {
+  const barsPath = useMemo(() => {
     //? We store enough data to have the waveform work in landscape. If in
     //? portrait mode, we need to downscale the number of bars.
     const maxBars = 1 + Math.floor((width - BAR_WIDTH) / (BAR_WIDTH + BAR_GAP));
@@ -43,21 +43,29 @@ export function Waveform(props: WaveformProps) {
       downSampledBars.push(props.amplitudes[idx] ?? 0);
     }
 
-    return downSampledBars.map((amplitude, index) => {
-      const barHeight = Math.max(MIN_BAR_HEIGHT, props.height * amplitude);
-      const x = (BAR_WIDTH + BAR_GAP) * index;
-      const y = (props.height - barHeight) / 2;
-      return (
-        <Rect
-          key={index}
-          rx={1}
-          x={x}
-          y={y}
-          height={barHeight}
-          width={BAR_WIDTH}
-        />
-      );
-    });
+    return downSampledBars
+      .map((amplitude, index) => {
+        const barHeight = Math.max(MIN_BAR_HEIGHT, props.height * amplitude);
+        const x = (BAR_WIDTH + BAR_GAP) * index;
+        const y = (props.height - barHeight) / 2;
+        const rr = Math.min(1, BAR_WIDTH / 2, barHeight / 2);
+
+        if (rr <= 0) {
+          return `M${x} ${y}H${x + BAR_WIDTH}V${y + barHeight}H${x}Z`;
+        }
+        return [
+          `M${x} ${y + rr}`,
+          `A${rr} ${rr} 0 0 1 ${x + rr} ${y}`,
+          `H${x + BAR_WIDTH - rr}`,
+          `A${rr} ${rr} 0 0 1 ${x + BAR_WIDTH} ${y + rr}`,
+          `V${y + barHeight - rr}`,
+          `A${rr} ${rr} 0 0 1 ${x + BAR_WIDTH - rr} ${y + barHeight}`,
+          `H${x + rr}`,
+          `A${rr} ${rr} 0 0 1 ${x} ${y + barHeight - rr}`,
+          `Z`,
+        ].join(" ");
+      })
+      .join(" ");
   }, [props.amplitudes, props.height, width]);
 
   return (
@@ -80,7 +88,7 @@ export function Waveform(props: WaveformProps) {
             />
           </LinearGradient>
         </Defs>
-        <G fill="url(#progress-grad)">{bars}</G>
+        <Path d={barsPath} fill="url(#progress-grad)" />
       </Svg>
     </View>
   );
