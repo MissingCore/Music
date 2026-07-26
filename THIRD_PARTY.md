@@ -4,7 +4,6 @@
 | @legendapp/list | MIT | https://github.com/LegendApp/legend-list |
 | @lodev09/react-native-true-sheet | MIT | https://github.com/lodev09/react-native-true-sheet |
 | @missingcore/react-native-actual-path | MIT | https://github.com/MissingCore/react-native-actual-path |
-| @missingcore/react-native-audio-analyzer | MIT | https://github.com/exzos28/react-native-audio-analyzer |
 | @missingcore/react-native-metadata-retriever | MIT | https://github.com/MissingCore/react-native-metadata-retriever |
 | @paralleldrive/cuid2 | MIT | https://github.com/paralleldrive/cuid2 |
 | @react-navigation/material-top-tabs | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/material-top-tabs |
