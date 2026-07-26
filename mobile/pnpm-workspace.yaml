@@ -8,7 +8,6 @@ allowBuilds:
   esbuild: false
   msgpackr-extract: false
   react-native-audio-browser@https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/05f7af440edc29222d12a0acc58234f5cb51433d: true
-  react-native-audio-data@https://codeload.github.com/MissingCore/react-native-audio-data/tar.gz/e74260d8b02b8a0447da74f6a6317067b13d4885: true
   unrs-resolver: false
 
 minimumReleaseAgeExclude:
