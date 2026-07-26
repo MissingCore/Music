@@ -12,6 +12,7 @@ allowBuilds:
   unrs-resolver: false
 
 minimumReleaseAgeExclude:
+  - '@missingcore/react-native-audio-analyzer@3.2.0-beta.5'
   - "@missingcore/react-native-metadata-retriever@4.0.0-beta.1"
   - react-native-reanimated@4.5.1
 

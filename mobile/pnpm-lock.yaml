@@ -24,6 +24,9 @@ importers:
       '@missingcore/react-native-actual-path':
         specifier: 0.1.0
         version: 0.1.0(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
+      '@missingcore/react-native-audio-analyzer':
+        specifier: 3.2.0-beta.5
+        version: 3.2.0-beta.5(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
       '@missingcore/react-native-metadata-retriever':
         specifier: 4.0.0-beta.1
         version: 4.0.0-beta.1(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
@@ -1551,6 +1554,12 @@ packages:
 
   '@missingcore/react-native-actual-path@0.1.0':
     resolution: {integrity: sha512-XbOZJsT8J9t8i2sFDw1GgTGnStxxtSQxiowj86M8a2kRb0sOX6V8F/kb5A3r8Ws6khWpQQooFD/JVZEztt/Qdw==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+
+  '@missingcore/react-native-audio-analyzer@3.2.0-beta.5':
+    resolution: {integrity: sha512-EWWv76z/lGSgXguOpQjH8QKfhF2G60USNPQGY5Hs8zWRnwS4CHmpUweqrGaF8qNXgez2MpQV+KWkgfzc68YDmA==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -6819,6 +6828,11 @@ snapshots:
       react-native-worklets: 0.11.1(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
 
   '@missingcore/react-native-actual-path@0.1.0(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)':
+    dependencies:
+      react: 19.2.3
+      react-native: 0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.3)
+
+  '@missingcore/react-native-audio-analyzer@3.2.0-beta.5(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)':
     dependencies:
       react: 19.2.3
       react-native: 0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.3)

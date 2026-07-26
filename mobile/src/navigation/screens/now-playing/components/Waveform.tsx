@@ -1,9 +1,9 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { computeAmplitude } from "@missingcore/react-native-audio-analyzer";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { View, useWindowDimensions } from "react-native";
-import { getWaveformDataByPoints } from "react-native-audio-data";
 import { Defs, LinearGradient, Path, Stop, Svg } from "react-native-svg";
 
 import { db } from "~/db";
@@ -125,7 +125,7 @@ export function useWaveformSamples(id: string, uri: string) {
     if (parsedUrl.startsWith("file://")) parsedUrl = parsedUrl.slice(8);
     let sampleData: number[] = [];
     try {
-      sampleData = await getWaveformDataByPoints(parsedUrl, scaledBarCount);
+      sampleData = computeAmplitude(parsedUrl, scaledBarCount);
     } catch {}
 
     if (sampleData.length > 0) {
