@@ -15,10 +15,10 @@ private const val DEFAULT_PRIMARY = 0xFF6750A4.toInt()
 private const val DEFAULT_SECONDARY = 0xFF625B71.toInt()
 private const val DEFAULT_TERTIARY = 0xFF7D5260.toInt()
 
-fun generateMaterial3ColorScheme(context: Context, imageUri: String): Map<String, String> {
+fun generateMaterial3ColorScheme(context: Context, imageUri: String): Map<String, String>? {
   val bitmap = loadBitmap(context, imageUri)
   if (bitmap == null) {
-    return buildScheme(DEFAULT_PRIMARY, DEFAULT_SECONDARY, DEFAULT_TERTIARY)
+    return null
   }
 
   val averageColor = calculateAverageColor(bitmap, 8)
