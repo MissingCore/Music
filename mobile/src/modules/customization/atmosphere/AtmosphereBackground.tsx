@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { ImageBackground as ExpoImageBackground } from "expo-image";
-import { withUniwind } from "uniwind";
+import { ScopedTheme, withUniwind } from "uniwind";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
@@ -19,12 +19,14 @@ export function AtmosphereBackground(props: {
 
   if (!atmosphereEffect || !props.source) return props.children;
   return (
-    <ImageBackground
-      source={getImageUri(props.source)}
-      contentFit="cover"
-      blurRadius={5}
-    >
-      {props.children}
-    </ImageBackground>
+    <ScopedTheme theme="dark">
+      <ImageBackground
+        source={getImageUri(props.source)}
+        contentFit="cover"
+        blurRadius={5}
+      >
+        {props.children}
+      </ImageBackground>
+    </ScopedTheme>
   );
 }
