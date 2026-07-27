@@ -221,13 +221,13 @@ function PlaylistNameField({ isFavoritesList }: { isFavoritesList?: boolean }) {
     <View className="gap-1">
       {isFavoritesList ? (
         <View>
-          <InputLabel labelKey="feat.trackMetadata.extra.name" />
+          <InputLabel label="feat.trackMetadata.extra.name" />
           <View className="min-h-12 w-full justify-center rounded-sm border border-outline p-2 opacity-25">
             <TStyledText textKey="term.favoriteTracks" numberOfLines={1} />
           </View>
         </View>
       ) : (
-        <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
+        <FormInput label="feat.trackMetadata.extra.name" field="name" />
       )}
       <View className="shrink flex-row items-center gap-0.5">
         <Icon
@@ -257,7 +257,7 @@ function ListHeaderComponent(props: {
     <View className="gap-6">
       <PlaylistNameField isFavoritesList={props.isFavoritesList} />
       <InputLabel
-        labelKey="term.tracks"
+        label="term.tracks"
         Trailing={
           <IconButton
             icon="add"

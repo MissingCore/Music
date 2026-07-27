@@ -1,11 +1,12 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import type { ParseKeys } from "i18next";
 import { memo, useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import { View } from "react-native";
+
+import type { TranslationKeyOrString } from "~/modules/i18n/core";
+import { useMaybeT } from "~/modules/i18n/core";
 
 import { cn } from "~/lib/style";
 import type { VariantColor } from "~/modules/customization/theme/core/constants";
@@ -41,7 +42,7 @@ export const ListItem = memo(function StandardListItem(props: ListItemProps) {
 //#region List Item Slots
 interface ListItemSlotsProps {
   /** Will be larger if `Leading` is provided & `supportingText` is omitted. */
-  labelText: ParseKeys | (string & {});
+  labelText: TranslationKeyOrString;
   supportingText?: string;
 
   Leading?: React.ReactNode;
@@ -56,7 +57,7 @@ interface ListItemSlotsProps {
 }
 
 const ListItemSlots = memo(function ListItemSlots(props: ListItemSlotsProps) {
-  const { t } = useTranslation();
+  const t = useMaybeT();
   const theme = useTheme();
 
   const lineCount = props._overflow ? undefined : 1;
@@ -77,7 +78,6 @@ const ListItemSlots = memo(function ListItemSlots(props: ListItemSlotsProps) {
             props._labelTextClassName,
           )}
         >
-          {/* @ts-expect-error - If the key doesn't exist, then the string is outputted. */}
           {t(props.labelText)}
         </StyledText>
         {props.supportingText ? (

@@ -183,11 +183,11 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
           </StyledText>
         </View>
 
-        <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
-        <ArrayFormInput labelKey="term.artists" field="artists" />
+        <FormInput label="feat.trackMetadata.extra.name" field="name" />
+        <ArrayFormInput label="term.artists" field="artists" />
         <View className="flex-1">
           <InputLabel
-            labelKey="term.album"
+            label="term.album"
             Trailing={
               <IconButton
                 icon="color-wand"
@@ -208,27 +208,23 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
           />
         </View>
         <ArrayFormInput
-          labelKey="feat.trackMetadata.extra.albumArtists"
+          label="feat.trackMetadata.extra.albumArtists"
           field="albumArtists"
         />
         <View className="flex-row items-end gap-4">
           <FormInput
-            labelKey="feat.trackMetadata.extra.disc"
+            label="feat.trackMetadata.extra.disc"
             field="disc"
             numeric
           />
           <FormInput
-            labelKey="feat.trackMetadata.extra.trackNumber"
+            label="feat.trackMetadata.extra.trackNumber"
             field="track"
             numeric
           />
         </View>
-        <FormInput
-          labelKey="feat.trackMetadata.extra.year"
-          field="year"
-          numeric
-        />
-        <ArrayFormInput labelKey="term.genres" field="genres" />
+        <FormInput label="feat.trackMetadata.extra.year" field="year" numeric />
+        <ArrayFormInput label="term.genres" field="genres" />
       </KeyboardAwareScrollView>
     </>
   );

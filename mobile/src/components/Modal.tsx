@@ -5,6 +5,8 @@ import type { ParseKeys } from "i18next";
 import { useState } from "react";
 import { Modal as RNModal, View } from "react-native";
 
+import type { TranslationKeyOrString } from "~/modules/i18n/core";
+
 import { cn } from "~/lib/style";
 import { GestureHandlerRootView } from "./Base/GestureHandlerRootView";
 import type { RipplePressProps } from "./Base/Pressable";
@@ -79,7 +81,8 @@ export function ConfirmableAction<
   Component: TComponent;
   componentProps: React.ComponentProps<TComponent> & { onPress: VoidFunction };
   disableModal?: boolean;
-  modalMessage: [ParseKeys] | [ParseKeys, ParseKeys];
+  modalMessage:
+    [TranslationKeyOrString] | [TranslationKeyOrString, TranslationKeyOrString];
 }) {
   const [visible, setVisible] = useState(false);
   return (
@@ -93,6 +96,7 @@ export function ConfirmableAction<
       />
       <Modal visible={visible}>
         {props.modalMessage.map((msg) => (
+          // @ts-expect-error - If the key doesn't exist, then the string is outputted.
           <TStyledText key={msg} textKey={msg} style={{ fontSize: 18 }} />
         ))}
         <ModalActions

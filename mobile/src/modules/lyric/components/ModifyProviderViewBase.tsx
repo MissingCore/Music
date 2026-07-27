@@ -67,7 +67,7 @@ function LyricProviderForm({ bottomOffset }: { bottomOffset: number }) {
       contentContainerStyle={{ paddingBottom: bottomOffset }}
       contentContainerClassName="gap-6 p-4"
     >
-      <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
+      <FormInput label="feat.trackMetadata.extra.name" field="name" />
       <Textarea label="Endpoint" field="endpoint" oneLine />
       <ArrayFormInput label="Traversed Fields" field="traversedFields" />
       <SheetLabelAction
