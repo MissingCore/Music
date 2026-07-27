@@ -13,7 +13,6 @@ import kotlin.math.ceil
 
 private const val DEFAULT_PRIMARY = 0xFF6750A4.toInt()
 private const val DEFAULT_SECONDARY = 0xFF625B71.toInt()
-private const val DEFAULT_TERTIARY = 0xFF7D5260.toInt()
 
 fun generateMaterial3ColorScheme(context: Context, imageUri: String): Map<String, String>? {
   val bitmap = loadBitmap(context, imageUri)
@@ -34,9 +33,8 @@ fun generateMaterial3ColorScheme(context: Context, imageUri: String): Map<String
 
   val primary = selectColor(listOf(vibrant, darkVibrant, dominant, averageColor), DEFAULT_PRIMARY)
   val secondary = selectColor(listOf(muted, darkMuted, lightMuted, vibrant, averageColor), DEFAULT_SECONDARY)
-  val tertiary = selectColor(listOf(lightVibrant, vibrant, dominant, averageColor), DEFAULT_TERTIARY)
 
-  return buildScheme(primary, secondary, tertiary)
+  return buildScheme(primary, secondary)
 }
 
 private fun loadBitmap(context: Context, imageUri: String): Bitmap? {
@@ -116,10 +114,9 @@ private fun calculateAverageColor(bitmap: Bitmap, pixelSpacing: Int): Int {
   }
 }
 
-private fun buildScheme(primary: Int, secondary: Int, tertiary: Int): Map<String, String> {
+private fun buildScheme(primary: Int, secondary: Int): Map<String, String> {
   val primaryContainer = makeContainerColor(primary)
   val secondaryContainer = makeContainerColor(secondary)
-  val tertiaryContainer = makeContainerColor(tertiary)
 
   val surface = makeSurfaceColor(primary, secondary)
   val surfaceVariant = makeSurfaceVariantColor(surface, secondary)
