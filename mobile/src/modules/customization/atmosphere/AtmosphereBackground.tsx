@@ -1,0 +1,30 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
+import { ImageBackground as ExpoImageBackground } from "expo-image";
+import { withUniwind } from "uniwind";
+
+import { usePreferenceStore } from "~/stores/Preference/store";
+
+import { getImageUri } from "~/lib/file-system";
+import type { Maybe } from "~/utils/types";
+
+const ImageBackground = withUniwind(ExpoImageBackground);
+
+export function AtmosphereBackground(props: {
+  children: React.ReactNode;
+  source: Maybe<string>;
+}) {
+  const atmosphereEffect = usePreferenceStore((s) => s.atmosphereEffect);
+
+  if (!atmosphereEffect || !props.source) return props.children;
+  return (
+    <ImageBackground
+      source={getImageUri(props.source)}
+      contentFit="cover"
+      blurRadius={5}
+    >
+      {props.children}
+    </ImageBackground>
+  );
+}

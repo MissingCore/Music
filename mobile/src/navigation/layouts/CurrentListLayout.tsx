@@ -30,6 +30,7 @@ import { ScrollView } from "~/components/Base/ScrollView";
 import { TopDownGradient } from "~/components/Gradient";
 import { Marquee } from "~/components/Marquee";
 import { Em, StyledText } from "~/components/Typography/StyledText";
+import { AtmosphereBackground } from "~/modules/customization/atmosphere/AtmosphereBackground";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import { MediaListControls } from "~/modules/media/components/MediaListControls";
@@ -55,10 +56,16 @@ export function CurrentListLayout<TData>(props: Props<TData>) {
     [isLargeScreen],
   );
   return (
-    <>
+    <AtmosphereBackground
+      source={
+        Array.isArray(props.imageSource)
+          ? props.imageSource[0]
+          : props.imageSource
+      }
+    >
       <UsedLayout {...props} />
       <HeaderTransitionGradient />
-    </>
+    </AtmosphereBackground>
   );
 }
 
