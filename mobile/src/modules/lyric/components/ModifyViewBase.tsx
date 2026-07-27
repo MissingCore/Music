@@ -49,8 +49,8 @@ function LyricForm({ bottomOffset }: { bottomOffset: number }) {
       contentContainerStyle={{ paddingBottom: bottomOffset }}
       contentContainerClassName="gap-6 p-4"
     >
-      <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
-      <Textarea labelKey="feat.lyrics.title" field="lyrics" />
+      <FormInput label="feat.trackMetadata.extra.name" field="name" />
+      <Textarea label="feat.lyrics.title" field="lyrics" />
     </KeyboardAwareScrollView>
   );
 }

@@ -1,10 +1,10 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import type { ParseKeys } from "i18next";
-import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
+import type { TranslationKeyOrString } from "~/modules/i18n/core";
+import { useMaybeT } from "~/modules/i18n/core";
 import { useFormStateContext } from ".";
 
 import { cn } from "~/lib/style";
@@ -13,21 +13,17 @@ import { FlatList } from "~/components/Base/List";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
 import { RemovableItem } from "~/components/List/RemovableItem";
-import { Em, TEm } from "~/components/Typography/StyledText";
+import { Em } from "~/components/Typography/StyledText";
 
 //#region Label
 export function InputLabel(props: {
-  labelKey?: ParseKeys;
-  label?: string;
+  label: TranslationKeyOrString;
   Trailing?: React.ReactNode;
 }) {
+  const t = useMaybeT();
   return (
     <View className="mb-1 min-h-8 flex-row items-center justify-between gap-4">
-      {props.labelKey ? (
-        <TEm textKey={props.labelKey} />
-      ) : (
-        <Em>{props.label}</Em>
-      )}
+      <Em>{t(props.label)}</Em>
       {props.Trailing}
     </View>
   );
@@ -37,8 +33,7 @@ export function InputLabel(props: {
 //#region Text/Numeric Input
 export function FormInputImpl<TData extends Record<string, any>>() {
   return function FormInput(props: {
-    labelKey?: ParseKeys;
-    label?: string;
+    label: TranslationKeyOrString;
     field: KeysOfValue<TData, string | number | null>;
     numeric?: boolean;
   }) {
@@ -59,7 +54,7 @@ export function FormInputImpl<TData extends Record<string, any>>() {
 
     return (
       <View className="flex-1">
-        <InputLabel labelKey={props.labelKey} label={props.label} />
+        <InputLabel label={props.label} />
         <TextInput
           inputMode={props.numeric ? "numeric" : undefined}
           editable={!isSubmitting}
@@ -76,11 +71,10 @@ export function FormInputImpl<TData extends Record<string, any>>() {
 //#region Array Input
 export function ArrayFormInputImpl<TData extends Record<string, any>>() {
   return function ArrayFormInput(props: {
-    labelKey?: ParseKeys;
-    label?: string;
+    label: TranslationKeyOrString;
     field: KeysOfValue<TData, string[]>;
   }) {
-    const { t } = useTranslation();
+    const t = useMaybeT();
     const { data, setField, isSubmitting } = useFormState<TData>();
 
     const field = props.field;
@@ -89,13 +83,12 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
     return (
       <View>
         <InputLabel
-          labelKey={props.labelKey}
           label={props.label}
           Trailing={
             <IconButton
               icon="add"
               accessibilityLabel={t("template.entryAdd", {
-                name: props.labelKey ? t(props.labelKey) : props.label,
+                name: t(props.label),
               })}
               onPress={() =>
                 setField((prev) => ({ ...prev, [field]: [...prev[field], ""] }))
@@ -148,15 +141,14 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
 //#region Textarea
 export function TextareaImpl<TData extends Record<string, any>>() {
   return function Textarea(props: {
-    labelKey?: ParseKeys;
-    label?: string;
+    label: TranslationKeyOrString;
     field: KeysOfValue<TData, string>;
     oneLine?: boolean;
   }) {
     const { data, setField, isSubmitting } = useFormState<TData>();
     return (
       <View className="flex-1">
-        <InputLabel labelKey={props.labelKey} label={props.label} />
+        <InputLabel label={props.label} />
         <TextInput
           editable={!isSubmitting}
           value={data[props.field]}

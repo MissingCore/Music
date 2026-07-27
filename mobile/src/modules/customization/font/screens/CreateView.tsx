@@ -72,7 +72,7 @@ function FontForm() {
 
   return (
     <KeyboardAwareScrollView contentContainerClassName="gap-6 p-4">
-      <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
+      <FormInput label="feat.trackMetadata.extra.name" field="name" />
       {!data.uri ? (
         <ExtendedTButton
           textKey="feat.backup.extra.import"

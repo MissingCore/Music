@@ -80,7 +80,7 @@ function ThemeForm({ bottomOffset }: { bottomOffset: number }) {
       contentContainerStyle={{ paddingBottom: bottomOffset }}
       contentContainerClassName="gap-6 p-4"
     >
-      <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
+      <FormInput label="feat.trackMetadata.extra.name" field="name" />
       <SheetLabelAction
         labelKey="feat.theme.extra.dark"
         Trailing={
