@@ -126,37 +126,40 @@ private fun buildScheme(primary: Int, secondary: Int, tertiary: Int): Map<String
   val background = makeBackgroundColor(surface)
   val outline = makeOutlineColor(surface, primary)
   val inverseSurface = if (isLight(surface)) darkenColor(surface, 0.18f) else lightenColor(surface, 0.2f)
+  val primaryDim = darkenColor(primary, 0.12f)
+  val secondaryDim = darkenColor(secondary, 0.12f)
+  val surfaceDim = darkenColor(surface, 0.08f)
+  val surfaceBright = lightenColor(surface, 0.08f)
+  val surfaceContainerLowest = lightenColor(surface, 0.04f)
+  val surfaceContainerLow = mixColors(surface, primary, 0.12f)
+  val surfaceContainer = mixColors(surface, secondary, 0.16f)
+  val surfaceContainerHigh = mixColors(surface, secondary, 0.24f)
+  val surfaceContainerHighest = mixColors(surface, primary, 0.28f)
 
   return linkedMapOf(
     "primary" to colorToHex(primary),
+    "primaryDim" to colorToHex(primaryDim),
     "onPrimary" to colorToHex(contrastColor(primary)),
-    "primaryContainer" to colorToHex(primaryContainer),
-    "onPrimaryContainer" to colorToHex(contrastColor(primaryContainer)),
+    "onPrimaryVariant" to colorToHex(contrastColor(primaryDim)),
     "secondary" to colorToHex(secondary),
+    "secondaryDim" to colorToHex(secondaryDim),
     "onSecondary" to colorToHex(contrastColor(secondary)),
-    "secondaryContainer" to colorToHex(secondaryContainer),
-    "onSecondaryContainer" to colorToHex(contrastColor(secondaryContainer)),
-    "tertiary" to colorToHex(tertiary),
-    "onTertiary" to colorToHex(contrastColor(tertiary)),
-    "tertiaryContainer" to colorToHex(tertiaryContainer),
-    "onTertiaryContainer" to colorToHex(contrastColor(tertiaryContainer)),
+    "onSecondaryVariant" to colorToHex(contrastColor(secondaryDim)),
+    "surfaceDim" to colorToHex(surfaceDim),
     "surface" to colorToHex(surface),
+    "surfaceBright" to colorToHex(surfaceBright),
+    "surfaceContainerLowest" to colorToHex(surfaceContainerLowest),
+    "surfaceContainerLow" to colorToHex(surfaceContainerLow),
+    "surfaceContainer" to colorToHex(surfaceContainer),
+    "surfaceContainerHigh" to colorToHex(surfaceContainerHigh),
+    "surfaceContainerHighest" to colorToHex(surfaceContainerHighest),
     "onSurface" to colorToHex(contrastColor(surface)),
-    "surfaceVariant" to colorToHex(surfaceVariant),
     "onSurfaceVariant" to colorToHex(contrastColor(surfaceVariant)),
-    "background" to colorToHex(background),
-    "onBackground" to colorToHex(contrastColor(background)),
-    "error" to "#BA1A1A",
-    "onError" to "#FFFFFF",
-    "errorContainer" to "#FFDAD6",
-    "onErrorContainer" to "#410002",
     "outline" to colorToHex(outline),
     "outlineVariant" to colorToHex(mixColors(surface, outline, 0.55f)),
-    "shadow" to "#000000",
-    "scrim" to "#000000",
     "inverseSurface" to colorToHex(inverseSurface),
     "inverseOnSurface" to colorToHex(contrastColor(inverseSurface)),
-    "inversePrimary" to colorToHex(mixColors(primary, Color.WHITE, 0.6f))
+    "placeholder" to colorToHex(mixColors(surface, contrastColor(surface), 0.2f))
   )
 }
 
