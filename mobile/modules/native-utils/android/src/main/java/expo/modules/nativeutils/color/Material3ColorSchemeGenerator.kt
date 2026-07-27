@@ -251,5 +251,18 @@ private fun mixColors(colorA: Int, colorB: Int, ratio: Float): Int {
 }
 
 private fun colorToHex(color: Int): String {
-  return String.format("#%06X", 0xFFFFFF and color)
+  val normalized = normalizeVariantColor(color)
+  return String.format("#%06X", 0xFFFFFF and normalized)
+}
+
+private fun normalizeVariantColor(color: Int): Int {
+  val red = Color.red(color)
+  val green = Color.green(color)
+  val blue = Color.blue(color)
+
+  return when {
+    red == 255 && green == 255 && blue == 255 -> Color.rgb(173, 173, 173)
+    red == 0 && green == 0 && blue == 0 -> Color.rgb(96, 96, 96)
+    else -> color
+  }
 }
