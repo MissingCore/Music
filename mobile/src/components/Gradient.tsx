@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { LinearGradient } from "expo-linear-gradient";
-import { useMemo } from "react";
+import { createContext, use, useMemo } from "react";
 import type { ViewProps } from "react-native";
 import type { AnimatedProps } from "react-native-reanimated";
 import Animated from "react-native-reanimated";
@@ -10,6 +10,22 @@ import Animated from "react-native-reanimated";
 import { cn } from "~/lib/style";
 import type { ColorRole } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
+
+//#region Disable Context
+const DisableGradientContext = createContext(false);
+
+export function DisableGradient(props: { children: React.ReactNode }) {
+  return (
+    <DisableGradientContext value={true}>
+      {props.children}
+    </DisableGradientContext>
+  );
+}
+
+export function useShouldDisableGradient() {
+  return use(DisableGradientContext);
+}
+//#endregion
 
 //#region Top Down Gradient
 /** Gradient where the darkest portion is on the top. */
@@ -53,7 +69,9 @@ export function HorizontalScrollGradient({
   gutter?: number;
   color?: ColorRole;
 } & AnimatedProps<ViewProps>) {
+  const disableGradient = useShouldDisableGradient();
   const gradientColor = useColor(color, "surface");
+
   return (
     <Animated.View
       {...props}
@@ -62,20 +80,24 @@ export function HorizontalScrollGradient({
     >
       {children}
       {/* Scroll Shadow */}
-      <LinearGradient
-        pointerEvents="none"
-        colors={[`${gradientColor}E6`, `${gradientColor}00`]}
-        {...ShadowProps}
-        style={{ width: size }}
-        className="absolute h-full ltr:left-0 rtl:right-0"
-      />
-      <LinearGradient
-        pointerEvents="none"
-        colors={[`${gradientColor}00`, `${gradientColor}E6`]}
-        {...ShadowProps}
-        style={{ width: size }}
-        className="absolute h-full ltr:right-0 rtl:left-0"
-      />
+      {!disableGradient ? (
+        <>
+          <LinearGradient
+            pointerEvents="none"
+            colors={[`${gradientColor}E6`, `${gradientColor}00`]}
+            {...ShadowProps}
+            style={{ width: size }}
+            className="absolute h-full ltr:left-0 rtl:right-0"
+          />
+          <LinearGradient
+            pointerEvents="none"
+            colors={[`${gradientColor}00`, `${gradientColor}E6`]}
+            {...ShadowProps}
+            style={{ width: size }}
+            className="absolute h-full ltr:right-0 rtl:left-0"
+          />
+        </>
+      ) : null}
     </Animated.View>
   );
 }

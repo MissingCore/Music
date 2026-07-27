@@ -8,6 +8,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { getImageUri } from "~/lib/file-system";
 import type { Maybe } from "~/utils/types";
+import { DisableGradient } from "~/components/Gradient";
 
 const ImageBackground = withUniwind(ExpoImageBackground);
 
@@ -19,14 +20,16 @@ export function AtmosphereBackground(props: {
 
   if (!atmosphereEffect || !props.source) return props.children;
   return (
-    <ScopedTheme theme="dark">
-      <ImageBackground
-        source={getImageUri(props.source)}
-        contentFit="cover"
-        blurRadius={5}
-      >
-        {props.children}
-      </ImageBackground>
-    </ScopedTheme>
+    <DisableGradient>
+      <ScopedTheme theme="dark">
+        <ImageBackground
+          source={getImageUri(props.source)}
+          contentFit="cover"
+          blurRadius={5}
+        >
+          {props.children}
+        </ImageBackground>
+      </ScopedTheme>
+    </DisableGradient>
   );
 }
