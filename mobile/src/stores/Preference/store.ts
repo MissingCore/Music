@@ -72,6 +72,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     theme: "system",
     activeCustomThemeId: null,
     activeCustomTheme: null,
+    atmosphereEffect: false,
 
     showNavbar: true,
     homeTab: "home",

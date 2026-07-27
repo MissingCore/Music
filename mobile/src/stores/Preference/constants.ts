@@ -39,6 +39,8 @@ export interface PreferenceStore {
   activeCustomThemeId: string | null;
   /** Values of active custom theme. */
   activeCustomTheme: CustomTheme | null;
+  /** Replaces the background with a blurred image. */
+  atmosphereEffect: boolean;
 
   /** If the navbar will be displayed after clicking the hamburger menu. */
   showNavbar: boolean;

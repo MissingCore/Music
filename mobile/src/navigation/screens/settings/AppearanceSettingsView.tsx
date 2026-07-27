@@ -44,6 +44,7 @@ export default function AppearanceSettings() {
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
   const theme = usePreferenceStore((s) => s.theme);
   const activeCustomTheme = usePreferenceStore((s) => s.activeCustomTheme);
+  const atmosphereEffect = usePreferenceStore((s) => s.atmosphereEffect);
   const showNavbar = usePreferenceStore((s) => s.showNavbar);
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const squareArtwork = usePreferenceStore((s) => s.squareArtwork);
@@ -71,6 +72,11 @@ export default function AppearanceSettings() {
               activeCustomTheme?.name ?? t(`feat.theme.extra.${theme}`)
             }
             onPress={() => navigation.navigate("Themes")}
+          />
+          <SegmentedList.Item
+            labelText="feat.theme.extra.atmosphere"
+            onPress={PreferenceTogglers.toggleKey("atmosphereEffect")}
+            Trailing={<Switch enabled={atmosphereEffect} />}
           />
         </SegmentedList>
 

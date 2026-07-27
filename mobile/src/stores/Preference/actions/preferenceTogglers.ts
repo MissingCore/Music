@@ -14,6 +14,7 @@ import { findAndSetCachedWaveform } from "../../Session/actions";
 import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 
 type ToggleableKey =
+  | "atmosphereEffect"
   | "checkForUpdates"
   | "dragClearPlayback"
   | "quickAddQueue"
