@@ -3,6 +3,7 @@
 
 import { useMemo } from "react";
 import { useColorScheme } from "react-native";
+import { useCSSVariable } from "uniwind";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
@@ -47,10 +48,12 @@ export function useColor(
   wantedColor: AppColor | undefined,
   fallback: AppColor,
 ) {
-  const theme = useTheme();
+  const themeColor = useCSSVariable(
+    isHexColor(fallback) ? "" : `--color-${wantedColor}`,
+  );
+  const fallbackColor = useCSSVariable(`--color-${fallback}`);
 
-  let color = isHexColor(fallback) ? fallback : theme[fallback];
-  if (wantedColor)
-    color = isHexColor(wantedColor) ? wantedColor : theme[wantedColor];
+  let color = isHexColor(fallback) ? fallback : fallbackColor;
+  if (wantedColor) color = isHexColor(wantedColor) ? wantedColor : themeColor;
   return color;
 }
