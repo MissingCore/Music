@@ -157,7 +157,6 @@ function MultiSelectActions(props: {
             accessibilityLabel: t("template.entryRemove", { name: trackTerm }),
             onPress: () => removeSelectedFromPlaylist(playlistRouteId),
           }}
-          // @ts-expect-error - If we use a non-translation key, it'll be rendered as a string.
           modalMessage={[t("template.entryRemove", { name: trackCount })]}
         />
       ) : (
@@ -181,7 +180,6 @@ function MultiSelectActions(props: {
           accessibilityLabel: t("template.entryHide", { name: trackTerm }),
           onPress: hideSelected,
         }}
-        // @ts-expect-error - If we use a non-translation key, it'll be rendered as a string.
         modalMessage={[t("template.entryHide", { name: trackCount })]}
       />
     </View>

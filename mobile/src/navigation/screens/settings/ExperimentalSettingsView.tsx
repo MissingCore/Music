@@ -80,9 +80,7 @@ export default function ExperimentalSettings() {
             onPress: deleteAllUnhashedImages,
           }}
           modalMessage={[
-            // @ts-expect-error - If we use a non-translation key, it'll be rendered as a string.
             "Re-launching the app is necessary after confirming this action.",
-            // @ts-expect-error - If we use a non-translation key, it'll be rendered as a string.
             "You will need to re-add any images you manually assigned to albums/artists/genres/playlists/tracks.",
           ]}
         />
