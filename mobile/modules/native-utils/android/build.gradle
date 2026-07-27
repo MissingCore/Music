@@ -19,4 +19,6 @@ android {
 
 dependencies {
   api 'commons-io:commons-io:1.4'
+  implementation 'androidx.annotation:annotation:1.10.0'
+  implementation 'androidx.palette:palette:1.0.0'
 }
