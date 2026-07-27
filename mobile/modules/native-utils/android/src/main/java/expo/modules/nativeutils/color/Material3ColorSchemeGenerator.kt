@@ -7,9 +7,9 @@ import android.graphics.Color
 import android.net.Uri
 import androidx.core.graphics.ColorUtils
 import androidx.palette.graphics.Palette
-import java.io.BufferedInputStream
-import java.io.IOException
 import java.io.InputStream
+import java.net.URI
+import kotlin.math.ceil
 
 private const val DEFAULT_PRIMARY = 0xFF6750A4.toInt()
 private const val DEFAULT_SECONDARY = 0xFF625B71.toInt()
@@ -17,12 +17,106 @@ private const val DEFAULT_TERTIARY = 0xFF7D5260.toInt()
 
 fun generateMaterial3ColorScheme(context: Context, imageUri: String): Map<String, String> {
   val bitmap = loadBitmap(context, imageUri)
-  val palette = bitmap?.let { Palette.from(it).generate() }
+  if (bitmap == null) {
+    return buildScheme(DEFAULT_PRIMARY, DEFAULT_SECONDARY, DEFAULT_TERTIARY)
+  }
 
-  val primary = palette?.getVibrantColor(DEFAULT_PRIMARY) ?: DEFAULT_PRIMARY
-  val secondary = palette?.getMutedColor(DEFAULT_SECONDARY) ?: DEFAULT_SECONDARY
-  val tertiary = palette?.getLightVibrantColor(DEFAULT_TERTIARY) ?: DEFAULT_TERTIARY
+  val averageColor = calculateAverageColor(bitmap, 8)
+  val palette = Palette.Builder(bitmap).generate()
 
+  val dominant = palette.getDominantColor(averageColor)
+  val vibrant = palette.getVibrantColor(averageColor)
+  val lightVibrant = palette.getLightVibrantColor(averageColor)
+  val darkVibrant = palette.getDarkVibrantColor(averageColor)
+  val muted = palette.getMutedColor(averageColor)
+  val lightMuted = palette.getLightMutedColor(averageColor)
+  val darkMuted = palette.getDarkMutedColor(averageColor)
+
+  val primary = selectColor(listOf(vibrant, darkVibrant, dominant, averageColor), DEFAULT_PRIMARY)
+  val secondary = selectColor(listOf(muted, darkMuted, lightMuted, vibrant, averageColor), DEFAULT_SECONDARY)
+  val tertiary = selectColor(listOf(lightVibrant, vibrant, dominant, averageColor), DEFAULT_TERTIARY)
+
+  return buildScheme(primary, secondary, tertiary)
+}
+
+private fun loadBitmap(context: Context, imageUri: String): Bitmap? {
+  return try {
+    when {
+      imageUri.startsWith("content://") -> {
+        context.contentResolver.openInputStream(Uri.parse(imageUri))?.use { stream ->
+          BitmapFactory.decodeStream(stream)
+        }
+      }
+
+      imageUri.startsWith("file://") -> {
+        BitmapFactory.decodeFile(Uri.parse(imageUri).path)
+      }
+
+      imageUri.startsWith("http://") || imageUri.startsWith("https://") -> {
+        val connection = URI(imageUri).toURL().openConnection()
+        connection.connectTimeout = 10000
+        connection.readTimeout = 10000
+        connection.getInputStream().use { stream ->
+          BitmapFactory.decodeStream(stream)
+        }
+      }
+
+      imageUri.startsWith("/") -> {
+        BitmapFactory.decodeFile(imageUri)
+      }
+
+      else -> {
+        val resourceId = context.resources.getIdentifier(imageUri, "drawable", context.packageName)
+        if (resourceId != 0) {
+          BitmapFactory.decodeResource(context.resources, resourceId)
+        } else {
+          BitmapFactory.decodeFile(imageUri)
+        }
+      }
+    }
+  } catch (_: Exception) {
+    null
+  }
+}
+
+private fun calculateAverageColor(bitmap: Bitmap, pixelSpacing: Int): Int {
+  val segmentWidth = 500
+  val width = bitmap.width
+  val height = bitmap.height
+  val numSegments = ceil(width.toDouble() / segmentWidth).toInt()
+  val segmentPixels = IntArray(segmentWidth * height)
+
+  var redSum = 0
+  var greenSum = 0
+  var blueSum = 0
+  var pixelCount = 0
+
+  for (index in 0 until numSegments) {
+    val xStart = index * segmentWidth
+    val xEnd = minOf(width, (index + 1) * segmentWidth)
+
+    bitmap.getPixels(segmentPixels, 0, segmentWidth, xStart, 0, xEnd - xStart, height)
+
+    for (segmentIndex in segmentPixels.indices step pixelSpacing) {
+      val pixel = segmentPixels[segmentIndex]
+      redSum += Color.red(pixel)
+      greenSum += Color.green(pixel)
+      blueSum += Color.blue(pixel)
+      pixelCount++
+    }
+  }
+
+  return if (pixelCount == 0) {
+    Color.BLACK
+  } else {
+    val red = redSum / pixelCount
+    val green = greenSum / pixelCount
+    val blue = blueSum / pixelCount
+    Color.rgb(red, green, blue)
+  }
+}
+
+private fun buildScheme(primary: Int, secondary: Int, tertiary: Int): Map<String, String> {
   val primaryContainer = makeContainerColor(primary)
   val secondaryContainer = makeContainerColor(secondary)
   val tertiaryContainer = makeContainerColor(tertiary)
@@ -33,7 +127,7 @@ fun generateMaterial3ColorScheme(context: Context, imageUri: String): Map<String
   val outline = makeOutlineColor(surface, primary)
   val inverseSurface = if (isLight(surface)) darkenColor(surface, 0.18f) else lightenColor(surface, 0.2f)
 
-  val scheme = linkedMapOf(
+  return linkedMapOf(
     "primary" to colorToHex(primary),
     "onPrimary" to colorToHex(contrastColor(primary)),
     "primaryContainer" to colorToHex(primaryContainer),
@@ -64,48 +158,10 @@ fun generateMaterial3ColorScheme(context: Context, imageUri: String): Map<String
     "inverseOnSurface" to colorToHex(contrastColor(inverseSurface)),
     "inversePrimary" to colorToHex(mixColors(primary, Color.WHITE, 0.6f))
   )
-
-  return scheme
 }
 
-private fun loadBitmap(context: Context, imageUri: String): Bitmap? {
-  return try {
-    val uri = Uri.parse(imageUri)
-    val inputStream = resolveInputStream(context, uri) ?: return null
-    inputStream.buffered().use { stream ->
-      val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-      BitmapFactory.decodeStream(stream, null, bounds)
-      stream.reset()
-
-      val options = BitmapFactory.Options().apply {
-        inPreferredConfig = Bitmap.Config.ARGB_8888
-        inSampleSize = calculateInSampleSize(bounds)
-      }
-      stream.reset()
-      BitmapFactory.decodeStream(stream, null, options)
-    }
-  } catch (_: Exception) {
-    null
-  }
-}
-
-private fun resolveInputStream(context: Context, uri: Uri): InputStream? {
-  return when (uri.scheme) {
-    "content", "file", "android.resource" -> context.contentResolver.openInputStream(uri)
-    else -> null
-  }
-}
-
-private fun calculateInSampleSize(bounds: BitmapFactory.Options): Int {
-  val height = bounds.outHeight
-  val width = bounds.outWidth
-  var inSampleSize = 1
-  var target = 256
-
-  while ((height / inSampleSize) > target || (width / inSampleSize) > target) {
-    inSampleSize *= 2
-  }
-  return inSampleSize
+private fun selectColor(candidates: List<Int>, fallback: Int): Int {
+  return candidates.firstOrNull { it != 0 && Color.alpha(it) == 255 } ?: fallback
 }
 
 private fun makeContainerColor(color: Int): Int {
