@@ -22,11 +22,7 @@ export function AtmosphereBackground(props: {
   return (
     <DisableGradient>
       <ScopedTheme theme="dark">
-        <ImageBackground
-          source={getImageUri(props.source)}
-          contentFit="cover"
-          blurRadius={5}
-        >
+        <ImageBackground source={getImageUri(props.source)} blurRadius={5}>
           {props.children}
         </ImageBackground>
       </ScopedTheme>
