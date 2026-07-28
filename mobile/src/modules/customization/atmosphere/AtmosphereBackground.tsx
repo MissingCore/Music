@@ -29,7 +29,7 @@ export function AtmosphereBackground(props: {
       <ScopedTheme theme="atmosphere">
         <Image
           source={getImageUri(props.source)}
-          blurRadius={5}
+          blurRadius={10}
           // @ts-expect-error - Brightness prop works.
           style={{
             height: imgSize,
