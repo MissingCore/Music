@@ -10,17 +10,15 @@ import { useHorizontalListLayoutConfig } from "~/hooks/useLayoutConfigs";
 
 import {
   CurrentListLayout,
-  CurrentListLayoutTopAppBar,
+  CurrentListSkeleton,
 } from "~/navigation/layouts/CurrentListLayout";
 import { ArtistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { SortSheet } from "~/navigation/sheets/SortSheet";
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
-import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
 import { FlatList } from "~/components/Base/List";
 import { HorizontalScrollGradient } from "~/components/Gradient";
-import { SafeContainer } from "~/components/SafeContainer";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { TEm } from "~/components/Typography/StyledText";
 import { MediaCard } from "~/modules/media/components/MediaCard";
@@ -46,12 +44,7 @@ export default function Artist({
   });
 
   if (artistDetailsQuery.isPending || artistDetailsQuery.error) {
-    return (
-      <SafeContainer additionalTopOffset={56} className="flex-1">
-        <CurrentListLayoutTopAppBar />
-        <PagePlaceholder isPending={artistDetailsQuery.isPending} />
-      </SafeContainer>
-    );
+    return <CurrentListSkeleton pending={artistDetailsQuery.isPending} />;
   }
 
   return (

@@ -7,15 +7,13 @@ import { useGenreDetails, useGenreTracks } from "~/data/genre/queries";
 
 import {
   CurrentListLayout,
-  CurrentListLayoutTopAppBar,
+  CurrentListSkeleton,
 } from "~/navigation/layouts/CurrentListLayout";
 import { GenreArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { SortSheet } from "~/navigation/sheets/SortSheet";
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
-import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
-import { SafeContainer } from "~/components/SafeContainer";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { useTrackListPreset } from "~/modules/media/components/Track";
 
@@ -39,12 +37,7 @@ export default function Genre({
   });
 
   if (genreDetailsQuery.isPending || genreDetailsQuery.error) {
-    return (
-      <SafeContainer additionalTopOffset={56} className="flex-1">
-        <CurrentListLayoutTopAppBar />
-        <PagePlaceholder isPending={genreDetailsQuery.isPending} />
-      </SafeContainer>
-    );
+    return <CurrentListSkeleton pending={genreDetailsQuery.isPending} />;
   }
 
   return (

@@ -14,18 +14,16 @@ import {
 
 import {
   CurrentListLayout,
-  CurrentListLayoutTopAppBar,
+  CurrentListSkeleton,
 } from "~/navigation/layouts/CurrentListLayout";
 import { PlaylistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 import type { MenuAction } from "~/navigation/components/CurrentListMenu";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
-import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ExportM3USheet } from "./sheets/ExportM3USheet";
 
 import { mutateGuard } from "~/lib/react-query";
 import { IconButton } from "~/components/Form/Button/Icon";
-import { SafeContainer } from "~/components/SafeContainer";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { useTrackListPreset } from "~/modules/media/components/Track";
@@ -64,14 +62,7 @@ export default function Playlist({
     [navigation, id, exportSheetRef],
   );
 
-  if (isPending || error) {
-    return (
-      <SafeContainer additionalTopOffset={56} className="flex-1">
-        <CurrentListLayoutTopAppBar />
-        <PagePlaceholder isPending={isPending} />
-      </SafeContainer>
-    );
-  }
+  if (isPending || error) return <CurrentListSkeleton pending={isPending} />;
 
   // Add optimistic UI updates.
   const isToggled = favoritePlaylist.isPending

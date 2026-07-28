@@ -22,6 +22,7 @@ import {
 } from "~/hooks/useAlternativeLayout";
 import { useDelayedReady } from "~/hooks/useDelayedReady";
 
+import { PagePlaceholder } from "../components/Placeholder";
 import {
   TOPAPPBAR_HEIGHT,
   BackButton,
@@ -35,6 +36,7 @@ import { LegendList } from "~/components/Base/LegendList";
 import { ScrollView } from "~/components/Base/ScrollView";
 import { TopDownGradient } from "~/components/Gradient";
 import { Marquee } from "~/components/Marquee";
+import { SafeContainer } from "~/components/SafeContainer";
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import { AtmosphereBackground } from "~/modules/customization/atmosphere/AtmosphereBackground";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
@@ -75,7 +77,7 @@ export function CurrentListLayout<TData>(props: Props<TData>) {
   );
 }
 
-export function CurrentListLayoutTopAppBar() {
+function CurrentListLayoutTopAppBar() {
   const { top } = useSafeAreaInsets();
   return (
     <View style={{ top }} className="absolute right-0 left-0 z-10">
@@ -83,6 +85,17 @@ export function CurrentListLayoutTopAppBar() {
     </View>
   );
 }
+
+//#region Skeleton
+export function CurrentListSkeleton({ pending = false }) {
+  return (
+    <SafeContainer additionalTopOffset={TOPAPPBAR_HEIGHT} className="flex-1">
+      <CurrentListLayoutTopAppBar />
+      <PagePlaceholder isPending={pending} />
+    </SafeContainer>
+  );
+}
+//#endregion
 
 //#region Mobile Layout
 export function MobileLayout<TData>({
