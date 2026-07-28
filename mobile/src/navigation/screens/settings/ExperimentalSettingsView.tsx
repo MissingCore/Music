@@ -37,6 +37,7 @@ export default function ExperimentalSettings() {
   const downsamplingProcessor = usePreferenceStore(
     (s) => s.downsamplingProcessor,
   );
+  const atmosphereEffect = usePreferenceStore((s) => s.atmosphereEffect);
   const { data: unhashedImagesCount } = useUnhashedImagesCount();
 
   return (
@@ -53,6 +54,12 @@ export default function ExperimentalSettings() {
         supportingText="Downsamples high sample rate audio files to 192kHz so that they can be played instead of throwing an error. This will eventually be the default behavior. Disable this feature if you encounter issues."
         onPress={PreferenceTogglers.toggleDownsamplingProcessor}
         Trailing={<Switch enabled={downsamplingProcessor} />}
+      />
+
+      <SegmentedList.Item
+        labelText="feat.theme.extra.atmosphere"
+        onPress={PreferenceTogglers.toggleKey("atmosphereEffect")}
+        Trailing={<Switch enabled={atmosphereEffect} />}
       />
 
       <ConfirmableAction

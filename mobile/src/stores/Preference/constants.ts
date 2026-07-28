@@ -102,6 +102,8 @@ export interface PreferenceStore {
   rcNotification: boolean;
 
   //! Experimental Features
+  /** Replaces the background with a blurred image. */
+  atmosphereEffect: boolean;
   /** Whether MediaStore is used to extract metadata. Requires Android 11+. */
   mediaStoreScanner: boolean;
   /**

@@ -10,17 +10,18 @@ import { useAlbumForScreen, useFavoriteAlbum } from "~/data/album/queries";
 import { TABLET_SIDEBAR_WIDTH_RATIO } from "~/hooks/useAlternativeLayout";
 import { useListLayoutConfig } from "~/hooks/useLayoutConfigs";
 
-import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
+import {
+  CurrentListLayout,
+  CurrentListSkeleton,
+} from "~/navigation/layouts/CurrentListLayout";
 import { AlbumArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
-import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { isNumber } from "~/utils/validation";
 import { IconButton } from "~/components/Form/Button/Icon";
-import { SafeContainer } from "~/components/SafeContainer";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import {
@@ -66,13 +67,7 @@ export default function Album({
     return sectionListTracks;
   }, [listData]);
 
-  if (isPending || error) {
-    return (
-      <SafeContainer additionalTopOffset={56} className="flex-1">
-        <PagePlaceholder isPending={isPending} />
-      </SafeContainer>
-    );
-  }
+  if (isPending || error) return <CurrentListSkeleton pending={isPending} />;
 
   // Add optimistic UI updates.
   const isToggled = favoriteAlbum.isPending

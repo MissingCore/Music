@@ -27,6 +27,7 @@ import { Marquee } from "~/components/Marquee";
 import { SafeContainer } from "~/components/SafeContainer";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
+import { AtmosphereBackground } from "~/modules/customization/atmosphere/AtmosphereBackground";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
 import {
   NextButton,
@@ -35,35 +36,51 @@ import {
   RepeatButton,
   ShuffleButton,
 } from "~/modules/media/components/MediaControls";
-import { PlaybackControlGestureWrapper } from "./components/PlaybackControlGestureWrapper";
 import { FavoriteButton } from "~/modules/media/components/Track";
+import { PlaybackControlGestureWrapper } from "./components/PlaybackControlGestureWrapper";
 
 export default function NowPlaying() {
   const isLargeScreen = useAlternativeLayout();
   const track = usePlaybackStore((s) => s.activeTrack);
+  const sleepTimerSheetRef = useSheetRef();
+  const playbackOptionsSheetRef = useSheetRef();
 
   if (!track) return <Back />;
   return (
-    <View className="flex-1 flex-row">
-      <SafeContainer className="flex-1 gap-8">
-        <SeekbarContext>
-          <PlaybackControlGestureWrapper>
-            <ArtworkSlot artwork={track.artwork} trackId={track.id} />
-            <View className="-mt-8 gap-6 px-4">
-              <Metadata track={track} />
-              <SeekBar
-                id={track.id}
-                uri={track.uri}
-                trackLength={track.duration}
-              />
-              <PlaybackControls />
-            </View>
-            <BottomAppBar trackId={track.id} />
-          </PlaybackControlGestureWrapper>
-        </SeekbarContext>
-      </SafeContainer>
-      {isLargeScreen ? <Upcoming renderAsScreen={false} /> : null}
-    </View>
+    <>
+      <SleepTimerSheet ref={sleepTimerSheetRef} />
+      <PlaybackOptionsSheet ref={playbackOptionsSheetRef} trackId={track.id} />
+
+      <AtmosphereBackground source={track.artwork}>
+        <View className="flex-1 flex-row">
+          <SafeContainer className="flex-1 gap-8">
+            <SeekbarContext>
+              <PlaybackControlGestureWrapper>
+                <ArtworkSlot artwork={track.artwork} trackId={track.id} />
+                <View className="-mt-8 gap-6 px-4">
+                  <Metadata track={track} />
+                  <SeekBar
+                    id={track.id}
+                    uri={track.uri}
+                    trackLength={track.duration}
+                  />
+                  <PlaybackControls />
+                </View>
+                <BottomAppBar
+                  presentSleepTimerSheet={() =>
+                    sleepTimerSheetRef.current?.present()
+                  }
+                  presentPlaybackOptionsSheet={() =>
+                    playbackOptionsSheetRef.current?.present()
+                  }
+                />
+              </PlaybackControlGestureWrapper>
+            </SeekbarContext>
+          </SafeContainer>
+          {isLargeScreen ? <Upcoming renderAsScreen={false} /> : null}
+        </View>
+      </AtmosphereBackground>
+    </>
   );
 }
 
@@ -134,47 +151,44 @@ function PlaybackControls() {
 //#endregion
 
 //#region Bottom App Bar
-function BottomAppBar({ trackId }: { trackId: string }) {
+function BottomAppBar(props: {
+  presentSleepTimerSheet: VoidFunction;
+  presentPlaybackOptionsSheet: VoidFunction;
+}) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const isLargeScreen = useAlternativeLayout();
-  const sleepTimerSheetRef = useSheetRef();
-  const playbackOptionsSheetRef = useSheetRef();
 
   return (
-    <>
-      <SleepTimerSheet ref={sleepTimerSheetRef} />
-      <PlaybackOptionsSheet ref={playbackOptionsSheetRef} trackId={trackId} />
-
-      <View className="flex-row items-center justify-between gap-4 p-4 pt-2">
-        <BackButton />
-        <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
-          <SleepTimerButton
-            present={() => sleepTimerSheetRef.current?.present()}
-          />
-          <FilledIconButton
-            icon="lyrics"
-            accessibilityLabel={t("feat.lyrics.title")}
-            onPress={toggleLyricVisibility}
+    <View className="flex-row items-center justify-between gap-4 p-4 pt-2">
+      <BackButton />
+      <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
+        <SleepTimerButton present={props.presentSleepTimerSheet} />
+        <IconButton
+          icon="lyrics"
+          accessibilityLabel={t("feat.lyrics.title")}
+          onPress={toggleLyricVisibility}
+          size="lg"
+          _fullRipple
+        />
+        {!isLargeScreen ? (
+          <IconButton
+            icon="view-agenda"
+            accessibilityLabel={t("term.upcoming")}
+            onPress={() => navigation.navigate("Upcoming")}
             size="lg"
+            _fullRipple
           />
-          {!isLargeScreen ? (
-            <FilledIconButton
-              icon="view-agenda"
-              accessibilityLabel={t("term.upcoming")}
-              onPress={() => navigation.navigate("Upcoming")}
-              size="lg"
-            />
-          ) : null}
-          <FilledIconButton
-            icon="more-horiz"
-            accessibilityLabel={t("feat.playback.extra.options")}
-            onPress={() => playbackOptionsSheetRef.current?.present()}
-            size="lg"
-          />
-        </View>
+        ) : null}
+        <IconButton
+          icon="more-horiz"
+          accessibilityLabel={t("feat.playback.extra.options")}
+          onPress={props.presentPlaybackOptionsSheet}
+          size="lg"
+          _fullRipple
+        />
       </View>
-    </>
+    </View>
   );
 }
 
@@ -182,12 +196,15 @@ function SleepTimerButton(props: { present: VoidFunction }) {
   const { t } = useTranslation();
   const sleepTimerActive = useSleepTimerStore((s) => s.endAt) !== null;
   return (
-    <FilledIconButton
+    <IconButton
       icon="timer"
       accessibilityLabel={t("feat.sleepTimer.title")}
       onPress={props.present}
       size="lg"
-      theme={sleepTimerActive ? "secondary" : undefined}
+      className={sleepTimerActive ? "bg-secondary" : undefined}
+      rippleColor={sleepTimerActive ? "secondaryDim" : undefined}
+      _iconColor={sleepTimerActive ? "onSecondary" : undefined}
+      _fullRipple
     />
   );
 }

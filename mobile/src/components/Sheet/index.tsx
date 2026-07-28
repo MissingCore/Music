@@ -11,6 +11,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useIsKeyboardVisible } from "~/stores/ListenerState";
 import { useSafeAreaHeight } from "~/hooks/useSafeAreaHeight";
 
+import { TOPAPPBAR_HEIGHT } from "~/navigation/components/TopAppBar";
+
 import { cn } from "~/lib/style";
 import type { TrueSheetRef } from "./useSheetRef";
 import { GestureHandlerRootView } from "../Base/GestureHandlerRootView";
@@ -39,7 +41,6 @@ interface SheetProps extends Pick<
 
 /** Distance between the bottom of the sheet & the navbar / bottom of screen. */
 const EDGE_SPACER = 16;
-const ESTIMATED_TOPAPPBAR_HEIGHT = 56;
 const MAX_SHEET_HEIGHT = 576;
 
 /**
@@ -51,7 +52,7 @@ export function useMaxDetachedSheetHeight() {
   const safeHeight = useSafeAreaHeight();
 
   // `safeHeight` includes `EDGE_SPACER` in the calculation.
-  const workableHeight = safeHeight + bottom - ESTIMATED_TOPAPPBAR_HEIGHT;
+  const workableHeight = safeHeight + bottom - TOPAPPBAR_HEIGHT;
   // If sheet utilizes full height, part of the sheet will end up behind
   // the navbar unless we include the bottom inset.
   const maxDetachedHeight = MAX_SHEET_HEIGHT + EDGE_SPACER + bottom;

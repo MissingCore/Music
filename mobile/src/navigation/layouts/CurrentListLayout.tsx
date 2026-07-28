@@ -22,6 +22,13 @@ import {
 } from "~/hooks/useAlternativeLayout";
 import { useDelayedReady } from "~/hooks/useDelayedReady";
 
+import { PagePlaceholder } from "../components/Placeholder";
+import {
+  TOPAPPBAR_HEIGHT,
+  BackButton,
+  TopAppBarTemplate,
+} from "../components/TopAppBar";
+
 import { cn } from "~/lib/style";
 import { clamp } from "~/utils/number";
 import type { LegendListProps } from "~/components/Base/LegendList";
@@ -29,7 +36,9 @@ import { LegendList } from "~/components/Base/LegendList";
 import { ScrollView } from "~/components/Base/ScrollView";
 import { TopDownGradient } from "~/components/Gradient";
 import { Marquee } from "~/components/Marquee";
+import { SafeContainer } from "~/components/SafeContainer";
 import { Em, StyledText } from "~/components/Typography/StyledText";
+import { AtmosphereBackground } from "~/modules/customization/atmosphere/AtmosphereBackground";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import { MediaListControls } from "~/modules/media/components/MediaListControls";
@@ -39,7 +48,6 @@ import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
 type SupportedMedia = "album" | "artist" | "genre" | "playlist";
 type MediaListSource = { type: SupportedMedia; id: string };
 
-const ESTIMATED_TOPAPPBAR_HEIGHT = 56;
 const ESTIMATED_TOPAPPBAR_YPAD = 8;
 
 interface Props<TData>
@@ -55,12 +63,39 @@ export function CurrentListLayout<TData>(props: Props<TData>) {
     [isLargeScreen],
   );
   return (
-    <>
+    <AtmosphereBackground
+      source={
+        Array.isArray(props.imageSource)
+          ? props.imageSource[0]
+          : props.imageSource
+      }
+    >
+      <CurrentListLayoutTopAppBar />
       <UsedLayout {...props} />
       <HeaderTransitionGradient />
-    </>
+    </AtmosphereBackground>
   );
 }
+
+function CurrentListLayoutTopAppBar() {
+  const { top } = useSafeAreaInsets();
+  return (
+    <View style={{ top }} className="absolute right-0 left-0 z-10">
+      <TopAppBarTemplate headerLeftAction={<BackButton />} />
+    </View>
+  );
+}
+
+//#region Skeleton
+export function CurrentListSkeleton({ pending = false }) {
+  return (
+    <SafeContainer additionalTopOffset={TOPAPPBAR_HEIGHT} className="flex-1">
+      <CurrentListLayoutTopAppBar />
+      <PagePlaceholder isPending={pending} />
+    </SafeContainer>
+  );
+}
+//#endregion
 
 //#region Mobile Layout
 export function MobileLayout<TData>({
@@ -231,7 +266,7 @@ export function TabletLayout<TData>({
 function useHeaderGradientHeight() {
   const insets = useSafeAreaInsets();
   // How far from the top edge of the screen the artwork will start from.
-  return insets.top + ESTIMATED_TOPAPPBAR_HEIGHT + 16;
+  return insets.top + TOPAPPBAR_HEIGHT + 16;
 }
 
 /** Header gradient to smoothly fade content as it gets scrolled under the status bar. */

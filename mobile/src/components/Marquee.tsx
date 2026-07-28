@@ -18,6 +18,7 @@ import { useInForeground } from "~/stores/ListenerState";
 
 import { OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
+import { useIsAtmosphereActive } from "~/modules/customization/atmosphere/store";
 import type { ColorRole } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
 import { ScrollView } from "./Base/ScrollView";
@@ -40,6 +41,7 @@ export function Marquee({
   contentContainerClassName?: string;
 }) {
   const inForeground = useInForeground();
+  const disableGradient = useIsAtmosphereActive();
   const shadowColor = useColor(color, "surface");
   // This will enable support of hexadecimal colors with opacity.
   const startColor = `${shadowColor}00`;
@@ -129,24 +131,28 @@ export function Marquee({
         </Animated.View>
       </ScrollView>
       {/* Scroll Shadow */}
-      <Animated.View
-        pointerEvents="none"
-        style={isLeftVisible}
-        className={cn("absolute h-full ltr:left-0 rtl:right-0", {
-          hidden: isStatic,
-        })}
-      >
-        <LinearGradient colors={[endColor, startColor]} {...ShadowProps} />
-      </Animated.View>
-      <Animated.View
-        pointerEvents="none"
-        style={isRightVisible}
-        className={cn("absolute h-full ltr:right-0 rtl:left-0", {
-          hidden: isStatic,
-        })}
-      >
-        <LinearGradient colors={[startColor, endColor]} {...ShadowProps} />
-      </Animated.View>
+      {!disableGradient ? (
+        <>
+          <Animated.View
+            pointerEvents="none"
+            style={isLeftVisible}
+            className={cn("absolute h-full ltr:left-0 rtl:right-0", {
+              hidden: isStatic,
+            })}
+          >
+            <LinearGradient colors={[endColor, startColor]} {...ShadowProps} />
+          </Animated.View>
+          <Animated.View
+            pointerEvents="none"
+            style={isRightVisible}
+            className={cn("absolute h-full ltr:right-0 rtl:left-0", {
+              hidden: isStatic,
+            })}
+          >
+            <LinearGradient colors={[startColor, endColor]} {...ShadowProps} />
+          </Animated.View>
+        </>
+      ) : null}
     </View>
   );
 }

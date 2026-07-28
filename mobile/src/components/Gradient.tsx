@@ -8,6 +8,7 @@ import type { AnimatedProps } from "react-native-reanimated";
 import Animated from "react-native-reanimated";
 
 import { cn } from "~/lib/style";
+import { useIsAtmosphereActive } from "~/modules/customization/atmosphere/store";
 import type { ColorRole } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
 
@@ -53,7 +54,9 @@ export function HorizontalScrollGradient({
   gutter?: number;
   color?: ColorRole;
 } & AnimatedProps<ViewProps>) {
+  const disableGradient = useIsAtmosphereActive();
   const gradientColor = useColor(color, "surface");
+
   return (
     <Animated.View
       {...props}
@@ -62,20 +65,24 @@ export function HorizontalScrollGradient({
     >
       {children}
       {/* Scroll Shadow */}
-      <LinearGradient
-        pointerEvents="none"
-        colors={[`${gradientColor}E6`, `${gradientColor}00`]}
-        {...ShadowProps}
-        style={{ width: size }}
-        className="absolute h-full ltr:left-0 rtl:right-0"
-      />
-      <LinearGradient
-        pointerEvents="none"
-        colors={[`${gradientColor}00`, `${gradientColor}E6`]}
-        {...ShadowProps}
-        style={{ width: size }}
-        className="absolute h-full ltr:right-0 rtl:left-0"
-      />
+      {!disableGradient ? (
+        <>
+          <LinearGradient
+            pointerEvents="none"
+            colors={[`${gradientColor}E6`, `${gradientColor}00`]}
+            {...ShadowProps}
+            style={{ width: size }}
+            className="absolute h-full ltr:left-0 rtl:right-0"
+          />
+          <LinearGradient
+            pointerEvents="none"
+            colors={[`${gradientColor}00`, `${gradientColor}E6`]}
+            {...ShadowProps}
+            style={{ width: size }}
+            className="absolute h-full ltr:right-0 rtl:left-0"
+          />
+        </>
+      ) : null}
     </Animated.View>
   );
 }

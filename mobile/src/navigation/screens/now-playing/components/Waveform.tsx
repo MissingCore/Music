@@ -13,7 +13,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { sessionStore, useSessionStore } from "~/stores/Session/store";
 import { findAndSetCachedWaveform } from "~/stores/Session/actions";
 
-import { useTheme } from "~/modules/customization/theme/hooks";
+import { useColor } from "~/modules/customization/theme/hooks";
 
 //#region Waveform
 interface WaveformProps {
@@ -29,7 +29,8 @@ const BAR_WIDTH = 2;
 const BAR_GAP = 1.75;
 
 export function Waveform(props: WaveformProps) {
-  const { primary, surfaceContainerHigh } = useTheme();
+  const primary = useColor(undefined, "primary");
+  const surfaceContainerHigh = useColor(undefined, "surfaceContainerHigh");
   const [width, setWidth] = useState(0);
 
   const barsPath = useMemo(() => {

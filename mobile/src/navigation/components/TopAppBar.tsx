@@ -12,25 +12,16 @@ import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { SafeContainer } from "~/components/SafeContainer";
 import { TEm } from "~/components/Typography/StyledText";
 
+export const TOPAPPBAR_HEIGHT = 56;
+
 /** Custom header bar for React Navigation. The "title" will get ellipsized. */
 export function TopAppBar({ options, route }: NativeStackHeaderProps) {
-  const { t } = useTranslation();
-  const navigation = useNavigation();
   const title = getHeaderTitle(options, route.name) as ParseKeys;
-
   return (
     <SafeContainer>
       <TopAppBarTemplate
         title={title}
-        headerLeftAction={
-          <FilledIconButton
-            icon="arrow-back"
-            accessibilityLabel={t("form.back")}
-            onPress={() => navigation.goBack()}
-            disabled={!!options.headerLeft}
-            className="rtl:rotate-180"
-          />
-        }
+        headerLeftAction={<BackButton disabled={!!options.headerLeft} />}
         headerRightAction={options.headerRight?.({ canGoBack: true })}
       />
     </SafeContainer>
@@ -55,6 +46,21 @@ export function TopAppBarTemplate({
       ) : null}
       {headerRightAction || <HeaderActionPlaceholder />}
     </View>
+  );
+}
+
+export function BackButton({ disabled = false }) {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+
+  return (
+    <FilledIconButton
+      icon="arrow-back"
+      accessibilityLabel={t("form.back")}
+      onPress={() => navigation.goBack()}
+      disabled={disabled}
+      className="rtl:rotate-180"
+    />
   );
 }
 
