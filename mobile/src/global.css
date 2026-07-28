@@ -149,5 +149,42 @@
 
       --color-placeholder: hsl(0 0% 100%);
     }
+
+    @variant atmosphere {
+      --color-primary: hsl(357 79% 47%);
+      --color-primaryDim: hsl(357 79% 38%);
+      --color-onPrimary: hsl(0 0% 100%);
+      --color-onPrimaryVariant: hsl(0 0% 89%);
+
+      --color-secondary: hsl(47 100% 50%);
+      --color-secondaryDim: hsl(47 100% 45%);
+      --color-onSecondary: hsl(0 0% 0%);
+      --color-onSecondaryVariant: hsl(0 0% 28%);
+
+      --color-error: hsl(350 85% 42%);
+      --color-errorDim: hsl(350 85% 37%);
+      --color-onError: hsl(0 0% 100%);
+      --color-onErrorVariant: hsl(0 0% 89%);
+
+      --color-surfaceDim: hsl(0 0% 0%);
+      --color-surface: hsl(0 0% 0%);
+      --color-surfaceBright: hsl(0 0% 7%);
+
+      --color-surfaceContainerLowest: hsl(0 0% 11%);
+      --color-surfaceContainerLow: hsl(0 0% 13%);
+      --color-surfaceContainer: hsl(0 0% 16%);
+      --color-surfaceContainerHigh: hsl(0 0% 20%);
+      --color-surfaceContainerHighest: hsl(0 0% 23%);
+
+      --color-onSurface: hsl(0 0% 100%);
+      --color-onSurfaceVariant: hsl(0 0% 68%);
+      --color-outline: hsl(0 0% 38%);
+      --color-outlineVariant: hsl(0 0% 20%);
+
+      --color-inverseSurface: hsl(0 0% 100%);
+      --color-inverseOnSurface: hsl(0 0% 0%);
+
+      --color-placeholder: hsl(0 0% 100%);
+    }
   }
 }

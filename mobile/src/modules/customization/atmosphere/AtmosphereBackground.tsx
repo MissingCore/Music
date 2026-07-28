@@ -21,7 +21,7 @@ export function AtmosphereBackground(props: {
   if (!atmosphereEffect || !props.source) return props.children;
   return (
     <DisableGradient>
-      <ScopedTheme theme="dark">
+      <ScopedTheme theme="atmosphere">
         <ImageBackground source={getImageUri(props.source)} blurRadius={5}>
           {props.children}
         </ImageBackground>
