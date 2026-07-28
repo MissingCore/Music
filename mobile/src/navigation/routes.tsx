@@ -61,6 +61,7 @@ import { useTabsByVisibility } from "~/stores/Preference/hooks";
 
 import { capitalize } from "~/utils/string";
 import type { Tab } from "~/stores/Preference/types";
+import { AtmosphereThemeListener } from "~/modules/customization/atmosphere/AtmosphereThemeListener";
 import { TrackMultiSelectListeners } from "~/modules/media/multiSelect/components/TrackMultiSelectListeners";
 import { BottomActions } from "./components/BottomActions";
 import { DeferredRender } from "./components/DeferredRender";
@@ -237,6 +238,7 @@ export const RootStack = createNativeStackNavigator({
       <TrackSheet />
       <ArtistsSheet />
       <TrackMultiSelectListeners />
+      <AtmosphereThemeListener />
       <PortalHost />
     </>
   ),
