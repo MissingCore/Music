@@ -6,6 +6,10 @@ Most experimental features require you to enable it in the "Experimental Feature
 
 See the [dedicated `Android Auto` documentation for more information](./android-auto.md).
 
+## Atmosphere Effect
+
+Applies an "atmosphere" effect (background being the primary image blurred) to the "Current List" & "Now Playing" screen.
+
 ## Downsample High Sample Rate Audio (192kHz+)
 
 > **Enabled by default.**
