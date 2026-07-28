@@ -5,6 +5,7 @@
     <item name="android:statusBarColor">@android:color/transparent</item>
     <item name="android:navigationBarColor">@android:color/transparent</item>
     <item name="android:windowBackground">@color/activityBackground</item>
+    <item name="android:enforceNavigationBarContrast" tools:targetApi="29">false</item>
     <item name="enforceNavigationBarContrast">false</item>
     <item name="android:colorEdgeEffect">#333333</item>
   </style>
