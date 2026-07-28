@@ -10,6 +10,9 @@ See the [dedicated `Android Auto` documentation for more information](./android-
 
 Applies an "atmosphere" effect (background being the primary image blurred) to the "Current List" & "Now Playing" screen.
 
+> [!NOTE]
+> This won't apply to everything on the screen with the "atmosphere effect" applied, for example: miniplayer, menu, multi-select menu, sheets.
+
 ## Downsample High Sample Rate Audio (192kHz+)
 
 > **Enabled by default.**
