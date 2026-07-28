@@ -151,13 +151,13 @@
     }
 
     @variant atmosphere {
-      /*? All "primary" colors are used. */
+      /* ? All "primary" colors are used. */
       --color-primary: hsl(357 79% 47%);
       --color-primaryDim: hsl(357 79% 38%);
       --color-onPrimary: hsl(0 0% 100%);
       --color-onPrimaryVariant: hsl(0 0% 89%);
 
-      /*? All "secondary" colors are used. */
+      /* ? All "secondary" colors are used. */
       --color-secondary: hsl(47 100% 50%);
       --color-secondaryDim: hsl(47 100% 45%);
       --color-onSecondary: hsl(0 0% 0%);
@@ -169,18 +169,18 @@
       --color-onErrorVariant: hsl(0 0% 89%);
 
       --color-surfaceDim: hsl(0 0% 0%);
-      /*? Used for top-down gradient. */
+      /* ? Used for top-down gradient. */
       --color-surface: hsl(0 0% 15%);
       --color-surfaceBright: hsl(0 0% 7%);
 
-      /*? Used for most backgrounds. */
+      /* ? Used for most backgrounds. */
       --color-surfaceContainerLowest: hsla(0 0% 11% / 0.35);
-      /*? Used for "Upcoming Tracks" background in "tablet" mode. */
+      /* ? Used for "Upcoming Tracks" background in "tablet" mode. */
       --color-surfaceContainerLow: hsl(0 0% 13% / 0.25);
       --color-surfaceContainer: hsl(0 0% 16%);
-      /*? Used for "pause button" & ripple backgrounds. */
+      /* ? Used for "pause button" & ripple backgrounds. */
       --color-surfaceContainerHigh: hsla(0 0% 20% / 0.25);
-      /*? Used for "pause button" ripple backgrounds. */
+      /* ? Used for "pause button" ripple backgrounds. */
       --color-surfaceContainerHighest: hsla(0 0% 23% / 0.25);
 
       --color-onSurface: hsl(0 0% 100%);
