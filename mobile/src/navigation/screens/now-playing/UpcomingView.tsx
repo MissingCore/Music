@@ -3,7 +3,6 @@
 
 import type { DragListRenderItemInfo } from "@missingcore/ui/drag-list";
 import { DragList, useDragListState } from "@missingcore/ui/drag-list";
-import { useNavigation } from "@react-navigation/native";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { inArray } from "drizzle-orm";
 import { memo, useCallback, useMemo, useRef, useState } from "react";
@@ -16,7 +15,10 @@ import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
-import { TopAppBarTemplate } from "~/navigation/components/TopAppBar";
+import {
+  BackButton,
+  TopAppBarTemplate,
+} from "~/navigation/components/TopAppBar";
 
 import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
@@ -31,7 +33,6 @@ import { extractTrackId } from "~/stores/Playback/utils";
 
 export default function Upcoming({ renderAsScreen = true }) {
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const queryClient = useQueryClient();
   const { isPending, error, data } = useQueueTracks();
   const listIndex = usePlaybackStore((s) => s.queuePosition);
@@ -105,16 +106,7 @@ export default function Upcoming({ renderAsScreen = true }) {
     >
       <TopAppBarTemplate
         title="term.upcoming"
-        headerLeftAction={
-          renderAsScreen ? (
-            <FilledIconButton
-              icon="arrow-back"
-              accessibilityLabel={t("form.back")}
-              onPress={() => navigation.goBack()}
-              className="rtl:rotate-180"
-            />
-          ) : undefined
-        }
+        headerLeftAction={renderAsScreen ? <BackButton /> : undefined}
         headerRightAction={
           <FilledIconButton
             icon="cached"

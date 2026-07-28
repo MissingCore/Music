@@ -1,9 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useNavigation } from "@react-navigation/native";
 import { useCallback, useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import type { LayoutChangeEvent } from "react-native";
 import { View, useWindowDimensions } from "react-native";
 import type { SharedValue } from "react-native-reanimated";
@@ -24,14 +22,17 @@ import {
 } from "~/hooks/useAlternativeLayout";
 import { useDelayedReady } from "~/hooks/useDelayedReady";
 
-import { TOPAPPBAR_HEIGHT, TopAppBarTemplate } from "../components/TopAppBar";
+import {
+  TOPAPPBAR_HEIGHT,
+  BackButton,
+  TopAppBarTemplate,
+} from "../components/TopAppBar";
 
 import { cn } from "~/lib/style";
 import { clamp } from "~/utils/number";
 import type { LegendListProps } from "~/components/Base/LegendList";
 import { LegendList } from "~/components/Base/LegendList";
 import { ScrollView } from "~/components/Base/ScrollView";
-import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
 import { Marquee } from "~/components/Marquee";
 import { Em, StyledText } from "~/components/Typography/StyledText";
@@ -75,22 +76,10 @@ export function CurrentListLayout<TData>(props: Props<TData>) {
 }
 
 export function CurrentListLayoutTopAppBar() {
-  const { t } = useTranslation();
-  const navigation = useNavigation();
   const { top } = useSafeAreaInsets();
-
   return (
     <View style={{ top }} className="absolute right-0 left-0 z-10">
-      <TopAppBarTemplate
-        headerLeftAction={
-          <FilledIconButton
-            icon="arrow-back"
-            accessibilityLabel={t("form.back")}
-            onPress={() => navigation.goBack()}
-            className="rtl:rotate-180"
-          />
-        }
-      />
+      <TopAppBarTemplate headerLeftAction={<BackButton />} />
     </View>
   );
 }
