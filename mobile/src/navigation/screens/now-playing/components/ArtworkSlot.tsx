@@ -7,6 +7,7 @@ import { View } from "react-native";
 
 import { useLyricStore } from "~/modules/lyric/core/store";
 
+import { useIsAtmosphereActive } from "~/modules/customization/atmosphere/store";
 import { LyricsOverlay } from "~/modules/lyric/components/LyricsOverlay";
 import { ArtworkPicker } from "./Artwork";
 
@@ -17,6 +18,7 @@ export function ArtworkSlot(props: {
 }) {
   const showLyrics = useLyricStore((s) => s.visible);
   const { containerProps, size, dimensions } = useArtworkSize();
+  const hideArtwork = useIsAtmosphereActive();
 
   return (
     <View {...containerProps} className="flex-1">
@@ -24,11 +26,13 @@ export function ArtworkSlot(props: {
         pointerEvents={showLyrics ? "none" : undefined}
         className="flex-1 items-center justify-center"
       >
-        <ArtworkPicker
-          source={props.artwork}
-          size={size}
-          dimensions={dimensions}
-        />
+        {!hideArtwork || !showLyrics ? (
+          <ArtworkPicker
+            source={props.artwork}
+            size={size}
+            dimensions={dimensions}
+          />
+        ) : null}
       </View>
       {showLyrics ? (
         <LyricsOverlay size={size} trackId={props.trackId} />

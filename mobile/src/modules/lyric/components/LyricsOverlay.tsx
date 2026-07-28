@@ -10,7 +10,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useLyricForTrack } from "~/data/lyric/queries";
 import { PlaybackControls } from "~/stores/Playback/actions";
-import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
@@ -21,6 +20,7 @@ import { ExtendedTButton } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
 import { Em, TEm } from "~/components/Typography/StyledText";
+import { useIsAtmosphereActive } from "~/modules/customization/atmosphere/store";
 import { useTheme } from "~/modules/customization/theme/hooks";
 import { autoDiscoverLyrics } from "../helpers/autoDiscoverLyrics";
 import { removeSynchronizedLyricsJunk } from "../helpers/cleanUpLyricsJunk";
@@ -31,18 +31,19 @@ const LINE_GAP = 16;
 export function LyricsOverlay(props: { size: number; trackId: string }) {
   const { top } = useSafeAreaInsets();
   const { scheme } = useTheme();
-  const screenDesign = usePreferenceStore((s) => s.nowPlayingDesign);
+  const hideBackground = useIsAtmosphereActive();
 
   // Estimated offset to get overlay to go behind the `TopAppBar`.
-  const topOffset = top + 57;
-  const lyricsOffset = topOffset + SCROLL_OFFSET;
+  const lyricsOffset = top + SCROLL_OFFSET;
 
   return (
     <View
-      style={{ top: -topOffset, bottom: 0 }}
+      style={{ top: -top, bottom: 0 }}
       className={cn(
-        "absolute w-full items-center justify-center bg-surface/85",
-        { "bg-surface/60": scheme === "dark" },
+        "absolute w-full items-center justify-center",
+        !hideBackground
+          ? cn("bg-surface/85", { "bg-surface/60": scheme === "dark" })
+          : undefined,
       )}
     >
       <View style={{ width: props.size }} className="px-2">
@@ -51,13 +52,15 @@ export function LyricsOverlay(props: { size: number; trackId: string }) {
 
       <TopDownGradient
         height={lyricsOffset}
-        startFrom={screenDesign === "vinylOld" ? top : topOffset}
+        startFrom={top}
         className="absolute top-0 left-0"
       />
-      <TopDownGradient
-        height={SCROLL_OFFSET}
-        className="absolute bottom-0 left-0 rotate-180"
-      />
+      {!hideBackground ? (
+        <TopDownGradient
+          height={SCROLL_OFFSET}
+          className="absolute bottom-0 left-0 rotate-180"
+        />
+      ) : null}
     </View>
   );
 }

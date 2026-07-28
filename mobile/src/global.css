@@ -175,7 +175,8 @@
 
       /*? Used for most backgrounds. */
       --color-surfaceContainerLowest: hsla(0 0% 11% / 0.35);
-      --color-surfaceContainerLow: hsl(0 0% 13%);
+      /*? Used for "Upcoming Tracks" background in "tablet" mode. */
+      --color-surfaceContainerLow: hsl(0 0% 13% / 0.25);
       --color-surfaceContainer: hsl(0 0% 16%);
       /*? Used for "pause button" & ripple backgrounds. */
       --color-surfaceContainerHigh: hsla(0 0% 20% / 0.25);

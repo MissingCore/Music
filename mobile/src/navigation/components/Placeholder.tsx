@@ -7,7 +7,7 @@ import { View } from "react-native";
 
 import { cn } from "~/lib/style";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
-import { useTheme } from "~/modules/customization/theme/hooks";
+import { useColor } from "~/modules/customization/theme/hooks";
 
 type ErrorMsgProps = {
   /** Key to error messaeg in translations. */
@@ -18,7 +18,9 @@ type ErrorMsgProps = {
 
 /** Nothing loading animation. */
 export function Loading() {
-  const { onSurfaceVariant, outline, outlineVariant } = useTheme();
+  const onSurfaceVariant = useColor(undefined, "onSurfaceVariant");
+  const outline = useColor(undefined, "outline");
+  const outlineVariant = useColor(undefined, "outlineVariant");
   const [idx, setIdx] = useState(0);
 
   useEffect(() => {
