@@ -78,9 +78,17 @@ export default (): ExpoConfig => {
     plugins: [
       buildPropertiesPlugin({
         android: {
+          cmakeVersion: "3.31.6",
           enableBundleCompression: true,
           enableMinifyInReleaseBuilds: true,
           enableShrinkResourcesInReleaseBuilds: true,
+          packagingOptions: {
+            //? This is to fix the following error after adding `cmakeVersion`:
+            //?   "2 files found with path 'lib/arm64-v8a/libNitroModules.so' from inputs"
+            //?
+            //? Ref: https://github.com/mrousavy/react-native-mmkv/issues/979#issuecomment-3705749982
+            pickFirst: ["lib/*/libNitroModules.so"],
+          },
         },
       }),
       fontPlugin({
