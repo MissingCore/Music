@@ -287,9 +287,7 @@ export const RootStack = createNativeStackNavigator({
   groups: {
     AudioEffect: AudioEffectScreenGroup,
     Current: {
-      screenOptions: {
-        headerTransparent: true,
-      },
+      screenOptions: { headerShown: false },
       screens: {
         Playlist,
         Album,

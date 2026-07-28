@@ -10,7 +10,10 @@ import { useAlbumForScreen, useFavoriteAlbum } from "~/data/album/queries";
 import { TABLET_SIDEBAR_WIDTH_RATIO } from "~/hooks/useAlternativeLayout";
 import { useListLayoutConfig } from "~/hooks/useLayoutConfigs";
 
-import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
+import {
+  CurrentListLayout,
+  CurrentListLayoutTopAppBar,
+} from "~/navigation/layouts/CurrentListLayout";
 import { AlbumArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
@@ -69,6 +72,7 @@ export default function Album({
   if (isPending || error) {
     return (
       <SafeContainer additionalTopOffset={56} className="flex-1">
+        <CurrentListLayoutTopAppBar />
         <PagePlaceholder isPending={isPending} />
       </SafeContainer>
     );

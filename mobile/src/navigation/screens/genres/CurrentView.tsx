@@ -5,7 +5,10 @@ import type { StaticScreenProps } from "@react-navigation/native";
 
 import { useGenreDetails, useGenreTracks } from "~/data/genre/queries";
 
-import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
+import {
+  CurrentListLayout,
+  CurrentListLayoutTopAppBar,
+} from "~/navigation/layouts/CurrentListLayout";
 import { GenreArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { SortSheet } from "~/navigation/sheets/SortSheet";
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
@@ -38,6 +41,7 @@ export default function Genre({
   if (genreDetailsQuery.isPending || genreDetailsQuery.error) {
     return (
       <SafeContainer additionalTopOffset={56} className="flex-1">
+        <CurrentListLayoutTopAppBar />
         <PagePlaceholder isPending={genreDetailsQuery.isPending} />
       </SafeContainer>
     );

@@ -12,7 +12,10 @@ import {
   usePlaylistForScreen,
 } from "~/data/playlist/queries";
 
-import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
+import {
+  CurrentListLayout,
+  CurrentListLayoutTopAppBar,
+} from "~/navigation/layouts/CurrentListLayout";
 import { PlaylistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 import type { MenuAction } from "~/navigation/components/CurrentListMenu";
@@ -64,6 +67,7 @@ export default function Playlist({
   if (isPending || error) {
     return (
       <SafeContainer additionalTopOffset={56} className="flex-1">
+        <CurrentListLayoutTopAppBar />
         <PagePlaceholder isPending={isPending} />
       </SafeContainer>
     );

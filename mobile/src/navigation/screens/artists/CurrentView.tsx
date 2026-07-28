@@ -8,7 +8,10 @@ import { useArtistDetails, useArtistTracks } from "~/data/artist/queries";
 import type { ArtistAlbum } from "~/data/artist/types";
 import { useHorizontalListLayoutConfig } from "~/hooks/useLayoutConfigs";
 
-import { CurrentListLayout } from "~/navigation/layouts/CurrentListLayout";
+import {
+  CurrentListLayout,
+  CurrentListLayoutTopAppBar,
+} from "~/navigation/layouts/CurrentListLayout";
 import { ArtistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { SortSheet } from "~/navigation/sheets/SortSheet";
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
@@ -45,6 +48,7 @@ export default function Artist({
   if (artistDetailsQuery.isPending || artistDetailsQuery.error) {
     return (
       <SafeContainer additionalTopOffset={56} className="flex-1">
+        <CurrentListLayoutTopAppBar />
         <PagePlaceholder isPending={artistDetailsQuery.isPending} />
       </SafeContainer>
     );

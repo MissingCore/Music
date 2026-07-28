@@ -12,6 +12,8 @@ import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { SafeContainer } from "~/components/SafeContainer";
 import { TEm } from "~/components/Typography/StyledText";
 
+export const TOPAPPBAR_HEIGHT = 56;
+
 /** Custom header bar for React Navigation. The "title" will get ellipsized. */
 export function TopAppBar({ options, route }: NativeStackHeaderProps) {
   const { t } = useTranslation();
