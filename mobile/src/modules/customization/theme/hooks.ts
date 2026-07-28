@@ -50,7 +50,7 @@ export function useColor(
 ) {
   // This represents a CSS color variable from either `wantedColor` or `fallback`.
   const themeColor = useCSSVariable(
-    isHexColor(wantedColor) ? `--color-${fallback}` : `--color-${wantedColor}`,
+    `--color-${isHexColor(wantedColor) ? fallback : wantedColor || fallback}`,
   ) as HexColor;
   return isHexColor(wantedColor) ? wantedColor : themeColor;
 }
