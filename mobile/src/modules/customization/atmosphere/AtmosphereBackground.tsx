@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { Image as ExpoImage } from "expo-image";
-import { useWindowDimensions } from "react-native";
+import { StatusBar, useWindowDimensions } from "react-native";
 import { ScopedTheme, withUniwind } from "uniwind";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -25,6 +25,7 @@ export function AtmosphereBackground(props: {
   if (!atmosphereEffect || !props.source) return props.children;
   return (
     <DisableGradient>
+      <StatusBar barStyle="light-content" />
       <ScopedTheme theme="atmosphere">
         <Image
           source={getImageUri(props.source)}

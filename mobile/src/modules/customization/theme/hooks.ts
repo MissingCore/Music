@@ -55,5 +55,5 @@ export function useColor(
 
   let color = isHexColor(fallback) ? fallback : fallbackColor;
   if (wantedColor) color = isHexColor(wantedColor) ? wantedColor : themeColor;
-  return color;
+  return color as string;
 }

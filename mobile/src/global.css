@@ -151,11 +151,13 @@
     }
 
     @variant atmosphere {
+      /*? All "primary" colors are used. */
       --color-primary: hsl(357 79% 47%);
       --color-primaryDim: hsl(357 79% 38%);
       --color-onPrimary: hsl(0 0% 100%);
       --color-onPrimaryVariant: hsl(0 0% 89%);
 
+      /*? All "secondary" colors are used. */
       --color-secondary: hsl(47 100% 50%);
       --color-secondaryDim: hsl(47 100% 45%);
       --color-onSecondary: hsl(0 0% 0%);
@@ -167,17 +169,21 @@
       --color-onErrorVariant: hsl(0 0% 89%);
 
       --color-surfaceDim: hsl(0 0% 0%);
-      --color-surface: hsl(0 0% 0%);
+      /*? Used for top-down gradient. */
+      --color-surface: hsl(0 0% 15%);
       --color-surfaceBright: hsl(0 0% 7%);
 
-      --color-surfaceContainerLowest: hsl(0 0% 11%);
+      /*? Used for "button group" & "selected" backgrounds. */
+      --color-surfaceContainerLowest: hsla(0 0% 11% / 0.25);
       --color-surfaceContainerLow: hsl(0 0% 13%);
       --color-surfaceContainer: hsl(0 0% 16%);
-      --color-surfaceContainerHigh: hsl(0 0% 20%);
-      --color-surfaceContainerHighest: hsl(0 0% 23%);
+      /*? Used for "pause button" & ripple backgrounds. */
+      --color-surfaceContainerHigh: hsla(0 0% 20% / 0.25);
+      /*? Used for "pause button" ripple backgrounds. */
+      --color-surfaceContainerHighest: hsla(0 0% 23% / 0.25);
 
       --color-onSurface: hsl(0 0% 100%);
-      --color-onSurfaceVariant: hsl(0 0% 68%);
+      --color-onSurfaceVariant: hsl(0 0% 89%);
       --color-outline: hsl(0 0% 38%);
       --color-outlineVariant: hsl(0 0% 20%);
 
