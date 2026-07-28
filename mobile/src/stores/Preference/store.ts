@@ -72,7 +72,6 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     theme: "system",
     activeCustomThemeId: null,
     activeCustomTheme: null,
-    atmosphereEffect: false,
 
     showNavbar: true,
     homeTab: "home",
@@ -127,6 +126,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     rcNotification: false,
 
     //! Experimental Features
+    atmosphereEffect: false,
     mediaStoreScanner: false,
     downsamplingProcessor: true,
     queueAwareNext: false,
