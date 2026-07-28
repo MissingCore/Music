@@ -18,10 +18,10 @@ import { useInForeground } from "~/stores/ListenerState";
 
 import { OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
+import { useIsAtmosphereActive } from "~/modules/customization/atmosphere/store";
 import type { ColorRole } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
 import { ScrollView } from "./Base/ScrollView";
-import { useShouldDisableGradient } from "./Gradient";
 
 /** Used to progressively display long content. */
 export function Marquee({
@@ -41,7 +41,7 @@ export function Marquee({
   contentContainerClassName?: string;
 }) {
   const inForeground = useInForeground();
-  const disableGradient = useShouldDisableGradient();
+  const disableGradient = useIsAtmosphereActive();
   const shadowColor = useColor(color, "surface");
   // This will enable support of hexadecimal colors with opacity.
   const startColor = `${shadowColor}00`;

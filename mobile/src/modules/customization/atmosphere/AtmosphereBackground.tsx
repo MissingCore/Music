@@ -9,7 +9,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { getImageUri } from "~/lib/file-system";
 import type { Maybe } from "~/utils/types";
-import { DisableGradient } from "~/components/Gradient";
+import { AtmosphereSubtreeContext } from "./store";
 
 const Image = withUniwind(ExpoImage);
 
@@ -24,7 +24,7 @@ export function AtmosphereBackground(props: {
 
   if (!atmosphereEffect || !props.source) return props.children;
   return (
-    <DisableGradient>
+    <AtmosphereSubtreeContext value={true}>
       <StatusBar barStyle="light-content" />
       <ScopedTheme theme="atmosphere">
         <Image
@@ -41,6 +41,6 @@ export function AtmosphereBackground(props: {
         />
         {props.children}
       </ScopedTheme>
-    </DisableGradient>
+    </AtmosphereSubtreeContext>
   );
 }
