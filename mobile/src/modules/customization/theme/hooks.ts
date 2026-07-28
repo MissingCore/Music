@@ -7,7 +7,7 @@ import { useCSSVariable } from "uniwind";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
-import type { AppColor } from "./core/constants";
+import type { AppColor, ColorRole, HexColor } from "./core/constants";
 import { Themes } from "./core/constants";
 import { isHexColor } from "./utils";
 
@@ -46,14 +46,11 @@ export function useTheme() {
 /** Returns a singular color. */
 export function useColor(
   wantedColor: AppColor | undefined,
-  fallback: AppColor,
+  fallback: ColorRole,
 ) {
+  // This represents a CSS color variable from either `wantedColor` or `fallback`.
   const themeColor = useCSSVariable(
-    isHexColor(fallback) ? "" : `--color-${wantedColor}`,
-  );
-  const fallbackColor = useCSSVariable(`--color-${fallback}`);
-
-  let color = isHexColor(fallback) ? fallback : fallbackColor;
-  if (wantedColor) color = isHexColor(wantedColor) ? wantedColor : themeColor;
-  return color as string;
+    isHexColor(wantedColor) ? `--color-${fallback}` : `--color-${wantedColor}`,
+  ) as HexColor;
+  return isHexColor(wantedColor) ? wantedColor : themeColor;
 }
