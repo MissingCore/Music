@@ -35,7 +35,7 @@
 | NDot日本語 | OFL-1.1 | https://x.com/NdotJP_Font |
 | react | MIT | https://github.com/facebook/react |
 | react-i18next | MIT | https://github.com/i18next/react-i18next |
-| react-native | MIT | https://github.com/facebook/react-native |
+| react-native | MIT | https://github.com/react/react-native |
 | react-native-android-widget | MIT | https://github.com/sAleksovski/react-native-android-widget |
 | react-native-audio-browser | MIT | https://github.com/radio-garden/react-native-audio-browser |
 | react-native-bootsplash | MIT | https://github.com/zoontek/react-native-bootsplash |
