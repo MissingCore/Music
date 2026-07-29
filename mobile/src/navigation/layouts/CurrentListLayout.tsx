@@ -38,6 +38,7 @@ import { TopDownGradient } from "~/components/Gradient";
 import { Marquee } from "~/components/Marquee";
 import { SafeContainer } from "~/components/SafeContainer";
 import { Em, StyledText } from "~/components/Typography/StyledText";
+import { useIsAtmosphereActive } from "~/modules/customization/atmosphere/store";
 import { AtmosphereBackground } from "~/modules/customization/atmosphere/AtmosphereBackground";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
 import { MediaImage } from "~/modules/media/components/MediaImage";
@@ -273,6 +274,9 @@ function useHeaderGradientHeight() {
 function HeaderTransitionGradient() {
   const insets = useSafeAreaInsets();
   const contentStartOffset = useHeaderGradientHeight();
+  const hideGradient = useIsAtmosphereActive();
+
+  if (hideGradient) return null;
   return (
     <TopDownGradient
       height={contentStartOffset}

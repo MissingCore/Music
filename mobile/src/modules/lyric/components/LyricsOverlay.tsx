@@ -50,16 +50,18 @@ export function LyricsOverlay(props: { size: number; trackId: string }) {
         <LyricsContent trackId={props.trackId} offset={lyricsOffset} />
       </View>
 
-      <TopDownGradient
-        height={lyricsOffset}
-        startFrom={top}
-        className="absolute top-0 left-0"
-      />
       {!hideBackground ? (
-        <TopDownGradient
-          height={SCROLL_OFFSET}
-          className="absolute bottom-0 left-0 rotate-180"
-        />
+        <>
+          <TopDownGradient
+            height={lyricsOffset}
+            startFrom={top}
+            className="absolute top-0 left-0"
+          />
+          <TopDownGradient
+            height={SCROLL_OFFSET}
+            className="absolute bottom-0 left-0 rotate-180"
+          />
+        </>
       ) : null}
     </View>
   );

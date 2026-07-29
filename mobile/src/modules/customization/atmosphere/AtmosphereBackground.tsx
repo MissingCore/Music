@@ -20,7 +20,7 @@ export function AtmosphereBackground(props: {
   const dimensions = useWindowDimensions();
   const atmosphereEffect = usePreferenceStore((s) => s.atmosphereEffect);
 
-  const imgSize = Math.max(dimensions.height, dimensions.width) * 1.25;
+  const imgSize = Math.max(dimensions.height, dimensions.width);
 
   if (!atmosphereEffect || !props.source) return props.children;
   return (
@@ -35,7 +35,7 @@ export function AtmosphereBackground(props: {
             height: imgSize,
             width: imgSize,
             // Reduce brightness of image so that white text is legible.
-            filter: [{ brightness: "80%" }],
+            filter: [{ brightness: "75%" }],
           }}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
         />

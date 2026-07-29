@@ -57,7 +57,7 @@ export default function NowPlaying() {
             <SeekbarContext>
               <PlaybackControlGestureWrapper>
                 <ArtworkSlot artwork={track.artwork} trackId={track.id} />
-                <View className="-mt-8 gap-6 px-4">
+                <View className="-mt-4 gap-6 px-4">
                   <Metadata track={track} />
                   <SeekBar
                     id={track.id}

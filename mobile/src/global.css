@@ -169,8 +169,7 @@
       --color-onErrorVariant: hsl(0 0% 89%);
 
       --color-surfaceDim: hsl(0 0% 0%);
-      /* ? Used for top-down gradient. */
-      --color-surface: hsl(0 0% 15%);
+      --color-surface: hsl(0 0% 0%);
       --color-surfaceBright: hsl(0 0% 7%);
 
       /* ? Used for most backgrounds. */
