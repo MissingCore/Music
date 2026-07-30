@@ -1,12 +1,9 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { inArray } from "drizzle-orm";
 import AudioBrowser from "react-native-audio-browser";
 import { useStore } from "zustand";
 
-import { db } from "~/db";
-import { tracksToPlaylists } from "~/db/schema";
 import { getTrack } from "~/data/track/api";
 
 import { createPersistedStore } from "~/lib/zustand";
@@ -65,29 +62,6 @@ export const playbackStore = createPersistedStore<PlaybackStore>(
       });
       AudioBrowser.reset();
       await resetWidgets();
-    },
-    resetOnCrash: async () => {
-      try {
-        await get().reset();
-
-        // Delete any `TracksToPlaylists` entries where the `trackId` doesn't exist.
-        const [allTracks, trackRels] = await Promise.all([
-          db.query.tracks.findMany({ columns: { id: true } }),
-          db
-            .selectDistinct({ id: tracksToPlaylists.trackId })
-            .from(tracksToPlaylists),
-        ]);
-        const trackIds = new Set(allTracks.map((t) => t.id));
-        const relTrackIds = trackRels.map((t) => t.id);
-        // Get ids in the track to playlist relationship where the track id
-        // doesn't exist and delete them.
-        const invalidTracks = relTrackIds.filter((id) => !trackIds.has(id));
-        if (invalidTracks.length > 0) {
-          await db
-            .delete(tracksToPlaylists)
-            .where(inArray(tracksToPlaylists.trackId, invalidTracks));
-        }
-      } catch {}
     },
 
     _hasRestoredPosition: false,

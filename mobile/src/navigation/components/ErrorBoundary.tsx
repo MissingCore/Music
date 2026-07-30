@@ -58,7 +58,7 @@ function ErrorLayout({ error }: { error: Error }) {
   const onError = useCallback(() => {
     // Display error message to user if encountered.
     Bootsplash.hide();
-    playbackStore.getState().resetOnCrash();
+    playbackStore.getState().reset();
 
     // Send error message to Sentry.
     if (CAN_SENTRY_REPORT) Sentry.captureException(error);
