@@ -79,9 +79,6 @@ export async function updateLyric(
 
 //#region DELETE Methods
 export async function deleteLyric(id: string) {
-  return db.transaction(async (tx) => {
-    await tx.delete(tracksToLyrics).where(eq(tracksToLyrics.lyricId, id));
-    await tx.delete(lyrics).where(eq(lyrics.id, id));
-  });
+  return db.delete(lyrics).where(eq(lyrics.id, id));
 }
 //#endregion
