@@ -11,6 +11,10 @@ import migrations from "./drizzle/migrations";
 export const expoSQLiteDB = openDatabaseSync("db.db", {
   useNewConnection: true,
 });
+
+// Enable foreign keys
+expoSQLiteDB.execSync("PRAGMA foreign_keys = ON;");
+
 export const db = drizzle(expoSQLiteDB, { schema, casing: "snake_case" });
 
 // Run migration on app start.
