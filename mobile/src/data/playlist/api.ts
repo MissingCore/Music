@@ -228,12 +228,7 @@ export async function updatePlaylist(
 
 //#region DELETE Methods
 export async function deletePlaylist(id: string) {
-  return db.transaction(async (tx) => {
-    await tx
-      .delete(tracksToPlaylists)
-      .where(eq(tracksToPlaylists.playlistName, id));
-    await tx.delete(playlists).where(eq(playlists.name, id));
-  });
+  return db.delete(playlists).where(eq(playlists.name, id));
 }
 //#endregion
 
