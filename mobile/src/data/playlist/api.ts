@@ -215,12 +215,6 @@ export async function updatePlaylist(
           }),
         );
       }
-    } else if (sanitizedName !== undefined) {
-      // If the playlist name has changed, update the relations.
-      await tx
-        .update(tracksToPlaylists)
-        .set({ playlistName: sanitizedName })
-        .where(eq(tracksToPlaylists.playlistName, id));
     }
   });
 }
