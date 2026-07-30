@@ -188,6 +188,7 @@ export async function updatePlaylist(
 ) {
   const { name, tracks, ...rest } = values;
   const sanitizedName = name ? sanitizePlaylistName(name) : undefined;
+  const targetName = sanitizedName ?? id;
   return db.transaction(async (tx) => {
     try {
       await tx
@@ -203,24 +204,19 @@ export async function updatePlaylist(
 
     // Handle playlist-track relations.
     if (tracks) {
+      // If we also rename the playlist, the foreign key relation will auto-update
+      // to the new playlist name.
       await tx
         .delete(tracksToPlaylists)
-        .where(eq(tracksToPlaylists.playlistName, id));
+        .where(eq(tracksToPlaylists.playlistName, targetName));
       // Re-add relations if they exist.
       if (tracks.length > 0) {
         await tx.insert(tracksToPlaylists).values(
           tracks.map((t, position) => {
-            const latestName = sanitizedName ?? id; // Use updated name if that got changed.
-            return { playlistName: latestName, trackId: t.id, position };
+            return { playlistName: targetName, trackId: t.id, position };
           }),
         );
       }
-    } else if (sanitizedName !== undefined) {
-      // If the playlist name has changed, update the relations.
-      await tx
-        .update(tracksToPlaylists)
-        .set({ playlistName: sanitizedName })
-        .where(eq(tracksToPlaylists.playlistName, id));
     }
   });
 }
@@ -228,12 +224,7 @@ export async function updatePlaylist(
 
 //#region DELETE Methods
 export async function deletePlaylist(id: string) {
-  return db.transaction(async (tx) => {
-    await tx
-      .delete(tracksToPlaylists)
-      .where(eq(tracksToPlaylists.playlistName, id));
-    await tx.delete(playlists).where(eq(playlists.name, id));
-  });
+  return db.delete(playlists).where(eq(playlists.name, id));
 }
 //#endregion
 

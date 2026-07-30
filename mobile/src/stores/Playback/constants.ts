@@ -27,8 +27,6 @@ export interface PlaybackStore {
   getTrack: (trackKey: string) => Promise<Track | undefined>;
   /** [Util] Revert to default store settings (except for `repeat` & `shuffle`). */
   reset: () => Promise<void>;
-  /** [Util] Run when we catch when the app crashes. */
-  resetOnCrash: () => Promise<void>;
 
   /** Determines if the playback position has been restored. */
   _hasRestoredPosition: boolean;

@@ -16,7 +16,6 @@ import {
 } from "~/lib/drizzle";
 import { omitKeys } from "~/utils/object";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
-import { TrackRelationTables } from "./constants";
 import type { BulkQueriedTrack, SortedTrack, Track } from "./types";
 import type { DrizzleFilter, TracksSortOptions } from "../types";
 import {
@@ -181,13 +180,6 @@ export async function deleteTracks(
         errorInfoMap[id] = errorInfo;
       }
     }
-
-    // Remove relations
-    await Promise.all(
-      TrackRelationTables.map((sch) =>
-        tx.delete(sch).where(inArray(sch.trackId, removedIds)),
-      ),
-    );
 
     const deletedTracks = await tx
       .delete(tracks)

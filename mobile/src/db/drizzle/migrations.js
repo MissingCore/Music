@@ -17,6 +17,7 @@ import m0012 from "./0012_organic_mordo.sql";
 import m0013 from "./0013_gigantic_senator_kelly.sql";
 import m0014 from "./0014_cold_the_executioner.sql";
 import m0015 from "./0015_melted_maddog.sql";
+import m0016 from "./0016_wakeful_tinkerer.sql";
 
 export default {
   journal,
@@ -37,5 +38,6 @@ export default {
     m0013,
     m0014,
     m0015,
+    m0016,
   },
 };

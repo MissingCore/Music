@@ -60,10 +60,10 @@ export const albumsToArtists = sqliteTable(
   {
     albumId: text()
       .notNull()
-      .references(() => albums.id),
+      .references(() => albums.id, { onDelete: "cascade" }),
     artistName: text()
       .notNull()
-      .references(() => artists.name),
+      .references(() => artists.name, { onDelete: "cascade" }),
   },
   (t) => [primaryKey({ columns: [t.albumId, t.artistName] })],
 );
@@ -92,7 +92,7 @@ export const tracks = sqliteTable("tracks", {
    * @deprecated Access the artist name through the new junction table.
    */
   rawArtistName: text(),
-  albumId: text().references(() => albums.id),
+  albumId: text().references(() => albums.id, { onDelete: "set null" }),
   // Album relations
   disc: integer(),
   track: integer(),
@@ -143,10 +143,10 @@ export const tracksToArtists = sqliteTable(
   {
     trackId: text()
       .notNull()
-      .references(() => tracks.id),
+      .references(() => tracks.id, { onDelete: "cascade" }),
     artistName: text()
       .notNull()
-      .references(() => artists.name),
+      .references(() => artists.name, { onDelete: "cascade" }),
   },
   (t) => [primaryKey({ columns: [t.trackId, t.artistName] })],
 );
@@ -199,10 +199,13 @@ export const tracksToPlaylists = sqliteTable(
   {
     trackId: text()
       .notNull()
-      .references(() => tracks.id),
+      .references(() => tracks.id, { onDelete: "cascade" }),
     playlistName: text()
       .notNull()
-      .references(() => playlists.name),
+      .references(() => playlists.name, {
+        onUpdate: "cascade",
+        onDelete: "cascade",
+      }),
     position: integer().notNull().default(-1),
   },
   (t) => [primaryKey({ columns: [t.trackId, t.playlistName] })],
@@ -255,7 +258,7 @@ export const playedMediaLists = sqliteTable(
 //#region Waveform
 export const waveformSamples = sqliteTable("waveform_sample", {
   trackId: text()
-    .references(() => tracks.id)
+    .references(() => tracks.id, { onDelete: "cascade" })
     .primaryKey(),
   samples: text({ mode: "json" })
     .notNull()
@@ -289,11 +292,11 @@ export const lyricsRelations = relations(lyrics, ({ many }) => ({
 
 export const tracksToLyrics = sqliteTable("tracks_to_lyrics", {
   trackId: text()
-    .references(() => tracks.id)
+    .references(() => tracks.id, { onDelete: "cascade" })
     .primaryKey(),
   lyricId: text()
     .notNull()
-    .references(() => lyrics.id),
+    .references(() => lyrics.id, { onDelete: "cascade" }),
 });
 
 export const tracksToLyricsRelations = relations(tracksToLyrics, ({ one }) => ({
@@ -323,10 +326,10 @@ export const tracksToGenres = sqliteTable(
   {
     trackId: text()
       .notNull()
-      .references(() => tracks.id),
+      .references(() => tracks.id, { onDelete: "cascade" }),
     genreName: text()
       .notNull()
-      .references(() => genres.name),
+      .references(() => genres.name, { onDelete: "cascade" }),
   },
   (t) => [primaryKey({ columns: [t.trackId, t.genreName] })],
 );
