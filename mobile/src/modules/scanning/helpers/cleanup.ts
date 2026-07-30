@@ -7,7 +7,6 @@ import { Directory } from "expo-file-system";
 import { db } from "~/db";
 import {
   albums,
-  albumsToArtists,
   artists,
   genres,
   hashedImages,
@@ -19,7 +18,6 @@ import {
 } from "~/db/schema";
 
 import { RECENT_RANGE_MS } from "~/data/recent/api";
-import { TrackRelationTables } from "~/data/track/constants";
 import { Queue } from "~/stores/Playback/actions";
 
 import { ImageDirectory, deleteImage, getImageUri } from "~/lib/file-system";
@@ -107,9 +105,6 @@ export const AppCleanUp = {
     const unusedAlbumIds = allAlbums
       .filter(({ tracks }) => tracks.length === 0)
       .map(({ id }) => id);
-    await db
-      .delete(albumsToArtists)
-      .where(inArray(albumsToArtists.albumId, unusedAlbumIds));
     await db.delete(albums).where(inArray(albums.id, unusedAlbumIds));
 
     // Remove unused artists.
@@ -158,14 +153,11 @@ export const AppCleanUp = {
       .filter((id) => !foundTrackIdsSet.has(id));
 
     if (unusedTrackIds.length > 0) {
-      await Promise.allSettled([
-        ...[hiddenTracks, invalidTracks, tracks].map((sch) =>
+      await Promise.allSettled(
+        [hiddenTracks, invalidTracks, tracks].map((sch) =>
           db.delete(sch).where(inArray(sch.id, unusedTrackIds)),
         ),
-        ...TrackRelationTables.map((sch) =>
-          db.delete(sch).where(inArray(sch.trackId, unusedTrackIds)),
-        ),
-      ]);
+      );
     }
 
     // Clear the queue of tracks that no longer exist.
