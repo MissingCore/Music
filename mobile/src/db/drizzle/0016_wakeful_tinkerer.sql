@@ -10,7 +10,6 @@ CREATE TABLE `__new_albums_to_artists` (
 INSERT INTO `__new_albums_to_artists`("album_id", "artist_name") SELECT "album_id", "artist_name" FROM `albums_to_artists`;--> statement-breakpoint
 DROP TABLE `albums_to_artists`;--> statement-breakpoint
 ALTER TABLE `__new_albums_to_artists` RENAME TO `albums_to_artists`;--> statement-breakpoint
-PRAGMA foreign_keys=ON;--> statement-breakpoint
 CREATE TABLE `__new_tracks` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
@@ -95,4 +94,5 @@ CREATE TABLE `__new_waveform_sample` (
 --> statement-breakpoint
 INSERT INTO `__new_waveform_sample`("track_id", "samples") SELECT "track_id", "samples" FROM `waveform_sample`;--> statement-breakpoint
 DROP TABLE `waveform_sample`;--> statement-breakpoint
-ALTER TABLE `__new_waveform_sample` RENAME TO `waveform_sample`;
+ALTER TABLE `__new_waveform_sample` RENAME TO `waveform_sample`;--> statement-breakpoint
+PRAGMA foreign_keys=ON;
