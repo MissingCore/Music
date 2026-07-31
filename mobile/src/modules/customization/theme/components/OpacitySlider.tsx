@@ -3,7 +3,7 @@
 
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
-import { ImageBackground } from "react-native";
+import { I18nManager, ImageBackground } from "react-native";
 import Animated, {
   useAnimatedReaction,
   useAnimatedStyle,
@@ -11,6 +11,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 
+import { OnRTLWorklet } from "~/lib/react";
 import { CachedSlider } from "~/components/Form/Slider";
 import type { HexColor } from "../core/constants";
 
@@ -37,7 +38,11 @@ export function OpacitySlider(props: {
     height: HANDLE_SIZE,
     width: HANDLE_SIZE,
     transform: [
-      { translateX: alpha.get() * (contentWidth.get() - HANDLE_SIZE) },
+      {
+        translateX:
+          OnRTLWorklet.decide(alpha.get() - 1, alpha.get()) *
+          (contentWidth.get() - HANDLE_SIZE),
+      },
       { translateY: "-50%" },
     ],
   }));
@@ -64,6 +69,7 @@ export function OpacitySlider(props: {
         {...SliderConfig}
         liveValue={alpha} //? Will override the initial value.
         onComplete={(alpha) => props.onComplete(alphaToHex(alpha))}
+        inverted={I18nManager.isRTL}
       />
     </ImageBackground>
   );
