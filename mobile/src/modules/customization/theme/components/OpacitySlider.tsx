@@ -1,32 +1,68 @@
+import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
-import { useAnimatedReaction, useSharedValue } from "react-native-reanimated";
+import { ImageBackground } from "react-native";
+import Animated, {
+  useAnimatedReaction,
+  useAnimatedStyle,
+  useSharedValue,
+} from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 
-import { LabeledSlider } from "~/components/Form/Slider.variant";
+import { CachedSlider } from "~/components/Form/Slider";
+import type { HexColor } from "../core/constants";
+
+const HANDLE_SIZE = 20;
 
 export function OpacitySlider(props: {
+  color: HexColor;
   value: string;
   onComplete: (hex: string) => void;
 }) {
   const alpha = useSharedValue(1);
-
-  useEffect(() => {
-    alpha.set(hexToAlpha(props.value));
-  }, [alpha, props.value]);
-
   const [_alpha, _setAlpha] = useState(1);
   useAnimatedReaction(
     () => alpha.get(),
     (currVal) => scheduleOnRN(_setAlpha, currVal),
   );
 
+  useEffect(() => {
+    alpha.set(hexToAlpha(props.value));
+  }, [alpha, props.value]);
+
+  const contentWidth = useSharedValue(0);
+  const sliderHandleStyle = useAnimatedStyle(() => ({
+    height: HANDLE_SIZE,
+    width: HANDLE_SIZE,
+    transform: [
+      { translateX: alpha.get() * (contentWidth.get() - HANDLE_SIZE) },
+      { translateY: "-50%" },
+    ],
+  }));
+
   return (
-    <LabeledSlider
-      {...SliderConfig}
-      liveValue={alpha} //? Will override the initial value.
-      onComplete={(alpha) => props.onComplete(alphaToHex(alpha))}
-      displayedValue={`${Math.round(_alpha * 100)}%`}
-    />
+    <ImageBackground
+      onLayout={(e) => contentWidth.set(e.nativeEvent.layout.width)}
+      source={require("~/resources/images/transparent-texture.png")}
+      imageStyle={{ resizeMode: "repeat" }}
+      className="relative overflow-hidden rounded-full"
+    >
+      <LinearGradient
+        colors={[`${props.color}00`, props.color]}
+        start={{ x: 0, y: 1 }}
+        end={{ x: 1, y: 1 }}
+        className="insets-0 absolute size-full"
+      />
+      <Animated.View
+        style={sliderHandleStyle}
+        className="absolute top-1/2 left-0 rounded-full border-2 border-black"
+      />
+
+      <CachedSlider
+        {...SliderConfig}
+        liveValue={alpha} //? Will override the initial value.
+        onComplete={(alpha) => props.onComplete(alphaToHex(alpha))}
+      />
+    </ImageBackground>
   );
 }
 
@@ -37,7 +73,7 @@ const SliderConfig = {
   max: 1,
   step: 0.01,
   thickness: 28,
-  hitSlop: 0,
+  transparent: true,
 };
 
 /** Returns a value between 0 (0x00) & 1 (0xFF), rounded to 2 decimal places. */
