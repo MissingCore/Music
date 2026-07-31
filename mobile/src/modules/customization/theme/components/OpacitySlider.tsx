@@ -2,14 +2,12 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { LinearGradient } from "expo-linear-gradient";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { I18nManager, ImageBackground } from "react-native";
 import Animated, {
-  useAnimatedReaction,
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
-import { scheduleOnRN } from "react-native-worklets";
 
 import { OnRTLWorklet } from "~/lib/react";
 import { CachedSlider } from "~/components/Form/Slider";
@@ -23,11 +21,6 @@ export function OpacitySlider(props: {
   onComplete: (hex: string) => void;
 }) {
   const alpha = useSharedValue(1);
-  const [_alpha, _setAlpha] = useState(1);
-  useAnimatedReaction(
-    () => alpha.get(),
-    (currVal) => scheduleOnRN(_setAlpha, currVal),
-  );
 
   useEffect(() => {
     alpha.set(hexToAlpha(props.value));
