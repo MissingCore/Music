@@ -30,12 +30,9 @@ export function OpacitySlider(props: {
   const sliderHandleStyle = useAnimatedStyle(() => ({
     height: HANDLE_SIZE,
     width: HANDLE_SIZE,
+    [OnRTLWorklet.decide("right", "left")]: 0,
     transform: [
-      {
-        translateX:
-          OnRTLWorklet.decide(alpha.get() - 1, alpha.get()) *
-          (contentWidth.get() - HANDLE_SIZE),
-      },
+      { translateX: alpha.get() * (contentWidth.get() - HANDLE_SIZE) },
       { translateY: "-50%" },
     ],
   }));
@@ -55,7 +52,7 @@ export function OpacitySlider(props: {
       />
       <Animated.View
         style={sliderHandleStyle}
-        className="absolute top-1/2 left-0 rounded-full border-2 border-black"
+        className="absolute top-1/2 rounded-full border-2 border-black"
       />
 
       <CachedSlider
