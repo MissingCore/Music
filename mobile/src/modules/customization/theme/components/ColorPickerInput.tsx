@@ -24,7 +24,7 @@ export function ColorPickerInput(props: {
   const [showPicker, setShowPicker] = useState(false);
 
   const currHex = props.value.slice(0, 7) as HexColor;
-  const alphaHex = props.value.slice(7, 9) || "FF";
+  const alphaHex = props.value.slice(7, 9) || "";
 
   const onChange = (text: string) => {
     setDraftHex(text.toUpperCase());
