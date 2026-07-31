@@ -58,6 +58,13 @@ You can customize the theme the app uses (light/dark/system). As of `v3.1.0`, yo
 }
 ```
 
+### [🧪 Experimental] Opaque Colors
+
+We support opaque colors for any color picker input (ie: Custom Themes, Widget Customization) after enabling the `Opaque Colors` experimental setting.
+
+> [!IMPORTANT]
+> We do not guarantee that opaque colors will look nice in our app or will be fully supported. For example, gradients and content that overlap may not look (or work) as expected.
+
 ## Tab Order
 
 You can customize the order of the home screens, hide screens, and specify which screen is displayed when you launch the app via the `Tab Order` feature found in `Settings > Appearance`.

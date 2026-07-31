@@ -62,6 +62,10 @@ Although the MediaStore scanner is extremely fast, it has some problems. I've no
   - If a track has a disc & track number, the value returned for the track number will incorporate both values (ie: `1002` for disc 1, track 2).
   - If a track has no embedded `artist` field, `<unknown>` is returned.
 
+## Opaque Colors
+
+See the [dedicated section about `Opaque Colors` in the `Custom Themes` documentation for more information](./customizations.md).
+
 ## Queue-Aware Play Next
 
 When using the "Play Next" feature, we attempt to add those track(s) after the previously "Play Next" tracks.
