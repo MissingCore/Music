@@ -64,7 +64,7 @@ Although the MediaStore scanner is extremely fast, it has some problems. I've no
 
 ## Opaque Colors
 
-See the [dedicated section about `Opaque Colors` in the `Custom Themes` documentation for more information](./customizations.md).
+See the [dedicated section about `Opaque Colors` in the `Custom Themes` documentation for more information](./customizations.md#-experimental-opaque-colors).
 
 ## Queue-Aware Play Next
 

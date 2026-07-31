@@ -86,7 +86,7 @@ export function ColorPickerInput(props: {
           <ColorPicker value={currHex} onComplete={onPickerComplete} />
           {enableOpacitySlider ? (
             <OpacitySlider
-              key={currHex} //? Needed as `onComplete` is cached.
+              key={currHex} //? Needed as `onComplete` gets cached.
               color={currHex}
               value={alphaHex}
               onComplete={onAlphaChange}

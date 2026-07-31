@@ -10,7 +10,10 @@ import { ColorRoleOptions } from "./constants";
 //#region Color
 const validHexLength = [3, 5, 6, 8];
 
-/** Normalizes `#RGB` and `#RRGGBB` strings to uppercase `#RRGGBB`. */
+/**
+ * Normalizes `#RGB` and `#RRGGBB` strings to uppercase `#RRGGBB`. If
+ * 2-digit alpha hex is also provided, normalize or strip it.
+ */
 export function normalizeHexColor(value: string) {
   let raw = value.trim();
   if (raw[0] !== "#") return null;
