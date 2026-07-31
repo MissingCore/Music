@@ -32,7 +32,10 @@ export function ColorPickerInput(props: {
   const onChange = (text: string) => {
     setDraftHex(text.toUpperCase());
     const normalized = normalizeHexColor(text);
-    if (normalized) props.onUpdateValue(`${normalized}${alphaHex}`);
+    if (normalized) {
+      const baseColor = normalized.slice(0, 7) as HexColor;
+      props.onUpdateValue(`${baseColor}${alphaHex}`);
+    }
   };
 
   const onPickerComplete = (hex: HexColor) => {
