@@ -10,6 +10,7 @@ import { TextInput } from "~/components/Form/Input";
 import { Modal } from "~/components/Modal";
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import { ColorPicker } from "./ColorPicker";
+import { OpacitySlider, hexToAlpha } from "./OpacitySlider";
 import type { HexColor } from "../core/constants";
 import { normalizeHexColor } from "../core/utils";
 
@@ -19,18 +20,25 @@ export function ColorPickerInput(props: {
   onUpdateValue: (color: HexColor) => void;
   disabled?: boolean;
 }) {
-  const [draftValue, setDraftValue] = useState<string>(props.value);
+  const [draftHex, setDraftHex] = useState<string>(props.value.slice(0, 7));
   const [showPicker, setShowPicker] = useState(false);
 
+  const currHex = props.value.slice(0, 7) as HexColor;
+  const alphaHex = props.value.slice(7, 9) || "FF";
+
   const onChange = (text: string) => {
-    setDraftValue(text.toUpperCase());
+    setDraftHex(text.toUpperCase());
     const normalized = normalizeHexColor(text);
-    if (normalized) props.onUpdateValue(normalized);
+    if (normalized) props.onUpdateValue(`${normalized}${alphaHex}`);
   };
 
   const onPickerComplete = (hex: HexColor) => {
-    setDraftValue(hex);
-    props.onUpdateValue(hex);
+    setDraftHex(hex);
+    props.onUpdateValue(`${hex}${alphaHex}`);
+  };
+
+  const onAlphaChange = (alpha: string) => {
+    props.onUpdateValue(`${currHex}${alpha}`);
   };
 
   return (
@@ -49,7 +57,7 @@ export function ColorPickerInput(props: {
         <View className="shrink grow p-2">
           <Em>{props.label}</Em>
           <StyledText className="text-sm text-onSurfaceVariant">
-            {props.value}
+            {currHex} / {Math.round(hexToAlpha(alphaHex) * 100)}%
           </StyledText>
         </View>
       </Ripple>
@@ -59,7 +67,7 @@ export function ColorPickerInput(props: {
           <View className="flex-row items-center justify-between gap-2">
             <Em>{props.label}</Em>
             <TextInput
-              value={draftValue}
+              value={draftHex}
               onChangeText={onChange}
               autoCapitalize="characters"
               autoCorrect={false}
@@ -70,6 +78,13 @@ export function ColorPickerInput(props: {
           </View>
 
           <ColorPicker value={props.value} onComplete={onPickerComplete} />
+
+          <OpacitySlider
+            key={currHex} //? Needed as `onComplete` is cached.
+            color={currHex}
+            value={alphaHex}
+            onComplete={onAlphaChange}
+          />
 
           <ExtendedTButton
             textKey="form.close"

@@ -51,8 +51,8 @@ export function OpacitySlider(props: {
     >
       <LinearGradient
         colors={[`${props.color}00`, props.color]}
-        start={{ x: 0, y: 1 }}
-        end={{ x: 1, y: 1 }}
+        start={[0, 0]}
+        end={[1, 0]}
         className="insets-0 absolute size-full"
       />
       <Animated.View
@@ -80,7 +80,7 @@ const SliderConfig = {
 };
 
 /** Returns a value between 0 (0x00) & 1 (0xFF), rounded to 2 decimal places. */
-function hexToAlpha(hex: string) {
+export function hexToAlpha(hex: string) {
   if (hex.length !== 2) return 1;
   return +(parseInt(hex, 16) / 255).toFixed(2);
 }
