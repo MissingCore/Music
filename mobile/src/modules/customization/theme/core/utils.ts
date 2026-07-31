@@ -18,11 +18,10 @@ export function normalizeHexColor(value: string) {
   if (!validHexLength.includes(raw.length)) return null;
 
   //? Sanitize the 2-digit alpha hex if provided.
-  let alphaHex = "FF";
+  let alphaHex = "";
   if (raw.length === 5 || raw.length === 8) {
-    if (/^([\da-fA-F]{2})$/.test(raw.slice(-2))) {
-      alphaHex = raw.slice(-2).toUpperCase();
-    }
+    const trailHex = raw.slice(-2);
+    if (/^([\da-fA-F]{2})$/.test(trailHex)) alphaHex = trailHex.toUpperCase();
     raw = raw.slice(0, -2);
   }
 
