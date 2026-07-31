@@ -24,6 +24,7 @@ type ToggleableKey =
   | "miniplayerGestures"
   | "nowPlayingArtworkControls"
   | "nowPlayingGestures"
+  | "opaqueColors"
   | "optimizedImageSave"
   | "rcNotification"
   | "rescanOnLaunch"

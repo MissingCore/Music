@@ -8,17 +8,36 @@ import type { ColorRole, HexColor } from "./constants";
 import { ColorRoleOptions } from "./constants";
 
 //#region Color
-/** Normalizes `#RGB` and `#RRGGBB` strings to uppercase `#RRGGBB`. */
+const validHexLength = [3, 5, 6, 8];
+
+/**
+ * Normalizes `#RGB` and `#RRGGBB` strings to uppercase `#RRGGBB`. If
+ * 2-digit alpha hex is also provided, normalize or strip it.
+ */
 export function normalizeHexColor(value: string) {
-  const raw = value.trim();
-  const shortMatch = /^#([\da-fA-F]{3})$/.exec(raw);
-  if (shortMatch) {
-    const [r, g, b] = shortMatch[1]!.split("");
-    return `#${r}${r}${g}${g}${b}${b}`.toUpperCase() as HexColor;
+  let raw = value.trim();
+  if (raw[0] !== "#") return null;
+  raw = raw.slice(1);
+  if (!validHexLength.includes(raw.length)) return null;
+
+  //? Sanitize the 2-digit alpha hex if provided.
+  let alphaHex = "";
+  if (raw.length === 5 || raw.length === 8) {
+    const trailHex = raw.slice(-2);
+    if (/^([\da-fA-F]{2})$/.test(trailHex)) alphaHex = trailHex.toUpperCase();
+    raw = raw.slice(0, -2);
   }
 
-  if (!/^#([\da-fA-F]{6})$/.test(raw)) return null;
-  return raw.toUpperCase() as HexColor;
+  //? Sanitize 3-digit hex colors.
+  const shortMatch = /^([\da-fA-F]{3})$/.exec(raw);
+  if (shortMatch) {
+    const [r, g, b] = shortMatch[1]!.split("");
+    return `#${r}${r}${g}${g}${b}${b}${alphaHex}`.toUpperCase() as HexColor;
+  }
+
+  //? Sanitize 6-digit hex colors.
+  if (!/^([\da-fA-F]{6})$/.test(raw)) return null;
+  return `#${raw.toUpperCase()}${alphaHex}` as HexColor;
 }
 
 export const HexColorSchema = z.pipe(

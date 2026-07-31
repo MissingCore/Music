@@ -154,7 +154,9 @@
         "light": "Light",
         "dark": "Dark",
         "system": "System",
-        "atmosphere": "Atmosphere Effect"
+
+        "atmosphere": "Atmosphere Effect",
+        "opaqueColors": "Opaque Colors"
       }
     },
     "tabsOrder": {
