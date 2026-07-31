@@ -77,7 +77,7 @@ export function ColorPickerInput(props: {
             />
           </View>
 
-          <ColorPicker value={props.value} onComplete={onPickerComplete} />
+          <ColorPicker value={currHex} onComplete={onPickerComplete} />
 
           <OpacitySlider
             key={currHex} //? Needed as `onComplete` is cached.
