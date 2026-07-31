@@ -38,6 +38,7 @@ export default function ExperimentalSettings() {
     (s) => s.downsamplingProcessor,
   );
   const atmosphereEffect = usePreferenceStore((s) => s.atmosphereEffect);
+  const opaqueColors = usePreferenceStore((s) => s.opaqueColors);
   const { data: unhashedImagesCount } = useUnhashedImagesCount();
 
   return (
@@ -56,11 +57,18 @@ export default function ExperimentalSettings() {
         Trailing={<Switch enabled={downsamplingProcessor} />}
       />
 
-      <SegmentedList.Item
-        labelText="feat.theme.extra.atmosphere"
-        onPress={PreferenceTogglers.toggleKey("atmosphereEffect")}
-        Trailing={<Switch enabled={atmosphereEffect} />}
-      />
+      <SegmentedList>
+        <SegmentedList.Item
+          labelText="feat.theme.extra.atmosphere"
+          onPress={PreferenceTogglers.toggleKey("atmosphereEffect")}
+          Trailing={<Switch enabled={atmosphereEffect} />}
+        />
+        <SegmentedList.Item
+          labelText="feat.theme.extra.opaqueColors"
+          onPress={PreferenceTogglers.toggleKey("opaqueColors")}
+          Trailing={<Switch enabled={opaqueColors} />}
+        />
+      </SegmentedList>
 
       <ConfirmableAction
         Component={SegmentedList.Item}

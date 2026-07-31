@@ -104,6 +104,8 @@ export interface PreferenceStore {
   //! Experimental Features
   /** Replaces the background with a blurred image. */
   atmosphereEffect: boolean;
+  /** Adds an opacity slider in our color picker input. */
+  opaqueColors: boolean;
   /** Whether MediaStore is used to extract metadata. Requires Android 11+. */
   mediaStoreScanner: boolean;
   /**

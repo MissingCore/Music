@@ -4,6 +4,8 @@
 import { useState } from "react";
 import { View } from "react-native";
 
+import { usePreferenceStore } from "~/stores/Preference/store";
+
 import { Ripple } from "~/components/Base/Pressable";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
@@ -22,6 +24,7 @@ export function ColorPickerInput(props: {
 }) {
   const [draftHex, setDraftHex] = useState<string>(props.value.slice(0, 7));
   const [showPicker, setShowPicker] = useState(false);
+  const enableOpacitySlider = usePreferenceStore((s) => s.opaqueColors);
 
   const currHex = props.value.slice(0, 7) as HexColor;
   const alphaHex = props.value.slice(7, 9) || "";
@@ -57,7 +60,10 @@ export function ColorPickerInput(props: {
         <View className="shrink grow p-2">
           <Em>{props.label}</Em>
           <StyledText className="text-sm text-onSurfaceVariant">
-            {currHex} / {Math.round(hexToAlpha(alphaHex) * 100)}%
+            {currHex}
+            {enableOpacitySlider
+              ? ` / ${Math.round(hexToAlpha(alphaHex) * 100)}%`
+              : null}
           </StyledText>
         </View>
       </Ripple>
@@ -78,13 +84,14 @@ export function ColorPickerInput(props: {
           </View>
 
           <ColorPicker value={currHex} onComplete={onPickerComplete} />
-
-          <OpacitySlider
-            key={currHex} //? Needed as `onComplete` is cached.
-            color={currHex}
-            value={alphaHex}
-            onComplete={onAlphaChange}
-          />
+          {enableOpacitySlider ? (
+            <OpacitySlider
+              key={currHex} //? Needed as `onComplete` is cached.
+              color={currHex}
+              value={alphaHex}
+              onComplete={onAlphaChange}
+            />
+          ) : null}
 
           <ExtendedTButton
             textKey="form.close"
