@@ -122,7 +122,7 @@ async function initServices() {
   AudioBrowser.onPlaybackChanged.addListener(async (e) => {
     if (e.state === "paused" || e.state === "stopped") {
       playbackStore.setState({ isPlaying: false });
-      await CurrentPlaybackSession.finalize(true);
+      await CurrentPlaybackSession.finalize({ paused: true });
     } else if (e.state === "playing") {
       playbackStore.setState({ isPlaying: true });
       await CurrentPlaybackSession.resume();

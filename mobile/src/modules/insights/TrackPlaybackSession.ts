@@ -52,7 +52,7 @@ export class TrackPlaybackSession {
   }
 
   /** Take a snapshot of the playback of the current track. */
-  async finalize(paused = false) {
+  async finalize({ paused = false }: { paused?: boolean } = {}) {
     if (!this.session) return;
 
     const { eventId, trackId, playedAt } = this.session;
