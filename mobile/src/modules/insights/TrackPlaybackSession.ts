@@ -46,6 +46,8 @@ export class TrackPlaybackSession {
   }
 
   async resume() {
+    //? This may get called in other situations such as when we seek or
+    //? play a different track.
     if (!this.session || !this.hasPaused) return;
     this.hasPaused = false;
     this.session.startedAt = Date.now();
