@@ -41,7 +41,7 @@ export function Waveform(props: WaveformProps) {
     const scaleRatio = props.amplitudes.length / maxBars;
     for (let i = 0; i < maxBars; i++) {
       const idx = Math.floor(i * scaleRatio);
-      downSampledBars.push(props.amplitudes[idx] ?? 0);
+      downSampledBars.push(props.amplitudes[idx] || 0);
     }
 
     return downSampledBars
@@ -134,12 +134,17 @@ export function useWaveformSamples(id: string, uri: string) {
       // Downsample the data.
       for (let i = 0; i < estimatedBarCount; i++) {
         const idx = Math.floor((i / estimatedBarCount) * scaledBarCount);
-        downSampledBars.push(sampleData[idx] ?? 0);
+        downSampledBars.push(sampleData[idx] || 0);
       }
 
       // Normalize amplitude.
-      const multiplier = Math.pow(Math.max(...downSampledBars), -1);
-      sampleData = downSampledBars.map((n) => n * multiplier);
+      const maxAmplitude = Math.max(...downSampledBars);
+      if (maxAmplitude > 0 && Number.isFinite(maxAmplitude)) {
+        const multiplier = Math.pow(maxAmplitude, -1);
+        sampleData = downSampledBars.map((n) => n * multiplier);
+      } else {
+        sampleData = samplesFallback;
+      }
     } else {
       sampleData = samplesFallback;
     }
