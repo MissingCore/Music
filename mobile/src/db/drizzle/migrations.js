@@ -18,7 +18,7 @@ import m0013 from "./0013_gigantic_senator_kelly.sql";
 import m0014 from "./0014_cold_the_executioner.sql";
 import m0015 from "./0015_melted_maddog.sql";
 import m0016 from "./0016_wakeful_tinkerer.sql";
-import m0017 from "./0017_puzzling_skrulls.sql";
+import m0017 from "./0017_spotty_invisible_woman.sql";
 
 export default {
   journal,

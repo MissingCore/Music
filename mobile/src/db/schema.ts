@@ -133,7 +133,6 @@ export const tracks = sqliteTable("tracks", {
 
 export const tracksRelations = relations(tracks, ({ one, many }) => ({
   album: one(albums, { fields: [tracks.albumId], references: [albums.id] }),
-  tracksPlayCounts: many(tracksPlayCounts),
   tracksPlayEvents: many(tracksPlayEvents),
   tracksToArtists: many(tracksToArtists),
   tracksToGenres: many(tracksToGenres),
@@ -417,29 +416,6 @@ export const hashedImages = sqliteTable("hashed_images", {
 //#endregion
 
 //#region Insights
-export const tracksPlayCounts = sqliteTable(
-  "tracks_play_counts",
-  {
-    trackId: text()
-      .notNull()
-      .references(() => tracks.id, { onDelete: "cascade" }),
-    year: integer().notNull(),
-    month: integer().notNull(),
-    count: integer().notNull(),
-  },
-  (t) => [primaryKey({ columns: [t.trackId, t.year, t.month] })],
-);
-
-export const tracksPlayCountsRelations = relations(
-  tracksPlayCounts,
-  ({ one }) => ({
-    track: one(tracks, {
-      fields: [tracksPlayCounts.trackId],
-      references: [tracks.id],
-    }),
-  }),
-);
-
 export const tracksPlayEvents = sqliteTable("tracks_play_events", {
   id: text()
     .primaryKey()
