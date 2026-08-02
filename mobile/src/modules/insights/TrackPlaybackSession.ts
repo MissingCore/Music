@@ -1,4 +1,3 @@
-import type { InferInsertModel } from "drizzle-orm";
 import { sql } from "drizzle-orm";
 
 import { db } from "~/db";
@@ -61,14 +60,19 @@ export class TrackPlaybackSession {
     const { elapsedTime, nextTime } = derivePlayTimes(this.session);
 
     if (nextTime > MIN_PLAY_TIME) {
-      const [sessionEvent] = await upsertPlaybackSession({
-        id: eventId,
-        trackId,
-        playedAt,
-        //? If `eventId` is defined, we just want to add the elapsed time
-        //? to the existing value.
-        playTime: eventId ? elapsedTime : nextTime,
-      });
+      //? If `eventId` is defined, we just want to add the elapsed time
+      //? to the existing value.
+      const playTime = eventId ? elapsedTime : nextTime;
+      const [sessionEvent] = await db
+        .insert(tracksPlayEvents)
+        .values({ id: eventId, trackId, playedAt, playTime })
+        .onConflictDoUpdate({
+          target: tracksPlayEvents.id,
+          set: {
+            playTime: sql`${tracksPlayEvents.playTime} + ${playTime}`,
+          },
+        })
+        .returning({ id: tracksPlayEvents.id });
 
       if (paused && sessionEvent?.id) this.session.eventId = sessionEvent.id;
     }
@@ -90,27 +94,9 @@ export class TrackPlaybackSession {
 
 //#region Internal Helpers
 function derivePlayTimes({ startedAt, playTime }: Session) {
-  const elapsedPlayTime = Math.max(
-    0,
-    Math.floor((Date.now() - startedAt) / 1000),
-  );
+  const elapsedTime = Math.max(0, Math.floor((Date.now() - startedAt) / 1000));
   //? Necessary in the situation where `playTime < 10`.
-  const nextPlayTime = playTime + elapsedPlayTime;
-  return { elapsedTime: elapsedPlayTime, nextTime: nextPlayTime };
-}
-
-async function upsertPlaybackSession(
-  args: InferInsertModel<typeof tracksPlayEvents>,
-) {
-  return db
-    .insert(tracksPlayEvents)
-    .values(args)
-    .onConflictDoUpdate({
-      target: tracksPlayEvents.id,
-      set: {
-        playTime: sql`${tracksPlayEvents.playTime} + ${args.playTime}`,
-      },
-    })
-    .returning({ id: tracksPlayEvents.id });
+  const nextTime = playTime + elapsedTime;
+  return { elapsedTime, nextTime };
 }
 //#endregion
