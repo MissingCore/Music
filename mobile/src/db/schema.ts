@@ -120,11 +120,7 @@ export const tracks = sqliteTable("tracks", {
   editedMetadata: integer(),
   /** @deprecated Use dedicated `hiddenTracks` table. */
   hiddenAt: integer(),
-  /** @deprecated Derive from `tracksPlayEvents` table. */
-  lastPlayedAt: integer().notNull().default(-1),
 
-  /** @deprecated Derive from `tracksPlayCounts` table. */
-  playCount: integer().notNull().default(0),
   parentFolder: text().generatedAlwaysAs(
     // Ref: https://stackoverflow.com/a/38330814
     (): SQL => sql`rtrim(${tracks.uri}, replace(${tracks.uri}, '/', ''))`,
