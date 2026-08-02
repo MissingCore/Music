@@ -2,14 +2,19 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useQuery } from "@tanstack/react-query";
+import { count, eq } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { db } from "~/db";
+import { tracksPlayEvents } from "~/db/schema";
 
 import { getArtistsString } from "~/data/artist/utils";
+import { fromJSONArrayString } from "~/data/utils";
+import { commonTrackColumns, structuredTracksView } from "~/data/views";
 
-import { iAsc } from "~/lib/drizzle";
+import { getSubqueryFields, iAsc, iDesc } from "~/lib/drizzle";
+import { pickKeys } from "~/utils/object";
 import { FlatList } from "~/components/Base/List";
 import { Divider } from "~/components/Divider";
 import { SegmentedList } from "~/components/List/Segmented";
@@ -90,28 +95,40 @@ type TrackData = {
 
 type MostPlayedPlacement = { placement: number; tracks: TrackData[] };
 
+const aggregatedPlayCountView = db
+  .select({
+    ...commonTrackColumns,
+    playCount: count(tracksPlayEvents.id).as("play_count"),
+  })
+  .from(tracksPlayEvents)
+  .innerJoin(
+    structuredTracksView,
+    eq(tracksPlayEvents.trackId, structuredTracksView.id),
+  )
+  .groupBy(tracksPlayEvents.trackId)
+  .as("aggregated_play_count");
+
+const wantedPlayCountColumns = pickKeys(
+  getSubqueryFields(aggregatedPlayCountView),
+  ["id", "name", "playCount", "albumName", "artists"],
+);
+
 async function getMostPlayedTracks() {
-  const mostPlayedTracks = await db.query.tracks.findMany({
-    where: (fields, { gt }) => gt(fields.playCount, 0),
-    columns: { id: true, name: true, playCount: true },
-    with: {
-      album: { columns: { name: true } },
-      tracksToArtists: { columns: { artistName: true } },
-    },
-    orderBy: (fields, { desc }) => [desc(fields.playCount), iAsc(fields.name)],
-    limit: 100,
-  });
+  const mostPlayedTracks = await db
+    .select(wantedPlayCountColumns)
+    .from(aggregatedPlayCountView)
+    .orderBy(
+      iDesc(aggregatedPlayCountView.playCount),
+      iAsc(aggregatedPlayCountView.name),
+    )
+    .limit(100);
 
   const groupedPlacement: MostPlayedPlacement[] = [];
   let recentPlacement: MostPlayedPlacement | undefined;
-  mostPlayedTracks.forEach(({ album, tracksToArtists, ...track }) => {
+  mostPlayedTracks.forEach(({ artists, ...track }) => {
     const formattedTrack = {
       ...track,
-      albumName: album?.name ?? null,
-      artistsString: getArtistsString(
-        tracksToArtists.map((t) => t.artistName),
-        null,
-      ),
+      artistsString: getArtistsString(fromJSONArrayString(artists), null),
     };
 
     if (!recentPlacement) {
