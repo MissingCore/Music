@@ -28,7 +28,7 @@ import { PlayedListsTracker } from "./PlayedListsTracker";
 export const RECENT_DAY_RANGE = 7;
 export const RECENT_RANGE_MS = RECENT_DAY_RANGE * 24 * 60 * 60 * 1000;
 
-const queryKey = ["recent", "all"];
+const queryKey = ["insights", "recent", "all"];
 
 export function useRecentlyPlayedMedia() {
   return useQuery({

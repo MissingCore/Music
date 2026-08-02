@@ -169,7 +169,7 @@ async function getHiddenTracks() {
   });
 }
 
-const queryKey = ["settings", "hidden-tracks"];
+const queryKey = ["insights", "hidden-tracks"];
 
 function useHiddenTracks() {
   return useQuery({

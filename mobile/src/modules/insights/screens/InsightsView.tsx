@@ -138,7 +138,7 @@ async function getStorageSummary() {
   };
 }
 
-const storageSummaryQueryKey = ["settings", "storage-summary"];
+const storageSummaryQueryKey = ["insights", "storage-summary"];
 
 function useStorageSummary() {
   return useQuery({
@@ -214,7 +214,7 @@ async function getDatabaseSummary() {
   };
 }
 
-const dbSummaryQueryKey = ["settings", "db-summary"];
+const dbSummaryQueryKey = ["insights", "db-summary"];
 
 function useDatabaseSummary() {
   return useQuery({

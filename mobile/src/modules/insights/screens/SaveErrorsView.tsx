@@ -35,7 +35,7 @@ async function getSaveErrors() {
   return db.query.invalidTracks.findMany();
 }
 
-const queryKey = ["settings", "save-errors"];
+const queryKey = ["insights", "save-errors"];
 
 function useSaveErrors() {
   return useQuery({ queryKey, queryFn: getSaveErrors, staleTime: 0 });
