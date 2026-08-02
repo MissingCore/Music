@@ -24,7 +24,7 @@ import { playbackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { preferenceStore } from "~/stores/Preference/store";
 import { sessionStore } from "~/stores/Session/store";
-import { TrackPlaybackSession } from "./modules/insights/TrackPlaybackSession";
+import { TrackListeningSession } from "./modules/insights/core/TrackListeningSession";
 import { AppCleanUp } from "~/modules/scanning/helpers/cleanup";
 import { router } from "~/navigation/utils/router";
 
@@ -91,11 +91,9 @@ async function initServices() {
   AudioBrowser.updateOptions(getAudioBrowserOptions());
 
   //#region Media Events
-  const CurrentPlaybackSession = new TrackPlaybackSession();
-
   // This event gets called when `appKilledPlaybackBehavior = "stop-playback-and-remove-notification"`.
   AudioBrowser.handleBeforeServiceKilled(async (permanent) => {
-    CurrentPlaybackSession.finalize();
+    TrackListeningSession.finalize();
     await revalidateWidgets({ openApp: true });
     if (permanent) {
       console.warn("[handleBeforeServiceKilled] Running aggressive cleanup...");
@@ -115,16 +113,16 @@ async function initServices() {
   AudioBrowser.onPlaybackChanged.addListener(async (e) => {
     if (e.state === "paused" || e.state === "stopped") {
       playbackStore.setState({ isPlaying: false });
-      await CurrentPlaybackSession.finalize({ paused: true });
+      await TrackListeningSession.finalize({ paused: true });
     } else if (e.state === "loading") {
       const { repeat, activeTrack } = playbackStore.getState();
       if (repeat === RepeatModes.REPEAT_ONE && activeTrack) {
-        await CurrentPlaybackSession.finalize();
-        await CurrentPlaybackSession.start(activeTrack.uri);
+        await TrackListeningSession.finalize();
+        await TrackListeningSession.start(activeTrack.uri);
       }
     } else if (e.state === "playing") {
       playbackStore.setState({ isPlaying: true });
-      await CurrentPlaybackSession.resume();
+      await TrackListeningSession.resume();
     }
   });
 
@@ -164,7 +162,7 @@ async function initServices() {
 
   // Called when "Smooth Playback Transition" doesn't trigger.
   AudioBrowser.onQueueEnded.addListener(async () => {
-    await CurrentPlaybackSession.finalize();
+    await TrackListeningSession.finalize();
     const { playbackDelay } = preferenceStore.getState();
     if (playbackDelay > 0) await bgWait(playbackDelay * 1000);
     await PlaybackControls.next(true); // Prevent updating the repeat setting.
@@ -194,15 +192,15 @@ async function initServices() {
     };
 
     //* Playback Session Tracking (Play Count + Time)
-    await CurrentPlaybackSession.finalize();
-    await CurrentPlaybackSession.start(activeTrackUri);
+    await TrackListeningSession.finalize();
+    await TrackListeningSession.start(activeTrackUri);
 
     await revalidateWidgets();
   });
 
   AudioBrowser.onPlaybackError.addListener(async ({ error: e }) => {
     if (!e) return;
-    CurrentPlaybackSession.reset();
+    TrackListeningSession.reset();
 
     //? We don't know exactly what track caused the error, but we can
     //? infer based on the state of the queue.
