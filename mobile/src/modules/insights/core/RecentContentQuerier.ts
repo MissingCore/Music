@@ -23,10 +23,8 @@ import { commonTrackColumns, structuredTracksView } from "~/data/views";
 import { iDesc } from "~/lib/drizzle";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
+import { RECENT_RANGE_MS } from "./constants";
 import { PlayedListsTracker } from "./PlayedListsTracker";
-
-export const RECENT_DAY_RANGE = 7;
-export const RECENT_RANGE_MS = RECENT_DAY_RANGE * 24 * 60 * 60 * 1000;
 
 const queryKey = ["insights", "recent", "all"];
 

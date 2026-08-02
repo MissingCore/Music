@@ -17,10 +17,8 @@ import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
 import { useTrackListPreset } from "~/modules/media/components/Track";
-import {
-  RECENT_DAY_RANGE,
-  useRecentlyPlayedMedia,
-} from "../core/RecentContentQuerier";
+import { RECENT_DAY_RANGE } from "../core/constants";
+import { useRecentlyPlayedMedia } from "../core/RecentContentQuerier";
 
 // Information about this track list.
 const trackSource = {
