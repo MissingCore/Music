@@ -20,7 +20,6 @@ import { useCallback, useMemo, useRef } from "react";
 import { BackHandler } from "react-native";
 
 import Home from "./screens/HomeView";
-import RecentlyPlayed from "./screens/RecentlyPlayedView";
 import Album from "./screens/albums/CurrentView";
 import Albums from "./screens/albums/View";
 import Artist from "./screens/artists/CurrentView";
@@ -37,12 +36,8 @@ import Playlists from "./screens/playlists/View";
 import AppearanceSettings from "./screens/settings/AppearanceSettingsView";
 import AppUpdate from "./screens/settings/AppUpdateView";
 import ExperimentalSettings from "./screens/settings/ExperimentalSettingsView";
-import HiddenTracks from "./screens/settings/HiddenTracksView";
-import Insights from "./screens/settings/InsightsView";
-import MostPlayed from "./screens/settings/MostPlayedView";
 import PackageLicense from "./screens/settings/PackageLicenseView";
 import PlaybackSettings from "./screens/settings/PlaybackSettingsView";
-import SaveErrors from "./screens/settings/SaveErrorsView";
 import ScanningSettings from "./screens/settings/ScanningSettingsView";
 import ThirdParty from "./screens/settings/ThirdPartyView";
 import Settings from "./screens/settings/View";
@@ -53,6 +48,7 @@ import { ArtistsSheet } from "./sheets/ArtistsSheet";
 import AudioEffectScreenGroup from "~/modules/audio/_screens";
 import FontScreenGroup from "~/modules/customization/font/screens";
 import ThemeScreenGroup from "~/modules/customization/theme/screens";
+import InsightsScreenGroup from "~/modules/insights/screens";
 import LyricScreenGroup from "~/modules/lyric/screens";
 import Search from "~/modules/search/screens/View";
 
@@ -252,10 +248,6 @@ export const RootStack = createNativeStackNavigator({
       screen: RootScreens,
       options: { headerShown: false },
     },
-    RecentlyPlayed: {
-      screen: RecentlyPlayed,
-      options: { title: "feat.playedRecent.title" },
-    },
     NowPlaying: {
       screen: NowPlaying,
       linking: {
@@ -314,6 +306,7 @@ export const RootStack = createNativeStackNavigator({
         },
       },
     },
+    Insights: InsightsScreenGroup,
     Lyric: LyricScreenGroup,
     Setting: {
       screenOptions: {
@@ -327,22 +320,6 @@ export const RootStack = createNativeStackNavigator({
         AppearanceSettings: {
           screen: AppearanceSettings,
           options: { title: "feat.appearance.title" },
-        },
-        Insights: {
-          screen: Insights,
-          options: { title: "feat.insights.title" },
-        },
-        HiddenTracks: {
-          screen: HiddenTracks,
-          options: { title: "feat.hiddenTracks.title" },
-        },
-        MostPlayed: {
-          screen: MostPlayed,
-          options: { title: "feat.mostPlayed.title" },
-        },
-        SaveErrors: {
-          screen: SaveErrors,
-          options: { title: "feat.saveErrors.title" },
         },
         PlaybackSettings: {
           screen: PlaybackSettings,

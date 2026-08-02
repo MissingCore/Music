@@ -13,13 +13,14 @@ import { getArtistsString } from "~/data/artist/utils";
 import { fromJSONArrayString } from "~/data/utils";
 import { commonTrackColumns, structuredTracksView } from "~/data/views";
 
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+
 import { getSubqueryFields, iAsc, iDesc } from "~/lib/drizzle";
 import { pickKeys } from "~/utils/object";
 import { FlatList } from "~/components/Base/List";
 import { Divider } from "~/components/Divider";
 import { SegmentedList } from "~/components/List/Segmented";
 import { StyledText } from "~/components/Typography/StyledText";
-import { ContentPlaceholder } from "../../components/Placeholder";
 
 export default function MostPlayed() {
   const { isPending, data } = useMostPlayedTracks();

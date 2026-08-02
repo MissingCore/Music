@@ -5,9 +5,10 @@ import { useQuery } from "@tanstack/react-query";
 
 import { db } from "~/db";
 
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+
 import { FlatList } from "~/components/Base/List";
 import { useGeneratedSegmentedList } from "~/components/List/Segmented";
-import { ContentPlaceholder } from "../../components/Placeholder";
 
 export default function SaveErrors() {
   const { data } = useSaveErrors();
