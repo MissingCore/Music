@@ -75,18 +75,22 @@ function createTrackListeningSession() {
         //? If `eventId` is defined, we just want to add the elapsed time
         //? to the existing value.
         const playTime = eventId ? elapsedTime : nextTime;
-        const [sessionEvent] = await db
-          .insert(tracksPlayEvents)
-          .values({ id: eventId, trackId, playedAt, playTime })
-          .onConflictDoUpdate({
-            target: tracksPlayEvents.id,
-            set: {
-              playTime: sql`${tracksPlayEvents.playTime} + ${playTime}`,
-            },
-          })
-          .returning({ id: tracksPlayEvents.id });
+        try {
+          const [sessionEvent] = await db
+            .insert(tracksPlayEvents)
+            .values({ id: eventId, trackId, playedAt, playTime })
+            .onConflictDoUpdate({
+              target: tracksPlayEvents.id,
+              set: {
+                playTime: sql`${tracksPlayEvents.playTime} + ${playTime}`,
+              },
+            })
+            .returning({ id: tracksPlayEvents.id });
 
-        if (paused && sessionEvent?.id) session.eventId = sessionEvent.id;
+          if (paused && sessionEvent?.id) session.eventId = sessionEvent.id;
+        } catch (err) {
+          console.error("[TrackListeningSession] Failed to record event.", err);
+        }
       }
 
       if (paused) {
