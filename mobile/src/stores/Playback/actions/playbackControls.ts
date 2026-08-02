@@ -268,7 +268,7 @@ function getNewRepeatState() {
 /**
  * Get information about the next track.
  *
- * **Use externally only for `🧪 Smooth Playback Transition`.**
+ * **Use externally only for `Smooth Playback Transition`.**
  */
 export async function getNextTrack() {
   const { getTrack, reset, queue, queuePosition, numQueuedNext } =

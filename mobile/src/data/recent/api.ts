@@ -1,7 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { and, eq, gt, sql } from "drizzle-orm";
+import { and, eq, gt } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { PlayedMediaList } from "~/db/schema";
@@ -100,16 +100,6 @@ export async function addPlayedMediaList(entry: PlayFromSource) {
       target: [playedMediaLists.id, playedMediaLists.type],
       set: { lastPlayedAt },
     });
-}
-
-export async function addPlayedTrack(uri: string) {
-  return db
-    .update(tracks)
-    .set({
-      lastPlayedAt: Date.now(),
-      playCount: sql`${tracks.playCount} + 1`,
-    })
-    .where(eq(tracks.uri, uri));
 }
 //#endregion
 

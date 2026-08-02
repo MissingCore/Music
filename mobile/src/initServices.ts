@@ -1,7 +1,6 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import BackgroundTimer from "@boterop/react-native-background-timer";
 import { toast } from "@missingcore/ui/toast";
 import AsyncStorage from "expo-sqlite/kv-store";
 import type {
@@ -19,7 +18,6 @@ import { getArtist, getArtistsSummary } from "~/data/artist/api";
 import { getArtistsString } from "~/data/artist/utils";
 import { getGenre, getGenresSummary } from "~/data/genre/api";
 import { getPlaylist, getPlaylistsSummary } from "~/data/playlist/api";
-import { addPlayedTrack } from "~/data/recent/api";
 import { deleteTracks, getSortedTracks } from "~/data/track/api";
 import type { CommonTrack } from "~/data/types";
 import { playbackStore } from "~/stores/Playback/store";
@@ -60,11 +58,6 @@ let gaplessPlaybackContext = {
   /** State the Playback store will be in once the next track is played. */
   nextSnapshot: undefined as PlaybackStoreFrame | undefined,
 };
-//#endregion
-
-//#region Play Count Tracking Constants
-let playCountTimout: ReturnType<typeof BackgroundTimer.setTimeout> | null =
-  null;
 //#endregion
 
 //#region Error Handling Constants
@@ -181,7 +174,7 @@ async function initServices() {
     if (e.index === undefined || e.track?.src === undefined) return;
     const activeTrackUri = decodeURIComponent(e.track.src);
 
-    //* 🧪 Smooth Playback Transition
+    //* Smooth Playback Transition
     try {
       if (e.index !== 0 && gaplessPlaybackContext.nextSnapshot) {
         playbackStore.setState(gaplessPlaybackContext.nextSnapshot);
@@ -200,21 +193,9 @@ async function initServices() {
       nextSnapshot: undefined,
     };
 
-    //* Playback Session Tracking
+    //* Playback Session Tracking (Play Count + Time)
     await CurrentPlaybackSession.finalize();
     await CurrentPlaybackSession.start(activeTrackUri);
-
-    //* Play Count Tracking
-    const { lastPosition } = playbackStore.getState();
-    if (playCountTimout !== null) BackgroundTimer.clearTimeout(playCountTimout);
-    // Only mark a track as played after we pass the 10s mark. This prevents
-    // the track being marked as "played" if we skip it.
-    if (lastPosition < 10) {
-      playCountTimout = BackgroundTimer.setTimeout(
-        async () => await addPlayedTrack(activeTrackUri),
-        (Math.min(e.track.duration!, 10) - lastPosition) * 1000,
-      );
-    }
 
     await revalidateWidgets();
   });
