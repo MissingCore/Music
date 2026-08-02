@@ -4,8 +4,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
-import { RECENT_DAY_RANGE } from "~/data/recent/api";
-import { useRecentlyPlayedMedia } from "~/data/recent/queries";
 import { useHorizontalListLayoutConfig } from "~/hooks/useLayoutConfigs";
 
 import { getMediaLinkContext } from "../utils/router";
@@ -15,6 +13,10 @@ import { PagePlaceholder } from "../components/Placeholder";
 import { LegendList } from "~/components/Base/LegendList";
 import { FlatList } from "~/components/Base/List";
 import { HorizontalScrollGradient } from "~/components/Gradient";
+import {
+  RECENT_DAY_RANGE,
+  useRecentlyPlayedMedia,
+} from "~/modules/insights/core/RecentContentQuerier";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";

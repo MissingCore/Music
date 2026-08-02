@@ -3,7 +3,6 @@
 
 import AudioBrowser from "react-native-audio-browser";
 
-import { addPlayedMediaList } from "~/data/recent/api";
 import { preferenceStore } from "~/stores/Preference/store";
 import { playbackStore } from "../store";
 import { RepeatModes } from "../constants";
@@ -18,6 +17,7 @@ import {
 
 import { isAudioBrowserSetUp } from "~/lib/react-native-audio-browser";
 import { applyReplayGainToTrack } from "~/modules/audio/replayGain/core/apply";
+import { PlayedListsTracker } from "~/modules/insights/core/PlayedListsTracker";
 import { revalidateWidgets } from "~/modules/widget/utils";
 
 //#region Loaders
@@ -249,7 +249,7 @@ export async function playFromList({
   AudioBrowser.play();
 
   // 7. Add media list to recent lists.
-  addPlayedMediaList(source);
+  PlayedListsTracker.add(source);
 }
 //#endregion
 

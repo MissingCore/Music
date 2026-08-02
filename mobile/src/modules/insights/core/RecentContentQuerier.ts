@@ -1,7 +1,8 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { and, eq, gt, max } from "drizzle-orm";
+import { useQuery } from "@tanstack/react-query";
+import { eq, gt, max } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { PlayedMediaList } from "~/db/schema";
@@ -9,26 +10,38 @@ import { playedMediaLists, tracks, tracksPlayEvents } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 import type { PlayFromSource } from "~/stores/Playback/types";
-import { getAlbumDetails } from "../album/api";
-import { AlbumArtistsKey } from "../album/utils";
-import { getArtist } from "../artist/api";
-import { getArtistsString } from "../artist/utils";
-import { getSortedFolderTracks } from "../folder/api";
-import { getGenre } from "../genre/api";
-import { getPlaylist } from "../playlist/api";
+import { getAlbumDetails } from "~/data/album/api";
+import { AlbumArtistsKey } from "~/data/album/utils";
+import { getArtist } from "~/data/artist/api";
+import { getArtistsString } from "~/data/artist/utils";
+import { getSortedFolderTracks } from "~/data/folder/api";
+import { getGenre } from "~/data/genre/api";
+import { getPlaylist } from "~/data/playlist/api";
+import { fromJSONArrayString } from "~/data/utils";
+import { commonTrackColumns, structuredTracksView } from "~/data/views";
 
 import { iDesc } from "~/lib/drizzle";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
-import { fromJSONArrayString } from "../utils";
-import { commonTrackColumns, structuredTracksView } from "../views";
+import { PlayedListsTracker } from "./PlayedListsTracker";
 
 export const RECENT_DAY_RANGE = 7;
 export const RECENT_RANGE_MS = RECENT_DAY_RANGE * 24 * 60 * 60 * 1000;
 
-//#region GET Methods
+const queryKey = ["recent", "all"];
+
+export function useRecentlyPlayedMedia() {
+  return useQuery({
+    queryKey,
+    queryFn: getRecentMedia,
+    gcTime: 0,
+    staleTime: 0,
+  });
+}
+
+//#region Internal Utils
 /** Get all recently played content (lists & tracks). */
-export async function getRecentMedia() {
+async function getRecentMedia() {
   const [recentLists, recentTracks] = await Promise.all([
     getRecentLists(),
     getRecentTracks(),
@@ -37,7 +50,7 @@ export async function getRecentMedia() {
   return { lists: recentLists, tracks: recentTracks };
 }
 
-export async function getRecentLists() {
+async function getRecentLists() {
   const sources = (await db.query.playedMediaLists.findMany({
     orderBy: iDesc(playedMediaLists.lastPlayedAt),
   })) as PlayedMediaList[];
@@ -52,12 +65,12 @@ export async function getRecentLists() {
   });
 
   // Silently remove recently played media lists that no longer exist.
-  Promise.allSettled(errors.map(removePlayedMediaList));
+  Promise.allSettled(errors.map(PlayedListsTracker.remove));
 
   return newRecentList;
 }
 
-export async function getRecentTracks() {
+async function getRecentTracks() {
   const results = await db
     .select({
       ...commonTrackColumns,
@@ -82,52 +95,7 @@ export async function getRecentTracks() {
     imageSource: track.artwork,
   }));
 }
-//#endregion
 
-//#region PATCH Methods
-export async function updatePlayedMediaList({
-  oldSource,
-  newSource,
-}: Record<"oldSource" | "newSource", PlayFromSource>) {
-  return db
-    .update(playedMediaLists)
-    .set(newSource)
-    .where(
-      and(
-        eq(playedMediaLists.id, oldSource.id),
-        eq(playedMediaLists.type, oldSource.type),
-      ),
-    );
-}
-//#endregion
-
-//#region PUT Methods
-export async function addPlayedMediaList(entry: PlayFromSource) {
-  const lastPlayedAt = Date.now();
-  return db
-    .insert(playedMediaLists)
-    .values({ ...entry, lastPlayedAt })
-    .onConflictDoUpdate({
-      target: [playedMediaLists.id, playedMediaLists.type],
-      set: { lastPlayedAt },
-    });
-}
-//#endregion
-
-//#region DELETE Methods
-export async function removePlayedMediaList(entry: PlayFromSource) {
-  return db
-    .delete(playedMediaLists)
-    .where(
-      and(
-        eq(playedMediaLists.id, entry.id),
-        eq(playedMediaLists.type, entry.type),
-      ),
-    );
-}
-//#endregion
-
-//#region Internal Utils
 /** Get a `MediaCardContent` from a source in the recent list. */
 async function getRecentListEntry(source: PlayFromSource) {
   try {

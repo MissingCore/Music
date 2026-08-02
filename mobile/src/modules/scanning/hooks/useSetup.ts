@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import AudioBrowser from "react-native-audio-browser";
 
 import { CAN_SENTRY_REPORT } from "~/env";
-import { addPlayedMediaList } from "~/data/recent/api";
 import { onAppStartUpInit } from "~/initServices";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
@@ -23,6 +22,7 @@ import { useLyricStore } from "~/modules/lyric/core/store";
 
 import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 import { Sentry } from "~/lib/sentry";
+import { PlayedListsTracker } from "~/modules/insights/core/PlayedListsTracker";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
 
@@ -115,7 +115,7 @@ export function useSetup() {
       }
 
       // Ensure the current list is at the top of recently played lists.
-      if (playingFrom) await addPlayedMediaList(playingFrom);
+      if (playingFrom) await PlayedListsTracker.add(playingFrom);
 
       setSetupState("ready");
     })();

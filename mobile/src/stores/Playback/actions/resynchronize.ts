@@ -3,16 +3,13 @@
 
 import AudioBrowser from "react-native-audio-browser";
 
-import {
-  removePlayedMediaList,
-  updatePlayedMediaList,
-} from "~/data/recent/api";
 import { getTrack } from "~/data/track/api";
 import { playbackStore } from "../store";
 import type { PlayFromSource } from "../types";
 import { arePlaybackSourceEqual, getSourceName } from "../utils";
 
 import { applyReplayGainToTrack } from "~/modules/audio/replayGain/core/apply";
+import { PlayedListsTracker } from "~/modules/insights/core/PlayedListsTracker";
 
 /** See if we should revalidate the `activeTrack` value stored in the Playback store. */
 export async function onActiveTrack(args: {
@@ -55,11 +52,11 @@ export async function onRename({
   newSource: PlayFromSource;
 }) {
   try {
-    await updatePlayedMediaList({ oldSource, newSource });
+    await PlayedListsTracker.update({ oldSource, newSource });
   } catch {
     // This means `newSource` already exists in the Recent List, so
     // just delete `oldSource`.
-    await removePlayedMediaList(oldSource);
+    await PlayedListsTracker.remove(oldSource);
   }
 
   const { playingFrom } = playbackStore.getState();

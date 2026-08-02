@@ -17,11 +17,11 @@ import {
   tracks,
 } from "~/db/schema";
 
-import { RECENT_RANGE_MS } from "~/data/recent/api";
 import { Queue } from "~/stores/Playback/actions";
 
 import { ImageDirectory, deleteImage, getImageUri } from "~/lib/file-system";
 import { batch } from "~/utils/promise";
+import { RECENT_RANGE_MS } from "~/modules/insights/core/RecentContentQuerier";
 
 /** Helper functions for cleaning up content stored by the app. */
 export const AppCleanUp = {
