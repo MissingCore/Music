@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useQuery } from "@tanstack/react-query";
-import { eq, gt, max } from "drizzle-orm";
+import { desc, eq, gt, max } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { PlayedMediaList } from "~/db/schema";
@@ -20,7 +20,6 @@ import { getPlaylist } from "~/data/playlist/api";
 import { fromJSONArrayString } from "~/data/utils";
 import { commonTrackColumns, structuredTracksView } from "~/data/views";
 
-import { iDesc } from "~/lib/drizzle";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
 import { RECENT_RANGE_MS } from "./constants";
@@ -50,7 +49,7 @@ async function getRecentMedia() {
 
 async function getRecentLists() {
   const sources = (await db.query.playedMediaLists.findMany({
-    orderBy: iDesc(playedMediaLists.lastPlayedAt),
+    orderBy: desc(playedMediaLists.lastPlayedAt),
   })) as PlayedMediaList[];
 
   const newRecentList: MediaCardContent[] = [];
@@ -84,7 +83,7 @@ async function getRecentTracks() {
     .where(gt(tracksPlayEvents.playedAt, Date.now() - RECENT_RANGE_MS))
     //? To prevent duplicate tracks from being returned.
     .groupBy(tracksPlayEvents.trackId)
-    .orderBy(iDesc(tracksPlayEvents.playedAt));
+    .orderBy(desc(tracksPlayEvents.playedAt));
 
   return results.map((track) => ({
     id: track.id,

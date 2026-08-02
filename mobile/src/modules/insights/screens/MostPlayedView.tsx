@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useQuery } from "@tanstack/react-query";
-import { count, eq } from "drizzle-orm";
+import { count, desc, eq } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -15,7 +15,7 @@ import { commonTrackColumns, structuredTracksView } from "~/data/views";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
-import { getSubqueryFields, iAsc, iDesc } from "~/lib/drizzle";
+import { getSubqueryFields, iAsc } from "~/lib/drizzle";
 import { pickKeys } from "~/utils/object";
 import { FlatList } from "~/components/Base/List";
 import { Divider } from "~/components/Divider";
@@ -119,7 +119,7 @@ async function getMostPlayedTracks() {
     .select(wantedPlayCountColumns)
     .from(aggregatedPlayCountView)
     .orderBy(
-      iDesc(aggregatedPlayCountView.playCount),
+      desc(aggregatedPlayCountView.playCount),
       iAsc(aggregatedPlayCountView.name),
     )
     .limit(100);
