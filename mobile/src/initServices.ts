@@ -1,7 +1,6 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import BackgroundTimer from "@boterop/react-native-background-timer";
 import { toast } from "@missingcore/ui/toast";
 import AsyncStorage from "expo-sqlite/kv-store";
 import type {
@@ -19,13 +18,13 @@ import { getArtist, getArtistsSummary } from "~/data/artist/api";
 import { getArtistsString } from "~/data/artist/utils";
 import { getGenre, getGenresSummary } from "~/data/genre/api";
 import { getPlaylist, getPlaylistsSummary } from "~/data/playlist/api";
-import { addPlayedTrack } from "~/data/recent/api";
 import { deleteTracks, getSortedTracks } from "~/data/track/api";
 import type { CommonTrack } from "~/data/types";
 import { playbackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { preferenceStore } from "~/stores/Preference/store";
 import { sessionStore } from "~/stores/Session/store";
+import { TrackListeningSession } from "./modules/insights/core/TrackListeningSession";
 import { AppCleanUp } from "~/modules/scanning/helpers/cleanup";
 import { router } from "~/navigation/utils/router";
 
@@ -61,11 +60,6 @@ let gaplessPlaybackContext = {
 };
 //#endregion
 
-//#region Play Count Tracking Constants
-let playCountTimout: ReturnType<typeof BackgroundTimer.setTimeout> | null =
-  null;
-//#endregion
-
 //#region Error Handling Constants
 /** Errors which should cause us to "delete" a track. */
 const ValidErrors = ["io-file-not-found", "failed-runtime-check"];
@@ -99,6 +93,7 @@ async function initServices() {
   //#region Media Events
   // This event gets called when `appKilledPlaybackBehavior = "stop-playback-and-remove-notification"`.
   AudioBrowser.handleBeforeServiceKilled(async (permanent) => {
+    TrackListeningSession.finalize();
     await revalidateWidgets({ openApp: true });
     if (permanent) {
       console.warn("[handleBeforeServiceKilled] Running aggressive cleanup...");
@@ -115,8 +110,20 @@ async function initServices() {
   });
 
   // Handle unexpected pauses (ie: disconnecting headphones).
-  AudioBrowser.onPlaybackChanged.addListener((e) => {
-    if (e.state === "paused") playbackStore.setState({ isPlaying: false });
+  AudioBrowser.onPlaybackChanged.addListener(async (e) => {
+    if (e.state === "paused" || e.state === "stopped") {
+      playbackStore.setState({ isPlaying: false });
+      await TrackListeningSession.finalize({ paused: true });
+    } else if (e.state === "loading") {
+      const { repeat, activeTrack } = playbackStore.getState();
+      if (repeat === RepeatModes.REPEAT_ONE && activeTrack) {
+        await TrackListeningSession.finalize();
+        await TrackListeningSession.start(activeTrack.uri);
+      }
+    } else if (e.state === "playing") {
+      playbackStore.setState({ isPlaying: true });
+      await TrackListeningSession.resume();
+    }
   });
 
   AudioBrowser.onProgressUpdated.addListener(async (e) => {
@@ -155,6 +162,7 @@ async function initServices() {
 
   // Called when "Smooth Playback Transition" doesn't trigger.
   AudioBrowser.onQueueEnded.addListener(async () => {
+    await TrackListeningSession.finalize();
     const { playbackDelay } = preferenceStore.getState();
     if (playbackDelay > 0) await bgWait(playbackDelay * 1000);
     await PlaybackControls.next(true); // Prevent updating the repeat setting.
@@ -164,7 +172,7 @@ async function initServices() {
     if (e.index === undefined || e.track?.src === undefined) return;
     const activeTrackUri = decodeURIComponent(e.track.src);
 
-    //* 🧪 Smooth Playback Transition
+    //* Smooth Playback Transition
     try {
       if (e.index !== 0 && gaplessPlaybackContext.nextSnapshot) {
         playbackStore.setState(gaplessPlaybackContext.nextSnapshot);
@@ -183,23 +191,16 @@ async function initServices() {
       nextSnapshot: undefined,
     };
 
-    //* Play Count Tracking
-    const { lastPosition } = playbackStore.getState();
-    if (playCountTimout !== null) BackgroundTimer.clearTimeout(playCountTimout);
-    // Only mark a track as played after we pass the 10s mark. This prevents
-    // the track being marked as "played" if we skip it.
-    if (lastPosition < 10) {
-      playCountTimout = BackgroundTimer.setTimeout(
-        async () => await addPlayedTrack(activeTrackUri),
-        (Math.min(e.track.duration!, 10) - lastPosition) * 1000,
-      );
-    }
+    //* Playback Session Tracking (Play Count + Time)
+    await TrackListeningSession.finalize();
+    await TrackListeningSession.start(activeTrackUri);
 
     await revalidateWidgets();
   });
 
   AudioBrowser.onPlaybackError.addListener(async ({ error: e }) => {
     if (!e) return;
+    TrackListeningSession.reset();
 
     //? We don't know exactly what track caused the error, but we can
     //? infer based on the state of the queue.

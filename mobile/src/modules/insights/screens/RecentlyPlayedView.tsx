@@ -4,13 +4,11 @@
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
-import { RECENT_DAY_RANGE } from "~/data/recent/api";
-import { useRecentlyPlayedMedia } from "~/data/recent/queries";
 import { useHorizontalListLayoutConfig } from "~/hooks/useLayoutConfigs";
 
-import { getMediaLinkContext } from "../utils/router";
-import { useBottomActionsOffset } from "../components/BottomActions/useBottomActions";
-import { PagePlaceholder } from "../components/Placeholder";
+import { getMediaLinkContext } from "~/navigation/utils/router";
+import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
+import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
 import { LegendList } from "~/components/Base/LegendList";
 import { FlatList } from "~/components/Base/List";
@@ -19,6 +17,8 @@ import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
 import { useTrackListPreset } from "~/modules/media/components/Track";
+import { RECENT_DAY_RANGE } from "../core/constants";
+import { useRecentlyPlayedMedia } from "../core/RecentContentQuerier";
 
 // Information about this track list.
 const trackSource = {

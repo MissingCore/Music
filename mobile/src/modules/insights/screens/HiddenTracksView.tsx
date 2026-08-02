@@ -11,6 +11,11 @@ import { db } from "~/db";
 import type { HiddenTrack } from "~/db/schema";
 import { hiddenTracks } from "~/db/schema";
 
+import {
+  ContentPlaceholder,
+  PagePlaceholder,
+} from "~/navigation/components/Placeholder";
+
 import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
 import { FlatList } from "~/components/Base/List";
@@ -18,10 +23,6 @@ import { Divider } from "~/components/Divider";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { SegmentedList } from "~/components/List/Segmented";
 import { Em, StyledText } from "~/components/Typography/StyledText";
-import {
-  ContentPlaceholder,
-  PagePlaceholder,
-} from "../../components/Placeholder";
 
 export default function HiddenTracks() {
   const { isPending, data } = useHiddenTracks();
@@ -168,7 +169,7 @@ async function getHiddenTracks() {
   });
 }
 
-const queryKey = ["settings", "hidden-tracks"];
+const queryKey = ["insights", "hidden-tracks"];
 
 function useHiddenTracks() {
   return useQuery({

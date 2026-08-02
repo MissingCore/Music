@@ -120,9 +120,7 @@ export const tracks = sqliteTable("tracks", {
   editedMetadata: integer(),
   /** @deprecated Use dedicated `hiddenTracks` table. */
   hiddenAt: integer(),
-  lastPlayedAt: integer().notNull().default(-1),
 
-  playCount: integer().notNull().default(0),
   parentFolder: text().generatedAlwaysAs(
     // Ref: https://stackoverflow.com/a/38330814
     (): SQL => sql`rtrim(${tracks.uri}, replace(${tracks.uri}, '/', ''))`,
@@ -131,6 +129,7 @@ export const tracks = sqliteTable("tracks", {
 
 export const tracksRelations = relations(tracks, ({ one, many }) => ({
   album: one(albums, { fields: [tracks.albumId], references: [albums.id] }),
+  tracksPlayEvents: many(tracksPlayEvents),
   tracksToArtists: many(tracksToArtists),
   tracksToGenres: many(tracksToGenres),
   tracksToLyrics: one(tracksToLyrics),
@@ -410,6 +409,31 @@ export const hashedImages = sqliteTable("hashed_images", {
    */
   uri: text().notNull(),
 });
+//#endregion
+
+//#region Insights
+export const tracksPlayEvents = sqliteTable("tracks_play_events", {
+  id: text()
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  trackId: text()
+    .notNull()
+    .references(() => tracks.id, { onDelete: "cascade" }),
+  // Stores the time we played this track in `ms` since epoch.
+  playedAt: integer().notNull(),
+  // Stores the time we played this track in seconds.
+  playTime: integer().notNull(),
+});
+
+export const tracksPlayEventsRelations = relations(
+  tracksPlayEvents,
+  ({ one }) => ({
+    track: one(tracks, {
+      fields: [tracksPlayEvents.trackId],
+      references: [tracks.id],
+    }),
+  }),
+);
 //#endregion
 
 //#region Types
