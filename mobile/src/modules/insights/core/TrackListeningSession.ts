@@ -71,6 +71,15 @@ function createTrackListeningSession() {
       const { eventId, trackId, playedAt } = session;
       const { elapsedTime, nextTime } = derivePlayTimes(session);
 
+      //? Reset `session` early to prevent weird scenarios.
+      if (paused) {
+        hasPaused = true;
+        session.playTime = nextTime;
+        session.startedAt = Date.now();
+      } else {
+        reset();
+      }
+
       if (nextTime > MIN_PLAY_TIME) {
         //? If `eventId` is defined, we just want to add the elapsed time
         //? to the existing value.
@@ -91,14 +100,6 @@ function createTrackListeningSession() {
         } catch (err) {
           console.error("[TrackListeningSession] Failed to record event.", err);
         }
-      }
-
-      if (paused) {
-        hasPaused = true;
-        session.playTime = nextTime;
-        session.startedAt = Date.now();
-      } else {
-        reset();
       }
     },
 
