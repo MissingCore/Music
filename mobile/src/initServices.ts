@@ -123,6 +123,12 @@ async function initServices() {
     if (e.state === "paused" || e.state === "stopped") {
       playbackStore.setState({ isPlaying: false });
       await CurrentPlaybackSession.finalize({ paused: true });
+    } else if (e.state === "loading") {
+      const { repeat, activeTrack } = playbackStore.getState();
+      if (repeat === RepeatModes.REPEAT_ONE && activeTrack) {
+        await CurrentPlaybackSession.finalize();
+        await CurrentPlaybackSession.start(activeTrack.uri);
+      }
     } else if (e.state === "playing") {
       playbackStore.setState({ isPlaying: true });
       await CurrentPlaybackSession.resume();
