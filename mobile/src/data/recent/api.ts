@@ -1,11 +1,11 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { and, eq, gt } from "drizzle-orm";
+import { and, eq, gt, max } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { PlayedMediaList } from "~/db/schema";
-import { playedMediaLists, tracks } from "~/db/schema";
+import { playedMediaLists, tracks, tracksPlayEvents } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 import type { PlayFromSource } from "~/stores/Playback/types";
@@ -59,10 +59,21 @@ export async function getRecentLists() {
 
 export async function getRecentTracks() {
   const results = await db
-    .select(commonTrackColumns)
-    .from(structuredTracksView)
-    .where(gt(structuredTracksView.lastPlayedAt, Date.now() - RECENT_RANGE_MS))
-    .orderBy(iDesc(structuredTracksView.lastPlayedAt));
+    .select({
+      ...commonTrackColumns,
+      //? Ensures only the latest entry is returned.
+      //?   - https://stackoverflow.com/a/71924314
+      playedAt: max(tracksPlayEvents.playedAt),
+    })
+    .from(tracksPlayEvents)
+    .innerJoin(
+      structuredTracksView,
+      eq(tracksPlayEvents.trackId, structuredTracksView.id),
+    )
+    .where(gt(tracksPlayEvents.playedAt, Date.now() - RECENT_RANGE_MS))
+    //? To prevent duplicate tracks from being returned.
+    .groupBy(tracksPlayEvents.trackId)
+    .orderBy(iDesc(tracksPlayEvents.playedAt));
 
   return results.map((track) => ({
     id: track.id,
