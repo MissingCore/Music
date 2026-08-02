@@ -10,11 +10,11 @@ import { playbackStore } from "~/stores/Playback/store";
 
 type ListeningSession = {
   trackId: string;
-  /** When we recorded as first playing the track. */
+  /** When we recorded as first playing the track in `ms` since epoch. */
   playedAt: number;
-  /** When we have started/resumed the given session. */
+  /** When we have started/resumed the given session in `ms` since epoch. */
   startedAt: number;
-  /** How long we played this track for so far. */
+  /** How long we played this track for so far in seconds. */
   playTime: number;
   eventId?: string;
 };

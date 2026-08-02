@@ -419,7 +419,9 @@ export const tracksPlayEvents = sqliteTable("tracks_play_events", {
   trackId: text()
     .notNull()
     .references(() => tracks.id, { onDelete: "cascade" }),
+  // Stores the time we played this track in `ms` since epoch.
   playedAt: integer().notNull(),
+  // Stores the time we played this track in seconds.
   playTime: integer().notNull(),
 });
 
