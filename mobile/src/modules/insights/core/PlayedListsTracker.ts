@@ -31,6 +31,10 @@ export const PlayedListsTracker = {
       );
   },
 
+  /**
+   * Replaces entry based off of `oldSource` with `newSource`. Throws if
+   * `newSource` already exists.
+   */
   update: async (args: {
     oldSource: PlayFromSource;
     newSource: PlayFromSource;
