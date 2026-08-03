@@ -71,7 +71,7 @@ function RadioChipField(props: {
   return (
     <Wrapper>
       {props.labelKey ? (
-        <TEm textKey={props.labelKey} className="mb-4 text-sm" />
+        <TEm textKey={props.labelKey} className="mb-2 text-sm" />
       ) : null}
       <View accessibilityRole="radiogroup" className="flex-row flex-wrap gap-2">
         {props.children}
