@@ -7,7 +7,8 @@ export type MigrationOption =
   | "multi-artist"
   | "favorites"
   | "onboarding-flow"
-  | "clear-image-cache";
+  | "clear-image-cache"
+  | "waveform-slider";
 
 /**
  * History of data migrations due to "breaking" changes.
@@ -31,8 +32,6 @@ export const MigrationHistory: Record<
     version: "v3.0.0-rc.0",
     changes: ["onboarding-flow", "hidden-tracks", "multi-artist", "favorites"],
   },
-  4: {
-    version: "v3.4.0-rc.0",
-    changes: ["clear-image-cache"],
-  },
+  4: { version: "v3.4.0-rc.0", changes: ["clear-image-cache"] },
+  5: { version: "v3.5.0-rc.0", changes: ["waveform-slider"] },
 };
