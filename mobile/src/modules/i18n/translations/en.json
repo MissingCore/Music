@@ -175,7 +175,9 @@
         "plain": "Plain",
         "vinyl": "Vinyl",
         "vinylOld": "Vinyl (Legacy)",
-        "none": "None"
+        "none": "None",
+
+        "alternativeInfoLayout": "Alternative Info Layout"
       }
     },
     "seekbar": {

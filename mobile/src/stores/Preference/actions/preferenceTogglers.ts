@@ -13,6 +13,7 @@ import { playbackStore } from "../../Playback/store";
 import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 
 type ToggleableKey =
+  | "alternativeInfoLayout"
   | "atmosphereEffect"
   | "checkForUpdates"
   | "dragClearPlayback"

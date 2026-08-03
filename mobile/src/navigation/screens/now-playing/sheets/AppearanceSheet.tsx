@@ -2,11 +2,16 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { PreferenceSetters } from "~/stores/Preference/actions";
+import {
+  PreferenceSetters,
+  PreferenceTogglers,
+} from "~/stores/Preference/actions";
 
 import { RadioChipField } from "~/components/Form/Radio";
 import { DetachedSheet } from "~/components/Sheet";
+import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
+import { SwitchInput } from "~/components/UI/Switch";
 import {
   NowPlayingDesignOptions,
   SeekbarDesignOptions,
@@ -14,10 +19,23 @@ import {
 
 export function AppearanceSheet(props: { ref: TrueSheetRef }) {
   const nowPlayingDesign = usePreferenceStore((s) => s.nowPlayingDesign);
+  const alternativeInfoLayout = usePreferenceStore(
+    (s) => s.alternativeInfoLayout,
+  );
   const seekbarDesign = usePreferenceStore((s) => s.seekbarDesign);
 
   return (
     <DetachedSheet ref={props.ref}>
+      <SheetLabelAction
+        labelKey="feat.nowPlayingDesign.extra.alternativeInfoLayout"
+        Trailing={
+          <SwitchInput
+            enabled={alternativeInfoLayout}
+            onPress={PreferenceTogglers.toggleKey("alternativeInfoLayout")}
+          />
+        }
+      />
+
       <RadioChipField labelKey="feat.artwork.title">
         {NowPlayingDesignOptions.map((design) => (
           <RadioChipField.Item
@@ -28,6 +46,7 @@ export function AppearanceSheet(props: { ref: TrueSheetRef }) {
           />
         ))}
       </RadioChipField>
+
       <RadioChipField labelKey="feat.seekbar.title">
         {SeekbarDesignOptions.map((design) => (
           <RadioChipField.Item

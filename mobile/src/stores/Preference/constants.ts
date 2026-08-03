@@ -76,6 +76,8 @@ export interface PreferenceStore {
   nowPlayingGestures: boolean;
   /** Delay before next track is naturally played. */
   playbackDelay: number;
+  /** If we use a different layout for the "info" row on the Now Playing screen. */
+  alternativeInfoLayout: boolean;
   /** Type of seekbar rendered on Now Playing screen. */
   seekbarDesign: SeekbarDesign;
 

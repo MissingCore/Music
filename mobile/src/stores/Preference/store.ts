@@ -103,6 +103,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     nowPlayingArtworkControls: false,
     nowPlayingGestures: false,
     playbackDelay: 0,
+    alternativeInfoLayout: false,
     seekbarDesign: "normal",
 
     quickScroll: true,
