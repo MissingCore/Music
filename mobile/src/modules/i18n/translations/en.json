@@ -174,7 +174,8 @@
       "extra": {
         "plain": "Plain",
         "vinyl": "Vinyl",
-        "vinylOld": "Vinyl (Legacy)"
+        "vinylOld": "Vinyl (Legacy)",
+        "none": "None"
       }
     },
     "seekbar": {

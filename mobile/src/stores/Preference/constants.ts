@@ -9,7 +9,12 @@ import type {
 import type { Tab } from "./types";
 
 //#region Now Playing Design
-export const NowPlayingDesignOptions = ["plain", "vinyl", "vinylOld"] as const;
+export const NowPlayingDesignOptions = [
+  "plain",
+  "vinyl",
+  "vinylOld",
+  "none",
+] as const;
 
 export type NowPlayingDesign = (typeof NowPlayingDesignOptions)[number];
 //#endregion
