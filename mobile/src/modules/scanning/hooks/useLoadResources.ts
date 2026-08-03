@@ -21,7 +21,7 @@ import { createFontDirectory } from "~/modules/customization/font/core/data";
 export function useLoadResources() {
   const { success: dbSuccess, error: dbError } = useMigrations(db, migrations);
   useDevOnly(expoSQLiteDB);
-  const setupCompleted = useSetup();
+  const setupCompleted = useSetup(dbSuccess);
   const [migrationCompleted, setMigrationCompleted] = useState(false);
   const [migrationError, setMigrationError] = useState<Error>();
 

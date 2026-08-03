@@ -1,12 +1,4 @@
 PRAGMA foreign_keys=OFF;--> statement-breakpoint
-CREATE TABLE `tracks_play_events` (
-	`id` text PRIMARY KEY NOT NULL,
-	`track_id` text NOT NULL,
-	`played_at` integer NOT NULL,
-	`play_time` integer NOT NULL,
-	FOREIGN KEY (`track_id`) REFERENCES `tracks`(`id`) ON UPDATE no action ON DELETE cascade
-);
---> statement-breakpoint
 CREATE TABLE `__new_albums_to_artists` (
 	`album_id` text NOT NULL,
 	`artist_name` text NOT NULL,
@@ -48,6 +40,14 @@ CREATE TABLE `__new_tracks` (
 INSERT INTO `__new_tracks`("id", "name", "raw_artist_name", "album_id", "disc", "track", "year", "duration", "format", "bitrate", "sample_rate", "size", "uri", "modification_time", "discover_time", "embedded_artwork", "alt_artwork", "is_favorite", "fetched_art", "edited_metadata", "hidden_at") SELECT "id", "name", "raw_artist_name", "album_id", "disc", "track", "year", "duration", "format", "bitrate", "sample_rate", "size", "uri", "modification_time", "discover_time", "embedded_artwork", "alt_artwork", "is_favorite", "fetched_art", "edited_metadata", "hidden_at" FROM `tracks`;--> statement-breakpoint
 DROP TABLE `tracks`;--> statement-breakpoint
 ALTER TABLE `__new_tracks` RENAME TO `tracks`;--> statement-breakpoint
+CREATE TABLE `tracks_play_events` (
+	`id` text PRIMARY KEY NOT NULL,
+	`track_id` text NOT NULL,
+	`played_at` integer NOT NULL,
+	`play_time` integer NOT NULL,
+	FOREIGN KEY (`track_id`) REFERENCES `tracks`(`id`) ON UPDATE no action ON DELETE cascade
+);
+--> statement-breakpoint
 CREATE TABLE `__new_tracks_to_artists` (
 	`track_id` text NOT NULL,
 	`artist_name` text NOT NULL,

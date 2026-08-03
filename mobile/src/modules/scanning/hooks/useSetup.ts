@@ -4,6 +4,8 @@
 import { useEffect, useState } from "react";
 import AudioBrowser from "react-native-audio-browser";
 
+import { expoSQLiteDB } from "~/db";
+
 import { CAN_SENTRY_REPORT } from "~/env";
 import { onAppStartUpInit } from "~/initServices";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
@@ -33,7 +35,7 @@ type SetupState = "idle" | "pending" | "ready";
  * sure those that rely on AudioBrowser to be initialized are hydrated
  * after AudioBrowser is initialized.
  */
-export function useSetup() {
+export function useSetup(ready = false) {
   const [setupState, setSetupState] = useState<SetupState>("idle");
   const playbackHydrated = usePlaybackStore((s) => s._hasHydrated);
   const preferenceHydrated = usePreferenceStore((s) => s._hasHydrated);
@@ -42,6 +44,7 @@ export function useSetup() {
 
   useEffect(() => {
     if (
+      !ready ||
       !playbackHydrated ||
       !preferenceHydrated ||
       !equalizerHydrated ||
@@ -53,6 +56,11 @@ export function useSetup() {
 
     (async () => {
       setSetupState("pending");
+
+      //? Enable foreign key constraint after we're sure Drizzle migrations
+      //? have completed.
+      await expoSQLiteDB.execAsync("PRAGMA foreign_keys = ON;");
+
       await onAppStartUpInit;
 
       // Load custom fonts. Done in a try-catch due to Sentry reporting error
@@ -120,6 +128,7 @@ export function useSetup() {
       setSetupState("ready");
     })();
   }, [
+    ready,
     playbackHydrated,
     preferenceHydrated,
     equalizerHydrated,
