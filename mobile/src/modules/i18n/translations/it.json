@@ -151,6 +151,17 @@
         "vinylOld": "Vinile (legacy)"
       }
     },
+    "seekbar": {
+      "title": null,
+      "extra": {
+        "normal": "$t(feat.equalizer.extra.normal)",
+        "waveform": null,
+
+        "waveformPurgeCache": null,
+        "waveformPurgeCacheBrief": null,
+        "waveformPurgeCacheToast": null
+      }
+    },
     "quickScroll": {
       "title": null,
       "brief": null
@@ -325,14 +336,6 @@
         "start": null,
         "stopTime": null,
         "extend": null
-      }
-    },
-    "waveformSlider": {
-      "title": null,
-      "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
       }
     },
     "code": {

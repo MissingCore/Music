@@ -104,7 +104,7 @@ export function PlaybackOptionsSheet(props: {
             }
           />
           <SheetLabelAction
-            labelKey="feat.waveformSlider.title"
+            labelKey="feat.seekbar.extra.waveform"
             Trailing={
               <SwitchInput
                 enabled={waveformSlider}

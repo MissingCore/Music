@@ -151,6 +151,17 @@
         "vinylOld": "Винил (устаревший)"
       }
     },
+    "seekbar": {
+      "title": null,
+      "extra": {
+        "normal": "$t(feat.equalizer.extra.normal)",
+        "waveform": null,
+
+        "waveformPurgeCache": "Очистить кэш аудиограмм",
+        "waveformPurgeCacheBrief": "Освобождает место для пересчета аудиограмм воспроизведенных треков.",
+        "waveformPurgeCacheToast": "Кэш аудиограмм очищен."
+      }
+    },
     "quickScroll": {
       "title": "Быстрая прокрутка",
       "brief": "Отображать полосу прокрутки в стиле Nothing на поддерживаемых устройствах."
@@ -325,14 +336,6 @@
         "start": "Начать",
         "stopTime": "Музыка перестанет играть в {{- time}}.",
         "extend": "Продлить таймер до завершения трека"
-      }
-    },
-    "waveformSlider": {
-      "title": "Ползунок аудиограммы",
-      "extra": {
-        "purgeCache": "Очистить кэш аудиограмм",
-        "purgeCacheBrief": "Освобождает место для пересчета аудиограмм воспроизведенных треков.",
-        "purgeCacheToast": "Кэш аудиограмм очищен."
       }
     },
     "code": {

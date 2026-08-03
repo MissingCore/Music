@@ -151,6 +151,17 @@
         "vinylOld": "Vinyl (Alt)"
       }
     },
+    "seekbar": {
+      "title": null,
+      "extra": {
+        "normal": "$t(feat.equalizer.extra.normal)",
+        "waveform": null,
+
+        "waveformPurgeCache": "Zwischengespeicherte Wellenformen löschen",
+        "waveformPurgeCacheBrief": "Gibt Speicherplatz frei, um die Wellenformen der abgespielten Spuren neu zu berechnen.",
+        "waveformPurgeCacheToast": "Wellenform-Cache gelöscht."
+      }
+    },
     "quickScroll": {
       "title": "Schnell scrollen",
       "brief": "Auf unterstützten Bildschirmen eine Scrollleiste im Nothing-Stil anzeigen."
@@ -325,14 +336,6 @@
         "start": "Start",
         "stopTime": "Wiedergabe stoppt um {{- time}}.",
         "extend": "Verlängerter Timer bis zum Ende des Liedes."
-      }
-    },
-    "waveformSlider": {
-      "title": "Slider in Wellenform",
-      "extra": {
-        "purgeCache": "Zwischengespeicherte Wellenformen löschen",
-        "purgeCacheBrief": "Gibt Speicherplatz frei, um die Wellenformen der abgespielten Spuren neu zu berechnen.",
-        "purgeCacheToast": "Wellenform-Cache gelöscht."
       }
     },
     "code": {

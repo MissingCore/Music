@@ -151,6 +151,17 @@
         "vinylOld": "Winyl (Poprzedni)"
       }
     },
+    "seekbar": {
+      "title": null,
+      "extra": {
+        "normal": "$t(feat.equalizer.extra.normal)",
+        "waveform": null,
+
+        "waveformPurgeCache": "Wyczyść dane dla wizualizacji",
+        "waveformPurgeCacheBrief": "Zwalnia pamięć i wymusza ponowne obliczenia dla wizualizacji fal dźwiękowych.",
+        "waveformPurgeCacheToast": "Dane wizualizacji fal dźwiękowych zostały wyczyszczone."
+      }
+    },
     "quickScroll": {
       "title": "Szybkie przewijanie",
       "brief": "Pokazuj na wspieranych zakładkach scrollbar w stylu Nothing."
@@ -325,14 +336,6 @@
         "start": "Start",
         "stopTime": "Odtwarzanie zostanie zatrzymane o {{- time}}.",
         "extend": "Przedłuż czas do końca utworu."
-      }
-    },
-    "waveformSlider": {
-      "title": "Pasek przewijania z falami dźwiękowymi",
-      "extra": {
-        "purgeCache": "Wyczyść dane dla wizualizacji",
-        "purgeCacheBrief": "Zwalnia pamięć i wymusza ponowne obliczenia dla wizualizacji fal dźwiękowych.",
-        "purgeCacheToast": "Dane wizualizacji fal dźwiękowych zostały wyczyszczone."
       }
     },
     "code": {

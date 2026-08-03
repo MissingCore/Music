@@ -151,6 +151,17 @@
         "vinylOld": "Vinyl (Lama)"
       }
     },
+    "seekbar": {
+      "title": null,
+      "extra": {
+        "normal": "$t(feat.equalizer.extra.normal)",
+        "waveform": null,
+
+        "waveformPurgeCache": "Bersihkan Tembolok Waveform",
+        "waveformPurgeCacheBrief": "Bebaskan ruang penyimpanan untuk merekalkulasi waveform dari pemutaran trek.",
+        "waveformPurgeCacheToast": "Tembolok waveform dibersihkan."
+      }
+    },
     "quickScroll": {
       "title": "Gulir Cepat",
       "brief": "Tampilkan bilah gulir Nothing-styled di layar yang mendukung."
@@ -325,14 +336,6 @@
         "start": "Mulai",
         "stopTime": "Audio akan berhenti memutar di {{- time}}.",
         "extend": "Tambah timer hingga trek berhenti."
-      }
-    },
-    "waveformSlider": {
-      "title": "Slider Waveform",
-      "extra": {
-        "purgeCache": "Bersihkan Tembolok Waveform",
-        "purgeCacheBrief": "Bebaskan ruang penyimpanan untuk merekalkulasi waveform dari pemutaran trek.",
-        "purgeCacheToast": "Tembolok waveform dibersihkan."
       }
     },
     "code": {

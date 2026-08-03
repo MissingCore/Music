@@ -177,6 +177,17 @@
         "vinylOld": "Vinyl (Legacy)"
       }
     },
+    "seekbar": {
+      "title": "Seekbar",
+      "extra": {
+        "normal": "$t(feat.equalizer.extra.normal)",
+        "waveform": "Waveform",
+
+        "waveformPurgeCache": "Purge Cached Waveforms",
+        "waveformPurgeCacheBrief": "Frees up storage to recalculate the waveforms of played tracks.",
+        "waveformPurgeCacheToast": "Waveform cache cleared."
+      }
+    },
     "quickScroll": {
       "title": "Quick Scroll",
       "brief": "Show Nothing-styled scrollbar on supported screens."
@@ -351,14 +362,6 @@
         "start": "Start",
         "stopTime": "Audio will stop playing at {{- time}}.",
         "extend": "Extend timer until track finishes."
-      }
-    },
-    "waveformSlider": {
-      "title": "Waveform Slider",
-      "extra": {
-        "purgeCache": "Purge Cached Waveforms",
-        "purgeCacheBrief": "Frees up storage to recalculate the waveforms of played tracks.",
-        "purgeCacheToast": "Waveform cache cleared."
       }
     },
     "code": {

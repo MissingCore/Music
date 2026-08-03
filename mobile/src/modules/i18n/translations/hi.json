@@ -151,6 +151,17 @@
         "vinylOld": "विनाइल (लीगेसी)"
       }
     },
+    "seekbar": {
+      "title": null,
+      "extra": {
+        "normal": "$t(feat.equalizer.extra.normal)",
+        "waveform": null,
+
+        "waveformPurgeCache": "कैश्ड वेवफॉर्म्स को हटाएँ",
+        "waveformPurgeCacheBrief": "यह स्टोरेज को मुक्त करता है ताकि खेले गए ट्रैकों के वेवफॉर्म्स को फिर से गणना किया जा सके।",
+        "waveformPurgeCacheToast": "वेवफॉर्म कैश साफ़ किया गया।"
+      }
+    },
     "quickScroll": {
       "title": "त्वरित स्क्रॉल",
       "brief": "सपोर्टेड स्क्रीन पर Nothing स्टाइल वाली स्क्रॉलबार दिखाएँ।"
@@ -325,14 +336,6 @@
         "start": "शुरू करें",
         "stopTime": "ऑडियो {{- time}} पर रुक जाएगा।",
         "extend": "ट्रैक खत्म होने तक टाइमर बढ़ाएँ।"
-      }
-    },
-    "waveformSlider": {
-      "title": "वेवफॉर्म स्लाइडर",
-      "extra": {
-        "purgeCache": "कैश्ड वेवफॉर्म्स को हटाएँ",
-        "purgeCacheBrief": "यह स्टोरेज को मुक्त करता है ताकि खेले गए ट्रैकों के वेवफॉर्म्स को फिर से गणना किया जा सके।",
-        "purgeCacheToast": "वेवफॉर्म कैश साफ़ किया गया।"
       }
     },
     "code": {
