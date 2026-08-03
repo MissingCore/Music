@@ -58,7 +58,10 @@ export function EqualizerSettings() {
             ))}
           </View>
 
-          <View className="flex-row flex-wrap gap-2">
+          <View
+            accessibilityRole="radiogroup"
+            className="flex-row flex-wrap gap-2"
+          >
             {eqPresets.map((preset) => (
               <RadioChipField
                 key={preset}
