@@ -58,12 +58,9 @@ export function EqualizerSettings() {
             ))}
           </View>
 
-          <View
-            accessibilityRole="radiogroup"
-            className="flex-row flex-wrap gap-2"
-          >
+          <RadioChipField>
             {eqPresets.map((preset) => (
-              <RadioChipField
+              <RadioChipField.Item
                 key={preset}
                 labelKey={`feat.equalizer.extra.${preset}`}
                 selected={activePreset === preset}
@@ -71,7 +68,7 @@ export function EqualizerSettings() {
                 disabled={!currEQ?.enabled}
               />
             ))}
-          </View>
+          </RadioChipField>
         </View>
       </SegmentedList.CustomItem>
     </SegmentedList>

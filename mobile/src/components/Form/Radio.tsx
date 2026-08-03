@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import type { ParseKeys } from "i18next";
-import { memo } from "react";
+import { Fragment, memo, useMemo } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View } from "react-native";
 
@@ -60,13 +60,31 @@ export const RadioField = memo(function RadioField(props: RadioFieldProps) {
 //#endregion
 
 //#region Chip
-type RadioChipProps = Omit<RadioFieldProps, "children"> & {
-  labelKey: ParseKeys;
-  disabled?: boolean;
-};
+function RadioChipField(props: {
+  labelKey?: ParseKeys;
+  children: React.ReactNode;
+}) {
+  const Wrapper = useMemo(
+    () => (props.labelKey ? View : Fragment),
+    [props.labelKey],
+  );
+  return (
+    <Wrapper>
+      {props.labelKey ? (
+        <TStyledText textKey={props.labelKey} className="mb-2" />
+      ) : null}
+      <View accessibilityRole="radiogroup" className="flex-row flex-wrap gap-2">
+        {props.children}
+      </View>
+    </Wrapper>
+  );
+}
 
-export const RadioChipField = memo(function RadioChipField(
-  props: RadioChipProps,
+function RadioChipFieldItem(
+  props: Omit<RadioFieldProps, "children"> & {
+    labelKey: ParseKeys;
+    disabled?: boolean;
+  },
 ) {
   return (
     <Button
@@ -85,5 +103,9 @@ export const RadioChipField = memo(function RadioChipField(
       />
     </Button>
   );
-});
+}
+
+RadioChipField.Item = memo(RadioChipFieldItem);
+
+export { RadioChipField };
 //#endregion
