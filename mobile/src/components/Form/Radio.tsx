@@ -11,7 +11,7 @@ import { Icon } from "~/resources/icons";
 import { cn } from "~/lib/style";
 import { Button } from "./Button";
 import { Ripple } from "../Base/Pressable";
-import { TStyledText } from "../Typography/StyledText";
+import { TEm, TStyledText } from "../Typography/StyledText";
 
 //#region Base
 export function Radio(props: {
@@ -71,7 +71,7 @@ function RadioChipField(props: {
   return (
     <Wrapper>
       {props.labelKey ? (
-        <TStyledText textKey={props.labelKey} className="mb-2" />
+        <TEm textKey={props.labelKey} className="mb-4 text-sm" />
       ) : null}
       <View accessibilityRole="radiogroup" className="flex-row flex-wrap gap-2">
         {props.children}

@@ -399,6 +399,7 @@
     },
 
     "artwork": {
+      "title": "Artwork",
       "extra": {
         "change": "Change Artwork",
         "remove": "Remove Artwork",

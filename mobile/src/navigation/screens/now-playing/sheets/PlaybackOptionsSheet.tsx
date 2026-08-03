@@ -117,7 +117,7 @@ export function PlaybackOptionsSheet(props: {
             <SegmentedList.Item
               labelText="feat.appearance.title"
               onPress={presentAppearanceSheet}
-              Leading={<Icon name="activity-zone" />}
+              Leading={<Icon name="format-paint" />}
             />
             <SegmentedList.Item
               labelText="feat.audioEffects.title"
