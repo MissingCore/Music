@@ -58,6 +58,14 @@ You can customize the theme the app uses (light/dark/system). As of `v3.1.0`, yo
 }
 ```
 
+### Now Playing
+
+We support various customizations on the "Now Playing" screen such as:
+
+- **Alternative Info Layout:** Changes the order of the Metadata + Favorite + Info from `[Metadata] [Favorite] [Info]` to `[Favorite] [Metadata] [Info]`.
+- **Artwork Design:** `Plain`, `Vinyl`, `Vinyl (Legacy)`, `None`
+- **Seekbar Design:** `Normal`, [`Waveform` (Experimental)](./experimental-features.md#waveform-slider)
+
 ### [🧪 Experimental] Opaque Colors
 
 We support opaque colors for any color picker input (ie: Custom Themes, Widget Customization) after enabling the `Opaque Colors` experimental setting.
