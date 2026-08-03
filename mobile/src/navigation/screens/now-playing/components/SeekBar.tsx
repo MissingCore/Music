@@ -26,7 +26,9 @@ interface SeekBarProps {
 }
 
 export function SeekBar(props: SeekBarProps) {
-  const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
+  const waveformSlider = usePreferenceStore(
+    (s) => s.seekbarDesign === "waveform",
+  );
   const samples = useWaveformSamples(props.id, props.uri);
   const timedPosition = useAtomValue(animatedPositionAtom);
   const setIsSeeking = useSetAtom(isSeekingAtom);

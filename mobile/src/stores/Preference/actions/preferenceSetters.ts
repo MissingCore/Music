@@ -6,7 +6,7 @@ import { Uniwind } from "uniwind";
 
 import i18next from "~/modules/i18n";
 import { preferenceStore } from "../store";
-import type { NowPlayingDesign } from "../constants";
+import type { NowPlayingDesign, SeekbarDesign } from "../constants";
 import {
   MinAlbumLengthConfig,
   PlaybackDelayConfig,
@@ -14,6 +14,7 @@ import {
 } from "../utils";
 import { playbackStore } from "../../Playback/store";
 import { getSourceName } from "../../Playback/utils";
+import { findAndSetCachedWaveform } from "../../Session/actions";
 
 import { clearAllQueries } from "~/lib/react-query";
 import type { Font } from "~/modules/customization/font/core/constants";
@@ -56,6 +57,15 @@ export function setNowPlayingDesign(nowPlayingDesign: NowPlayingDesign) {
 
 export function setPrimaryFont(primaryFont: Font) {
   preferenceStore.setState({ primaryFont });
+}
+
+export async function setSeekbarDesign(seekbarDesign: SeekbarDesign) {
+  preferenceStore.setState({ seekbarDesign });
+
+  if (seekbarDesign === "waveform") {
+    const { activeTrack } = playbackStore.getState();
+    if (activeTrack) await findAndSetCachedWaveform(activeTrack.id);
+  }
 }
 
 export async function setTheme(theme: DefaultTheme | (string & {})) {

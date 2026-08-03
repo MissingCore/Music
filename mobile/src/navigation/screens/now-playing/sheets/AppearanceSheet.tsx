@@ -7,10 +7,15 @@ import { PreferenceSetters } from "~/stores/Preference/actions";
 import { RadioChipField } from "~/components/Form/Radio";
 import { DetachedSheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { NowPlayingDesignOptions } from "~/stores/Preference/constants";
+import {
+  NowPlayingDesignOptions,
+  SeekbarDesignOptions,
+} from "~/stores/Preference/constants";
 
 export function AppearanceSheet(props: { ref: TrueSheetRef }) {
   const nowPlayingDesign = usePreferenceStore((s) => s.nowPlayingDesign);
+  const seekbarDesign = usePreferenceStore((s) => s.seekbarDesign);
+
   return (
     <DetachedSheet ref={props.ref}>
       <RadioChipField labelKey="feat.artwork.title">
@@ -20,6 +25,16 @@ export function AppearanceSheet(props: { ref: TrueSheetRef }) {
             labelKey={`feat.nowPlayingDesign.extra.${design}`}
             selected={nowPlayingDesign === design}
             onSelect={() => PreferenceSetters.setNowPlayingDesign(design)}
+          />
+        ))}
+      </RadioChipField>
+      <RadioChipField labelKey="feat.seekbar.title">
+        {SeekbarDesignOptions.map((design) => (
+          <RadioChipField.Item
+            key={design}
+            labelKey={`feat.seekbar.extra.${design}`}
+            selected={seekbarDesign === design}
+            onSelect={() => PreferenceSetters.setSeekbarDesign(design)}
           />
         ))}
       </RadioChipField>

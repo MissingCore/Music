@@ -9,7 +9,6 @@ import i18next from "~/modules/i18n";
 
 import { preferenceStore } from "../store";
 import { playbackStore } from "../../Playback/store";
-import { findAndSetCachedWaveform } from "../../Session/actions";
 
 import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 
@@ -67,12 +66,4 @@ export function toggleQueueAwareNext() {
     queueAwareNext: !prev.queueAwareNext,
   }));
   playbackStore.setState({ numQueuedNext: 0 });
-}
-
-export async function toggleWaveformSlider() {
-  const nextState = !preferenceStore.getState().waveformSlider;
-  preferenceStore.setState({ waveformSlider: nextState });
-
-  const { activeTrack } = playbackStore.getState();
-  if (activeTrack) await findAndSetCachedWaveform(activeTrack.id);
 }

@@ -14,6 +14,12 @@ export const NowPlayingDesignOptions = ["plain", "vinyl", "vinylOld"] as const;
 export type NowPlayingDesign = (typeof NowPlayingDesignOptions)[number];
 //#endregion
 
+//#region Seekbar Design
+export const SeekbarDesignOptions = ["normal", "waveform"] as const;
+
+export type SeekbarDesign = (typeof SeekbarDesignOptions)[number];
+//#endregion
+
 //#region Store
 export interface PreferenceStore {
   /** Determines if the store has been hydrated from AsyncStorage. */
@@ -65,6 +71,8 @@ export interface PreferenceStore {
   nowPlayingGestures: boolean;
   /** Delay before next track is naturally played. */
   playbackDelay: number;
+  /** Type of seekbar rendered on Now Playing screen. */
+  seekbarDesign: SeekbarDesign;
 
   /** Show functional Nothing-styled scrollbar on supported screens. */
   quickScroll: boolean;
@@ -113,8 +121,6 @@ export interface PreferenceStore {
    * added track. Tracking resets after app session ends.
    */
   queueAwareNext: boolean;
-  /** Utilize a waveform slider on the Now Playing screen. */
-  waveformSlider: boolean;
   /**
    * Downsample high sample rate tracks so that they can be played instead
    * of throwing an error.

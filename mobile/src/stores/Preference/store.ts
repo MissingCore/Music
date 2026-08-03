@@ -103,6 +103,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     nowPlayingArtworkControls: false,
     nowPlayingGestures: false,
     playbackDelay: 0,
+    seekbarDesign: "normal",
 
     quickScroll: true,
     squareArtwork: true,
@@ -131,7 +132,6 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     mediaStoreScanner: false,
     downsamplingProcessor: true,
     queueAwareNext: false,
-    waveformSlider: false,
   }),
   {
     name: "music::user-preferences",
