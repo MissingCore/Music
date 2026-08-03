@@ -154,7 +154,7 @@
     "seekbar": {
       "title": null,
       "extra": {
-        "normal": "$t(feat.equalizer.extra.normal)",
+        "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": null,
 
         "waveformPurgeCache": null,

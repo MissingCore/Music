@@ -180,7 +180,7 @@
     "seekbar": {
       "title": "Seekbar",
       "extra": {
-        "normal": "$t(feat.equalizer.extra.normal)",
+        "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": "Waveform",
 
         "waveformPurgeCache": "Purge Cached Waveforms",
