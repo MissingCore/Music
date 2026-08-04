@@ -130,7 +130,9 @@
       "extra": {
         "light": "Licht",
         "dark": "Dunkel",
-        "system": "System"
+        "system": "System",
+        "atmosphere": null,
+        "opaqueColors": null
       }
     },
     "tabsOrder": {
@@ -148,7 +150,9 @@
       "extra": {
         "plain": "Einfach",
         "vinyl": "Vinyl",
-        "vinylOld": "Vinyl (Alt)"
+        "vinylOld": "Vinyl (Alt)",
+        "none": null,
+        "alternativeInfoLayout": null
       }
     },
     "seekbar": {
@@ -156,7 +160,6 @@
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": "Wellenform",
-
         "waveformPurgeCache": "Zwischengespeicherte Wellenformen löschen",
         "waveformPurgeCacheBrief": "Gibt Speicherplatz frei, um die Wellenformen der abgespielten Spuren neu zu berechnen.",
         "waveformPurgeCacheToast": "Wellenform-Cache gelöscht."
@@ -373,6 +376,7 @@
       }
     },
     "artwork": {
+      "title": null,
       "extra": {
         "change": "Bild ändern",
         "remove": "Bild beseitigen",
@@ -413,6 +417,8 @@
         "list": "Liste",
         "grid": "Raster",
         "compactGrid": "Kompaktes Raster",
+        "columnSize": null,
+        "columnCount": null,
         "sort": "Sortierreihenfolge",
         "asc": "Aufsteigende Reihenfolge",
         "discover": "Zuletzt Hinzugefügt",

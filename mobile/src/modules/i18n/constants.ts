@@ -80,7 +80,7 @@ export const LANGUAGES = [
         display: "Julian Bouys",
         link: "https://crowdin.com/profile/julian.bouys",
       },
-      { display: "Mickael81", link: "https://crowdin.com/profile/mickael81" },
+      { display: "Mickael81", link: "https://github.com/mickael81" },
       { display: "Sertra", link: "https://www.github.com/SertraFurr" },
     ],
   },

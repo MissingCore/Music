@@ -130,7 +130,9 @@
       "extra": {
         "light": "ライト",
         "dark": "ダーク",
-        "system": "システム"
+        "system": "システム",
+        "atmosphere": null,
+        "opaqueColors": null
       }
     },
     "tabsOrder": {
@@ -148,7 +150,9 @@
       "extra": {
         "plain": "プレーン",
         "vinyl": "ヴァイナル",
-        "vinylOld": "ヴァイナル (従来)"
+        "vinylOld": "ヴァイナル (従来)",
+        "none": null,
+        "alternativeInfoLayout": null
       }
     },
     "seekbar": {
@@ -156,7 +160,6 @@
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": "波形",
-
         "waveformPurgeCache": "キャッシュされた波形を消去",
         "waveformPurgeCacheBrief": "ストレージを開放して再生したトラックの波形を再計算します。",
         "waveformPurgeCacheToast": "波形キャッシュを消去しました。"
@@ -373,6 +376,7 @@
       }
     },
     "artwork": {
+      "title": null,
       "extra": {
         "change": "アートワークを変更",
         "remove": "アートワークを削除",
@@ -413,6 +417,8 @@
         "list": "リスト",
         "grid": "グリッド",
         "compactGrid": "コンパクトなグリッド",
+        "columnSize": null,
+        "columnCount": null,
         "sort": "並べ替え順",
         "asc": "昇順",
         "discover": "時間を見つける",

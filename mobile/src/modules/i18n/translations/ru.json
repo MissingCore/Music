@@ -130,7 +130,9 @@
       "extra": {
         "light": "Светлая",
         "dark": "Тёмная",
-        "system": "Системная"
+        "system": "Системная",
+        "atmosphere": null,
+        "opaqueColors": null
       }
     },
     "tabsOrder": {
@@ -148,7 +150,9 @@
       "extra": {
         "plain": "Обычный",
         "vinyl": "Винил",
-        "vinylOld": "Винил (устаревший)"
+        "vinylOld": "Винил (устаревший)",
+        "none": null,
+        "alternativeInfoLayout": null
       }
     },
     "seekbar": {
@@ -156,7 +160,6 @@
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": "Аудиограммы",
-
         "waveformPurgeCache": "Очистить кэш аудиограмм",
         "waveformPurgeCacheBrief": "Освобождает место для пересчета аудиограмм воспроизведенных треков.",
         "waveformPurgeCacheToast": "Кэш аудиограмм очищен."
@@ -373,6 +376,7 @@
       }
     },
     "artwork": {
+      "title": null,
       "extra": {
         "change": "Изменить обложку",
         "remove": "Удалить обложку",
@@ -413,6 +417,8 @@
         "list": "Список",
         "grid": "Сетка",
         "compactGrid": "Компактная сетка",
+        "columnSize": null,
+        "columnCount": null,
         "sort": "Порядок сортировки",
         "asc": "По возрастанию",
         "discover": "Время на прослушивание музыки",
