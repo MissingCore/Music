@@ -9,11 +9,11 @@ import {
 
 import { FlatList } from "~/components/Base/List";
 import { RadioField } from "~/components/Form/Radio";
+import { Switch } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
 import { DetachedSheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";
-import { Switch } from "~/components/UI/Switch";
 import {
   SortOptions,
   SortOptionTranslation,

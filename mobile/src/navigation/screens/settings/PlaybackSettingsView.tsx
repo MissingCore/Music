@@ -8,9 +8,9 @@ import { PreferenceTogglers } from "~/stores/Preference/actions";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 
+import { Switch } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
 import { TEm } from "~/components/Typography/StyledText";
-import { Switch } from "~/components/UI/Switch";
 
 export default function PlaybackSettings() {
   const { t } = useTranslation();

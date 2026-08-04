@@ -27,9 +27,9 @@ import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { ImageDirectory } from "~/lib/file-system";
 import { queryClient } from "~/lib/react-query";
 import { Links, openLink } from "~/lib/web-browser";
+import { Switch } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
 import { ConfirmableAction } from "~/components/Modal";
-import { Switch } from "~/components/UI/Switch";
 
 export default function ExperimentalSettings() {
   const { t } = useTranslation();

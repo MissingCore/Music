@@ -16,10 +16,10 @@ import {
 } from "~/navigation/screens/settings/ScanningSettingsView";
 
 import { ExtendedTButton } from "~/components/Form/Button";
+import { Switch } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
 import { AccentText } from "~/components/Typography/AccentText";
 import { TEm } from "~/components/Typography/StyledText";
-import { Switch } from "~/components/UI/Switch";
 
 /** Have the user configure settings before initiating the first-time scan. */
 export function OnboardingConfiguration() {

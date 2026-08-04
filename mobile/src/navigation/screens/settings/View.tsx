@@ -16,9 +16,9 @@ import { LanguageSheet } from "./sheets/LanguageSheet";
 import { APP_VERSION } from "~/constants/Config";
 import { Links, openLink } from "~/lib/web-browser";
 import { Divider } from "~/components/Divider";
+import { Switch } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { Switch } from "~/components/UI/Switch";
 
 export default function Settings() {
   const { t } = useTranslation();

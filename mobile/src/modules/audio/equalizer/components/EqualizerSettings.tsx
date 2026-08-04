@@ -10,8 +10,8 @@ import { toggleEQ, setEQPreset } from "../core/actions";
 
 import { cn } from "~/lib/style";
 import { RadioChipField } from "~/components/Form/Radio";
+import { Switch } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
-import { Switch } from "~/components/UI/Switch";
 import { EQGraph } from "../components/EQGraph";
 import { FrequencySlider } from "../components/FrequencySlider";
 

@@ -27,6 +27,7 @@ import { TabOrderSheet } from "./sheets/TabOrderSheet";
 
 import { Divider } from "~/components/Divider";
 import { LabeledSlider } from "~/components/Form/Slider.variant";
+import { Switch } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import {
@@ -34,7 +35,6 @@ import {
   TEm,
   TStyledText,
 } from "~/components/Typography/StyledText";
-import { Switch } from "~/components/UI/Switch";
 import { getFontDisplayName } from "~/modules/customization/font/utils";
 
 export default function AppearanceSettings() {

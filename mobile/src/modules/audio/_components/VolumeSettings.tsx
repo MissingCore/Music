@@ -9,9 +9,9 @@ import { scheduleOnRN } from "react-native-worklets";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 
 import { LabeledSlider } from "~/components/Form/Slider.variant";
+import { Switch } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
 import { TStyledText } from "~/components/Typography/StyledText";
-import { Switch } from "~/components/UI/Switch";
 
 export function VolumeSettings() {
   const restoreVolume = usePlaybackStore((s) => s.restoreVolume);

@@ -8,8 +8,8 @@ import { z } from "zod/mini";
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
+import { SwitchInput } from "~/components/Form/Switch";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
-import { SwitchInput } from "~/components/UI/Switch";
 import type { FABWorkflowConfig } from "~/modules/form/FormState";
 import {
   FABWorkflow,

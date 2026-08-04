@@ -8,9 +8,9 @@ import { toggleStatus } from "../core/actions";
 
 import { cn } from "~/lib/style";
 import { Divider } from "~/components/Divider";
+import { Switch } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
 import { TStyledText } from "~/components/Typography/StyledText";
-import { Switch } from "~/components/UI/Switch";
 import { PreAmpSlider } from "./PreAmpSlider";
 
 export function ReplayGainSettings() {

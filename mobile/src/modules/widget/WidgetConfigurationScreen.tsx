@@ -10,10 +10,10 @@ import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { MinimumAppProvider } from "~/navigation/providers/AppProvider";
 
 import { isAudioBrowserSetUp } from "~/lib/react-native-audio-browser";
+import { SwitchInput } from "~/components/Form/Switch";
 import { ModalActions } from "~/components/Modal";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import { AccentText } from "~/components/Typography/AccentText";
-import { SwitchInput } from "~/components/UI/Switch";
 import { ColorPickerInput } from "~/modules/customization/theme/components/ColorPickerInput";
 import { DEFAULT_WIDGET_CONFIG } from "./constants/Config";
 import type { WidgetName } from "./impl";

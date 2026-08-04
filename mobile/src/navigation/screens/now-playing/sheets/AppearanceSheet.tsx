@@ -8,10 +8,10 @@ import {
 } from "~/stores/Preference/actions";
 
 import { RadioChipField } from "~/components/Form/Radio";
+import { SwitchInput } from "~/components/Form/Switch";
 import { DetachedSheet } from "~/components/Sheet";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { SwitchInput } from "~/components/UI/Switch";
 import {
   NowPlayingDesignOptions,
   SeekbarDesignOptions,
