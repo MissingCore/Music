@@ -99,7 +99,9 @@ export function Waveform(props: WaveformProps) {
 //#region useWaveformSamples
 export function useWaveformSamples(id: string, uri: string) {
   const { height, width } = useWindowDimensions();
-  const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
+  const waveformSlider = usePreferenceStore(
+    (s) => s.seekbarDesign === "waveform",
+  );
   const activeWaveformContext = useSessionStore((s) => s.activeWaveformContext);
   const lastQueriedTrack = useRef("");
 

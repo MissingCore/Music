@@ -151,6 +151,17 @@
         "vinylOld": "Vinil (tradicional)"
       }
     },
+    "seekbar": {
+      "title": null,
+      "extra": {
+        "normal": "$t(feat.equalizer.extra.Normal)",
+        "waveform": null,
+
+        "waveformPurgeCache": null,
+        "waveformPurgeCacheBrief": null,
+        "waveformPurgeCacheToast": null
+      }
+    },
     "quickScroll": {
       "title": "Desplaçament ràpid",
       "brief": "Mostra una barra de desplaçament estil Nothing quan sigui compatible."
@@ -325,14 +336,6 @@
         "start": null,
         "stopTime": null,
         "extend": null
-      }
-    },
-    "waveformSlider": {
-      "title": null,
-      "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
       }
     },
     "code": {

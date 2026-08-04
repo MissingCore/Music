@@ -151,6 +151,17 @@
         "vinylOld": "Vinyl og cover"
       }
     },
+    "seekbar": {
+      "title": null,
+      "extra": {
+        "normal": "$t(feat.equalizer.extra.Normal)",
+        "waveform": "Bølgeform",
+
+        "waveformPurgeCache": "Slet cachelagrede bølgeformer",
+        "waveformPurgeCacheBrief": "Frigør lagerplads for at genberegne bølgeformer af afspillede sange.",
+        "waveformPurgeCacheToast": "Bølgeform-cache ryddet."
+      }
+    },
     "quickScroll": {
       "title": "Scrollbar",
       "brief": "Vis Nothing-lignende scrollbar på understøttede skærme."
@@ -325,14 +336,6 @@
         "start": "Start",
         "stopTime": "Afspilning vil stoppe klokken {{- time}}.",
         "extend": "Udvid timer, indtil igangværende sang er afsluttet."
-      }
-    },
-    "waveformSlider": {
-      "title": "Slider i bølgeform",
-      "extra": {
-        "purgeCache": "Slet cachelagrede bølgeformer",
-        "purgeCacheBrief": "Frigør lagerplads for at genberegne bølgeformer af afspillede sange.",
-        "purgeCacheToast": "Bølgeform-cache ryddet."
       }
     },
     "code": {

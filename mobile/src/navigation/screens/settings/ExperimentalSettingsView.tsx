@@ -73,11 +73,11 @@ export default function ExperimentalSettings() {
       <ConfirmableAction
         Component={SegmentedList.Item}
         componentProps={{
-          labelText: "feat.waveformSlider.extra.purgeCache",
-          supportingText: t("feat.waveformSlider.extra.purgeCacheBrief"),
+          labelText: "feat.seekbar.extra.waveformPurgeCache",
+          supportingText: t("feat.seekbar.extra.waveformPurgeCacheBrief"),
           onPress: purgeWaveformCache,
         }}
-        modalMessage={["feat.waveformSlider.extra.purgeCache"]}
+        modalMessage={["feat.seekbar.extra.waveformPurgeCache"]}
       />
 
       <SegmentedList.Item
@@ -109,7 +109,7 @@ async function purgeWaveformCache() {
   // eslint-disable-next-line drizzle/enforce-delete-with-where
   await db.delete(waveformSamples);
   sessionStore.setState({ activeWaveformContext: null });
-  toast.t("feat.waveformSlider.extra.purgeCacheToast");
+  toast.t("feat.seekbar.extra.waveformPurgeCacheToast");
 }
 
 const queryKey = ["has-unhashed-images"];

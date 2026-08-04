@@ -206,4 +206,14 @@ const MigrationFunctionMap: Record<
   "clear-image-cache": async () => {
     await Image.clearDiskCache();
   },
+
+  //? v3.4.0-rc.0
+  "waveform-slider": async () => {
+    const defaultToWaveform: boolean =
+      // @ts-expect-error - Field previously existed.
+      preferenceStore.getState().waveformSlider;
+    if (defaultToWaveform === true) {
+      preferenceStore.setState({ seekbarDesign: "waveform" });
+    }
+  },
 };

@@ -151,6 +151,17 @@
         "vinylOld": "گرامافون (قدیمی)"
       }
     },
+    "seekbar": {
+      "title": null,
+      "extra": {
+        "normal": "$t(feat.equalizer.extra.Normal)",
+        "waveform": "شکل موج",
+
+        "waveformPurgeCache": "حذف کش شکل موج",
+        "waveformPurgeCacheBrief": "برای محاسبه مجدد شکل موج ها ، حافظه را خالی میکند",
+        "waveformPurgeCacheToast": "کش شکل موج تخلیه شد"
+      }
+    },
     "quickScroll": {
       "title": "اسکرول سریع",
       "brief": "نمایش نوار اسکرول به سبک Nothing در صفحات پشتیبانی شده."
@@ -325,14 +336,6 @@
         "start": "شروع",
         "stopTime": "صدا در {{- time}} متوقف خواهد شد.",
         "extend": "تا پایان پخش موسیقی زمان را افزایش بده."
-      }
-    },
-    "waveformSlider": {
-      "title": "اسلایدر شکل موج",
-      "extra": {
-        "purgeCache": "حذف کش شکل موج",
-        "purgeCacheBrief": "برای محاسبه مجدد شکل موج ها ، حافظه را خالی میکند",
-        "purgeCacheToast": "کش شکل موج تخلیه شد"
       }
     },
     "code": {

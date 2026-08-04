@@ -23,6 +23,7 @@ export function ArtistsLink(props: {
   beforeNavigation?: VoidFunction;
   /** Optional screen popping strategy to navigate to the artist screen. */
   popStrategy?: PopStrategy;
+  center?: boolean;
   marqueeShadowColor?: ColorRole;
   className?: string;
 }) {
@@ -31,7 +32,7 @@ export function ArtistsLink(props: {
   if (props.artists === null || props.artists.length === 0) return null;
   const artists = props.artists as [string, ...string[]];
   return (
-    <Marquee color={props.marqueeShadowColor}>
+    <Marquee color={props.marqueeShadowColor} center={props.center}>
       <Pressable
         onPress={() => {
           if (props.beforeNavigation) props.beforeNavigation();

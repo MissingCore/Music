@@ -1,7 +1,6 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import type { ParseKeys } from "i18next";
 import { useMemo } from "react";
 import { View } from "react-native";
 import { useEqualizerSettings } from "react-native-audio-browser";
@@ -10,9 +9,8 @@ import { useEqualizerStore } from "../core/store";
 import { toggleEQ, setEQPreset } from "../core/actions";
 
 import { cn } from "~/lib/style";
-import { Button } from "~/components/Form/Button";
+import { RadioChipField } from "~/components/Form/Radio";
 import { SegmentedList } from "~/components/List/Segmented";
-import { TStyledText } from "~/components/Typography/StyledText";
 import { Switch } from "~/components/UI/Switch";
 import { EQGraph } from "../components/EQGraph";
 import { FrequencySlider } from "../components/FrequencySlider";
@@ -60,27 +58,17 @@ export function EqualizerSettings() {
             ))}
           </View>
 
-          <View className="flex-row flex-wrap gap-2">
-            {eqPresets.map((preset) => {
-              const isActive = activePreset === preset;
-              return (
-                <Button
-                  key={preset}
-                  onPress={() => setEQPreset(preset)}
-                  disabled={!currEQ?.enabled || isActive}
-                  className={cn(
-                    "min-h-auto rounded-full bg-surfaceContainerLow py-2 disabled:opacity-100",
-                    { "bg-primary": isActive },
-                  )}
-                >
-                  <TStyledText
-                    textKey={`feat.equalizer.extra.${preset}` as ParseKeys}
-                    className={cn("text-xs", { "text-onPrimary": isActive })}
-                  />
-                </Button>
-              );
-            })}
-          </View>
+          <RadioChipField>
+            {eqPresets.map((preset) => (
+              <RadioChipField.Item
+                key={preset}
+                labelKey={`feat.equalizer.extra.${preset}`}
+                selected={activePreset === preset}
+                onSelect={() => setEQPreset(preset)}
+                disabled={!currEQ?.enabled}
+              />
+            ))}
+          </RadioChipField>
         </View>
       </SegmentedList.CustomItem>
     </SegmentedList>

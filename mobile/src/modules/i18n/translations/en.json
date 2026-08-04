@@ -174,7 +174,21 @@
       "extra": {
         "plain": "Plain",
         "vinyl": "Vinyl",
-        "vinylOld": "Vinyl (Legacy)"
+        "vinylOld": "Vinyl (Legacy)",
+        "none": "None",
+
+        "alternativeInfoLayout": "Alternative Info Layout"
+      }
+    },
+    "seekbar": {
+      "title": "Seekbar",
+      "extra": {
+        "normal": "$t(feat.equalizer.extra.Normal)",
+        "waveform": "Waveform",
+
+        "waveformPurgeCache": "Purge Cached Waveforms",
+        "waveformPurgeCacheBrief": "Frees up storage to recalculate the waveforms of played tracks.",
+        "waveformPurgeCacheToast": "Waveform cache cleared."
       }
     },
     "quickScroll": {
@@ -353,14 +367,6 @@
         "extend": "Extend timer until track finishes."
       }
     },
-    "waveformSlider": {
-      "title": "Waveform Slider",
-      "extra": {
-        "purgeCache": "Purge Cached Waveforms",
-        "purgeCacheBrief": "Frees up storage to recalculate the waveforms of played tracks.",
-        "purgeCacheToast": "Waveform cache cleared."
-      }
-    },
     "code": {
       "title": "GitHub Repository",
       "brief": "Report issues, contribute, or request new features."
@@ -399,6 +405,7 @@
     },
 
     "artwork": {
+      "title": "Artwork",
       "extra": {
         "change": "Change Artwork",
         "remove": "Remove Artwork",

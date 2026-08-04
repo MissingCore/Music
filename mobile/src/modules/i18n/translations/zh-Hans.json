@@ -151,6 +151,17 @@
         "vinylOld": "黑胶唱片(经典)"
       }
     },
+    "seekbar": {
+      "title": null,
+      "extra": {
+        "normal": "$t(feat.equalizer.extra.Normal)",
+        "waveform": null,
+
+        "waveformPurgeCache": null,
+        "waveformPurgeCacheBrief": null,
+        "waveformPurgeCacheToast": null
+      }
+    },
     "quickScroll": {
       "title": null,
       "brief": null
@@ -325,14 +336,6 @@
         "start": "启动",
         "stopTime": null,
         "extend": null
-      }
-    },
-    "waveformSlider": {
-      "title": null,
-      "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
       }
     },
     "code": {

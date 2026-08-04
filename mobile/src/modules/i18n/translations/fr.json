@@ -151,6 +151,17 @@
         "vinylOld": "Vinyle (Legacy)"
       }
     },
+    "seekbar": {
+      "title": null,
+      "extra": {
+        "normal": "$t(feat.equalizer.extra.Normal)",
+        "waveform": "Forme d'onde",
+
+        "waveformPurgeCache": "Purger les formes d'onde mises en cache",
+        "waveformPurgeCacheBrief": "Libère de l'espace de stockage pour recalculer les formes d'onde des titres lus.",
+        "waveformPurgeCacheToast": "Cache de formes d'onde effacé."
+      }
+    },
     "quickScroll": {
       "title": "Défilement Rapide",
       "brief": "Afficher la barre de défilement du style Nothing sur les écrans supportés."
@@ -325,14 +336,6 @@
         "start": "Démarrer",
         "stopTime": "La lecture s'arrêtera à {{- time}}.",
         "extend": "Prolongez le minuteur jusqu'à la fin du titre."
-      }
-    },
-    "waveformSlider": {
-      "title": "Curseur de forme d'onde",
-      "extra": {
-        "purgeCache": "Purger les formes d'onde mises en cache",
-        "purgeCacheBrief": "Libère de l'espace de stockage pour recalculer les formes d'onde des titres lus.",
-        "purgeCacheToast": "Cache de formes d'onde effacé."
       }
     },
     "code": {

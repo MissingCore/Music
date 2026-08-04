@@ -9,9 +9,20 @@ import type {
 import type { Tab } from "./types";
 
 //#region Now Playing Design
-export const NowPlayingDesignOptions = ["plain", "vinyl", "vinylOld"] as const;
+export const NowPlayingDesignOptions = [
+  "plain",
+  "vinyl",
+  "vinylOld",
+  "none",
+] as const;
 
 export type NowPlayingDesign = (typeof NowPlayingDesignOptions)[number];
+//#endregion
+
+//#region Seekbar Design
+export const SeekbarDesignOptions = ["normal", "waveform"] as const;
+
+export type SeekbarDesign = (typeof SeekbarDesignOptions)[number];
 //#endregion
 
 //#region Store
@@ -65,6 +76,10 @@ export interface PreferenceStore {
   nowPlayingGestures: boolean;
   /** Delay before next track is naturally played. */
   playbackDelay: number;
+  /** If we use a different layout for the "info" row on the Now Playing screen. */
+  alternativeInfoLayout: boolean;
+  /** Type of seekbar rendered on Now Playing screen. */
+  seekbarDesign: SeekbarDesign;
 
   /** Show functional Nothing-styled scrollbar on supported screens. */
   quickScroll: boolean;
@@ -113,8 +128,6 @@ export interface PreferenceStore {
    * added track. Tracking resets after app session ends.
    */
   queueAwareNext: boolean;
-  /** Utilize a waveform slider on the Now Playing screen. */
-  waveformSlider: boolean;
   /**
    * Downsample high sample rate tracks so that they can be played instead
    * of throwing an error.

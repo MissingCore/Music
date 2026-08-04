@@ -151,6 +151,17 @@
         "vinylOld": "Plak (Eski)"
       }
     },
+    "seekbar": {
+      "title": null,
+      "extra": {
+        "normal": "$t(feat.equalizer.extra.Normal)",
+        "waveform": "Dalga Formu",
+
+        "waveformPurgeCache": "Önbelleğe Alınmış Dalga Formlarını Temizle",
+        "waveformPurgeCacheBrief": "Çalınan parçaların dalga formlarını yeniden hesaplamak için depolama alanında yer açar.",
+        "waveformPurgeCacheToast": "Dalga formu önbelleği temizlendi."
+      }
+    },
     "quickScroll": {
       "title": "Hızlı Kaydırma",
       "brief": "Desteklenen ekranlarda Nothing stili kaydırma çubuğunu göster."
@@ -325,14 +336,6 @@
         "start": "Başlat",
         "stopTime": "Ses çalma işleminin durdurulacağı saat: {{- time}}",
         "extend": "Zamanlayıcıyı parça bitene kadar uzat."
-      }
-    },
-    "waveformSlider": {
-      "title": "Ses Dalga Formu Kaydırıcısı",
-      "extra": {
-        "purgeCache": "Önbelleğe Alınmış Dalga Formlarını Temizle",
-        "purgeCacheBrief": "Çalınan parçaların dalga formlarını yeniden hesaplamak için depolama alanında yer açar.",
-        "purgeCacheToast": "Dalga formu önbelleği temizlendi."
       }
     },
     "code": {

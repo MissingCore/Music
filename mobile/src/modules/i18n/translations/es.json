@@ -151,6 +151,17 @@
         "vinylOld": "Vinilo (clásico)"
       }
     },
+    "seekbar": {
+      "title": null,
+      "extra": {
+        "normal": "$t(feat.equalizer.extra.Normal)",
+        "waveform": "Forma de onda",
+
+        "waveformPurgeCache": "Borrar caché",
+        "waveformPurgeCacheBrief": "Libera espacio y regenera las formas de onda.",
+        "waveformPurgeCacheToast": "Caché eliminada."
+      }
+    },
     "quickScroll": {
       "title": "Desplazamiento rápido",
       "brief": "Muestra una barra de desplazamiento estilo Nothing cuando sea compatible."
@@ -325,14 +336,6 @@
         "start": "Iniciar",
         "stopTime": "Se detendrá en {{- time}}.",
         "extend": "Extender el temporizador hasta que la canción termine."
-      }
-    },
-    "waveformSlider": {
-      "title": "Deslizador de forma de onda",
-      "extra": {
-        "purgeCache": "Borrar caché",
-        "purgeCacheBrief": "Libera espacio y regenera las formas de onda.",
-        "purgeCacheToast": "Caché eliminada."
       }
     },
     "code": {

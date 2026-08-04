@@ -8,10 +8,7 @@ import AudioBrowser from "react-native-audio-browser";
 import { Icon } from "~/resources/icons";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import {
-  PreferenceSetters,
-  PreferenceTogglers,
-} from "~/stores/Preference/actions";
+import { PreferenceSetters } from "~/stores/Preference/actions";
 import { PlaybackDelayConfig } from "~/stores/Preference/utils";
 
 import { getMediaLinkContext } from "~/navigation/utils/router";
@@ -26,7 +23,6 @@ import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { SwitchInput } from "~/components/UI/Switch";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 
 export function PlaybackOptionsSheet(props: {
@@ -38,7 +34,6 @@ export function PlaybackOptionsSheet(props: {
   const playingSource = usePlaybackStore((s) => s.playingFrom);
   const sourceName = usePlaybackStore((s) => s.playingFromName);
   const playbackDelay = usePreferenceStore((s) => s.playbackDelay);
-  const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
   const volume = usePlaybackStore((s) => s.volume);
   const appearanceSheetRef = useSheetRef();
   const sheetListHandlers = useEnableSheetScroll(true);
@@ -103,21 +98,12 @@ export function PlaybackOptionsSheet(props: {
               />
             }
           />
-          <SheetLabelAction
-            labelKey="feat.waveformSlider.title"
-            Trailing={
-              <SwitchInput
-                enabled={waveformSlider}
-                onPress={PreferenceTogglers.toggleWaveformSlider}
-              />
-            }
-          />
 
           <SegmentedList>
             <SegmentedList.Item
               labelText="feat.appearance.title"
               onPress={presentAppearanceSheet}
-              Leading={<Icon name="activity-zone" />}
+              Leading={<Icon name="format-paint" />}
             />
             <SegmentedList.Item
               labelText="feat.audioEffects.title"

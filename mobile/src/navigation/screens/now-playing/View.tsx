@@ -8,6 +8,7 @@ import { View } from "react-native";
 
 import type { Track } from "~/data/track/types";
 import { usePlaybackStore } from "~/stores/Playback/store";
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
 import { toggleLyricVisibility } from "~/modules/lyric/core/actions";
 import { useAlternativeLayout } from "~/hooks/useAlternativeLayout";
@@ -88,20 +89,23 @@ export default function NowPlaying() {
 function Metadata({ track }: { track: Track }) {
   const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const alternativeLayout = usePreferenceStore((s) => s.alternativeInfoLayout);
 
   return (
     <View className="flex-row items-center gap-4">
+      {alternativeLayout ? <FavoriteButton id={track.id} size="lg" /> : null}
       <View className="shrink grow gap-1">
-        <Marquee>
+        <Marquee center={alternativeLayout}>
           <StyledText className="text-xl/[1.125]">{track.name}</StyledText>
         </Marquee>
         <ArtistsLink
           artists={track.artists}
           popStrategy="popScreen"
+          center={alternativeLayout}
           className="text-sm/[1.125]"
         />
         {track.albumName ? (
-          <Marquee>
+          <Marquee center={alternativeLayout}>
             <Pressable
               onPress={() => navigation.popTo("Album", { id: track.albumId })}
             >
@@ -113,7 +117,7 @@ function Metadata({ track }: { track: Track }) {
         ) : null}
       </View>
       <View className="flex-row items-center gap-1">
-        <FavoriteButton id={track.id} size="lg" />
+        {!alternativeLayout ? <FavoriteButton id={track.id} size="lg" /> : null}
         <IconButton
           icon="more-vert"
           accessibilityLabel={t("template.entrySeeMore", { name: track.name })}
