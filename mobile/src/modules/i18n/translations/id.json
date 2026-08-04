@@ -155,7 +155,7 @@
       "title": null,
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
-        "waveform": null,
+        "waveform": "Waveform",
 
         "waveformPurgeCache": "Bersihkan Tembolok Waveform",
         "waveformPurgeCacheBrief": "Bebaskan ruang penyimpanan untuk merekalkulasi waveform dari pemutaran trek.",

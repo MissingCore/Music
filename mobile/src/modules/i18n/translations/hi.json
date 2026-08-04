@@ -155,7 +155,7 @@
       "title": null,
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
-        "waveform": null,
+        "waveform": "वेवफॉर्म",
 
         "waveformPurgeCache": "कैश्ड वेवफॉर्म्स को हटाएँ",
         "waveformPurgeCacheBrief": "यह स्टोरेज को मुक्त करता है ताकि खेले गए ट्रैकों के वेवफॉर्म्स को फिर से गणना किया जा सके।",

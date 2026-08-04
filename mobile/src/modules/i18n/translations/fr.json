@@ -155,7 +155,7 @@
       "title": null,
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
-        "waveform": null,
+        "waveform": "Forme d'onde",
 
         "waveformPurgeCache": "Purger les formes d'onde mises en cache",
         "waveformPurgeCacheBrief": "Libère de l'espace de stockage pour recalculer les formes d'onde des titres lus.",

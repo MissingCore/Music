@@ -155,7 +155,7 @@
       "title": null,
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
-        "waveform": null,
+        "waveform": "Bølgeform",
 
         "waveformPurgeCache": "Slet cachelagrede bølgeformer",
         "waveformPurgeCacheBrief": "Frigør lagerplads for at genberegne bølgeformer af afspillede sange.",

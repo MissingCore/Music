@@ -155,7 +155,7 @@
       "title": null,
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
-        "waveform": null,
+        "waveform": "Dalga Formu",
 
         "waveformPurgeCache": "Önbelleğe Alınmış Dalga Formlarını Temizle",
         "waveformPurgeCacheBrief": "Çalınan parçaların dalga formlarını yeniden hesaplamak için depolama alanında yer açar.",

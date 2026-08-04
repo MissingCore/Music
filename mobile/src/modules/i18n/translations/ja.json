@@ -155,7 +155,7 @@
       "title": null,
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
-        "waveform": null,
+        "waveform": "波形",
 
         "waveformPurgeCache": "キャッシュされた波形を消去",
         "waveformPurgeCacheBrief": "ストレージを開放して再生したトラックの波形を再計算します。",

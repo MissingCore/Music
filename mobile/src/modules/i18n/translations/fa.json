@@ -155,7 +155,7 @@
       "title": null,
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
-        "waveform": null,
+        "waveform": "شکل موج",
 
         "waveformPurgeCache": "حذف کش شکل موج",
         "waveformPurgeCacheBrief": "برای محاسبه مجدد شکل موج ها ، حافظه را خالی میکند",
