@@ -130,7 +130,9 @@
       "extra": {
         "light": "روشن",
         "dark": "تاریک",
-        "system": "سیستم"
+        "system": "سیستم",
+        "atmosphere": null,
+        "opaqueColors": null
       }
     },
     "tabsOrder": {
@@ -148,7 +150,9 @@
       "extra": {
         "plain": "ساده",
         "vinyl": "گرامافون",
-        "vinylOld": "گرامافون (قدیمی)"
+        "vinylOld": "گرامافون (قدیمی)",
+        "none": null,
+        "alternativeInfoLayout": null
       }
     },
     "seekbar": {
@@ -156,7 +160,6 @@
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": "شکل موج",
-
         "waveformPurgeCache": "حذف کش شکل موج",
         "waveformPurgeCacheBrief": "برای محاسبه مجدد شکل موج ها ، حافظه را خالی میکند",
         "waveformPurgeCacheToast": "کش شکل موج تخلیه شد"
@@ -373,6 +376,7 @@
       }
     },
     "artwork": {
+      "title": null,
       "extra": {
         "change": "تغییر تصویر جلد",
         "remove": "حذف تصویر جلد",
@@ -413,6 +417,8 @@
         "list": "لیست",
         "grid": "جدولی",
         "compactGrid": "جدول فشرده",
+        "columnSize": null,
+        "columnCount": null,
         "sort": "ترتیب مرتب سازی",
         "asc": "ترتیب صعودی",
         "discover": "زمان پیداشدن",

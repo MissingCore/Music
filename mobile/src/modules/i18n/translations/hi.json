@@ -130,7 +130,9 @@
       "extra": {
         "light": "हल्का",
         "dark": "गहरा",
-        "system": "सिस्टम"
+        "system": "सिस्टम",
+        "atmosphere": null,
+        "opaqueColors": null
       }
     },
     "tabsOrder": {
@@ -148,7 +150,9 @@
       "extra": {
         "plain": "साधारण",
         "vinyl": "विनाइल",
-        "vinylOld": "विनाइल (लीगेसी)"
+        "vinylOld": "विनाइल (लीगेसी)",
+        "none": null,
+        "alternativeInfoLayout": null
       }
     },
     "seekbar": {
@@ -156,7 +160,6 @@
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": "वेवफॉर्म",
-
         "waveformPurgeCache": "कैश्ड वेवफॉर्म्स को हटाएँ",
         "waveformPurgeCacheBrief": "यह स्टोरेज को मुक्त करता है ताकि खेले गए ट्रैकों के वेवफॉर्म्स को फिर से गणना किया जा सके।",
         "waveformPurgeCacheToast": "वेवफॉर्म कैश साफ़ किया गया।"
@@ -373,6 +376,7 @@
       }
     },
     "artwork": {
+      "title": null,
       "extra": {
         "change": "आर्टवर्क बदलें",
         "remove": "आर्टवर्क हटाएँ",
@@ -413,6 +417,8 @@
         "list": "सूची",
         "grid": "ग्रिड",
         "compactGrid": "संक्षिप्त ग्रिड",
+        "columnSize": null,
+        "columnCount": null,
         "sort": "क्रम",
         "asc": "आरोही क्रम",
         "discover": "खोज समय",

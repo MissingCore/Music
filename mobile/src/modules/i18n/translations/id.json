@@ -130,7 +130,9 @@
       "extra": {
         "light": "Terang",
         "dark": "Gelap",
-        "system": "Sistem"
+        "system": "Sistem",
+        "atmosphere": null,
+        "opaqueColors": null
       }
     },
     "tabsOrder": {
@@ -148,7 +150,9 @@
       "extra": {
         "plain": "Plain",
         "vinyl": "Vinyl",
-        "vinylOld": "Vinyl (Lama)"
+        "vinylOld": "Vinyl (Lama)",
+        "none": null,
+        "alternativeInfoLayout": null
       }
     },
     "seekbar": {
@@ -156,7 +160,6 @@
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": "Waveform",
-
         "waveformPurgeCache": "Bersihkan Tembolok Waveform",
         "waveformPurgeCacheBrief": "Bebaskan ruang penyimpanan untuk merekalkulasi waveform dari pemutaran trek.",
         "waveformPurgeCacheToast": "Tembolok waveform dibersihkan."
@@ -373,6 +376,7 @@
       }
     },
     "artwork": {
+      "title": null,
       "extra": {
         "change": "Ubah Karya Seni",
         "remove": "Hapus Karya Seni",
@@ -413,6 +417,8 @@
         "list": "Daftar",
         "grid": "Ubin",
         "compactGrid": "Ubin Kompak",
+        "columnSize": null,
+        "columnCount": null,
         "sort": "urutan penyortiran",
         "asc": "Urutan Naik",
         "discover": "Jelajahi Waktu",

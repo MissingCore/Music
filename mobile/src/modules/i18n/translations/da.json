@@ -130,7 +130,9 @@
       "extra": {
         "light": "Lys",
         "dark": "Mørk",
-        "system": "System-standard"
+        "system": "System-standard",
+        "atmosphere": null,
+        "opaqueColors": null
       }
     },
     "tabsOrder": {
@@ -148,7 +150,9 @@
       "extra": {
         "plain": "Kun cover",
         "vinyl": "Kun vinyl",
-        "vinylOld": "Vinyl og cover"
+        "vinylOld": "Vinyl og cover",
+        "none": null,
+        "alternativeInfoLayout": null
       }
     },
     "seekbar": {
@@ -156,7 +160,6 @@
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": "Bølgeform",
-
         "waveformPurgeCache": "Slet cachelagrede bølgeformer",
         "waveformPurgeCacheBrief": "Frigør lagerplads for at genberegne bølgeformer af afspillede sange.",
         "waveformPurgeCacheToast": "Bølgeform-cache ryddet."
@@ -373,6 +376,7 @@
       }
     },
     "artwork": {
+      "title": null,
       "extra": {
         "change": "Skift billede",
         "remove": "Fjern billede",
@@ -413,6 +417,8 @@
         "list": "Liste",
         "grid": "Gitter",
         "compactGrid": "Kompakt gitter",
+        "columnSize": null,
+        "columnCount": null,
         "sort": "Sortering",
         "asc": "Stigende rækkefølge",
         "discover": "Senest opdaget af appen",

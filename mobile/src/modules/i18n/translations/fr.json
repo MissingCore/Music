@@ -130,7 +130,9 @@
       "extra": {
         "light": "Clair",
         "dark": "Sombre",
-        "system": "Système"
+        "system": "Système",
+        "atmosphere": "Effet d'ambiance",
+        "opaqueColors": null
       }
     },
     "tabsOrder": {
@@ -148,7 +150,9 @@
       "extra": {
         "plain": "Classique",
         "vinyl": "Vinyle",
-        "vinylOld": "Vinyle (Legacy)"
+        "vinylOld": "Vinyle (Legacy)",
+        "none": null,
+        "alternativeInfoLayout": null
       }
     },
     "seekbar": {
@@ -156,7 +160,6 @@
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": "Forme d'onde",
-
         "waveformPurgeCache": "Purger les formes d'onde mises en cache",
         "waveformPurgeCacheBrief": "Libère de l'espace de stockage pour recalculer les formes d'onde des titres lus.",
         "waveformPurgeCacheToast": "Cache de formes d'onde effacé."
@@ -373,6 +376,7 @@
       }
     },
     "artwork": {
+      "title": null,
       "extra": {
         "change": "Modifier l'illustration",
         "remove": "Supprimer l'illustration",
@@ -413,6 +417,8 @@
         "list": "Liste",
         "grid": "Grille",
         "compactGrid": "Grille compacte",
+        "columnSize": "Taille de la colonne",
+        "columnCount": "Nombre de colonnes : {{count}}",
         "sort": "Ordre de tri",
         "asc": "Ordre croissant",
         "discover": "Découvrez le temps",

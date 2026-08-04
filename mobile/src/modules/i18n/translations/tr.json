@@ -130,7 +130,9 @@
       "extra": {
         "light": "Açık",
         "dark": "Koyu",
-        "system": "Sistem"
+        "system": "Sistem",
+        "atmosphere": null,
+        "opaqueColors": null
       }
     },
     "tabsOrder": {
@@ -148,7 +150,9 @@
       "extra": {
         "plain": "Düz",
         "vinyl": "Plak",
-        "vinylOld": "Plak (Eski)"
+        "vinylOld": "Plak (Eski)",
+        "none": null,
+        "alternativeInfoLayout": null
       }
     },
     "seekbar": {
@@ -156,7 +160,6 @@
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": "Dalga Formu",
-
         "waveformPurgeCache": "Önbelleğe Alınmış Dalga Formlarını Temizle",
         "waveformPurgeCacheBrief": "Çalınan parçaların dalga formlarını yeniden hesaplamak için depolama alanında yer açar.",
         "waveformPurgeCacheToast": "Dalga formu önbelleği temizlendi."
@@ -373,6 +376,7 @@
       }
     },
     "artwork": {
+      "title": null,
       "extra": {
         "change": "Kapak Görselini Değiştir",
         "remove": "Kapak Görselini Kaldır",
@@ -413,6 +417,8 @@
         "list": "Liste",
         "grid": "Izgara",
         "compactGrid": "Kompakt Izgara",
+        "columnSize": null,
+        "columnCount": null,
         "sort": "Sıralama Düzeni",
         "asc": "Artan Düzen",
         "discover": "Keşfedilme Zamanı",

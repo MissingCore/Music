@@ -130,7 +130,9 @@
       "extra": {
         "light": "Claro",
         "dark": "Oscuro",
-        "system": "Sistema"
+        "system": "Sistema",
+        "atmosphere": null,
+        "opaqueColors": null
       }
     },
     "tabsOrder": {
@@ -148,7 +150,9 @@
       "extra": {
         "plain": "Simple",
         "vinyl": "Vinilo",
-        "vinylOld": "Vinilo (clásico)"
+        "vinylOld": "Vinilo (clásico)",
+        "none": null,
+        "alternativeInfoLayout": null
       }
     },
     "seekbar": {
@@ -156,7 +160,6 @@
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": "Forma de onda",
-
         "waveformPurgeCache": "Borrar caché",
         "waveformPurgeCacheBrief": "Libera espacio y regenera las formas de onda.",
         "waveformPurgeCacheToast": "Caché eliminada."
@@ -373,6 +376,7 @@
       }
     },
     "artwork": {
+      "title": null,
       "extra": {
         "change": "Cambiar carátula",
         "remove": "Eliminar carátula",
@@ -413,6 +417,8 @@
         "list": "Lista",
         "grid": "Cuadrícula",
         "compactGrid": "Cuadrícula Compacta",
+        "columnSize": null,
+        "columnCount": null,
         "sort": "Ordenar",
         "asc": "Ascendente",
         "discover": "Descubrir",

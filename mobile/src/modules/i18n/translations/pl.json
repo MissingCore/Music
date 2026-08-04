@@ -130,7 +130,9 @@
       "extra": {
         "light": "Jasny",
         "dark": "Ciemny",
-        "system": "Systemowy"
+        "system": "Systemowy",
+        "atmosphere": null,
+        "opaqueColors": null
       }
     },
     "tabsOrder": {
@@ -148,7 +150,9 @@
       "extra": {
         "plain": "Zwykły",
         "vinyl": "Winyl",
-        "vinylOld": "Winyl (Poprzedni)"
+        "vinylOld": "Winyl (Poprzedni)",
+        "none": null,
+        "alternativeInfoLayout": null
       }
     },
     "seekbar": {
@@ -156,7 +160,6 @@
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": null,
-
         "waveformPurgeCache": "Wyczyść dane dla wizualizacji",
         "waveformPurgeCacheBrief": "Zwalnia pamięć i wymusza ponowne obliczenia dla wizualizacji fal dźwiękowych.",
         "waveformPurgeCacheToast": "Dane wizualizacji fal dźwiękowych zostały wyczyszczone."
@@ -373,6 +376,7 @@
       }
     },
     "artwork": {
+      "title": null,
       "extra": {
         "change": "Zmień okładkę",
         "remove": "Usuń okładkę",
@@ -413,6 +417,8 @@
         "list": "Lista",
         "grid": "Siatka",
         "compactGrid": "Kompaktowa siatka",
+        "columnSize": null,
+        "columnCount": null,
         "sort": "Kolejność sortowania",
         "asc": "Rosnąco",
         "discover": "Data wydania",
