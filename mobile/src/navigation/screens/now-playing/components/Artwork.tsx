@@ -12,6 +12,7 @@ import Animated, {
   withDelay,
   withTiming,
 } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scheduleOnRN } from "react-native-worklets";
 
 import { usePlaybackStore } from "~/stores/Playback/store";
@@ -86,6 +87,7 @@ function VinylSeekBar(props: ArtworkProps) {
 
 /** Similar artwork design seen in v1, but with the new features. */
 function VinylLegacy(props: ArtworkProps) {
+  const insets = useSafeAreaInsets();
   const [animationCompleted, setAnimationCompleted] = useState(0);
   const alternativeLayout =
     props.dimensions.width > props.dimensions.height * 1.5;
@@ -108,15 +110,26 @@ function VinylLegacy(props: ArtworkProps) {
         coverPosition.set(
           withDelay(
             50,
-            withTiming(-props.size / 2, { duration: 500 }, (finished) => {
-              if (finished && alternativeLayout) {
-                scheduleOnRN(setAnimationCompleted, Date.now());
-              }
-            }),
+            withTiming(
+              alternativeLayout
+                ? -props.size / 2
+                : //? Calculations to prevent artwork from going beyound status bar.
+                  Math.max(
+                    -(props.dimensions.height + insets.top - props.size),
+                    -props.size / 2,
+                  ),
+              { duration: 500 },
+              (finished) => {
+                if (finished && alternativeLayout) {
+                  scheduleOnRN(setAnimationCompleted, Date.now());
+                }
+              },
+            ),
           ),
         )
       }
-      className="relative"
+      style={{ maxHeight: props.size * 1.5, marginTop: -insets.top }}
+      className="relative flex-1 justify-end"
     >
       <Animated.View style={vinylStyle}>
         <VinylSeekBar
@@ -129,7 +142,7 @@ function VinylLegacy(props: ArtworkProps) {
       <Animated.View
         pointerEvents="none"
         style={coverStyle}
-        className="absolute top-0 left-0 z-10"
+        className="absolute bottom-0 left-0 z-10"
       >
         <MediaImage type="track" {...props} />
       </Animated.View>
