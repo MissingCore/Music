@@ -2,10 +2,13 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useAtomValue, useSetAtom } from "jotai";
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useMemo } from "react";
 import { usePanGesture } from "react-native-gesture-handler";
-import type Animated from "react-native-reanimated";
-import { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
+import {
+  useAnimatedRef,
+  useAnimatedStyle,
+  useSharedValue,
+} from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 
 import { usePlaybackStore } from "~/stores/Playback/store";
@@ -16,14 +19,13 @@ import { animatedPositionAtom, isSeekingAtom } from "./Seekbar.context";
 type Position = { absoluteX: number; absoluteY: number };
 
 export function useVinylSeekbar() {
-  const activeTrack = usePlaybackStore((s) => s.activeTrack);
-  const duration = activeTrack?.duration ?? 0;
+  const duration = usePlaybackStore((s) => s.activeTrack?.duration ?? 0);
 
   const timedPosition = useAtomValue(animatedPositionAtom);
   const setIsSeeking = useSetAtom(isSeekingAtom);
 
   //#region Layout Calculation + Vinyl Styling
-  const wrapperRef = useRef<Animated.View>(null);
+  const wrapperRef = useAnimatedRef();
   const center = useSharedValue({ x: 0, y: 0 });
   const radius = useSharedValue(0);
 
@@ -35,6 +37,7 @@ export function useVinylSeekbar() {
     () => ({
       ref: wrapperRef,
       onLayout: () => {
+        "worklet";
         wrapperRef.current?.measure((_x, _y, width, height, pageX, pageY) => {
           center.set({ x: pageX + width / 2, y: pageY + height / 2 });
           radius.set(Math.min(width, height) / 2);
@@ -42,7 +45,7 @@ export function useVinylSeekbar() {
       },
       style: vinylStyle,
     }),
-    [center, radius, vinylStyle],
+    [wrapperRef, center, radius, vinylStyle],
   );
   //#endregion
 
