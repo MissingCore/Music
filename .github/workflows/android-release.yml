@@ -97,6 +97,10 @@ jobs:
           echo "COMMIT_TAG=${COMMIT_TAG}" >> $GITHUB_ENV
           echo "Commit Tag: $COMMIT_TAG"
 
+      - name: Have the "Check for Updates" setting enabled by default
+        run: |
+          echo "EXPO_PUBLIC_CHECK_FOR_UPDATES=true" > .env
+
       - name: Add upload key secrets for signing APKs
         run: |
           git submodule update --init --recursive
