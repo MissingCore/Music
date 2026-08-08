@@ -7,6 +7,7 @@ let config = null;
 if (process.env.EXPO_PUBLIC_WITH_SENTRY === "true") {
   const { getSentryExpoConfig } = require("@sentry/react-native/metro", {
     includeWebReplay: false,
+    includeWebFeedback: false,
   });
   config = getSentryExpoConfig(__dirname);
 } else {
