@@ -132,7 +132,7 @@
         "dark": "Sombre",
         "system": "Système",
         "atmosphere": "Effet d'ambiance",
-        "opaqueColors": null
+        "opaqueColors": "Couleurs opaques"
       }
     },
     "tabsOrder": {
@@ -151,12 +151,12 @@
         "plain": "Classique",
         "vinyl": "Vinyle",
         "vinylOld": "Vinyle (Legacy)",
-        "none": null,
+        "none": "Aucun",
         "alternativeInfoLayout": null
       }
     },
     "seekbar": {
-      "title": null,
+      "title": "Barre de recherche",
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": "Forme d'onde",
