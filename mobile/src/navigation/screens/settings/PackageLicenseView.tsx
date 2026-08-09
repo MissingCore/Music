@@ -3,6 +3,7 @@
 
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import LicensesList from "~/resources/licenses.json";
 
@@ -21,6 +22,7 @@ export default function PackageLicense({
   },
 }: Props) {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
 
   const licenseInfo = LicensesList[id as keyof typeof LicensesList];
 
@@ -37,7 +39,11 @@ export default function PackageLicense({
           />
         )}
       />
-      <SegmentedList scrollEnabled contentContainerClassName="p-4">
+      <SegmentedList
+        scrollEnabled
+        contentContainerStyle={{ paddingBottom: insets.bottom + 16 }}
+        contentContainerClassName="p-4"
+      >
         <SegmentedList.CustomItem className="gap-2 p-4">
           <AccentText className="text-xl" originalText>
             {licenseInfo.name}

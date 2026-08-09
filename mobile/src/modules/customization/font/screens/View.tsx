@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import type { CustomFont } from "~/db/schema";
 
@@ -58,6 +59,7 @@ function FontsScreenBase(props: {
 }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
   const { isPending, data } = useCustomFonts();
   const canDeleteFont = useCanDeleteFont();
 
@@ -110,6 +112,7 @@ function FontsScreenBase(props: {
             />
           );
         }}
+        contentContainerStyle={{ paddingBottom: insets.bottom + 16 }}
         contentContainerClassName="p-4"
       />
     </>

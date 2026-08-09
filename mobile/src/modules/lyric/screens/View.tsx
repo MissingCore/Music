@@ -4,6 +4,7 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Icon } from "~/resources/icons";
 import { useLyrics } from "~/data/lyric/queries";
@@ -26,6 +27,7 @@ export default function Lyrics({
 }: Props) {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
   const { isPending, data } = useLyrics();
 
   if (isPending) return <PagePlaceholder isPending={isPending} />;
@@ -62,7 +64,7 @@ export default function Lyrics({
         )}
         emptyMsgKey="err.msg.noLyrics"
         wrapperClassName="px-4 pt-4"
-        contentContainerClassName="pb-4"
+        contentContainerStyle={{ paddingBottom: insets.bottom + 16 }}
       />
     </>
   );

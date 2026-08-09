@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { count, desc, eq } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { db } from "~/db";
 import { tracksPlayEvents } from "~/db/schema";
@@ -23,6 +24,7 @@ import { SegmentedList } from "~/components/List/Segmented";
 import { StyledText } from "~/components/Typography/StyledText";
 
 export default function MostPlayed() {
+  const insets = useSafeAreaInsets();
   const { isPending, data } = useMostPlayedTracks();
 
   if (isPending || data?.length === 0) {
@@ -31,7 +33,11 @@ export default function MostPlayed() {
     );
   }
   return (
-    <SegmentedList scrollEnabled contentContainerClassName="p-4">
+    <SegmentedList
+      scrollEnabled
+      contentContainerStyle={{ paddingBottom: insets.bottom + 16 }}
+      contentContainerClassName="p-4"
+    >
       {data?.map((item) => (
         <SegmentedList.CustomItem key={item.placement} className="flex-row p-1">
           <PlacementNumber placement={item.placement} />
