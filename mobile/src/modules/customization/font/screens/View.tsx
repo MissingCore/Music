@@ -5,12 +5,12 @@ import { useNavigation } from "@react-navigation/native";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import type { CustomFont } from "~/db/schema";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
+import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
@@ -59,7 +59,7 @@ function FontsScreenBase(props: {
 }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const insets = useSafeAreaInsets();
+  const layoutBottomOffset = useLayoutBottomOffset();
   const { isPending, data } = useCustomFonts();
   const canDeleteFont = useCanDeleteFont();
 
@@ -112,7 +112,7 @@ function FontsScreenBase(props: {
             />
           );
         }}
-        contentContainerStyle={{ paddingBottom: insets.bottom + 16 }}
+        contentContainerStyle={layoutBottomOffset.style}
         contentContainerClassName="p-4"
       />
     </>

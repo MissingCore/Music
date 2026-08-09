@@ -6,6 +6,8 @@ import { View } from "react-native";
 import type { WidgetConfigurationScreenProps } from "react-native-android-widget";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
+
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { MinimumAppProvider } from "~/navigation/providers/AppProvider";
 
@@ -39,6 +41,7 @@ function WidgetConfigurationScreenPropsImpl({
   renderWidget,
 }: WidgetConfigurationScreenProps) {
   const insets = useSafeAreaInsets();
+  const layoutBottomOffset = useLayoutBottomOffset();
 
   const widgetKey = getWidgetConfigKey(widgetInfo);
 
@@ -72,7 +75,7 @@ function WidgetConfigurationScreenPropsImpl({
     <ListLayout
       contentContainerStyle={{
         paddingTop: insets.top + 64,
-        paddingBottom: insets.bottom + 16,
+        paddingBottom: layoutBottomOffset.offset,
       }}
     >
       <AccentText>Customize Widget</AccentText>

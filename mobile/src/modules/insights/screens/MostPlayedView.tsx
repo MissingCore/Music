@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import { count, desc, eq } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { db } from "~/db";
 import { tracksPlayEvents } from "~/db/schema";
@@ -13,6 +12,7 @@ import { tracksPlayEvents } from "~/db/schema";
 import { getArtistsString } from "~/data/artist/utils";
 import { fromJSONArrayString } from "~/data/utils";
 import { commonTrackColumns, structuredTracksView } from "~/data/views";
+import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
@@ -24,7 +24,7 @@ import { SegmentedList } from "~/components/List/Segmented";
 import { StyledText } from "~/components/Typography/StyledText";
 
 export default function MostPlayed() {
-  const insets = useSafeAreaInsets();
+  const layoutBottomOffset = useLayoutBottomOffset();
   const { isPending, data } = useMostPlayedTracks();
 
   if (isPending || data?.length === 0) {
@@ -35,7 +35,7 @@ export default function MostPlayed() {
   return (
     <SegmentedList
       scrollEnabled
-      contentContainerStyle={{ paddingBottom: insets.bottom + 16 }}
+      contentContainerStyle={layoutBottomOffset.style}
       contentContainerClassName="p-4"
     >
       {data?.map((item) => (

@@ -6,9 +6,9 @@ import { DragList, useDragListState } from "@missingcore/ui/drag-list";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Icon } from "~/resources/icons";
+import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
 import { useLyricStore } from "../core/store";
 import { moveLyricProvider } from "../core/actions";
 import type { LyricProvider } from "../core/constants";
@@ -26,7 +26,7 @@ import { StyledText } from "~/components/Typography/StyledText";
 export default function LyricsProviders() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const insets = useSafeAreaInsets();
+  const layoutBottomOffset = useLayoutBottomOffset();
   const lyricProviders = useLyricStore((s) => s.providers);
 
   return (
@@ -56,7 +56,7 @@ export default function LyricsProviders() {
           />
         }
         className="-mb-4"
-        contentContainerStyle={{ paddingBottom: insets.bottom + 16 }}
+        contentContainerStyle={layoutBottomOffset.style}
         contentContainerClassName="p-4"
         alwaysKeyRenderedItems
       />

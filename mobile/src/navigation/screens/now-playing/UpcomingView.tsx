@@ -7,13 +7,13 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { inArray } from "drizzle-orm";
 import { memo, useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { getArtistsString } from "~/data/artist/utils";
 import { getTracks } from "~/data/track/api";
 import { structuredTracksView } from "~/data/views";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
+import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import {
@@ -35,7 +35,7 @@ import { extractTrackId } from "~/stores/Playback/utils";
 export default function Upcoming({ renderAsScreen = true }) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const insets = useSafeAreaInsets();
+  const layoutBottomOffset = useLayoutBottomOffset();
   const { isPending, error, data } = useQueueTracks();
   const listIndex = usePlaybackStore((s) => s.queuePosition);
   const repeat = usePlaybackStore((s) => s.repeat);
@@ -129,7 +129,7 @@ export default function Upcoming({ renderAsScreen = true }) {
           renderItem={renderItem}
           onReordered={onMove}
           className="-mb-2"
-          contentContainerStyle={{ paddingBottom: insets.bottom + 16 }}
+          contentContainerStyle={layoutBottomOffset.style}
           contentContainerClassName="p-4"
         />
       )}

@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
+import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import {
@@ -25,6 +26,7 @@ import { TEm } from "~/components/Typography/StyledText";
 export function OnboardingConfiguration() {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
+  const layoutBottomOffset = useLayoutBottomOffset();
   const sheetRefs = ScanningConfigurations.useScanningSheetRefs();
 
   return (
@@ -34,7 +36,7 @@ export function OnboardingConfiguration() {
       <ListLayout
         contentContainerStyle={{
           paddingTop: insets.top + 64,
-          paddingBottom: insets.bottom + 16,
+          paddingBottom: layoutBottomOffset.offset,
         }}
       >
         <AccentText>{t("feat.onboarding.extra.configureSettings")}</AccentText>

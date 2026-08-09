@@ -6,11 +6,12 @@ import { inArray } from "drizzle-orm";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { db } from "~/db";
 import type { HiddenTrack } from "~/db/schema";
 import { hiddenTracks } from "~/db/schema";
+
+import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
 
 import {
   ContentPlaceholder,
@@ -32,7 +33,7 @@ export default function HiddenTracks() {
 }
 
 function ScreenContents(props: { data: HiddenTrack[] }) {
-  const insets = useSafeAreaInsets();
+  const layoutBottomOffset = useLayoutBottomOffset();
   const [dataSnapshot, setDataSnapshot] = useState(props.data);
   const unHiddenTracks = useRef<string[]>([]);
 
@@ -119,7 +120,7 @@ function ScreenContents(props: { data: HiddenTrack[] }) {
       ListEmptyComponent={
         <ContentPlaceholder errMsgKey="err.msg.noHiddenTracks" />
       }
-      contentContainerStyle={{ paddingBottom: insets.bottom + 16 }}
+      contentContainerStyle={layoutBottomOffset.style}
       contentContainerClassName="p-4 pt-2"
     />
   );

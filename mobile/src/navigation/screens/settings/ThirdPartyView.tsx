@@ -2,16 +2,16 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useNavigation } from "@react-navigation/native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import LicensesList from "~/resources/licenses.json";
+import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
 
 import { FlatList } from "~/components/Base/List";
 import { useGeneratedSegmentedList } from "~/components/List/Segmented";
 
 export default function ThirdParty() {
   const navigation = useNavigation();
-  const insets = useSafeAreaInsets();
+  const layoutBottomOffset = useLayoutBottomOffset();
   const listContext = useGeneratedSegmentedList({
     data: Object.entries(LicensesList),
     renderOptions: {
@@ -27,7 +27,7 @@ export default function ThirdParty() {
   return (
     <FlatList
       keyExtractor={([id]) => id}
-      contentContainerStyle={{ paddingBottom: insets.bottom + 16 }}
+      contentContainerStyle={layoutBottomOffset.style}
       contentContainerClassName="p-4"
       {...listContext}
     />

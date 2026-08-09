@@ -5,7 +5,6 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import type { Track } from "~/data/track/types";
 import { usePlaybackStore } from "~/stores/Playback/store";
@@ -13,6 +12,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
 import { toggleLyricVisibility } from "~/modules/lyric/core/actions";
 import { useAlternativeLayout } from "~/hooks/useAlternativeLayout";
+import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
 
 import { Back } from "~/navigation/components/Back";
 import Upcoming from "./UpcomingView";
@@ -162,12 +162,12 @@ function BottomAppBar(props: {
 }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const insets = useSafeAreaInsets();
+  const layoutBottomOffset = useLayoutBottomOffset();
   const isLargeScreen = useAlternativeLayout();
 
   return (
     <View
-      style={{ paddingBottom: insets.bottom + 16 }}
+      style={layoutBottomOffset.style}
       className="flex-row items-center justify-between gap-4 p-4 pt-2"
     >
       <BackButton />
