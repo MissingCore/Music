@@ -4,7 +4,6 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { AlbumArtistsKey } from "~/data/album/utils";
 import { getArtistsString } from "~/data/artist/utils";
@@ -65,7 +64,6 @@ type SearchResultsListProps<TScope extends SearchCategories> = {
 function SearchResultsList<TScope extends SearchCategories>(
   props: SearchResultsListProps<TScope> & { query: string },
 ) {
-  const insets = useSafeAreaInsets();
   const listLayout = useListLayoutConfig();
   const results = useSearch(props.searchScope, props.query);
   const [selectedTab, setSelectedTab] = useState<TScope[number] | "all">("all");
@@ -155,10 +153,11 @@ function SearchResultsList<TScope extends SearchCategories>(
         }
         nestedScrollEnabled={props.forSheets}
         className="-mx-1 -mb-2"
-        contentContainerClassName="pb-4"
+        contentContainerClassName={cn("pb-4", {
+          "pb-safe-offset-4": !props.forSheets,
+        })}
         contentContainerStyle={{
           paddingTop: tabsWithData.length > 0 ? filterHeight : 24,
-          paddingBottom: 16 + (!props.forSheets ? insets.bottom : 0),
         }}
       />
 

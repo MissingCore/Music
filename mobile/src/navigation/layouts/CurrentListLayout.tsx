@@ -79,9 +79,8 @@ export function CurrentListLayout<TData>(props: Props<TData>) {
 }
 
 function CurrentListLayoutTopAppBar() {
-  const { top } = useSafeAreaInsets();
   return (
-    <View style={{ top }} className="absolute right-0 left-0 z-10">
+    <View className="absolute top-safe right-0 left-0 z-10">
       <TopAppBarTemplate headerLeftAction={<BackButton />} />
     </View>
   );

@@ -68,8 +68,7 @@ export function TrackMultiSelectMenu() {
       <Animated.View
         entering={SlideInUp}
         exiting={SlideOutUp}
-        style={{ paddingTop: insets.top }}
-        className="absolute top-0 right-0 left-0"
+        className="absolute top-0 right-0 left-0 pt-safe"
       >
         <TopDownGradient
           height={ESTIMATED_MENU_HEIGHT + insets.top}

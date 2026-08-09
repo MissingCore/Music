@@ -10,7 +10,6 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import type { SupportedIconName } from "~/resources/icons";
 import { Icon } from "~/resources/icons";
@@ -28,18 +27,13 @@ export function ScanningProgress() {
 
     animate: () => {},
   });
-  const { bottom } = useSafeAreaInsets();
-
   return (
     <Animated.View {...container}>
       <Animated.Image {...logo} />
       <Animated.View
         layout={LinearTransition}
-        style={{
-          width: Dimensions.get("window").width - 32,
-          bottom: bottom + 32,
-        }}
-        className="absolute left-4 gap-4"
+        style={{ width: Dimensions.get("window").width - 32 }}
+        className="absolute bottom-safe-offset-8 left-4 gap-4"
       >
         <TracksSavingProgress />
         <ArtworkSavingProgress />

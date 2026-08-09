@@ -269,8 +269,8 @@ function ShyHeader(props: {
       />
       <View
         collapsable={false}
-        style={{ paddingTop: insets.top + 32, marginBottom: SHADOW_HEIGHT }}
-        className="px-4"
+        style={{ marginBottom: SHADOW_HEIGHT }}
+        className="px-4 pt-safe-offset-8"
       >
         <View className="flex-row items-center justify-between gap-4">
           <Marquee>
