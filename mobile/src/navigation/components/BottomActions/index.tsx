@@ -4,6 +4,7 @@
 import { useMemo } from "react";
 import { View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { useRenderBottomActions } from "./useBottomActions";
@@ -14,6 +15,7 @@ import { Navbar, SearchButton, SettingsButton } from "./NavActions";
 //#region Bottom Actions
 /** Actions stickied to the bottom of the screens. */
 export function BottomActions() {
+  const { bottom } = useSafeAreaInsets();
   const showNavbar = usePreferenceStore((s) => s.showNavbar);
 
   const BottomActionsLayout = useMemo(
@@ -27,7 +29,8 @@ export function BottomActions() {
       <Animated.View
         layout={LinearTransition}
         pointerEvents="box-none"
-        className="absolute bottom-0 left-0 w-full items-end gap-2 p-4 pt-0"
+        style={{ bottom }}
+        className="absolute left-0 w-full items-end gap-2 p-4 pt-0"
       >
         <BottomActionsLayout />
       </Animated.View>

@@ -27,10 +27,7 @@ import { scheduleOnUI } from "react-native-worklets";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
-import {
-  BottomActionsOffset,
-  useBottomActionsOffset,
-} from "~/navigation/components/BottomActions/useBottomActions";
+import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 
 import type {
   AnimatedLegendListRef,
@@ -73,10 +70,11 @@ export function NScrollLayout(props: {
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const scrollBarContext = useScrollbarContext();
 
-  let bottomOffset = BottomActionsOffset + 16;
   const showNavbar = usePreferenceStore((s) => s.showNavbar);
-  const miniplayVisible = useBottomActionsOffset() !== 0;
-  bottomOffset += miniplayVisible && showNavbar ? BottomActionsOffset - 8 : 0;
+  const bottomOffset = useBottomActionsOffset({
+    maxRows: showNavbar ? 2 : 1,
+    rowAlwaysVisible: true,
+  });
 
   // Shy Header
   const [topBarHeight, setTopBarHeight] = useState(
@@ -161,10 +159,11 @@ export function NScrollListLayout<TData>({
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const scrollBarContext = useScrollbarContext();
 
-  let bottomOffset = BottomActionsOffset + 16;
   const showNavbar = usePreferenceStore((s) => s.showNavbar);
-  const miniplayVisible = useBottomActionsOffset() !== 0;
-  bottomOffset += miniplayVisible && showNavbar ? BottomActionsOffset - 8 : 0;
+  const bottomOffset = useBottomActionsOffset({
+    maxRows: showNavbar ? 2 : 1,
+    rowAlwaysVisible: true,
+  });
 
   // Shy Header
   const [topBarHeight, setTopBarHeight] = useState(

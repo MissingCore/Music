@@ -40,7 +40,7 @@ export default function Album({
 }: Props) {
   const { t } = useTranslation();
   const listLayout = useListLayoutConfig(ColumnLayoutConfig);
-  const bottomOffset = useBottomActionsOffset(16);
+  const bottomOffset = useBottomActionsOffset();
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
   const artworkSheetRef = useSheetRef();
