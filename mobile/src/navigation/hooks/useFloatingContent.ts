@@ -4,6 +4,7 @@
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { LayoutChangeEvent, View, ViewStyle } from "react-native";
 import { useWindowDimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type UseFloatingContentResult = {
   /** Padding-bottom need for scrollable content underneath the floating content. */
@@ -19,6 +20,7 @@ type UseFloatingContentResult = {
 
 /** Get the bottom-offset needed for content behind floating content. */
 export function useFloatingContent(): UseFloatingContentResult {
+  const { bottom } = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const [offset, setOffset] = useState(16);
   const ref = useRef<View>(null);
@@ -32,15 +34,15 @@ export function useFloatingContent(): UseFloatingContentResult {
 
   return useMemo(
     () => ({
-      offset,
+      offset: offset + bottom,
       floatingContentProps: {
         ref,
         onLayout: (e: LayoutChangeEvent) =>
           setOffset(e.nativeEvent.layout.height + 32),
-        style: { maxWidth: width - 32 },
-        className: "absolute bottom-4 left-4 w-full rounded-md bg-surface",
+        style: { maxWidth: width - 32, bottom: 16 + bottom },
+        className: "absolute left-4 w-full rounded-md bg-surface",
       },
     }),
-    [offset, width],
+    [width, bottom, offset],
   );
 }
