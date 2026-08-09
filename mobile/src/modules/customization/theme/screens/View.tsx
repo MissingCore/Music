@@ -9,7 +9,6 @@ import { View } from "react-native";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
-import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
@@ -37,7 +36,6 @@ const DefaultThemeMap = {
 export default function Themes() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const layoutBottomOffset = useLayoutBottomOffset();
   const { isPending, data } = useCustomThemes();
   const selectedScheme = usePreferenceStore((s) => s.theme);
   const activeCustomThemeId = usePreferenceStore((s) => s.activeCustomThemeId);
@@ -125,8 +123,7 @@ export default function Themes() {
             />
           );
         }}
-        contentContainerStyle={layoutBottomOffset.style}
-        contentContainerClassName="p-4"
+        contentContainerClassName="p-4 pb-safe-offset-4"
       />
     </>
   );

@@ -12,7 +12,6 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
 import { toggleLyricVisibility } from "~/modules/lyric/core/actions";
 import { useAlternativeLayout } from "~/hooks/useAlternativeLayout";
-import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
 
 import { Back } from "~/navigation/components/Back";
 import Upcoming from "./UpcomingView";
@@ -162,14 +161,10 @@ function BottomAppBar(props: {
 }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const layoutBottomOffset = useLayoutBottomOffset();
   const isLargeScreen = useAlternativeLayout();
 
   return (
-    <View
-      style={layoutBottomOffset.style}
-      className="flex-row items-center justify-between gap-4 p-4 pt-2"
-    >
+    <View className="flex-row items-center justify-between gap-4 px-4 pt-2 pb-safe-offset-4">
       <BackButton />
       <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
         <SleepTimerButton present={props.presentSleepTimerSheet} />

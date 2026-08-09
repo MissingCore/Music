@@ -10,7 +10,6 @@ import type { CustomFont } from "~/db/schema";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
-import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
@@ -59,7 +58,6 @@ function FontsScreenBase(props: {
 }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const layoutBottomOffset = useLayoutBottomOffset();
   const { isPending, data } = useCustomFonts();
   const canDeleteFont = useCanDeleteFont();
 
@@ -112,8 +110,7 @@ function FontsScreenBase(props: {
             />
           );
         }}
-        contentContainerStyle={layoutBottomOffset.style}
-        contentContainerClassName="p-4"
+        contentContainerClassName="p-4 pb-safe-offset-4"
       />
     </>
   );

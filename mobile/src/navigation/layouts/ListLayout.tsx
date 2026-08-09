@@ -1,24 +1,17 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
-
 import { cn } from "~/lib/style";
 import type { ScrollViewProps } from "~/components/Base/ScrollView";
 import { ScrollView } from "~/components/Base/ScrollView";
 
 /** Render groups of content with standardized spacing. */
 export function ListLayout(props: ScrollViewProps) {
-  const layoutBottomOffset = useLayoutBottomOffset();
   return (
     <ScrollView
       {...props}
-      contentContainerStyle={[
-        layoutBottomOffset.style,
-        props.contentContainerStyle,
-      ]}
       contentContainerClassName={cn(
-        "grow gap-6 p-4",
+        "grow gap-6 p-4 pb-safe-offset-4",
         props.contentContainerClassName,
       )}
     />

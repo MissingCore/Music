@@ -7,8 +7,12 @@ import { NavigationBar } from "@zoontek/react-native-navigation-bar";
 import { useTranslation } from "react-i18next";
 import { StatusBar } from "react-native";
 import { KeyboardProvider } from "react-native-keyboard-controller";
-import { SafeAreaProvider as RawSafeAreaProvider } from "react-native-safe-area-context";
-import { withUniwind } from "uniwind";
+import type { EdgeInsets } from "react-native-safe-area-context";
+import {
+  SafeAreaProvider as RawSafeAreaProvider,
+  SafeAreaListener,
+} from "react-native-safe-area-context";
+import { Uniwind, withUniwind } from "uniwind";
 
 import "../../global.css";
 import { ListenerStateStoreProvider } from "~/stores/ListenerState";
@@ -28,16 +32,18 @@ const SafeAreaProvider = withUniwind(RawSafeAreaProvider);
 export function AppProvider(props: { children: React.ReactNode }) {
   return (
     <SafeAreaProvider className="bg-surface">
-      <KeyboardProvider>
-        <GestureHandlerRootView>
-          <QueryClientProvider client={queryClient}>
-            <SystemBars />
-            <ListenerStateStoreProvider />
-            {props.children}
-            <ToastProvider />
-          </QueryClientProvider>
-        </GestureHandlerRootView>
-      </KeyboardProvider>
+      <UniwindListeners>
+        <KeyboardProvider>
+          <GestureHandlerRootView>
+            <QueryClientProvider client={queryClient}>
+              <SystemBars />
+              <ListenerStateStoreProvider />
+              {props.children}
+              <ToastProvider />
+            </QueryClientProvider>
+          </GestureHandlerRootView>
+        </KeyboardProvider>
+      </UniwindListeners>
     </SafeAreaProvider>
   );
 }
@@ -45,14 +51,27 @@ export function AppProvider(props: { children: React.ReactNode }) {
 export function MinimumAppProvider(props: { children: React.ReactNode }) {
   return (
     <SafeAreaProvider className="bg-surface">
-      <KeyboardProvider>
-        <GestureHandlerRootView>{props.children}</GestureHandlerRootView>
-      </KeyboardProvider>
+      <UniwindListeners>
+        <KeyboardProvider>
+          <GestureHandlerRootView>{props.children}</GestureHandlerRootView>
+        </KeyboardProvider>
+      </UniwindListeners>
     </SafeAreaProvider>
   );
 }
 
 //#region Edge-To-Edge
+const onSafeAreaChange = ({ insets }: { insets: EdgeInsets }) =>
+  Uniwind.updateInsets(insets);
+
+function UniwindListeners(props: { children: React.ReactNode }) {
+  return (
+    <SafeAreaListener onChange={onSafeAreaChange}>
+      {props.children}
+    </SafeAreaListener>
+  );
+}
+
 function SystemBars() {
   const currentTheme = useCurrentScheme();
   const iconColor = currentTheme === "light" ? "dark" : "light";

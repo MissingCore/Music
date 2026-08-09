@@ -13,7 +13,6 @@ import { getTracks } from "~/data/track/api";
 import { structuredTracksView } from "~/data/views";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
-import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import {
@@ -35,7 +34,6 @@ import { extractTrackId } from "~/stores/Playback/utils";
 export default function Upcoming({ renderAsScreen = true }) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const layoutBottomOffset = useLayoutBottomOffset();
   const { isPending, error, data } = useQueueTracks();
   const listIndex = usePlaybackStore((s) => s.queuePosition);
   const repeat = usePlaybackStore((s) => s.repeat);
@@ -129,8 +127,7 @@ export default function Upcoming({ renderAsScreen = true }) {
           renderItem={renderItem}
           onReordered={onMove}
           className="-mb-2"
-          contentContainerStyle={layoutBottomOffset.style}
-          contentContainerClassName="p-4"
+          contentContainerClassName="p-4 pb-safe-offset-4"
         />
       )}
     </SafeContainer>

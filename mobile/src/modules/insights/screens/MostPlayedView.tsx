@@ -12,7 +12,6 @@ import { tracksPlayEvents } from "~/db/schema";
 import { getArtistsString } from "~/data/artist/utils";
 import { fromJSONArrayString } from "~/data/utils";
 import { commonTrackColumns, structuredTracksView } from "~/data/views";
-import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
@@ -24,7 +23,6 @@ import { SegmentedList } from "~/components/List/Segmented";
 import { StyledText } from "~/components/Typography/StyledText";
 
 export default function MostPlayed() {
-  const layoutBottomOffset = useLayoutBottomOffset();
   const { isPending, data } = useMostPlayedTracks();
 
   if (isPending || data?.length === 0) {
@@ -35,8 +33,7 @@ export default function MostPlayed() {
   return (
     <SegmentedList
       scrollEnabled
-      contentContainerStyle={layoutBottomOffset.style}
-      contentContainerClassName="p-4"
+      contentContainerClassName="p-4 pb-safe-offset-4"
     >
       {data?.map((item) => (
         <SegmentedList.CustomItem key={item.placement} className="flex-row p-1">

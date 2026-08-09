@@ -4,14 +4,12 @@
 import { useNavigation } from "@react-navigation/native";
 
 import LicensesList from "~/resources/licenses.json";
-import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
 
 import { FlatList } from "~/components/Base/List";
 import { useGeneratedSegmentedList } from "~/components/List/Segmented";
 
 export default function ThirdParty() {
   const navigation = useNavigation();
-  const layoutBottomOffset = useLayoutBottomOffset();
   const listContext = useGeneratedSegmentedList({
     data: Object.entries(LicensesList),
     renderOptions: {
@@ -27,8 +25,7 @@ export default function ThirdParty() {
   return (
     <FlatList
       keyExtractor={([id]) => id}
-      contentContainerStyle={layoutBottomOffset.style}
-      contentContainerClassName="p-4"
+      contentContainerClassName="p-4 pb-safe-offset-4"
       {...listContext}
     />
   );

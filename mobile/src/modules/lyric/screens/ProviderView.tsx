@@ -8,7 +8,6 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { Icon } from "~/resources/icons";
-import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
 import { useLyricStore } from "../core/store";
 import { moveLyricProvider } from "../core/actions";
 import type { LyricProvider } from "../core/constants";
@@ -26,7 +25,6 @@ import { StyledText } from "~/components/Typography/StyledText";
 export default function LyricsProviders() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const layoutBottomOffset = useLayoutBottomOffset();
   const lyricProviders = useLyricStore((s) => s.providers);
 
   return (
@@ -56,8 +54,7 @@ export default function LyricsProviders() {
           />
         }
         className="-mb-4"
-        contentContainerStyle={layoutBottomOffset.style}
-        contentContainerClassName="p-4"
+        contentContainerClassName="p-4 pb-safe-offset-4"
         alwaysKeyRenderedItems
       />
     </>

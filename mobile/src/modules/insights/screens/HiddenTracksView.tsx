@@ -11,8 +11,6 @@ import { db } from "~/db";
 import type { HiddenTrack } from "~/db/schema";
 import { hiddenTracks } from "~/db/schema";
 
-import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
-
 import {
   ContentPlaceholder,
   PagePlaceholder,
@@ -33,7 +31,6 @@ export default function HiddenTracks() {
 }
 
 function ScreenContents(props: { data: HiddenTrack[] }) {
-  const layoutBottomOffset = useLayoutBottomOffset();
   const [dataSnapshot, setDataSnapshot] = useState(props.data);
   const unHiddenTracks = useRef<string[]>([]);
 
@@ -120,8 +117,7 @@ function ScreenContents(props: { data: HiddenTrack[] }) {
       ListEmptyComponent={
         <ContentPlaceholder errMsgKey="err.msg.noHiddenTracks" />
       }
-      contentContainerStyle={layoutBottomOffset.style}
-      contentContainerClassName="p-4 pt-2"
+      contentContainerClassName="px-4 pt-2 pb-safe-offset-4"
     />
   );
 }

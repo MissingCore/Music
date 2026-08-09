@@ -5,7 +5,6 @@ import type { StaticScreenProps } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
 import LicensesList from "~/resources/licenses.json";
-import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
 
 import { openLink } from "~/lib/web-browser";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
@@ -22,7 +21,6 @@ export default function PackageLicense({
   },
 }: Props) {
   const { t } = useTranslation();
-  const layoutBottomOffset = useLayoutBottomOffset();
 
   const licenseInfo = LicensesList[id as keyof typeof LicensesList];
 
@@ -41,8 +39,7 @@ export default function PackageLicense({
       />
       <SegmentedList
         scrollEnabled
-        contentContainerStyle={layoutBottomOffset.style}
-        contentContainerClassName="p-4"
+        contentContainerClassName="p-4 pb-safe-offset-4"
       >
         <SegmentedList.CustomItem className="gap-2 p-4">
           <AccentText className="text-xl" originalText>

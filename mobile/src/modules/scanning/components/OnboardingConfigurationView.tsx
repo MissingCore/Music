@@ -3,11 +3,9 @@
 
 import { useTranslation } from "react-i18next";
 import Animated, { FadeIn } from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
-import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import {
@@ -25,20 +23,13 @@ import { TEm } from "~/components/Typography/StyledText";
 /** Have the user configure settings before initiating the first-time scan. */
 export function OnboardingConfiguration() {
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
-  const layoutBottomOffset = useLayoutBottomOffset();
   const sheetRefs = ScanningConfigurations.useScanningSheetRefs();
 
   return (
     <Animated.View entering={FadeIn} className="flex-1">
       <ScanningConfigurations.Sheets {...sheetRefs} />
 
-      <ListLayout
-        contentContainerStyle={{
-          paddingTop: insets.top + 64,
-          paddingBottom: layoutBottomOffset.offset,
-        }}
-      >
+      <ListLayout contentContainerClassName="pt-safe-offset-16 pb-safe-offset-4">
         <AccentText>{t("feat.onboarding.extra.configureSettings")}</AccentText>
 
         <TEm textKey="feat.scanning.title" className="-mb-4" />

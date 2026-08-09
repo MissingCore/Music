@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 
 import { Icon } from "~/resources/icons";
 import { useLyrics } from "~/data/lyric/queries";
-import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
@@ -27,7 +26,6 @@ export default function Lyrics({
 }: Props) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const layoutBottomOffset = useLayoutBottomOffset();
   const { isPending, data } = useLyrics();
 
   if (isPending) return <PagePlaceholder isPending={isPending} />;
@@ -64,7 +62,7 @@ export default function Lyrics({
         )}
         emptyMsgKey="err.msg.noLyrics"
         wrapperClassName="px-4 pt-4"
-        contentContainerStyle={layoutBottomOffset.style}
+        contentContainerClassName="pb-safe-offset-4"
       />
     </>
   );

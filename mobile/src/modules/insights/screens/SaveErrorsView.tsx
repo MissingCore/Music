@@ -5,15 +5,12 @@ import { useQuery } from "@tanstack/react-query";
 
 import { db } from "~/db";
 
-import { useLayoutBottomOffset } from "~/hooks/useLayoutBottomOffset";
-
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { FlatList } from "~/components/Base/List";
 import { useGeneratedSegmentedList } from "~/components/List/Segmented";
 
 export default function SaveErrors() {
-  const layoutBottomOffset = useLayoutBottomOffset();
   const { data } = useSaveErrors();
   const listContext = useGeneratedSegmentedList({
     data,
@@ -27,8 +24,7 @@ export default function SaveErrors() {
     <FlatList
       keyExtractor={({ id }) => id}
       ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noErrors" />}
-      contentContainerStyle={layoutBottomOffset.style}
-      contentContainerClassName="p-4"
+      contentContainerClassName="p-4 pb-safe-offset-4"
       {...listContext}
     />
   );
