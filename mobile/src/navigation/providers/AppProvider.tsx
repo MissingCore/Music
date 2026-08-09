@@ -7,7 +7,8 @@ import { NavigationBar } from "@zoontek/react-native-navigation-bar";
 import { useTranslation } from "react-i18next";
 import { StatusBar } from "react-native";
 import { KeyboardProvider } from "react-native-keyboard-controller";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { SafeAreaProvider as RawSafeAreaProvider } from "react-native-safe-area-context";
+import { withUniwind } from "uniwind";
 
 import "../../global.css";
 import { ListenerStateStoreProvider } from "~/stores/ListenerState";
@@ -20,6 +21,8 @@ import {
   useCurrentScheme,
   useTheme,
 } from "~/modules/customization/theme/hooks";
+
+const SafeAreaProvider = withUniwind(RawSafeAreaProvider);
 
 /** All providers used by the app. */
 export function AppProvider(props: { children: React.ReactNode }) {
