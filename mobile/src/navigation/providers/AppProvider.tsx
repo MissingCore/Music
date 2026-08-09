@@ -5,12 +5,9 @@ import { Toaster } from "@missingcore/ui/toast";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { NavigationBar } from "@zoontek/react-native-navigation-bar";
 import { useTranslation } from "react-i18next";
-import { StatusBar, View } from "react-native";
+import { StatusBar } from "react-native";
 import { KeyboardProvider } from "react-native-keyboard-controller";
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import "../../global.css";
 import { ListenerStateStoreProvider } from "~/stores/ListenerState";
@@ -27,13 +24,13 @@ import {
 /** All providers used by the app. */
 export function AppProvider(props: { children: React.ReactNode }) {
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider className="bg-surface">
       <KeyboardProvider>
         <GestureHandlerRootView>
           <QueryClientProvider client={queryClient}>
             <SystemBars />
             <ListenerStateStoreProvider />
-            <ChildrenWrapper {...props} />
+            {props.children}
             <ToastProvider />
           </QueryClientProvider>
         </GestureHandlerRootView>
@@ -44,11 +41,9 @@ export function AppProvider(props: { children: React.ReactNode }) {
 
 export function MinimumAppProvider(props: { children: React.ReactNode }) {
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider className="bg-surface">
       <KeyboardProvider>
-        <GestureHandlerRootView>
-          <ChildrenWrapper {...props} />
-        </GestureHandlerRootView>
+        <GestureHandlerRootView>{props.children}</GestureHandlerRootView>
       </KeyboardProvider>
     </SafeAreaProvider>
   );
@@ -63,17 +58,6 @@ function SystemBars() {
       <StatusBar barStyle={`${iconColor}-content`} />
       <NavigationBar barStyle={`${iconColor}-content`} />
     </>
-  );
-}
-
-function ChildrenWrapper(props: { children: React.ReactNode }) {
-  const { bottom } = useSafeAreaInsets();
-  return (
-    <View
-      style={{ paddingBottom: bottom }}
-      className="flex-1 bg-surface"
-      {...props}
-    />
   );
 }
 //#endregion
