@@ -81,6 +81,10 @@ export function useBottomActionsOffset({
       defaultSpace += ROW_HEIGHT;
       if (maxRows === 2) defaultSpace += ROW_GAP;
     }
+
+    //? Remove unnecessary space when miniplayer isn't rendered.
+    if (!isMiniPlayerRendered && !rowAlwaysVisible) defaultSpace -= SPACING;
+
     return defaultSpace + 2 * SPACING + bottom;
   }, [bottom, maxRows, rowAlwaysVisible, isMiniPlayerRendered]);
 }
