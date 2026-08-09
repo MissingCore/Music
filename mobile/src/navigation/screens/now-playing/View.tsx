@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import type { Track } from "~/data/track/types";
 import { usePlaybackStore } from "~/stores/Playback/store";
@@ -161,10 +162,14 @@ function BottomAppBar(props: {
 }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
   const isLargeScreen = useAlternativeLayout();
 
   return (
-    <View className="flex-row items-center justify-between gap-4 p-4 pt-2">
+    <View
+      style={{ paddingBottom: insets.bottom + 16 }}
+      className="flex-row items-center justify-between gap-4 p-4 pt-2"
+    >
       <BackButton />
       <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
         <SleepTimerButton present={props.presentSleepTimerSheet} />
