@@ -9,7 +9,6 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 
-import { OnRTLWorklet } from "~/lib/react";
 import { CachedSlider } from "~/components/Form/Slider";
 import type { HexColor } from "../core/constants";
 
@@ -30,7 +29,6 @@ export function OpacitySlider(props: {
   const sliderHandleStyle = useAnimatedStyle(() => ({
     height: HANDLE_SIZE,
     width: HANDLE_SIZE,
-    [OnRTLWorklet.decide("right", "left")]: 0,
     transform: [
       { translateX: alpha.get() * (contentWidth.get() - HANDLE_SIZE) },
       { translateY: "-50%" },
@@ -52,7 +50,7 @@ export function OpacitySlider(props: {
       />
       <Animated.View
         style={sliderHandleStyle}
-        className="absolute top-1/2 rounded-full border-2 border-black"
+        className="absolute top-1/2 rounded-full border-2 border-black ltr:left-0 rtl:right-0"
       />
 
       <CachedSlider

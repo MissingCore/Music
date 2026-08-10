@@ -1,5 +1,10 @@
 import { useCallback, useEffect } from "react";
-import { StyleSheet, Text, useWindowDimensions } from "react-native";
+import {
+  I18nManager,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+} from "react-native";
 import { GestureDetector, usePanGesture } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedStyle,
@@ -85,7 +90,7 @@ export function Toast({ toast, exiting, theme }: Props) {
     maxWidth: Math.min(384, windowDimensions.width - 32),
     opacity: animationState.get(),
     transform: [
-      { translateX: "-50%" },
+      { translateX: I18nManager.isRTL ? "50%" : "-50%" },
       {
         translateY:
           panAmount.get() < 0

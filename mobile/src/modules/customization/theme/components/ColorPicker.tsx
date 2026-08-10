@@ -161,7 +161,7 @@ export function ColorPicker({
 
           <Animated.View
             style={panelHandleStyle}
-            className="absolute top-0 left-0 rounded-full border-2"
+            className="absolute top-0 rounded-full border-2 ltr:left-0 rtl:right-0"
           />
         </Animated.View>
       </GestureDetector>
@@ -179,7 +179,7 @@ export function ColorPicker({
           />
           <Animated.View
             style={sliderHandleStyle}
-            className="absolute top-1/2 left-0 rounded-full border-2 border-black"
+            className="absolute top-1/2 rounded-full border-2 border-black ltr:left-0 rtl:right-0"
           />
         </View>
       </GestureDetector>

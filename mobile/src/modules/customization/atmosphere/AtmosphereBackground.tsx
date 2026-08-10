@@ -37,7 +37,7 @@ export function AtmosphereBackground(props: {
             // Reduce brightness of image so that white text is legible.
             filter: [{ brightness: "75%" }],
           }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 ltr:left-1/2 rtl:right-1/2"
         />
         {props.children}
       </ScopedTheme>
