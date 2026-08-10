@@ -39,8 +39,9 @@ export function useFloatingContent(): UseFloatingContentResult {
         ref,
         onLayout: (e: LayoutChangeEvent) =>
           setOffset(e.nativeEvent.layout.height + 32),
-        style: { maxWidth: width - 32, bottom: 16 + bottom },
-        className: "absolute left-4 w-full rounded-md bg-surface",
+        style: { maxWidth: width - 32 },
+        className:
+          "absolute bottom-safe-offset-4 left-4 w-full rounded-md bg-surface",
       },
     }),
     [width, bottom, offset],
