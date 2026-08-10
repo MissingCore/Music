@@ -36,7 +36,6 @@ import { LegendList } from "~/components/Base/LegendList";
 import { ScrollView } from "~/components/Base/ScrollView";
 import { TopDownGradient } from "~/components/Gradient";
 import { Marquee } from "~/components/Marquee";
-import { SafeContainer } from "~/components/SafeContainer";
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import { useIsAtmosphereActive } from "~/modules/customization/atmosphere/store";
 import { AtmosphereBackground } from "~/modules/customization/atmosphere/AtmosphereBackground";
@@ -89,10 +88,10 @@ function CurrentListLayoutTopAppBar() {
 //#region Skeleton
 export function CurrentListSkeleton({ pending = false }) {
   return (
-    <SafeContainer additionalTopOffset={TOPAPPBAR_HEIGHT} className="flex-1">
+    <View className="flex-1 pt-safe-offset-14">
       <CurrentListLayoutTopAppBar />
       <PagePlaceholder isPending={pending} />
-    </SafeContainer>
+    </View>
   );
 }
 //#endregion

@@ -9,7 +9,6 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { FilledIconButton } from "~/components/Form/Button/Icon";
-import { SafeContainer } from "~/components/SafeContainer";
 import { TEm } from "~/components/Typography/StyledText";
 
 export const TOPAPPBAR_HEIGHT = 56;
@@ -18,13 +17,13 @@ export const TOPAPPBAR_HEIGHT = 56;
 export function TopAppBar({ options, route }: NativeStackHeaderProps) {
   const title = getHeaderTitle(options, route.name) as ParseKeys;
   return (
-    <SafeContainer>
+    <View className="pt-safe">
       <TopAppBarTemplate
         title={title}
         headerLeftAction={<BackButton disabled={!!options.headerLeft} />}
         headerRightAction={options.headerRight?.({ canGoBack: true })}
       />
-    </SafeContainer>
+    </View>
   );
 }
 

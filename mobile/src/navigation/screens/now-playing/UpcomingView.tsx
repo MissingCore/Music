@@ -7,6 +7,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { inArray } from "drizzle-orm";
 import { memo, useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 
 import { getArtistsString } from "~/data/artist/utils";
 import { getTracks } from "~/data/track/api";
@@ -25,7 +26,6 @@ import { moveArray } from "~/utils/object";
 import { wait } from "~/utils/promise";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { RemovableItem } from "~/components/List/RemovableItem";
-import { SafeContainer } from "~/components/SafeContainer";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { RepeatModes } from "~/stores/Playback/constants";
@@ -99,8 +99,8 @@ export default function Upcoming({ renderAsScreen = true }) {
   const isDataPending = isPending || error || cachedData.length === 0;
 
   return (
-    <SafeContainer
-      className={cn("flex-1", {
+    <View
+      className={cn("flex-1 pt-safe", {
         "max-w-96 min-w-80 bg-surfaceContainerLow": !renderAsScreen,
       })}
     >
@@ -130,7 +130,7 @@ export default function Upcoming({ renderAsScreen = true }) {
           contentContainerClassName="p-4 pb-safe-offset-4"
         />
       )}
-    </SafeContainer>
+    </View>
   );
 }
 
