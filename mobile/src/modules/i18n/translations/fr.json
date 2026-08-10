@@ -152,7 +152,7 @@
         "vinyl": "Vinyle",
         "vinylOld": "Vinyle (Legacy)",
         "none": "Aucun",
-        "alternativeInfoLayout": null
+        "alternativeInfoLayout": "Autre présentation des informations"
       }
     },
     "seekbar": {
@@ -376,7 +376,7 @@
       }
     },
     "artwork": {
-      "title": null,
+      "title": "Pochette d'album",
       "extra": {
         "change": "Modifier l'illustration",
         "remove": "Supprimer l'illustration",
