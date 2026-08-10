@@ -4,6 +4,7 @@
 import type { NavigationRoute, ParamListBase } from "@react-navigation/native";
 import { useNavigationState } from "@react-navigation/native";
 import { useMemo } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { usePlaybackStore } from "~/stores/Playback/store";
 
@@ -44,11 +45,26 @@ export function useRenderBottomActions() {
   );
 }
 
-/** Fixed-size bottom offset applied when bottom actions are rendered. */
-export const BottomActionsOffset = 72; // 56px Height + 16px Bottom Padding
+const ROW_HEIGHT = 56;
+const ROW_GAP = 8;
+const SPACING = 16;
 
-/** Returns the offset we need to apply to account for the bottom actions. */
-export function useBottomActionsOffset(additionalOffset = 0) {
+/** Fixed-size bottom offset applied when bottom actions are rendered. */
+export const BottomActionsOffset = ROW_HEIGHT + SPACING; // Height + Bottom Padding
+
+interface BottomOffsetArgs {
+  /** Number of rows of "floating content" displayed at the bottom of the screen. */
+  maxRows?: 1 | 2;
+  /** If at least 1 row is always visible. */
+  rowAlwaysVisible?: boolean;
+}
+
+/** Returns the offset to adjust content based on what's on the bottom of the screen. */
+export function useBottomActionsOffset({
+  maxRows = 1,
+  rowAlwaysVisible = false,
+}: BottomOffsetArgs = {}) {
+  const { bottom } = useSafeAreaInsets();
   const activeTrack = usePlaybackStore((s) => s.activeTrack);
 
   //? We've previously accounted for whether the miniplayer can be rendered on the
@@ -58,8 +74,17 @@ export function useBottomActionsOffset(additionalOffset = 0) {
   //? if the miniplayer is rendered.
   const isMiniPlayerRendered = !!activeTrack;
 
-  return useMemo(
-    () => (isMiniPlayerRendered ? BottomActionsOffset : 0) + additionalOffset,
-    [additionalOffset, isMiniPlayerRendered],
-  );
+  return useMemo(() => {
+    let defaultSpace = rowAlwaysVisible || maxRows === 2 ? ROW_HEIGHT : 0;
+    //? If we can render only a single row and it's always visible, don't add more.
+    if (isMiniPlayerRendered && !(rowAlwaysVisible && maxRows === 1)) {
+      defaultSpace += ROW_HEIGHT;
+      if (maxRows === 2) defaultSpace += ROW_GAP;
+    }
+
+    //? Remove unnecessary space when miniplayer isn't rendered.
+    if (!isMiniPlayerRendered && !rowAlwaysVisible) defaultSpace -= SPACING;
+
+    return defaultSpace + 2 * SPACING + bottom;
+  }, [bottom, maxRows, rowAlwaysVisible, isMiniPlayerRendered]);
 }

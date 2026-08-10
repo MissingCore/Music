@@ -28,7 +28,7 @@ const trackSource = {
 
 export default function RecentlyPlayed() {
   const { t } = useTranslation();
-  const bottomOffset = useBottomActionsOffset(16);
+  const bottomOffset = useBottomActionsOffset();
   const { isPending, error, data } = useRecentlyPlayedMedia();
 
   const presets = useTrackListPreset({

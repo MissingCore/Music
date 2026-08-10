@@ -37,7 +37,10 @@ export default function PackageLicense({
           />
         )}
       />
-      <SegmentedList scrollEnabled contentContainerClassName="p-4">
+      <SegmentedList
+        scrollEnabled
+        contentContainerClassName="p-4 pb-safe-offset-4"
+      >
         <SegmentedList.CustomItem className="gap-2 p-4">
           <AccentText className="text-xl" originalText>
             {licenseInfo.name}

@@ -24,7 +24,7 @@ export default function Genre({
     params: { id },
   },
 }: Props) {
-  const bottomOffset = useBottomActionsOffset(16);
+  const bottomOffset = useBottomActionsOffset();
   const genreDetailsQuery = useGenreDetails(id);
   const genreTracksQuery = useGenreTracks(id);
   const artworkSheetRef = useSheetRef();

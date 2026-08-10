@@ -110,7 +110,7 @@ function FontsScreenBase(props: {
             />
           );
         }}
-        contentContainerClassName="p-4"
+        contentContainerClassName="p-4 pb-safe-offset-4"
       />
     </>
   );

@@ -11,7 +11,7 @@ export function ListLayout(props: ScrollViewProps) {
     <ScrollView
       {...props}
       contentContainerClassName={cn(
-        "grow gap-6 p-4",
+        "grow gap-6 p-4 pb-safe-offset-4",
         props.contentContainerClassName,
       )}
     />

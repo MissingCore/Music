@@ -31,7 +31,7 @@ export default function Artist({
     params: { id: artistName },
   },
 }: Props) {
-  const bottomOffset = useBottomActionsOffset(16);
+  const bottomOffset = useBottomActionsOffset();
   const artistDetailsQuery = useArtistDetails(artistName);
   const artistTracksQuery = useArtistTracks(artistName);
   const artworkSheetRef = useSheetRef();

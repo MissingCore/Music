@@ -27,7 +27,7 @@ export function BottomActions() {
       <Animated.View
         layout={LinearTransition}
         pointerEvents="box-none"
-        className="absolute bottom-0 left-0 w-full items-end gap-2 p-4 pt-0"
+        className="absolute bottom-safe left-0 w-full items-end gap-2 p-4 pt-0"
       >
         <BottomActionsLayout />
       </Animated.View>

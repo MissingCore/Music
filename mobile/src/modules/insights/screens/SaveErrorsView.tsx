@@ -24,7 +24,7 @@ export default function SaveErrors() {
     <FlatList
       keyExtractor={({ id }) => id}
       ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noErrors" />}
-      contentContainerClassName="p-4"
+      contentContainerClassName="p-4 pb-safe-offset-4"
       {...listContext}
     />
   );

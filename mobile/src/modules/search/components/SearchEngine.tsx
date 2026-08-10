@@ -153,7 +153,9 @@ function SearchResultsList<TScope extends SearchCategories>(
         }
         nestedScrollEnabled={props.forSheets}
         className="-mx-1 -mb-2"
-        contentContainerClassName="pb-4"
+        contentContainerClassName={cn("pb-4", {
+          "pb-safe-offset-4": !props.forSheets,
+        })}
         contentContainerStyle={{
           paddingTop: tabsWithData.length > 0 ? filterHeight : 24,
         }}

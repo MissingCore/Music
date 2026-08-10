@@ -117,7 +117,7 @@ function ScreenContents(props: { data: HiddenTrack[] }) {
       ListEmptyComponent={
         <ContentPlaceholder errMsgKey="err.msg.noHiddenTracks" />
       }
-      contentContainerClassName="p-4 pt-2"
+      contentContainerClassName="px-4 pt-2 pb-safe-offset-4"
     />
   );
 }

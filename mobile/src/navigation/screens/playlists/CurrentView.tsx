@@ -37,7 +37,7 @@ export default function Playlist({
 }: Props) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const bottomOffset = useBottomActionsOffset(16);
+  const bottomOffset = useBottomActionsOffset();
   const { isPending, error, data } = usePlaylistForScreen(id);
   const favoritePlaylist = useFavoritePlaylist(id);
   const artworkSheetRef = useSheetRef();

@@ -31,7 +31,10 @@ export default function MostPlayed() {
     );
   }
   return (
-    <SegmentedList scrollEnabled contentContainerClassName="p-4">
+    <SegmentedList
+      scrollEnabled
+      contentContainerClassName="p-4 pb-safe-offset-4"
+    >
       {data?.map((item) => (
         <SegmentedList.CustomItem key={item.placement} className="flex-row p-1">
           <PlacementNumber placement={item.placement} />

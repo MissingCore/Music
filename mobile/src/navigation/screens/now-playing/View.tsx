@@ -25,7 +25,6 @@ import { useSleepTimerStore } from "./sheets/SleepTimerSheet/store";
 import { Pressable } from "~/components/Base/Pressable";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { Marquee } from "~/components/Marquee";
-import { SafeContainer } from "~/components/SafeContainer";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
 import { AtmosphereBackground } from "~/modules/customization/atmosphere/AtmosphereBackground";
@@ -54,7 +53,7 @@ export default function NowPlaying() {
 
       <AtmosphereBackground source={track.artwork}>
         <View className="flex-1 flex-row">
-          <SafeContainer className="flex-1 gap-8">
+          <View className="flex-1 gap-8 pt-safe">
             <SeekbarContext>
               <PlaybackControlGestureWrapper>
                 <ArtworkSlot artwork={track.artwork} trackId={track.id} />
@@ -77,7 +76,7 @@ export default function NowPlaying() {
                 />
               </PlaybackControlGestureWrapper>
             </SeekbarContext>
-          </SafeContainer>
+          </View>
           {isLargeScreen ? <Upcoming renderAsScreen={false} /> : null}
         </View>
       </AtmosphereBackground>
@@ -164,7 +163,7 @@ function BottomAppBar(props: {
   const isLargeScreen = useAlternativeLayout();
 
   return (
-    <View className="flex-row items-center justify-between gap-4 p-4 pt-2">
+    <View className="flex-row items-center justify-between gap-4 px-4 pt-2 pb-safe-offset-4">
       <BackButton />
       <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
         <SleepTimerButton present={props.presentSleepTimerSheet} />

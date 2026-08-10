@@ -5,7 +5,6 @@ import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import Bootsplash from "react-native-bootsplash";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { CAN_SENTRY_REPORT } from "~/env";
 import { playbackStore } from "~/stores/Playback/store";
@@ -52,7 +51,6 @@ export class ErrorBoundary extends React.Component<
 /** Screen displayed when an error is thrown in a component. */
 function ErrorLayout({ error }: { error: Error }) {
   const { t } = useTranslation();
-  const { top } = useSafeAreaInsets();
   const { offset, floatingContentProps } = useFloatingContent();
 
   const onError = useCallback(() => {
@@ -71,7 +69,7 @@ function ErrorLayout({ error }: { error: Error }) {
       <View ref={onError} />
       <View className="relative flex-1">
         <ListLayout contentContainerStyle={{ paddingBottom: offset }}>
-          <AccentText style={{ paddingTop: top + 16 }}>
+          <AccentText className="pt-safe-offset-4">
             {t("err.flow.generic.title")}
           </AccentText>
           <TStyledText

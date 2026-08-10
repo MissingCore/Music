@@ -4,7 +4,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
 import type { WidgetConfigurationScreenProps } from "react-native-android-widget";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { MinimumAppProvider } from "~/navigation/providers/AppProvider";
@@ -38,8 +37,6 @@ function WidgetConfigurationScreenPropsImpl({
   setResult,
   renderWidget,
 }: WidgetConfigurationScreenProps) {
-  const insets = useSafeAreaInsets();
-
   const widgetKey = getWidgetConfigKey(widgetInfo);
 
   const onSubmit = useCallback(
@@ -69,12 +66,7 @@ function WidgetConfigurationScreenPropsImpl({
   }, [setResult]);
 
   return (
-    <ListLayout
-      contentContainerStyle={{
-        paddingTop: insets.top + 64,
-        paddingBottom: insets.bottom + 16,
-      }}
-    >
+    <ListLayout contentContainerClassName="pt-safe-offset-16 pb-safe-offset-4">
       <AccentText>Customize Widget</AccentText>
 
       <WidgetConfigForm

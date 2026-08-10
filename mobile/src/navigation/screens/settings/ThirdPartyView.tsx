@@ -25,7 +25,7 @@ export default function ThirdParty() {
   return (
     <FlatList
       keyExtractor={([id]) => id}
-      contentContainerClassName="p-4"
+      contentContainerClassName="p-4 pb-safe-offset-4"
       {...listContext}
     />
   );
