@@ -1,0 +1,1 @@
+ALTER TABLE `custom_themes` ADD `android_navbar` text DEFAULT '#FFFFFF00' NOT NULL;

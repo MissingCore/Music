@@ -43,12 +43,11 @@ export async function pickTheme() {
 
     //! FIXME: Temporary compatibility layer to support importing old theme
     //! files as our schema is "strict" (requires all colors to be defined).
-    if (
-      isRecord(fileContents) &&
-      fileContents.colors &&
-      !fileContents.colors.placeholder
-    ) {
-      fileContents.colors.placeholder = "#FFFFFF";
+    if (isRecord(fileContents) && fileContents.colors) {
+      if (!fileContents.colors.placeholder)
+        fileContents.colors.placeholder = "#FFFFFF";
+      if (!fileContents.colors.androidNavbar)
+        fileContents.colors.androidNavbar = "#00000000";
     }
 
     return ThemeExportSchema.parse(fileContents);
