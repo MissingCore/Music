@@ -8,6 +8,7 @@ import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 import expo.modules.nativeutils.media.AssetsOptions
 import expo.modules.nativeutils.media.assets.getAssets
+import expo.modules.nativeutils.media.assets.getExternalAudioUris
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -72,6 +73,12 @@ class NativeUtilsModule : Module() {
       val currentContext = context
       if (currentContext == null) throw Exception("React Context is currently undefined.")
       return@AsyncFunction getAssets(currentContext, assetOptions)
+    }
+
+    AsyncFunction("getExternalAudioUris") {
+      val currentContext = context
+      if (currentContext == null) throw Exception("React Context is currently undefined.")
+      return@AsyncFunction getExternalAudioUris(currentContext)
     }
   }
 

@@ -27,7 +27,7 @@ internal fun getQueryFromOptions(input: AssetsOptions): GetAssetsQuery {
   return GetAssetsQuery(selection, selectionArgs, order, limit, offset)
 }
 
-internal fun getExternalAudioUris(context: Context): List<Uri> {
+fun getExternalAudioUris(context: Context): List<Uri> {
   val uris = mutableListOf(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI)
 
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

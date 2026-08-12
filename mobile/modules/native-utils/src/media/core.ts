@@ -22,6 +22,11 @@ export async function getAudioAssets(
   return NativeUtils.getAudioAssets(options);
 }
 
+/** Returns a list of "drives" MediaStore will query from. */
+export async function getExternalAudioUris(): Promise<string[]> {
+  return NativeUtils.getExternalAudioUris();
+}
+
 /** Request permissions required for this media module. */
 export const useMediaLibraryPermissions = createPermissionRequestHook(
   Number(Platform.Version) >= 33
