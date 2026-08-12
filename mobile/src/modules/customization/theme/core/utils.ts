@@ -8,7 +8,7 @@ import type { ColorRole, HexColor } from "./constants";
 import { ColorRoleOptions } from "./constants";
 
 //#region Color
-const validHexLength = [3, 5, 6, 8];
+const validHexLength = [3, 6, 8];
 
 /**
  * Normalizes `#RGB` and `#RRGGBB` strings to uppercase `#RRGGBB`. If
@@ -22,7 +22,7 @@ export function normalizeHexColor(value: string) {
 
   //? Sanitize the 2-digit alpha hex if provided.
   let alphaHex = "";
-  if (raw.length === 5 || raw.length === 8) {
+  if (raw.length === 8) {
     const trailHex = raw.slice(-2);
     if (/^([\da-fA-F]{2})$/.test(trailHex)) alphaHex = trailHex.toUpperCase();
     raw = raw.slice(0, -2);
