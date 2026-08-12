@@ -154,6 +154,7 @@ function PlaylistForm(props: {
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         onReordered={reorderTrack}
+        extraData={{ isSubmitting }}
         ListHeaderComponent={
           <ListHeaderComponent
             isFavoritesList={props.isFavoritesList}

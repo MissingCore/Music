@@ -4,7 +4,7 @@ import type {
 } from "@legendapp/list/react-native";
 import type { AnimatedLegendListProps } from "@legendapp/list/reanimated";
 import { AnimatedLegendList } from "@legendapp/list/reanimated";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   GestureDetector,
   useNativeGesture,
@@ -61,6 +61,9 @@ interface DragListProps<TData> extends Pick<
   onDragEnd?: VoidFunction;
   /** Called when an item is successfully moved. */
   onReordered: (fromIndex: number, toIndex: number) => void;
+
+  /** Indicates to LegendList when the list should re-render. */
+  extraData?: Record<string, any>;
 }
 
 export function DragList<TData>(props: DragListProps<TData>) {
@@ -83,6 +86,7 @@ function DragListImpl<TData>({
   onDragBegin: _,
   onDragEnd,
   onReordered,
+  extraData: _extraData = {},
   ...props
 }: DragListProps<TData>) {
   const enabled = useSharedValue(true);
@@ -241,7 +245,7 @@ function DragListImpl<TData>({
         //? outdated translations styles being applied by forcing a re-render only
         //? on the items that moved. This has a side-effect of making scrolling worse.
         key={
-          alwaysKeyRenderedItems || extraData?.(index)
+          alwaysKeyRenderedItems || extraData?.isInReRenderRange?.(index)
             ? `${keyExtractor(item, index)}_${index}`
             : undefined
         }
@@ -251,6 +255,11 @@ function DragListImpl<TData>({
       </ItemWrapper>
     ),
     [alwaysKeyRenderedItems, keyExtractor, renderItem],
+  );
+
+  const extraData = useMemo(
+    () => ({ ..._extraData, isInReRenderRange }),
+    [isInReRenderRange, _extraData],
   );
 
   // Reset transitions during render after the data changes to prevent flashing.
@@ -279,7 +288,7 @@ function DragListImpl<TData>({
         scrollEnabled={reactiveActiveIndex === INACTIVE}
         recycleItems
         // Fixes some issues caused by recycling.
-        extraData={isInReRenderRange}
+        extraData={extraData}
         maintainVisibleContentPosition={false}
         overScrollMode="never"
         showsHorizontalScrollIndicator={false}
