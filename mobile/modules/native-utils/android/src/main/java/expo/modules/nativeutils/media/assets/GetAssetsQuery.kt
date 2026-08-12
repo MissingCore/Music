@@ -1,5 +1,8 @@
 package expo.modules.nativeutils.media.assets
 
+import android.content.Context
+import android.net.Uri
+import android.os.Build
 import android.provider.MediaStore
 import expo.modules.nativeutils.media.AssetsOptions
 
@@ -22,6 +25,20 @@ internal fun getQueryFromOptions(input: AssetsOptions): GetAssetsQuery {
   val order = MediaStore.Audio.Media.DEFAULT_SORT_ORDER
 
   return GetAssetsQuery(selection, selectionArgs, order, limit, offset)
+}
+
+internal fun getExternalAudioUris(context: Context): List<Uri> {
+  val uris = mutableListOf(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI)
+
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+    runCatching { MediaStore.getExternalVolumeNames(context) }
+      .getOrNull()
+      ?.filter { it.isNotBlank() && it != MediaStore.VOLUME_EXTERNAL_PRIMARY }
+      ?.map { MediaStore.Audio.Media.getContentUri(it) }
+      ?.let { uris.addAll(it) }
+  }
+
+  return uris.distinctBy { it.toString() }
 }
 
 @Throws(IllegalArgumentException::class)

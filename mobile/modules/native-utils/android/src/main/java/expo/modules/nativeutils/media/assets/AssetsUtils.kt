@@ -1,6 +1,8 @@
 package expo.modules.nativeutils.media.assets
 
+import android.content.ContentUris
 import android.database.Cursor
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -17,7 +19,8 @@ fun putAssetsInfo(
   response: MutableList<Bundle>,
   limit: Int,
   offset: Int,
-  returnWithMetadata: Boolean
+  returnWithMetadata: Boolean,
+  queryUri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
 ) {
   val idIndex = cursor.getColumnIndex(MediaStore.Audio.Media._ID)
   val filenameIndex = cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)
@@ -46,7 +49,8 @@ fun putAssetsInfo(
   while (i < limit && !cursor.isAfterLast) {
     val assetId = cursor.getLong(idIndex)
     val path = cursor.getString(localUriIndex)
-    val localUri = "file://$path"
+    val uriFromPath = path?.takeIf { it.isNotBlank() }?.let { "file://$it" }
+    val localUri = uriFromPath ?: ContentUris.withAppendedId(queryUri, assetId).toString()
 
     val asset = Bundle().apply {
       putString("id", assetId.toString())
