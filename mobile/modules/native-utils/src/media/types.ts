@@ -39,5 +39,4 @@ export type AssetResult = {
   assets: Asset[];
   hasNextPage: boolean;
   endCursor: number;
-  totalCount: number;
 };

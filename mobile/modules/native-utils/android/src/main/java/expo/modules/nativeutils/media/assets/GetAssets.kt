@@ -75,7 +75,6 @@ fun getAssets(context: Context, assetOptions: AssetsOptions): Bundle {
       putParcelableArrayList("assets", pagedAssets)
       putBoolean("hasNextPage", hasNextPage)
       putInt("endCursor", startIndex + pagedAssets.size)
-      putInt("totalCount", globalPosition)
     }
   } catch (e: Exception) {
     throw when (e) {
