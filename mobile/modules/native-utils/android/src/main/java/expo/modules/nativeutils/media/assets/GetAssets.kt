@@ -53,6 +53,12 @@ fun getAssets(context: Context, assetOptions: AssetsOptions): Bundle {
           Int.MAX_VALUE
         }
 
+        // Have `hasNextPage = true` if we have more content remaining in
+        // the volume compared to the amount we want.
+        if (volumeSize - offsetInThisVolume > remainingToCollect) {
+          hasNextPage = true
+        }
+
         // Only query if we still need items
         if (remainingToCollect > 0) {
           val volumeAssets = ArrayList<Bundle>()
