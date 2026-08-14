@@ -15,17 +15,17 @@ fun getAssets(context: Context, assetOptions: AssetsOptions): Bundle {
     val query = getQueryFromOptions(assetOptions)
     val returnWithMetadata = assetOptions.returnWithMetadata == true && isMetadataSupported()
     val projection = if (returnWithMetadata) AUDIO_METADATA_ASSET_PROJECTION else ASSET_PROJECTION
-    val pagedAssets = ArrayList<Bundle>()
 
+    val assets = ArrayList<Bundle>()
     val pageSize = query.limit.toInt().coerceAtLeast(0)
-    val startIndex = query.offset.coerceAtLeast(0)
 
-    var globalPosition = 0
+    var remainingOffset = query.offset.coerceAtLeast(0)
+    var remainingLimit = pageSize
     var hasNextPage = false
 
     for (queryUri in getExternalAudioUris(context)) {
-      // Stop if we've already filled the requested page
-      if (pageSize > 0 && pagedAssets.size >= pageSize) {
+      // Stop if we've already filled the requested page.
+      if (remainingLimit == 0) {
         hasNextPage = true
         break
       }
@@ -39,53 +39,35 @@ fun getAssets(context: Context, assetOptions: AssetsOptions): Bundle {
       )?.use { assetsCursor ->
         val volumeSize = assetsCursor.count
 
-        // Calculate offset within this specific volume
-        val offsetInThisVolume = if (globalPosition < startIndex) {
-          startIndex - globalPosition
-        } else {
-          0
-        }
-        
-        globalPosition += volumeSize
-
-        // Skip checking this volume if index is beyond what this volume offers.
-        if (offsetInThisVolume > volumeSize) {
+        // Skip volume if offset is beyond this volume.
+        if (remainingOffset >= volumeSize) {
+          remainingOffset -= volumeSize
           return@use
         }
 
-        // Calculate how many items we still need to collect for this page
-        val remainingToCollect = if (pageSize > 0) {
-          pageSize - pagedAssets.size
-        } else {
-          Int.MAX_VALUE
-        }
+        val priorAssetsCount = assets.size
+        putAssetsInfo(
+          assetsCursor,
+          assets,
+          remainingLimit,
+          remainingOffset,
+          returnWithMetadata,
+          queryUri,
+        )
 
-        // Have `hasNextPage = true` if we have more content remaining in
-        // the volume compared to the amount we want.
-        if (volumeSize - offsetInThisVolume > remainingToCollect) {
+        if (volumeSize > remainingLimit + remainingOffset) {
           hasNextPage = true
         }
 
-        // Only query if we still need items
-        if (remainingToCollect > 0) {
-          val volumeAssets = ArrayList<Bundle>()
-          putAssetsInfo(
-            assetsCursor,
-            volumeAssets,
-            remainingToCollect,
-            offsetInThisVolume,
-            returnWithMetadata,
-            queryUri,
-          )
-          pagedAssets.addAll(volumeAssets)
-        }
+        remainingLimit -= assets.size - priorAssetsCount
+        remainingOffset = 0
       }
     }
 
     return Bundle().apply {
-      putParcelableArrayList("assets", pagedAssets)
+      putParcelableArrayList("assets", assets)
       putBoolean("hasNextPage", hasNextPage)
-      putInt("endCursor", startIndex + pagedAssets.size)
+      putInt("endCursor", query.offset.coerceAtLeast(0) + assets.size)
     }
   } catch (e: Exception) {
     throw when (e) {
