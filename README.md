@@ -178,9 +178,9 @@ The [full list of translators can be found here](./TRANSLATORS.md). A huge thank
 
 <a href="https://www.star-history.com/?repos=MissingCore%2FMusic&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=MissingCore/Music&type=date&theme=dark&legend=top-left&sealed_token=OlbOjvo75bNKtsZ3Rq3JyMTG5sdF9RyhdrAoA05_PhWIDo21F-Z7F02DScjqRIICEpxProAdZnpn7_oSVPpBh4ucDxWmqjt71M40ca-_sKbdnY04yjkG_zEbFbyOlKvxCP_xVh_MMdfEJKKjQrHlIAB5_q2cWONEE8mFQbnANA0HYoy-93vf49qbRov9" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=MissingCore/Music&type=date&legend=top-left&sealed_token=OlbOjvo75bNKtsZ3Rq3JyMTG5sdF9RyhdrAoA05_PhWIDo21F-Z7F02DScjqRIICEpxProAdZnpn7_oSVPpBh4ucDxWmqjt71M40ca-_sKbdnY04yjkG_zEbFbyOlKvxCP_xVh_MMdfEJKKjQrHlIAB5_q2cWONEE8mFQbnANA0HYoy-93vf49qbRov9" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=MissingCore/Music&type=date&legend=top-left&sealed_token=OlbOjvo75bNKtsZ3Rq3JyMTG5sdF9RyhdrAoA05_PhWIDo21F-Z7F02DScjqRIICEpxProAdZnpn7_oSVPpBh4ucDxWmqjt71M40ca-_sKbdnY04yjkG_zEbFbyOlKvxCP_xVh_MMdfEJKKjQrHlIAB5_q2cWONEE8mFQbnANA0HYoy-93vf49qbRov9" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=MissingCore/Music&type=date&theme=dark&legend=top-left&sealed_token=3Dfszl-ozhchPIY3p1Zq9OQU4KOu9tmrmE9SB9D7TmuxtirQ8irk55s2lwstlhb5KX2Iw2chOjmhytEsK1l8gvUZjdYmiInSSqgMfa1PiCBeIzwIdAGzvWHDj7JXnHCyW6kZJB21I01MAdRXQjhfwHP1kAXv94w4-XsowPv-KSjS12FDW1UmzVE1jzfA" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=MissingCore/Music&type=date&legend=top-left&sealed_token=3Dfszl-ozhchPIY3p1Zq9OQU4KOu9tmrmE9SB9D7TmuxtirQ8irk55s2lwstlhb5KX2Iw2chOjmhytEsK1l8gvUZjdYmiInSSqgMfa1PiCBeIzwIdAGzvWHDj7JXnHCyW6kZJB21I01MAdRXQjhfwHP1kAXv94w4-XsowPv-KSjS12FDW1UmzVE1jzfA" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=MissingCore/Music&type=date&legend=top-left&sealed_token=3Dfszl-ozhchPIY3p1Zq9OQU4KOu9tmrmE9SB9D7TmuxtirQ8irk55s2lwstlhb5KX2Iw2chOjmhytEsK1l8gvUZjdYmiInSSqgMfa1PiCBeIzwIdAGzvWHDj7JXnHCyW6kZJB21I01MAdRXQjhfwHP1kAXv94w4-XsowPv-KSjS12FDW1UmzVE1jzfA" />
  </picture>
 </a>
 
