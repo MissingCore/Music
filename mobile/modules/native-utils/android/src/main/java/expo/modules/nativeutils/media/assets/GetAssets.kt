@@ -41,9 +41,16 @@ fun getAssets(context: Context, assetOptions: AssetsOptions): Bundle {
 
         // Calculate offset within this specific volume
         val offsetInThisVolume = if (globalPosition < startIndex) {
-          minOf(startIndex - globalPosition, volumeSize)
+          startIndex - globalPosition
         } else {
           0
+        }
+        
+        globalPosition += volumeSize
+
+        // Skip checking this volume if index is beyond what this volume offers.
+        if (offsetInThisVolume > volumeSize) {
+          return@use
         }
 
         // Calculate how many items we still need to collect for this page
@@ -72,8 +79,6 @@ fun getAssets(context: Context, assetOptions: AssetsOptions): Bundle {
           )
           pagedAssets.addAll(volumeAssets)
         }
-
-        globalPosition += volumeSize
       }
     }
 
