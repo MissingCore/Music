@@ -1,10 +1,13 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { saveBundledAssetToURI } from "@missingcore/native-utils";
 import { migrate } from "drizzle-orm/expo-sqlite/migrator";
 import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
+import { Directory, File } from "expo-file-system";
 import type { SQLiteDatabase } from "expo-sqlite";
 import { useEffect, useReducer } from "react";
+import { Image } from "react-native";
 import AudioBrowser from "react-native-audio-browser";
 
 import { db, expoSQLiteDB } from "~/db";
@@ -21,10 +24,14 @@ import {
 } from "~/modules/audio/equalizer/core/actions";
 import { lyricStore } from "~/modules/lyric/core/store";
 
-import { createImageDirectory } from "~/lib/file-system";
+import {
+  ImageDirectory,
+  PlaceholderDirectory,
+  PlaceholderImageFile,
+} from "~/lib/file-system";
 import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 import { Stopwatch } from "~/utils/debug";
-import { createFontDirectory } from "~/modules/customization/font/core/data";
+import { FontDirectory } from "~/modules/customization/font/core/data";
 import { PlayedListsTracker } from "~/modules/insights/core/PlayedListsTracker";
 import { checkForMigrations } from "~/modules/scanning/helpers/migrations";
 import { revalidateWidgets } from "~/modules/widget/utils";
@@ -87,8 +94,29 @@ async function startupFlow() {
   await expoSQLiteDB.execAsync("PRAGMA foreign_keys = ON;");
 
   //? 3. Ensure content directories are defined.
-  await createImageDirectory();
-  createFontDirectory();
+  const imgDir = new Directory(ImageDirectory);
+  if (!imgDir.exists) imgDir.create();
+
+  const placeholderDir = new Directory(PlaceholderDirectory);
+  if (!placeholderDir.exists) placeholderDir.create();
+
+  //? Save a bundled asset to the local file system as we can't pass a
+  //? `require()` image to `react-native-audio-browser`.
+  //? - Ref: https://github.com/expo/expo/issues/41996#issuecomment-3724350425
+  try {
+    const fallbackImg = new File(PlaceholderImageFile);
+    if (fallbackImg.exists) return;
+    await saveBundledAssetToURI(
+      Image.resolveAssetSource(require("~/resources/images/music-glyph.png"))
+        .uri,
+      PlaceholderImageFile,
+    );
+  } catch (err) {
+    console.log(err);
+  }
+
+  const fontDir = new Directory(FontDirectory);
+  if (!fontDir.exists) fontDir.create();
 
   //? 4. Ensure all persisted stores are hydrated.
   //! The Playback store hydration can't be deferred due to a potential

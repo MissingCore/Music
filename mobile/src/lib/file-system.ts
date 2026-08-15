@@ -1,11 +1,9 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { saveBundledAssetToURI } from "@missingcore/native-utils";
 import { Directory, File, Paths } from "expo-file-system";
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import { launchImageLibraryAsync } from "expo-image-picker";
-import { Image } from "react-native";
 
 import { db } from "~/db";
 import { hashedImages } from "~/db/schema";
@@ -15,8 +13,6 @@ import i18next from "~/modules/i18n";
 import { addTrailingSlash, removeLeadingSlash } from "~/utils/string";
 import type { Maybe } from "~/utils/types";
 
-const resolveAssetSource = Image.resolveAssetSource;
-
 /** Internal app directory where we store images. */
 export const ImageDirectory = Paths.join(Paths.document, "images");
 export const PlaceholderDirectory = Paths.join(Paths.document, "placeholders");
@@ -24,29 +20,6 @@ export const PlaceholderImageFile = Paths.join(
   PlaceholderDirectory,
   "music-glyph.png",
 );
-
-/** Creates "image" directory if it doesn't already exist. */
-export async function createImageDirectory() {
-  const imgDir = new Directory(ImageDirectory);
-  if (!imgDir.exists) imgDir.create();
-
-  const placeholderDir = new Directory(PlaceholderDirectory);
-  if (!placeholderDir.exists) placeholderDir.create();
-
-  //? Save a bundled asset to the local file system as we can't pass a
-  //? `require()` image to `react-native-audio-browser`.
-  //? - Ref: https://github.com/expo/expo/issues/41996#issuecomment-3724350425
-  try {
-    const fallbackImg = new File(PlaceholderImageFile);
-    if (fallbackImg.exists) return;
-    await saveBundledAssetToURI(
-      resolveAssetSource(require("~/resources/images/music-glyph.png")).uri,
-      PlaceholderImageFile,
-    );
-  } catch (err) {
-    console.log(err);
-  }
-}
 
 /** Helper to delete an internal image file if it's defined. */
 export function deleteImage(uri: Maybe<string>) {

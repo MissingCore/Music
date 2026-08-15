@@ -5,7 +5,7 @@ import { toast } from "@missingcore/ui/toast";
 import { createId } from "@paralleldrive/cuid2";
 import { useQuery } from "@tanstack/react-query";
 import { eq } from "drizzle-orm";
-import { Directory, File, Paths } from "expo-file-system";
+import { File, Paths } from "expo-file-system";
 
 import { db } from "~/db";
 import { customFonts } from "~/db/schema";
@@ -16,11 +16,6 @@ const queryKey = ["custom-fonts"] as const;
 
 //#region Font Management
 export const FontDirectory = Paths.join(Paths.document, "fonts");
-
-export function createFontDirectory() {
-  const fontDir = new Directory(FontDirectory);
-  if (!fontDir.exists) fontDir.create();
-}
 
 /** Saves font in correct directory and creates a new database entry. */
 export async function saveCustomFont(entry: { name: string; uri: string }) {
