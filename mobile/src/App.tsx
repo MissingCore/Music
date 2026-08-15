@@ -14,7 +14,7 @@ import { scheduleOnRN } from "react-native-worklets";
 
 import { INITIALIZE_SENTRY } from "~/env";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { useLoadResources } from "~/modules/scanning/hooks/useLoadResources";
+import { useStartup } from "~/modules/startup/useStartup";
 import { useScanning } from "~/modules/scanning/hooks/useScanning";
 
 import NavigationContainer from "~/navigation";
@@ -49,17 +49,17 @@ if (INITIALIZE_SENTRY) {
 }
 
 export default function App() {
-  const { isLoaded, error } = useLoadResources();
+  const { success, error } = useStartup();
   const completedOnboarding = usePreferenceStore((s) => s.completedOnboarding);
   const { completed, error: scanningError } = useScanning(
-    isLoaded && completedOnboarding,
+    success && completedOnboarding,
   );
 
   const OnboardingScreen = useMemo(() => {
     // Prevent flashing in `OnboardingConfiguration` when we're waiting for hydration.
-    if (!isLoaded || completedOnboarding) return ScanningProgress;
+    if (!success || completedOnboarding) return ScanningProgress;
     return OnboardingConfiguration;
-  }, [completedOnboarding, isLoaded]);
+  }, [completedOnboarding, success]);
 
   if (error || scanningError) {
     return (
