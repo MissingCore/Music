@@ -104,13 +104,13 @@ async function startupFlow() {
   //* `require()` image to `react-native-audio-browser`.
   //* - Ref: https://github.com/expo/expo/issues/41996#issuecomment-3724350425
   try {
-    const fallbackImg = new File(PlaceholderImageFile);
-    if (fallbackImg.exists) return;
-    await saveBundledAssetToURI(
-      Image.resolveAssetSource(require("~/resources/images/music-glyph.png"))
-        .uri,
-      PlaceholderImageFile,
-    );
+    if (!new File(PlaceholderImageFile).exists) {
+      await saveBundledAssetToURI(
+        Image.resolveAssetSource(require("~/resources/images/music-glyph.png"))
+          .uri,
+        PlaceholderImageFile,
+      );
+    }
   } catch (err) {
     console.log(err);
   }
