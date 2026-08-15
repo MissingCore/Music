@@ -20,6 +20,7 @@ export const lyricStore = createPersistedStore<LyricStore>(
   }),
   {
     name: "music::lyric",
+    skipHydration: true,
     // Only store some fields in AsyncStorage.
     partialize: (state) =>
       Object.fromEntries(

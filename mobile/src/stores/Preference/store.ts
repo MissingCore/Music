@@ -136,6 +136,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
   }),
   {
     name: "music::user-preferences",
+    skipHydration: true,
     // Only store some fields in AsyncStorage.
     partialize: (state) =>
       Object.fromEntries(
