@@ -11,7 +11,6 @@ import { db, expoSQLiteDB } from "~/db";
 import migrations from "~/db/drizzle/migrations";
 
 import { IS_DEV } from "~/env";
-import { onAppStartUpInit } from "~/initServices";
 import { playbackStore } from "~/stores/Playback/store";
 import { preferenceStore } from "~/stores/Preference/store";
 import { viewPreferenceStore } from "~/stores/ViewPreference/store";
@@ -30,6 +29,7 @@ import { PlayedListsTracker } from "~/modules/insights/core/PlayedListsTracker";
 import { checkForMigrations } from "~/modules/scanning/helpers/migrations";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
+import { headlessAudioBrowserSetup } from "./audioBrowser";
 
 interface State {
   success: boolean;
@@ -101,7 +101,7 @@ async function startupFlow() {
   await viewPreferenceStore.persist.rehydrate();
 
   //? 5. Ensure AudioBrowser is setup.
-  await onAppStartUpInit;
+  await headlessAudioBrowserSetup;
 
   //? 6. Initialize services that relies on AudioBrowser being initialized.
   _initEQStore();

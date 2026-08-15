@@ -2,48 +2,26 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { toast } from "@missingcore/ui/toast";
-import AsyncStorage from "expo-sqlite/kv-store";
-import type {
-  BrowserConfiguration,
-  BrowserSource,
-  ResolvedTrack,
-} from "react-native-audio-browser";
 import AudioBrowser from "react-native-audio-browser";
 
 import { db } from "~/db";
 
 import i18next from "~/modules/i18n";
-import { getAlbum, getAlbumsSummary } from "~/data/album/api";
-import { getArtist, getArtistsSummary } from "~/data/artist/api";
-import { getArtistsString } from "~/data/artist/utils";
-import { getGenre, getGenresSummary } from "~/data/genre/api";
-import { getPlaylist, getPlaylistsSummary } from "~/data/playlist/api";
-import { deleteTracks, getSortedTracks } from "~/data/track/api";
-import type { CommonTrack } from "~/data/types";
+import { deleteTracks } from "~/data/track/api";
 import { playbackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { preferenceStore } from "~/stores/Preference/store";
 import { sessionStore } from "~/stores/Session/store";
-import { TrackListeningSession } from "./modules/insights/core/TrackListeningSession";
+import { TrackListeningSession } from "~/modules/insights/core/TrackListeningSession";
 import { AppCleanUp } from "~/modules/scanning/helpers/cleanup";
+
 import { router } from "~/navigation/utils/router";
 
-import {
-  getImageUri,
-  ImageDirectory,
-  PlaceholderDirectory,
-  PlaceholderImageFile,
-} from "~/lib/file-system";
-import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 import { clearAllQueries } from "~/lib/react-query";
 import { bgWait } from "~/utils/promise";
-import { capitalize, getSafeUri } from "~/utils/string";
 import { applyReplayGainToTrack } from "~/modules/audio/replayGain/core/apply";
-import { ReservedPlaylists } from "~/modules/media/constants";
-import type { MediaImage } from "~/modules/media/components/MediaImage";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
-import type { MediaType, PlayFromSource } from "~/stores/Playback/types";
 
 //#region "Smooth Playback Transition" Constants
 type PlaybackStoreFrame = Awaited<
@@ -68,29 +46,8 @@ const ValidErrors = ["io-file-not-found", "failed-runtime-check"];
 const erroredTrackUris = new Set<string>();
 //#endregion
 
-/**
- * Register services in the `index.ts` file. Doesn't get called on next
- * app launch if "Continue Playback on Dismiss" is enabled.
- */
-async function initServices() {
-  console.warn("[InitServices] Initializing services...");
-
-  //* Fetch the value from `AsyncStorage` instead of `preferenceStore` as the
-  //* store might not be hydrated in time (so if we turned it off, it might
-  //* still be enabled due to the default value being `true`).
-  const useDownsamplingProcessor =
-    (await AsyncStorage.getItem("downsamplingProcessor")) ?? "true";
-
-  //? Seems like we can setup the playback service in the background/headlessly.
-  await AudioBrowser.setupPlayer({
-    android: {
-      allowedArtworkParentPaths: [ImageDirectory, PlaceholderDirectory],
-      downsamplingProcessor: useDownsamplingProcessor === "true",
-    },
-  });
-  AudioBrowser.updateOptions(getAudioBrowserOptions());
-
-  //#region Media Events
+/** Register events to handle playback, errors, and tear-down.  */
+export function registerEvents() {
   // This event gets called when `appKilledPlaybackBehavior = "stop-playback-and-remove-notification"`.
   AudioBrowser.handleBeforeServiceKilled(async (permanent) => {
     TrackListeningSession.finalize();
@@ -259,148 +216,4 @@ async function initServices() {
       await playbackStore.getState().reset();
     }
   });
-  //#endregion
-
-  //#region Android Auto
-  const experimentalLabel = "🧪 This is an Experimental Feature. 🧪";
-
-  /** Generate route containing all lists of a given category. */
-  async function getMediaCategoryRoute(
-    category: MediaType,
-    loader: () => Promise<
-      Array<{
-        name: string;
-        id?: string;
-        artistName?: string;
-        trackCount: number;
-        artwork: MediaImage.ImageSource;
-      }>
-    >,
-  ): Promise<ResolvedTrack> {
-    const data = await loader();
-    return {
-      url: `/${category}`,
-      title: `${capitalize(category)}s`,
-      children: data.map(({ artwork, ...item }) => {
-        return {
-          url: `/${category}/${item.id ?? item.name}`,
-          title: item.name,
-          description:
-            item.artistName ||
-            i18next.t("plural.track", { count: item.trackCount }),
-          artwork:
-            getImageUri(Array.isArray(artwork) ? artwork[0] : artwork) ||
-            PlaceholderImageFile,
-        };
-      }),
-    };
-  }
-
-  /** Generate route for list in a given category. */
-  function getMediaCategoryEntryRoute(
-    category: MediaType,
-    loader: (id: string) => Promise<{
-      name: string;
-      tracks: Array<CommonTrack & { disc?: number | null }>;
-    }>,
-  ): BrowserSource {
-    return async ({ routeParams }): Promise<ResolvedTrack> => {
-      const id = routeParams!.id!;
-      const data = await loader(id);
-      // Only available for tracks in "Album" entry.
-      const hasDiscLabel = (data.tracks.at(-1)?.disc ?? -1) > 1;
-
-      return {
-        url: category === "track" ? "/track" : `/${category}/${id}`,
-        title: data.name,
-        children: data.tracks.map((track) => ({
-          src: getSafeUri(track.uri),
-          title: track.name,
-          artist: getArtistsString(track.artists),
-          artwork: getImageUri(track.artwork) || PlaceholderImageFile,
-          duration: track.duration,
-          groupTitle:
-            hasDiscLabel && typeof track.disc === "number"
-              ? `Disc ${track.disc}`
-              : undefined,
-        })),
-      };
-    };
-  }
-
-  const mediaListRoutes: Record<string, BrowserSource> = {
-    "/album": () => getMediaCategoryRoute("album", getAlbumsSummary),
-    "/album/{id}": getMediaCategoryEntryRoute("album", getAlbum),
-    "/artist": () => getMediaCategoryRoute("artist", getArtistsSummary),
-    "/artist/{id}": getMediaCategoryEntryRoute("artist", getArtist),
-    "/genre": () => getMediaCategoryRoute("genre", getGenresSummary),
-    "/genre/{id}": getMediaCategoryEntryRoute("genre", getGenre),
-    "/playlist": () => getMediaCategoryRoute("playlist", getPlaylistsSummary),
-    "/playlist/{id}": getMediaCategoryEntryRoute("playlist", getPlaylist),
-    "/track": getMediaCategoryEntryRoute("track", async () => {
-      return { name: "Tracks", tracks: await getSortedTracks() };
-    }),
-  };
-
-  const configuration: BrowserConfiguration = {
-    tabs: [
-      {
-        title: "Your Library",
-        url: "/library",
-      },
-    ],
-    routes: {
-      ...mediaListRoutes,
-      "/library": {
-        url: "/library",
-        title: "Your Library",
-        children: ["Album", "Artist", "Genre", "Playlist", "Track"].map(
-          (category) => ({
-            url: `/${category.toLowerCase()}`,
-            title: `${category}s`,
-            groupTitle: experimentalLabel,
-          }),
-        ),
-      },
-    },
-    //* Only load a single track to be consistent with our playback strategy.
-    singleTrack: true,
-    //* Triggered when we select a track in Android Auto.
-    handleTrackLoad: async ({ track }) => {
-      const trackUri = track.src ? decodeURIComponent(track.src) : undefined;
-      const androidAutoURL = track.url; // ie: `/album/srzxiew5ihjsxe6u706siqfq?__trackId=......`
-
-      //? Fallback to playing the track in the Playback store if we don't
-      //? have context on the selected track & list.
-      if (!trackUri || !androidAutoURL) return PlaybackControls.play();
-
-      //? Derive the `PlayFromSource` from the url.
-      const [_, lType, lId] = androidAutoURL.split("?__trackId")[0]!.split("/");
-      let listSource = { type: lType, id: lId } as PlayFromSource;
-      //* We need to pay attention to the special case of playing from the "Tracks" list.
-      if (lType === "track") {
-        listSource = { type: "playlist", id: ReservedPlaylists.tracks };
-      } else if (!lType || !lId) {
-        return;
-      }
-
-      //? Get the id of the selected track since we can't pass it down.
-      const activeTrack = await db.query.tracks.findFirst({
-        where: (fields, { eq }) => eq(fields.uri, trackUri),
-      });
-
-      //? Simplest way of updating the Playback store when we change
-      //? lists via Android Auto.
-      return PlaybackControls.playFromList({
-        source: listSource,
-        trackId: activeTrack?.id,
-      });
-    },
-  };
-
-  AudioBrowser.configureBrowser(configuration);
-  //#endregion
 }
-
-/** Promise to setup AudioBrowser. */
-export const onAppStartUpInit = initServices();
