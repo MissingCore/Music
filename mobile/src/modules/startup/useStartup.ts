@@ -91,7 +91,10 @@ async function startupFlow() {
   createFontDirectory();
 
   //? 4. Ensure all persisted stores are hydrated.
-  await playbackStore.persist.rehydrate();
+  //! The Playback store hydration can't be deferred due to a potential
+  //! issue of being overriden if we play a track via Android Auto.
+  if (!playbackStore.getState()._hasHydrated)
+    await playbackStore.persist.rehydrate();
   await preferenceStore.persist.rehydrate();
   await equalizerStore.persist.rehydrate();
   await lyricStore.persist.rehydrate();

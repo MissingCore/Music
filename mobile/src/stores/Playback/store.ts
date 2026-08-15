@@ -93,7 +93,6 @@ export const playbackStore = createPersistedStore<PlaybackStore>(
   }),
   {
     name: "music::playback-store",
-    skipHydration: true,
     // Only store some fields in AsyncStorage.
     partialize: (state) =>
       Object.fromEntries(
