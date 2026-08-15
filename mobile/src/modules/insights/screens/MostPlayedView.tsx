@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useQuery } from "@tanstack/react-query";
-import { count, desc, eq } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -102,7 +102,12 @@ type MostPlayedPlacement = { placement: number; tracks: TrackData[] };
 const aggregatedPlayCountView = db
   .select({
     ...commonTrackColumns,
-    playCount: count(tracksPlayEvents.id).as("play_count"),
+    //? Derive `playCount` from "completion ratio" for best representation based on
+    //? track duration and play time.
+    playCount:
+      sql`ceil(sum(${tracksPlayEvents.playTime}) / ${structuredTracksView.duration})`
+        .mapWith(Number)
+        .as("play_count"),
   })
   .from(tracksPlayEvents)
   .innerJoin(
