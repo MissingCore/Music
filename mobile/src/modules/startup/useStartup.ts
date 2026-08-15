@@ -35,7 +35,6 @@ import { FontDirectory } from "~/modules/customization/font/core/data";
 import { PlayedListsTracker } from "~/modules/insights/core/PlayedListsTracker";
 import { checkForMigrations } from "~/modules/scanning/helpers/migrations";
 import { revalidateWidgets } from "~/modules/widget/utils";
-import { RepeatModes } from "~/stores/Playback/constants";
 import { headlessAudioBrowserSetup } from "./audioBrowser";
 
 interface State {
@@ -86,23 +85,24 @@ function useDevOnly(db: SQLiteDatabase | null) {
 async function startupFlow() {
   const stopwatch = new Stopwatch();
 
-  //? 1. Ensure all migrations are applied.
+  //? 1. Ensure database is in the correct state.
   await migrate(db, migrations);
-
-  //? 2. Enable foreign key constraint after we're sure Drizzle migrations
-  //? have completed.
+  //* Enable foreign key constraint after ensuring drizzle migrations are done.
   await expoSQLiteDB.execAsync("PRAGMA foreign_keys = ON;");
 
-  //? 3. Ensure content directories are defined.
+  //? 2. Ensure content directories & files are defined.
+  const fontDir = new Directory(FontDirectory);
+  if (!fontDir.exists) fontDir.create();
+
   const imgDir = new Directory(ImageDirectory);
   if (!imgDir.exists) imgDir.create();
 
   const placeholderDir = new Directory(PlaceholderDirectory);
   if (!placeholderDir.exists) placeholderDir.create();
 
-  //? Save a bundled asset to the local file system as we can't pass a
-  //? `require()` image to `react-native-audio-browser`.
-  //? - Ref: https://github.com/expo/expo/issues/41996#issuecomment-3724350425
+  //* Save a bundled asset to the local file system as we can't pass a
+  //* `require()` image to `react-native-audio-browser`.
+  //* - Ref: https://github.com/expo/expo/issues/41996#issuecomment-3724350425
   try {
     const fallbackImg = new File(PlaceholderImageFile);
     if (fallbackImg.exists) return;
@@ -115,10 +115,7 @@ async function startupFlow() {
     console.log(err);
   }
 
-  const fontDir = new Directory(FontDirectory);
-  if (!fontDir.exists) fontDir.create();
-
-  //? 4. Ensure all persisted stores are hydrated.
+  //? 3. Ensure persisted stores are hydrated.
   //! The Playback store hydration can't be deferred due to a potential
   //! issue of being overriden if we play a track via Android Auto.
   if (!playbackStore.getState()._hasHydrated)
@@ -128,23 +125,21 @@ async function startupFlow() {
   await lyricStore.persist.rehydrate();
   await viewPreferenceStore.persist.rehydrate();
 
-  //? 5. Ensure AudioBrowser is setup.
+  //? 4. Ensure AudioBrowser is setup & run logic requiring its initialization.
   await headlessAudioBrowserSetup;
 
-  //? 6. Initialize services that relies on AudioBrowser being initialized.
   _initEQStore();
 
-  // Prevent Android Auto from reading stale cached data on app launch
-  // if it's reusing a prior session.
-  //  - This should be enough as you shouldn't be changing anything
-  //  in the current Android Auto session as should be driving.
+  //* Prevent Android Auto from reading stale cached data on app launch
+  //* if it's reusing a prior session.
+  //*  - This should be enough as you shouldn't be changing anything
+  //*  in the current Android Auto session as should be driving.
   AudioBrowser.revalidateBrowser();
 
-  // Ensure widget has up-to-date data as the Playback store isn't
-  // immediately hydrated.
+  //* Ensure widget has up-to-date data as the Playback store isn't immediately hydrated.
   await revalidateWidgets({ openApp: !playbackStore.getState().isPlaying });
 
-  //? 7. Apply user preferences.
+  //? 5. Apply user preferences.
   const {
     repeat,
     playingFrom,
@@ -165,7 +160,7 @@ async function startupFlow() {
   AudioBrowser.updateOptions(
     getAudioBrowserOptions({ continuePlaybackOnDismiss }),
   );
-  if (repeat === RepeatModes.REPEAT_ONE) AudioBrowser.setRepeatMode("track");
+  if (repeat === "repeat-one") AudioBrowser.setRepeatMode("track");
   if (restoreVolume) AudioBrowser.setVolume(volume);
   else playbackStore.setState({ volume: 1 }); //? Ensure it's reset after turning setting off.
   AudioBrowser.setReplayGainStatus(isReplayGainEnabled);
@@ -180,7 +175,7 @@ async function startupFlow() {
   // Ensure the current list is at the top of recently played lists.
   if (playingFrom) await PlayedListsTracker.add(playingFrom);
 
-  //? 8. Ensure migrations are applied.
+  //? 6. Ensure migrations are applied.
   stopwatch.lapTime();
   await checkForMigrations();
   console.log(`Completed migrations in ${stopwatch.lapTime()}.`);

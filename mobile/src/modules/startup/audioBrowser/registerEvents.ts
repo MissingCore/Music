@@ -21,7 +21,6 @@ import { clearAllQueries } from "~/lib/react-query";
 import { bgWait } from "~/utils/promise";
 import { applyReplayGainToTrack } from "~/modules/audio/replayGain/core/apply";
 import { revalidateWidgets } from "~/modules/widget/utils";
-import { RepeatModes } from "~/stores/Playback/constants";
 
 //#region "Smooth Playback Transition" Constants
 type PlaybackStoreFrame = Awaited<
@@ -73,7 +72,7 @@ export function registerEvents() {
       await TrackListeningSession.finalize({ paused: true });
     } else if (e.state === "loading") {
       const { repeat, activeTrack } = playbackStore.getState();
-      if (repeat === RepeatModes.REPEAT_ONE && activeTrack) {
+      if (repeat === "repeat-one" && activeTrack) {
         await TrackListeningSession.finalize();
         await TrackListeningSession.start(activeTrack.uri);
       }
@@ -95,7 +94,7 @@ export function registerEvents() {
     const loadingFrame = 5 * Math.max(1, sessionStore.getState().playbackSpeed);
     if (
       //? Ignore if we're repeating the current track.
-      repeat === RepeatModes.REPEAT_ONE ||
+      repeat === "repeat-one" ||
       //? "Natural Playback Delay" & "Smooth Playback Transition" are mutually exclusive features.
       playbackDelay > 0 ||
       //? Prevent recomputation.
@@ -111,7 +110,7 @@ export function registerEvents() {
     if (!gaplessPlaybackContext.nextSnapshot) return;
     const { activeTrack, queuePosition } = gaplessPlaybackContext.nextSnapshot;
     //? Ensure that we handle "No Repeat" mode cleanly (no sound bleed).
-    if (queuePosition === 0 && repeat === RepeatModes.NO_REPEAT) return;
+    if (queuePosition === 0 && repeat === "no-repeat") return;
 
     // Load the next track into the queue for smoother playback.
     AudioBrowser.add(await applyReplayGainToTrack(activeTrack));
