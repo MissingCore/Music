@@ -70,7 +70,10 @@ export const browserConfiguration: BrowserConfiguration = {
 
     //? Derive the `PlayFromSource` from the url.
     const [_, lType, lId] = androidAutoURL.split("?__trackId")[0]!.split("/");
-    let listSource = { type: lType, id: lId } as PlayFromSource;
+    let listSource = {
+      type: lType,
+      id: decodeURIComponent(lId ?? ""),
+    } as PlayFromSource;
     //* We need to pay attention to the special case of playing from the "Tracks" list.
     if (lType === "track") {
       listSource = { type: "playlist", id: ReservedPlaylists.tracks };
@@ -113,7 +116,7 @@ async function getMediaCategoryRoute(
     title: `${capitalize(category)}s`,
     children: data.map(({ artwork, ...item }) => {
       return {
-        url: `/${category}/${item.id ?? item.name}`,
+        url: `/${category}/${encodeURIComponent(item.id ?? item.name)}`,
         title: item.name,
         description:
           item.artistName ||
@@ -135,8 +138,8 @@ function getMediaCategoryEntryRoute(
   }>,
 ): BrowserSource {
   return async ({ routeParams }): Promise<ResolvedTrack> => {
-    const id = routeParams!.id!;
-    const data = await loader(id);
+    const id = routeParams!.id!; // Undefined for `/track`, but we return a fixed route.
+    const data = await loader(decodeURIComponent(id));
     // Only available for tracks in "Album" entry.
     const hasDiscLabel = (data.tracks.at(-1)?.disc ?? -1) > 1;
 
