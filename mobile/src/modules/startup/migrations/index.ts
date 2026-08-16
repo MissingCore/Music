@@ -22,8 +22,8 @@ import { playbackStore } from "~/stores/Playback/store";
 import { preferenceStore } from "~/stores/Preference/store";
 
 import type { Tab } from "~/stores/Preference/types";
-import type { MigrationOption } from "../constants";
-import { MigrationHistory } from "../constants";
+import type { MigrationOption } from "./constants";
+import { MigrationHistory } from "./constants";
 
 import { iAsc } from "~/lib/drizzle";
 import { chunkArray } from "~/utils/object";

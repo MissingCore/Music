@@ -33,9 +33,9 @@ import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
 import { Stopwatch } from "~/utils/debug";
 import { FontDirectory } from "~/modules/customization/font/core/data";
 import { PlayedListsTracker } from "~/modules/insights/core/PlayedListsTracker";
-import { checkForMigrations } from "~/modules/scanning/helpers/migrations";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { headlessAudioBrowserSetup } from "./audioBrowser";
+import { checkForMigrations } from "./migrations";
 
 interface State {
   success: boolean;
