@@ -207,7 +207,7 @@ const MigrationFunctionMap: Record<
     await Image.clearDiskCache();
   },
 
-  //? v3.4.0-rc.0
+  //? v3.5.0-rc.0
   "waveform-slider": async () => {
     const defaultToWaveform: boolean =
       // @ts-expect-error - Field previously existed.
