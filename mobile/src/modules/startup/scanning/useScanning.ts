@@ -63,9 +63,7 @@ export function useScanning(canStart: boolean) {
     if (!canStart) return;
 
     if (permissionResponse && status === undefined) {
-      readMusicLibrary().catch((err) => {
-        setError(err);
-      });
+      readMusicLibrary().catch(setError);
     }
   }, [canStart, permissionResponse, readMusicLibrary, status]);
 
