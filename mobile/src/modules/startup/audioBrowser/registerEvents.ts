@@ -13,7 +13,7 @@ import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { preferenceStore } from "~/stores/Preference/store";
 import { sessionStore } from "~/stores/Session/store";
 import { TrackListeningSession } from "~/modules/insights/core/TrackListeningSession";
-import { AppCleanUp } from "~/modules/scanning/helpers/cleanup";
+import { AppCleanUp } from "../scanning/core/cleanup";
 
 import { router } from "~/navigation/utils/router";
 

@@ -15,13 +15,13 @@ import { scheduleOnRN } from "react-native-worklets";
 import { INITIALIZE_SENTRY } from "~/env";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { useStartup } from "~/modules/startup/useStartup";
-import { useScanning } from "~/modules/scanning/hooks/useScanning";
+import { useScanning } from "~/modules/startup/scanning/useScanning";
 
 import NavigationContainer from "~/navigation";
 import { AppProvider } from "~/navigation/providers/AppProvider";
 import { ErrorBoundary } from "~/navigation/components/ErrorBoundary";
-import { OnboardingConfiguration } from "~/modules/scanning/components/OnboardingConfigurationView";
-import { ScanningProgress } from "~/modules/scanning/components/ScanningProgressView";
+import { OnboardingConfiguration } from "~/modules/startup/screens/OnboardingConfigurationView";
+import { ScanningProgress } from "~/modules/startup/screens/ScanningProgressView";
 
 import "~/modules/i18n"; // Make sure translations are bundled.
 import { Sentry } from "~/lib/sentry";
