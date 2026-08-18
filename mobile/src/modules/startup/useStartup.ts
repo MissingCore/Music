@@ -91,14 +91,10 @@ async function startupFlow() {
   await expoSQLiteDB.execAsync("PRAGMA foreign_keys = ON;");
 
   //? 2. Ensure content directories & files are defined.
-  const fontDir = new Directory(FontDirectory);
-  if (!fontDir.exists) fontDir.create();
-
-  const imgDir = new Directory(ImageDirectory);
-  if (!imgDir.exists) imgDir.create();
-
-  const placeholderDir = new Directory(PlaceholderDirectory);
-  if (!placeholderDir.exists) placeholderDir.create();
+  [FontDirectory, ImageDirectory, PlaceholderDirectory].forEach((path) => {
+    const dir = new Directory(path);
+    if (!dir.exists) dir.create();
+  });
 
   //* Save a bundled asset to the local file system as we can't pass a
   //* `require()` image to `react-native-audio-browser`.
