@@ -77,8 +77,8 @@ export const browserConfiguration: BrowserConfiguration = {
     //* We need to pay attention to the special case of playing from the "Tracks" list.
     if (lType === "track") {
       listSource = { type: "playlist", id: ReservedPlaylists.tracks };
-    } else if (!lType || !lId) {
-      return;
+    } else if (!listSource.type || !listSource.id) {
+      return PlaybackControls.play();
     }
 
     //? Get the id of the selected track since we can't pass it down.
