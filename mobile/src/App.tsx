@@ -49,17 +49,17 @@ if (INITIALIZE_SENTRY) {
 }
 
 export default function App() {
-  const { success, error } = useStartup();
+  const { success: completedStartup, error } = useStartup();
   const completedOnboarding = usePreferenceStore((s) => s.completedOnboarding);
   const { completed, error: scanningError } = useScanning(
-    success && completedOnboarding,
+    completedStartup && completedOnboarding,
   );
 
   const OnboardingScreen = useMemo(() => {
     // Prevent flashing in `OnboardingConfiguration` when we're waiting for hydration.
-    if (!success || completedOnboarding) return ScanningProgress;
+    if (!completedStartup || completedOnboarding) return ScanningProgress;
     return OnboardingConfiguration;
-  }, [completedOnboarding, success]);
+  }, [completedOnboarding, completedStartup]);
 
   if (error || scanningError) {
     return (
