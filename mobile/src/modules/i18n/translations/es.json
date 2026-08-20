@@ -131,8 +131,8 @@
         "light": "Claro",
         "dark": "Oscuro",
         "system": "Sistema",
-        "atmosphere": null,
-        "opaqueColors": null
+        "atmosphere": "Efecto de atmósfera",
+        "opaqueColors": "Colores opacos"
       }
     },
     "tabsOrder": {
@@ -151,12 +151,12 @@
         "plain": "Simple",
         "vinyl": "Vinilo",
         "vinylOld": "Vinilo (clásico)",
-        "none": null,
-        "alternativeInfoLayout": null
+        "none": "Ninguno",
+        "alternativeInfoLayout": "Diseño alternativo de información"
       }
     },
     "seekbar": {
-      "title": null,
+      "title": "Barra de búsqueda",
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": "Forma de onda",
@@ -376,7 +376,7 @@
       }
     },
     "artwork": {
-      "title": null,
+      "title": "Ilustración",
       "extra": {
         "change": "Cambiar carátula",
         "remove": "Eliminar carátula",
@@ -417,8 +417,8 @@
         "list": "Lista",
         "grid": "Cuadrícula",
         "compactGrid": "Cuadrícula Compacta",
-        "columnSize": null,
-        "columnCount": null,
+        "columnSize": "Tamaño de columna",
+        "columnCount": "Número de columnas: {{count}}",
         "sort": "Ordenar",
         "asc": "Ascendente",
         "discover": "Descubrir",
