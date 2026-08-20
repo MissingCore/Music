@@ -69,6 +69,7 @@ export const LANGUAGES = [
     rtl: true,
     translators: [
       { display: "Sourosh Tahvilian", link: "https://github.com/soorosh-st" },
+      { display: "Bardia", link: "https://github.com/therealbardiakhan" },
     ],
   },
   {
@@ -148,6 +149,10 @@ export const LANGUAGES = [
     name: "Türkçe",
     translators: [
       { display: "𝗛𝗼𝗹𝗶", link: "https://www.github.com/mikropsoft" },
+      {
+        display: "Emre Bayraktar",
+        link: "https://crowdin.com/profile/emreyunusbayraktar",
+      },
     ],
   },
   {

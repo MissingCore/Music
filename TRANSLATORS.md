@@ -51,6 +51,7 @@
 ## [Türkçe] Turkish
 
 - [@mikropsoft](https://www.github.com/mikropsoft)
+- [Emre Bayraktar (emreyunusbayraktar)](https://crowdin.com/profile/emreyunusbayraktar)
 
 ## [Català] Catalan
 
@@ -82,3 +83,4 @@
 ## [فارسی] Persian
 
 - [@soorosh-st](https://github.com/soorosh-st)
+- [@therealbardiakhan](https://github.com/therealbardiakhan)

@@ -30,7 +30,7 @@
     "settings": "تنظیمات",
     "upcoming": "بعدی",
     "playingFrom": "در حال پخش از",
-    "instructions": null,
+    "instructions": "دستورالعمل ها",
     "disc": "دیسک {{count}}"
   },
   "template": {
@@ -65,7 +65,7 @@
     "unsaved": "ممکن است تغییرات ذخیره نشده‌ای داشته باشید.",
     "stay": "ماندن",
     "leave": "خروج",
-    "close": null,
+    "close": "بستن",
     "create": "ایجاد",
     "delete": "حذف",
     "edit": "ویرایش",
@@ -119,7 +119,7 @@
       "title": "ظاهر"
     },
     "font": {
-      "title": null,
+      "title": "فونت ها",
       "extra": {
         "accent": "قلم تاکیدی",
         "primary": "قلم اصلی"
@@ -131,8 +131,8 @@
         "light": "روشن",
         "dark": "تاریک",
         "system": "سیستم",
-        "atmosphere": null,
-        "opaqueColors": null
+        "atmosphere": "جلوه اتمسفر",
+        "opaqueColors": "رنگ های کدر"
       }
     },
     "tabsOrder": {
@@ -151,7 +151,7 @@
         "plain": "ساده",
         "vinyl": "گرامافون",
         "vinylOld": "گرامافون (قدیمی)",
-        "none": null,
+        "none": "هیچ کدام",
         "alternativeInfoLayout": null
       }
     },
@@ -216,7 +216,7 @@
     "playback": {
       "title": "پخش",
       "extra": {
-        "delay": "تأخیر طبیعی پخش",
+        "delay": "تأخیر پخش",
         "options": "گزینه های پخش",
         "pitch": null,
         "speed": "سرعت پخش",
