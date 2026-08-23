@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
-import { useRescanForTracks } from "~/modules/scanning/helpers/rescan";
+import { useRescanForTracks } from "~/modules/startup/scanning/core/rescan";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { MinDurationSheet } from "./sheets/MinDurationSheet";

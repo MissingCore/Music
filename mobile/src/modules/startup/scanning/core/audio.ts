@@ -65,8 +65,9 @@ export async function findAndSaveAudio() {
       after: lastRead,
     });
     foundAssets.push(...assets);
+    // Stop if the page is empty or the cursor did not advance.
+    isComplete = !hasNextPage || assets.length === 0 || endCursor === lastRead;
     lastRead = endCursor;
-    isComplete = !hasNextPage;
   } while (!isComplete);
 
   const discoveredTracks = foundAssets.filter(

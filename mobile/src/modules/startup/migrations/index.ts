@@ -22,8 +22,8 @@ import { playbackStore } from "~/stores/Playback/store";
 import { preferenceStore } from "~/stores/Preference/store";
 
 import type { Tab } from "~/stores/Preference/types";
-import type { MigrationOption } from "../constants";
-import { MigrationHistory } from "../constants";
+import type { MigrationOption } from "./constants";
+import { MigrationHistory } from "./constants";
 
 import { iAsc } from "~/lib/drizzle";
 import { chunkArray } from "~/utils/object";
@@ -207,7 +207,7 @@ const MigrationFunctionMap: Record<
     await Image.clearDiskCache();
   },
 
-  //? v3.4.0-rc.0
+  //? v3.5.0-rc.0
   "waveform-slider": async () => {
     const defaultToWaveform: boolean =
       // @ts-expect-error - Field previously existed.
