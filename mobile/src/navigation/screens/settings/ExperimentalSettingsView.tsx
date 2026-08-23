@@ -34,9 +34,6 @@ import { ConfirmableAction } from "~/components/Modal";
 export default function ExperimentalSettings() {
   const { t } = useTranslation();
   const queueAwareNext = usePreferenceStore((s) => s.queueAwareNext);
-  const downsamplingProcessor = usePreferenceStore(
-    (s) => s.downsamplingProcessor,
-  );
   const atmosphereEffect = usePreferenceStore((s) => s.atmosphereEffect);
   const opaqueColors = usePreferenceStore((s) => s.opaqueColors);
   const { data: unhashedImagesCount } = useUnhashedImagesCount();
@@ -48,13 +45,6 @@ export default function ExperimentalSettings() {
         supportingText={t("feat.queue.extra.queueAwareNextBrief")}
         onPress={PreferenceTogglers.toggleQueueAwareNext}
         Trailing={<Switch enabled={queueAwareNext} />}
-      />
-
-      <SegmentedList.Item
-        labelText="Downsample High Sample Rate Audio (192kHz+)"
-        supportingText="Downsamples high sample rate audio files to 192kHz so that they can be played instead of throwing an error. This will eventually be the default behavior. Disable this feature if you encounter issues."
-        onPress={PreferenceTogglers.toggleDownsamplingProcessor}
-        Trailing={<Switch enabled={downsamplingProcessor} />}
       />
 
       <SegmentedList>

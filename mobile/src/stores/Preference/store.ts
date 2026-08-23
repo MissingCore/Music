@@ -133,7 +133,6 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     atmosphereEffect: false,
     opaqueColors: false,
     mediaStoreScanner: false,
-    downsamplingProcessor: true,
     queueAwareNext: false,
   }),
   {
