@@ -60,6 +60,7 @@ import type { Tab } from "~/stores/Preference/types";
 import { AtmosphereThemeListener } from "~/modules/customization/atmosphere/AtmosphereThemeListener";
 import { TrackMultiSelectListeners } from "~/modules/media/multiSelect/components/TrackMultiSelectListeners";
 import { BottomActions } from "./components/BottomActions";
+import { DeferredRender } from "./components/DeferredRender";
 import { TopAppBar } from "./components/TopAppBar";
 
 //#region Root Screens
@@ -237,6 +238,7 @@ export const RootStack = createNativeStackNavigator({
       <PortalHost />
     </>
   ),
+  screenLayout: ({ children }) => <DeferredRender>{children}</DeferredRender>,
   screenOptions: {
     header: TopAppBar,
     title: "",
@@ -251,6 +253,8 @@ export const RootStack = createNativeStackNavigator({
       linking: {
         path: "now-playing",
       },
+      //? Prevents blank screen when opening caused by deferred render.
+      layout: ({ children }) => children,
       options: {
         headerShown: false,
         presentation: "formSheet",
