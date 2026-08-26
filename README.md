@@ -39,7 +39,7 @@ A Nothing inspired **local** music player.
 - Lyrics (BYO - Bring Your Own, Embedded, Providers)
 - Background playback w/ media control notification
 - Queue manipulation (track removal & reordering)
-- Vinyl on "Now Playing" screen acts as a seekbar (24s for a full rotation)
+- Vinyl on "Now Playing" screen acts as a seekbar (24s for a full rotation, or 1.8s if "Standard Vinyl Speed" is enabled)
 - Theoretical support of [these media formats](https://developer.android.com/media/platform/supported-formats#audio-formats)
 - [Community translations](#translations)
 - **`[🧪 Experimental]`** Sleep timer support

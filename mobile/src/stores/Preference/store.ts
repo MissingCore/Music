@@ -106,6 +106,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     nowPlayingGestures: false,
     playbackDelay: 0,
     alternativeInfoLayout: false,
+    standardVinylSpeed: false,
     seekbarDesign: "normal",
 
     quickScroll: true,

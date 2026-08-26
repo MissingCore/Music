@@ -22,6 +22,7 @@ export function AppearanceSheet(props: { ref: TrueSheetRef }) {
   const alternativeInfoLayout = usePreferenceStore(
     (s) => s.alternativeInfoLayout,
   );
+  const standardVinylSpeed = usePreferenceStore((s) => s.standardVinylSpeed);
   const seekbarDesign = usePreferenceStore((s) => s.seekbarDesign);
 
   return (
@@ -32,6 +33,15 @@ export function AppearanceSheet(props: { ref: TrueSheetRef }) {
           <SwitchInput
             enabled={alternativeInfoLayout}
             onPress={PreferenceTogglers.toggleKey("alternativeInfoLayout")}
+          />
+        }
+      />
+      <SheetLabelAction
+        labelKey="feat.nowPlayingDesign.extra.standardVinylSpeed"
+        Trailing={
+          <SwitchInput
+            enabled={standardVinylSpeed}
+            onPress={PreferenceTogglers.toggleKey("standardVinylSpeed")}
           />
         }
       />

@@ -30,7 +30,8 @@ type ToggleableKey =
   | "repeatOnSkip"
   | "restoreLastPosition"
   | "showNavbar"
-  | "squareArtwork";
+  | "squareArtwork"
+  | "standardVinylSpeed";
 
 export function toggleKey(key: ToggleableKey) {
   return () => {

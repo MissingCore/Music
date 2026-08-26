@@ -13,12 +13,16 @@ import { scheduleOnRN } from "react-native-worklets";
 
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
+import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { animatedPositionAtom, isSeekingAtom } from "./Seekbar.context";
 
 type Position = { absoluteX: number; absoluteY: number };
 
 export function useVinylSeekbar() {
+  const revolutionDuration = usePreferenceStore((s) =>
+    s.standardVinylSpeed ? 1.8 : 24,
+  );
   const duration = usePlaybackStore((s) => s.activeTrack?.duration ?? 0);
 
   const timedPosition = useAtomValue(animatedPositionAtom);
@@ -30,7 +34,9 @@ export function useVinylSeekbar() {
   const radius = useSharedValue(0);
 
   const vinylStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${convertUnit(timedPosition.get())}deg` }],
+    transform: [
+      { rotate: `${convertUnit(timedPosition.get(), revolutionDuration)}deg` },
+    ],
   }));
 
   const vinylWrapperArgs = useMemo(
@@ -100,7 +106,11 @@ export function useVinylSeekbar() {
       prevAngle.set(currAngle);
 
       // Calculate new position.
-      const changeDelta = convertUnit(rotateAmount, "degrees");
+      const changeDelta = convertUnit(
+        rotateAmount,
+        revolutionDuration,
+        "degrees",
+      );
       const newPosition = timedPosition.get() + changeDelta;
       if (newPosition < 0) timedPosition.set(0);
       else if (newPosition > duration) timedPosition.set(duration);
@@ -133,9 +143,13 @@ export function useVinylSeekbar() {
  *
  * **DEFAULTS** to converting seconds to degrees.
  */
-function convertUnit(value: number, from?: "seconds" | "degrees") {
+function convertUnit(
+  value: number,
+  revolutionDuration: number,
+  from?: "seconds" | "degrees",
+) {
   "worklet";
-  if (from === "degrees") return value * (24 / 360);
-  return value * (360 / 24);
+  if (from === "degrees") return value * (revolutionDuration / 360);
+  return value * (360 / revolutionDuration);
 }
 //#endregion
