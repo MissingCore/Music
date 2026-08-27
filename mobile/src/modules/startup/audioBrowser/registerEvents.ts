@@ -6,7 +6,7 @@ import AudioBrowser from "react-native-audio-browser";
 
 import { db } from "~/db";
 
-import i18next from "~/modules/i18n";
+import { CAN_SENTRY_REPORT } from "~/env";
 import { deleteTracks } from "~/data/track/api";
 import { playbackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
@@ -18,6 +18,7 @@ import { AppCleanUp } from "../scanning/core/cleanup";
 import { router } from "~/navigation/utils/router";
 
 import { clearAllQueries } from "~/lib/react-query";
+import { Sentry } from "~/lib/sentry";
 import { bgWait } from "~/utils/promise";
 import { applyReplayGainToTrack } from "~/modules/audio/replayGain/core/apply";
 import { revalidateWidgets } from "~/modules/widget/utils";
@@ -209,7 +210,13 @@ export function registerEvents() {
         }
       }
 
-      toast.error(i18next.t("template.notFound", { name: erroredTrack.title }));
+      toast.error(
+        `Something went wrong when playing: ${erroredTrack.title}.\n[${e.code}] ${e.message}`,
+      );
+      if (CAN_SENTRY_REPORT)
+        Sentry.captureException(
+          new Error(`[PlaybackError: ${e.code}] ${e.message}`),
+        );
     } else {
       // If we get this event when there's no active track, just reset.
       await playbackStore.getState().reset();
