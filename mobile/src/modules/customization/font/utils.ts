@@ -25,7 +25,7 @@ function getBundledFontFamily(
     return FontFamily.ntypeHeadline;
   } else if (
     options?.bold &&
-    (fontCode === "geistMono" || fontCode === "roboto" || fontCode === "inter")
+    (fontCode === "geist" || fontCode === "geistMono")
   ) {
     return FontFamily[`${fontCode}Medium`];
   }
@@ -43,10 +43,7 @@ export function getFont(
   if (!isBundledFont(font)) {
     const fileName = font.uri.split("/").at(-1);
     if (fileName) return removeFileExtension(fileName);
-    return getBundledFontFamily(
-      options?.headline ? "NType" : "Roboto",
-      options,
-    );
+    return getBundledFontFamily(options?.headline ? "NType" : "Geist", options);
   }
   return getBundledFontFamily(font, options);
 }

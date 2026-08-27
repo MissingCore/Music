@@ -27,6 +27,7 @@ import { MigrationHistory } from "./constants";
 
 import { iAsc } from "~/lib/drizzle";
 import { chunkArray } from "~/utils/object";
+import { isString } from "~/utils/validation";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 /**
@@ -214,6 +215,18 @@ const MigrationFunctionMap: Record<
       preferenceStore.getState().waveformSlider;
     if (defaultToWaveform === true) {
       preferenceStore.setState({ seekbarDesign: "waveform" });
+    }
+  },
+
+  //? v3.6.0-rc.0
+  "geist-font": async () => {
+    const { accentFont, primaryFont } = preferenceStore.getState();
+    const removedFonts = ["Roboto", "Inter"];
+    if (isString(accentFont) && removedFonts.includes(accentFont)) {
+      preferenceStore.setState({ accentFont: "Geist" });
+    }
+    if (isString(primaryFont) && removedFonts.includes(primaryFont)) {
+      preferenceStore.setState({ primaryFont: "Geist" });
     }
   },
 };
