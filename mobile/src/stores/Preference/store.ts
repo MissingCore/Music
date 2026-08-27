@@ -70,7 +70,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     forceLTR: false,
 
     accentFont: "NType",
-    primaryFont: "Roboto",
+    primaryFont: "Geist",
     theme: "system",
     activeCustomThemeId: null,
     activeCustomTheme: null,
