@@ -13,7 +13,7 @@ import Animated, {
 
 import type { SupportedIconName } from "~/resources/icons";
 import { Icon } from "~/resources/icons";
-import { useScanningProgressStore } from "../ScanningProgress";
+import { useScanningProgressStore } from "../scanning/ScanningProgress";
 
 import { CachedSlider } from "~/components/Form/Slider";
 import { Em, TEm } from "~/components/Typography/StyledText";

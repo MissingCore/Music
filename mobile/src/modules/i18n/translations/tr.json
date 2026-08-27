@@ -30,7 +30,7 @@
     "settings": "Ayarlar",
     "upcoming": "Sıradaki",
     "playingFrom": "Şuradan Oynatılıyor:",
-    "instructions": null,
+    "instructions": "Nasıl Kullanılır",
     "disc": "Disk {{count}}"
   },
   "template": {
@@ -46,7 +46,7 @@
     "entryHide": "`{{- name}}` öğesini gizle",
     "entryEnable": "`{{- name}}` öğesini etkinleştir",
     "entryDisable": "`{{- name}}` öğesini devre dışı bırak",
-    "countSelected": null,
+    "countSelected": "{{count}} Seçili",
     "noContentFound": "Hiçbir {{- name}} bulunamadı."
   },
   "plural": {
@@ -65,7 +65,7 @@
     "unsaved": "Kaydedilmemiş değişiklikleriniz olabilir.",
     "stay": "Kal",
     "leave": "Ayrıl",
-    "close": null,
+    "close": "Kapat",
     "create": "Oluştur",
     "delete": "Sil",
     "edit": "Düzenle",
@@ -119,7 +119,7 @@
       "title": "Görünüm"
     },
     "font": {
-      "title": null,
+      "title": "Fontlar",
       "extra": {
         "accent": "Vurgu Yazı Tipi",
         "primary": "Birincil Yazı Tipi"
@@ -131,8 +131,8 @@
         "light": "Açık",
         "dark": "Koyu",
         "system": "Sistem",
-        "atmosphere": null,
-        "opaqueColors": null
+        "atmosphere": "Atmosfer Efektleri",
+        "opaqueColors": "Mat Renkler"
       }
     },
     "tabsOrder": {
@@ -140,7 +140,7 @@
       "brief": "Sekmelerin sırasını ve görünürlüğünü özelleştirin.",
       "extra": {
         "setHomeTab": "Uygulama başlatıldığında {{- name}} sekmesini aç.",
-        "showNavbar": null
+        "showNavbar": "Menüyü Göster"
       }
     },
     "minAlbumLength": {
@@ -151,12 +151,12 @@
         "plain": "Düz",
         "vinyl": "Plak",
         "vinylOld": "Plak (Eski)",
-        "none": null,
-        "alternativeInfoLayout": null
+        "none": "Hiçbiri",
+        "alternativeInfoLayout": "Alternatif bilgi düzeni"
       }
     },
     "seekbar": {
-      "title": null,
+      "title": "Şarkı ilerletme Çubuğu",
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": "Dalga Formu",
@@ -218,9 +218,9 @@
       "extra": {
         "delay": "Oynatma Gecikmesi",
         "options": "Oynatma Seçenekleri",
-        "pitch": null,
+        "pitch": "Ses tonu",
         "speed": "Oynatma Hızı",
-        "restoreVolume": null,
+        "restoreVolume": "Sesi Sıfırla",
         "volume": "Uygulama Sesi"
       }
     },
@@ -239,18 +239,18 @@
       "title": "Şarkı Sözleri",
       "extra": {
         "useEmbedded": "Gömülü Olanı Kullan",
-        "providers": null,
+        "providers": "Şarkı sözü Sağlayanlar",
         "providersInstructions": {
-          "line1": null,
-          "line2": null
+          "line1": "Yasal nedenlerle ve lisansımız olmadığından, şarkı sözleri için otomatik olarak çevrim içi kaynak sağlamıyoruz. Bunun yerine, şarkı sözlerinin hangi kaynaklardan çekileceğini kendinizin belirleyebileceği sağlayıcıları destekliyoruz.",
+          "line2": "Sağlayıcı oluşturma hakkında daha fazla bilgi edinmek için tıklayın."
         }
       }
     },
     "scanning": {
       "title": "Tarama",
       "extra": {
-        "useMediaStore": null,
-        "useMediaStoreBrief": null
+        "useMediaStore": "🧪 Sistem Mrdya tarayıcısını kullan",
+        "useMediaStoreBrief": "Çok hızlıdır ancak o kadar doğru olmayabilir. Android 11 ve üzeri gerekir."
       }
     },
     "rescan": {
@@ -267,11 +267,11 @@
       "brief": "Normal yeniden tarama özelliğini hızlandıran atlama önlemlerini yoksayar."
     },
     "optimizedImageSave": {
-      "title": null,
-      "brief": null,
+      "title": "Optimized Görsel kaydetme",
+      "brief": "Şarkılar, albümleriyle aynı kapağı paylaşır.",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Bu özelliği devre dışı bırakmak, albüm kapaklarının yerel olarak kaydedilmesine yol açar. Bu da uygulamanın çok daha fazla yer kaplamasına ve taramanın yavaşlamasına neden olabilir.",
+        "line2": "Değişiklikleri uygulamak için Derinlemesine Yeniden Tarama gerekir."
       }
     },
     "rescanOnLaunch": {
@@ -301,7 +301,7 @@
       "title": "Deneysel Özellikler"
     },
     "audioEffects": {
-      "title": null
+      "title": "Ses Efektleri"
     },
     "equalizer": {
       "title": "Ekolayzer",
@@ -320,12 +320,12 @@
       }
     },
     "replayGain": {
-      "title": null,
+      "title": "Ses Düzeyini Eşitle",
       "extra": {
-        "preAmp": null,
-        "preAmpDescription": null,
-        "adjustWithTags": null,
-        "adjustWithoutTags": null
+        "preAmp": "Ses Eşitleme Ön Yükselticisi",
+        "preAmpDescription": "Ses eşitleme etkinken ses yüksekliğini ayarlar. Bazı parçalarda seste patlamaya neden olabilir. Değişiklikler bir sonraki şarkıda uygulanır.",
+        "adjustWithTags": "Etiketli Parçalar İçin Ayar",
+        "adjustWithoutTags": "Etiketsiz Parçalar için Ayar"
       }
     },
     "ignoreInterrupt": {
@@ -376,7 +376,7 @@
       }
     },
     "artwork": {
-      "title": null,
+      "title": "Kapak Görseli",
       "extra": {
         "change": "Kapak Görselini Değiştir",
         "remove": "Kapak Görselini Kaldır",
@@ -417,7 +417,7 @@
         "list": "Liste",
         "grid": "Izgara",
         "compactGrid": "Kompakt Izgara",
-        "columnSize": null,
+        "columnSize": "Sütun Genişliği",
         "columnCount": null,
         "sort": "Sıralama Düzeni",
         "asc": "Artan Düzen",
@@ -433,21 +433,21 @@
         "filePath": "Dosya Yolu",
         "sampleRate": "Örnekleme Hızı",
         "size": "Boyut",
-        "trackQuickActions": null,
+        "trackQuickActions": "Hızlı Parça İşlemleri",
         "addToPlaylist": "Çalma Listesine Ekle"
       }
     },
     "miniplayer": {
-      "title": null,
+      "title": "Mini oynatıcı",
       "extra": {
-        "dragToDismiss": null,
-        "swipeControls": null
+        "dragToDismiss": "Kapatmak İçin Kaydırın",
+        "swipeControls": "Kaydırma Hareketleri"
       }
     },
     "nowPlaying": {
-      "title": null,
+      "title": "Şuan Çalan",
       "extra": {
-        "artworkPlaybackToggle": null
+        "artworkPlaybackToggle": "Kapak Resminden Oynatma Ayarı"
       }
     },
     "queue": {

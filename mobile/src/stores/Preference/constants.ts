@@ -78,6 +78,8 @@ export interface PreferenceStore {
   playbackDelay: number;
   /** If we use a different layout for the "info" row on the Now Playing screen. */
   alternativeInfoLayout: boolean;
+  /** If the vinyl should spin at 33 1/3 rpm (1.8s per revolution) instead of 2.5 rpm (24s per revolution). */
+  standardVinylSpeed: boolean;
   /** Type of seekbar rendered on Now Playing screen. */
   seekbarDesign: SeekbarDesign;
 
@@ -128,11 +130,6 @@ export interface PreferenceStore {
    * added track. Tracking resets after app session ends.
    */
   queueAwareNext: boolean;
-  /**
-   * Downsample high sample rate tracks so that they can be played instead
-   * of throwing an error.
-   */
-  downsamplingProcessor: boolean;
 }
 
 export const OmittedFields: string[] = [

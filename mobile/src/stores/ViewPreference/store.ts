@@ -48,6 +48,7 @@ export const viewPreferenceStore = createPersistedStore<ViewPreferenceStore>(
   }),
   {
     name: "music::view-preferences",
+    skipHydration: true,
     // Only store some fields in AsyncStorage.
     partialize: (state) =>
       Object.fromEntries(

@@ -22,7 +22,7 @@ export function WidgetText({
       truncate="END"
       allowFontScaling={false}
       maxLines={maxLines}
-      style={{ fontFamily: "Inter-Regular", ...style, fontSize, color }}
+      style={{ fontFamily: "Geist-Regular", ...style, fontSize, color }}
       {...props}
     />
   );

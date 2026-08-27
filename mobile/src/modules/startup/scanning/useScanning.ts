@@ -7,9 +7,9 @@ import { useCallback, useEffect, useState } from "react";
 import { Resynchronize } from "~/stores/Playback/actions";
 import { preferenceStore } from "~/stores/Preference/store";
 
-import { findAndSaveArtwork } from "../helpers/artwork";
-import { findAndSaveAudio } from "../helpers/audio";
-import { AppCleanUp } from "../helpers/cleanup";
+import { findAndSaveArtwork } from "./core/artwork";
+import { findAndSaveAudio } from "./core/audio";
+import { AppCleanUp } from "./core/cleanup";
 
 import { Stopwatch } from "~/utils/debug";
 
@@ -63,9 +63,7 @@ export function useScanning(canStart: boolean) {
     if (!canStart) return;
 
     if (permissionResponse && status === undefined) {
-      readMusicLibrary().catch((err) => {
-        setError(err);
-      });
+      readMusicLibrary().catch(setError);
     }
   }, [canStart, permissionResponse, readMusicLibrary, status]);
 

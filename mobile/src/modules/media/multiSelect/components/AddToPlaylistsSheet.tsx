@@ -12,7 +12,7 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
-import { FlatList } from "~/components/Base/List";
+import { FlatList, getListItemLayout } from "~/components/Base/List";
 import { CheckboxField } from "~/components/Form/Checkbox";
 import { Marquee } from "~/components/Marquee";
 import { DetachedSheet } from "~/components/Sheet";
@@ -68,7 +68,7 @@ export function AddToPlaylistsSheet(props: { ref: TrueSheetRef }) {
             </Marquee>
           </CheckboxField>
         )}
-        getItemLayout={getItemLayout}
+        getItemLayout={getListItemLayout}
         ListEmptyComponent={
           <ContentPlaceholder errMsgKey="err.msg.noPlaylists" />
         }
@@ -78,11 +78,6 @@ export function AddToPlaylistsSheet(props: { ref: TrueSheetRef }) {
       />
     </DetachedSheet>
   );
-}
-
-function getItemLayout(_: unknown, index: number) {
-  // 54px Height + 8px Margin Bottom
-  return { length: 62, offset: 62 * index, index };
 }
 
 /** Dismiss multi-select menu when we finish adding the selected tracks to the playlists. */

@@ -14,18 +14,17 @@ import { scheduleOnRN } from "react-native-worklets";
 
 import { INITIALIZE_SENTRY } from "~/env";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { useLoadResources } from "~/modules/scanning/hooks/useLoadResources";
-import { useScanning } from "~/modules/scanning/hooks/useScanning";
+import { useStartup } from "~/modules/startup/useStartup";
+import { useScanning } from "~/modules/startup/scanning/useScanning";
 
 import NavigationContainer from "~/navigation";
 import { AppProvider } from "~/navigation/providers/AppProvider";
 import { ErrorBoundary } from "~/navigation/components/ErrorBoundary";
-import { OnboardingConfiguration } from "~/modules/scanning/components/OnboardingConfigurationView";
-import { ScanningProgress } from "~/modules/scanning/components/ScanningProgressView";
+import { OnboardingConfiguration } from "~/modules/startup/screens/OnboardingConfigurationView";
+import { ScanningProgress } from "~/modules/startup/screens/ScanningProgressView";
 
 import "~/modules/i18n"; // Make sure translations are bundled.
 import { Sentry } from "~/lib/sentry";
-import { bgWait } from "~/utils/promise";
 
 if (INITIALIZE_SENTRY) {
   const RemovedIntegrations = new Set(["ConsoleLogs", "MobileReplay"]);
@@ -49,17 +48,17 @@ if (INITIALIZE_SENTRY) {
 }
 
 export default function App() {
-  const { isLoaded, error } = useLoadResources();
+  const { success: completedStartup, error } = useStartup();
   const completedOnboarding = usePreferenceStore((s) => s.completedOnboarding);
   const { completed, error: scanningError } = useScanning(
-    isLoaded && completedOnboarding,
+    completedStartup && completedOnboarding,
   );
 
   const OnboardingScreen = useMemo(() => {
     // Prevent flashing in `OnboardingConfiguration` when we're waiting for hydration.
-    if (!isLoaded || completedOnboarding) return ScanningProgress;
+    if (!completedStartup || completedOnboarding) return ScanningProgress;
     return OnboardingConfiguration;
-  }, [completedOnboarding, isLoaded]);
+  }, [completedOnboarding, completedStartup]);
 
   if (error || scanningError) {
     return (
@@ -89,8 +88,8 @@ function handleAppLifeCycle() {
   // persisted when it shouldn't. Make sure we close at least the bootsplash
   // from `react-native-bootsplash` whenever we render the app (in case its
   // "autohide" behavior doesn't work as expected).
-  //  - Delay to prevent flicker from change in how onboarding screen is shown.
-  bgWait(1).then(() => Bootsplash.hide());
+  //  - https://github.com/MissingCore/Music/issues/61
+  Bootsplash.hide({ fade: true });
 }
 
 //#region Layout Transition

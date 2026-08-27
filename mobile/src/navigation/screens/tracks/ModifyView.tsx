@@ -26,8 +26,8 @@ import { updateTrack } from "~/data/track/api";
 import { useTrack, useTrackGenres } from "~/data/track/queries";
 import { Resynchronize } from "~/stores/Playback/actions";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
-import { getArtworkHash } from "~/modules/scanning/helpers/artwork";
-import { AppCleanUp } from "~/modules/scanning/helpers/cleanup";
+import { getArtworkHash } from "~/modules/startup/scanning/core/artwork";
+import { AppCleanUp } from "~/modules/startup/scanning/core/cleanup";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 import { router } from "~/navigation/utils/router";

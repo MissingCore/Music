@@ -13,12 +13,6 @@ Applies an "atmosphere" effect (background being the primary image blurred) to t
 > [!NOTE]
 > This won't apply to everything on the screen with the "atmosphere effect" applied, for example: miniplayer, menu, multi-select menu, sheets.
 
-## Downsample High Sample Rate Audio (192kHz+)
-
-> **Enabled by default.**
-
-This fixes [#138](https://github.com/MissingCore/Music/issues/138), an issue where high sample rate audio (`352.8kHz` & `384kHz`) cannot be played due to Exoplayer limitations, by downsampling the audio to `192kHz`. **This will be removed in the future once we deem it to be stable as we're currently unsure if there's any side-effects.**
-
 ## Equalizer
 
 We support the default 5-band equalizer with 10 provided presets and the option to set a custom preset.

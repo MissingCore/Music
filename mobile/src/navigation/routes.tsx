@@ -253,6 +253,7 @@ export const RootStack = createNativeStackNavigator({
       linking: {
         path: "now-playing",
       },
+      //? Prevents blank screen when opening caused by deferred render.
       layout: ({ children }) => children,
       options: {
         headerShown: false,

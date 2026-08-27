@@ -5,12 +5,13 @@ import { I18nManager } from "react-native";
 import { Uniwind } from "uniwind";
 import { useStore } from "zustand";
 
-import { CAN_SENTRY_REPORT, CHECK_FOR_UPDATES } from "~/env";
+import { CHECK_FOR_UPDATES } from "~/env";
 import i18next from "~/modules/i18n";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
-import { Sentry } from "~/lib/sentry";
 import { createPersistedStore } from "~/lib/zustand";
+import { getCustomFonts } from "~/modules/customization/font/core/data";
+import { loadCustomFont } from "~/modules/customization/font/utils";
 import { getCustomTheme } from "~/modules/customization/theme/core/data";
 import {
   formatCustomTheme,
@@ -24,6 +25,10 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
   (set) => ({
     _hasHydrated: false,
     _init: async (state) => {
+      // Load custom fonts.
+      const customFonts = await getCustomFonts();
+      await Promise.allSettled(customFonts.map((f) => loadCustomFont(f.uri)));
+
       // Set app theme on initialization.
       try {
         if (state.activeCustomThemeId) {
@@ -35,10 +40,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
         } else {
           Uniwind.setTheme(state.theme);
         }
-      } catch (err) {
-        //! FIXME: Temporary to see if we get a `no such table: custom_themes` error.
-        if (CAN_SENTRY_REPORT) Sentry.captureException(err);
-
+      } catch {
         // Reset custom theme if it no longer exists in the database.
         Uniwind.setTheme(state.theme);
         set({ activeCustomThemeId: null, activeCustomTheme: null });
@@ -68,7 +70,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     forceLTR: false,
 
     accentFont: "NType",
-    primaryFont: "Roboto",
+    primaryFont: "Geist",
     theme: "system",
     activeCustomThemeId: null,
     activeCustomTheme: null,
@@ -104,6 +106,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     nowPlayingGestures: false,
     playbackDelay: 0,
     alternativeInfoLayout: false,
+    standardVinylSpeed: false,
     seekbarDesign: "normal",
 
     quickScroll: true,
@@ -131,11 +134,11 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     atmosphereEffect: false,
     opaqueColors: false,
     mediaStoreScanner: false,
-    downsamplingProcessor: true,
     queueAwareNext: false,
   }),
   {
     name: "music::user-preferences",
+    skipHydration: true,
     // Only store some fields in AsyncStorage.
     partialize: (state) =>
       Object.fromEntries(

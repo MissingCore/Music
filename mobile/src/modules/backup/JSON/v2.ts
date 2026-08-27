@@ -32,7 +32,7 @@ import { getSubqueryFields } from "~/lib/drizzle";
 import { pickDirectory } from "~/lib/file-system";
 import { pickKeys } from "~/utils/object";
 import { ZSchema } from "~/modules/form/utils";
-import { getArtworkHash } from "~/modules/scanning/helpers/artwork";
+import { getArtworkHash } from "~/modules/startup/scanning/core/artwork";
 
 //#region Schemas
 const PlaylistNameSchema = z.pipe(

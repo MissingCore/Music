@@ -22,11 +22,12 @@ import { playbackStore } from "~/stores/Playback/store";
 import { preferenceStore } from "~/stores/Preference/store";
 
 import type { Tab } from "~/stores/Preference/types";
-import type { MigrationOption } from "../constants";
-import { MigrationHistory } from "../constants";
+import type { MigrationOption } from "./constants";
+import { MigrationHistory } from "./constants";
 
 import { iAsc } from "~/lib/drizzle";
 import { chunkArray } from "~/utils/object";
+import { isString } from "~/utils/validation";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 /**
@@ -207,13 +208,25 @@ const MigrationFunctionMap: Record<
     await Image.clearDiskCache();
   },
 
-  //? v3.4.0-rc.0
+  //? v3.5.0-rc.0
   "waveform-slider": async () => {
     const defaultToWaveform: boolean =
       // @ts-expect-error - Field previously existed.
       preferenceStore.getState().waveformSlider;
     if (defaultToWaveform === true) {
       preferenceStore.setState({ seekbarDesign: "waveform" });
+    }
+  },
+
+  //? v3.6.0-rc.0
+  "geist-font": async () => {
+    const { accentFont, primaryFont } = preferenceStore.getState();
+    const removedFonts = ["Roboto", "Inter"];
+    if (isString(accentFont) && removedFonts.includes(accentFont)) {
+      preferenceStore.setState({ accentFont: "Geist" });
+    }
+    if (isString(primaryFont) && removedFonts.includes(primaryFont)) {
+      preferenceStore.setState({ primaryFont: "Geist" });
     }
   },
 };

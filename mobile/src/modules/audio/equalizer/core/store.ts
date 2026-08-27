@@ -26,6 +26,7 @@ export const equalizerStore = createPersistedStore<EqualizerStore>(
   }),
   {
     name: "music::equalizer",
+    skipHydration: true,
     // Only store some fields in AsyncStorage.
     partialize: (state) =>
       Object.fromEntries(

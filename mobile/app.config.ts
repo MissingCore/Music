@@ -26,7 +26,7 @@ export default (): ExpoConfig => {
     name: "Music",
     slug: "Music",
     description: "A Nothing inspired music player.",
-    version: "3.5.0-rc.2",
+    version: "3.5.0",
     platforms: ["android"],
     githubUrl: "https://github.com/MissingCore/Music",
     orientation: "portrait",
@@ -38,7 +38,7 @@ export default (): ExpoConfig => {
     assetBundlePatterns: ["**/*"],
     android: {
       package: "com.cyanchill.missingcore.music",
-      versionCode: 2250,
+      versionCode: 2260,
       allowBackup: false,
       adaptiveIcon: {
         foregroundImage: `./assets/${BUILD_THEME}/adaptive-icon.png`,
@@ -93,10 +93,8 @@ export default (): ExpoConfig => {
       }),
       fontPlugin({
         fonts: [
-          "assets/fonts/Roboto-Regular.ttf",
-          "assets/fonts/Roboto-Medium.ttf",
-          "assets/fonts/Inter-Regular.ttf",
-          "assets/fonts/Inter-Medium.ttf",
+          "assets/fonts/Geist-Regular.ttf",
+          "assets/fonts/Geist-Medium.ttf",
           "assets/fonts/GeistMono-Regular.ttf",
           "assets/fonts/GeistMono-Medium.ttf",
           "assets/fonts/Ndot-77_JP_Extended.ttf",

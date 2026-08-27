@@ -8,7 +8,8 @@ export type MigrationOption =
   | "favorites"
   | "onboarding-flow"
   | "clear-image-cache"
-  | "waveform-slider";
+  | "waveform-slider"
+  | "geist-font";
 
 /**
  * History of data migrations due to "breaking" changes.
@@ -34,4 +35,5 @@ export const MigrationHistory: Record<
   },
   4: { version: "v3.4.0-rc.0", changes: ["clear-image-cache"] },
   5: { version: "v3.5.0-rc.0", changes: ["waveform-slider"] },
+  6: { version: "v3.6.0-rc.0", changes: ["geist-font"] },
 };

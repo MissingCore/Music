@@ -1,7 +1,6 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import AsyncStorage from "expo-sqlite/kv-store";
 import { I18nManager } from "react-native";
 import AudioBrowser from "react-native-audio-browser";
 
@@ -31,7 +30,8 @@ type ToggleableKey =
   | "repeatOnSkip"
   | "restoreLastPosition"
   | "showNavbar"
-  | "squareArtwork";
+  | "squareArtwork"
+  | "standardVinylSpeed";
 
 export function toggleKey(key: ToggleableKey) {
   return () => {
@@ -45,14 +45,6 @@ export async function toggleContinuePlaybackOnDismiss() {
   AudioBrowser.updateOptions(
     getAudioBrowserOptions({ continuePlaybackOnDismiss: nextState }),
   );
-}
-
-export async function toggleDownsamplingProcessor() {
-  const prevState = preferenceStore.getState().downsamplingProcessor;
-  preferenceStore.setState({ downsamplingProcessor: !prevState });
-  // Update a dedicated value in `AsyncStorage` as the value stored in
-  // `preferenceStore` may not be hydrated in time by the time we use it.
-  await AsyncStorage.setItem("downsamplingProcessor", `${!prevState}`);
 }
 
 export function toggleForceLTR() {

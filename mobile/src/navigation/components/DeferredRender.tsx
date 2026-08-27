@@ -11,7 +11,6 @@ import { useDelayedReady } from "~/hooks/useDelayedReady";
  * screen is mounted, leading to a longer visual delay compared to v6.
  */
 export function DeferredRender(props: {
-  /** Defaults to `1ms`. */
   delayMs?: number;
   children: React.ReactNode;
 }) {

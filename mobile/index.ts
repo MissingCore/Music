@@ -12,13 +12,13 @@ import {
 
 import "./src/db"; //? Ensure DB is setup on app launch to maybe fix those weird issues reported by Sentry.
 import App from "./src/App";
-import { onAppStartUpInit } from "./src/initServices";
+import { headlessAudioBrowserSetup } from "./src/modules/startup/audioBrowser";
 import { widgetTaskHandler } from "./src/modules/widget/WidgetTaskHandler";
 import { WidgetConfigurationScreen } from "./src/modules/widget/WidgetConfigurationScreen";
 
 registerRootComponent(App);
 (async () => {
-  await onAppStartUpInit;
+  await headlessAudioBrowserSetup;
 })();
 registerWidgetTaskHandler(widgetTaskHandler);
 registerWidgetConfigurationScreen(WidgetConfigurationScreen);

@@ -177,7 +177,8 @@
         "vinylOld": "Vinyl (Legacy)",
         "none": "None",
 
-        "alternativeInfoLayout": "Alternative Info Layout"
+        "alternativeInfoLayout": "Alternative Info Layout",
+        "standardVinylSpeed": "Standard Vinyl Speed"
       }
     },
     "seekbar": {
