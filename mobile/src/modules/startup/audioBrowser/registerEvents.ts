@@ -158,6 +158,11 @@ export function registerEvents() {
   AudioBrowser.onPlaybackError.addListener(async ({ error: e }) => {
     if (!e) return;
     TrackListeningSession.reset();
+    if (CAN_SENTRY_REPORT) {
+      Sentry.captureException(
+        new Error(`[PlaybackError: ${e.code}] ${e.message}`),
+      );
+    }
 
     //? We don't know exactly what track caused the error, but we can
     //? infer based on the state of the queue.
@@ -186,7 +191,7 @@ export function registerEvents() {
       // Delete the track that caused the error from certain scenarios.
       //  - We've encountered no code when AudioBrowser naturally plays
       //  the next track that throws an error because it doesn't exist.
-      if (ValidErrors.includes(e.code) || e.code === undefined) {
+      if (ValidErrors.includes(e.code)) {
         let errorMessage = "File not found.";
         if (e.code === "failed-runtime-check")
           errorMessage =
@@ -213,10 +218,6 @@ export function registerEvents() {
       toast.error(
         `Something went wrong when playing: ${erroredTrack.title}.\n[${e.code}] ${e.message}`,
       );
-      if (CAN_SENTRY_REPORT)
-        Sentry.captureException(
-          new Error(`[PlaybackError: ${e.code}] ${e.message}`),
-        );
     } else {
       // If we get this event when there's no active track, just reset.
       await playbackStore.getState().reset();
