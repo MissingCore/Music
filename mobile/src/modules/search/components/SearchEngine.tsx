@@ -67,7 +67,7 @@ function SearchResultsList<TScope extends SearchCategories>(
   const listLayout = useListLayoutConfig();
   const results = useSearch(props.searchScope, props.query);
   const [selectedTab, setSelectedTab] = useState<TScope[number] | "all">("all");
-  const [filterHeight, setFilterHeight] = useState(53); // Height will be ~53px
+  const [filterHeight, setFilterHeight] = useState(52); // Height will be ~52px
   const listRef = useLegendListRef();
 
   const overrideItemLayout = useMemo(
