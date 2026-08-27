@@ -25,7 +25,6 @@ import { ScanningProgress } from "~/modules/startup/screens/ScanningProgressView
 
 import "~/modules/i18n"; // Make sure translations are bundled.
 import { Sentry } from "~/lib/sentry";
-import { bgWait } from "~/utils/promise";
 
 if (INITIALIZE_SENTRY) {
   const RemovedIntegrations = new Set(["ConsoleLogs", "MobileReplay"]);
@@ -89,8 +88,8 @@ function handleAppLifeCycle() {
   // persisted when it shouldn't. Make sure we close at least the bootsplash
   // from `react-native-bootsplash` whenever we render the app (in case its
   // "autohide" behavior doesn't work as expected).
-  //  - Delay to prevent flicker from change in how onboarding screen is shown.
-  bgWait(1).then(() => Bootsplash.hide());
+  //  - https://github.com/MissingCore/Music/issues/61
+  Bootsplash.hide({ fade: true });
 }
 
 //#region Layout Transition
