@@ -27,7 +27,6 @@
 | expo-sqlite | MIT | https://github.com/expo/expo/tree/main/packages/expo-sqlite |
 | Geist Font Family | OFL-1.1 | https://github.com/vercel/geist-font |
 | i18next | MIT | https://github.com/i18next/i18next |
-| Inter Font | OFL-1.1 | https://rsms.me/inter |
 | intl-pluralrules | ISC | https://github.com/eemeli/intl-pluralrules |
 | ionicons | MIT | https://github.com/ionic-team/ionicons |
 | jotai | MIT | https://github.com/pmndrs/jotai |
@@ -50,7 +49,6 @@
 | react-native-screens | MIT | https://github.com/software-mansion/react-native-screens |
 | react-native-svg | MIT | https://github.com/software-mansion/react-native-svg |
 | react-native-worklets | MIT | https://github.com/software-mansion/react-native-reanimated/tree/main/packages/react-native-worklets |
-| Roboto Font | OFL-1.1 | https://github.com/googlefonts/roboto-3-classic |
 | tailwind-merge | MIT | https://github.com/dcastil/tailwind-merge |
 | uniwind | MIT | https://github.com/uni-stack/uniwind |
 | zod | MIT | https://github.com/colinhacks/zod |

@@ -5,10 +5,6 @@ import type { CustomFont } from "~/db/schema";
 
 //#region Bundled Fonts
 export const FontFamily = {
-  roboto: "Roboto-Regular",
-  robotoMedium: "Roboto-Medium",
-  inter: "Inter-Regular",
-  interMedium: "Inter-Medium",
   geist: "Geist-Regular",
   geistMedium: "Geist-Medium",
   geistMono: "GeistMono-Regular",
@@ -23,8 +19,6 @@ export const FontFamily = {
 export const BundledFontOptions = [
   "NDot",
   "NType",
-  "Roboto",
-  "Inter",
   "Geist",
   "Geist Mono",
   "System",

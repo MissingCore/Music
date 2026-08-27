@@ -93,10 +93,6 @@ export default (): ExpoConfig => {
       }),
       fontPlugin({
         fonts: [
-          "assets/fonts/Roboto-Regular.ttf",
-          "assets/fonts/Roboto-Medium.ttf",
-          "assets/fonts/Inter-Regular.ttf",
-          "assets/fonts/Inter-Medium.ttf",
           "assets/fonts/Geist-Regular.ttf",
           "assets/fonts/Geist-Medium.ttf",
           "assets/fonts/GeistMono-Regular.ttf",
