@@ -39,7 +39,11 @@ export const Ripple = memo(function Ripple({
     <Pressable
       {...props}
       android_ripple={{
-        color: `${color}80`, // 50% opacity
+        //? If an invalid color is provided, Android uses a ripple color
+        //? based on the set theme. Since this will mostly happen on the
+        //? "Atmosphere Effect" screens, use a 25% opacity white color.
+        //? Otherwise, we use 50% opacity of a valid color.
+        color: color.length > 7 ? `#FFFFFF40` : `${color}80`,
         foreground: true,
         radius: rippleRadius,
       }}

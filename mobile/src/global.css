@@ -74,7 +74,7 @@
       --color-inverseOnSurface: hsl(0 0% 100%);
 
       --color-placeholder: hsl(0 0% 100%);
-      --color-androidNavbar: hsl(0 0% 95% / 0);
+      --color-androidNavbar: hsla(0 0% 95% / 0);
     }
 
     @variant dark {
@@ -112,7 +112,7 @@
       --color-inverseOnSurface: hsl(0 0% 0%);
 
       --color-placeholder: hsl(0 0% 100%);
-      --color-androidNavbar: hsl(0 0% 0% / 0);
+      --color-androidNavbar: hsla(0 0% 0% / 0);
     }
 
     @variant custom {
@@ -150,7 +150,7 @@
       --color-inverseOnSurface: hsl(46 100% 94%);
 
       --color-placeholder: hsl(0 0% 100%);
-      --color-androidNavbar: hsl(44 67% 88% / 0);
+      --color-androidNavbar: hsla(44 67% 88% / 0);
     }
 
     @variant atmosphere {
@@ -176,14 +176,18 @@
       --color-surfaceBright: hsl(0 0% 7%);
 
       /* ? Used for most backgrounds. */
-      --color-surfaceContainerLowest: hsla(0 0% 11% / 0.35);
+      --color-surfaceContainerLowest: hsla(0 0% 100% / 0.15);
       /* ? Used for "Upcoming Tracks" background in "tablet" mode. */
-      --color-surfaceContainerLow: hsl(0 0% 13% / 0.25);
+      --color-surfaceContainerLow: hsla(0 0% 13% / 0.25);
       --color-surfaceContainer: hsl(0 0% 16%);
-      /* ? Used for "pause button" & ripple backgrounds. */
-      --color-surfaceContainerHigh: hsla(0 0% 20% / 0.25);
+      /*
+        ? Used for "pause button". This is also used as the ripple background,
+        ? but since we want to force a "white" ripple, we set an alpha color
+        ? so that a special condition in `<Ripple />` is used.
+      */
+      --color-surfaceContainerHigh: hsla(0 0% 20% / 0.99);
       /* ? Used for "pause button" ripple backgrounds. */
-      --color-surfaceContainerHighest: hsla(0 0% 23% / 0.25);
+      --color-surfaceContainerHighest: hsl(0 0% 23%);
 
       --color-onSurface: hsl(0 0% 100%);
       --color-onSurfaceVariant: hsl(0 0% 89%);
@@ -194,7 +198,7 @@
       --color-inverseOnSurface: hsl(0 0% 0%);
 
       --color-placeholder: hsl(0 0% 100%);
-      --color-androidNavbar: hsl(0 0% 0% / 0);
+      --color-androidNavbar: hsla(0 0% 0% / 0);
     }
   }
 }
