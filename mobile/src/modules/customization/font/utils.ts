@@ -25,7 +25,10 @@ function getBundledFontFamily(
     return FontFamily.ntypeHeadline;
   } else if (
     options?.bold &&
-    (fontCode === "geistMono" || fontCode === "roboto" || fontCode === "inter")
+    (fontCode === "geist" ||
+      fontCode === "geistMono" ||
+      fontCode === "roboto" ||
+      fontCode === "inter")
   ) {
     return FontFamily[`${fontCode}Medium`];
   }

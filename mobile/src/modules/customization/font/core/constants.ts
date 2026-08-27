@@ -9,6 +9,8 @@ export const FontFamily = {
   robotoMedium: "Roboto-Medium",
   inter: "Inter-Regular",
   interMedium: "Inter-Medium",
+  geist: "Geist-Regular",
+  geistMedium: "Geist-Medium",
   geistMono: "GeistMono-Regular",
   geistMonoMedium: "GeistMono-Medium",
   ndot: "Ndot-77_JP_Extended",
@@ -23,6 +25,7 @@ export const BundledFontOptions = [
   "NType",
   "Roboto",
   "Inter",
+  "Geist",
   "Geist Mono",
   "System",
 ] as const;
