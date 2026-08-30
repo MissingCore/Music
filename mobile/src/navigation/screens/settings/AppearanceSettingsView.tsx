@@ -45,7 +45,6 @@ export default function AppearanceSettings() {
   const theme = usePreferenceStore((s) => s.theme);
   const activeCustomTheme = usePreferenceStore((s) => s.activeCustomTheme);
   const showNavbar = usePreferenceStore((s) => s.showNavbar);
-  const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const squareArtwork = usePreferenceStore((s) => s.squareArtwork);
   const tabOrderSheetRef = useSheetRef();
 
@@ -87,19 +86,11 @@ export default function AppearanceSettings() {
           />
         </SegmentedList>
 
-        <SegmentedList>
-          <SegmentedList.Item
-            labelText="feat.quickScroll.title"
-            supportingText={t("feat.quickScroll.brief")}
-            onPress={PreferenceTogglers.toggleKey("quickScroll")}
-            Trailing={<Switch enabled={quickScroll} />}
-          />
-          <SegmentedList.Item
-            labelText="feat.artwork.extra.square"
-            onPress={PreferenceTogglers.toggleKey("squareArtwork")}
-            Trailing={<Switch enabled={squareArtwork} />}
-          />
-        </SegmentedList>
+        <SegmentedList.Item
+          labelText="feat.artwork.extra.square"
+          onPress={PreferenceTogglers.toggleKey("squareArtwork")}
+          Trailing={<Switch enabled={squareArtwork} />}
+        />
 
         <GridColumnSizeSetting />
       </ListLayout>

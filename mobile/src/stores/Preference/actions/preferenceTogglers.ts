@@ -18,7 +18,6 @@ type ToggleableKey =
   | "dragClearPlayback"
   | "quickAddQueue"
   | "quickFavorite"
-  | "quickScroll"
   | "mediaStoreScanner"
   | "miniplayerGestures"
   | "nowPlayingArtworkControls"

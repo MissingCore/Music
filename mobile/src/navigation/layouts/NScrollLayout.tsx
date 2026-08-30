@@ -67,7 +67,6 @@ export function NScrollLayout(props: {
   const scrollRef = useAnimatedScrollViewRef();
 
   // NScrollbar
-  const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const scrollBarContext = useScrollbarContext();
 
   const showNavbar = usePreferenceStore((s) => s.showNavbar);
@@ -118,7 +117,6 @@ export function NScrollLayout(props: {
       <Scrollbar
         listRef={scrollRef}
         scrollbarOffset={{ top: topBarHeight, bottom: bottomOffset }}
-        isVisible={quickScroll}
         {...scrollBarContext.layoutInfo}
         onEnd={shyHeaderContext.onNScrollGestureEnd}
       />
@@ -156,7 +154,6 @@ export function NScrollListLayout<TData>({
   const sheetRef = useSheetRef();
 
   // NScrollbar
-  const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const scrollBarContext = useScrollbarContext();
 
   const showNavbar = usePreferenceStore((s) => s.showNavbar);
@@ -224,7 +221,6 @@ export function NScrollListLayout<TData>({
         key={Number(props.numColumns)}
         listRef={internalListRef}
         scrollbarOffset={{ top: topBarHeight, bottom: bottomOffset }}
-        isVisible={quickScroll}
         {...scrollBarContext.layoutInfo}
         onEnd={shyHeaderContext.onNScrollGestureEnd}
       />

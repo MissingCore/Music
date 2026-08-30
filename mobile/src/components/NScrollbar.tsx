@@ -31,7 +31,6 @@ interface ScrollbarProps {
 
   scrollbarOffset: { top: number; bottom: number };
 
-  isVisible?: boolean;
   /** Worklet function that's called when the gesture has ended. */
   onEnd?: VoidFunction;
 }
@@ -48,7 +47,6 @@ export function Scrollbar({
   listScrollHeight,
   listScrollAmount,
   scrollbarOffset: { top, bottom },
-  isVisible = true,
   onEnd,
 }: ScrollbarProps) {
   const scrollbarHeight = useSharedValue(0);
@@ -106,7 +104,7 @@ export function Scrollbar({
     const hasEnoughContent = listScrollHeight.get() / listHeight.get() > 2;
     scheduleOnRN(
       setScrollbarVisible,
-      isVisible && hasEnoughContent && isScrollingBuffer.get() !== 0,
+      hasEnoughContent && isScrollingBuffer.get() !== 0,
     );
   });
 

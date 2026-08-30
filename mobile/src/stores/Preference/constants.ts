@@ -83,8 +83,6 @@ export interface PreferenceStore {
   /** Type of seekbar rendered on Now Playing screen. */
   seekbarDesign: SeekbarDesign;
 
-  /** Show functional Nothing-styled scrollbar on supported screens. */
-  quickScroll: boolean;
   /** If we use `contentFit="cover"` for artwork. */
   squareArtwork: boolean;
 

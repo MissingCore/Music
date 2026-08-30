@@ -192,10 +192,6 @@
         "waveformPurgeCacheToast": "Waveform cache cleared."
       }
     },
-    "quickScroll": {
-      "title": "Quick Scroll",
-      "brief": "Show Nothing-styled scrollbar on supported screens."
-    },
     "language": {
       "title": "Language",
       "extra": {
