@@ -7,6 +7,8 @@ import { createStore } from "zustand/vanilla";
 import type { SessionStore } from "./constants";
 
 export const sessionStore = createStore<SessionStore>()(() => ({
+  recapStartEpoch: 0,
+
   playbackSpeed: 1,
   playbackPitch: 1,
 

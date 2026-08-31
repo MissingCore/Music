@@ -16,6 +16,7 @@ import migrations from "~/db/drizzle/migrations";
 import { IS_DEV } from "~/env";
 import { playbackStore } from "~/stores/Playback/store";
 import { preferenceStore } from "~/stores/Preference/store";
+import { sessionStore } from "~/stores/Session/store";
 import { viewPreferenceStore } from "~/stores/ViewPreference/store";
 import { equalizerStore } from "~/modules/audio/equalizer/core/store";
 import {
@@ -177,4 +178,12 @@ async function startupFlow() {
   console.log(`Completed migrations in ${stopwatch.lapTime()}.`);
 
   console.log(`Completed setup in ${stopwatch.stop()}.`);
+
+  //? 7. Identify the range of our "Recap" feature.
+  const firstPlayEvent = await db.query.tracksPlayEvents.findFirst({
+    orderBy: (fields, { asc }) => asc(fields.playedAt),
+  });
+  sessionStore.setState({
+    recapStartEpoch: firstPlayEvent?.playedAt ?? Date.now(),
+  });
 }
