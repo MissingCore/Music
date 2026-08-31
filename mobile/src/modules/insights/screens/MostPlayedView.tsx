@@ -2,17 +2,27 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useQuery } from "@tanstack/react-query";
-import { desc, eq, sql } from "drizzle-orm";
+import {
+  and,
+  countDistinct,
+  desc,
+  eq,
+  getTableColumns,
+  gte,
+  lte,
+  sql,
+} from "drizzle-orm";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { db } from "~/db";
-import { tracksPlayEvents } from "~/db/schema";
+import { tracks, tracksPlayEvents, tracksToArtists } from "~/db/schema";
 
 import { getArtistsString } from "~/data/artist/utils";
 import { fromJSONArrayString } from "~/data/utils";
 import { commonTrackColumns, structuredTracksView } from "~/data/views";
+import { useSessionStore } from "~/stores/Session/store";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
@@ -21,7 +31,7 @@ import { getSubqueryFields, iAsc } from "~/lib/drizzle";
 import { getImageUri } from "~/lib/file-system";
 import { cn } from "~/lib/style";
 import { formatSeconds } from "~/utils/number";
-import { pickKeys } from "~/utils/object";
+import { omitKeys, pickKeys } from "~/utils/object";
 import { FlatList } from "~/components/Base/List";
 import { Ripple } from "~/components/Base/Pressable";
 import { Divider } from "~/components/Divider";
@@ -32,21 +42,17 @@ import { MediaImage } from "~/modules/media/components/MediaImage";
 
 export default function MostPlayed() {
   const { t } = useTranslation();
-  const { isPending, data } = useMostPlayedTracks();
+  const recapStartEpoch = useSessionStore((s) => s.recapStartEpoch);
+  const { isPending, data } = useRecap(recapStartEpoch);
 
-  // if (isPending || data?.length === 0) {
-  //   return (
-  //     <ContentPlaceholder isPending={isPending} errMsgKey="err.msg.noResults" />
-  //   );
-  // }
+  if (isPending || !data) {
+    return (
+      <ContentPlaceholder isPending={isPending} errMsgKey="err.msg.noResults" />
+    );
+  }
   return (
     <ListLayout>
-      <QuickOverView
-        totalListeningTime={1000}
-        totalPlays={10}
-        uniqueSongs={5}
-        uniqueArtists={1}
-      />
+      <QuickOverview {...data.overview} />
       <TopList label={t("term.tracks")} data={[]} />
       <TopList label={t("term.artists")} data={[]} roundedImage />
       <TopList label={t("term.albums")} data={[]} />
@@ -55,12 +61,12 @@ export default function MostPlayed() {
 }
 
 //#region Quick Overview
-const overviewStats = ["totalPlays", "uniqueSongs", "uniqueArtists"] as const;
+const overviewStats = ["totalPlays", "uniqueTracks", "uniqueArtists"] as const;
 
-function QuickOverView(props: {
+function QuickOverview(props: {
   totalListeningTime: number;
   totalPlays: number;
-  uniqueSongs: number;
+  uniqueTracks: number;
   uniqueArtists: number;
 }) {
   return (
@@ -71,7 +77,7 @@ function QuickOverView(props: {
           className="text-sm text-onSecondaryVariant"
         />
         <AccentText className="text-4xl leading-none! text-onSecondary">
-          {formatSeconds(props.totalListeningTime)}
+          {formatSeconds(props.totalListeningTime, false)}
         </AccentText>
       </View>
       <Divider />
@@ -175,6 +181,68 @@ function TopList(props: {
 //#endregion
 
 //#region Data Query
+async function getRecap(startEpoch: number, endEpoch = Date.now()) {
+  //? Identify range of data we care about.
+  const scopedPlayEventView = db
+    .select({
+      ...omitKeys(getTableColumns(tracksPlayEvents), ["playTime"]),
+      ...omitKeys(getTableColumns(tracks), ["id"]),
+      //? Derive `playCount` from "completion ratio" for best representation based on
+      //? track duration and play time.
+      playCount:
+        sql`ceil(sum(${tracksPlayEvents.playTime}) / ${tracks.duration})`
+          .mapWith(Number)
+          .as("play_count"),
+      //? Derive aggregated play time for track.
+      playTime: sql`sum(${tracksPlayEvents.playTime})`
+        .mapWith(Number)
+        .as("agg_play_time"),
+    })
+    .from(tracksPlayEvents)
+    .where(
+      and(
+        gte(tracksPlayEvents.playedAt, startEpoch),
+        lte(tracksPlayEvents.playedAt, endEpoch),
+      ),
+    )
+    .innerJoin(tracks, eq(tracksPlayEvents.trackId, tracks.id))
+    .groupBy(tracksPlayEvents.trackId)
+    .as("scoped_play_events");
+
+  //? Get "overview" stats.
+  const [overviewStats] = await db
+    .select({
+      totalListeningTime: sql`sum(${scopedPlayEventView.playTime})`.mapWith(
+        Number,
+      ),
+      totalPlays: sql`sum(${scopedPlayEventView.playCount})`.mapWith(Number),
+      uniqueTracks: countDistinct(scopedPlayEventView.trackId),
+    })
+    .from(scopedPlayEventView);
+  const [uniqueArtistsStat] = await db
+    .select({
+      uniqueArtists: countDistinct(tracksToArtists.artistName),
+    })
+    .from(scopedPlayEventView)
+    .innerJoin(
+      tracksToArtists,
+      eq(scopedPlayEventView.trackId, tracksToArtists.trackId),
+    );
+
+  return {
+    overview: { ...overviewStats!, ...uniqueArtistsStat! },
+  };
+}
+
+const queryKey = ["insights", "most-played"];
+
+function useRecap(startEpoch: number, endEpoch?: number) {
+  return useQuery({
+    queryKey: [...queryKey, { startEpoch, endEpoch }],
+    queryFn: () => getRecap(startEpoch, endEpoch),
+  });
+}
+
 type TrackData = {
   id: string;
   name: string;
@@ -249,16 +317,5 @@ async function getMostPlayedTracks() {
   if (recentPlacement) groupedPlacement.push(recentPlacement);
 
   return groupedPlacement;
-}
-
-const queryKey = ["insights", "most-played"];
-
-function useMostPlayedTracks() {
-  return useQuery({
-    queryKey,
-    queryFn: getMostPlayedTracks,
-    gcTime: 0,
-    staleTime: 0,
-  });
 }
 //#endregion
