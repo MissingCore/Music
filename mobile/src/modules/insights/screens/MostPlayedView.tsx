@@ -17,21 +17,23 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { db } from "~/db";
-import { tracks, tracksPlayEvents, tracksToArtists } from "~/db/schema";
+import {
+  albums,
+  artists,
+  tracks,
+  tracksPlayEvents,
+  tracksToArtists,
+} from "~/db/schema";
 
-import { getArtistsString } from "~/data/artist/utils";
-import { fromJSONArrayString } from "~/data/utils";
-import { commonTrackColumns, structuredTracksView } from "~/data/views";
 import { useSessionStore } from "~/stores/Session/store";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 
-import { getSubqueryFields, iAsc } from "~/lib/drizzle";
-import { getImageUri } from "~/lib/file-system";
+import { iAsc } from "~/lib/drizzle";
 import { cn } from "~/lib/style";
 import { formatSeconds } from "~/utils/number";
-import { omitKeys, pickKeys } from "~/utils/object";
+import { omitKeys } from "~/utils/object";
 import { FlatList } from "~/components/Base/List";
 import { Ripple } from "~/components/Base/Pressable";
 import { Divider } from "~/components/Divider";
@@ -53,9 +55,9 @@ export default function MostPlayed() {
   return (
     <ListLayout>
       <QuickOverview {...data.overview} />
-      <TopList label={t("term.tracks")} data={[]} />
-      <TopList label={t("term.artists")} data={[]} roundedImage />
-      <TopList label={t("term.albums")} data={[]} />
+      <TopList label={t("term.tracks")} data={data.topTracks} />
+      <TopList label={t("term.artists")} data={data.topArtists} roundedImage />
+      <TopList label={t("term.albums")} data={data.topAlbums} />
     </ListLayout>
   );
 }
@@ -209,7 +211,7 @@ async function getRecap(startEpoch: number, endEpoch = Date.now()) {
     .groupBy(tracksPlayEvents.trackId)
     .as("scoped_play_events");
 
-  //? Get "overview" stats.
+  //? Get "Overview" stats.
   const [overviewStats] = await db
     .select({
       totalListeningTime: sql`sum(${scopedPlayEventView.playTime})`.mapWith(
@@ -229,8 +231,64 @@ async function getRecap(startEpoch: number, endEpoch = Date.now()) {
       eq(scopedPlayEventView.trackId, tracksToArtists.trackId),
     );
 
+  //? Get "Top Tracks" stats.
+  const topTracks = await db
+    .select({
+      name: scopedPlayEventView.name,
+      imgSrc: sql<
+        string | null
+      >`coalesce(${scopedPlayEventView.artwork}, ${albums.artwork})`,
+      playCount: scopedPlayEventView.playCount,
+      totalTime: scopedPlayEventView.playTime,
+    })
+    .from(scopedPlayEventView)
+    .leftJoin(albums, eq(scopedPlayEventView.albumId, albums.id))
+    .orderBy(
+      desc(scopedPlayEventView.playCount),
+      iAsc(scopedPlayEventView.name),
+    );
+
+  //? Get "Top Artists" stats.
+  const topArtists = await db
+    .select({
+      name: artists.name,
+      imgSrc: artists.artwork,
+      playCount: sql`sum(${scopedPlayEventView.playCount})`.mapWith(Number),
+      totalTime: sql`sum(${scopedPlayEventView.playTime})`.mapWith(Number),
+    })
+    .from(scopedPlayEventView)
+    .innerJoin(
+      tracksToArtists,
+      eq(scopedPlayEventView.trackId, tracksToArtists.trackId),
+    )
+    .innerJoin(artists, eq(tracksToArtists.artistName, artists.name))
+    .groupBy(artists.name)
+    .orderBy(
+      desc(sql`sum(${scopedPlayEventView.playCount})`),
+      iAsc(artists.name),
+    );
+
+  //? Get "Top Albums" stats.
+  const topAlbums = await db
+    .select({
+      name: albums.name,
+      imgSrc: albums.artwork,
+      playCount: sql`sum(${scopedPlayEventView.playCount})`.mapWith(Number),
+      totalTime: sql`sum(${scopedPlayEventView.playTime})`.mapWith(Number),
+    })
+    .from(scopedPlayEventView)
+    .innerJoin(albums, eq(scopedPlayEventView.albumId, albums.id))
+    .groupBy(albums.id)
+    .orderBy(
+      desc(sql`sum(${scopedPlayEventView.playCount})`),
+      iAsc(albums.name),
+    );
+
   return {
     overview: { ...overviewStats!, ...uniqueArtistsStat! },
+    topTracks,
+    topArtists,
+    topAlbums,
   };
 }
 
@@ -241,81 +299,5 @@ function useRecap(startEpoch: number, endEpoch?: number) {
     queryKey: [...queryKey, { startEpoch, endEpoch }],
     queryFn: () => getRecap(startEpoch, endEpoch),
   });
-}
-
-type TrackData = {
-  id: string;
-  name: string;
-  playCount: number;
-  artistsString: string | null;
-  albumName: string | null;
-};
-
-type MostPlayedPlacement = { placement: number; tracks: TrackData[] };
-
-const aggregatedPlayCountView = db
-  .select({
-    ...commonTrackColumns,
-    //? Derive `playCount` from "completion ratio" for best representation based on
-    //? track duration and play time.
-    playCount:
-      sql`ceil(sum(${tracksPlayEvents.playTime}) / ${structuredTracksView.duration})`
-        .mapWith(Number)
-        .as("play_count"),
-  })
-  .from(tracksPlayEvents)
-  .innerJoin(
-    structuredTracksView,
-    eq(tracksPlayEvents.trackId, structuredTracksView.id),
-  )
-  .groupBy(tracksPlayEvents.trackId)
-  .as("aggregated_play_count");
-
-const wantedPlayCountColumns = pickKeys(
-  getSubqueryFields(aggregatedPlayCountView),
-  ["id", "name", "playCount", "albumName", "artists"],
-);
-
-async function getMostPlayedTracks() {
-  const mostPlayedTracks = await db
-    .select(wantedPlayCountColumns)
-    .from(aggregatedPlayCountView)
-    .orderBy(
-      desc(aggregatedPlayCountView.playCount),
-      iAsc(aggregatedPlayCountView.name),
-    )
-    .limit(100);
-
-  const groupedPlacement: MostPlayedPlacement[] = [];
-  let recentPlacement: MostPlayedPlacement | undefined;
-  mostPlayedTracks.forEach(({ artists, ...track }) => {
-    const formattedTrack = {
-      ...track,
-      artistsString: getArtistsString(fromJSONArrayString(artists), null),
-    };
-
-    if (!recentPlacement) {
-      recentPlacement = { placement: 1, tracks: [formattedTrack] };
-      return;
-    }
-
-    // If the current track belongs in the same placement.
-    if (recentPlacement.tracks.at(-1)!.playCount === formattedTrack.playCount) {
-      recentPlacement.tracks.push(formattedTrack);
-      return;
-    }
-
-    // If this track is of a lower placement.
-    groupedPlacement.push(recentPlacement);
-    recentPlacement = {
-      placement: recentPlacement.placement + recentPlacement.tracks.length,
-      tracks: [formattedTrack],
-    };
-  });
-
-  // Push last placement.
-  if (recentPlacement) groupedPlacement.push(recentPlacement);
-
-  return groupedPlacement;
 }
 //#endregion
