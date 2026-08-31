@@ -241,7 +241,9 @@
         "uniqueSongs": "Unique Songs",
         "uniqueArtists": "Unique Artists",
 
-        "asCard": "As Card"
+        "asCard": "As Card",
+        "show": "Show {{- name}}",
+        "showAll": "Show all {{- name}}"
       }
     },
     "mostPlayed": {

@@ -3,6 +3,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { desc, eq, sql } from "drizzle-orm";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -22,9 +23,9 @@ import { cn } from "~/lib/style";
 import { formatSeconds } from "~/utils/number";
 import { pickKeys } from "~/utils/object";
 import { FlatList } from "~/components/Base/List";
+import { Ripple } from "~/components/Base/Pressable";
 import { Divider } from "~/components/Divider";
 import { ListItem } from "~/components/List";
-import { SegmentedList } from "~/components/List/Segmented";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { AccentText } from "~/components/Typography/AccentText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
@@ -33,6 +34,11 @@ export default function MostPlayed() {
   const { t } = useTranslation();
   const { isPending, data } = useMostPlayedTracks();
 
+  // if (isPending || data?.length === 0) {
+  //   return (
+  //     <ContentPlaceholder isPending={isPending} errMsgKey="err.msg.noResults" />
+  //   );
+  // }
   return (
     <ListLayout>
       <QuickOverView
@@ -41,40 +47,11 @@ export default function MostPlayed() {
         uniqueSongs={5}
         uniqueArtists={1}
       />
-      <TopList
-        label={t("feat.recap.extra.top", { name: t("term.tracks") })}
-        data={[]}
-      />
-      <TopList
-        label={t("feat.recap.extra.top", { name: t("term.artists") })}
-        data={[]}
-        roundedImage
-      />
-      <TopList
-        label={t("feat.recap.extra.top", { name: t("term.albums") })}
-        data={[]}
-      />
+      <TopList label={t("term.tracks")} data={[]} />
+      <TopList label={t("term.artists")} data={[]} roundedImage />
+      <TopList label={t("term.albums")} data={[]} />
     </ListLayout>
   );
-
-  // if (isPending || data?.length === 0) {
-  //   return (
-  //     <ContentPlaceholder isPending={isPending} errMsgKey="err.msg.noResults" />
-  //   );
-  // }
-  // return (
-  //   <SegmentedList
-  //     scrollEnabled
-  //     contentContainerClassName="p-4 pb-safe-offset-4"
-  //   >
-  //     {data?.map((item) => (
-  //       <SegmentedList.CustomItem key={item.placement} className="flex-row p-1">
-  //         <PlacementNumber placement={item.placement} />
-  //         <PlayCountList tracks={item.tracks} />
-  //       </SegmentedList.CustomItem>
-  //     ))}
-  //   </SegmentedList>
-  // );
 }
 
 //#region Quick Overview
@@ -127,14 +104,18 @@ function TopList(props: {
   roundedImage?: boolean;
 }) {
   const { t } = useTranslation();
+  const [previewLimit, setPreviewLimit] = useState(5);
+
+  const canLimitPreview = props.data.length > 5;
+
   if (props.data.length === 0) return null;
   return (
     <View className="gap-2">
       <StyledText bold className="text-lg">
-        {props.label} ({props.data.length})
+        {t("feat.recap.extra.top", { name: props.label })} ({props.data.length})
       </StyledText>
       <FlatList
-        data={props.data}
+        data={props.data.slice(0, previewLimit)}
         keyExtractor={(_, index) => String(index)}
         renderItem={({ item, index }) => (
           <ListItem
@@ -156,59 +137,39 @@ function TopList(props: {
               "gap-2 rounded-3xl bg-surfaceContainerLowest p-2 pr-4",
               {
                 "rounded-t-sm": index !== 0,
-                "rounded-b-sm": index !== props.data.length - 1,
+                "rounded-b-sm":
+                  index !== Math.min(props.data.length, previewLimit) - 1,
               },
             )}
             _overflow={false}
           />
         )}
+        ListFooterComponent={
+          canLimitPreview ? (
+            <Ripple
+              onPress={() =>
+                setPreviewLimit((prev) => (prev === 5 ? props.data.length : 5))
+              }
+              className="rounded-full"
+            >
+              <StyledText className="text-sm text-primary">
+                {previewLimit === 5
+                  ? t("feat.recap.extra.showAll", {
+                      name: props.label.toLocaleLowerCase(),
+                    })
+                  : t("feat.recap.extra.show", {
+                      name: t("feat.recap.extra.top", {
+                        name: 5,
+                      }).toLocaleLowerCase(),
+                    })}
+              </StyledText>
+            </Ripple>
+          ) : null
+        }
         scrollEnabled={false}
         contentContainerClassName="gap-[3px]"
       />
     </View>
-  );
-}
-//#endregion
-
-//#region List Components
-function PlacementNumber({ placement }: { placement: number }) {
-  return (
-    <View className="size-12 items-center justify-center">
-      <StyledText>{placement}</StyledText>
-    </View>
-  );
-}
-
-function PlayCountList({ tracks }: { tracks: TrackData[] }) {
-  const { t } = useTranslation();
-  return (
-    <FlatList
-      data={tracks}
-      keyExtractor={({ id }) => id}
-      renderItem={({
-        item: { name, artistsString, albumName, playCount },
-        index,
-      }) => (
-        <View className="gap-2">
-          <View>
-            <StyledText className="text-sm">{name}</StyledText>
-            {artistsString ? (
-              <StyledText dim className="text-onSurface/80">
-                {artistsString}
-              </StyledText>
-            ) : null}
-            {albumName ? <StyledText dim>{albumName}</StyledText> : null}
-          </View>
-          <Divider />
-          {tracks.length - 1 === index ? (
-            <StyledText numberOfLines={1} className="text-xs text-primary">
-              {t("feat.mostPlayed.extra.playCount", { count: playCount })}
-            </StyledText>
-          ) : null}
-        </View>
-      )}
-      className="shrink grow gap-2 p-2 pr-3"
-    />
   );
 }
 //#endregion
