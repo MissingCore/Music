@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import HiddenTracks from "./HiddenTracksView";
-import MostPlayed from "./MostPlayedView";
+import Recap from "./RecapView";
 import RecentlyPlayed from "./RecentlyPlayedView";
 import SaveErrors from "./SaveErrorsView";
 import Insights from "./View";
@@ -25,9 +25,9 @@ const InsightsScreenGroup = {
       screen: HiddenTracks,
       options: { title: "feat.hiddenTracks.title" },
     },
-    MostPlayed: {
-      screen: MostPlayed,
-      options: { title: "feat.mostPlayed.title" },
+    Recap: {
+      screen: Recap,
+      options: { title: "feat.recap.title" },
     },
     SaveErrors: {
       screen: SaveErrors,

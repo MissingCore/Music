@@ -223,6 +223,7 @@
     },
     "recap": {
       "title": "Recap",
+      "brief": "Your top tracks, artists, and playback history.",
       "extra": {
         "recapTemplate": "{{- name}} $t(feat.recap.title)",
         "playCount": "{{count}} plays",
@@ -244,13 +245,6 @@
         "asCard": "As Card",
         "show": "Show {{- name}}",
         "showAll": "Show all {{- name}}"
-      }
-    },
-    "mostPlayed": {
-      "title": "Most Played",
-      "brief": "All-time ranking of tracks.",
-      "extra": {
-        "playCount": "{{count}} plays"
       }
     },
     "hiddenTracks": {
