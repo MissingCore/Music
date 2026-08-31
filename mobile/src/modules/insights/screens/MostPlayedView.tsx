@@ -14,36 +14,161 @@ import { fromJSONArrayString } from "~/data/utils";
 import { commonTrackColumns, structuredTracksView } from "~/data/views";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+import { ListLayout } from "~/navigation/layouts/ListLayout";
 
 import { getSubqueryFields, iAsc } from "~/lib/drizzle";
+import { getImageUri } from "~/lib/file-system";
+import { cn } from "~/lib/style";
+import { formatSeconds } from "~/utils/number";
 import { pickKeys } from "~/utils/object";
 import { FlatList } from "~/components/Base/List";
 import { Divider } from "~/components/Divider";
+import { ListItem } from "~/components/List";
 import { SegmentedList } from "~/components/List/Segmented";
-import { StyledText } from "~/components/Typography/StyledText";
+import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import { AccentText } from "~/components/Typography/AccentText";
+import { MediaImage } from "~/modules/media/components/MediaImage";
 
 export default function MostPlayed() {
+  const { t } = useTranslation();
   const { isPending, data } = useMostPlayedTracks();
 
-  if (isPending || data?.length === 0) {
-    return (
-      <ContentPlaceholder isPending={isPending} errMsgKey="err.msg.noResults" />
-    );
-  }
   return (
-    <SegmentedList
-      scrollEnabled
-      contentContainerClassName="p-4 pb-safe-offset-4"
-    >
-      {data?.map((item) => (
-        <SegmentedList.CustomItem key={item.placement} className="flex-row p-1">
-          <PlacementNumber placement={item.placement} />
-          <PlayCountList tracks={item.tracks} />
-        </SegmentedList.CustomItem>
-      ))}
-    </SegmentedList>
+    <ListLayout>
+      <QuickOverView
+        totalListeningTime={1000}
+        totalPlays={10}
+        uniqueSongs={5}
+        uniqueArtists={1}
+      />
+      <TopList
+        label={t("feat.recap.extra.top", { name: t("term.tracks") })}
+        data={[]}
+      />
+      <TopList
+        label={t("feat.recap.extra.top", { name: t("term.artists") })}
+        data={[]}
+        roundedImage
+      />
+      <TopList
+        label={t("feat.recap.extra.top", { name: t("term.albums") })}
+        data={[]}
+      />
+    </ListLayout>
+  );
+
+  // if (isPending || data?.length === 0) {
+  //   return (
+  //     <ContentPlaceholder isPending={isPending} errMsgKey="err.msg.noResults" />
+  //   );
+  // }
+  // return (
+  //   <SegmentedList
+  //     scrollEnabled
+  //     contentContainerClassName="p-4 pb-safe-offset-4"
+  //   >
+  //     {data?.map((item) => (
+  //       <SegmentedList.CustomItem key={item.placement} className="flex-row p-1">
+  //         <PlacementNumber placement={item.placement} />
+  //         <PlayCountList tracks={item.tracks} />
+  //       </SegmentedList.CustomItem>
+  //     ))}
+  //   </SegmentedList>
+  // );
+}
+
+//#region Quick Overview
+const overviewStats = ["totalPlays", "uniqueSongs", "uniqueArtists"] as const;
+
+function QuickOverView(props: {
+  totalListeningTime: number;
+  totalPlays: number;
+  uniqueSongs: number;
+  uniqueArtists: number;
+}) {
+  return (
+    <View className="gap-4 rounded-3xl bg-surfaceContainerLowest p-4">
+      <View className="gap-2 rounded-3xl bg-secondary p-4">
+        <TStyledText
+          textKey="feat.recap.extra.totalListeningTime"
+          className="text-sm text-onSecondaryVariant"
+        />
+        <AccentText className="text-4xl leading-none! text-onSecondary">
+          {formatSeconds(props.totalListeningTime)}
+        </AccentText>
+      </View>
+      <Divider />
+      <View className="flex-row gap-4">
+        {overviewStats.map((key) => (
+          <View key={key} className="flex-1">
+            <AccentText className="text-lg text-primary">
+              {props[key]}
+            </AccentText>
+            <TStyledText textKey={`feat.recap.extra.${key}`} dim />
+          </View>
+        ))}
+      </View>
+    </View>
   );
 }
+//#endregion
+
+//#region Top Lists
+type TopItem = {
+  name: string;
+  imgSrc: string | null;
+  playCount: number;
+  totalTime: number;
+};
+
+function TopList(props: {
+  label: string;
+  data: TopItem[];
+  roundedImage?: boolean;
+}) {
+  const { t } = useTranslation();
+  if (props.data.length === 0) return null;
+  return (
+    <View className="gap-2">
+      <StyledText bold className="text-lg">
+        {props.label} ({props.data.length})
+      </StyledText>
+      <FlatList
+        data={props.data}
+        keyExtractor={(_, index) => String(index)}
+        renderItem={({ item, index }) => (
+          <ListItem
+            labelText={item.name}
+            supportingText={`${t("feat.recap.extra.playCount", { count: item.playCount })} • ${formatSeconds(item.totalTime)}`}
+            Leading={
+              <>
+                <View className="size-8 items-center justify-center">
+                  <StyledText>{index + 1}</StyledText>
+                </View>
+                <MediaImage
+                  type={props.roundedImage ? "artist" : "track"}
+                  source={item.imgSrc}
+                  size={48}
+                />
+              </>
+            }
+            className={cn(
+              "gap-2 rounded-3xl bg-surfaceContainerLowest p-2 pr-4",
+              {
+                "rounded-t-sm": index !== 0,
+                "rounded-b-sm": index !== props.data.length - 1,
+              },
+            )}
+            _overflow={false}
+          />
+        )}
+        scrollEnabled={false}
+        contentContainerClassName="gap-[3px]"
+      />
+    </View>
+  );
+}
+//#endregion
 
 //#region List Components
 function PlacementNumber({ placement }: { placement: number }) {

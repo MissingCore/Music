@@ -221,6 +221,29 @@
         "totalDuration": "Total Duration"
       }
     },
+    "recap": {
+      "title": "Recap",
+      "extra": {
+        "recapTemplate": "{{- name}} $t(feat.recap.title)",
+        "playCount": "{{count}} plays",
+
+        "mostPlayed": "Most Played {{- name}}",
+        "top": "Top {{- name}}",
+        "breakdown": "{{- name}} Breakdown",
+
+        "allTime": "All-Time",
+        "monthly": "Monthly",
+        "yearly": "Yearly",
+
+        "listeningTime": "Listening Time",
+        "totalListeningTime": "Total Listening Time",
+        "totalPlays": "Total Plays",
+        "uniqueSongs": "Unique Songs",
+        "uniqueArtists": "Unique Artists",
+
+        "asCard": "As Card"
+      }
+    },
     "mostPlayed": {
       "title": "Most Played",
       "brief": "All-time ranking of tracks.",
