@@ -143,6 +143,7 @@ function RecapContent(props: { startEpoch: number; endEpoch?: number }) {
   return (
     <>
       <QuickOverview {...data.overview} />
+      <TopContent {...data.mostPlayed} />
       <TopList label={t("term.tracks")} data={data.topTracks} />
       <TopList label={t("term.artists")} data={data.topArtists} roundedImage />
       <TopList label={t("term.albums")} data={data.topAlbums} />
@@ -232,12 +233,9 @@ function TimeRangeSheet(props: {
 //#region Quick Overview
 const overviewStats = ["totalPlays", "uniqueTracks", "uniqueArtists"] as const;
 
-function QuickOverview(props: {
-  totalListeningTime: number;
-  totalPlays: number;
-  uniqueTracks: number;
-  uniqueArtists: number;
-}) {
+function QuickOverview(
+  props: Awaited<ReturnType<typeof getRecap>>["overview"],
+) {
   return (
     <View className="gap-4 rounded-3xl bg-surfaceContainerLowest p-4">
       <View className="gap-2 rounded-3xl bg-secondary p-4">
@@ -253,15 +251,43 @@ function QuickOverview(props: {
       <View className="flex-row gap-4">
         {overviewStats.map((key) => (
           <View key={key} className="flex-1">
-            <AccentText className="text-lg text-primary">
-              {props[key]}
-            </AccentText>
+            <AccentText className="text-lg">{props[key]}</AccentText>
             <TStyledText textKey={`feat.recap.extra.${key}`} dim />
           </View>
         ))}
       </View>
     </View>
   );
+}
+//#endregion
+
+//#region Top Content
+function TopContent(props: Awaited<ReturnType<typeof getRecap>>["mostPlayed"]) {
+  const { t } = useTranslation();
+  return (["track", "artist", "album"] as const)
+    .filter((content) => props[content] !== undefined)
+    .map((content) => {
+      const item = props[content]!;
+      return (
+        <View
+          key={content}
+          className="flex-row items-center gap-4 rounded-3xl bg-surfaceContainerLowest p-4"
+        >
+          <MediaImage type={content} source={item.imgSrc} size={64} />
+          <View className="shrink grow">
+            <StyledText dim className="text-primary">
+              {t("feat.recap.extra.mostPlayed", { name: t(`term.${content}`) })}
+            </StyledText>
+            <StyledText numberOfLines={1} className="text-lg">
+              {item.name}
+            </StyledText>
+            <StyledText numberOfLines={1} dim>
+              {`${t("feat.recap.extra.playCount", { count: item.playCount })} • ${formatSeconds(item.totalTime)}`}
+            </StyledText>
+          </View>
+        </View>
+      );
+    });
 }
 //#endregion
 
@@ -454,6 +480,11 @@ async function getRecap(startEpoch: number, endEpoch = Date.now()) {
 
   return {
     overview: { ...overviewStats!, ...uniqueArtistsStat! },
+    mostPlayed: {
+      album: topAlbums[0],
+      artist: topArtists[0],
+      track: topTracks[0],
+    },
     topTracks,
     topArtists,
     topAlbums,
