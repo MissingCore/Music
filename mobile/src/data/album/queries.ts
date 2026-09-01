@@ -8,7 +8,7 @@ import { updateAlbum } from "./api";
 import { AlbumArtistsKey } from "./utils";
 import { queries as q } from "../keyStore";
 
-import { formatSeconds } from "~/utils/number";
+import { Seconds } from "~/utils/date";
 import { wait } from "~/utils/promise";
 
 //#region Queries
@@ -29,12 +29,12 @@ export function useAlbumForScreen(albumId: string) {
           t("term.album"),
           ...(year ? [year] : []),
           t("plural.track", { count: tracks.length }),
-          formatSeconds(
+          Seconds.toReadableTime(
             tracks.reduce((total, curr) => total + curr.duration, 0),
           ),
         ],
         tracks: tracks.map(({ name: title, duration, artists, ...other }) => {
-          let description = formatSeconds(duration);
+          let description = Seconds.toReadableTime(duration);
           if (Array.isArray(artists)) {
             const diff = artists.filter((name) => !albumArtists.has(name));
             if (diff.length > 0) description += ` • ${diff.join(", ")}`;

@@ -23,7 +23,8 @@ import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { Colors } from "~/constants/Styles";
 import { ImageDirectory } from "~/lib/file-system";
 import type { ExtractQueryData } from "~/lib/react-query";
-import { abbreviateSize, formatSeconds } from "~/utils/number";
+import { Seconds } from "~/utils/date";
+import { abbreviateSize } from "~/utils/number";
 import { SegmentedList } from "~/components/List/Segmented";
 import { Legend } from "~/components/UI/Legend";
 import { ProgressBar } from "~/components/UI/ProgressBar";
@@ -157,7 +158,7 @@ function DBSummaryWidget() {
     field: keyof ExtractQueryData<typeof useDatabaseSummary>,
   ) => {
     if (!data) return "—";
-    if (field === "totalDuration") return formatSeconds(data[field], false);
+    if (field === "totalDuration") return Seconds.toReadableTime(data[field]);
     return data[field];
   };
 

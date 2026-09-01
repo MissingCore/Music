@@ -38,7 +38,7 @@ export const Seconds = {
    * Automatically convert seconds to a readable format. If less than than
    * 24 hours, display as `hh:mm:ss`, otherwise, `d hr min`.
    */
-  toReadableTime: (seconds: number, overrideAsISO?: boolean) => {
+  toReadableTime: (seconds: number) => {
     let roundedSeconds = Math.floor(seconds);
 
     const days = Math.floor(roundedSeconds / (24 * 3600));
@@ -48,7 +48,7 @@ export const Seconds = {
     const minutes = Math.floor(roundedSeconds / 60);
     roundedSeconds -= minutes * 60;
 
-    const asISO = overrideAsISO ?? days < 1;
+    const asISO = days < 1;
 
     const timeStr: string[] = [];
     pushTimeSegment(timeStr, days, !asISO ? "d" : undefined);

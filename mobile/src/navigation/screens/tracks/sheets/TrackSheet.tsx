@@ -21,12 +21,8 @@ import { TrackArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { TrackToPlaylistsSheet } from "./TrackToPlaylistsSheet";
 
 import { mutateGuard } from "~/lib/react-query";
-import { Epoch } from "~/utils/date";
-import {
-  abbreviateBitRate,
-  abbreviateSize,
-  formatSeconds,
-} from "~/utils/number";
+import { Epoch, Seconds } from "~/utils/date";
+import { abbreviateBitRate, abbreviateSize } from "~/utils/number";
 import { Pressable } from "~/components/Base/Pressable";
 import { Divider } from "~/components/Divider";
 import { IconButton } from "~/components/Form/Button/Icon";
@@ -145,7 +141,7 @@ function TrackMetadata({ data }: { data: Track }) {
         </Marquee>
         <View className="flex-row gap-2">
           {data.format ? <Badge>{data.format.toUpperCase()}</Badge> : null}
-          <Badge icon="schedule">{formatSeconds(data.duration)}</Badge>
+          <Badge icon="schedule">{Seconds.toReadableTime(data.duration)}</Badge>
         </View>
       </View>
     </View>

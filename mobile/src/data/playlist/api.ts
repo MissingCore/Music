@@ -9,7 +9,7 @@ import { playlists, tracks, tracksToPlaylists } from "~/db/schema";
 import i18next from "~/modules/i18n";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
-import { formatSeconds } from "~/utils/number";
+import { Seconds } from "~/utils/date";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import type { MediaImage } from "~/modules/media/components/MediaImage";
 import type { PlaylistSummary, PlaylistSummaryTrack } from "./types";
@@ -58,7 +58,7 @@ export async function getPlaylistDetails(id: string) {
     id: details.name,
     name: parsePlaylistName(details.name),
     artwork: derivedArtwork,
-    duration: formatSeconds(agg?.duration ? +agg.duration : 0),
+    duration: Seconds.toReadableTime(agg?.duration ? +agg.duration : 0),
   };
 }
 
