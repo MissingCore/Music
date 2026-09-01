@@ -88,7 +88,7 @@ const recapRangeReducer = (_: State, action: Action): State => {
     const year = action.payload.getFullYear();
 
     const endMonth = month === 11 ? 0 : month + 1;
-    const endYear = year === 11 ? year + 1 : year;
+    const endYear = month === 11 ? year + 1 : year;
 
     const startEpoch = new Date(year, month, 1).getTime();
     const endEpoch = new Date(endYear, endMonth, 1).getTime();
