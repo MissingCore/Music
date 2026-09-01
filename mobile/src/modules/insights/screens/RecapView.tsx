@@ -34,7 +34,7 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 
 import { cn } from "~/lib/style";
-import { formatSeconds } from "~/utils/number";
+import { Months, Seconds } from "~/utils/date";
 import { omitKeys } from "~/utils/object";
 import { LegendList } from "~/components/Base/LegendList";
 import { FlatList } from "~/components/Base/List";
@@ -49,21 +49,6 @@ import { AccentText } from "~/components/Typography/AccentText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 
 //#region Recap Time Range
-const MONTHS = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-] as const;
-
 interface State {
   rangeLabel: string;
   startEpoch: number;
@@ -92,7 +77,7 @@ const recapRangeReducer = (_: State, action: Action): State => {
     const startEpoch = new Date(year, month, 1).getTime();
     const endEpoch = new Date(endYear, endMonth, 1).getTime();
 
-    return { rangeLabel: `${MONTHS[month]} ${year}`, startEpoch, endEpoch };
+    return { rangeLabel: `${Months[month]} ${year}`, startEpoch, endEpoch };
   }
   // `action.type === "year"`
   const year = action.payload.getFullYear();
@@ -174,7 +159,7 @@ function TimeRangeSheet(props: {
     do {
       while (startMonth < 12) {
         rangeOptions.unshift({
-          label: `${MONTHS[startMonth]} ${startYear}`,
+          label: `${Months[startMonth]} ${startYear}`,
           payload: new Date(startYear, startMonth, 1),
           type: "month",
         });
@@ -243,7 +228,7 @@ function QuickOverview(
           className="text-sm text-onSecondaryVariant"
         />
         <AccentText className="text-4xl leading-none! text-onSecondary">
-          {formatSeconds(props.totalListeningTime, false)}
+          {Seconds.toReadableTime(props.totalListeningTime)}
         </AccentText>
       </View>
       <Divider />
@@ -281,7 +266,7 @@ function TopContent(props: Awaited<ReturnType<typeof getRecap>>["mostPlayed"]) {
               {item.name}
             </StyledText>
             <StyledText numberOfLines={1} dim>
-              {`${t("feat.recap.extra.playCount", { count: item.playCount })} • ${formatSeconds(item.totalTime)}`}
+              {`${t("feat.recap.extra.playCount", { count: item.playCount })} • ${Seconds.toReadableTime(item.totalTime)}`}
             </StyledText>
           </View>
         </View>
@@ -320,7 +305,7 @@ function TopList(props: {
         renderItem={({ item, index }) => (
           <ListItem
             labelText={item.name}
-            supportingText={`${t("feat.recap.extra.playCount", { count: item.playCount })} • ${formatSeconds(item.totalTime)}`}
+            supportingText={`${t("feat.recap.extra.playCount", { count: item.playCount })} • ${Seconds.toReadableTime(item.totalTime)}`}
             Leading={
               <>
                 <View className="size-12 items-center justify-center">
