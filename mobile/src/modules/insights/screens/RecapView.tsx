@@ -323,8 +323,10 @@ function TopList(props: {
             supportingText={`${t("feat.recap.extra.playCount", { count: item.playCount })} • ${formatSeconds(item.totalTime)}`}
             Leading={
               <>
-                <View className="size-8 items-center justify-center">
-                  <StyledText>{index + 1}</StyledText>
+                <View className="size-12 items-center justify-center">
+                  <StyledText style={{ fontVariant: ["tabular-nums"] }}>
+                    {index + 1}
+                  </StyledText>
                 </View>
                 <MediaImage
                   type={props.roundedImage ? "artist" : "track"}
