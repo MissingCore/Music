@@ -33,7 +33,6 @@ import { sessionStore, useSessionStore } from "~/stores/Session/store";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 
-import { iAsc } from "~/lib/drizzle";
 import { cn } from "~/lib/style";
 import { formatSeconds } from "~/utils/number";
 import { omitKeys } from "~/utils/object";
@@ -439,7 +438,7 @@ async function getRecap(startEpoch: number, endEpoch = Date.now()) {
     .leftJoin(albums, eq(scopedPlayEventView.albumId, albums.id))
     .orderBy(
       desc(scopedPlayEventView.playCount),
-      iAsc(scopedPlayEventView.name),
+      desc(scopedPlayEventView.playTime),
     );
 
   //? Get "Top Artists" stats.
@@ -459,7 +458,7 @@ async function getRecap(startEpoch: number, endEpoch = Date.now()) {
     .groupBy(artists.name)
     .orderBy(
       desc(sql`sum(${scopedPlayEventView.playCount})`),
-      iAsc(artists.name),
+      desc(sql`sum(${scopedPlayEventView.playTime})`),
     );
 
   //? Get "Top Albums" stats.
@@ -475,7 +474,7 @@ async function getRecap(startEpoch: number, endEpoch = Date.now()) {
     .groupBy(albums.id)
     .orderBy(
       desc(sql`sum(${scopedPlayEventView.playCount})`),
-      iAsc(albums.name),
+      desc(sql`sum(${scopedPlayEventView.playTime})`),
     );
 
   return {
