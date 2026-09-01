@@ -51,7 +51,8 @@
     "notFound": "`{{- name}}` doesn't exist.",
 
     "entryMove": "Move `{{- name}}`",
-    "entryShow": "Show `{{- name}}`",
+    "entryShow": "Show {{- name}}",
+    "entryShowAll": "Show all {{- name}}",
     "entryHide": "Hide `{{- name}}`",
     "entryEnable": "Enable `{{- name}}`",
     "entryDisable": "Disable `{{- name}}`",
@@ -230,21 +231,15 @@
 
         "mostPlayed": "Most Played {{- name}}",
         "top": "Top {{- name}}",
-        "breakdown": "{{- name}} Breakdown",
 
+        "timeRange": "Time Range",
         "allTime": "All-Time",
-        "monthly": "Monthly",
-        "yearly": "Yearly",
 
         "listeningTime": "Listening Time",
-        "totalListeningTime": "Total Listening Time",
+        "totalListeningTime": "Total $t(feat.recap.extra.listeningTime)",
         "totalPlays": "Total Plays",
         "uniqueTracks": "Unique Tracks",
-        "uniqueArtists": "Unique Artists",
-
-        "asCard": "As Card",
-        "show": "Show {{- name}}",
-        "showAll": "Show all {{- name}}"
+        "uniqueArtists": "Unique Artists"
       }
     },
     "hiddenTracks": {

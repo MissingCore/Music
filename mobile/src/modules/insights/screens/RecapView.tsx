@@ -12,7 +12,8 @@ import {
   lte,
   sql,
 } from "drizzle-orm";
-import { useState } from "react";
+import type { ActionDispatch } from "react";
+import { useMemo, useReducer, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -25,7 +26,9 @@ import {
   tracksToArtists,
 } from "~/db/schema";
 
-import { useSessionStore } from "~/stores/Session/store";
+import i18next from "~/modules/i18n";
+import { Icon } from "~/resources/icons";
+import { sessionStore, useSessionStore } from "~/stores/Session/store";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
@@ -34,31 +37,195 @@ import { iAsc } from "~/lib/drizzle";
 import { cn } from "~/lib/style";
 import { formatSeconds } from "~/utils/number";
 import { omitKeys } from "~/utils/object";
+import { LegendList } from "~/components/Base/LegendList";
 import { FlatList } from "~/components/Base/List";
 import { Ripple } from "~/components/Base/Pressable";
 import { Divider } from "~/components/Divider";
 import { ListItem } from "~/components/List";
+import { DetachedSheet } from "~/components/Sheet";
+import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
+import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { AccentText } from "~/components/Typography/AccentText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 
-export default function MostPlayed() {
-  const { t } = useTranslation();
-  const recapStartEpoch = useSessionStore((s) => s.recapStartEpoch);
-  const { isPending, data } = useRecap(recapStartEpoch);
+//#region Recap Time Range
+const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+] as const;
 
-  if (isPending || !data) {
-    return (
-      <ContentPlaceholder isPending={isPending} errMsgKey="err.msg.noResults" />
-    );
+interface State {
+  rangeLabel: string;
+  startEpoch: number;
+  endEpoch?: number;
+}
+
+type Action =
+  | { type: "all-time" }
+  | { type: "month"; payload: Date }
+  | { type: "year"; payload: Date };
+
+const recapRangeReducer = (_: State, action: Action): State => {
+  if (action.type === "all-time") {
+    return {
+      rangeLabel: i18next.t("feat.recap.extra.allTime"),
+      startEpoch: sessionStore.getState().recapStartEpoch,
+      endEpoch: undefined,
+    };
+  } else if (action.type === "month") {
+    const month = action.payload.getMonth();
+    const year = action.payload.getFullYear();
+
+    const endMonth = month === 11 ? 0 : month + 1;
+    const endYear = year === 11 ? year + 1 : year;
+
+    const startEpoch = new Date(year, month, 1).getTime();
+    const endEpoch = new Date(endYear, endMonth, 1).getTime();
+
+    return { rangeLabel: `${MONTHS[month]} ${year}`, startEpoch, endEpoch };
   }
+  // `action.type === "year"`
+  const year = action.payload.getFullYear();
+  const startEpoch = new Date(year, 0, 1).getTime();
+  const endEpoch = new Date(year + 1, 0, 1).getTime();
+  return { rangeLabel: String(year), startEpoch, endEpoch };
+};
+//#endregion
+
+export default function Recap() {
+  const recapStartEpoch = useSessionStore((s) => s.recapStartEpoch);
+  const [state, dispatch] = useReducer(recapRangeReducer, {
+    rangeLabel: i18next.t("feat.recap.extra.allTime"),
+    startEpoch: recapStartEpoch,
+  });
+  const timeRangeSheetRef = useSheetRef();
+
   return (
-    <ListLayout>
+    <>
+      <TimeRangeSheet ref={timeRangeSheetRef} dispatch={dispatch} />
+      <ListLayout>
+        <Ripple
+          onPress={() => timeRangeSheetRef.current?.present()}
+          className="flex-row justify-between gap-4 rounded-3xl bg-surfaceContainerLowest p-4"
+        >
+          <View className="gap-2">
+            <TStyledText
+              textKey="feat.recap.extra.timeRange"
+              className="text-sm text-onSurfaceVariant"
+            />
+            <AccentText className="text-4xl leading-none!">
+              {state.rangeLabel}
+            </AccentText>
+          </View>
+          <Icon name="keyboard-arrow-down" />
+        </Ripple>
+        <RecapContent {...state} />
+      </ListLayout>
+    </>
+  );
+}
+
+function RecapContent(props: { startEpoch: number; endEpoch?: number }) {
+  const { t } = useTranslation();
+  const { isPending, data } = useRecap(props.startEpoch, props.endEpoch);
+  if (isPending || !data) return <ContentPlaceholder isPending={isPending} />;
+  return (
+    <>
       <QuickOverview {...data.overview} />
       <TopList label={t("term.tracks")} data={data.topTracks} />
       <TopList label={t("term.artists")} data={data.topArtists} roundedImage />
       <TopList label={t("term.albums")} data={data.topAlbums} />
-    </ListLayout>
+    </>
+  );
+}
+
+function TimeRangeSheet(props: {
+  ref: TrueSheetRef;
+  dispatch: ActionDispatch<[action: Action]>;
+}) {
+  const recapStartEpoch = useSessionStore((s) => s.recapStartEpoch);
+
+  const options = useMemo(() => {
+    const startDate = new Date(recapStartEpoch);
+    const endDate = new Date();
+
+    let startMonth = startDate.getMonth();
+    let startYear = startDate.getFullYear();
+    const endMonth = endDate.getMonth();
+    const endYear = endDate.getFullYear();
+
+    const rangeOptions: Array<{
+      label: string;
+      payload: Date;
+      type: "month" | "year";
+    }> = [];
+
+    do {
+      while (startMonth < 12) {
+        rangeOptions.unshift({
+          label: `${MONTHS[startMonth]} ${startYear}`,
+          payload: new Date(startYear, startMonth, 1),
+          type: "month",
+        });
+        if (startYear === endYear && startMonth === endMonth) break;
+        startMonth += 1;
+      }
+
+      rangeOptions.unshift({
+        label: `${startYear}`,
+        payload: new Date(startYear, 0, 1),
+        type: "year",
+      });
+      startMonth = 0;
+      startYear += 1;
+    } while (startYear <= endYear);
+
+    return rangeOptions;
+  }, [recapStartEpoch]);
+
+  return (
+    <DetachedSheet ref={props.ref} contentContainerClassName="pb-0">
+      <LegendList
+        data={options}
+        keyExtractor={(item) => item.label}
+        renderItem={({ item }) => (
+          <Ripple
+            onPress={() => {
+              props.dispatch(item);
+              props.ref.current?.dismiss();
+            }}
+          >
+            <StyledText className="text-lg">{item.label}</StyledText>
+          </Ripple>
+        )}
+        ListHeaderComponent={
+          <Ripple
+            onPress={() => {
+              props.dispatch({ type: "all-time" });
+              props.ref.current?.dismiss();
+            }}
+          >
+            <TStyledText
+              textKey="feat.recap.extra.allTime"
+              className="text-lg"
+            />
+          </Ripple>
+        }
+        nestedScrollEnabled
+        contentContainerClassName="pb-4"
+      />
+    </DetachedSheet>
   );
 }
 
@@ -162,10 +329,10 @@ function TopList(props: {
             >
               <StyledText className="text-sm text-primary">
                 {previewLimit === 5
-                  ? t("feat.recap.extra.showAll", {
+                  ? t("template.entryShowAll", {
                       name: props.label.toLocaleLowerCase(),
                     })
-                  : t("feat.recap.extra.show", {
+                  : t("template.entryShow", {
                       name: t("feat.recap.extra.top", {
                         name: 5,
                       }).toLocaleLowerCase(),
