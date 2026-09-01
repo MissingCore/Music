@@ -74,25 +74,25 @@ const recapRangeReducer = (_: State, action: Action): State => {
     const endMonth = month === 11 ? 0 : month + 1;
     const endYear = month === 11 ? year + 1 : year;
 
-    const startEpoch = Epoch.from({ month, year });
-    const endEpoch = Epoch.from({ month: endMonth, year: endYear });
-
-    return { rangeLabel: `${Months[month]} ${year}`, startEpoch, endEpoch };
+    return {
+      rangeLabel: `${Months[month]} ${year}`,
+      startEpoch: Epoch.from({ month, year }),
+      endEpoch: Epoch.from({ month: endMonth, year: endYear }),
+    };
   }
   // `action.type === "year"`
   const year = action.payload.getFullYear();
-  const startEpoch = Epoch.from({ year });
-  const endEpoch = Epoch.from({ year: year + 1 });
-  return { rangeLabel: String(year), startEpoch, endEpoch };
+  return {
+    rangeLabel: String(year),
+    startEpoch: Epoch.from({ year }),
+    endEpoch: Epoch.from({ year: year + 1 }),
+  };
 };
 //#endregion
 
 export default function Recap() {
-  const recapStartEpoch = useSessionStore((s) => s.recapStartEpoch);
-  const [state, dispatch] = useReducer(recapRangeReducer, {
-    rangeLabel: i18next.t("feat.recap.extra.allTime"),
-    startEpoch: recapStartEpoch,
-  });
+  const defaultRecapRange = useSessionStore((s) => s.defaultRecapRange);
+  const [state, dispatch] = useReducer(recapRangeReducer, defaultRecapRange);
   const timeRangeSheetRef = useSheetRef();
 
   return (

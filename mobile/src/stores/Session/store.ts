@@ -8,6 +8,7 @@ import type { SessionStore } from "./constants";
 
 export const sessionStore = createStore<SessionStore>()(() => ({
   recapStartEpoch: 0,
+  defaultRecapRange: { rangeLabel: "", startEpoch: 0, endEpoch: 0 },
 
   playbackSpeed: 1,
   playbackPitch: 1,
