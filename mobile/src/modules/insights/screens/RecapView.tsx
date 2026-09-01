@@ -384,7 +384,8 @@ async function getRecap(startEpoch: number, endEpoch = Date.now()) {
       totalListeningTime: sql`sum(${scopedPlayEventView.playTime})`.mapWith(
         Number,
       ),
-      totalPlays: sql`sum(${scopedPlayEventView.playCount})`.mapWith(Number),
+      totalPlays:
+        sql`coalesce(sum(${scopedPlayEventView.playCount}), 0)`.mapWith(Number),
       uniqueTracks: countDistinct(scopedPlayEventView.trackId),
     })
     .from(scopedPlayEventView);
