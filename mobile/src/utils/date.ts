@@ -15,10 +15,28 @@ export const Months = [
 ] as const;
 //#endregion
 
+export const Epoch = {
+  /**
+   * Get the epoch time from a day, month, and year.
+   *  - Month is from 0-11, with everything else being "normal".
+   */
+  from: ({ day = 1, month = 0, year = 2026 }) => {
+    return new Date(year, month, day).getTime();
+  },
+
+  /** Convert epoch time to `YYYY-MM-DD` */
+  toDateAbbreviation: (ms: number) => {
+    const date = new Date(ms);
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${date.getFullYear()}-${month}-${day}`;
+  },
+};
+
 export const Seconds = {
   /**
    * Automatically convert seconds to a readable format. If less than than
-   * 24 hours, display as `hh:mm:ss`, otherwise, `d h min`.
+   * 24 hours, display as `hh:mm:ss`, otherwise, `d hr min`.
    */
   toReadableTime: (seconds: number, overrideAsISO?: boolean) => {
     let roundedSeconds = Math.floor(seconds);

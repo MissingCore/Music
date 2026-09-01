@@ -21,10 +21,10 @@ import { TrackArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { TrackToPlaylistsSheet } from "./TrackToPlaylistsSheet";
 
 import { mutateGuard } from "~/lib/react-query";
+import { Epoch } from "~/utils/date";
 import {
   abbreviateBitRate,
   abbreviateSize,
-  formatEpoch,
   formatSeconds,
 } from "~/utils/number";
 import { Pressable } from "~/components/Base/Pressable";
@@ -134,7 +134,7 @@ function TrackMetadata({ data }: { data: Track }) {
         <View className="flex-row items-center gap-1">
           <Icon name="edit" size={14} />
           <StyledText className="text-xxs/tight">
-            {formatEpoch(data.modificationTime)}
+            {Epoch.toDateAbbreviation(data.modificationTime)}
           </StyledText>
         </View>
       </Marquee>

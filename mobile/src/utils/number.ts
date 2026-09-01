@@ -31,14 +31,6 @@ export function countDecimals(value: number) {
   return asString.split(".").at(-1)!.length;
 }
 
-/** Convert epoch time to `YYYY-MM-DD` */
-export function formatEpoch(ms: number) {
-  const date = new Date(ms);
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const day = date.getDate().toString().padStart(2, "0");
-  return `${date.getFullYear()}-${month}-${day}`;
-}
-
 /**
  * Convert seconds into a time representing in the format of: `dd:hh:mm:ss`
  * (default) or `d h min`.

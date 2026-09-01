@@ -34,7 +34,7 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 
 import { cn } from "~/lib/style";
-import { Months, Seconds } from "~/utils/date";
+import { Epoch, Months, Seconds } from "~/utils/date";
 import { omitKeys } from "~/utils/object";
 import { LegendList } from "~/components/Base/LegendList";
 import { FlatList } from "~/components/Base/List";
@@ -74,15 +74,15 @@ const recapRangeReducer = (_: State, action: Action): State => {
     const endMonth = month === 11 ? 0 : month + 1;
     const endYear = month === 11 ? year + 1 : year;
 
-    const startEpoch = new Date(year, month, 1).getTime();
-    const endEpoch = new Date(endYear, endMonth, 1).getTime();
+    const startEpoch = Epoch.from({ month, year });
+    const endEpoch = Epoch.from({ month: endMonth, year: endYear });
 
     return { rangeLabel: `${Months[month]} ${year}`, startEpoch, endEpoch };
   }
   // `action.type === "year"`
   const year = action.payload.getFullYear();
-  const startEpoch = new Date(year, 0, 1).getTime();
-  const endEpoch = new Date(year + 1, 0, 1).getTime();
+  const startEpoch = Epoch.from({ year });
+  const endEpoch = Epoch.from({ year: year + 1 });
   return { rangeLabel: String(year), startEpoch, endEpoch };
 };
 //#endregion
