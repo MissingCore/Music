@@ -41,7 +41,7 @@
     "entryManage": "Управлять {{- name}}",
     "entrySeeMore": "Узнать больше о {{- name}}",
     "notFound": "{{- name}} не существует",
-    "entryMove": "Переместить{{- name}}",
+    "entryMove": "Переместить {{- name}}",
     "entryShow": "Показать {{- name}}",
     "entryHide": "Скрыть {{- name}}",
     "entryEnable": "Включить {{- name}}",
