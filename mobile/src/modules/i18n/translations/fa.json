@@ -34,20 +34,20 @@
     "disc": "دیسک {{count}}"
   },
   "template": {
-    "entryAdd": "`{{- name}}` اضافه کردن.",
-    "entryAdded": "`{{- name}}` اضافه شد.",
-    "entryRemove": "حذف `{{- name}}`.",
-    "entryRemoved": "`{{- name}}` حذف شد.",
-    "entryManage": "مدیریت `{{- name}}`",
-    "entrySeeMore": "اطلاعات بیشتر درباره `{{- name}}`.",
-    "notFound": "`{{- name}}` وجود ندارد.",
-    "entryMove": "`{{- name}}` جا به جا کردن",
-    "entryShow": "نمایش `{{- name}}`",
-    "entryHide": "مخفی کردن `{{- name}}`",
-    "entryEnable": "فعال کردن `{{- name}}`",
-    "entryDisable": "غیرفعال کردن `{{- name}}`",
+    "entryAdd": "{{- name}} اضافه کردن",
+    "entryAdded": "{{- name}} اضافه شد",
+    "entryRemove": "حذف {{- name}}",
+    "entryRemoved": "{{- name}} حذف شد",
+    "entryManage": "مدیریت {{- name}}",
+    "entrySeeMore": "اطلاعات بیشتر درباره {{- name}}",
+    "notFound": "{{- name}} وجود ندارد",
+    "entryMove": "{{- name}} جا به جا کردن",
+    "entryShow": "نمایش {{- name}}",
+    "entryHide": "مخفی کردن {{- name}}",
+    "entryEnable": "فعال کردن {{- name}}",
+    "entryDisable": "غیرفعال کردن {{- name}}",
     "countSelected": null,
-    "noContentFound": "{{- name}} یافت نشد."
+    "noContentFound": "{{- name}} یافت نشد"
   },
   "plural": {
     "entry_one": "{{count}} مورد",
@@ -465,7 +465,7 @@
         "add": "اضافه به صف",
         "playNext": "پخش بعدی",
         "playLast": "پخش اخرین",
-        "toast": "`{{- name}}` به صف اضافه شد.",
+        "toast": "{{- name}} به صف اضافه شد.",
         "queueAwareNext": "پخش بعدی - آگاه از صف",
         "queueAwareNextBrief": "بعد از آخرین پخش بعدی به صف اضافه می شود."
       }

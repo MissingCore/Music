@@ -34,20 +34,20 @@
     "disc": "CD {{count}}"
   },
   "template": {
-    "entryAdd": "'{{- name}}' hinzufügen.",
-    "entryAdded": "`{{- name}}` hinzugefügt.",
-    "entryRemove": "`{{- name}}` entfernen.",
-    "entryRemoved": "Hat `{{- name}}` entfernt.",
+    "entryAdd": "{{- name}} hinzufügen",
+    "entryAdded": "{{- name}} hinzugefügt",
+    "entryRemove": "{{- name}} entfernen",
+    "entryRemoved": "Hat {{- name}} entfernt",
     "entryManage": "Verwalte {{- name}}",
-    "entrySeeMore": "Mehr über `{{- name}}` sehen.",
-    "notFound": "`{{- name}}` existiert nicht.",
-    "entryMove": "Verschiebe '{{- name}}'",
-    "entryShow": "`{{- name}}` anzeigen",
-    "entryHide": "`{{- name}}` verstecken",
-    "entryEnable": "`{{- name}}` aktivieren",
-    "entryDisable": "`{{- name}}` deaktivieren",
+    "entrySeeMore": "Mehr über {{- name}} sehen",
+    "notFound": "{{- name}} existiert nicht",
+    "entryMove": "Verschiebe {{- name}}",
+    "entryShow": "{{- name}} anzeigen",
+    "entryHide": "{{- name}} verstecken",
+    "entryEnable": "{{- name}} aktivieren",
+    "entryDisable": "{{- name}} deaktivieren",
     "countSelected": null,
-    "noContentFound": "Kein {{- name}} gefunden."
+    "noContentFound": "Kein {{- name}} gefunden"
   },
   "plural": {
     "entry_one": "{{count}} Eintrag",
@@ -465,7 +465,7 @@
         "add": "Zur Warteschlange hinzufügen",
         "playNext": "Als Nächstes",
         "playLast": "Als Letztes",
-        "toast": "`{{- name}}` wurde zur Warteschlange hinzugefügt.",
+        "toast": "{{- name}} wurde zur Warteschlange hinzugefügt.",
         "queueAwareNext": "Warteschlangen-gerechtes \"Als Nächstes\"",
         "queueAwareNextBrief": "Versuche um nach dem letzten „Nächsten abspielen“-Titel weitere Titel hinzuzufügen."
       }

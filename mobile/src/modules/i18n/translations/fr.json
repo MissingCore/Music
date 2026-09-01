@@ -34,20 +34,20 @@
     "disc": "CD {{count}}"
   },
   "template": {
-    "entryAdd": "Ajouter `{{- name}}`.",
-    "entryAdded": "`{{- name}}` ajouté.",
-    "entryRemove": "Supprimer `{{- name}}`.",
-    "entryRemoved": "`{{- name}}` supprimé.",
-    "entryManage": "Gérer `{{- name}}`",
-    "entrySeeMore": "Voir plus sur `{{- name}}`.",
-    "notFound": "`{{- name}}` n'existe pas.",
-    "entryMove": "Déplacer `{{- name}}`",
-    "entryShow": "Afficher `{{- name}}`",
-    "entryHide": "Cacher `{{- name}}`",
-    "entryEnable": "Activer `{{- name}}`",
-    "entryDisable": "Désactiver `{{- name}}`",
+    "entryAdd": "Ajouter {{- name}}",
+    "entryAdded": "{{- name}} ajouté",
+    "entryRemove": "Supprimer {{- name}}",
+    "entryRemoved": "{{- name}} supprimé",
+    "entryManage": "Gérer {{- name}}",
+    "entrySeeMore": "Voir plus sur {{- name}}",
+    "notFound": "{{- name}} n'existe pas",
+    "entryMove": "Déplacer {{- name}}",
+    "entryShow": "Afficher {{- name}}",
+    "entryHide": "Cacher {{- name}}",
+    "entryEnable": "Activer {{- name}}",
+    "entryDisable": "Désactiver {{- name}}",
     "countSelected": "{{count}} sélectionnés",
-    "noContentFound": "Aucun {{- name}} trouvé."
+    "noContentFound": "Aucun {{- name}} trouvé"
   },
   "plural": {
     "entry_one": "{{count}} entrée",
@@ -465,7 +465,7 @@
         "add": "Mettre à la suite",
         "playNext": "Jouer juste après",
         "playLast": "Jouer en dernier",
-        "toast": "`{{- name}}` ajouté à la file d'attente.",
+        "toast": "{{- name}} ajouté à la file d'attente.",
         "queueAwareNext": "Lecture suivante en fonction de la file d'attente",
         "queueAwareNextBrief": "Tentatives d'ajout d'un morceau après le dernier morceau \"Lecture suivante\"."
       }

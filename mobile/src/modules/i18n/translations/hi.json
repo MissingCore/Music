@@ -34,18 +34,18 @@
     "disc": "डिस्क {{count}}"
   },
   "template": {
-    "entryAdd": "`{{- name}}` जोड़ें।",
-    "entryAdded": "`{{- name}}` जोड़ा गया।",
-    "entryRemove": "`{{- name}}` हटाएँ।",
-    "entryRemoved": "`{{- name}}` हटा दिया गया।",
+    "entryAdd": "{{- name}} जोड़ें।",
+    "entryAdded": "{{- name}} जोड़ा गया।",
+    "entryRemove": "{{- name}} हटाएँ।",
+    "entryRemoved": "{{- name}} हटा दिया गया।",
     "entryManage": "{{- name}} प्रबंधित करें",
-    "entrySeeMore": "`{{- name}}` के बारे में और देखें।",
-    "notFound": "`{{- name}}` मौजूद नहीं है।",
-    "entryMove": "`{{- name}}` स्थानांतरित करें",
-    "entryShow": "`{{- name}}` दिखाएँ",
-    "entryHide": "`{{- name}}` छुपाएँ",
-    "entryEnable": "`{{- name}}` सक्षम करें",
-    "entryDisable": "`{{- name}}` अक्षम करें",
+    "entrySeeMore": "{{- name}} के बारे में और देखें।",
+    "notFound": "{{- name}} मौजूद नहीं है।",
+    "entryMove": "{{- name}} स्थानांतरित करें",
+    "entryShow": "{{- name}} दिखाएँ",
+    "entryHide": "{{- name}} छुपाएँ",
+    "entryEnable": "{{- name}} सक्षम करें",
+    "entryDisable": "{{- name}} अक्षम करें",
     "countSelected": null,
     "noContentFound": "कोई {{- name}} नहीं मिला।"
   },
@@ -139,7 +139,7 @@
       "title": "होम टैब्स क्रम",
       "brief": "टैब्स के क्रम और दृश्यता को अनुकूलित करें।",
       "extra": {
-        "setHomeTab": "ऐप लॉन्च पर `{{- name}}` टैब खोलें।",
+        "setHomeTab": "ऐप लॉन्च पर {{- name}} टैब खोलें।",
         "showNavbar": null
       }
     },
@@ -465,7 +465,7 @@
         "add": "कतार में जोड़ें",
         "playNext": "अगला चलाएँ",
         "playLast": "अंतिम चलाएँ",
-        "toast": "`{{- name}}` कतार में जोड़ा गया।",
+        "toast": "{{- name}} कतार में जोड़ा गया।",
         "queueAwareNext": "क्यू-सजग अगला चलाएँ",
         "queueAwareNextBrief": "अंतिम \"अगला चलाएँ\" ट्रैक के बाद ट्रैक जोड़ने का प्रयास करता है।"
       }
