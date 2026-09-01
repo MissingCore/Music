@@ -198,11 +198,21 @@
         "totalDuration": "合計の再生時間"
       }
     },
-    "mostPlayed": {
-      "title": "再生回数が多い物",
-      "brief": "トラックの歴代人気ランキング。",
+    "recap": {
+      "title": null,
+      "brief": null,
       "extra": {
-        "playCount": "{{count}} 回再生"
+        "recapTemplate": null,
+        "playCount": "{{count}} 回再生",
+        "mostPlayed": null,
+        "top": null,
+        "timeRange": null,
+        "allTime": null,
+        "listeningTime": null,
+        "totalListeningTime": null,
+        "totalPlays": null,
+        "uniqueTracks": null,
+        "uniqueArtists": null
       }
     },
     "hiddenTracks": {

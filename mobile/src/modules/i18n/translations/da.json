@@ -198,11 +198,21 @@
         "totalDuration": "Varighed i alt"
       }
     },
-    "mostPlayed": {
-      "title": "Hyppigst afspillede sange",
-      "brief": "Dine mest afspillede sange i én liste.",
+    "recap": {
+      "title": null,
+      "brief": null,
       "extra": {
-        "playCount": "Afspillet {{count}} gange"
+        "recapTemplate": null,
+        "playCount": "Afspillet {{count}} gange",
+        "mostPlayed": "Hyppigst afspillede {{- name}}",
+        "top": null,
+        "timeRange": null,
+        "allTime": null,
+        "listeningTime": null,
+        "totalListeningTime": null,
+        "totalPlays": null,
+        "uniqueTracks": null,
+        "uniqueArtists": null
       }
     },
     "hiddenTracks": {

@@ -198,11 +198,21 @@
         "totalDuration": "Полная длительность"
       }
     },
-    "mostPlayed": {
-      "title": "Часто воспроизводимые",
-      "brief": "Рейтинг треков за всё время.",
+    "recap": {
+      "title": null,
+      "brief": null,
       "extra": {
-        "playCount": "Прослушиваний: {{count}}"
+        "recapTemplate": null,
+        "playCount": "Прослушиваний: {{count}}",
+        "mostPlayed": "Часто воспроизводимые {{- name}}",
+        "top": null,
+        "timeRange": null,
+        "allTime": null,
+        "listeningTime": null,
+        "totalListeningTime": null,
+        "totalPlays": null,
+        "uniqueTracks": null,
+        "uniqueArtists": null
       }
     },
     "hiddenTracks": {

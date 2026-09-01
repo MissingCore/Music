@@ -198,11 +198,21 @@
         "totalDuration": "إجمالي المدة"
       }
     },
-    "mostPlayed": {
+    "recap": {
       "title": null,
       "brief": null,
       "extra": {
-        "playCount": null
+        "recapTemplate": null,
+        "playCount": null,
+        "mostPlayed": null,
+        "top": null,
+        "timeRange": null,
+        "allTime": null,
+        "listeningTime": null,
+        "totalListeningTime": null,
+        "totalPlays": null,
+        "uniqueTracks": null,
+        "uniqueArtists": null
       }
     },
     "hiddenTracks": {

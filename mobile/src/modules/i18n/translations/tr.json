@@ -198,11 +198,21 @@
         "totalDuration": "Toplam Süre"
       }
     },
-    "mostPlayed": {
-      "title": "En Çok Çalınanlar",
-      "brief": "Tüm zamanların parça sıralaması.",
+    "recap": {
+      "title": null,
+      "brief": null,
       "extra": {
-        "playCount": "{{count}} çalma"
+        "recapTemplate": null,
+        "playCount": "{{count}} çalma",
+        "mostPlayed": "En Çok Çalınanlar {{- name}}",
+        "top": null,
+        "timeRange": null,
+        "allTime": null,
+        "listeningTime": null,
+        "totalListeningTime": null,
+        "totalPlays": null,
+        "uniqueTracks": null,
+        "uniqueArtists": null
       }
     },
     "hiddenTracks": {

@@ -198,11 +198,21 @@
         "totalDuration": "Łączna długość"
       }
     },
-    "mostPlayed": {
-      "title": "Najczęściej odtwarzane",
-      "brief": "Ranking najczęściej odtwarzanych utworów.",
+    "recap": {
+      "title": null,
+      "brief": null,
       "extra": {
-        "playCount": "{{count}} razy"
+        "recapTemplate": null,
+        "playCount": "{{count}} razy",
+        "mostPlayed": "Najczęściej odtwarzane {{- name}}",
+        "top": null,
+        "timeRange": null,
+        "allTime": null,
+        "listeningTime": null,
+        "totalListeningTime": null,
+        "totalPlays": null,
+        "uniqueTracks": null,
+        "uniqueArtists": null
       }
     },
     "hiddenTracks": {

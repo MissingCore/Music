@@ -198,11 +198,21 @@
         "totalDuration": "Duración total"
       }
     },
-    "mostPlayed": {
-      "title": "Más reproducidas",
-      "brief": "Tus canciones más escuchadas.",
+    "recap": {
+      "title": null,
+      "brief": null,
       "extra": {
-        "playCount": "{{count}} reproducciones"
+        "recapTemplate": null,
+        "playCount": "{{count}} reproducciones",
+        "mostPlayed": "Más reproducidas {{- name}}",
+        "top": null,
+        "timeRange": null,
+        "allTime": null,
+        "listeningTime": null,
+        "totalListeningTime": null,
+        "totalPlays": null,
+        "uniqueTracks": null,
+        "uniqueArtists": null
       }
     },
     "hiddenTracks": {
