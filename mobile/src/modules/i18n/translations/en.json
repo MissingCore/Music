@@ -37,7 +37,9 @@
 
     "instructions": "Instructions",
 
-    "disc": "Disc {{count}}"
+    "disc": "Disc {{count}}",
+    "eps": "EPs",
+    "singles": "Singles"
   },
 
   "template": {

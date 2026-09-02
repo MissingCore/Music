@@ -17,6 +17,10 @@ export const sessionStore = createStore<SessionStore>()(() => ({
   displayedArtists: null,
 
   activeWaveformContext: null,
+
+  showSingles: true,
+  showEPs: true,
+  showAlbums: true,
 }));
 
 export function useSessionStore<T>(selector: (state: SessionStore) => T): T {

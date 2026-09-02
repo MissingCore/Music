@@ -15,6 +15,7 @@ export type Track = Prettify<
   TRACK_INTERNAL & {
     albumName: string | null;
     albumArtistsKey: string | null;
+    isAlbumEP: boolean | null;
     artists: string[] | null;
   }
 >;

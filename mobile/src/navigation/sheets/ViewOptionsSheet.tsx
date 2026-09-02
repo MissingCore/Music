@@ -8,6 +8,8 @@ import { Icon } from "~/resources/icons";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
 import { MinAlbumLengthConfig } from "~/stores/Preference/utils";
+import { useSessionStore } from "~/stores/Session/store";
+import { toggleSessionKey } from "~/stores/Session/actions";
 import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { ViewPreferenceSetters } from "~/stores/ViewPreference/actions";
 
@@ -15,6 +17,7 @@ import { SortSheet } from "~/navigation/sheets/SortSheet";
 
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { NumberStepper } from "~/components/Form/NumberStepper";
+import { SwitchInput } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
 import { DetachedSheet } from "~/components/Sheet";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
@@ -25,7 +28,11 @@ import type { MutableViewLayout } from "~/stores/ViewPreference/types";
 
 //#region Albums
 export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
+  const { t } = useTranslation();
   const minAlbumLength = usePreferenceStore((s) => s.minAlbumLength);
+  const showSingles = useSessionStore((s) => s.showSingles);
+  const showEPs = useSessionStore((s) => s.showEPs);
+  const showAlbums = useSessionStore((s) => s.showAlbums);
   const sortOrderSheetRef = useSheetRef();
 
   return (
@@ -39,6 +46,34 @@ export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
               value={minAlbumLength}
               onChange={PreferenceSetters.updateMinAlbumLengthByDelta}
               {...MinAlbumLengthConfig.bound}
+            />
+          }
+        />
+
+        <SheetLabelAction
+          label={t("template.entryShow", { name: t("term.singles") })}
+          Trailing={
+            <SwitchInput
+              enabled={showSingles}
+              onPress={toggleSessionKey("showSingles")}
+            />
+          }
+        />
+        <SheetLabelAction
+          label={t("template.entryShow", { name: t("term.eps") })}
+          Trailing={
+            <SwitchInput
+              enabled={showEPs}
+              onPress={toggleSessionKey("showEPs")}
+            />
+          }
+        />
+        <SheetLabelAction
+          label={t("template.entryShow", { name: t("term.albums") })}
+          Trailing={
+            <SwitchInput
+              enabled={showAlbums}
+              onPress={toggleSessionKey("showAlbums")}
             />
           }
         />

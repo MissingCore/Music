@@ -17,7 +17,7 @@ import {
 import { db } from "~/db";
 import { albums, albumsToArtists, artists, tracks } from "~/db/schema";
 
-import { iAsc, throwIfNoResults } from "~/lib/drizzle";
+import { getExcludedColumns, iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { omitKeys } from "~/utils/object";
 import type { AlbumSummary, AlbumTrack } from "./types";
 import { AlbumArtistsKey } from "./utils";
@@ -152,7 +152,10 @@ export async function updateAlbum(id: string, values: Partial<InsertedAlbum>) {
 
 //#region PUT Methods
 /** Create/update album entries and its relations. Returns the created albums. */
-export function upsertAlbums(entries: InsertedAlbum[]) {
+export function upsertAlbums(
+  entries: InsertedAlbum[],
+  overrideModifiable = false,
+) {
   return db.transaction(async (tx) => {
     const results = await tx
       .insert(albums)
@@ -161,7 +164,10 @@ export function upsertAlbums(entries: InsertedAlbum[]) {
         target: [albums.name, albums.artistsKey],
         // Replace `name` with passed name to allow `.returning()` to return
         // a value if a conflict occurs.
-        set: { name: sql`excluded.name` },
+        set: getExcludedColumns([
+          "name",
+          ...(overrideModifiable ? ["embeddedArtwork", "isEP"] : []),
+        ]),
       })
       .returning();
 

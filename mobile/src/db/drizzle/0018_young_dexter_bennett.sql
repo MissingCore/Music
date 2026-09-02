@@ -1,0 +1,1 @@
+ALTER TABLE `albums` ADD `is_ep` integer DEFAULT false NOT NULL;
