@@ -34,20 +34,21 @@
     "disc": "डिस्क {{count}}"
   },
   "template": {
-    "entryAdd": "{{- name}} जोड़ें।",
-    "entryAdded": "{{- name}} जोड़ा गया।",
-    "entryRemove": "{{- name}} हटाएँ।",
-    "entryRemoved": "{{- name}} हटा दिया गया।",
+    "entryAdd": "{{- name}} जोड़ें",
+    "entryAdded": "{{- name}} जोड़ा गया",
+    "entryRemove": "{{- name}} हटाएँ",
+    "entryRemoved": "{{- name}} हटा दिया गया",
     "entryManage": "{{- name}} प्रबंधित करें",
-    "entrySeeMore": "{{- name}} के बारे में और देखें।",
-    "notFound": "{{- name}} मौजूद नहीं है।",
+    "entrySeeMore": "{{- name}} के बारे में और देखें",
+    "notFound": "{{- name}} मौजूद नहीं है",
     "entryMove": "{{- name}} स्थानांतरित करें",
     "entryShow": "{{- name}} दिखाएँ",
+    "entryShowAll": null,
     "entryHide": "{{- name}} छुपाएँ",
     "entryEnable": "{{- name}} सक्षम करें",
     "entryDisable": "{{- name}} अक्षम करें",
     "countSelected": null,
-    "noContentFound": "कोई {{- name}} नहीं मिला।"
+    "noContentFound": "कोई {{- name}} नहीं मिला"
   },
   "plural": {
     "entry_one": "{{count}} प्रविष्टि",
@@ -152,7 +153,8 @@
         "vinyl": "विनाइल",
         "vinylOld": "विनाइल (लीगेसी)",
         "none": null,
-        "alternativeInfoLayout": null
+        "alternativeInfoLayout": null,
+        "standardVinylSpeed": null
       }
     },
     "seekbar": {
@@ -164,10 +166,6 @@
         "waveformPurgeCacheBrief": "यह स्टोरेज को मुक्त करता है ताकि खेले गए ट्रैकों के वेवफॉर्म्स को फिर से गणना किया जा सके।",
         "waveformPurgeCacheToast": "वेवफॉर्म कैश साफ़ किया गया।"
       }
-    },
-    "quickScroll": {
-      "title": "त्वरित स्क्रॉल",
-      "brief": "सपोर्टेड स्क्रीन पर Nothing स्टाइल वाली स्क्रॉलबार दिखाएँ।"
     },
     "language": {
       "title": "भाषा",

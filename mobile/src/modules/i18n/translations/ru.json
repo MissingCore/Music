@@ -35,7 +35,7 @@
   },
   "template": {
     "entryAdd": "Добавить {{- name}}",
-    "entryAdded": "{{- name}} Добавлен",
+    "entryAdded": "{{- name}} добавлен",
     "entryRemove": "Удалить {{- name}}",
     "entryRemoved": "{{- name}} удалён",
     "entryManage": "Управлять {{- name}}",
@@ -43,6 +43,7 @@
     "notFound": "{{- name}} не существует",
     "entryMove": "Переместить {{- name}}",
     "entryShow": "Показать {{- name}}",
+    "entryShowAll": null,
     "entryHide": "Скрыть {{- name}}",
     "entryEnable": "Включить {{- name}}",
     "entryDisable": "Отключить {{- name}}",
@@ -152,7 +153,8 @@
         "vinyl": "Винил",
         "vinylOld": "Винил (устаревший)",
         "none": null,
-        "alternativeInfoLayout": null
+        "alternativeInfoLayout": null,
+        "standardVinylSpeed": null
       }
     },
     "seekbar": {
@@ -164,10 +166,6 @@
         "waveformPurgeCacheBrief": "Освобождает место для пересчета аудиограмм воспроизведенных треков.",
         "waveformPurgeCacheToast": "Кэш аудиограмм очищен."
       }
-    },
-    "quickScroll": {
-      "title": "Быстрая прокрутка",
-      "brief": "Отображать полосу прокрутки в стиле Nothing на поддерживаемых устройствах."
     },
     "language": {
       "title": "Язык",

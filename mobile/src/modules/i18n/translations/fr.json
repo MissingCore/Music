@@ -43,6 +43,7 @@
     "notFound": "{{- name}} n'existe pas",
     "entryMove": "Déplacer {{- name}}",
     "entryShow": "Afficher {{- name}}",
+    "entryShowAll": null,
     "entryHide": "Cacher {{- name}}",
     "entryEnable": "Activer {{- name}}",
     "entryDisable": "Désactiver {{- name}}",
@@ -152,7 +153,8 @@
         "vinyl": "Vinyle",
         "vinylOld": "Vinyle (Legacy)",
         "none": "Aucun",
-        "alternativeInfoLayout": "Autre présentation des informations"
+        "alternativeInfoLayout": "Autre présentation des informations",
+        "standardVinylSpeed": null
       }
     },
     "seekbar": {
@@ -164,10 +166,6 @@
         "waveformPurgeCacheBrief": "Libère de l'espace de stockage pour recalculer les formes d'onde des titres lus.",
         "waveformPurgeCacheToast": "Cache de formes d'onde effacé."
       }
-    },
-    "quickScroll": {
-      "title": "Défilement Rapide",
-      "brief": "Afficher la barre de défilement du style Nothing sur les écrans supportés."
     },
     "language": {
       "title": "Langue",

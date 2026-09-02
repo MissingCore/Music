@@ -43,6 +43,7 @@
     "notFound": "{{- name}} non esiste",
     "entryMove": null,
     "entryShow": "Mostra {{- name}}",
+    "entryShowAll": null,
     "entryHide": "Nascondi {{- name}}",
     "entryEnable": "Attiva {{- name}}",
     "entryDisable": "Disattiva {{- name}}",
@@ -152,7 +153,8 @@
         "vinyl": "Vinile",
         "vinylOld": "Vinile (legacy)",
         "none": null,
-        "alternativeInfoLayout": null
+        "alternativeInfoLayout": null,
+        "standardVinylSpeed": null
       }
     },
     "seekbar": {
@@ -164,10 +166,6 @@
         "waveformPurgeCacheBrief": null,
         "waveformPurgeCacheToast": null
       }
-    },
-    "quickScroll": {
-      "title": null,
-      "brief": null
     },
     "language": {
       "title": "Lingua",

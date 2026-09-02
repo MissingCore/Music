@@ -34,15 +34,16 @@
     "disc": "دیسک {{count}}"
   },
   "template": {
-    "entryAdd": "{{- name}} اضافه کردن",
+    "entryAdd": "اضافه کردن {{- name}}",
     "entryAdded": "{{- name}} اضافه شد",
     "entryRemove": "حذف {{- name}}",
     "entryRemoved": "{{- name}} حذف شد",
     "entryManage": "مدیریت {{- name}}",
     "entrySeeMore": "اطلاعات بیشتر درباره {{- name}}",
     "notFound": "{{- name}} وجود ندارد",
-    "entryMove": "{{- name}} جا به جا کردن",
+    "entryMove": "جا به جا کردن {{- name}}",
     "entryShow": "نمایش {{- name}}",
+    "entryShowAll": null,
     "entryHide": "مخفی کردن {{- name}}",
     "entryEnable": "فعال کردن {{- name}}",
     "entryDisable": "غیرفعال کردن {{- name}}",
@@ -152,7 +153,8 @@
         "vinyl": "گرامافون",
         "vinylOld": "گرامافون (قدیمی)",
         "none": "هیچ کدام",
-        "alternativeInfoLayout": null
+        "alternativeInfoLayout": null,
+        "standardVinylSpeed": null
       }
     },
     "seekbar": {
@@ -164,10 +166,6 @@
         "waveformPurgeCacheBrief": "برای محاسبه مجدد شکل موج ها ، حافظه را خالی میکند",
         "waveformPurgeCacheToast": "کش شکل موج تخلیه شد"
       }
-    },
-    "quickScroll": {
-      "title": "اسکرول سریع",
-      "brief": "نمایش نوار اسکرول به سبک Nothing در صفحات پشتیبانی شده."
     },
     "language": {
       "title": "زبان",

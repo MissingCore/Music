@@ -43,6 +43,7 @@
     "notFound": "{{- name}} findes ikke",
     "entryMove": "Flyt {{- name}}",
     "entryShow": "Vis {{- name}}",
+    "entryShowAll": null,
     "entryHide": "Gem {{- name}}",
     "entryEnable": "Aktivér {{- name}}",
     "entryDisable": "Deaktivér {{- name}}",
@@ -152,7 +153,8 @@
         "vinyl": "Kun vinyl",
         "vinylOld": "Vinyl og cover",
         "none": null,
-        "alternativeInfoLayout": null
+        "alternativeInfoLayout": null,
+        "standardVinylSpeed": null
       }
     },
     "seekbar": {
@@ -164,10 +166,6 @@
         "waveformPurgeCacheBrief": "Frigør lagerplads for at genberegne bølgeformer af afspillede sange.",
         "waveformPurgeCacheToast": "Bølgeform-cache ryddet."
       }
-    },
-    "quickScroll": {
-      "title": "Scrollbar",
-      "brief": "Vis Nothing-lignende scrollbar på understøttede skærme."
     },
     "language": {
       "title": "Sprog",

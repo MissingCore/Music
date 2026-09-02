@@ -43,6 +43,7 @@
     "notFound": "{{- name}} tidak ditemukan",
     "entryMove": "Pindahkan {{- name}}",
     "entryShow": "Tampilkan {{- name}}",
+    "entryShowAll": null,
     "entryHide": "Sembunyikan {{- name}}",
     "entryEnable": "Aktifkan {{- name}}",
     "entryDisable": "Nonaktifkan {{- name}}",
@@ -152,7 +153,8 @@
         "vinyl": "Vinyl",
         "vinylOld": "Vinyl (Lama)",
         "none": null,
-        "alternativeInfoLayout": null
+        "alternativeInfoLayout": null,
+        "standardVinylSpeed": null
       }
     },
     "seekbar": {
@@ -164,10 +166,6 @@
         "waveformPurgeCacheBrief": "Bebaskan ruang penyimpanan untuk merekalkulasi waveform dari pemutaran trek.",
         "waveformPurgeCacheToast": "Tembolok waveform dibersihkan."
       }
-    },
-    "quickScroll": {
-      "title": "Gulir Cepat",
-      "brief": "Tampilkan bilah gulir Nothing-styled di layar yang mendukung."
     },
     "language": {
       "title": "Bahasa",

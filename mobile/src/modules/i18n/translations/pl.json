@@ -43,6 +43,7 @@
     "notFound": "{{- name}} nie istnieje",
     "entryMove": "Przenieś {{- name}}",
     "entryShow": "Pokaż {{- name}}",
+    "entryShowAll": null,
     "entryHide": "Ukryj {{- name}}",
     "entryEnable": "Włącz {{- name}}",
     "entryDisable": "Wyłącz {{- name}}",
@@ -152,7 +153,8 @@
         "vinyl": "Winyl",
         "vinylOld": "Winyl (Poprzedni)",
         "none": null,
-        "alternativeInfoLayout": null
+        "alternativeInfoLayout": null,
+        "standardVinylSpeed": null
       }
     },
     "seekbar": {
@@ -164,10 +166,6 @@
         "waveformPurgeCacheBrief": "Zwalnia pamięć i wymusza ponowne obliczenia dla wizualizacji fal dźwiękowych.",
         "waveformPurgeCacheToast": "Dane wizualizacji fal dźwiękowych zostały wyczyszczone."
       }
-    },
-    "quickScroll": {
-      "title": "Szybkie przewijanie",
-      "brief": "Pokazuj na wspieranych zakładkach scrollbar w stylu Nothing."
     },
     "language": {
       "title": "Język",
