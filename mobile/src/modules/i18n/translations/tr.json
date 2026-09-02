@@ -34,20 +34,20 @@
     "disc": "Disk {{count}}"
   },
   "template": {
-    "entryAdd": "`{{- name}}` ekle.",
-    "entryAdded": "`{{- name}}` eklendi.",
-    "entryRemove": "`{{- name}}` öğesini kaldır.",
-    "entryRemoved": "`{{- name}}` kaldırıldı.",
+    "entryAdd": "{{- name}} ekle",
+    "entryAdded": "{{- name}} eklendi",
+    "entryRemove": "{{- name}} öğesini kaldır",
+    "entryRemoved": "{{- name}} kaldırıldı",
     "entryManage": "{{- name}} Yönet",
-    "entrySeeMore": "`{{- name}}` hakkında daha fazla bilgi edin.",
-    "notFound": "`{{- name}}` mevcut değil.",
-    "entryMove": "`{{- name}}` öğesini taşı",
-    "entryShow": "`{{- name}}` öğesini göster",
-    "entryHide": "`{{- name}}` öğesini gizle",
-    "entryEnable": "`{{- name}}` öğesini etkinleştir",
-    "entryDisable": "`{{- name}}` öğesini devre dışı bırak",
+    "entrySeeMore": "{{- name}} hakkında daha fazla bilgi edin",
+    "notFound": "{{- name}} mevcut değil",
+    "entryMove": "{{- name}} öğesini taşı",
+    "entryShow": "{{- name}} öğesini göster",
+    "entryHide": "{{- name}} öğesini gizle",
+    "entryEnable": "{{- name}} öğesini etkinleştir",
+    "entryDisable": "{{- name}} öğesini devre dışı bırak",
     "countSelected": "{{count}} Seçili",
-    "noContentFound": "Hiçbir {{- name}} bulunamadı."
+    "noContentFound": "Hiçbir {{- name}} bulunamadı"
   },
   "plural": {
     "entry_one": "{{count}} öğe",
@@ -198,11 +198,21 @@
         "totalDuration": "Toplam Süre"
       }
     },
-    "mostPlayed": {
-      "title": "En Çok Çalınanlar",
-      "brief": "Tüm zamanların parça sıralaması.",
+    "recap": {
+      "title": null,
+      "brief": null,
       "extra": {
-        "playCount": "{{count}} çalma"
+        "recapTemplate": null,
+        "playCount": "{{count}} çalma",
+        "mostPlayed": "En Çok Çalınanlar {{- name}}",
+        "top": null,
+        "timeRange": null,
+        "allTime": null,
+        "listeningTime": null,
+        "totalListeningTime": null,
+        "totalPlays": null,
+        "uniqueTracks": null,
+        "uniqueArtists": null
       }
     },
     "hiddenTracks": {
@@ -455,7 +465,7 @@
         "add": "Kuyruğa Ekle",
         "playNext": "Sonraki Çal",
         "playLast": "En Son Çal",
-        "toast": "`{{- name}}` kuyruğa eklendi.",
+        "toast": "{{- name}} kuyruğa eklendi.",
         "queueAwareNext": "Kuyruk Uyumlu Sonraki Çal",
         "queueAwareNextBrief": "Parçayı son \"Sonraki Çal\" öğesinden sonraki sıraya eklemeyi dener."
       }

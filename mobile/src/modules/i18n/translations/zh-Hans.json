@@ -35,17 +35,17 @@
   },
   "template": {
     "entryAdd": null,
-    "entryAdded": "已添加 `{{- name}}`。",
-    "entryRemove": "移除 `{{- name}}`。",
-    "entryRemoved": "已移除 `{{- name}}`。",
+    "entryAdded": "已添加 {{- name}}",
+    "entryRemove": "移除 {{- name}}",
+    "entryRemoved": "已移除 {{- name}}",
     "entryManage": null,
-    "entrySeeMore": "查看更多关于 `{{- name}}` 的信息。",
-    "notFound": "`{{- name}}` 不存在。",
+    "entrySeeMore": "查看更多关于 {{- name}} 的信息",
+    "notFound": "{{- name}} 不存在",
     "entryMove": null,
-    "entryShow": "显示`{{- name}}`",
-    "entryHide": "隐藏 `{{- name}}`",
-    "entryEnable": "启用`{{- name}}`",
-    "entryDisable": "禁用`{{- name}}`",
+    "entryShow": "显示{{- name}}",
+    "entryHide": "隐藏 {{- name}}",
+    "entryEnable": "启用{{- name}}",
+    "entryDisable": "禁用{{- name}}",
     "countSelected": null,
     "noContentFound": null
   },
@@ -198,11 +198,21 @@
         "totalDuration": "总时长"
       }
     },
-    "mostPlayed": {
+    "recap": {
       "title": null,
       "brief": null,
       "extra": {
-        "playCount": null
+        "recapTemplate": null,
+        "playCount": null,
+        "mostPlayed": null,
+        "top": null,
+        "timeRange": null,
+        "allTime": null,
+        "listeningTime": null,
+        "totalListeningTime": null,
+        "totalPlays": null,
+        "uniqueTracks": null,
+        "uniqueArtists": null
       }
     },
     "hiddenTracks": {
@@ -455,7 +465,7 @@
         "add": "添加到队列",
         "playNext": null,
         "playLast": null,
-        "toast": "已将 `{{- name}}` 添加到队列。",
+        "toast": "已将 {{- name}} 添加到队列。",
         "queueAwareNext": null,
         "queueAwareNextBrief": null
       }

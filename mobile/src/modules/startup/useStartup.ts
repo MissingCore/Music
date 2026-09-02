@@ -16,6 +16,7 @@ import migrations from "~/db/drizzle/migrations";
 import { IS_DEV } from "~/env";
 import { playbackStore } from "~/stores/Playback/store";
 import { preferenceStore } from "~/stores/Preference/store";
+import { sessionStore } from "~/stores/Session/store";
 import { viewPreferenceStore } from "~/stores/ViewPreference/store";
 import { equalizerStore } from "~/modules/audio/equalizer/core/store";
 import {
@@ -30,6 +31,7 @@ import {
   PlaceholderImageFile,
 } from "~/lib/file-system";
 import { getAudioBrowserOptions } from "~/lib/react-native-audio-browser";
+import { Epoch, Months } from "~/utils/date";
 import { Stopwatch } from "~/utils/debug";
 import { FontDirectory } from "~/modules/customization/font/core/data";
 import { PlayedListsTracker } from "~/modules/insights/core/PlayedListsTracker";
@@ -177,4 +179,24 @@ async function startupFlow() {
   console.log(`Completed migrations in ${stopwatch.lapTime()}.`);
 
   console.log(`Completed setup in ${stopwatch.stop()}.`);
+
+  //? 7. Identify the range of our "Recap" feature.
+  const firstPlayEvent = await db.query.tracksPlayEvents.findFirst({
+    orderBy: (fields, { asc }) => asc(fields.playedAt),
+  });
+
+  const todayDate = new Date();
+  const month = todayDate.getMonth();
+  const year = todayDate.getFullYear();
+  const endMonth = month === 11 ? 0 : month + 1;
+  const endYear = month === 11 ? year + 1 : year;
+
+  sessionStore.setState({
+    recapStartEpoch: firstPlayEvent?.playedAt ?? Date.now(),
+    defaultRecapRange: {
+      rangeLabel: `${Months[month]} ${year}`,
+      startEpoch: Epoch.from({ month, year }),
+      endEpoch: Epoch.from({ month: endMonth, year: endYear }),
+    },
+  });
 }

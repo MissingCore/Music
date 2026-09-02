@@ -34,20 +34,20 @@
     "disc": "ディスク {{count}}"
   },
   "template": {
-    "entryAdd": "「{{- name}}」を追加する",
-    "entryAdded": "｢{{- name}}｣を追加しました。",
-    "entryRemove": "｢{{- name}}｣を削除します。",
-    "entryRemoved": "｢{{- name}}｣を削除しました。",
-    "entryManage": "「{{- name}}」を管理",
-    "entrySeeMore": "｢{{- name}}｣の詳細を確認します。",
-    "notFound": "｢{{- name}}｣は存在しません。",
-    "entryMove": "「{{- name}}」を移動",
-    "entryShow": "｢{{- name}}｣を表示",
-    "entryHide": "｢{{- name}}｣を非表示",
-    "entryEnable": "「{{- name}}」を有効化",
-    "entryDisable": "「{{- name}}」を無効化",
+    "entryAdd": "{{- name}}を追加する",
+    "entryAdded": "{{- name}}を追加しました",
+    "entryRemove": "{{- name}}を削除します",
+    "entryRemoved": "{{- name}}を削除しました",
+    "entryManage": "{{- name}}を管理",
+    "entrySeeMore": "{{- name}}の詳細を確認します",
+    "notFound": "{{- name}}は存在しません",
+    "entryMove": "{{- name}}を移動",
+    "entryShow": "{{- name}}を表示",
+    "entryHide": "{{- name}}を非表示",
+    "entryEnable": "{{- name}}を有効化",
+    "entryDisable": "{{- name}}を無効化",
     "countSelected": null,
-    "noContentFound": "「{{- name}}」が見つかりません"
+    "noContentFound": "{{- name}}が見つかりません"
   },
   "plural": {
     "entry_one": "{{count}} 件のエントリ",
@@ -139,7 +139,7 @@
       "title": "タブの順序",
       "brief": "タブの順序と表示をカスタマイズします。",
       "extra": {
-        "setHomeTab": "アプリの起動時に「{{- name}}」のタブを開きます。",
+        "setHomeTab": "アプリの起動時に{{- name}}のタブを開きます。",
         "showNavbar": null
       }
     },
@@ -198,11 +198,21 @@
         "totalDuration": "合計の再生時間"
       }
     },
-    "mostPlayed": {
-      "title": "再生回数が多い物",
-      "brief": "トラックの歴代人気ランキング。",
+    "recap": {
+      "title": null,
+      "brief": null,
       "extra": {
-        "playCount": "{{count}} 回再生"
+        "recapTemplate": null,
+        "playCount": "{{count}} 回再生",
+        "mostPlayed": null,
+        "top": null,
+        "timeRange": null,
+        "allTime": null,
+        "listeningTime": null,
+        "totalListeningTime": null,
+        "totalPlays": null,
+        "uniqueTracks": null,
+        "uniqueArtists": null
       }
     },
     "hiddenTracks": {
@@ -455,7 +465,7 @@
         "add": "キューに追加",
         "playNext": "次に再生",
         "playLast": "最後に再生",
-        "toast": "｢{{- name}}｣がキューに追加されました。",
+        "toast": "{{- name}}がキューに追加されました。",
         "queueAwareNext": "キューの認識による次の再生",
         "queueAwareNextBrief": "最後の「次に再生」するトラックの後にトラックを追加します。"
       }

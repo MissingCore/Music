@@ -34,20 +34,20 @@
     "disc": "Disk {{count}}"
   },
   "template": {
-    "entryAdd": "Tambahkan `{{- name}}`.",
-    "entryAdded": "`{{- name}}` telah ditambahkan.",
-    "entryRemove": "`{{- name}}` Dihapus.",
-    "entryRemoved": "`{{- name}}` Telah Dihapus.",
+    "entryAdd": "Tambahkan {{- name}}",
+    "entryAdded": "{{- name}} telah ditambahkan",
+    "entryRemove": "{{- name}} Dihapus",
+    "entryRemoved": "{{- name}} Telah Dihapus",
     "entryManage": "Kelola {{- name}}",
-    "entrySeeMore": "Lihat selengkapnya tentang `{{- name}}`.",
-    "notFound": "`{{- name}}` tidak ditemukan.",
-    "entryMove": "Pindahkan `{{- name}}`",
-    "entryShow": "Tampilkan `{{- name}}`",
-    "entryHide": "Sembunyikan `{{- name}}`",
-    "entryEnable": "Aktifkan `{{- name}}`",
-    "entryDisable": "Nonaktifkan `{{- name}}`",
+    "entrySeeMore": "Lihat selengkapnya tentang {{- name}}",
+    "notFound": "{{- name}} tidak ditemukan",
+    "entryMove": "Pindahkan {{- name}}",
+    "entryShow": "Tampilkan {{- name}}",
+    "entryHide": "Sembunyikan {{- name}}",
+    "entryEnable": "Aktifkan {{- name}}",
+    "entryDisable": "Nonaktifkan {{- name}}",
     "countSelected": null,
-    "noContentFound": "{{- name}} tidak ditemukan."
+    "noContentFound": "{{- name}} tidak ditemukan"
   },
   "plural": {
     "entry_one": "{{count}} entri",
@@ -198,11 +198,21 @@
         "totalDuration": "Durasi Total"
       }
     },
-    "mostPlayed": {
-      "title": "Sering Diputar",
-      "brief": "Trek teratas all-time.",
+    "recap": {
+      "title": null,
+      "brief": null,
       "extra": {
-        "playCount": "{{count}} pemutaran"
+        "recapTemplate": null,
+        "playCount": "{{count}} pemutaran",
+        "mostPlayed": "Sering Diputar {{- name}}",
+        "top": null,
+        "timeRange": null,
+        "allTime": null,
+        "listeningTime": null,
+        "totalListeningTime": null,
+        "totalPlays": null,
+        "uniqueTracks": null,
+        "uniqueArtists": null
       }
     },
     "hiddenTracks": {
@@ -455,7 +465,7 @@
         "add": "Tambahkan ke Antrian",
         "playNext": "Putar Berikutnya",
         "playLast": "Putar Terakhir",
-        "toast": "`{{- name}}` ditambahkan ke antrian.",
+        "toast": "{{- name}} ditambahkan ke antrian.",
         "queueAwareNext": "Putar Berikutnya dengan Mempertimbangkan Antrian",
         "queueAwareNextBrief": "Upaya untuk menambahkan trek setelah akhir \"Putar Berikutnya\" trek."
       }

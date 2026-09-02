@@ -34,20 +34,20 @@
     "disc": "CD {{count}}"
   },
   "template": {
-    "entryAdd": "Dodaj `{{- name}}`.",
-    "entryAdded": "Dodano `{{- name}}`.",
-    "entryRemove": "Usuń `{{- name}}`.",
-    "entryRemoved": "Usunięto `{{- name}}`.",
-    "entryManage": "Zarządzaj `{{- name}}`",
-    "entrySeeMore": "Zobacz więcej o `{{- name}}`.",
-    "notFound": "`{{- name}}` nie istnieje.",
-    "entryMove": "Przenieś `{{- name}}`",
-    "entryShow": "Pokaż `{{- name}}`",
-    "entryHide": "Ukryj `{{- name}}`",
-    "entryEnable": "Włącz `{{- name}}`",
-    "entryDisable": "Wyłącz `{{- name}}`",
+    "entryAdd": "Dodaj {{- name}}",
+    "entryAdded": "Dodano {{- name}}",
+    "entryRemove": "Usuń {{- name}}",
+    "entryRemoved": "Usunięto {{- name}}",
+    "entryManage": "Zarządzaj {{- name}}",
+    "entrySeeMore": "Zobacz więcej o {{- name}}",
+    "notFound": "{{- name}} nie istnieje",
+    "entryMove": "Przenieś {{- name}}",
+    "entryShow": "Pokaż {{- name}}",
+    "entryHide": "Ukryj {{- name}}",
+    "entryEnable": "Włącz {{- name}}",
+    "entryDisable": "Wyłącz {{- name}}",
     "countSelected": null,
-    "noContentFound": "Nie znaleziono {{- name}}."
+    "noContentFound": "Nie znaleziono {{- name}}"
   },
   "plural": {
     "entry_one": "{{count}} element",
@@ -198,11 +198,21 @@
         "totalDuration": "Łączna długość"
       }
     },
-    "mostPlayed": {
-      "title": "Najczęściej odtwarzane",
-      "brief": "Ranking najczęściej odtwarzanych utworów.",
+    "recap": {
+      "title": null,
+      "brief": null,
       "extra": {
-        "playCount": "{{count}} razy"
+        "recapTemplate": null,
+        "playCount": "{{count}} razy",
+        "mostPlayed": "Najczęściej odtwarzane {{- name}}",
+        "top": null,
+        "timeRange": null,
+        "allTime": null,
+        "listeningTime": null,
+        "totalListeningTime": null,
+        "totalPlays": null,
+        "uniqueTracks": null,
+        "uniqueArtists": null
       }
     },
     "hiddenTracks": {
@@ -455,7 +465,7 @@
         "add": "Dodaj do kolejki",
         "playNext": "Odtwórz jako następną",
         "playLast": "Odtwórz jako ostatnią",
-        "toast": "Dodano do kolejki: `{{- name}}`.",
+        "toast": "Dodano do kolejki: {{- name}}.",
         "queueAwareNext": "Odtwórz jako następną z zachowaniem kolejności",
         "queueAwareNextBrief": "Utwór dodany jako następny zostanie umiejscowiony za ostatnim dodanym jako następnym."
       }

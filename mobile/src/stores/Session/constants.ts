@@ -9,6 +9,15 @@ import type { PopStrategy } from "./types";
 
 //#region Store
 export interface SessionStore {
+  /** Time since epoch where we started recording play events. */
+  recapStartEpoch: number;
+  /** Time range we'll display by default on the "Recap" screen. */
+  defaultRecapRange: {
+    rangeLabel: string;
+    startEpoch: number;
+    endEpoch: number;
+  };
+
   /** The rate at which the media is played (from 0.25 to 2). */
   playbackSpeed: number;
   /** The factor at which the pitch will be shifted (from 0.25 to 2). */

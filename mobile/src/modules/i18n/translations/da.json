@@ -34,20 +34,20 @@
     "disc": "Plade {{count}}"
   },
   "template": {
-    "entryAdd": "Tilføj \"{{- name}}\".",
-    "entryAdded": "\"{{- name}}\" blev tilføjet.",
-    "entryRemove": "Fjern \"{{- name}}\".",
-    "entryRemoved": "\"{{- name}}\" blev fjernet.",
-    "entryManage": "Administrér \"{{- name}}\"",
-    "entrySeeMore": "Se mere om \"{{- name}}\".",
-    "notFound": "\"{{- name}}\" findes ikke.",
-    "entryMove": "Flyt \"{{- name}}\"",
-    "entryShow": "Vis \"{{- name}}\"",
-    "entryHide": "Gem \"{{- name}}\"",
-    "entryEnable": "Aktivér \"{{- name}}\"",
-    "entryDisable": "Deaktivér \"{{- name}}\"",
+    "entryAdd": "Tilføj {{- name}}",
+    "entryAdded": "{{- name}} blev tilføjet",
+    "entryRemove": "Fjern {{- name}}",
+    "entryRemoved": "{{- name}} blev fjernet",
+    "entryManage": "Administrér {{- name}}",
+    "entrySeeMore": "Se mere om {{- name}}",
+    "notFound": "{{- name}} findes ikke",
+    "entryMove": "Flyt {{- name}}",
+    "entryShow": "Vis {{- name}}",
+    "entryHide": "Gem {{- name}}",
+    "entryEnable": "Aktivér {{- name}}",
+    "entryDisable": "Deaktivér {{- name}}",
     "countSelected": null,
-    "noContentFound": "\"{{- name}}\" blev ikke fundet."
+    "noContentFound": "{{- name}} blev ikke fundet"
   },
   "plural": {
     "entry_one": "{{count}} indlæg",
@@ -198,11 +198,21 @@
         "totalDuration": "Varighed i alt"
       }
     },
-    "mostPlayed": {
-      "title": "Hyppigst afspillede sange",
-      "brief": "Dine mest afspillede sange i én liste.",
+    "recap": {
+      "title": null,
+      "brief": null,
       "extra": {
-        "playCount": "Afspillet {{count}} gange"
+        "recapTemplate": null,
+        "playCount": "Afspillet {{count}} gange",
+        "mostPlayed": "Hyppigst afspillede {{- name}}",
+        "top": null,
+        "timeRange": null,
+        "allTime": null,
+        "listeningTime": null,
+        "totalListeningTime": null,
+        "totalPlays": null,
+        "uniqueTracks": null,
+        "uniqueArtists": null
       }
     },
     "hiddenTracks": {
@@ -455,7 +465,7 @@
         "add": "Tilføj til kø",
         "playNext": "Afspil som næste",
         "playLast": "Afspil sidst",
-        "toast": "\"{{- name}}\" tilføjet til kø.",
+        "toast": "{{- name}} tilføjet til kø.",
         "queueAwareNext": "Kø-bevidst \"Afspil som næste\"",
         "queueAwareNextBrief": "Forsøger at tilføje sang efter den sidste \"Afspil som næste\"-sang i køen."
       }

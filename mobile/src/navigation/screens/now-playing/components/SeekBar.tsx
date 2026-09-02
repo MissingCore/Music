@@ -15,7 +15,8 @@ import {
   renderedPositionAtom,
 } from "../helpers/Seekbar.context";
 
-import { clamp, formatSeconds } from "~/utils/number";
+import { Seconds } from "~/utils/date";
+import { clamp } from "~/utils/number";
 import { CachedSlider } from "~/components/Form/Slider";
 import { Em } from "~/components/Typography/StyledText";
 
@@ -75,8 +76,8 @@ export function SeekBar(props: SeekBarProps) {
         />
       )}
       <View className="flex-row justify-between rtl:flex-row-reverse">
-        <Em>{formatSeconds(clampedPos)}</Em>
-        <Em>{formatSeconds(props.trackLength)}</Em>
+        <Em>{Seconds.toReadableTime(clampedPos)}</Em>
+        <Em>{Seconds.toReadableTime(props.trackLength)}</Em>
       </View>
     </View>
   );

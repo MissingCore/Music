@@ -34,20 +34,20 @@
     "disc": "Disco {{count}}"
   },
   "template": {
-    "entryAdd": "Agregar `{{- name}}`.",
-    "entryAdded": "`{{- name}}` añadido.",
-    "entryRemove": "Eliminar `{{- name}}`.",
-    "entryRemoved": "`{{- name}}` eliminado.",
+    "entryAdd": "Agregar {{- name}}",
+    "entryAdded": "{{- name}} añadido",
+    "entryRemove": "Eliminar {{- name}}",
+    "entryRemoved": "{{- name}} eliminado",
     "entryManage": "Gestionar {{- name}}",
-    "entrySeeMore": "Ver más sobre `{{- name}}`.",
-    "notFound": "`{{- name}}` no existe.",
-    "entryMove": "Mover `{{- name}}`",
-    "entryShow": "Mostrar `{{- name}}`",
-    "entryHide": "Ocultar `{{- name}}`",
-    "entryEnable": "Activar `{{- name}}`",
-    "entryDisable": "Desactivar `{{- name}}`",
+    "entrySeeMore": "Ver más sobre {{- name}}",
+    "notFound": "{{- name}} no existe",
+    "entryMove": "Mover {{- name}}",
+    "entryShow": "Mostrar {{- name}}",
+    "entryHide": "Ocultar {{- name}}",
+    "entryEnable": "Activar {{- name}}",
+    "entryDisable": "Desactivar {{- name}}",
     "countSelected": "{{count}} Seleccionado",
-    "noContentFound": "No se encontró {{- name}}."
+    "noContentFound": "No se encontró {{- name}}"
   },
   "plural": {
     "entry_one": "{{count}} entrada",
@@ -198,11 +198,21 @@
         "totalDuration": "Duración total"
       }
     },
-    "mostPlayed": {
-      "title": "Más reproducidas",
-      "brief": "Tus canciones más escuchadas.",
+    "recap": {
+      "title": null,
+      "brief": null,
       "extra": {
-        "playCount": "{{count}} reproducciones"
+        "recapTemplate": null,
+        "playCount": "{{count}} reproducciones",
+        "mostPlayed": "Más reproducidas {{- name}}",
+        "top": null,
+        "timeRange": null,
+        "allTime": null,
+        "listeningTime": null,
+        "totalListeningTime": null,
+        "totalPlays": null,
+        "uniqueTracks": null,
+        "uniqueArtists": null
       }
     },
     "hiddenTracks": {
@@ -455,7 +465,7 @@
         "add": "Añadir a la cola",
         "playNext": "Reproducir a continuación",
         "playLast": "Reproducir al final",
-        "toast": "`{{- name}}` añadida a la cola.",
+        "toast": "{{- name}} añadida a la cola.",
         "queueAwareNext": "Insertar como siguiente",
         "queueAwareNextBrief": "Intenta colocar la canción después de la última marcada como \"Reproducir a continuación\"."
       }

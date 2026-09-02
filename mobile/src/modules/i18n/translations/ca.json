@@ -34,20 +34,20 @@
     "disc": "Disc {{count}}"
   },
   "template": {
-    "entryAdd": "Afegir {{- name}}.",
-    "entryAdded": "`{{- name}}` afegit.",
-    "entryRemove": "Suprimeix `{{- name}}`.",
-    "entryRemoved": "`{{- name}}` suprimit.",
+    "entryAdd": "Afegir {{- name}}",
+    "entryAdded": "{{- name}} afegit",
+    "entryRemove": "Suprimeix {{- name}}",
+    "entryRemoved": "{{- name}} suprimit",
     "entryManage": "Gestionar {{- name}}",
-    "entrySeeMore": "Veure més sobre `{{- name}}`.",
-    "notFound": "`{{- name}}` no existeix.",
+    "entrySeeMore": "Veure més sobre {{- name}}",
+    "notFound": "{{- name}} no existeix",
     "entryMove": "Moure {{- name}}",
-    "entryShow": "Mostra `{{- name}}`",
-    "entryHide": "Amaga `{{- name}}`",
-    "entryEnable": "Activar `{{- name}}`",
-    "entryDisable": "Desactivar `{{- name}}`",
+    "entryShow": "Mostra {{- name}}",
+    "entryHide": "Amaga {{- name}}",
+    "entryEnable": "Activar {{- name}}",
+    "entryDisable": "Desactivar {{- name}}",
     "countSelected": "{{count}} Seleccionat",
-    "noContentFound": "No s'ha trobat {{- name}}."
+    "noContentFound": "No s'ha trobat {{- name}}"
   },
   "plural": {
     "entry_one": "{{count}} entrada",
@@ -198,11 +198,21 @@
         "totalDuration": "Durada total"
       }
     },
-    "mostPlayed": {
-      "title": "Més reproduïdes",
-      "brief": "Les teves cançons més escoltades.",
+    "recap": {
+      "title": null,
+      "brief": null,
       "extra": {
-        "playCount": "{{count}} reproduccions"
+        "recapTemplate": null,
+        "playCount": "{{count}} reproduccions",
+        "mostPlayed": "Més reproduïdes {{- name}}",
+        "top": null,
+        "timeRange": null,
+        "allTime": null,
+        "listeningTime": null,
+        "totalListeningTime": null,
+        "totalPlays": null,
+        "uniqueTracks": null,
+        "uniqueArtists": null
       }
     },
     "hiddenTracks": {
@@ -455,7 +465,7 @@
         "add": "Afegir a la cua",
         "playNext": null,
         "playLast": null,
-        "toast": "`{{- name}}` afegit a la cua.",
+        "toast": "{{- name}} afegit a la cua.",
         "queueAwareNext": null,
         "queueAwareNextBrief": null
       }

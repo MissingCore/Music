@@ -13,7 +13,7 @@ import {
 } from "~/db/schema";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
-import { formatSeconds } from "~/utils/number";
+import { Seconds } from "~/utils/date";
 import type { ArtistAlbum } from "./types";
 import type { CommonTrack, TracksSortOptions } from "../types";
 import { commonTracksOrIds, getTracksOrderedBy } from "../utils";
@@ -52,7 +52,7 @@ export async function getArtistDetails(id: string) {
 
   return {
     ...details,
-    duration: formatSeconds(agg?.duration ? +agg.duration : 0),
+    duration: Seconds.toReadableTime(agg?.duration ? +agg.duration : 0),
   };
 }
 

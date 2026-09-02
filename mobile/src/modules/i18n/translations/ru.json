@@ -34,20 +34,20 @@
     "disc": "Диск {{count}}"
   },
   "template": {
-    "entryAdd": "Добавить`{{- name}}`.",
-    "entryAdded": "`{{- name}}` Добавлен.",
-    "entryRemove": "Удалить `{{- name}}`.",
-    "entryRemoved": "`{{- name}}` удалён.",
+    "entryAdd": "Добавить {{- name}}",
+    "entryAdded": "{{- name}} Добавлен",
+    "entryRemove": "Удалить {{- name}}",
+    "entryRemoved": "{{- name}} удалён",
     "entryManage": "Управлять {{- name}}",
-    "entrySeeMore": "Узнать больше о `{{- name}}`.",
-    "notFound": "`{{- name}}` не существует.",
-    "entryMove": "Переместить`{{- name}}`",
-    "entryShow": "Показать `{{- name}}`",
-    "entryHide": "Скрыть `{{- name}}`",
-    "entryEnable": "Включить `{{- name}}`",
-    "entryDisable": "Отключить `{{- name}}`",
+    "entrySeeMore": "Узнать больше о {{- name}}",
+    "notFound": "{{- name}} не существует",
+    "entryMove": "Переместить {{- name}}",
+    "entryShow": "Показать {{- name}}",
+    "entryHide": "Скрыть {{- name}}",
+    "entryEnable": "Включить {{- name}}",
+    "entryDisable": "Отключить {{- name}}",
     "countSelected": "{{count}} Выбрать",
-    "noContentFound": "{{- name}} не найдено."
+    "noContentFound": "{{- name}} не найдено"
   },
   "plural": {
     "entry_one": "{{count}} запись",
@@ -198,11 +198,21 @@
         "totalDuration": "Полная длительность"
       }
     },
-    "mostPlayed": {
-      "title": "Часто воспроизводимые",
-      "brief": "Рейтинг треков за всё время.",
+    "recap": {
+      "title": null,
+      "brief": null,
       "extra": {
-        "playCount": "Прослушиваний: {{count}}"
+        "recapTemplate": null,
+        "playCount": "Прослушиваний: {{count}}",
+        "mostPlayed": "Часто воспроизводимые {{- name}}",
+        "top": null,
+        "timeRange": null,
+        "allTime": null,
+        "listeningTime": null,
+        "totalListeningTime": null,
+        "totalPlays": null,
+        "uniqueTracks": null,
+        "uniqueArtists": null
       }
     },
     "hiddenTracks": {
@@ -455,7 +465,7 @@
         "add": "Добавить в очередь",
         "playNext": "Воспроизвести следующим",
         "playLast": "Воспроизвести последним",
-        "toast": "`{{- name}}` добавлен в очередь.",
+        "toast": "{{- name}} добавлен в очередь.",
         "queueAwareNext": "Учитывать очередь при воспроизведении следующим",
         "queueAwareNextBrief": "Добавляет трек после последней песни, добавленной через «Воспроизвести следующим»."
       }
