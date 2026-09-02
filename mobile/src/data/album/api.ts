@@ -17,7 +17,7 @@ import {
 import { db } from "~/db";
 import { albums, albumsToArtists, artists, tracks } from "~/db/schema";
 
-import { iAsc, throwIfNoResults } from "~/lib/drizzle";
+import { getExcludedColumns, iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { omitKeys } from "~/utils/object";
 import type { AlbumSummary, AlbumTrack } from "./types";
 import { AlbumArtistsKey } from "./utils";
@@ -161,7 +161,7 @@ export function upsertAlbums(entries: InsertedAlbum[]) {
         target: [albums.name, albums.artistsKey],
         // Replace `name` with passed name to allow `.returning()` to return
         // a value if a conflict occurs.
-        set: { name: sql`excluded.name` },
+        set: UpsertFields,
       })
       .returning();
 
@@ -192,6 +192,8 @@ export function upsertAlbums(entries: InsertedAlbum[]) {
 //#endregion
 
 //#region Internal Utils
+const UpsertFields = getExcludedColumns(["name", "embeddedArtwork", "isEP"]);
+
 function parseAlbumTracks(tracks?: string) {
   if (!tracks) return [];
   let results: CommonTrack[] = [];
