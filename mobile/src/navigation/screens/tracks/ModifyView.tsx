@@ -310,14 +310,17 @@ async function onEditTrack(data: TrackMetadata) {
     // Add new album to the database.
     let albumId: string | null = null;
     if (updatedAlbum.name && updatedAlbum.artistsKey) {
-      const [newAlbum] = await upsertAlbums([
-        {
-          name: updatedAlbum.name,
-          artistsKey: updatedAlbum.artistsKey,
-          embeddedArtwork: artworkHash,
-          isEP: updatedAlbum.isEP,
-        },
-      ]);
+      const [newAlbum] = await upsertAlbums(
+        [
+          {
+            name: updatedAlbum.name,
+            artistsKey: updatedAlbum.artistsKey,
+            embeddedArtwork: artworkHash,
+            isEP: updatedAlbum.isEP,
+          },
+        ],
+        true,
+      );
       if (newAlbum) albumId = newAlbum.id;
     }
     if (!albumId || !preferenceStore.getState().optimizedImageSave) {

@@ -152,7 +152,7 @@ export async function updateAlbum(id: string, values: Partial<InsertedAlbum>) {
 
 //#region PUT Methods
 /** Create/update album entries and its relations. Returns the created albums. */
-export function upsertAlbums(entries: InsertedAlbum[]) {
+export function upsertAlbums(entries: InsertedAlbum[], overrideIsEP = false) {
   return db.transaction(async (tx) => {
     const results = await tx
       .insert(albums)
@@ -161,7 +161,11 @@ export function upsertAlbums(entries: InsertedAlbum[]) {
         target: [albums.name, albums.artistsKey],
         // Replace `name` with passed name to allow `.returning()` to return
         // a value if a conflict occurs.
-        set: UpsertFields,
+        set: getExcludedColumns([
+          "name",
+          "embeddedArtwork",
+          ...(overrideIsEP ? ["isEP"] : []),
+        ]),
       })
       .returning();
 
@@ -192,8 +196,6 @@ export function upsertAlbums(entries: InsertedAlbum[]) {
 //#endregion
 
 //#region Internal Utils
-const UpsertFields = getExcludedColumns(["name", "embeddedArtwork", "isEP"]);
-
 function parseAlbumTracks(tracks?: string) {
   if (!tracks) return [];
   let results: CommonTrack[] = [];
