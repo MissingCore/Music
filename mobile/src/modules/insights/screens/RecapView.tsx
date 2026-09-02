@@ -114,7 +114,7 @@ export default function Recap() {
           </View>
           <Icon name="keyboard-arrow-down" />
         </Ripple>
-        <RecapContent {...state} />
+        <RecapContent key={state.rangeLabel} {...state} />
       </ListLayout>
     </>
   );
@@ -135,6 +135,7 @@ function RecapContent(props: { startEpoch: number; endEpoch?: number }) {
   );
 }
 
+//#region Time Range Sheet
 function TimeRangeSheet(props: {
   ref: TrueSheetRef;
   dispatch: ActionDispatch<[action: Action]>;
@@ -213,6 +214,7 @@ function TimeRangeSheet(props: {
     </DetachedSheet>
   );
 }
+//#endregion
 
 //#region Quick Overview
 const overviewStats = ["totalPlays", "uniqueTracks", "uniqueArtists"] as const;
@@ -477,7 +479,7 @@ async function getRecap(startEpoch: number, endEpoch = Date.now()) {
   };
 }
 
-const queryKey = ["insights", "most-played"];
+const queryKey = ["insights", "recap"];
 
 function useRecap(startEpoch: number, endEpoch?: number) {
   return useQuery({
