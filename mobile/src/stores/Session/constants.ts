@@ -30,5 +30,10 @@ export interface SessionStore {
 
   /** Waveform data for the active track. */
   activeWaveformContext: WaveformSample | null;
+
+  // Type of content shown on the "Albums" screen.
+  showSingles: boolean;
+  showEPs: boolean;
+  showAlbums: boolean;
 }
 //#endregion
