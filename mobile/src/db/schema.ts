@@ -46,6 +46,7 @@ export const albums = sqliteTable(
     embeddedArtwork: text(),
     altArtwork: text(),
     isFavorite: integer({ mode: "boolean" }).notNull().default(false),
+    isEP: integer({ mode: "boolean" }).notNull().default(false),
   },
   (t) => [unique().on(t.name, t.artistsKey)],
 );

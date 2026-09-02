@@ -19,4 +19,5 @@ export type AlbumSummary = {
   artwork: string | null;
   duration: number;
   trackCount: number;
+  isEP: boolean;
 };
