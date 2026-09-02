@@ -152,7 +152,10 @@ export async function updateAlbum(id: string, values: Partial<InsertedAlbum>) {
 
 //#region PUT Methods
 /** Create/update album entries and its relations. Returns the created albums. */
-export function upsertAlbums(entries: InsertedAlbum[], overrideIsEP = false) {
+export function upsertAlbums(
+  entries: InsertedAlbum[],
+  overrideModifiable = false,
+) {
   return db.transaction(async (tx) => {
     const results = await tx
       .insert(albums)
@@ -163,8 +166,7 @@ export function upsertAlbums(entries: InsertedAlbum[], overrideIsEP = false) {
         // a value if a conflict occurs.
         set: getExcludedColumns([
           "name",
-          "embeddedArtwork",
-          ...(overrideIsEP ? ["isEP"] : []),
+          ...(overrideModifiable ? ["embeddedArtwork", "isEP"] : []),
         ]),
       })
       .returning();
