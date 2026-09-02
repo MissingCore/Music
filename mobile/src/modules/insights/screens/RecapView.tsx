@@ -9,7 +9,7 @@ import {
   eq,
   getTableColumns,
   gte,
-  lte,
+  lt,
   sql,
 } from "drizzle-orm";
 import type { ActionDispatch } from "react";
@@ -385,7 +385,7 @@ async function getRecap(startEpoch: number, endEpoch = Date.now()) {
     .where(
       and(
         gte(tracksPlayEvents.playedAt, startEpoch),
-        lte(tracksPlayEvents.playedAt, endEpoch),
+        lt(tracksPlayEvents.playedAt, endEpoch),
       ),
     )
     .innerJoin(tracks, eq(tracksPlayEvents.trackId, tracks.id))
