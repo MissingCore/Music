@@ -30,7 +30,7 @@
     "settings": "Einstellungen",
     "upcoming": "Bevorstehend",
     "playingFrom": "Wiedergabe von",
-    "instructions": null,
+    "instructions": "Anweisungen",
     "disc": "CD {{count}}"
   },
   "template": {
@@ -43,10 +43,11 @@
     "notFound": "{{- name}} existiert nicht",
     "entryMove": "Verschiebe {{- name}}",
     "entryShow": "{{- name}} anzeigen",
+    "entryShowAll": null,
     "entryHide": "{{- name}} verstecken",
     "entryEnable": "{{- name}} aktivieren",
     "entryDisable": "{{- name}} deaktivieren",
-    "countSelected": null,
+    "countSelected": "{{count}} Ausgewählt",
     "noContentFound": "Kein {{- name}} gefunden"
   },
   "plural": {
@@ -65,7 +66,7 @@
     "unsaved": "Möglicherweise hast du noch nicht gespeicherte Änderungen.",
     "stay": "Bleiben",
     "leave": "Verlassen",
-    "close": null,
+    "close": "Schließen",
     "create": "Erstellen",
     "delete": "Löschen",
     "edit": "Bearbeiten",
@@ -119,7 +120,7 @@
       "title": "Aussehen"
     },
     "font": {
-      "title": null,
+      "title": "Schriftarten",
       "extra": {
         "accent": "Akzentschrift",
         "primary": "Primäre Schriftart"
@@ -131,7 +132,7 @@
         "light": "Licht",
         "dark": "Dunkel",
         "system": "System",
-        "atmosphere": null,
+        "atmosphere": "Atmosphären-Effekt",
         "opaqueColors": null
       }
     },
@@ -140,7 +141,7 @@
       "brief": "Reihenfolge und Sichtbarkeit der Tabs ändern.",
       "extra": {
         "setHomeTab": "{{- name}} Tab beim Start öffnen.",
-        "showNavbar": null
+        "showNavbar": "Navigationsleiste anzeigen"
       }
     },
     "minAlbumLength": {
@@ -151,8 +152,9 @@
         "plain": "Einfach",
         "vinyl": "Vinyl",
         "vinylOld": "Vinyl (Alt)",
-        "none": null,
-        "alternativeInfoLayout": null
+        "none": "Nichts",
+        "alternativeInfoLayout": null,
+        "standardVinylSpeed": null
       }
     },
     "seekbar": {
@@ -164,10 +166,6 @@
         "waveformPurgeCacheBrief": "Gibt Speicherplatz frei, um die Wellenformen der abgespielten Spuren neu zu berechnen.",
         "waveformPurgeCacheToast": "Wellenform-Cache gelöscht."
       }
-    },
-    "quickScroll": {
-      "title": "Schnell scrollen",
-      "brief": "Auf unterstützten Bildschirmen eine Scrollleiste im Nothing-Stil anzeigen."
     },
     "language": {
       "title": "Sprache",
@@ -260,7 +258,7 @@
       "title": "Scannen",
       "extra": {
         "useMediaStore": null,
-        "useMediaStoreBrief": null
+        "useMediaStoreBrief": "Extrem schnell, aber möglicherweise nicht so genau. Erfordert Android 11+."
       }
     },
     "rescan": {
@@ -277,11 +275,11 @@
       "brief": "Ignoriert alle Überspringungsmaßnahmen, die die normale Rescan Funktion beschleunigen."
     },
     "optimizedImageSave": {
-      "title": null,
-      "brief": null,
+      "title": "Optimiertes speichern von Bildern",
+      "brief": "Titel verwenden dasselbe Cover wie ihr Album.",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Durch Deaktivieren dieser Funktion benötigt die App deutlich mehr Speicherplatz und der Scanvorgang kann sich verlangsamen, da Coverbilder lokal gespeichert werden.",
+        "line2": "Erfordert die Verwendung der Funktion „Tiefenscan“, um Änderungen anzuwenden."
       }
     },
     "rescanOnLaunch": {
@@ -311,7 +309,7 @@
       "title": "Experimentelle Funktionen"
     },
     "audioEffects": {
-      "title": null
+      "title": "Audioeffekte"
     },
     "equalizer": {
       "title": "Equalizer",
@@ -427,7 +425,7 @@
         "list": "Liste",
         "grid": "Raster",
         "compactGrid": "Kompaktes Raster",
-        "columnSize": null,
+        "columnSize": "Spaltengröße",
         "columnCount": null,
         "sort": "Sortierreihenfolge",
         "asc": "Aufsteigende Reihenfolge",
@@ -448,14 +446,14 @@
       }
     },
     "miniplayer": {
-      "title": null,
+      "title": "Miniplayer",
       "extra": {
         "dragToDismiss": null,
-        "swipeControls": null
+        "swipeControls": "Wischgesten"
       }
     },
     "nowPlaying": {
-      "title": null,
+      "title": "Aktuelle Wiedergabe",
       "extra": {
         "artworkPlaybackToggle": null
       }

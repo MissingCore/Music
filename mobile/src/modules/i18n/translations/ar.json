@@ -43,6 +43,7 @@
     "notFound": "{{- name}} غير موجود",
     "entryMove": null,
     "entryShow": "إظهار {{- name}}",
+    "entryShowAll": null,
     "entryHide": "إخفاء {{- name}}",
     "entryEnable": "تفعيل {{- name}}",
     "entryDisable": "تعطيل {{- name}}",
@@ -152,7 +153,8 @@
         "vinyl": "أسطوانة",
         "vinylOld": "أسطوانة (قديم)",
         "none": null,
-        "alternativeInfoLayout": null
+        "alternativeInfoLayout": null,
+        "standardVinylSpeed": null
       }
     },
     "seekbar": {
@@ -164,10 +166,6 @@
         "waveformPurgeCacheBrief": null,
         "waveformPurgeCacheToast": null
       }
-    },
-    "quickScroll": {
-      "title": null,
-      "brief": null
     },
     "language": {
       "title": "اللغة",

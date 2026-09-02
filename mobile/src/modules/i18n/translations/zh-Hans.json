@@ -43,6 +43,7 @@
     "notFound": "{{- name}} 不存在",
     "entryMove": null,
     "entryShow": "显示{{- name}}",
+    "entryShowAll": null,
     "entryHide": "隐藏 {{- name}}",
     "entryEnable": "启用{{- name}}",
     "entryDisable": "禁用{{- name}}",
@@ -152,7 +153,8 @@
         "vinyl": "黑胶唱片",
         "vinylOld": "黑胶唱片(经典)",
         "none": null,
-        "alternativeInfoLayout": null
+        "alternativeInfoLayout": null,
+        "standardVinylSpeed": null
       }
     },
     "seekbar": {
@@ -164,10 +166,6 @@
         "waveformPurgeCacheBrief": null,
         "waveformPurgeCacheToast": null
       }
-    },
-    "quickScroll": {
-      "title": null,
-      "brief": null
     },
     "language": {
       "title": "语言",

@@ -43,6 +43,7 @@
     "notFound": "{{- name}}は存在しません",
     "entryMove": "{{- name}}を移動",
     "entryShow": "{{- name}}を表示",
+    "entryShowAll": null,
     "entryHide": "{{- name}}を非表示",
     "entryEnable": "{{- name}}を有効化",
     "entryDisable": "{{- name}}を無効化",
@@ -152,7 +153,8 @@
         "vinyl": "ヴァイナル",
         "vinylOld": "ヴァイナル (従来)",
         "none": null,
-        "alternativeInfoLayout": null
+        "alternativeInfoLayout": null,
+        "standardVinylSpeed": null
       }
     },
     "seekbar": {
@@ -164,10 +166,6 @@
         "waveformPurgeCacheBrief": "ストレージを開放して再生したトラックの波形を再計算します。",
         "waveformPurgeCacheToast": "波形キャッシュを消去しました。"
       }
-    },
-    "quickScroll": {
-      "title": "クイックスクロール",
-      "brief": "対応している画面に Nothing スタイルのスクロールバーを表示します。"
     },
     "language": {
       "title": "言語",

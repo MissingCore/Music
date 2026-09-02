@@ -43,6 +43,7 @@
     "notFound": "{{- name}} mevcut değil",
     "entryMove": "{{- name}} öğesini taşı",
     "entryShow": "{{- name}} öğesini göster",
+    "entryShowAll": null,
     "entryHide": "{{- name}} öğesini gizle",
     "entryEnable": "{{- name}} öğesini etkinleştir",
     "entryDisable": "{{- name}} öğesini devre dışı bırak",
@@ -152,7 +153,8 @@
         "vinyl": "Plak",
         "vinylOld": "Plak (Eski)",
         "none": "Hiçbiri",
-        "alternativeInfoLayout": "Alternatif bilgi düzeni"
+        "alternativeInfoLayout": "Alternatif bilgi düzeni",
+        "standardVinylSpeed": null
       }
     },
     "seekbar": {
@@ -164,10 +166,6 @@
         "waveformPurgeCacheBrief": "Çalınan parçaların dalga formlarını yeniden hesaplamak için depolama alanında yer açar.",
         "waveformPurgeCacheToast": "Dalga formu önbelleği temizlendi."
       }
-    },
-    "quickScroll": {
-      "title": "Hızlı Kaydırma",
-      "brief": "Desteklenen ekranlarda Nothing stili kaydırma çubuğunu göster."
     },
     "language": {
       "title": "Dil",
