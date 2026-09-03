@@ -15,5 +15,4 @@ minimumReleaseAgeExclude:
 
 patchedDependencies:
   "@lodev09/react-native-true-sheet": "patches/@lodev09__react-native-true-sheet.patch"
-  expo-modules-core: patches/expo-modules-core.patch
   react-native-android-widget: "patches/react-native-android-widget.patch"
