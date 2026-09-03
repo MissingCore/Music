@@ -21,6 +21,7 @@ import { BackHandler } from "react-native";
 
 import Home from "./screens/HomeView";
 import Album from "./screens/albums/CurrentView";
+import ModifyAlbum from "./screens/albums/ModifyView";
 import Albums from "./screens/albums/View";
 import Artist from "./screens/artists/CurrentView";
 import Artists from "./screens/artists/View";
@@ -293,6 +294,10 @@ export const RootStack = createNativeStackNavigator({
     Font: FontScreenGroup,
     Form: {
       screens: {
+        ModifyAlbum: {
+          screen: ModifyAlbum,
+          options: { title: "form.edit" },
+        },
         CreatePlaylist: {
           screen: CreatePlaylist,
           options: { title: "form.create" },
