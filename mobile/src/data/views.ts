@@ -35,7 +35,6 @@ export const structuredTracksView = db
     //? For some weird reason, using `albums.name` directly returns `tracks.name`.
     albumName: sql<string | null>`${albums.name}`.as("album_name"),
     albumArtistsKey: albums.artistsKey,
-    isAlbumEP: albums.isEP,
     artistsName: sql<
       string | null
     >`GROUP_CONCAT(${orderedTrackArtistsView.artistName}, ', ')`.as(

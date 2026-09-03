@@ -39,8 +39,6 @@ import { splitOn } from "~/utils/string";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
-import { SwitchInput } from "~/components/Form/Switch";
-import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
 import { ZSchema } from "~/modules/form/utils";
@@ -99,7 +97,6 @@ export default function ModifyTrack({
         albumArtists: trackQuery.data.albumArtistsKey
           ? AlbumArtistsKey.deconstruct(trackQuery.data.albumArtistsKey)
           : [],
-        isEP: trackQuery.data.isAlbumEP ?? false,
         year: trackQuery.data.year,
         disc: trackQuery.data.disc,
         track: trackQuery.data.track,
@@ -214,16 +211,6 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
           label="feat.trackMetadata.extra.albumArtists"
           field="albumArtists"
         />
-        <SheetLabelAction
-          label="isAlbumEP"
-          Trailing={
-            <SwitchInput
-              enabled={data.isEP}
-              onPress={() => setFields((prev) => ({ isEP: !prev.isEP }))}
-              disabled={isSubmitting}
-            />
-          }
-        />
         <View className="flex-row items-end gap-4">
           <FormInput
             label="feat.trackMetadata.extra.disc"
@@ -254,7 +241,6 @@ const TrackMetadataSchema = z.object({
   artists: z.array(ZSchema.NonEmptyString),
   album: ZSchema.NullableString,
   albumArtists: z.array(ZSchema.NonEmptyString),
-  isEP: z.boolean(),
   year: ZSchema.NullableRealNumber,
   disc: ZSchema.NullableRealNumber,
   track: ZSchema.NullableRealNumber,
@@ -271,16 +257,8 @@ function useFormState() {
 //#region Submit Handler
 async function onEditTrack(data: TrackMetadata) {
   try {
-    const {
-      id,
-      uri,
-      album,
-      albumArtists,
-      isEP,
-      artists,
-      genres,
-      ...trackBase
-    } = data;
+    const { id, uri, album, albumArtists, artists, genres, ...trackBase } =
+      data;
 
     const updatedTrack = {
       ...trackBase,
@@ -291,7 +269,6 @@ async function onEditTrack(data: TrackMetadata) {
     const updatedAlbum = {
       name: album,
       artistsKey: AlbumArtistsKey.from(albumArtists),
-      isEP,
     };
 
     // Add new artists & genres to the database.
@@ -310,17 +287,13 @@ async function onEditTrack(data: TrackMetadata) {
     // Add new album to the database.
     let albumId: string | null = null;
     if (updatedAlbum.name && updatedAlbum.artistsKey) {
-      const [newAlbum] = await upsertAlbums(
-        [
-          {
-            name: updatedAlbum.name,
-            artistsKey: updatedAlbum.artistsKey,
-            embeddedArtwork: artworkHash,
-            isEP: updatedAlbum.isEP,
-          },
-        ],
-        true,
-      );
+      const [newAlbum] = await upsertAlbums([
+        {
+          name: updatedAlbum.name,
+          artistsKey: updatedAlbum.artistsKey,
+          embeddedArtwork: artworkHash,
+        },
+      ]);
       if (newAlbum) albumId = newAlbum.id;
     }
     if (!albumId || !preferenceStore.getState().optimizedImageSave) {
