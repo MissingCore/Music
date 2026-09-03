@@ -4,12 +4,14 @@
 import { toast } from "@missingcore/ui/toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { eq, inArray } from "drizzle-orm";
+import { View } from "react-native";
 import { z } from "zod/mini";
 
 import { db } from "~/db";
 import type { albums } from "~/db/schema";
 import { albumsToArtists, tracks, tracksToGenres } from "~/db/schema";
 
+import { Icon } from "~/resources/icons";
 import { updateAlbum, upsertAlbums } from "~/data/album/api";
 import { useAlbum } from "~/data/album/queries";
 import { AlbumArtistsKey } from "~/data/album/utils";
@@ -26,6 +28,7 @@ import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { Divider } from "~/components/Divider";
 import { SwitchInput } from "~/components/Form/Switch";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
+import { TStyledText } from "~/components/Typography/StyledText";
 import { ZSchema } from "~/modules/form/utils";
 import {
   FormStateProvider,
@@ -97,6 +100,14 @@ function MetadataForm() {
         }
       />
       <Divider />
+      <View className="flex-row gap-2 rounded-md bg-surfaceContainerLowest p-4 pl-2">
+        <Icon name="info" size={20} color="onSurfaceVariant" />
+        <TStyledText
+          textKey="feat.trackMetadata.extra.overrideFields"
+          dim
+          className="shrink grow text-sm"
+        />
+      </View>
       <FormInput label="feat.trackMetadata.extra.year" field="year" numeric />
       <ArrayFormInput label="term.genres" field="genres" />
     </KeyboardAwareScrollView>
