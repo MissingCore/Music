@@ -199,7 +199,12 @@ async function onEditAlbum(data: AlbumMetadata) {
             );
           });
         }
-      } catch {
+      } catch (err) {
+        //? If we don't get a constraint error, then propagate the error.
+        const constraintErrMsg =
+          "UNIQUE constraint failed: albums.name, albums.artists_key";
+        if (!(err as Error).message.includes(constraintErrMsg)) throw err;
+
         //? If we crash, then an album with the changed `name` or `artistsKey`
         //? already exists. In that case, we use that album's id.
         const upsertContent = { ...ctx, ...albumContent };
@@ -215,7 +220,7 @@ async function onEditAlbum(data: AlbumMetadata) {
       }
     }
 
-    // Revalidate `activeTrack` in Playback store if needed.
+    //? 3. Revalidate `activeTrack` in Playback store if needed.
     await Resynchronize.onActiveTrack({ type: "album", id: albumId });
     await AppCleanUp.media();
     clearAllQueries();
