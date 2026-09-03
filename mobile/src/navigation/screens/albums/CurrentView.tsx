@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import type { StaticScreenProps } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -16,6 +17,7 @@ import {
 } from "~/navigation/layouts/CurrentListLayout";
 import { AlbumArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
+import type { MenuAction } from "~/navigation/components/CurrentListMenu";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 
 import { mutateGuard } from "~/lib/react-query";
@@ -39,6 +41,7 @@ export default function Album({
   },
 }: Props) {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const listLayout = useListLayoutConfig(ColumnLayoutConfig);
   const bottomOffset = useBottomActionsOffset();
   const { isPending, error, data } = useAlbumForScreen(albumId);
@@ -47,6 +50,17 @@ export default function Album({
 
   const trackSource = { type: "album", id: albumId } as const;
   const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
+
+  const menuActions = useMemo<MenuAction[]>(
+    () => [
+      {
+        icon: "edit",
+        labelKey: "form.edit",
+        onPress: () => navigation.navigate("ModifyAlbum", { id: albumId }),
+      },
+    ],
+    [navigation, albumId],
+  );
 
   const formattedData = useMemo(() => {
     if (!listData) return [];
@@ -92,6 +106,7 @@ export default function Album({
                 onPress={() => mutateGuard(favoriteAlbum, !data.isFavorite)}
               />
               <CurrentListMenu
+                actions={menuActions}
                 name={data.name}
                 trackIds={data.tracks.map(({ id }) => id)}
                 presentArtworkSheet={() => artworkSheetRef.current?.present()}
