@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import type { SynchronizedLine, SynchronizedWord } from "./types";
 
 /** Regex identifying the start of a lyric line (a timestamp). */
