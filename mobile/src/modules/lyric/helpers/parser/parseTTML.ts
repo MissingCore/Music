@@ -31,17 +31,17 @@ export function parseTTML(lyrics: string): SynchronizedLine[] {
           const attributes = parseAttributes(wordLine);
           if (!attributes.begin) return;
           return {
-            startMS: parseTimestampAsMS(attributes.begin),
-            content: wordLine.replace(TAG, ""),
+            timeMS: parseTimestampAsMS(attributes.begin),
+            word: wordLine.replace(TAG, "") + " ",
           };
         })
         .filter((word) => word !== undefined);
 
-      formattedLines.push({ startMS, content: syncWords });
+      formattedLines.push({ timeMS: startMS, words: syncWords });
     } else {
       formattedLines.push({
-        startMS,
-        content: [{ startMS, content: line.replace(TAG, "") }],
+        timeMS: startMS,
+        words: [{ timeMS: startMS, word: line.replace(TAG, "") }],
       });
     }
   }

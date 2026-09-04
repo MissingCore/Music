@@ -38,23 +38,20 @@ export function parseLRC(lyrics: string): SynchronizedLine[] {
         .map((timestamp, idx) => {
           const word = words[idx];
           if (word === undefined) return;
-          return {
-            startMS: parseTimestampAsMS(timestamp),
-            content: word.trim(),
-          };
+          return { timeMS: parseTimestampAsMS(timestamp), word: word.trim() };
         })
         .filter((word) => word !== undefined);
 
       //? Assign the first word (could be an empty string) the line's timestamp.
       if (typeof firstWord === "string") {
-        syncWords.unshift({ startMS, content: firstWord });
+        syncWords.unshift({ timeMS: startMS, word: firstWord });
       }
 
-      formattedLines.push({ startMS, content: syncWords });
+      formattedLines.push({ timeMS: startMS, words: syncWords });
     } else {
       formattedLines.push({
-        startMS,
-        content: [{ startMS, content: lineContent }],
+        timeMS: startMS,
+        words: [{ timeMS: startMS, word: lineContent }],
       });
     }
   }
