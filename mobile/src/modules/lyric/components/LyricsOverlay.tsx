@@ -13,6 +13,7 @@ import { PlaybackControls } from "~/stores/Playback/actions";
 
 import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
+import { isString } from "~/utils/validation";
 import type { FlatListProps, FlatListRef } from "~/components/Base/List";
 import { FlatList, useFlatListRef } from "~/components/Base/List";
 import { Pressable } from "~/components/Base/Pressable";
@@ -24,6 +25,8 @@ import { useIsAtmosphereActive } from "~/modules/customization/atmosphere/store"
 import { useTheme } from "~/modules/customization/theme/hooks";
 import { autoDiscoverLyrics } from "../helpers/autoDiscoverLyrics";
 import { removeSynchronizedLyricsJunk } from "../helpers/cleanUpLyricsJunk";
+import { parseLyrics } from "../helpers/parser";
+import type { SynchronizedLine } from "../helpers/parser/utils";
 
 const SCROLL_OFFSET = 64;
 const LINE_GAP = 16;
@@ -73,30 +76,22 @@ function LyricsContent(props: { trackId: string; offset: number }) {
   const { isPending, data, error } = useLyricForTrack(props.trackId);
   const cleanupInProgress = useRef<Set<string>>(new Set());
 
-  const lyricsLines = useMemo(() => {
-    if (!data?.lyrics) return [];
-    return data.lyrics.split("\n").map((line) => line.trim());
+  const formattedLyrics = useMemo(() => {
+    if (!data?.lyrics) return;
+    return parseLyrics(data.lyrics);
   }, [data?.lyrics]);
-
-  const isSynchronized = useMemo(
-    () =>
-      lyricsLines.every((line) =>
-        !line ? true : LRC_LINE_SYNC_TAG.test(line),
-      ),
-    [lyricsLines],
-  );
 
   //! TODO: Remove in `v4.0.0`.
   //! Temporary "hack" to clean up cached lyrics with "junk" in front, which
   //! was fixed in `v3.3.0`.
   useEffect(() => {
-    if (isSynchronized || !data?.id || lyricsLines.length === 0) return;
+    if (!isString(formattedLyrics) || !data?.id) return;
     if (cleanupInProgress.current.has(data.id)) return;
     cleanupInProgress.current.add(data.id);
     removeSynchronizedLyricsJunk(data.id)
       .catch((err) => console.log(`[LRC_CLEANUP_ERR]`, err))
       .finally(() => cleanupInProgress.current.delete(data.id));
-  }, [props.trackId, data?.id, lyricsLines, isSynchronized]);
+  }, [props.trackId, data?.id, formattedLyrics]);
 
   if (isPending) return null;
   else if (error || !data) {
@@ -105,15 +100,15 @@ function LyricsContent(props: { trackId: string; offset: number }) {
 
   return (
     <>
-      {isSynchronized ? (
+      {Array.isArray(formattedLyrics) ? (
         <SynchronizedLyrics
           key={props.trackId}
-          lines={lyricsLines}
+          parsedLines={formattedLyrics}
           offset={props.offset}
         />
       ) : (
         <FlatList
-          data={lyricsLines}
+          data={formattedLyrics?.split("\n")}
           keyExtractor={(_, index) => `${index}`}
           renderItem={({ item }) => <Em className="text-xl">{item}</Em>}
           nestedScrollEnabled
@@ -174,15 +169,19 @@ function LyricsNotFound(props: { trackId: string; offset: number }) {
 //#endregion
 
 //#region Synchronized Lyrics
-function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
+function SynchronizedLyrics({
+  parsedLines,
+  offset,
+}: {
+  parsedLines: SynchronizedLine[];
+  offset: number;
+}) {
   // Use `usePolledProgress` as `Event.PlaybackProgressUpdated` fires once a second.
   const { position } = usePolledProgress(50, false);
   const listRef = useFlatListRef();
   const [activeLineIndex, setActiveLineIndex] = useState(-1);
   const prevActiveLineIndex = useRef(-1);
   const [inActiveWordStartIndex, setInActiveWordStartIndex] = useState(0);
-
-  const parsedLines = useMemo(() => parseLines(props.lines), [props.lines]);
 
   //#region Auto Scroll
   const autoScrollResumeTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
@@ -281,7 +280,7 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
       initialNumToRender={renderedLines.length}
       onScrollBeginDrag={onPauseAutoScroll}
       onScrollEndDrag={debouncedResumeAutoScroll}
-      offset={props.offset}
+      offset={offset}
     />
   );
 }
@@ -337,76 +336,4 @@ const MemoLyricList = memo(
     JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data) &&
     prevProps.offset === nextProps.offset,
 );
-//#endregion
-
-//#region Lyric Parsing
-const LRC_LINE_SYNC_TAG = /^\[.+:.+?\]/;
-const LRC_LINE_START_TIMESTAMP = /^\[[0-9]+:[0-9]+(?:\.[0-9]+)?\]/;
-/** Supports both square & angle bracket format. */
-const LRC_WORD_TIMESTAMP = /(?:\[|<)[0-9]+:[0-9]+(?:\.[0-9]+)?(?:\]|>)/g;
-const LRC_TIMESTAMP = /[0-9]+/g;
-
-type Timestamp = [string, string, ...string[]];
-
-type SynchronizedWord = { timeMS: number; word: string };
-type SynchronizedLine = { timeMS: number; words: SynchronizedWord[] };
-
-function parseLines(lines: string[]): SynchronizedLine[] {
-  const results: SynchronizedLine[] = [];
-  for (const line of lines) {
-    if (!line) continue;
-    const lyricLineTimestampStr = line.match(LRC_LINE_START_TIMESTAMP);
-    if (!lyricLineTimestampStr || lyricLineTimestampStr.length === 0) continue;
-
-    // Get the time when the line will start.
-    const lineTimeMS = getTimestampInMS(lyricLineTimestampStr[0]);
-    const lyricLine = line.replace(LRC_LINE_START_TIMESTAMP, "").trim();
-
-    // See if this has word-by-word synchronization.
-    if (LRC_WORD_TIMESTAMP.test(lyricLine)) {
-      const wordTimestampStrs = lyricLine.match(LRC_WORD_TIMESTAMP);
-      if (!wordTimestampStrs || wordTimestampStrs.length === 0) continue;
-      // Get the words after each timestamp. In general, `wordTimestampStrs` &
-      // `words` should have the same length.
-      const [lineFirstWord, ...words] = lyricLine.split(LRC_WORD_TIMESTAMP);
-
-      const synchronizedWords: SynchronizedWord[] = wordTimestampStrs
-        .map((wordTimestamp, index) => {
-          const syncWord = words[index];
-          if (syncWord === undefined) return;
-          return {
-            timeMS: getTimestampInMS(wordTimestamp),
-            word: syncWord.trimStart(),
-          };
-        })
-        .filter((syncWord) => syncWord !== undefined);
-
-      // Assign the first word (could be an empty string) the line's timestamp.
-      if (typeof lineFirstWord === "string") {
-        synchronizedWords.unshift({ timeMS: lineTimeMS, word: lineFirstWord });
-      }
-
-      results.push({ timeMS: lineTimeMS, words: synchronizedWords });
-    } else {
-      results.push({
-        timeMS: lineTimeMS,
-        words: [{ timeMS: lineTimeMS, word: lyricLine }],
-      });
-    }
-  }
-
-  return results;
-}
-//#endregion
-
-//#region Helpers
-function getTimestampInMS(timeString: string) {
-  const [min, sec, ms = "0"] = timeString.match(LRC_TIMESTAMP) as Timestamp;
-  return (
-    Number.parseInt(min) * 60 * 1000 +
-    Number.parseInt(sec) * 1000 +
-    Number.parseInt(ms)
-  );
-}
-//#endregion
 //#endregion
