@@ -10,7 +10,7 @@ export function parseTimestampAsMS(timeStr: string) {
   const timeSegments = timeStr.match(/[0-9]+/g);
   if (!timeSegments) return 0;
   const ms = timeStr.includes(".") ? timeSegments.at(-1)! : "0";
-  const sec = timeStr.at(-2)!;
+  const sec = timeSegments.at(-2)!;
   const min = timeStr.includes(":") ? timeSegments.at(-3)! : "0";
   return (
     Number.parseInt(min) * 60 * 1000 +
