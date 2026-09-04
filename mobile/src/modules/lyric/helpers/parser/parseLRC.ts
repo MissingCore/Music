@@ -1,11 +1,12 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import type { SynchronizedLine, SynchronizedWord } from "./types";
+import type { SynchronizedLine, SynchronizedWord } from "./utils";
+import { parseTimestampAsMS } from "./utils";
 
-/** Regex identifying the start of a lyric line (a timestamp). */
+/** Identifies the start of a lyric line (a timestamp). */
 const LRC_LINE_START = /^\[[0-9]+:[0-9]+(?:\.[0-9]+)?\]/;
-/** Regex identifying the timestamps in the LRC A2 format. */
+/** Identifies the timestamps in the LRC A2 format. */
 const LRC_A2_TIMESTAMP = /(?:\[|<)[0-9]+:[0-9]+(?:\.[0-9]+)?(?:\]|>)/g;
 
 /**
@@ -60,19 +61,3 @@ export function parseLRC(lyrics: string): SynchronizedLine[] {
 
   return formattedLines;
 }
-
-//#region Helpers
-type Timestamp = [string, string, ...string[]];
-
-/** Regex to extract each timestamp segment. */
-const LRC_TIMESTAMP = /[0-9]+/g;
-
-function parseTimestampAsMS(timeStr: string) {
-  const [min, sec, ms = "0"] = timeStr.match(LRC_TIMESTAMP) as Timestamp;
-  return (
-    Number.parseInt(min) * 60 * 1000 +
-    Number.parseInt(sec) * 1000 +
-    Number.parseInt(ms)
-  );
-}
-//#endregion
