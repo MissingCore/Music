@@ -449,7 +449,9 @@
         "disc": "Disc",
         "name": "Name",
         "trackNumber": "Track Number",
-        "year": "Year"
+        "year": "Year",
+
+        "overrideFields": "Providing a value to the following fields will override the assigned values on all tracks in the album."
       }
     },
 
