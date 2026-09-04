@@ -90,7 +90,7 @@ function MetadataForm() {
       <FormInput label="feat.trackMetadata.extra.name" field="name" />
       <ArrayFormInput label="term.artists" field="artists" />
       <SheetLabelAction
-        label="isAlbumEP"
+        label="isEP"
         Trailing={
           <SwitchInput
             enabled={data.isEP}
