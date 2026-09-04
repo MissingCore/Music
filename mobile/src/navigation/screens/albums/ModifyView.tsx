@@ -161,22 +161,26 @@ async function onEditAlbum(data: AlbumMetadata) {
     }
 
     if (genres.length > 0) {
-      const genreEntries = genres.flatMap((genreName) =>
-        trackIds.map((trackId) => ({ trackId, genreName })),
-      );
       await createGenres(genres.map((name) => ({ name })));
       await db.transaction(async (tx) => {
         await tx
           .delete(tracksToGenres)
           .where(inArray(tracksToGenres.trackId, trackIds));
-        await tx.insert(tracksToGenres).values(genreEntries);
+        await tx
+          .insert(tracksToGenres)
+          .values(
+            genres.flatMap((genreName) =>
+              trackIds.map((trackId) => ({ trackId, genreName })),
+            ),
+          );
       });
     }
 
     //? 2. Update the album entry.
     const albumContent: Partial<typeof albums.$inferInsert> = {};
     if (ctx.name !== albumBase.name) albumContent.name = albumBase.name;
-    const artistsKey = AlbumArtistsKey.from(albumBase.artists)!;
+    const artistsKey = AlbumArtistsKey.from(albumBase.artists);
+    if (!artistsKey) throw new Error("`artistsKey` somehow not generated.");
     if (ctx.artistsKey !== artistsKey) albumContent.artistsKey = artistsKey;
     if (ctx.isEP !== albumBase.isEP) albumContent.isEP = albumBase.isEP;
 
