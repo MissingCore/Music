@@ -7,7 +7,7 @@ import type { SynchronizedLine } from "./utils";
 
 /** Identifies and returns the lyrics we want to display. */
 export function parseLyrics(lyrics: string): string | SynchronizedLine[] {
-  if (lyrics.includes(`xmlns="http://www.w3.org/ns/ttml"`)) {
+  if (lyrics.includes("http://www.w3.org/ns/ttml")) {
     return parseTTML(lyrics);
   }
 

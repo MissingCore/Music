@@ -5,9 +5,9 @@ import type { SynchronizedLine, SynchronizedWord } from "./utils";
 import { parseTimestampAsMS } from "./utils";
 
 /** Identifies a lyric line, which may contain words in the form of `<span>`. */
-const PLineRegex = /<p\b([^>]*)>(.*?)<\/p>/g;
+const PLineRegex = /<p\b([^>]*)>([\s\S]*?)<\/p>/g;
 /** Identifies the representation of a word. */
-const SpanLineRegex = /<span\b([^>]*)>(.*?)<\/span>\s*/g;
+const SpanLineRegex = /<span\b([^>]*)>([\s\S]*?)<\/span>\s*/g;
 
 /** Identifies the HTML tag portion. */
 const HTMLTagRegex = /<[^>]*>/g;
