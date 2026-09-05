@@ -68,7 +68,7 @@ Given you have a license to an API that distributes lyrics which can be displaye
 
 ## Supported Lyric Formats
 
-Unless we support the provided lyrics format, they will be rendered as a static string.
+Unless we support the provided lyrics format, they will be rendered as a static string. In addition, if the lyrics are identified as synchronized, clicking on a line will **seek to the start of the line (we do not support seeking to a specific word)**.
 
 <table>
   <thead>
