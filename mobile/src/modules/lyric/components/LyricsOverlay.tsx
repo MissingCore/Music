@@ -2,7 +2,16 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useNavigation } from "@react-navigation/native";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  createContext,
+  memo,
+  use,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import { usePolledProgress } from "react-native-audio-browser";
@@ -31,50 +40,57 @@ import type { SynchronizedLine } from "../helpers/parser/utils";
 const SCROLL_OFFSET = 64;
 const LINE_GAP = 16;
 
+const LyricOffsetContext = createContext({ offset: 0, extraTop: 0 });
+
 export function LyricsOverlay(props: { size: number; trackId: string }) {
   const { top } = useSafeAreaInsets();
   const { scheme } = useTheme();
   const hideBackground = useIsAtmosphereActive();
 
   // Estimated offset to get overlay to go behind the `TopAppBar`.
-  const lyricsOffset = top + SCROLL_OFFSET;
+  const scrollGradientHeight = top + SCROLL_OFFSET;
 
   return (
-    <View
-      style={{ top: -top, bottom: 0 }}
-      className={cn(
-        "absolute w-full items-center justify-center",
-        !hideBackground
-          ? cn("bg-surface/85", { "bg-surface/60": scheme === "dark" })
-          : undefined,
-      )}
+    <LyricOffsetContext
+      value={{ offset: props.size / 2, extraTop: scrollGradientHeight }}
     >
-      <View style={{ width: props.size }} className="px-2">
-        <LyricsContent trackId={props.trackId} offset={lyricsOffset} />
-      </View>
+      <View
+        style={{ top: -top, bottom: 0 }}
+        className={cn(
+          "absolute w-full items-center justify-center",
+          !hideBackground
+            ? cn("bg-surface/85", { "bg-surface/60": scheme === "dark" })
+            : undefined,
+        )}
+      >
+        <View style={{ width: props.size }} className="px-2">
+          <LyricsContent trackId={props.trackId} />
+        </View>
 
-      {!hideBackground ? (
-        <>
-          <TopDownGradient
-            height={lyricsOffset}
-            startFrom={top}
-            className="absolute top-0 left-0"
-          />
-          <TopDownGradient
-            height={SCROLL_OFFSET}
-            className="absolute bottom-0 left-0 rotate-180"
-          />
-        </>
-      ) : null}
-    </View>
+        {!hideBackground ? (
+          <>
+            <TopDownGradient
+              height={scrollGradientHeight}
+              startFrom={top}
+              className="absolute top-0 left-0"
+            />
+            <TopDownGradient
+              height={scrollGradientHeight}
+              className="absolute bottom-0 left-0 rotate-180"
+            />
+          </>
+        ) : null}
+      </View>
+    </LyricOffsetContext>
   );
 }
 
-function LyricsContent(props: { trackId: string; offset: number }) {
+function LyricsContent({ trackId }: { trackId: string }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { isPending, data, error } = useLyricForTrack(props.trackId);
+  const { isPending, data, error } = useLyricForTrack(trackId);
   const cleanupInProgress = useRef<Set<string>>(new Set());
+  const { offset, extraTop } = use(LyricOffsetContext);
 
   const formattedLyrics = useMemo(() => {
     if (!data?.lyrics) return;
@@ -91,21 +107,16 @@ function LyricsContent(props: { trackId: string; offset: number }) {
     removeSynchronizedLyricsJunk(data.id)
       .catch((err) => console.log(`[LRC_CLEANUP_ERR]`, err))
       .finally(() => cleanupInProgress.current.delete(data.id));
-  }, [props.trackId, data?.id, formattedLyrics]);
+  }, [trackId, data?.id, formattedLyrics]);
 
   if (isPending) return null;
   else if (error || !data) {
-    return <LyricsNotFound key={props.trackId} {...props} />;
+    return <LyricsNotFound key={trackId} trackId={trackId} />;
   }
-
   return (
     <>
       {Array.isArray(formattedLyrics) ? (
-        <SynchronizedLyrics
-          key={props.trackId}
-          parsedLines={formattedLyrics}
-          offset={props.offset}
-        />
+        <SynchronizedLyrics key={trackId} parsedLines={formattedLyrics} />
       ) : (
         <FlatList
           data={formattedLyrics?.split("\n")}
@@ -113,8 +124,8 @@ function LyricsContent(props: { trackId: string; offset: number }) {
           renderItem={({ item }) => <Em className="text-xl">{item}</Em>}
           nestedScrollEnabled
           contentContainerStyle={{
-            paddingTop: props.offset,
-            paddingBottom: SCROLL_OFFSET,
+            paddingTop: offset + extraTop,
+            paddingBottom: offset,
             gap: LINE_GAP,
           }}
         />
@@ -132,10 +143,11 @@ function LyricsContent(props: { trackId: string; offset: number }) {
 }
 
 //#region Not Found
-function LyricsNotFound(props: { trackId: string; offset: number }) {
+function LyricsNotFound({ trackId }: { trackId: string }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const [checkingEmbeddedLyrics, setCheckingEmbeddedLyrics] = useState(true);
+  const { extraTop } = use(LyricOffsetContext);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -150,15 +162,12 @@ function LyricsNotFound(props: { trackId: string; offset: number }) {
   }, []);
 
   return (
-    <View
-      style={{ paddingTop: props.offset }}
-      className="items-center gap-6 pb-4"
-    >
+    <View style={{ paddingTop: extraTop }} className="items-center gap-6 pb-4">
       <TEm textKey="err.msg.noLyrics" className="text-xl" />
       <ExtendedTButton
         // @ts-expect-error - Will display text if key doesn't exist.
         textKey={t("template.entryManage", { name: t("feat.lyrics.title") })}
-        onPress={() => navigation.navigate("Lyrics", { linkTo: props.trackId })}
+        onPress={() => navigation.navigate("Lyrics", { linkTo: trackId })}
         disabled={checkingEmbeddedLyrics}
         className="min-h-auto w-full max-w-48"
         textClassName="text-xs"
@@ -171,10 +180,8 @@ function LyricsNotFound(props: { trackId: string; offset: number }) {
 //#region Synchronized Lyrics
 function SynchronizedLyrics({
   parsedLines,
-  offset,
 }: {
   parsedLines: SynchronizedLine[];
-  offset: number;
 }) {
   // Use `usePolledProgress` as `Event.PlaybackProgressUpdated` fires once a second.
   const { position } = usePolledProgress(50, false);
@@ -280,7 +287,6 @@ function SynchronizedLyrics({
       initialNumToRender={renderedLines.length}
       onScrollBeginDrag={onPauseAutoScroll}
       onScrollEndDrag={debouncedResumeAutoScroll}
-      offset={offset}
     />
   );
 }
@@ -295,9 +301,9 @@ const MemoLyricList = memo(
   function MemoLyricList(
     props: Omit<FlatListProps<FormattedSynchronizedLine>, "renderItem"> & {
       ref: FlatListRef<FormattedSynchronizedLine>;
-      offset: number;
     },
   ) {
+    const { offset, extraTop } = use(LyricOffsetContext);
     return (
       <FlatList
         {...props}
@@ -324,16 +330,15 @@ const MemoLyricList = memo(
         // Suppresses error when `scrollToIndex` fails.
         onScrollToIndexFailed={() => {}}
         contentContainerStyle={{
-          paddingTop: props.offset,
-          paddingBottom: SCROLL_OFFSET,
+          paddingTop: offset + extraTop,
+          paddingBottom: offset,
           gap: LINE_GAP,
         }}
       />
     );
   },
-  // We should only re-render the list when `data` or `offset` changes.
+  // We should only re-render the list when `data` changes.
   (prevProps, nextProps) =>
-    JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data) &&
-    prevProps.offset === nextProps.offset,
+    JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data),
 );
 //#endregion
