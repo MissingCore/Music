@@ -4,27 +4,27 @@
 import type { SynchronizedLine, SynchronizedWord } from "./utils";
 import { parseTimestampAsMS } from "./utils";
 
-/** Identifies the start of a lyric line. */
-const P_LINE_START = /<p\b([^>]*)>(.*?)<\/p>/g;
-/** Identifies the start of a word. */
-const SPAN_LINE_START = /<span\b([^>]*)>(.*?)<\/span>\s*/g;
+/** Identifies a lyric line, which may contain words in the form of `<span>`. */
+const PLineRegex = /<p\b([^>]*)>(.*?)<\/p>/g;
+/** Identifies the representation of a word. */
+const SpanLineRegex = /<span\b([^>]*)>(.*?)<\/span>\s*/g;
 
-/** Identifies the attributes in a tag. */
-const ATTRIBUTE = /(\w+)="([^"]*)"/g;
 /** Identifies the HTML tag portion. */
-const TAG = /<[^>]*>/g;
+const HTMLTagRegex = /<[^>]*>/g;
+/** Identifies the attributes in a HTML tag. */
+const HTMLAttributeRegex = /(\w+)="([^"]*)"/g;
 
 export function parseTTML(lyrics: string): SynchronizedLine[] {
   const formattedLines: SynchronizedLine[] = [];
 
-  const lines = Array.from(lyrics.match(P_LINE_START) ?? []);
+  const lines = Array.from(lyrics.match(PLineRegex) ?? []);
 
   for (const line of lines) {
     const lineAttributes = parseAttributes(line);
     if (!lineAttributes.begin) continue;
 
     const startMS = parseTimestampAsMS(lineAttributes.begin);
-    const wordLines = line.match(SPAN_LINE_START);
+    const wordLines = line.match(SpanLineRegex);
 
     if (wordLines) {
       const syncWords: SynchronizedWord[] = wordLines
@@ -33,7 +33,7 @@ export function parseTTML(lyrics: string): SynchronizedLine[] {
           if (!attributes.begin) return;
           return {
             timeMS: parseTimestampAsMS(attributes.begin),
-            word: wordLine.replace(TAG, ""),
+            word: wordLine.replace(HTMLTagRegex, ""),
           };
         })
         .filter((word) => word !== undefined);
@@ -42,7 +42,7 @@ export function parseTTML(lyrics: string): SynchronizedLine[] {
     } else {
       formattedLines.push({
         timeMS: startMS,
-        words: [{ timeMS: startMS, word: line.replace(TAG, "") }],
+        words: [{ timeMS: startMS, word: line.replace(HTMLTagRegex, "") }],
       });
     }
   }
@@ -53,10 +53,13 @@ export function parseTTML(lyrics: string): SynchronizedLine[] {
 //#region Helpers
 /** Parse the "attributes" from the starting HTML tag in the segment. */
 function parseAttributes(segment: string): Record<string, string> {
-  const startingTag = segment.match(TAG)?.[0];
+  const startingTag = segment.match(HTMLTagRegex)?.[0];
   if (!startingTag) return {};
   return Object.fromEntries(
-    Array.from(startingTag.matchAll(ATTRIBUTE), ([_, key, val]) => [key, val]),
+    Array.from(startingTag.matchAll(HTMLAttributeRegex), ([_, key, val]) => [
+      key,
+      val,
+    ]),
   );
 }
 //#endregion

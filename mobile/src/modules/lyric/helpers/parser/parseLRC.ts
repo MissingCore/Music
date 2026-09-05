@@ -5,9 +5,9 @@ import type { SynchronizedLine, SynchronizedWord } from "./utils";
 import { parseTimestampAsMS } from "./utils";
 
 /** Identifies the start of a lyric line (a timestamp). */
-const LRC_LINE_START = /^\[([0-9]+:[0-9]+(?:\.[0-9]+)?)\](.*)/;
+const LRCLineRegex = /^\[([0-9]+:[0-9]+(?:\.[0-9]+)?)\](.*)/;
 /** Identifies the timestamps in the LRC A2 format. */
-const LRC_A2_TIMESTAMP = /(?:\[|<)[0-9]+:[0-9]+(?:\.[0-9]+)?(?:\]|>)/g;
+const A2TimestampRegex = /(?:\[|<)[0-9]+:[0-9]+(?:\.[0-9]+)?(?:\]|>)/g;
 
 /**
  * Supports parsing the following formats:
@@ -21,7 +21,7 @@ export function parseLRC(lyrics: string): SynchronizedLine[] {
   const lines = lyrics
     .split("\n")
     .map((line) => {
-      const parsedLine = line.match(LRC_LINE_START);
+      const parsedLine = line.match(LRCLineRegex);
       if (!parsedLine || !parsedLine[1] || !parsedLine[2]) return undefined;
       return [parsedLine[1], parsedLine[2].trim()] as [string, string];
     })
@@ -31,11 +31,11 @@ export function parseLRC(lyrics: string): SynchronizedLine[] {
     const startMS = parseTimestampAsMS(timestamp);
 
     //? See if the lyrics are in A2 format.
-    const a2LRCTimestamps = lineContent.match(LRC_A2_TIMESTAMP);
+    const a2LRCTimestamps = lineContent.match(A2TimestampRegex);
     if (a2LRCTimestamps) {
       //? Get words after each timestamp. We expect `a2LRCTimestamps` &
       //? `words` to have the same length.
-      const [firstWord, ...words] = lineContent.split(LRC_A2_TIMESTAMP);
+      const [firstWord, ...words] = lineContent.split(A2TimestampRegex);
 
       const syncWords: SynchronizedWord[] = a2LRCTimestamps
         .map((timestamp, idx) => {
