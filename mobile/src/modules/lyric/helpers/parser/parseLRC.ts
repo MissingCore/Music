@@ -5,7 +5,7 @@ import type { SynchronizedLine, SynchronizedWord } from "./utils";
 import { parseTimestampAsMS } from "./utils";
 
 /** Identifies the start of a lyric line (a timestamp). */
-const LRC_LINE_START = /^\[[0-9]+:[0-9]+(?:\.[0-9]+)?\]/;
+const LRC_LINE_START = /^\[([0-9]+:[0-9]+(?:\.[0-9]+)?)\](.*)/;
 /** Identifies the timestamps in the LRC A2 format. */
 const LRC_A2_TIMESTAMP = /(?:\[|<)[0-9]+:[0-9]+(?:\.[0-9]+)?(?:\]|>)/g;
 
@@ -17,35 +17,36 @@ const LRC_A2_TIMESTAMP = /(?:\[|<)[0-9]+:[0-9]+(?:\.[0-9]+)?(?:\]|>)/g;
 export function parseLRC(lyrics: string): SynchronizedLine[] {
   const formattedLines: SynchronizedLine[] = [];
 
-  const lines = lyrics.split("\n").map((line) => line.trim());
-  for (const line of lines) {
-    //? Skip any non-LRC lines (ie: metadata, comments).
-    if (!line || !LRC_LINE_START.test(line)) continue;
+  //? Get tuple of timestamp & lyric line content.
+  const lines = lyrics
+    .split("\n")
+    .map((line) => {
+      const parsedLine = line.match(LRC_LINE_START);
+      if (!parsedLine || !parsedLine[1] || !parsedLine[2]) return undefined;
+      return [parsedLine[1], parsedLine[2].trim()] as [string, string];
+    })
+    .filter((line) => line !== undefined);
 
-    const startMS = parseTimestampAsMS(line.match(LRC_LINE_START)![0]);
-    const lineContent = line.replace(LRC_LINE_START, "").trim();
+  for (const [timestamp, lineContent] of lines) {
+    const startMS = parseTimestampAsMS(timestamp);
 
     //? See if the lyrics are in A2 format.
-    if (LRC_A2_TIMESTAMP.test(lineContent)) {
-      const timestampStrs = lineContent.match(LRC_A2_TIMESTAMP);
-      if (!timestampStrs || timestampStrs.length === 0) continue;
-
-      //? Get words after each timestamp. We expect `timestampStrs` & `words`
-      //? to have the same length.
+    const a2LRCTimestamps = lineContent.match(LRC_A2_TIMESTAMP);
+    if (a2LRCTimestamps) {
+      //? Get words after each timestamp. We expect `a2LRCTimestamps` &
+      //? `words` to have the same length.
       const [firstWord, ...words] = lineContent.split(LRC_A2_TIMESTAMP);
 
-      const syncWords: SynchronizedWord[] = timestampStrs
+      const syncWords: SynchronizedWord[] = a2LRCTimestamps
         .map((timestamp, idx) => {
           const word = words[idx];
           if (word === undefined) return;
-          return { timeMS: parseTimestampAsMS(timestamp), word: word.trim() };
+          return { timeMS: parseTimestampAsMS(timestamp), word };
         })
         .filter((word) => word !== undefined);
 
       //? Assign the first word (could be an empty string) the line's timestamp.
-      if (typeof firstWord === "string") {
-        syncWords.unshift({ timeMS: startMS, word: firstWord });
-      }
+      if (firstWord) syncWords.unshift({ timeMS: startMS, word: firstWord });
 
       formattedLines.push({ timeMS: startMS, words: syncWords });
     } else {
