@@ -7,7 +7,7 @@ import { parseTimestampAsMS } from "./utils";
 /** Identifies the start of a lyric line. */
 const P_LINE_START = /<p\b([^>]*)>(.*?)<\/p>/g;
 /** Identifies the start of a word. */
-const SPAN_LINE_START = /<span\b([^>]*)>(.*?)<\/span>/g;
+const SPAN_LINE_START = /<span\b([^>]*)>(.*?)<\/span>\s*/g;
 
 /** Identifies the attributes in a tag. */
 const ATTRIBUTE = /(\w+)="([^"]*)"/g;
@@ -18,6 +18,7 @@ export function parseTTML(lyrics: string): SynchronizedLine[] {
   const formattedLines: SynchronizedLine[] = [];
 
   const lines = Array.from(lyrics.match(P_LINE_START) ?? []);
+
   for (const line of lines) {
     const lineAttributes = parseAttributes(line);
     if (!lineAttributes.begin) continue;
@@ -32,7 +33,7 @@ export function parseTTML(lyrics: string): SynchronizedLine[] {
           if (!attributes.begin) return;
           return {
             timeMS: parseTimestampAsMS(attributes.begin),
-            word: wordLine.replace(TAG, "") + " ",
+            word: wordLine.replace(TAG, ""),
           };
         })
         .filter((word) => word !== undefined);
