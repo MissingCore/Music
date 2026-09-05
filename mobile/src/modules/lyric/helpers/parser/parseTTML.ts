@@ -6,8 +6,14 @@ import { parseTimestampAsMS } from "./utils";
 
 /** Identifies a lyric line, which may contain words in the form of `<span>`. */
 const PLineRegex = /<p\b([^>]*)>([\s\S]*?)<\/p>/g;
-/** Identifies the representation of a word. */
-const SpanLineRegex = /<span\b([^>]*)>([\s\S]*?)<\/span>\s*/g;
+/**
+ * Identifies the representation of a word (or group of words if we get a nested span).
+ * Since it's evaluated from left-to-right, we ensure nested span matches are returned first.
+ */
+const SpanLineRegex =
+  /<span\b([^>]*)>([\s\S]*?)(<\/span>\s*){2}|<span\b([^>]*)>([\s\S]*?)<\/span>\s*/g;
+/** Identifies inner span contents. */
+const SpanContentsRegex = /<span\b[^>]*>(.*)<\/span>(\s)*/;
 
 /** Identifies the HTML tag portion. */
 const HTMLTagRegex = /<[^>]*>/g;
@@ -19,6 +25,22 @@ export function parseTTML(lyrics: string): SynchronizedLine[] {
 
   const lines = Array.from(lyrics.match(PLineRegex) ?? []);
 
+  //? Helper for tracking what goes in a `SynchronizedLine`.
+  let lineWords: SynchronizedWord[] = [];
+  const parseAndPushWord = (wordLine: string) => {
+    const attributes = parseAttributes(wordLine);
+    if (!attributes.begin) return;
+    lineWords.push({
+      timeMS: parseTimestampAsMS(attributes.begin),
+      word: wordLine.replace(HTMLTagRegex, ""),
+    });
+  };
+  const pushLine = () => {
+    if (lineWords.length === 0) return;
+    formattedLines.push({ timeMS: lineWords[0]!.timeMS, words: lineWords });
+    lineWords = [];
+  };
+
   for (const line of lines) {
     const lineAttributes = parseAttributes(line);
     if (!lineAttributes.begin) continue;
@@ -27,18 +49,27 @@ export function parseTTML(lyrics: string): SynchronizedLine[] {
     const wordLines = line.match(SpanLineRegex);
 
     if (wordLines) {
-      const syncWords: SynchronizedWord[] = wordLines
-        .map((wordLine) => {
-          const attributes = parseAttributes(wordLine);
-          if (!attributes.begin) return;
-          return {
-            timeMS: parseTimestampAsMS(attributes.begin),
-            word: wordLine.replace(HTMLTagRegex, ""),
-          };
-        })
-        .filter((word) => word !== undefined);
+      for (const wordLine of wordLines) {
+        if (wordLine.split("</span>").length - 1 === 1) {
+          //? Typical case of no nested spans.
+          parseAndPushWord(wordLine);
+        } else {
+          //? Case with nested spans, in which we create a new line.
+          pushLine();
 
-      formattedLines.push({ timeMS: startMS, words: syncWords });
+          const newLine = wordLine.match(SpanContentsRegex);
+          if (!newLine) continue;
+          //? Trailing space we want to add to the last word of this new line.
+          const trailingSpace = newLine[2] ?? "";
+
+          newLine[1]?.match(SpanLineRegex)?.forEach(parseAndPushWord);
+          if (lineWords.at(-1)) lineWords.at(-1)!.word += trailingSpace;
+
+          pushLine();
+        }
+      }
+
+      pushLine();
     } else {
       formattedLines.push({
         timeMS: startMS,
