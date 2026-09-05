@@ -13,7 +13,7 @@ const PLineRegex = /<p\b([^>]*)>([\s\S]*?)<\/p>/g;
 const SpanLineRegex =
   /<span\b([^>]*)>([\s\S]*?)(<\/span>\s*){2}|<span\b([^>]*)>([\s\S]*?)<\/span>\s*/g;
 /** Identifies inner span contents. */
-const SpanContentsRegex = /<span\b[^>]*>(.*)<\/span>(\s)*/;
+const SpanContentsRegex = /<span\b[^>]*>(.*)<\/span>\s*/;
 
 /** Identifies the HTML tag portion. */
 const HTMLTagRegex = /<[^>]*>/g;
@@ -56,15 +56,9 @@ export function parseTTML(lyrics: string): SynchronizedLine[] {
         } else {
           //? Case with nested spans, in which we create a new line.
           pushLine();
-
           const newLine = wordLine.match(SpanContentsRegex);
           if (!newLine) continue;
-          //? Trailing space we want to add to the last word of this new line.
-          const trailingSpace = newLine[2] ?? "";
-
           newLine[1]?.match(SpanLineRegex)?.forEach(parseAndPushWord);
-          if (lineWords.at(-1)) lineWords.at(-1)!.word += trailingSpace;
-
           pushLine();
         }
       }
