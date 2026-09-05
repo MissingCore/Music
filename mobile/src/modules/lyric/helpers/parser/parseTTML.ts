@@ -27,15 +27,15 @@ export function parseTTML(lyrics: string): SynchronizedLine[] {
 
   //? Helper for tracking what goes in a `SynchronizedLine`.
   let lineWords: SynchronizedWord[] = [];
-  const parseAndPushWord = (wordLine: string) => {
-    const attributes = parseAttributes(wordLine);
+  const parseAndPushWord = (wordSpan: string) => {
+    const attributes = parseAttributes(wordSpan);
     if (!attributes.begin) return;
     lineWords.push({
       timeMS: parseTimestampAsMS(attributes.begin),
-      word: wordLine.replace(HTMLTagRegex, ""),
+      word: wordSpan.replace(HTMLTagRegex, ""),
     });
   };
-  const pushLine = () => {
+  const pushWordsAsLine = () => {
     if (lineWords.length === 0) return;
     formattedLines.push({ timeMS: lineWords[0]!.timeMS, words: lineWords });
     lineWords = [];
@@ -46,24 +46,25 @@ export function parseTTML(lyrics: string): SynchronizedLine[] {
     if (!lineAttributes.begin) continue;
 
     const startMS = parseTimestampAsMS(lineAttributes.begin);
-    const wordLines = line.match(SpanLineRegex);
+    const wordSpans = line.match(SpanLineRegex);
 
-    if (wordLines) {
-      for (const wordLine of wordLines) {
-        if (wordLine.split("</span>").length - 1 === 1) {
+    //? Handle if line is made up of words/syllables.
+    if (wordSpans) {
+      for (const wordSpan of wordSpans) {
+        if (wordSpan.split("</span>").length - 1 === 1) {
           //? Typical case of no nested spans.
-          parseAndPushWord(wordLine);
+          parseAndPushWord(wordSpan);
         } else {
           //? Case with nested spans, in which we create a new line.
-          pushLine();
-          const newLine = wordLine.match(SpanContentsRegex);
+          pushWordsAsLine();
+          const newLine = wordSpan.match(SpanContentsRegex);
           if (!newLine) continue;
           newLine[1]?.match(SpanLineRegex)?.forEach(parseAndPushWord);
-          pushLine();
+          pushWordsAsLine();
         }
       }
 
-      pushLine();
+      pushWordsAsLine();
     } else {
       formattedLines.push({
         timeMS: startMS,
