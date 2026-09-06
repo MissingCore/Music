@@ -191,23 +191,21 @@ function SynchronizedLyrics({
   const [inActiveWordStartIndex, setInActiveWordStartIndex] = useState(0);
 
   //#region Auto Scroll
-  const autoScrollResumeTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
-  const [autoScroll, setAutoScroll] = useState(false);
+  const [canEmitAutoScrollEvent, setCanEmitAutoScrollEvent] = useState(false);
+  const canResumeTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
 
-  const onPauseAutoScroll = useCallback(() => {
-    if (autoScrollResumeTimerRef.current)
-      clearTimeout(autoScrollResumeTimerRef.current);
-    setAutoScroll(false);
+  const pauseAutoScroll = useCallback(() => {
+    if (canResumeTimerRef.current) clearTimeout(canResumeTimerRef.current);
+    setCanEmitAutoScrollEvent(false);
   }, []);
 
-  const debouncedResumeAutoScroll = useMemo(() => {
+  const resumeAutoScroll = useMemo(() => {
     return () => {
-      if (autoScrollResumeTimerRef.current)
-        clearTimeout(autoScrollResumeTimerRef.current);
-      autoScrollResumeTimerRef.current = setTimeout(
-        () => setAutoScroll(true),
-        500,
-      );
+      if (canResumeTimerRef.current) clearTimeout(canResumeTimerRef.current);
+      canResumeTimerRef.current = setTimeout(() => {
+        prevActiveLineIndex.current = -1;
+        setCanEmitAutoScrollEvent(true);
+      }, 500);
     };
   }, []);
   //#endregion
@@ -215,8 +213,8 @@ function SynchronizedLyrics({
   //? Delay scroll to active line on mount because sometimes it doesn't work due to
   //? timings, which is noticeable due to our `scrollToIndex` spam-prevention logic.
   useEffect(() => {
-    debouncedResumeAutoScroll();
-  }, [debouncedResumeAutoScroll]);
+    resumeAutoScroll();
+  }, [resumeAutoScroll]);
 
   useEffect(() => {
     // Calculate active index.
@@ -237,7 +235,7 @@ function SynchronizedLyrics({
     }
 
     // Checks to see if we should auto-scroll.
-    if (!listRef.current || !autoScroll) return;
+    if (!listRef.current || !canEmitAutoScrollEvent) return;
     // Scroll to active index.
     if (newIndex === -1) {
       listRef.current.scrollToOffset({ offset: 0 });
@@ -252,7 +250,7 @@ function SynchronizedLyrics({
       viewOffset: (SCROLL_OFFSET + LINE_GAP) / 2,
       viewPosition: 0.5,
     });
-  }, [listRef, parsedLines, position, autoScroll]);
+  }, [listRef, parsedLines, position, canEmitAutoScrollEvent]);
 
   // Pre-format the rendered content so that we don't recalculate this
   // on every render.
@@ -285,8 +283,8 @@ function SynchronizedLyrics({
       data={renderedLines}
       //? Force all items to render, allowing `scrollToIndex` to work.
       initialNumToRender={renderedLines.length}
-      onScrollBeginDrag={onPauseAutoScroll}
-      onScrollEndDrag={debouncedResumeAutoScroll}
+      onMomentumScrollBegin={pauseAutoScroll}
+      onMomentumScrollEnd={resumeAutoScroll}
     />
   );
 }
