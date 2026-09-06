@@ -22,8 +22,8 @@ export function parseLRC(lyrics: string): SynchronizedLine[] {
     .split("\n")
     .map((line) => {
       const parsedLine = line.match(LRCLineRegex);
-      if (!parsedLine || !parsedLine[1] || !parsedLine[2]) return undefined;
-      return [parsedLine[1], parsedLine[2].trim()] as [string, string];
+      if (parsedLine?.[1] && parsedLine?.[2])
+        return [parsedLine[1], parsedLine[2].trim()] as const;
     })
     .filter((line) => line !== undefined);
 
@@ -40,12 +40,13 @@ export function parseLRC(lyrics: string): SynchronizedLine[] {
       const syncWords: SynchronizedWord[] = a2LRCTimestamps
         .map((timestamp, idx) => {
           const word = words[idx];
-          if (word === undefined) return;
-          return { timeMS: parseTimestampAsMS(timestamp), word };
+          if (word) return { timeMS: parseTimestampAsMS(timestamp), word };
         })
         .filter((word) => word !== undefined);
 
       //? Assign the first word (could be an empty string) the line's timestamp.
+      //? This situation would be if we got `[mm:ss.xxx]word` instead of
+      //? `[mm:ss.xxx]<mm:ss.xxx>word`.
       if (firstWord) syncWords.unshift({ timeMS: startMS, word: firstWord });
 
       formattedLines.push({ timeMS: startMS, words: syncWords });
