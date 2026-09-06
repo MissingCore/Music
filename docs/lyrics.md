@@ -92,7 +92,7 @@ Unless we support the provided lyrics format, they will be rendered as a static 
       <td>
         <b>In addition to the <code>LRC</code> notes:</b>
         <ul>
-          <li>We support word/syllable timestamps with square or angle branckets (ie: <code>[mm:ss.ms]</code>, <code>&lt;mm:ss.ms&gt;</code>).</li>
+          <li>We support word/syllable timestamps with square or angle brackets (ie: <code>[mm:ss.ms]</code>, <code>&lt;mm:ss.ms&gt;</code>).</li>
         </ul>
       </td>
     </tr>
