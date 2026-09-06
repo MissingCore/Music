@@ -2,7 +2,16 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useNavigation } from "@react-navigation/native";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  createContext,
+  memo,
+  use,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import { usePolledProgress } from "react-native-audio-browser";
@@ -13,6 +22,7 @@ import { PlaybackControls } from "~/stores/Playback/actions";
 
 import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
+import { isString } from "~/utils/validation";
 import type { FlatListProps, FlatListRef } from "~/components/Base/List";
 import { FlatList, useFlatListRef } from "~/components/Base/List";
 import { Pressable } from "~/components/Base/Pressable";
@@ -24,9 +34,13 @@ import { useIsAtmosphereActive } from "~/modules/customization/atmosphere/store"
 import { useTheme } from "~/modules/customization/theme/hooks";
 import { autoDiscoverLyrics } from "../helpers/autoDiscoverLyrics";
 import { removeSynchronizedLyricsJunk } from "../helpers/cleanUpLyricsJunk";
+import { parseLyrics } from "../helpers/parser";
+import type { SynchronizedLine } from "../helpers/parser/utils";
 
 const SCROLL_OFFSET = 64;
 const LINE_GAP = 16;
+
+const LyricOffsetContext = createContext({ offset: 0, extraTop: 0 });
 
 export function LyricsOverlay(props: { size: number; trackId: string }) {
   const { top } = useSafeAreaInsets();
@@ -34,92 +48,84 @@ export function LyricsOverlay(props: { size: number; trackId: string }) {
   const hideBackground = useIsAtmosphereActive();
 
   // Estimated offset to get overlay to go behind the `TopAppBar`.
-  const lyricsOffset = top + SCROLL_OFFSET;
+  const scrollGradientHeight = top + SCROLL_OFFSET;
 
   return (
-    <View
-      style={{ top: -top, bottom: 0 }}
-      className={cn(
-        "absolute w-full items-center justify-center",
-        !hideBackground
-          ? cn("bg-surface/85", { "bg-surface/60": scheme === "dark" })
-          : undefined,
-      )}
+    <LyricOffsetContext
+      value={{ offset: props.size / 2, extraTop: scrollGradientHeight }}
     >
-      <View style={{ width: props.size }} className="px-2">
-        <LyricsContent trackId={props.trackId} offset={lyricsOffset} />
-      </View>
+      <View
+        style={{ top: -top, bottom: 0 }}
+        className={cn(
+          "absolute w-full items-center justify-center",
+          !hideBackground
+            ? cn("bg-surface/85", { "bg-surface/60": scheme === "dark" })
+            : undefined,
+        )}
+      >
+        <View style={{ width: props.size }} className="px-2">
+          <LyricsContent trackId={props.trackId} />
+        </View>
 
-      {!hideBackground ? (
-        <>
-          <TopDownGradient
-            height={lyricsOffset}
-            startFrom={top}
-            className="absolute top-0 left-0"
-          />
-          <TopDownGradient
-            height={SCROLL_OFFSET}
-            className="absolute bottom-0 left-0 rotate-180"
-          />
-        </>
-      ) : null}
-    </View>
+        {!hideBackground ? (
+          <>
+            <TopDownGradient
+              height={scrollGradientHeight}
+              startFrom={top}
+              className="absolute top-0 left-0"
+            />
+            <TopDownGradient
+              height={scrollGradientHeight}
+              className="absolute bottom-0 left-0 rotate-180"
+            />
+          </>
+        ) : null}
+      </View>
+    </LyricOffsetContext>
   );
 }
 
-function LyricsContent(props: { trackId: string; offset: number }) {
+function LyricsContent({ trackId }: { trackId: string }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { isPending, data, error } = useLyricForTrack(props.trackId);
+  const { isPending, data, error } = useLyricForTrack(trackId);
   const cleanupInProgress = useRef<Set<string>>(new Set());
+  const { offset, extraTop } = use(LyricOffsetContext);
 
-  const lyricsLines = useMemo(() => {
-    if (!data?.lyrics) return [];
-    return data.lyrics.split("\n").map((line) => line.trim());
+  const formattedLyrics = useMemo(() => {
+    if (!data?.lyrics) return;
+    return parseLyrics(data.lyrics);
   }, [data?.lyrics]);
-
-  const isSynchronized = useMemo(
-    () =>
-      lyricsLines.every((line) =>
-        !line ? true : LRC_LINE_SYNC_TAG.test(line),
-      ),
-    [lyricsLines],
-  );
 
   //! TODO: Remove in `v4.0.0`.
   //! Temporary "hack" to clean up cached lyrics with "junk" in front, which
   //! was fixed in `v3.3.0`.
   useEffect(() => {
-    if (isSynchronized || !data?.id || lyricsLines.length === 0) return;
+    if (!isString(formattedLyrics) || !data?.id) return;
     if (cleanupInProgress.current.has(data.id)) return;
     cleanupInProgress.current.add(data.id);
     removeSynchronizedLyricsJunk(data.id)
       .catch((err) => console.log(`[LRC_CLEANUP_ERR]`, err))
       .finally(() => cleanupInProgress.current.delete(data.id));
-  }, [props.trackId, data?.id, lyricsLines, isSynchronized]);
+  }, [trackId, data?.id, formattedLyrics]);
 
   if (isPending) return null;
   else if (error || !data) {
-    return <LyricsNotFound key={props.trackId} {...props} />;
+    return <LyricsNotFound key={trackId} trackId={trackId} />;
   }
-
   return (
     <>
-      {isSynchronized ? (
-        <SynchronizedLyrics
-          key={props.trackId}
-          lines={lyricsLines}
-          offset={props.offset}
-        />
+      {Array.isArray(formattedLyrics) ? (
+        <SynchronizedLyrics key={trackId} parsedLines={formattedLyrics} />
       ) : (
         <FlatList
-          data={lyricsLines}
+          data={formattedLyrics?.split("\n")}
           keyExtractor={(_, index) => `${index}`}
           renderItem={({ item }) => <Em className="text-xl">{item}</Em>}
           nestedScrollEnabled
           contentContainerStyle={{
-            paddingTop: props.offset,
-            paddingBottom: SCROLL_OFFSET,
+            paddingTop: offset + extraTop,
+            paddingBottom: offset,
             gap: LINE_GAP,
           }}
         />
@@ -137,10 +143,11 @@ function LyricsContent(props: { trackId: string; offset: number }) {
 }
 
 //#region Not Found
-function LyricsNotFound(props: { trackId: string; offset: number }) {
+function LyricsNotFound({ trackId }: { trackId: string }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const [checkingEmbeddedLyrics, setCheckingEmbeddedLyrics] = useState(true);
+  const { extraTop } = use(LyricOffsetContext);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -155,15 +162,12 @@ function LyricsNotFound(props: { trackId: string; offset: number }) {
   }, []);
 
   return (
-    <View
-      style={{ paddingTop: props.offset }}
-      className="items-center gap-6 pb-4"
-    >
+    <View style={{ paddingTop: extraTop }} className="items-center gap-6 pb-4">
       <TEm textKey="err.msg.noLyrics" className="text-xl" />
       <ExtendedTButton
         // @ts-expect-error - Will display text if key doesn't exist.
         textKey={t("template.entryManage", { name: t("feat.lyrics.title") })}
-        onPress={() => navigation.navigate("Lyrics", { linkTo: props.trackId })}
+        onPress={() => navigation.navigate("Lyrics", { linkTo: trackId })}
         disabled={checkingEmbeddedLyrics}
         className="min-h-auto w-full max-w-48"
         textClassName="text-xs"
@@ -174,15 +178,17 @@ function LyricsNotFound(props: { trackId: string; offset: number }) {
 //#endregion
 
 //#region Synchronized Lyrics
-function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
+function SynchronizedLyrics({
+  parsedLines,
+}: {
+  parsedLines: SynchronizedLine[];
+}) {
   // Use `usePolledProgress` as `Event.PlaybackProgressUpdated` fires once a second.
   const { position } = usePolledProgress(50, false);
   const listRef = useFlatListRef();
   const [activeLineIndex, setActiveLineIndex] = useState(-1);
   const prevActiveLineIndex = useRef(-1);
   const [inActiveWordStartIndex, setInActiveWordStartIndex] = useState(0);
-
-  const parsedLines = useMemo(() => parseLines(props.lines), [props.lines]);
 
   //#region Auto Scroll
   const autoScrollResumeTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
@@ -281,7 +287,6 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
       initialNumToRender={renderedLines.length}
       onScrollBeginDrag={onPauseAutoScroll}
       onScrollEndDrag={debouncedResumeAutoScroll}
-      offset={props.offset}
     />
   );
 }
@@ -296,9 +301,9 @@ const MemoLyricList = memo(
   function MemoLyricList(
     props: Omit<FlatListProps<FormattedSynchronizedLine>, "renderItem"> & {
       ref: FlatListRef<FormattedSynchronizedLine>;
-      offset: number;
     },
   ) {
+    const { offset, extraTop } = use(LyricOffsetContext);
     return (
       <FlatList
         {...props}
@@ -325,88 +330,15 @@ const MemoLyricList = memo(
         // Suppresses error when `scrollToIndex` fails.
         onScrollToIndexFailed={() => {}}
         contentContainerStyle={{
-          paddingTop: props.offset,
-          paddingBottom: SCROLL_OFFSET,
+          paddingTop: offset + extraTop,
+          paddingBottom: offset,
           gap: LINE_GAP,
         }}
       />
     );
   },
-  // We should only re-render the list when `data` or `offset` changes.
+  // We should only re-render the list when `data` changes.
   (prevProps, nextProps) =>
-    JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data) &&
-    prevProps.offset === nextProps.offset,
+    JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data),
 );
-//#endregion
-
-//#region Lyric Parsing
-const LRC_LINE_SYNC_TAG = /^\[.+:.+?\]/;
-const LRC_LINE_START_TIMESTAMP = /^\[[0-9]+:[0-9]+(?:\.[0-9]+)?\]/;
-/** Supports both square & angle bracket format. */
-const LRC_WORD_TIMESTAMP = /(?:\[|<)[0-9]+:[0-9]+(?:\.[0-9]+)?(?:\]|>)/g;
-const LRC_TIMESTAMP = /[0-9]+/g;
-
-type Timestamp = [string, string, ...string[]];
-
-type SynchronizedWord = { timeMS: number; word: string };
-type SynchronizedLine = { timeMS: number; words: SynchronizedWord[] };
-
-function parseLines(lines: string[]): SynchronizedLine[] {
-  const results: SynchronizedLine[] = [];
-  for (const line of lines) {
-    if (!line) continue;
-    const lyricLineTimestampStr = line.match(LRC_LINE_START_TIMESTAMP);
-    if (!lyricLineTimestampStr || lyricLineTimestampStr.length === 0) continue;
-
-    // Get the time when the line will start.
-    const lineTimeMS = getTimestampInMS(lyricLineTimestampStr[0]);
-    const lyricLine = line.replace(LRC_LINE_START_TIMESTAMP, "").trim();
-
-    // See if this has word-by-word synchronization.
-    if (LRC_WORD_TIMESTAMP.test(lyricLine)) {
-      const wordTimestampStrs = lyricLine.match(LRC_WORD_TIMESTAMP);
-      if (!wordTimestampStrs || wordTimestampStrs.length === 0) continue;
-      // Get the words after each timestamp. In general, `wordTimestampStrs` &
-      // `words` should have the same length.
-      const [lineFirstWord, ...words] = lyricLine.split(LRC_WORD_TIMESTAMP);
-
-      const synchronizedWords: SynchronizedWord[] = wordTimestampStrs
-        .map((wordTimestamp, index) => {
-          const syncWord = words[index];
-          if (syncWord === undefined) return;
-          return {
-            timeMS: getTimestampInMS(wordTimestamp),
-            word: syncWord.trimStart(),
-          };
-        })
-        .filter((syncWord) => syncWord !== undefined);
-
-      // Assign the first word (could be an empty string) the line's timestamp.
-      if (typeof lineFirstWord === "string") {
-        synchronizedWords.unshift({ timeMS: lineTimeMS, word: lineFirstWord });
-      }
-
-      results.push({ timeMS: lineTimeMS, words: synchronizedWords });
-    } else {
-      results.push({
-        timeMS: lineTimeMS,
-        words: [{ timeMS: lineTimeMS, word: lyricLine }],
-      });
-    }
-  }
-
-  return results;
-}
-//#endregion
-
-//#region Helpers
-function getTimestampInMS(timeString: string) {
-  const [min, sec, ms = "0"] = timeString.match(LRC_TIMESTAMP) as Timestamp;
-  return (
-    Number.parseInt(min) * 60 * 1000 +
-    Number.parseInt(sec) * 1000 +
-    Number.parseInt(ms)
-  );
-}
-//#endregion
 //#endregion

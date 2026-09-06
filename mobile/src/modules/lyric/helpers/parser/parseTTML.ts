@@ -1,0 +1,91 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
+import type { SynchronizedLine, SynchronizedWord } from "./utils";
+import { parseTimestampAsMS } from "./utils";
+
+/** Identifies a lyric line, which may contain words in the form of `<span>`. */
+const PLineRegex = /<p\b([^>]*)>([\s\S]*?)<\/p>/g;
+/**
+ * Identifies the representation of a word (or group of words if we get a nested span).
+ * Since it's evaluated from left-to-right, we ensure nested span matches are returned first.
+ */
+const SpanLineRegex =
+  /<span\b([^>]*)>([\s\S]*?)(<\/span>\s*){2}|<span\b([^>]*)>([\s\S]*?)<\/span>\s*/g;
+/** Identifies inner span contents. */
+const SpanContentsRegex = /<span\b[^>]*>([\s\S]*)<\/span>\s*/;
+
+/** Identifies the HTML tag portion. */
+const HTMLTagRegex = /<[^>]*>/g;
+/** Identifies the attributes in a HTML tag. */
+const HTMLAttributeRegex = /(\w+)="([^"]*)"/g;
+
+export function parseTTML(lyrics: string): SynchronizedLine[] {
+  const formattedLines: SynchronizedLine[] = [];
+
+  const lines = Array.from(lyrics.match(PLineRegex) ?? []);
+
+  //? Helper for tracking what goes in a `SynchronizedLine`.
+  let lineWords: SynchronizedWord[] = [];
+  const parseAndPushWord = (wordSpan: string) => {
+    const attributes = parseAttributes(wordSpan);
+    if (!attributes.begin) return;
+    lineWords.push({
+      timeMS: parseTimestampAsMS(attributes.begin),
+      word: wordSpan.replace(HTMLTagRegex, ""),
+    });
+  };
+  const pushWordsAsLine = () => {
+    if (lineWords.length === 0) return;
+    formattedLines.push({ timeMS: lineWords[0]!.timeMS, words: lineWords });
+    lineWords = [];
+  };
+
+  for (const line of lines) {
+    const lineAttributes = parseAttributes(line);
+    if (!lineAttributes.begin) continue;
+
+    const startMS = parseTimestampAsMS(lineAttributes.begin);
+    const wordSpans = line.match(SpanLineRegex);
+
+    //? Handle if line is made up of words/syllables.
+    if (wordSpans) {
+      for (const wordSpan of wordSpans) {
+        if (wordSpan.split("</span>").length - 1 === 1) {
+          //? Typical case of no nested spans.
+          parseAndPushWord(wordSpan);
+        } else {
+          //? Case with nested spans, in which we create a new line.
+          pushWordsAsLine();
+          const newLine = wordSpan.match(SpanContentsRegex);
+          if (!newLine) continue;
+          newLine[1]?.match(SpanLineRegex)?.forEach(parseAndPushWord);
+          pushWordsAsLine();
+        }
+      }
+
+      pushWordsAsLine();
+    } else {
+      formattedLines.push({
+        timeMS: startMS,
+        words: [{ timeMS: startMS, word: line.replace(HTMLTagRegex, "") }],
+      });
+    }
+  }
+
+  return formattedLines;
+}
+
+//#region Helpers
+/** Parse the "attributes" from the starting HTML tag in the segment. */
+function parseAttributes(segment: string): Record<string, string> {
+  const startingTag = segment.match(HTMLTagRegex)?.[0];
+  if (!startingTag) return {};
+  return Object.fromEntries(
+    Array.from(startingTag.matchAll(HTMLAttributeRegex), ([_, key, val]) => [
+      key,
+      val,
+    ]),
+  );
+}
+//#endregion

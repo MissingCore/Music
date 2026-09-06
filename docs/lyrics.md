@@ -68,8 +68,42 @@ Given you have a license to an API that distributes lyrics which can be displaye
 
 ## Supported Lyric Formats
 
-Lyrics will be rendered as a static string, unless it's identified as synchronized by the following conditions:
+Unless we support the provided lyrics format, they will be rendered as a static string. In addition, if the lyrics are identified as synchronized, clicking on a line will **seek to the start of the line (we do not support seeking to a specific word)**.
 
-- Every line starts with `[mm:ss.ms]` or `[mm:ss]`.
-  - Tags at the start of the lyrics that follow a similar format (ie: `[ti:]`) will be ignored.
-- Word-by-word lyrics (using either square or angle brackets) are also supported (ie: `[mm:ss.ms]`, `<mm:ss.ms>`).
+<table>
+  <thead>
+    <tr>
+      <th>Format</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>LRC</code></td>
+      <td>
+        <ul>
+          <li>Every line starts with <code>[mm:ss.ms]</code> or <code>[mm:ss]</code>.</li>
+          <li>Tags at the start of the lyrics that follow a similar format (ie: <code>[ti:]</code>) will be ignored.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td><code>LRC A2</code></td>
+      <td>
+        <b>In addition to the <code>LRC</code> notes:</b>
+        <ul>
+          <li>We support word/syllable timestamps with square or angle brackets (ie: <code>[mm:ss.ms]</code>, <code>&lt;mm:ss.ms&gt;</code>).</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td><code>TTML</code></td>
+      <td>
+        <ul>
+          <li>We do not support/take advantage of every feature provided by the <code>TTML</code> lyrics format.</li>
+          <li>For example, inline assistant content (ie: background vocals) will be rendered as a separate line.</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
