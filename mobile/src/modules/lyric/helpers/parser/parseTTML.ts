@@ -13,7 +13,7 @@ const PLineRegex = /<p\b([^>]*)>([\s\S]*?)<\/p>/g;
 const SpanLineRegex =
   /<span\b([^>]*)>([\s\S]*?)(<\/span>\s*){2}|<span\b([^>]*)>([\s\S]*?)<\/span>\s*/g;
 /** Identifies inner span contents. */
-const SpanContentsRegex = /<span\b[^>]*>(.*)<\/span>\s*/;
+const SpanContentsRegex = /<span\b[^>]*>([\s\S]*)<\/span>\s*/;
 
 /** Identifies the HTML tag portion. */
 const HTMLTagRegex = /<[^>]*>/g;
