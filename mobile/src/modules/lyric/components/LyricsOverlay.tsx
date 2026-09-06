@@ -254,28 +254,32 @@ function SynchronizedLyrics({
 
   // Pre-format the rendered content so that we don't recalculate this
   // on every render.
-  const renderedLines = useMemo(
+  const cachedJoinedLines: FormattedSynchronizedLine[] = useMemo(
     () =>
-      parsedLines.map(({ timeMS, words }, index) => ({
+      parsedLines.map(({ timeMS, words }) => ({
         timeMS,
-        line:
-          index !== activeLineIndex
-            ? words.reduce((prev, { word }) => prev + word, "")
-            : words.reduce(
-                (prev, { word }, index) => {
-                  if (
-                    inActiveWordStartIndex === -1 ||
-                    index < inActiveWordStartIndex
-                  ) {
-                    prev[0] += word;
-                  } else prev[1] += word;
-                  return prev;
-                },
-                ["", ""] as [string, string],
-              ),
+        line: words.map(({ word }) => word).join(""),
       })),
-    [parsedLines, activeLineIndex, inActiveWordStartIndex],
+    [parsedLines],
   );
+
+  const renderedLines = useMemo(() => {
+    const activeLine = parsedLines[activeLineIndex];
+    if (activeLineIndex === -1 || activeLine === undefined)
+      return cachedJoinedLines;
+
+    const { timeMS, words } = activeLine;
+    const formattedLine: [string, string] = ["", ""];
+    words.forEach(({ word }, index) => {
+      const hasSeen =
+        inActiveWordStartIndex === -1 || index < inActiveWordStartIndex;
+      formattedLine[hasSeen ? 0 : 1] += word;
+    });
+
+    const copiedJoinLines = [...cachedJoinedLines];
+    copiedJoinLines[activeLineIndex] = { timeMS, line: formattedLine };
+    return copiedJoinLines;
+  }, [parsedLines, cachedJoinedLines, activeLineIndex, inActiveWordStartIndex]);
 
   return (
     <MemoLyricList

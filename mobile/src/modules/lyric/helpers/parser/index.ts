@@ -9,7 +9,7 @@ import type { SynchronizedLine } from "./utils";
 export function parseLyrics(lyrics: string): string | SynchronizedLine[] {
   if (lyrics.includes("http://www.w3.org/ns/ttml")) {
     const results = parseTTML(lyrics);
-    if (results.length > 0) return parseTTML(lyrics);
+    if (results.length > 0) return results;
   }
 
   //* Current way of testing for `LRC` or `LRC A2` format is to run it
