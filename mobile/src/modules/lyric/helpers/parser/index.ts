@@ -8,7 +8,8 @@ import type { SynchronizedLine } from "./utils";
 /** Identifies and returns the lyrics we want to display. */
 export function parseLyrics(lyrics: string): string | SynchronizedLine[] {
   if (lyrics.includes("http://www.w3.org/ns/ttml")) {
-    return parseTTML(lyrics);
+    const results = parseTTML(lyrics);
+    if (results.length > 0) return parseTTML(lyrics);
   }
 
   //* Current way of testing for `LRC` or `LRC A2` format is to run it
