@@ -43,7 +43,7 @@
     "notFound": "{{- name}} n'existe pas",
     "entryMove": "Déplacer {{- name}}",
     "entryShow": "Afficher {{- name}}",
-    "entryShowAll": null,
+    "entryShowAll": "Afficher tous les {{- name}}",
     "entryHide": "Cacher {{- name}}",
     "entryEnable": "Activer {{- name}}",
     "entryDisable": "Désactiver {{- name}}",
@@ -154,7 +154,7 @@
         "vinylOld": "Vinyle (Legacy)",
         "none": "Aucun",
         "alternativeInfoLayout": "Autre présentation des informations",
-        "standardVinylSpeed": null
+        "standardVinylSpeed": "Vitesse standard du vinyle"
       }
     },
     "seekbar": {
@@ -197,20 +197,20 @@
       }
     },
     "recap": {
-      "title": null,
-      "brief": null,
+      "title": "Récapitulatif",
+      "brief": "Vos morceaux préférés, vos artistes préférés et votre historique d'écoute.",
       "extra": {
-        "recapTemplate": null,
+        "recapTemplate": "{{- name}} $t(feat.recap.title)",
         "playCount": "{{count}} lus",
         "mostPlayed": "Plus Écouté {{- name}}",
-        "top": null,
-        "timeRange": null,
+        "top": "Top {{- name}}",
+        "timeRange": "Période",
         "allTime": null,
-        "listeningTime": null,
-        "totalListeningTime": null,
-        "totalPlays": null,
-        "uniqueTracks": null,
-        "uniqueArtists": null
+        "listeningTime": "Durée d'écoute",
+        "totalListeningTime": "Total $t(feat.recap.extra.listeningTime)",
+        "totalPlays": "Nombre total de lectures",
+        "uniqueTracks": "Titres uniques",
+        "uniqueArtists": "Artistes uniques"
       }
     },
     "hiddenTracks": {

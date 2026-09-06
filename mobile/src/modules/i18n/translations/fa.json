@@ -200,7 +200,7 @@
       "title": null,
       "brief": null,
       "extra": {
-        "recapTemplate": null,
+        "recapTemplate": "{{- name}} $t(feat.recap.title)",
         "playCount": "{{count}} پخش",
         "mostPlayed": "بیشترین پخش شده {{- name}}",
         "top": null,
