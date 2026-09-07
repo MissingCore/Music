@@ -70,7 +70,7 @@ export function registerEvents() {
   AudioBrowser.onPlaybackChanged.addListener(async (e) => {
     if (e.state === "paused" || e.state === "stopped") {
       playbackStore.setState({ isPlaying: false });
-      await TrackListeningSession.finalize({ paused: true });
+      await TrackListeningSession.finalize({ paused: e.state === "paused" });
     } else if (e.state === "loading") {
       const { repeat, activeTrack } = playbackStore.getState();
       if (repeat === "repeat-one" && activeTrack) {
