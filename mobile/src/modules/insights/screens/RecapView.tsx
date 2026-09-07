@@ -47,6 +47,7 @@ import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { AccentText } from "~/components/Typography/AccentText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
+import { generateRecapRange } from "../helpers/generateRecapRange";
 
 //#region Recap Time Range
 interface State {
@@ -142,43 +143,14 @@ function TimeRangeSheet(props: {
 }) {
   const recapStartEpoch = useSessionStore((s) => s.recapStartEpoch);
 
-  const options = useMemo(() => {
-    const startDate = new Date(recapStartEpoch);
-    const endDate = new Date();
-
-    let startMonth = startDate.getMonth();
-    let startYear = startDate.getFullYear();
-    const endMonth = endDate.getMonth();
-    const endYear = endDate.getFullYear();
-
-    const rangeOptions: Array<{
-      label: string;
-      payload: Date;
-      type: "month" | "year";
-    }> = [];
-
-    do {
-      while (startMonth < 12) {
-        rangeOptions.unshift({
-          label: `${Months[startMonth]} ${startYear}`,
-          payload: new Date(startYear, startMonth, 1),
-          type: "month",
-        });
-        if (startYear === endYear && startMonth === endMonth) break;
-        startMonth += 1;
-      }
-
-      rangeOptions.unshift({
-        label: `${startYear}`,
-        payload: new Date(startYear, 0, 1),
-        type: "year",
-      });
-      startMonth = 0;
-      startYear += 1;
-    } while (startYear <= endYear);
-
-    return rangeOptions;
-  }, [recapStartEpoch]);
+  const options = useMemo(
+    () =>
+      generateRecapRange(recapStartEpoch, true).map(({ date, ...rest }) => ({
+        payload: date,
+        ...rest,
+      })),
+    [recapStartEpoch],
+  );
 
   return (
     <DetachedSheet ref={props.ref} contentContainerClassName="pb-0">

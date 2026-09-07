@@ -65,6 +65,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     },
 
     completedOnboarding: false,
+    optimizeInsightsFrom: 0,
 
     language: "",
     forceLTR: false,

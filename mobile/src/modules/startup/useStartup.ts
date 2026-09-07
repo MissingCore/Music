@@ -191,6 +191,8 @@ async function startupFlow() {
   const endMonth = month === 11 ? 0 : month + 1;
   const endYear = month === 11 ? year + 1 : year;
 
+  const startRecapFrom = firstPlayEvent?.playedAt ?? Date.now();
+
   sessionStore.setState({
     recapStartEpoch: firstPlayEvent?.playedAt ?? Date.now(),
     defaultRecapRange: {
@@ -199,4 +201,15 @@ async function startupFlow() {
       endEpoch: Epoch.from({ month: endMonth, year: endYear }),
     },
   });
+
+  //* Also set when we can optimize our database from.
+  if (preferenceStore.getState().optimizeInsightsFrom === 0) {
+    const optimizeInsightsFromDate = new Date(startRecapFrom);
+    preferenceStore.setState({
+      optimizeInsightsFrom: Epoch.from({
+        month: optimizeInsightsFromDate.getMonth(),
+        year: optimizeInsightsFromDate.getFullYear(),
+      }),
+    });
+  }
 }

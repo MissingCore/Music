@@ -224,6 +224,14 @@
         "totalDuration": "Total Duration"
       }
     },
+    "dbOptimization": {
+      "title": "Optimize Database",
+      "brief": "There are {{count}} optimization targets available.",
+      "extra": {
+        "start": "Optimizing...",
+        "success": "Finished optimizations."
+      }
+    },
     "recap": {
       "title": "Recap",
       "brief": "Your top tracks, artists, and playback history.",
