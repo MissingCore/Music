@@ -93,6 +93,9 @@ function createTrackListeningSession() {
         reset();
       }
 
+      //? To help ensure we mutate the same session during a "pause" event.
+      const currentSession = session;
+
       if (nextTime > MIN_PLAY_TIME) {
         //? If `eventId` is defined, we just want to add the elapsed time
         //? to the existing value.
@@ -109,7 +112,9 @@ function createTrackListeningSession() {
             })
             .returning({ id: tracksPlayEvents.id });
 
-          if (paused && sessionEvent?.id) session.eventId = sessionEvent.id;
+          if (paused && session === currentSession && sessionEvent?.id) {
+            session.eventId = sessionEvent.id;
+          }
         } catch (err) {
           console.error("[TrackListeningSession] Failed to record event.", err);
         }
