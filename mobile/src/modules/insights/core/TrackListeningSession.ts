@@ -42,7 +42,8 @@ function createTrackListeningSession() {
     }
   }
 
-  async function start(trackId?: string) {
+  async function start(trackId?: string, skipIfSameTrack = false) {
+    if (skipIfSameTrack && session?.trackId === trackId) return;
     await finalize();
     if (!trackId || !AudioBrowser.getPlayingState().playing) return reset();
     session = { trackId, playedAt: Date.now() };

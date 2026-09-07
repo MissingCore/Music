@@ -80,6 +80,7 @@ export function registerEvents() {
       playbackStore.setState({ isPlaying: true });
       await TrackListeningSession.start(
         playbackStore.getState().activeTrack?.id,
+        true,
       );
     }
   });
