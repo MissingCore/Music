@@ -70,16 +70,17 @@ export function registerEvents() {
   AudioBrowser.onPlaybackChanged.addListener(async (e) => {
     if (e.state === "paused" || e.state === "stopped") {
       playbackStore.setState({ isPlaying: false });
-      await TrackListeningSession.finalize({ paused: e.state === "paused" });
+      await TrackListeningSession.finalize();
     } else if (e.state === "loading") {
       const { repeat, activeTrack } = playbackStore.getState();
       if (repeat === "repeat-one" && activeTrack) {
-        await TrackListeningSession.finalize();
-        await TrackListeningSession.start(activeTrack.uri);
+        await TrackListeningSession.start(activeTrack.id);
       }
     } else if (e.state === "playing") {
       playbackStore.setState({ isPlaying: true });
-      await TrackListeningSession.resume();
+      await TrackListeningSession.start(
+        playbackStore.getState().activeTrack?.id,
+      );
     }
   });
 
@@ -127,7 +128,6 @@ export function registerEvents() {
 
   AudioBrowser.onActiveTrackChanged.addListener(async (e) => {
     if (e.index === undefined || e.track?.src === undefined) return;
-    const activeTrackUri = decodeURIComponent(e.track.src);
 
     //* Smooth Playback Transition
     try {
@@ -149,8 +149,7 @@ export function registerEvents() {
     };
 
     //* Playback Session Tracking (Play Count + Time)
-    await TrackListeningSession.finalize();
-    await TrackListeningSession.start(activeTrackUri);
+    await TrackListeningSession.start(playbackStore.getState().activeTrack?.id);
 
     await revalidateWidgets();
   });
