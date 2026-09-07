@@ -71,11 +71,6 @@ export function registerEvents() {
     if (e.state === "paused" || e.state === "stopped") {
       playbackStore.setState({ isPlaying: false });
       await TrackListeningSession.finalize();
-    } else if (e.state === "loading") {
-      const { repeat, activeTrack } = playbackStore.getState();
-      if (repeat === "repeat-one" && activeTrack) {
-        await TrackListeningSession.start(activeTrack.id);
-      }
     } else if (e.state === "playing") {
       playbackStore.setState({ isPlaying: true });
       await TrackListeningSession.start(
