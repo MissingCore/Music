@@ -5,6 +5,7 @@ import AudioBrowser from "react-native-audio-browser";
 import { useStore } from "zustand";
 
 import { getTrack } from "~/data/track/api";
+import { TrackListeningSession } from "~/modules/insights/core/TrackListeningSession";
 
 import { createPersistedStore } from "~/lib/zustand";
 import { resetWidgets } from "~/modules/widget/utils/update";
@@ -45,6 +46,9 @@ export const playbackStore = createPersistedStore<PlaybackStore>(
       }
     },
     reset: async () => {
+      //? We should finalize whatever listening session is active currently.
+      await TrackListeningSession.finalize();
+
       set({
         _hasHydrated: true,
         _hasRestoredPosition: false,
