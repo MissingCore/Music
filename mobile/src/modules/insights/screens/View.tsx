@@ -23,6 +23,7 @@ import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { Colors } from "~/constants/Styles";
 import { ImageDirectory } from "~/lib/file-system";
 import type { ExtractQueryData } from "~/lib/react-query";
+import { mutateGuard } from "~/lib/react-query";
 import { Seconds } from "~/utils/date";
 import { abbreviateSize } from "~/utils/number";
 import { SegmentedList } from "~/components/List/Segmented";
@@ -30,6 +31,10 @@ import { Legend } from "~/components/UI/Legend";
 import { ProgressBar } from "~/components/UI/ProgressBar";
 import { FontDirectory } from "~/modules/customization/font/core/data";
 import { useTheme } from "~/modules/customization/theme/hooks";
+import {
+  useOptimizableTargetCount,
+  useOptimizeDatabase,
+} from "../helpers/optimizeDB";
 
 export default function Insights() {
   const { t } = useTranslation();
@@ -40,6 +45,7 @@ export default function Insights() {
       <SegmentedList>
         <StorageWidget />
         <DBSummaryWidget />
+        <DatabaseOptimizationWidget />
       </SegmentedList>
 
       <SegmentedList.Item
@@ -223,6 +229,25 @@ function useDatabaseSummary() {
     queryFn: getDatabaseSummary,
     staleTime: 0,
   });
+}
+//#endregion
+
+//#region Database Optimization
+function DatabaseOptimizationWidget() {
+  const { t } = useTranslation();
+  const { data } = useOptimizableTargetCount();
+  const optimizeDB = useOptimizeDatabase();
+
+  const count = data ?? 0;
+
+  return (
+    <SegmentedList.Item
+      labelText="feat.dbOptimization.title"
+      supportingText={t("feat.dbOptimization.brief", { count })}
+      disabled={count === 0 || optimizeDB.isPending}
+      onPress={() => mutateGuard(optimizeDB, undefined)}
+    />
+  );
 }
 //#endregion
 
