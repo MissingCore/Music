@@ -38,7 +38,13 @@ function createTrackListeningSession() {
      * called when a new track is played.
      */
     start: async (uri: string) => {
-      if (!AudioBrowser.getPlayingState().playing) return reset();
+      //? In case AudioBrowser throws (ie: when it's not ready).
+      let isPlaying = false;
+      try {
+        isPlaying = AudioBrowser.getPlayingState().playing;
+      } catch {}
+
+      if (!isPlaying) return reset();
       const track = await db.query.tracks.findFirst({
         columns: { id: true },
         where: (fields, { eq }) => eq(fields.uri, uri),
