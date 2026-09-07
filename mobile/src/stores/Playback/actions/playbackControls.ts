@@ -4,6 +4,7 @@
 import AudioBrowser from "react-native-audio-browser";
 
 import { preferenceStore } from "~/stores/Preference/store";
+import { TrackListeningSession } from "~/modules/insights/core/TrackListeningSession";
 import { playbackStore } from "../store";
 import { RepeatModes } from "../constants";
 import type { PlayFromSource } from "../types";
@@ -81,6 +82,8 @@ export async function stop() {
     _restoredTrackKey: playbackStore.getState().activeKey,
   });
   AudioBrowser.reset();
+  //? Finalize listening session here as it won't through the `onPlaybackChanged` event.
+  TrackListeningSession.finalize();
   revalidateWidgets({ openApp: true });
 }
 

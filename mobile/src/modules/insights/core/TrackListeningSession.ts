@@ -2,11 +2,10 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { sql } from "drizzle-orm";
+import AudioBrowser from "react-native-audio-browser";
 
 import { db } from "~/db";
 import { tracksPlayEvents } from "~/db/schema";
-
-import { playbackStore } from "~/stores/Playback/store";
 
 type ListeningSession = {
   trackId: string;
@@ -39,7 +38,7 @@ function createTrackListeningSession() {
      * called when a new track is played.
      */
     start: async (uri: string) => {
-      if (!playbackStore.getState().isPlaying) return reset();
+      if (!AudioBrowser.getPlayingState().playing) return reset();
       const track = await db.query.tracks.findFirst({
         columns: { id: true },
         where: (fields, { eq }) => eq(fields.uri, uri),
@@ -68,6 +67,14 @@ function createTrackListeningSession() {
     finalize: async ({ paused = false }: { paused?: boolean } = {}) => {
       if (!session) return;
 
+      //? Handles edge case where the `finalize` called when the app is killed
+      //? when already in a paused state would incorrectly update the existing
+      //? session entry, resulting in an inflated value.
+      if (hasPaused) {
+        if (!paused) reset();
+        return;
+      }
+
       const { eventId, trackId, playedAt } = session;
       const { elapsedTime, nextTime } = derivePlayTimes(session);
 
@@ -79,6 +86,9 @@ function createTrackListeningSession() {
       } else {
         reset();
       }
+
+      //? To help ensure we mutate the same session during a "pause" event.
+      const currentSession = session;
 
       if (nextTime > MIN_PLAY_TIME) {
         //? If `eventId` is defined, we just want to add the elapsed time
@@ -96,7 +106,9 @@ function createTrackListeningSession() {
             })
             .returning({ id: tracksPlayEvents.id });
 
-          if (paused && sessionEvent?.id) session.eventId = sessionEvent.id;
+          if (paused && session === currentSession && sessionEvent?.id) {
+            session.eventId = sessionEvent.id;
+          }
         } catch (err) {
           console.error("[TrackListeningSession] Failed to record event.", err);
         }
