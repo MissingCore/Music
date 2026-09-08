@@ -279,6 +279,10 @@
       "title": "Keep Repeat Mode on Skip",
       "brief": "Don't switch mode to \"Repeat\" from \"Repeat One\" on skip."
     },
+    "reshuffleOnLaunch": {
+      "title": "Reshuffle on App Launch",
+      "brief": "Reshuffles queue on app launch if shuffle is enabled."
+    },
     "restoreLastPosition": {
       "title": "Restore From Last Played Position"
     },

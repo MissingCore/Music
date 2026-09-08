@@ -15,6 +15,7 @@ import migrations from "~/db/drizzle/migrations";
 
 import { IS_DEV } from "~/env";
 import { playbackStore } from "~/stores/Playback/store";
+import { PlaybackSettings } from "~/stores/Playback/actions";
 import { preferenceStore } from "~/stores/Preference/store";
 import { sessionStore } from "~/stores/Session/store";
 import { viewPreferenceStore } from "~/stores/ViewPreference/store";
@@ -140,19 +141,23 @@ async function startupFlow() {
   //? 5. Apply user preferences.
   const {
     repeat,
+    shuffle,
     playingFrom,
     activeKey,
     isReplayGainEnabled,
     restoreVolume,
     volume,
   } = playbackStore.getState();
-  const { restoreLastPosition, continuePlaybackOnDismiss } =
+  const { restoreLastPosition, continuePlaybackOnDismiss, reshuffleOnLaunch } =
     preferenceStore.getState();
+
+  // Ensure correct playback states.
   if (restoreLastPosition) {
     playbackStore.setState({ _restoredTrackKey: activeKey });
   } else {
     playbackStore.setState({ _hasRestoredPosition: true, lastPosition: 0 });
   }
+  if (reshuffleOnLaunch && shuffle) PlaybackSettings.toggleShuffle(true);
 
   // Ensure correct AudioBrowser settings.
   AudioBrowser.updateOptions(

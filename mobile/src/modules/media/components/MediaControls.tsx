@@ -36,7 +36,7 @@ export function ShuffleButton({ size = "lg" }: { size?: ButtonSize }) {
     <IconButton
       icon="shuffle"
       accessibilityLabel={t("term.shuffle")}
-      onPress={PlaybackSettings.toggleShuffle}
+      onPress={() => PlaybackSettings.toggleShuffle()}
       size={size}
       _iconColor={isActive ? "primary" : undefined}
     />

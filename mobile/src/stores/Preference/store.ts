@@ -114,6 +114,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
 
     continuePlaybackOnDismiss: false,
     repeatOnSkip: false,
+    reshuffleOnLaunch: false,
     restoreLastPosition: true,
     quickAddQueue: false,
     quickFavorite: false,

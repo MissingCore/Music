@@ -24,9 +24,9 @@ export async function cycleRepeat() {
 }
 
 /** Update the `shuffle` field along with `currentList` & `listIdx`. */
-export async function toggleShuffle() {
+export async function toggleShuffle(overrideNewShuffleStatus?: boolean) {
   const { shuffle, orderSnapshot, queue, activeKey } = playbackStore.getState();
-  const newShuffleStatus = !shuffle;
+  const newShuffleStatus = overrideNewShuffleStatus ?? !shuffle;
 
   // Exit early if we don't have a list loaded.
   if (queue.length === 0 || !activeKey) {

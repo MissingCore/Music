@@ -95,6 +95,8 @@ export interface PreferenceStore {
   continuePlaybackOnDismiss: boolean;
   /** Whether we stay on "Repeat One" mode when we skip. */
   repeatOnSkip: boolean;
+  /** Whether the queue gets reshuffled on app launch. */
+  reshuffleOnLaunch: boolean;
   /** Whether we'll restore the track to the last played position. */
   restoreLastPosition: boolean;
   /** Shows button to add track to queue on `<Track />` item. */
