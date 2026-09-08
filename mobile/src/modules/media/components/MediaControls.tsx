@@ -57,7 +57,7 @@ export function PlayToggleButton() {
       })}
       size="lg"
       rippleColor={isPlaying ? "surfaceContainerHighest" : "primaryDim"}
-      _iconColor="onPrimary"
+      _iconColor={isPlaying ? "onSurface" : "onPrimary"}
     />
   );
 }
