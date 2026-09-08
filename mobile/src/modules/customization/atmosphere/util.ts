@@ -52,9 +52,11 @@ export async function deriveAndSetAtmosphereColors(
 
   if (palette) {
     for (const role of ["primary", "secondary"] as const) {
-      const imgColor = palette[
-        role === "primary" ? "vibrant" : "lightMuted"
+      let imgColor = palette[
+        role === "primary" ? "lightMuted" : "lightVibrant"
       ] as HexColor;
+      if (role === "primary" && imgColor === "#FFFFFF")
+        imgColor = palette.dominantAndroid as HexColor;
 
       const colorAsHSV = hexToHSV(imgColor);
       const dimColor = hsvToHex({
