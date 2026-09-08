@@ -3,6 +3,30 @@
 
 import type { HexColor } from "../core/constants";
 
+/** Determine if white or black looks better over the specified color. */
+export function getContrastColor(hex: HexColor) {
+  const cleanHex = hex.replace("#", "");
+
+  const fullHex =
+    cleanHex.length === 3
+      ? cleanHex
+          .split("")
+          .map((char) => char + char)
+          .join("")
+      : cleanHex;
+
+  // Extract RGB values
+  const r = parseInt(fullHex.substring(0, 2), 16);
+  const g = parseInt(fullHex.substring(2, 4), 16);
+  const b = parseInt(fullHex.substring(4, 6), 16);
+
+  // Calculate YIQ brightness
+  const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+
+  // Return black for light backgrounds, white for dark backgrounds
+  return yiq >= 128 ? "black" : "white";
+}
+
 export function hexToHSV(hex: HexColor) {
   const [r, g, b] = hex
     .replace("#", "")
