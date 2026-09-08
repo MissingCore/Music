@@ -28,10 +28,11 @@ export function AtmosphereBackground(props: {
   const imgSize = Math.max(dimensions.height, dimensions.width);
 
   useEffect(() => {
+    if (!atmosphereEffect) return;
     const controller = new AbortController();
     deriveAndSetAtmosphereColors(getImageUri(props.source), controller);
     return () => controller.abort();
-  }, [props.source]);
+  }, [atmosphereEffect, props.source]);
 
   //? Reset the "Atmosphere" Uniwind theme after we no longer show this.
   useEffect(() => {
