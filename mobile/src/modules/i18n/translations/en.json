@@ -379,10 +379,6 @@
         "adjustWithoutTags": "Adjustment Without Tags"
       }
     },
-    "ignoreInterrupt": {
-      "title": "Ignore Interruptions",
-      "brief": "Continue playing audio when an interruption such as a notification or a call occurs. You will need to manually pause and unpause the music during these situations."
-    },
     "sleepTimer": {
       "title": "Sleep Timer",
       "description": "Stop playing audio after the specified amount of minutes.",
