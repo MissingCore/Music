@@ -49,9 +49,6 @@ importers:
       '@sentry/react-native':
         specifier: 8.24.0
         version: 8.24.0(@expo/env@2.4.3)(dotenv@17.4.2)(expo@57.0.19)(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
-      '@somesoap/react-native-image-palette':
-        specifier: 1.2.2
-        version: 1.2.2(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
       '@tanstack/react-query':
         specifier: 5.102.8
         version: 5.102.8(react@19.2.3)
@@ -1904,12 +1901,6 @@ packages:
 
   '@sinclair/typebox@0.27.12':
     resolution: {integrity: sha512-hhyNJ+nbR6ZR7pToHvllEFun9TL0sbL+tk/ON75lo+Xas054uez98qRbsuNt7MBCyZKK4+8Yli/OAGZhmfBZ/g==}
-
-  '@somesoap/react-native-image-palette@1.2.2':
-    resolution: {integrity: sha512-91O9pDEeYrA5vJzZs8x5h50uwTTAvqSrAnu5sWs4jeHiRXeGDgDY0keVB0s3RrIlbeF61KBK7OZpXxymSMyz5Q==}
-    peerDependencies:
-      react: '*'
-      react-native: '*'
 
   '@tailwindcss/node@4.3.2':
     resolution: {integrity: sha512-yWP/sqEcBLaD8JuA6zNwxoYKr75qxTioYwlRwekj5Jr/I5GXnoJfjetH/psLUIv74cYTH2lBUEzBkinthoYcBg==}
@@ -7369,11 +7360,6 @@ snapshots:
       '@sentry/core': 10.71.0
 
   '@sinclair/typebox@0.27.12': {}
-
-  '@somesoap/react-native-image-palette@1.2.2(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)':
-    dependencies:
-      react: 19.2.3
-      react-native: 0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3)
 
   '@tailwindcss/node@4.3.2':
     dependencies:

@@ -12,7 +12,6 @@
 | @react-navigation/native-stack | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native-stack |
 | @rn-primitives/portal | MIT | https://github.com/roninoss/rn-primitives/tree/main/packages/portal |
 | @sentry/react-native | MIT | https://github.com/getsentry/sentry-react-native |
-| @somesoap/react-native-image-palette | MIT | https://github.com/someSOAP/react-native-image-palette |
 | @tanstack/react-query | MIT | https://github.com/TanStack/query |
 | @zoontek/react-native-navigation-bar | MIT | https://github.com/zoontek/react-native-navigation-bar |
 | clsx | MIT | https://github.com/lukeed/clsx |
