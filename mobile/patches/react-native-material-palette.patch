@@ -1,0 +1,84 @@
+diff --git a/android/src/main/java/com/callstack/materialpalette/MaterialPaletteModule.kt b/android/src/main/java/com/callstack/materialpalette/MaterialPaletteModule.kt
+index 69755104dbea62b49e1fac70649b09f391eb0c6a..a112fee3f65ae8238ffe61fee254cb5093ab8f5a 100644
+--- a/android/src/main/java/com/callstack/materialpalette/MaterialPaletteModule.kt
++++ b/android/src/main/java/com/callstack/materialpalette/MaterialPaletteModule.kt
+@@ -30,6 +30,7 @@ class MaterialPaletteModule(reactContext: ReactApplicationContext) :
+   ) {
+     generatePalette(source, maximumColorCount, region, null) { palette ->
+       Arguments.createMap().apply {
++        putSwatch("dominant", palette.dominantSwatch)
+         putSwatch("vibrant", palette.vibrantSwatch)
+         putSwatch("lightVibrant", palette.lightVibrantSwatch)
+         putSwatch("darkVibrant", palette.darkVibrantSwatch)
+diff --git a/lib/module/createPalette.js b/lib/module/createPalette.js
+index 9a58af0bc8e8a3a56073d2e07a8e723b45d99f6a..6ee7a6668ec1f95171485cb924466569068a405d 100644
+--- a/lib/module/createPalette.js
++++ b/lib/module/createPalette.js
+@@ -45,6 +45,7 @@ export async function createPalette(source, options = {}) {
+   } = options;
+   const result = await MaterialPalette.createPalette(uri, maximumColorCount, region);
+   const palette = {
++    dominant: result.dominant ?? undefined,
+     vibrant: result.vibrant ?? undefined,
+     lightVibrant: result.lightVibrant ?? undefined,
+     darkVibrant: result.darkVibrant ?? undefined,
+diff --git a/lib/typescript/src/NativeMaterialPalette.d.ts b/lib/typescript/src/NativeMaterialPalette.d.ts
+index e0564d3bcd5054c7f0b89dcfaa56114aa9400415..7d79a60c2190294bcddde6cc8ab8a34ab7360fab 100644
+--- a/lib/typescript/src/NativeMaterialPalette.d.ts
++++ b/lib/typescript/src/NativeMaterialPalette.d.ts
+@@ -24,6 +24,7 @@ export type PaletteSwatchSpec = {
+     titleTextColor: string;
+ };
+ export type PaletteResultSpec = {
++    dominant: PaletteSwatchSpec | undefined;
+     vibrant: PaletteSwatchSpec | undefined;
+     lightVibrant: PaletteSwatchSpec | undefined;
+     darkVibrant: PaletteSwatchSpec | undefined;
+diff --git a/lib/typescript/src/types.d.ts b/lib/typescript/src/types.d.ts
+index 242fd23bf7eef105485a4bd8b538a35c97a78587..fa026d03b305e3aeb4a2510b1dd20e25a9fd58da 100644
+--- a/lib/typescript/src/types.d.ts
++++ b/lib/typescript/src/types.d.ts
+@@ -28,6 +28,7 @@ export type PaletteSwatchOptions = PaletteOptions & {
+      * Color target for color matching.
+      *
+      * Can be one of the preset targets or a custom target object:
++     * - `'dominant'` - The dominant color from the image.
+      * - `'vibrant'` - A vibrant color from the image.
+      * - `'lightVibrant'` - A light and vibrant color.
+      * - `'darkVibrant'` - A dark and vibrant color.
+diff --git a/src/NativeMaterialPalette.ts b/src/NativeMaterialPalette.ts
+index eb7c149d262077b83fc5982a7fdb7aa67d4f9f67..b1de2eed3aa8425af9f0c1245ceb1283471609fd 100644
+--- a/src/NativeMaterialPalette.ts
++++ b/src/NativeMaterialPalette.ts
+@@ -27,6 +27,7 @@ export type PaletteSwatchSpec = {
+ };
+ 
+ export type PaletteResultSpec = {
++  dominant: PaletteSwatchSpec | undefined;
+   vibrant: PaletteSwatchSpec | undefined;
+   lightVibrant: PaletteSwatchSpec | undefined;
+   darkVibrant: PaletteSwatchSpec | undefined;
+diff --git a/src/createPalette.tsx b/src/createPalette.tsx
+index 441e6ef485eaa0c3c4a85d5e0eeefc28622f32f3..c437c4c04ef9e54d8580578f555d95b560382446 100644
+--- a/src/createPalette.tsx
++++ b/src/createPalette.tsx
+@@ -73,6 +73,7 @@ export async function createPalette(
+   );
+ 
+   const palette: PaletteResult = {
++    dominant: result.dominant ?? undefined,
+     vibrant: result.vibrant ?? undefined,
+     lightVibrant: result.lightVibrant ?? undefined,
+     darkVibrant: result.darkVibrant ?? undefined,
+diff --git a/src/types.tsx b/src/types.tsx
+index a14432a2a536d57b64c506c8531096196f294076..89fd6e3c5722a92a4317ce9519df70a9261b798a 100644
+--- a/src/types.tsx
++++ b/src/types.tsx
+@@ -38,6 +38,7 @@ export type PaletteSwatchOptions = PaletteOptions & {
+    * Color target for color matching.
+    *
+    * Can be one of the preset targets or a custom target object:
++   * - `'dominant'` - The dominant color from the image.
+    * - `'vibrant'` - A vibrant color from the image.
+    * - `'lightVibrant'` - A light and vibrant color.
+    * - `'darkVibrant'` - A dark and vibrant color.

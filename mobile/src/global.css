@@ -161,8 +161,8 @@
       /* ? All "secondary" colors are used. */
       --color-secondary: hsl(47 100% 50%);
       --color-secondaryDim: hsl(47 100% 45%);
-      --color-onSecondary: hsl(0 0% 0%);
-      --color-onSecondaryVariant: hsl(0 0% 28%);
+      --color-onSecondary: hsl(0 0% 100%);
+      --color-onSecondaryVariant: hsl(0 0% 89%);
 
       --color-error: hsl(350 85% 42%);
       --color-errorDim: hsl(350 85% 37%);

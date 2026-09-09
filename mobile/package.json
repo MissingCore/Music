@@ -60,6 +60,7 @@
     "react-native-gesture-handler": "3.2.1",
     "react-native-keyboard-controller": "1.22.4",
     "react-native-markdown-renderer": "4.1.1",
+    "react-native-material-palette": "0.2.0",
     "react-native-nano-icons": "0.2.1",
     "react-native-nitro-modules": "0.37.1",
     "react-native-pager-view": "8.0.4",
