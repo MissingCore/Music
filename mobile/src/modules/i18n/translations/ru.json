@@ -31,7 +31,9 @@
     "upcoming": "Предстоящее",
     "playingFrom": "Играет с",
     "instructions": "Инструкция",
-    "disc": "Диск {{count}}"
+    "disc": "Диск {{count}}",
+    "eps": null,
+    "singles": null
   },
   "template": {
     "entryAdd": "Добавить {{- name}}",
@@ -196,6 +198,14 @@
         "totalDuration": "Полная длительность"
       }
     },
+    "dbOptimization": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "start": null,
+        "success": null
+      }
+    },
     "recap": {
       "title": null,
       "brief": null,
@@ -239,6 +249,10 @@
     "repeatOnSkip": {
       "title": "Не выключать режим повтора при пропуске",
       "brief": "Не переключаться в режим \"Повтор\" с режима \"Повторять одну\" после пропуска."
+    },
+    "reshuffleOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "restoreLastPosition": {
       "title": "Сохранить на последнем остановившемся моменте"
@@ -415,7 +429,8 @@
         "disc": "Диск",
         "name": "Имя",
         "trackNumber": "Номер трека",
-        "year": "Год"
+        "year": "Год",
+        "overrideFields": null
       }
     },
     "modalViewPreference": {

@@ -31,7 +31,9 @@
     "upcoming": "Bevorstehend",
     "playingFrom": "Wiedergabe von",
     "instructions": "Anweisungen",
-    "disc": "CD {{count}}"
+    "disc": "CD {{count}}",
+    "eps": null,
+    "singles": null
   },
   "template": {
     "entryAdd": "{{- name}} hinzufügen",
@@ -196,6 +198,14 @@
         "totalDuration": "Gesamtdauer"
       }
     },
+    "dbOptimization": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "start": null,
+        "success": null
+      }
+    },
     "recap": {
       "title": null,
       "brief": null,
@@ -239,6 +249,10 @@
     "repeatOnSkip": {
       "title": "Wiederholungsmodus beim Überspringen behalten",
       "brief": "Beim Überspringen nicht von \"Ein Lied wiederholen\" auf \"Wiederholen\" umschalten."
+    },
+    "reshuffleOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "restoreLastPosition": {
       "title": "Zuletzt gespielte Position speichern"
@@ -415,7 +429,8 @@
         "disc": "CD Nummer",
         "name": "Name",
         "trackNumber": "Titelnummer",
-        "year": "Jahr"
+        "year": "Jahr",
+        "overrideFields": null
       }
     },
     "modalViewPreference": {

@@ -31,7 +31,9 @@
     "upcoming": "आगामी",
     "playingFrom": "यहाँ से चल रहा है",
     "instructions": null,
-    "disc": "डिस्क {{count}}"
+    "disc": "डिस्क {{count}}",
+    "eps": null,
+    "singles": null
   },
   "template": {
     "entryAdd": "{{- name}} जोड़ें",
@@ -196,6 +198,14 @@
         "totalDuration": "कुल अवधि"
       }
     },
+    "dbOptimization": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "start": null,
+        "success": null
+      }
+    },
     "recap": {
       "title": null,
       "brief": null,
@@ -239,6 +249,10 @@
     "repeatOnSkip": {
       "title": "स्किप करने पर रिपीट मोड चालू रखें",
       "brief": "स्किप करने पर मोड को \"रिपीट वन\" से \"रिपीट\" में न बदलें।"
+    },
+    "reshuffleOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "restoreLastPosition": {
       "title": "अंतिम प्ले किए गए स्थान से पुनर्स्थापित करें"
@@ -415,7 +429,8 @@
         "disc": "डिस्क",
         "name": "नाम",
         "trackNumber": "ट्रैक संख्या",
-        "year": "वर्ष"
+        "year": "वर्ष",
+        "overrideFields": null
       }
     },
     "modalViewPreference": {

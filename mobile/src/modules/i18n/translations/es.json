@@ -31,7 +31,9 @@
     "upcoming": "A continuación",
     "playingFrom": "Reproduciendo desde",
     "instructions": "Instrucciones",
-    "disc": "Disco {{count}}"
+    "disc": "Disco {{count}}",
+    "eps": null,
+    "singles": null
   },
   "template": {
     "entryAdd": "Agregar {{- name}}",
@@ -196,6 +198,14 @@
         "totalDuration": "Duración total"
       }
     },
+    "dbOptimization": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "start": null,
+        "success": null
+      }
+    },
     "recap": {
       "title": "Recap",
       "brief": "Tus canciones y artistas más escuchados e historial de reproducción.",
@@ -239,6 +249,10 @@
     "repeatOnSkip": {
       "title": "Mantener repetición al saltar",
       "brief": "Evita que \"Repetir una\" cambie al saltar canción."
+    },
+    "reshuffleOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "restoreLastPosition": {
       "title": "Restaurar última posición"
@@ -415,7 +429,8 @@
         "disc": "Disco",
         "name": "Nombre",
         "trackNumber": "Número de canción",
-        "year": "Año"
+        "year": "Año",
+        "overrideFields": null
       }
     },
     "modalViewPreference": {

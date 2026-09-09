@@ -31,7 +31,9 @@
     "upcoming": "Sıradaki",
     "playingFrom": "Şuradan Oynatılıyor:",
     "instructions": "Nasıl Kullanılır",
-    "disc": "Disk {{count}}"
+    "disc": "Disk {{count}}",
+    "eps": null,
+    "singles": null
   },
   "template": {
     "entryAdd": "{{- name}} ekle",
@@ -196,6 +198,14 @@
         "totalDuration": "Toplam Süre"
       }
     },
+    "dbOptimization": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "start": null,
+        "success": null
+      }
+    },
     "recap": {
       "title": null,
       "brief": null,
@@ -239,6 +249,10 @@
     "repeatOnSkip": {
       "title": "Atlarken Tekrar Modunu Koru",
       "brief": "Atlama sırasında modu \"Tekini Tekrarla\" durumundan \"Tekrarla\" durumuna geçirme."
+    },
+    "reshuffleOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "restoreLastPosition": {
       "title": "Son Çalınan Konumdan Devam Et"
@@ -415,7 +429,8 @@
         "disc": "Disk",
         "name": "Ad",
         "trackNumber": "Parça Numarası",
-        "year": "Yıl"
+        "year": "Yıl",
+        "overrideFields": null
       }
     },
     "modalViewPreference": {

@@ -31,7 +31,9 @@
     "upcoming": "即将播放",
     "playingFrom": "正在播放来自",
     "instructions": null,
-    "disc": "碟片 {{count}}"
+    "disc": "碟片 {{count}}",
+    "eps": null,
+    "singles": null
   },
   "template": {
     "entryAdd": null,
@@ -196,6 +198,14 @@
         "totalDuration": "总时长"
       }
     },
+    "dbOptimization": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "start": null,
+        "success": null
+      }
+    },
     "recap": {
       "title": null,
       "brief": null,
@@ -239,6 +249,10 @@
     "repeatOnSkip": {
       "title": "跳过时保持单曲循环",
       "brief": "不要在跳过时从“单曲循环”切换模式到“循环播放”。"
+    },
+    "reshuffleOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "restoreLastPosition": {
       "title": null
@@ -415,7 +429,8 @@
         "disc": "唱片",
         "name": "名称",
         "trackNumber": "曲目编号",
-        "year": "年份"
+        "year": "年份",
+        "overrideFields": null
       }
     },
     "modalViewPreference": {
