@@ -31,7 +31,9 @@
     "upcoming": "Pròxima",
     "playingFrom": "Reproduint des de",
     "instructions": "Instruccions",
-    "disc": "Disc {{count}}"
+    "disc": "Disc {{count}}",
+    "eps": null,
+    "singles": null
   },
   "template": {
     "entryAdd": "Afegir {{- name}}",
@@ -196,6 +198,14 @@
         "totalDuration": "Durada total"
       }
     },
+    "dbOptimization": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "start": null,
+        "success": null
+      }
+    },
     "recap": {
       "title": null,
       "brief": null,
@@ -239,6 +249,10 @@
     "repeatOnSkip": {
       "title": "Mantenir el mode de repetició al saltar",
       "brief": "Evita que \"Repetir una vegada\" canviï a \"Repetir\" en saltar."
+    },
+    "reshuffleOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "restoreLastPosition": {
       "title": "Guardar l'última posició reproduïda"
@@ -415,7 +429,8 @@
         "disc": null,
         "name": null,
         "trackNumber": null,
-        "year": null
+        "year": null,
+        "overrideFields": null
       }
     },
     "modalViewPreference": {

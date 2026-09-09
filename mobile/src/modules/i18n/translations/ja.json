@@ -31,7 +31,9 @@
     "upcoming": "次に再生",
     "playingFrom": "再生元",
     "instructions": null,
-    "disc": "ディスク {{count}}"
+    "disc": "ディスク {{count}}",
+    "eps": null,
+    "singles": null
   },
   "template": {
     "entryAdd": "{{- name}}を追加する",
@@ -196,6 +198,14 @@
         "totalDuration": "合計の再生時間"
       }
     },
+    "dbOptimization": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "start": null,
+        "success": null
+      }
+    },
     "recap": {
       "title": null,
       "brief": null,
@@ -239,6 +249,10 @@
     "repeatOnSkip": {
       "title": "スキップ時にリピートモードを維持する",
       "brief": "スキップ時に「1 回リピート」を「リピート」に切り替えないようにします。"
+    },
+    "reshuffleOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "restoreLastPosition": {
       "title": "最後に再生した位置を復元"
@@ -415,7 +429,8 @@
         "disc": "ディスク",
         "name": "名前",
         "trackNumber": "トラック番号",
-        "year": "年"
+        "year": "年",
+        "overrideFields": null
       }
     },
     "modalViewPreference": {

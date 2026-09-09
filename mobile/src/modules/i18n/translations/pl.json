@@ -31,7 +31,9 @@
     "upcoming": "Następne",
     "playingFrom": "Odtwarzanie z",
     "instructions": "Instrukcje",
-    "disc": "CD {{count}}"
+    "disc": "CD {{count}}",
+    "eps": null,
+    "singles": null
   },
   "template": {
     "entryAdd": "Dodaj {{- name}}",
@@ -196,6 +198,14 @@
         "totalDuration": "Łączna długość"
       }
     },
+    "dbOptimization": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "start": null,
+        "success": null
+      }
+    },
     "recap": {
       "title": null,
       "brief": null,
@@ -239,6 +249,10 @@
     "repeatOnSkip": {
       "title": "Zachowaj zapętlenie po pominięciu",
       "brief": "Nie zmieniaj trybu na `Zapętl` z `Zapętl jedną` po pominięciu."
+    },
+    "reshuffleOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "restoreLastPosition": {
       "title": "Przywróć ostatnio odtwarzaną pozycję"
@@ -415,7 +429,8 @@
         "disc": "CD",
         "name": "Tytuł",
         "trackNumber": "Numer ścieżki",
-        "year": "Rok"
+        "year": "Rok",
+        "overrideFields": null
       }
     },
     "modalViewPreference": {

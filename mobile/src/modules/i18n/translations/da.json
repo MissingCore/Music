@@ -31,7 +31,9 @@
     "upcoming": "Næste sange",
     "playingFrom": "Afspiller fra",
     "instructions": null,
-    "disc": "Plade {{count}}"
+    "disc": "Plade {{count}}",
+    "eps": null,
+    "singles": null
   },
   "template": {
     "entryAdd": "Tilføj {{- name}}",
@@ -196,6 +198,14 @@
         "totalDuration": "Varighed i alt"
       }
     },
+    "dbOptimization": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "start": null,
+        "success": null
+      }
+    },
     "recap": {
       "title": null,
       "brief": null,
@@ -239,6 +249,10 @@
     "repeatOnSkip": {
       "title": "Behold gentagelsesindstilling ved næste sang",
       "brief": "Ændr ikke gentagelsesindstillingen fra \"Gentag én\" til \"Gentag\", når der skiftes til næste sang."
+    },
+    "reshuffleOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "restoreLastPosition": {
       "title": "Fortsæt samme sted, når du åbner appen igen"
@@ -415,7 +429,8 @@
         "disc": "Plade",
         "name": "Navn",
         "trackNumber": "Sangnummer",
-        "year": "Udgivelsesår"
+        "year": "Udgivelsesår",
+        "overrideFields": null
       }
     },
     "modalViewPreference": {

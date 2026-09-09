@@ -31,7 +31,9 @@
     "upcoming": "Yang akan Datang",
     "playingFrom": "Memutar Dari",
     "instructions": "Instruksi",
-    "disc": "Disk {{count}}"
+    "disc": "Disk {{count}}",
+    "eps": null,
+    "singles": null
   },
   "template": {
     "entryAdd": "Tambahkan {{- name}}",
@@ -196,6 +198,14 @@
         "totalDuration": "Durasi Total"
       }
     },
+    "dbOptimization": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "start": null,
+        "success": null
+      }
+    },
     "recap": {
       "title": null,
       "brief": null,
@@ -239,6 +249,10 @@
     "repeatOnSkip": {
       "title": "Tetap dalam Mode Mengulang saat Melewati",
       "brief": "Jangan mengalihkan mode ke \"Ulangi\" dari \"Ulangi Sekali\" saat melewati."
+    },
+    "reshuffleOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "restoreLastPosition": {
       "title": "Pulihkan Dari Posisi Terakhir Diputar"
@@ -415,7 +429,8 @@
         "disc": "Disk",
         "name": "Nama",
         "trackNumber": "Nomer Trek",
-        "year": "Tahun"
+        "year": "Tahun",
+        "overrideFields": null
       }
     },
     "modalViewPreference": {

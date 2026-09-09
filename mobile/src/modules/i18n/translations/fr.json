@@ -31,7 +31,9 @@
     "upcoming": "À venir",
     "playingFrom": "Joue depuis",
     "instructions": "Instructions",
-    "disc": "CD {{count}}"
+    "disc": "Disque {{count}}",
+    "eps": null,
+    "singles": null
   },
   "template": {
     "entryAdd": "Ajouter {{- name}}",
@@ -79,18 +81,18 @@
   "err": {
     "flow": {
       "generic": {
-        "title": "Quelque chose s'est mal passé",
-        "brief": "Vous avez rencontré une erreur inattendue."
+        "title": "Une erreur s'est produite",
+        "brief": "Une erreur inattendue s'est produite."
       },
       "report": {
         "title": "Signaler un problème",
-        "brief": "Incluez une capture d'écran de cette page."
+        "brief": "Joignez une capture d'écran de cet écran."
       }
     },
     "msg": {
       "actionCancel": "Action annulée.",
       "invalidStructure": "Structure invalide.",
-      "noSelect": "Rien n'est sélectionné.",
+      "noSelect": "Aucun élément n'est sélectionné.",
       "usedName": "Ce nom ne peut pas être utilisé.",
       "noContent": "Aucun contenu trouvé.",
       "noErrors": "Aucune erreur trouvée.",
@@ -107,7 +109,7 @@
   "feat": {
     "appUpdate": {
       "title": "Mise à jour de l'application",
-      "brief": "Une nouvelle mise à jour est disponible!",
+      "brief": "Une nouvelle mise à jour est disponible !",
       "extra": {
         "downloadAPK": "Télécharger le dernier APK",
         "updateGoogle": "Mettre à jour via le Play Store",
@@ -122,8 +124,8 @@
     "font": {
       "title": "Polices d'écriture",
       "extra": {
-        "accent": "Police Accentuée",
-        "primary": "Police Principale"
+        "accent": "Police accentuée",
+        "primary": "Police principale"
       }
     },
     "theme": {
@@ -151,7 +153,7 @@
       "extra": {
         "plain": "Classique",
         "vinyl": "Vinyle",
-        "vinylOld": "Vinyle (Legacy)",
+        "vinylOld": "Vinyle (édition classique)",
         "none": "Aucun",
         "alternativeInfoLayout": "Autre présentation des informations",
         "standardVinylSpeed": "Vitesse standard du vinyle"
@@ -162,8 +164,8 @@
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": "Forme d'onde",
-        "waveformPurgeCache": "Purger les formes d'onde mises en cache",
-        "waveformPurgeCacheBrief": "Libère de l'espace de stockage pour recalculer les formes d'onde des titres lus.",
+        "waveformPurgeCache": "Vider la mémoire cache des formes d'onde",
+        "waveformPurgeCacheBrief": "Libère de l'espace de stockage pour recalculer les formes d'onde des morceaux en cours de lecture.",
         "waveformPurgeCacheToast": "Cache de formes d'onde effacé."
       }
     },
@@ -177,7 +179,7 @@
     },
     "backup": {
       "title": "Sauvegarde",
-      "description": "Transférez vos données entre appareils via un fichier `music_backup.json`.",
+      "description": "Transférez les données de cette application d'un appareil à l'autre via un fichier `music_backup.json`.",
       "extra": {
         "export": "Exporter",
         "exportSuccess": "L'exportation s'est déroulée avec succès.",
@@ -186,7 +188,7 @@
       }
     },
     "insights": {
-      "title": "Informations Approfondies",
+      "title": "Perspectives",
       "extra": {
         "cache": "Cache",
         "database": "Base de données",
@@ -194,6 +196,14 @@
         "other": "Autre",
         "total": "Total",
         "totalDuration": "Durée Totale"
+      }
+    },
+    "dbOptimization": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "start": null,
+        "success": null
       }
     },
     "recap": {
@@ -205,7 +215,7 @@
         "mostPlayed": "Plus Écouté {{- name}}",
         "top": "Top {{- name}}",
         "timeRange": "Période",
-        "allTime": null,
+        "allTime": "De tous les temps",
         "listeningTime": "Durée d'écoute",
         "totalListeningTime": "Total $t(feat.recap.extra.listeningTime)",
         "totalPlays": "Nombre total de lectures",
@@ -214,8 +224,8 @@
       }
     },
     "hiddenTracks": {
-      "title": "Pistes Masqués",
-      "brief": "Pistes non affichées dans l'application."
+      "title": "Titres masqués",
+      "brief": "Titres non affichés dans l'application."
     },
     "saveErrors": {
       "title": "Erreurs d'enregistrement",
@@ -225,7 +235,7 @@
       "title": "Lecture",
       "extra": {
         "delay": "Délai de lecture",
-        "options": "Options de Lecture",
+        "options": "Options de lecture",
         "pitch": "Hauteur de lecture",
         "speed": "Vitesse de lecture",
         "restoreVolume": "Restaurer le volume de l'application",
@@ -233,12 +243,16 @@
       }
     },
     "continuePlaybackOnDismiss": {
-      "title": "Continuer la lecture à la fermeture",
-      "description": "Laisse la lecture de la musique continuer lorsque vous fermez l'application des tâches récentes. Forcer l'arrêt de l'application pour interrompre la lecture."
+      "title": "Poursuivre la lecture après avoir fermé l'application",
+      "description": "La lecture musicale se poursuit lorsque vous fermez l'application depuis la liste des tâches récentes. Forcez l'arrêt de l'application pour interrompre la lecture."
     },
     "repeatOnSkip": {
-      "title": "Garder le mode Répéter lors du passage au titre suivant",
+      "title": "Garder le mode « Répéter » lors du passage au titre suivant",
       "brief": "Ne pas basculer en mode « Répéter » depuis « Répéter le titre » lors du saut."
+    },
+    "reshuffleOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "restoreLastPosition": {
       "title": "Restaurer à partir de la dernière position jouée"
@@ -249,7 +263,7 @@
         "useEmbedded": "Utiliser les paroles intégrées",
         "providers": "Fournisseurs de paroles",
         "providersInstructions": {
-          "line1": "Pour des raisons juridiques, nous ne fournissons pas automatiquement de sources en ligne pour l'affichage des paroles, car nous ne disposons pas de licence à cet effet. Nous proposons toutefois une liste de fournisseurs que vous pouvez utiliser pour nous indiquer d'où nous pouvons extraire les paroles.",
+          "line1": "Pour des raisons juridiques, nous ne fournissons pas automatiquement de sources en ligne pour l'affichage des paroles, car nous ne disposons pas de licence à cet effet. En revanche, nous proposons une liste de fournisseurs que vous pouvez utiliser pour nous indiquer d'où nous pouvons extraire les paroles.",
           "line2": "Cliquez ici pour en savoir plus sur la manière de créer un prestataire."
         }
       }
@@ -262,51 +276,51 @@
       }
     },
     "rescan": {
-      "title": "Lancer une nouvelle recherche",
-      "brief": "Recherchez à nouveau votre bibliothèque musicale.",
+      "title": "Relancer l'analyse",
+      "brief": "Recherchez tout nouveau média.",
       "extra": {
-        "start": "Recherche en cours...",
-        "success": "Recherche terminée.",
-        "fail": "Erreur lors de la recherche."
+        "start": "Nouvelle analyse de la bibliothèque...",
+        "success": "La numérisation de la bibliothèque est terminée.",
+        "fail": "Échec de la nouvelle analyse de la bibliothèque."
       }
     },
     "deepRescan": {
-      "title": "Recherche en profondeur",
-      "brief": "Ignore toutes les mesures de saut qui accélèrent la fonction normale de recherche."
+      "title": "Analyse approfondie",
+      "brief": "Ignore les mesures à sauter, ce qui accélère le fonctionnement normal de la fonction de relecture."
     },
     "optimizedImageSave": {
       "title": "Enregistrement optimisé des images",
       "brief": "Les titres reprennent la même pochette que leur album.",
       "description": {
-        "line1": "Si vous désactivez cette fonctionnalité, l'application utilisera beaucoup plus d'espace de stockage et le processus de numérisation risque d'être ralenti, car les illustrations seront enregistrées localement.",
-        "line2": "Il est nécessaire d'utiliser la fonction « Deep Rescan » pour appliquer les modifications."
+        "line1": "La désactivation de cette fonctionnalité entraînera une augmentation considérable de l'espace de stockage utilisé par l'application et pourra ralentir la numérisation, car les illustrations seront enregistrées localement.",
+        "line2": "Il est nécessaire d'utiliser la fonctionnalité « Analyse approfondie » pour appliquer les modifications."
       }
     },
     "rescanOnLaunch": {
-      "title": "Rescanner au lancement de l'app",
-      "brief": "Si cette option est désactivée, utilisez la fonction de nouvelle analyse pour détecter les titres nouveaux, mis à jour et supprimés."
+      "title": "Réanalyser au démarrage",
+      "brief": "Si cette option est désactivée, utilisez la fonction « Relancer l'analyse » pour détecter les nouveaux titres, mis à jour ou supprimés."
     },
     "listAllow": {
-      "title": "Liste d'autorisation",
-      "description": "Indiquez l'emplacement des titres. Si ce champ est vide, la recherche s'effectuera partout."
+      "title": "Liste blanche",
+      "description": "Précisez où se trouvent les titres. Si ce champ est vide, la recherche s'effectuera partout."
     },
     "listBlock": {
-      "title": "Liste de blocage",
-      "description": "Possède la priorité sur la liste d'autorisation."
+      "title": "Liste noire",
+      "description": "A une priorité plus élevée que les entrées figurant dans la liste blanche."
     },
     "minTrackDuration": {
       "title": "Durée minimale d'un morceau",
-      "description": "La durée minimale, en secondes, qu'un morceau doit avoir pour pouvoir être enregistré."
+      "description": "Durée minimale, en secondes, qu'un morceau doit avoir pour pouvoir être enregistré."
     },
     "separators": {
-      "title": "Séparateurs à valeurs multiples",
+      "title": "Séparateurs de valeurs multiples",
       "description": {
-        "line1": "S'applique aux nouveaux titres. Utilisez la fonction de réanalyse approfondie pour mettre à jour les titres existants.",
-        "line2": "Avertissement : cela peut entraîner l'identification erronée de certaines balises comme ayant plusieurs valeurs. Ne s'applique pas aux titres que vous avez modifiés manuellement."
+        "line1": "S'applique aux nouveaux titres. Utilisez la fonction « Analyse approfondie » pour mettre à jour les titres existants.",
+        "line2": "Avertissement : cela peut entraîner l'identification erronée de certaines balises comme comportant plusieurs valeurs. Ne s'applique pas aux morceaux que vous avez modifiés manuellement."
       }
     },
     "experimental": {
-      "title": "Fonctionnalités Expérimentales"
+      "title": "Fonctionnalités expérimentales"
     },
     "audioEffects": {
       "title": "Effets audio"
@@ -331,27 +345,27 @@
       "title": "ReplayGain",
       "extra": {
         "preAmp": "Préamplificateur ReplayGain",
-        "preAmpDescription": "Règle le volume lorsque ReplayGain est activé. Cela peut entraîner des pics de volume sur certaines pistes. Les modifications s'appliquent à la piste suivante.",
+        "preAmpDescription": "Règle le volume lorsque la fonction ReplayGain est activée. Cela peut entraîner des pics de volume sur certains morceaux. Les modifications s'appliquent au morceau suivant.",
         "adjustWithTags": "Ajustement à l'aide de balises",
         "adjustWithoutTags": "Ajustement sans balise"
       }
     },
     "ignoreInterrupt": {
       "title": "Ignorer les interruptions",
-      "brief": "Continuer à lire l'audio quand une interruption comme une notification ou un appel se produit. Vous devrez mettre manuellement la musique en pause et la remettre en pause pendant ces situations."
+      "brief": "La lecture audio se poursuit en cas d'interruption, telle qu'une notification ou un appel. Vous devrez alors mettre manuellement la musique en pause et la relancer vous-même."
     },
     "sleepTimer": {
-      "title": "Minuteur de Sommeil",
-      "description": "Arrêter la lecture audio après le nombre de minutes spécifié.",
+      "title": "Minuterie",
+      "description": "Arrêter la lecture audio au bout du nombre de minutes indiqué.",
       "extra": {
         "start": "Démarrer",
         "stopTime": "La lecture s'arrêtera à {{- time}}.",
-        "extend": "Prolongez le minuteur jusqu'à la fin du titre."
+        "extend": "Prolongez la minuterie jusqu'à la fin du morceau."
       }
     },
     "code": {
       "title": "Dépôt GitHub",
-      "brief": "Signalez des bugs, contribuez ou demandez des nouvelles fonctionnalités."
+      "brief": "Signaler des problèmes, apporter votre contribution ou proposer de nouvelles fonctionnalités."
     },
     "license": {
       "title": "Licence"
@@ -361,14 +375,14 @@
     },
     "thirdParty": {
       "title": "Logiciel tiers",
-      "brief": "Ce qui rend cette application possible."
+      "brief": "Qu'est-ce qui rend cette application possible ?"
     },
     "onboarding": {
       "extra": {
         "configureSettings": "Configurer les paramètres",
-        "startScan": "Commencer à scanner les titres",
-        "saveTracks": "Sauvegarde des titres",
-        "saveImages": "Sauvegarde des images"
+        "startScan": "Lancer la recherche de titres",
+        "saveTracks": "Enregistrement des titres",
+        "saveImages": "Enregistrement d'images"
       }
     },
     "playedRecent": {
@@ -380,21 +394,21 @@
     "search": {
       "title": "Rechercher",
       "extra": {
-        "searchMedia": "Recherchez des médias"
+        "searchMedia": "Rechercher dans les médias"
       }
     },
     "artwork": {
-      "title": "Pochette d'album",
+      "title": "Illustration",
       "extra": {
         "change": "Modifier l'illustration",
         "remove": "Supprimer l'illustration",
-        "square": "Œuvre d'art carrée"
+        "square": "Illustration carrée"
       }
     },
     "directory": {
       "extra": {
-        "add": "Ajouter un Dossier",
-        "select": "Sélectionner un Dossier"
+        "add": "Ajouter un répertoire",
+        "select": "Sélectionner un répertoire"
       }
     },
     "playlist": {
@@ -407,19 +421,20 @@
     },
     "trackMetadata": {
       "description": {
-        "line1": "Modifiez l'apparence de la piste pour cette application. Cela ne modifie pas le fichier lui-même.",
-        "line2": "Remarque : vos modifications peuvent être réinitialisées si ce fichier est modifié."
+        "line1": "Modifiez l'affichage du morceau dans cette application. Cela ne modifie pas le fichier lui-même.",
+        "line2": "Remarque : vos modifications risquent d'être réinitialisées si ce fichier est modifié."
       },
       "extra": {
         "albumArtists": "Artistes de l'album",
         "disc": "Disque",
         "name": "Nom",
-        "trackNumber": "Numéro de Piste",
-        "year": "Année"
+        "trackNumber": "Numéro de piste",
+        "year": "Année",
+        "overrideFields": null
       }
     },
     "modalViewPreference": {
-      "title": "Options d'écran",
+      "title": "Options d'affichage",
       "extra": {
         "layout": "Mise en page",
         "list": "Liste",
@@ -431,14 +446,14 @@
         "asc": "Ordre croissant",
         "discover": "Découvrez le temps",
         "duration": "Durée",
-        "modified": "Modifié récemment",
+        "modified": "Dernière modification",
         "trackCount": "Nombre de titres"
       }
     },
     "modalTrack": {
       "extra": {
         "bitrate": "Débit binaire",
-        "filePath": "Chemin du fichier",
+        "filePath": "Chemin d'accès au fichier",
         "sampleRate": "Taux d'échantillonnage",
         "size": "Taille",
         "trackQuickActions": "Suivi des actions rapides",
@@ -460,12 +475,12 @@
     },
     "queue": {
       "extra": {
-        "add": "Mettre à la suite",
-        "playNext": "Jouer juste après",
-        "playLast": "Jouer en dernier",
+        "add": "Ajouter à la file d'attente",
+        "playNext": "Lire la piste suivante",
+        "playLast": "Lire en dernier",
         "toast": "{{- name}} ajouté à la file d'attente.",
         "queueAwareNext": "Lecture suivante en fonction de la file d'attente",
-        "queueAwareNextBrief": "Tentatives d'ajout d'un morceau après le dernier morceau \"Lecture suivante\"."
+        "queueAwareNextBrief": "Tente d'ajouter un titre après le dernier titre de la liste « Lire la piste suivante »."
       }
     }
   }

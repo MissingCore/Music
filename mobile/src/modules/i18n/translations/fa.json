@@ -31,7 +31,9 @@
     "upcoming": "بعدی",
     "playingFrom": "در حال پخش از",
     "instructions": "دستورالعمل ها",
-    "disc": "دیسک {{count}}"
+    "disc": "دیسک {{count}}",
+    "eps": null,
+    "singles": null
   },
   "template": {
     "entryAdd": "اضافه کردن {{- name}}",
@@ -196,11 +198,19 @@
         "totalDuration": "مدت کل"
       }
     },
+    "dbOptimization": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "start": null,
+        "success": null
+      }
+    },
     "recap": {
       "title": null,
       "brief": null,
       "extra": {
-        "recapTemplate": "{{- name}} $t(feat.recap.title)",
+        "recapTemplate": null,
         "playCount": "{{count}} پخش",
         "mostPlayed": "بیشترین پخش شده {{- name}}",
         "top": null,
@@ -239,6 +249,10 @@
     "repeatOnSkip": {
       "title": "حفظ حالت تکرار هنگام رد کردن",
       "brief": "حالت را از \"تکرار یکی\" به \"تکرار\" هنگام رد کردن تغییر نده."
+    },
+    "reshuffleOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "restoreLastPosition": {
       "title": "ذخیره آخرین موقعیت پخش"
@@ -415,7 +429,8 @@
         "disc": "دیسک",
         "name": "نام",
         "trackNumber": "شماره آهنگ",
-        "year": "سال"
+        "year": "سال",
+        "overrideFields": null
       }
     },
     "modalViewPreference": {
