@@ -8,35 +8,21 @@ import { Uniwind } from "uniwind";
 
 import { preferenceStore } from "~/stores/Preference/store";
 
-import { capitalize } from "~/utils/string";
 import type { ColorRole, HexColor } from "../theme/core/constants";
 import { Themes } from "../theme/core/constants";
-import {
-  getContrastColor,
-  hexToHSV,
-  hsvToHex,
-} from "../theme/helpers/colorConverter";
+import { hexToHSV, hsvToHex } from "../theme/helpers/colorConverter";
 
 const UpdatedColorRoles = [
   "primary",
   "primaryDim",
-  "onPrimary",
-  "onPrimaryVariant",
   "secondary",
   "secondaryDim",
-  "onSecondary",
-  "onSecondaryVariant",
 ] as const satisfies ColorRole[];
 
 const paletteColors = {
   primary: ["muted", "lightMuted", "dominantAndroid"],
   secondary: ["lightVibrant", "vibrant", "darkMuted", "dominantAndroid"],
 } as const satisfies Record<string, Array<keyof PaletteResult>>;
-
-const contrastColors = {
-  black: { base: "#000000", variant: "#484848" },
-  white: { base: "#FFFFFF", variant: "#E3E3E3" },
-} as const;
 
 /** Updates "Atmosphere" Uniwind theme based on image color or fallback. */
 export async function deriveAndSetAtmosphereColors(
@@ -78,15 +64,9 @@ export async function deriveAndSetAtmosphereColors(
 
       const colorAsHSV = hexToHSV(imgColor);
       const dimColor = hsvToHex({ ...colorAsHSV, v: colorAsHSV.v * 0.9 });
-      const { base, variant } =
-        contrastColors[
-          role === "primary" ? "white" : getContrastColor(imgColor)
-        ];
 
       updatedVariables[`--color-${role}`] = imgColor;
       updatedVariables[`--color-${role}Dim`] = dimColor;
-      updatedVariables[`--color-on${capitalize(role)}`] = base;
-      updatedVariables[`--color-on${capitalize(role)}Variant`] = variant;
     }
   }
 
