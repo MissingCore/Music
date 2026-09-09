@@ -28,6 +28,11 @@ const UpdatedColorRoles = [
   "onSecondaryVariant",
 ] as const satisfies ColorRole[];
 
+const paletteColors = {
+  primary: ["muted", "lightMuted", "dominantAndroid"],
+  secondary: ["lightVibrant", "vibrant", "darkMuted", "dominantAndroid"],
+} as const satisfies Record<string, Array<keyof PaletteResult>>;
+
 const contrastColors = {
   black: { base: "#000000", variant: "#484848" },
   white: { base: "#FFFFFF", variant: "#E3E3E3" },
@@ -51,26 +56,34 @@ export async function deriveAndSetAtmosphereColors(
   const updatedVariables = getAtmosphereThemeVariables();
 
   if (palette) {
+    // Returns a color that isn't the fallback & not the dominant color
+    // (if the key isn't `dominantAndroid`).
+    const getSuitableColor = (keys: ReadonlyArray<keyof PaletteResult>) => {
+      const dominantColor = palette.dominantAndroid!;
+      for (const key of keys) {
+        const color = palette[key] as HexColor;
+        if (
+          color === "#FFFFFF" ||
+          (key !== "dominantAndroid" && color === dominantColor)
+        )
+          continue;
+        return color;
+      }
+      return null;
+    };
+
     for (const role of ["primary", "secondary"] as const) {
-      let imgColor = palette[
-        role === "primary" ? "lightMuted" : "lightVibrant"
-      ] as HexColor;
-      if (role === "primary" && imgColor === "#FFFFFF")
-        imgColor = palette.dominantAndroid as HexColor;
+      const imgColor = getSuitableColor(paletteColors[role]);
+      if (!imgColor) continue;
 
       const colorAsHSV = hexToHSV(imgColor);
-      const dimColor = hsvToHex({
-        ...colorAsHSV,
-        v: colorAsHSV.v * 0.9,
-      });
-
-      const onColor = contrastColors[getContrastColor(imgColor)];
+      const dimColor = hsvToHex({ ...colorAsHSV, v: colorAsHSV.v * 0.9 });
+      const { base, variant } = contrastColors[getContrastColor(imgColor)];
 
       updatedVariables[`--color-${role}`] = imgColor;
       updatedVariables[`--color-${role}Dim`] = dimColor;
-      updatedVariables[`--color-on${capitalize(role)}`] = onColor.base;
-      updatedVariables[`--color-on${capitalize(role)}Variant`] =
-        onColor.variant;
+      updatedVariables[`--color-on${capitalize(role)}`] = base;
+      updatedVariables[`--color-on${capitalize(role)}Variant`] = variant;
     }
   }
 
