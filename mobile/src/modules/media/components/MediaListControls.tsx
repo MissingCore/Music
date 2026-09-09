@@ -55,7 +55,7 @@ export function PlayMediaListButton(props: {
         props.className,
       )}
       rippleColor={displayPause ? "surfaceContainerHighest" : "primaryDim"}
-      _iconColor={isPlaying ? "onSurface" : "onPrimary"}
+      _iconColor="onPrimary"
     />
   );
 }

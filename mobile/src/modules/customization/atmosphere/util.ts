@@ -78,7 +78,10 @@ export async function deriveAndSetAtmosphereColors(
 
       const colorAsHSV = hexToHSV(imgColor);
       const dimColor = hsvToHex({ ...colorAsHSV, v: colorAsHSV.v * 0.9 });
-      const { base, variant } = contrastColors[getContrastColor(imgColor)];
+      const { base, variant } =
+        contrastColors[
+          role === "primary" ? "white" : getContrastColor(imgColor)
+        ];
 
       updatedVariables[`--color-${role}`] = imgColor;
       updatedVariables[`--color-${role}Dim`] = dimColor;
