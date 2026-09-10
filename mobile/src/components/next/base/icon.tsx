@@ -11,15 +11,15 @@ const AppIcons = createNanoIconSet(glyphMap);
 
 export type SupportedIconName = React.ComponentProps<typeof AppIcons>["name"];
 
-type Props = {
+interface IconProps {
   name: SupportedIconName;
   /** Defaults to `24px`. */
   size?: number;
   /** Defaults to theme's `onSurface` color. */
   color?: AppColor;
-};
+}
 
-export function Icon({ name, size = 24, color }: Props) {
+export function Icon({ name, size = 24, color }: IconProps) {
   const usedColor = useColor(color, "onSurface");
   return (
     <AppIcons
