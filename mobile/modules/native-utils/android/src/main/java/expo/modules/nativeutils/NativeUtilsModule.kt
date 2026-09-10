@@ -39,6 +39,10 @@ class NativeUtilsModule : Module() {
       return@Constant uiMode == Configuration.UI_MODE_NIGHT_YES
     }
 
+    Constant("bundleId") {
+      context?.packageName ?: ""
+    }
+
     // Based on:
     //  - https://github.com/sAleksovski/react-native-android-widget/blob/v0.20.1/android/src/main/java/com/reactnativeandroidwidget/RNWidgetProvider.java#L123-L130
     Function("launchAppViaIntent") {

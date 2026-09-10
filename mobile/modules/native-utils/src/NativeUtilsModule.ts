@@ -2,6 +2,7 @@ import { NativeModule, requireNativeModule } from "expo";
 
 declare class NativeUtilsModule extends NativeModule {
   isSystemDarkMode: boolean;
+  bundleId: string;
   launchAppViaIntent(): void;
   saveBundledAssetToURI(assetName: string, toUri: string): Promise<void>;
 }
@@ -9,6 +10,7 @@ declare class NativeUtilsModule extends NativeModule {
 const nativeModule = requireNativeModule<NativeUtilsModule>("NativeUtils");
 
 export const isSystemDarkMode = nativeModule.isSystemDarkMode;
+export const bundleId = nativeModule.bundleId;
 
 export function launchAppViaIntent() {
   return nativeModule.launchAppViaIntent();

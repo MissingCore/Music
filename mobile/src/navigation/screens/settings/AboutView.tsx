@@ -1,11 +1,13 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { bundleId } from "@missingcore/native-utils";
 import { useNavigation } from "@react-navigation/native";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 
+import { useHasNewUpdate } from "~/navigation/hooks/useHasNewUpdate";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 
 import { APP_VERSION } from "~/constants/Config";
@@ -13,11 +15,17 @@ import { Links, openLink } from "~/lib/web-browser";
 import { Switch } from "~/components/Form/Switch";
 import { Card } from "~/components/next/base/card";
 import { Image } from "~/components/next/base/image";
-import { Text } from "~/components/next/base/typography";
+import { createTextStack } from "~/components/next/blocks/text-stack";
 import * as SettingsList from "./components/SettingsList";
+
+const CustomTextStack = createTextStack({
+  labelConfig: { intent: "accent", center: true },
+  descriptionConfig: { muted: true, center: true },
+});
 
 export default function AboutApp() {
   const navigation = useNavigation();
+  const { hasNewUpdate } = useHasNewUpdate();
   const checkForUpdates = usePreferenceStore((s) => s.checkForUpdates);
   const showRCNotification = usePreferenceStore((s) => s.rcNotification);
 
@@ -28,9 +36,23 @@ export default function AboutApp() {
           source={require("~/resources/images/app-icon.png")}
           className="size-24 rounded-full"
         />
-        <Text intent="accent" center>
-          MissingCore Music
-        </Text>
+        <CustomTextStack
+          // @ts-expect-error - Will render text if translation key isn't found.
+          label="MissingCore Music"
+          descriptionText={bundleId}
+        />
+
+        <SettingsList.Container theme={hasNewUpdate ? "secondary" : "muted"}>
+          <SettingsList.Item
+            iconName={hasNewUpdate ? "mobile-arrow-down" : "mobile-check"}
+            contentConfig={{
+              label: `feat.appUpdate.${hasNewUpdate ? "brief" : "extra.upToDate"}`,
+            }}
+            onPress={() => navigation.navigate("AppUpdate")}
+            disabled={!hasNewUpdate}
+            Trailing={hasNewUpdate && <SettingsList.FunctionIndicator />}
+          />
+        </SettingsList.Container>
       </Card>
 
       <SettingsList.Container>
@@ -56,6 +78,7 @@ export default function AboutApp() {
           contentConfig={{ label: "feat.appUpdate.extra.rcNotification" }}
           onPress={PreferenceTogglers.toggleKey("rcNotification")}
           disabled={!checkForUpdates}
+          className="disabled:opacity-25"
           Trailing={<Switch enabled={showRCNotification} />}
         />
       </SettingsList.Container>

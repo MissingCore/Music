@@ -16,21 +16,26 @@ interface TextStackProps {
 
 /** Generates a React Component that is built to the specified configurations. */
 export function createTextStack(args: {
-  labelConfig: TextVariants;
-  descriptionConfig: TextVariants;
+  labelConfig?: TextVariants;
+  descriptionConfig?: TextVariants;
   /** If `numberOfLines = 1` is applied to both fields. */
   clampText?: boolean;
 }) {
   const additionalProps = {
     numberOfLines: args.clampText ? 1 : undefined,
-    className: "shrink grow",
   };
 
   const labelConfig = { ...args.labelConfig, ...additionalProps };
   const descriptionConfig = { ...args.descriptionConfig, ...additionalProps };
 
-  function Label(props: { textKey: ParseKeys }) {
-    return <TText {...labelConfig} textKey={props.textKey} />;
+  function Label(props: { textKey: ParseKeys; singular?: boolean }) {
+    return (
+      <TText
+        {...labelConfig}
+        textKey={props.textKey}
+        className={props.singular ? "shrink grow" : undefined}
+      />
+    );
   }
 
   function Description(props: { textKey?: ParseKeys; text?: string }) {
@@ -41,9 +46,9 @@ export function createTextStack(args: {
 
   return function TextStack(props: TextStackProps) {
     if (!props.description && !props.descriptionText)
-      return <Label textKey={props.label} />;
+      return <Label textKey={props.label} singular />;
     return (
-      <View className="w-full shrink">
+      <View className="shrink grow">
         <Label textKey={props.label} />
         <Description textKey={props.description} text={props.descriptionText} />
       </View>
@@ -52,6 +57,5 @@ export function createTextStack(args: {
 }
 
 export const TextStack = createTextStack({
-  labelConfig: {},
-  descriptionConfig: { intent: "muted" },
+  descriptionConfig: { muted: true },
 });

@@ -12,16 +12,16 @@ export const cardStyle = cva({
   variants: {
     intent: {
       unset: null,
+      muted: "bg-surfaceContainerHigh",
       primary: "bg-primary",
       secondary: "bg-secondary",
       error: "bg-error",
     },
     padding: { true: "p-4" },
-    outline: { true: "border" },
+    outline: { true: "border border-outlineVariant" },
     overflow: { false: "overflow-hidden" },
   },
   compoundVariants: [
-    { intent: "unset", outline: true, className: "border-outlineVariant" },
     { intent: "primary", outline: true, className: "border-primaryDim" },
     { intent: "secondary", outline: true, className: "border-secondaryDim" },
     { intent: "error", outline: true, className: "border-errorDim" },
