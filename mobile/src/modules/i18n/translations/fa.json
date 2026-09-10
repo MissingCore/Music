@@ -32,8 +32,8 @@
     "playingFrom": "در حال پخش از",
     "instructions": "دستورالعمل ها",
     "disc": "دیسک {{count}}",
-    "eps": null,
-    "singles": null
+    "eps": "مینی‌آلبوم‌ها",
+    "singles": "تک‌آهنگ‌ها"
   },
   "template": {
     "entryAdd": "اضافه کردن {{- name}}",
@@ -45,11 +45,11 @@
     "notFound": "{{- name}} وجود ندارد",
     "entryMove": "جا به جا کردن {{- name}}",
     "entryShow": "نمایش {{- name}}",
-    "entryShowAll": null,
+    "entryShowAll": "نمایش همهٔ {{- name}}",
     "entryHide": "مخفی کردن {{- name}}",
     "entryEnable": "فعال کردن {{- name}}",
     "entryDisable": "غیرفعال کردن {{- name}}",
-    "countSelected": null,
+    "countSelected": "{{count}} مورد انتخاب‌شده",
     "noContentFound": "{{- name}} یافت نشد"
   },
   "plural": {
@@ -143,7 +143,7 @@
       "brief": "ترتیب و نمایش تب‌ها را شخصی کنید.",
       "extra": {
         "setHomeTab": "باز کردن تب {{- name}} هنگام اجرای برنامه.",
-        "showNavbar": null
+        "showNavbar": "نمایش نوار پیمایش"
       }
     },
     "minAlbumLength": {
@@ -155,12 +155,12 @@
         "vinyl": "گرامافون",
         "vinylOld": "گرامافون (قدیمی)",
         "none": "هیچ کدام",
-        "alternativeInfoLayout": null,
-        "standardVinylSpeed": null
+        "alternativeInfoLayout": "چیدمان جایگزین اطلاعات",
+        "standardVinylSpeed": "سرعت استاندارد گرامافون"
       }
     },
     "seekbar": {
-      "title": null,
+      "title": "نوار پیشرفت",
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": "شکل موج",
@@ -199,28 +199,28 @@
       }
     },
     "dbOptimization": {
-      "title": null,
-      "brief": null,
+      "title": "بهینه‌سازی پایگاه داده",
+      "brief": "{{count}} مورد قابل بهینه‌سازی وجود دارد.",
       "extra": {
-        "start": null,
-        "success": null
+        "start": "در حال بهینه‌سازی...",
+        "success": "بهینه‌سازی‌ها به پایان رسید."
       }
     },
     "recap": {
-      "title": null,
-      "brief": null,
+      "title": "مرور عملکرد",
+      "brief": "برترین آهنگ‌ها، خوانندگان و سابقهٔ پخش شما.",
       "extra": {
-        "recapTemplate": null,
+        "recapTemplate": "$t(feat.recap.title) {{- name}}",
         "playCount": "{{count}} پخش",
         "mostPlayed": "بیشترین پخش شده {{- name}}",
-        "top": null,
-        "timeRange": null,
-        "allTime": null,
-        "listeningTime": null,
-        "totalListeningTime": null,
-        "totalPlays": null,
-        "uniqueTracks": null,
-        "uniqueArtists": null
+        "top": "برترین {{- name}}",
+        "timeRange": "بازهٔ زمانی",
+        "allTime": "از ابتدا تاکنون",
+        "listeningTime": "زمان گوش‌دادن",
+        "totalListeningTime": "مجموع $t(feat.recap.extra.listeningTime)",
+        "totalPlays": "مجموع پخش‌ها",
+        "uniqueTracks": "آهنگ‌های منحصربه‌فرد",
+        "uniqueArtists": "خوانندگان منحصربه‌فرد"
       }
     },
     "hiddenTracks": {
@@ -236,9 +236,9 @@
       "extra": {
         "delay": "تأخیر پخش",
         "options": "گزینه های پخش",
-        "pitch": null,
+        "pitch": "زیر و بمی پخش",
         "speed": "سرعت پخش",
-        "restoreVolume": null,
+        "restoreVolume": "بازیابی صدای برنامه",
         "volume": "صدای برنامه"
       }
     },
@@ -251,8 +251,8 @@
       "brief": "حالت را از \"تکرار یکی\" به \"تکرار\" هنگام رد کردن تغییر نده."
     },
     "reshuffleOnLaunch": {
-      "title": null,
-      "brief": null
+      "title": "تصادفی‌سازی مجدد هنگام اجرای برنامه",
+      "brief": "اگر پخش تصادفی فعال باشد، هنگام اجرای برنامه صف را دوباره به‌صورت تصادفی مرتب می‌کند."
     },
     "restoreLastPosition": {
       "title": "ذخیره آخرین موقعیت پخش"
@@ -261,18 +261,18 @@
       "title": "متن آهنگ",
       "extra": {
         "useEmbedded": "استفاده از متن پیوست",
-        "providers": null,
+        "providers": "ارائه‌دهندگان متن آهنگ",
         "providersInstructions": {
-          "line1": null,
-          "line2": null
+          "line1": "به دلایل قانونی، منابع آنلاین برای نمایش متن آهنگ را به‌طور خودکار ارائه نمی‌کنیم، زیرا مجوز این کار را نداریم. در عوض، از ارائه‌دهندگانی پشتیبانی می‌کنیم که می‌توانید با استفاده از آن‌ها محل دریافت متن آهنگ را مشخص کنید.",
+          "line2": "برای آشنایی با نحوهٔ ایجاد یک ارائه‌دهنده کلیک کنید."
         }
       }
     },
     "scanning": {
       "title": "اسکن موسیقی",
       "extra": {
-        "useMediaStore": null,
-        "useMediaStoreBrief": null
+        "useMediaStore": "🧪 استفاده از اسکنر MediaStore",
+        "useMediaStoreBrief": "بسیار سریع است، اما ممکن است دقت کمتری داشته باشد. به Android 11 یا بالاتر نیاز دارد."
       }
     },
     "rescan": {
@@ -289,11 +289,11 @@
       "brief": "هر گونه اقدام رد کردنی که اسکن عادی را سریع تر می کند را نادیده می گیرد."
     },
     "optimizedImageSave": {
-      "title": null,
-      "brief": null,
+      "title": "ذخیره‌سازی بهینهٔ تصاویر",
+      "brief": "آهنگ‌ها از همان تصویر جلد آلبوم خود استفاده می‌کنند.",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "غیرفعال کردن این ویژگی باعث می‌شود برنامه از فضای ذخیره‌سازی بسیار بیشتری استفاده کند و ممکن است اسکن را کندتر کند، زیرا تصاویر جلد به‌صورت محلی ذخیره می‌شوند.",
+        "line2": "برای اعمال تغییرات، باید از ویژگی اسکن عمیق استفاده کنید."
       }
     },
     "rescanOnLaunch": {
@@ -323,7 +323,7 @@
       "title": "ویژگی های آزمایشی"
     },
     "audioEffects": {
-      "title": null
+      "title": "جلوه‌های صوتی"
     },
     "equalizer": {
       "title": "اکولایزر",
@@ -342,12 +342,12 @@
       }
     },
     "replayGain": {
-      "title": null,
+      "title": "ReplayGain",
       "extra": {
-        "preAmp": null,
-        "preAmpDescription": null,
-        "adjustWithTags": null,
-        "adjustWithoutTags": null
+        "preAmp": "پیش‌تقویت ReplayGain",
+        "preAmpDescription": "هنگامی که ReplayGain فعال است، بلندی صدا را تنظیم می‌کند. ممکن است در برخی آهنگ‌ها باعث بالارفتن بیش‌ازحد سطح صدا شود. تغییرات از آهنگ بعدی اعمال می‌شوند.",
+        "adjustWithTags": "تنظیم برای آهنگ‌های دارای تگ",
+        "adjustWithoutTags": "تنظیم برای آهنگ‌های بدون تگ"
       }
     },
     "ignoreInterrupt": {
@@ -398,7 +398,7 @@
       }
     },
     "artwork": {
-      "title": null,
+      "title": "تصویر جلد",
       "extra": {
         "change": "تغییر تصویر جلد",
         "remove": "حذف تصویر جلد",
@@ -430,7 +430,7 @@
         "name": "نام",
         "trackNumber": "شماره آهنگ",
         "year": "سال",
-        "overrideFields": null
+        "overrideFields": "وارد کردن مقدار برای فیلدهای زیر، مقادیر اختصاص‌یافته به همهٔ آهنگ‌های آلبوم را بازنویسی می‌کند."
       }
     },
     "modalViewPreference": {
@@ -440,8 +440,8 @@
         "list": "لیست",
         "grid": "جدولی",
         "compactGrid": "جدول فشرده",
-        "columnSize": null,
-        "columnCount": null,
+        "columnSize": "اندازهٔ ستون",
+        "columnCount": "تعداد ستون‌ها: {{count}}",
         "sort": "ترتیب مرتب سازی",
         "asc": "ترتیب صعودی",
         "discover": "زمان پیداشدن",
@@ -461,16 +461,16 @@
       }
     },
     "miniplayer": {
-      "title": null,
+      "title": "پخش‌کنندهٔ کوچک",
       "extra": {
-        "dragToDismiss": null,
-        "swipeControls": null
+        "dragToDismiss": "برای بستن بکشید",
+        "swipeControls": "کنترل با کشیدن انگشت"
       }
     },
     "nowPlaying": {
-      "title": null,
+      "title": "در حال پخش",
       "extra": {
-        "artworkPlaybackToggle": null
+        "artworkPlaybackToggle": "تغییر وضعیت پخش با تصویر جلد"
       }
     },
     "queue": {
