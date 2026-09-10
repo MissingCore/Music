@@ -12,7 +12,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { cva } from "~/lib/style";
 import { getFont } from "~/modules/customization/font/utils";
 
-const text = cva({
+const textStyle = cva({
   base: "text-left text-base text-onSurface",
   variants: {
     intent: {
@@ -29,7 +29,9 @@ const text = cva({
   },
 });
 
-interface TextProps extends RNTextProps, VariantProps<typeof text> {
+export type TextVariants = VariantProps<typeof textStyle>;
+
+interface TextProps extends RNTextProps, TextVariants {
   bold?: boolean;
 }
 
@@ -51,7 +53,7 @@ export function Text({
   return (
     <RNText
       {...props}
-      className={text({ intent, uppercase, className })}
+      className={textStyle({ intent, uppercase, className })}
       style={[
         {
           fontFamily: getFont(fontFamily, { headline: asAccent, bold }),
