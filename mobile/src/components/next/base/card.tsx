@@ -18,6 +18,7 @@ export const cardStyle = cva({
     },
     padding: { true: "p-4" },
     outline: { true: "border" },
+    overflow: { false: "overflow-hidden" },
   },
   compoundVariants: [
     { intent: "unset", outline: true, className: "border-outlineVariant" },
@@ -29,22 +30,26 @@ export const cardStyle = cva({
     intent: "unset",
     padding: true,
     outline: false,
+    overflow: false,
   },
 });
 
-interface CardProps extends ViewProps, VariantProps<typeof cardStyle> {}
+export type CardVariants = VariantProps<typeof cardStyle>;
+
+interface CardProps extends ViewProps, CardVariants {}
 
 export function Card({
   intent,
   padding,
   outline,
+  overflow,
   className,
   ...props
 }: CardProps) {
   return (
     <View
       {...props}
-      className={cardStyle({ intent, padding, outline, className })}
+      className={cardStyle({ intent, padding, outline, overflow, className })}
     />
   );
 }

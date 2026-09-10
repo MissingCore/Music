@@ -17,14 +17,16 @@ const textStyle = cva({
   variants: {
     intent: {
       unset: null,
-      accent: "text-4xl leading-tight",
+      accent: "text-3xl leading-tight",
       em: "text-xs",
       muted: "text-xs text-onSurfaceVariant",
     },
+    center: { true: "text-center" },
     uppercase: { true: "tracking-wider uppercase" },
   },
   defaultVariants: {
     intent: "unset",
+    center: false,
     uppercase: false,
   },
 });
@@ -37,6 +39,7 @@ interface TextProps extends RNTextProps, TextVariants {
 
 export function Text({
   intent,
+  center,
   uppercase,
   bold: _bold,
   className,
@@ -53,7 +56,7 @@ export function Text({
   return (
     <RNText
       {...props}
-      className={textStyle({ intent, uppercase, className })}
+      className={textStyle({ intent, center, uppercase, className })}
       style={[
         {
           fontFamily: getFont(fontFamily, { headline: asAccent, bold }),

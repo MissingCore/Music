@@ -32,6 +32,7 @@
     "more": "More",
     "home": "Home",
     "settings": "Settings",
+    "about": "About",
     "upcoming": "Upcoming",
     "playingFrom": "Playing From",
 
@@ -137,6 +138,7 @@
         "updateGoogle": "Update via Play Store",
 
         "version": "Version",
+        "viewChangelog": "View Changelog",
         "checkUpdates": "Check for Updates",
         "rcNotification": "Pre-Release Notification"
       }

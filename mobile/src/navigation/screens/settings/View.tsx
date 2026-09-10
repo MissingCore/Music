@@ -5,18 +5,12 @@ import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
 import { Icon } from "~/resources/icons";
-import { usePreferenceStore } from "~/stores/Preference/store";
-import { PreferenceTogglers } from "~/stores/Preference/actions";
 
 import { useHasNewUpdate } from "~/navigation/hooks/useHasNewUpdate";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { BackupSheet } from "./sheets/BackupSheet";
 import { LanguageSheet } from "./sheets/LanguageSheet";
 
-import { APP_VERSION } from "~/constants/Config";
-import { Links, openLink } from "~/lib/web-browser";
-import { Divider } from "~/components/Divider";
-import { Switch } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 
@@ -24,8 +18,6 @@ export default function Settings() {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { hasNewUpdate } = useHasNewUpdate();
-  const checkForUpdates = usePreferenceStore((s) => s.checkForUpdates);
-  const showRCNotification = usePreferenceStore((s) => s.rcNotification);
   const backupSheetRef = useSheetRef();
   const languageSheetRef = useSheetRef();
 
@@ -101,54 +93,10 @@ export default function Settings() {
           Leading={<Icon name="flask-filled" />}
         />
 
-        <SegmentedList>
-          <SegmentedList.Item
-            labelText="feat.code.title"
-            supportingText={t("feat.code.brief")}
-            onPress={() => openLink(Links.GitHub)}
-            Trailing={<Icon name="open-in-new" />}
-          />
-          <SegmentedList.Item
-            labelText="feat.license.title"
-            onPress={() => openLink(Links.License)}
-            Trailing={<Icon name="open-in-new" />}
-          />
-          <SegmentedList.Item
-            labelText="feat.privacy.title"
-            onPress={() => openLink(Links.PrivacyPolicy)}
-            Trailing={<Icon name="open-in-new" />}
-          />
-          <SegmentedList.Item
-            labelText="feat.thirdParty.title"
-            supportingText={t("feat.thirdParty.brief")}
-            onPress={() => navigation.navigate("ThirdParty")}
-          />
-        </SegmentedList>
-
-        <SegmentedList.CustomItem>
-          <SegmentedList.Item
-            labelText="feat.appUpdate.extra.version"
-            supportingText={APP_VERSION}
-            onPress={() => openLink(Links.CurrentRelease)}
-            Trailing={<Icon name="open-in-new" />}
-            className="rounded-none"
-          />
-          <Divider className="mx-4" />
-          <SegmentedList.Item
-            labelText="feat.appUpdate.extra.checkUpdates"
-            onPress={PreferenceTogglers.toggleKey("checkForUpdates")}
-            Trailing={<Switch enabled={checkForUpdates} />}
-            className="rounded-none"
-          />
-          <Divider className="mx-4" />
-          <SegmentedList.Item
-            labelText="feat.appUpdate.extra.rcNotification"
-            onPress={PreferenceTogglers.toggleKey("rcNotification")}
-            disabled={!checkForUpdates}
-            Trailing={<Switch enabled={showRCNotification} />}
-            className="rounded-none"
-          />
-        </SegmentedList.CustomItem>
+        <SegmentedList.Item
+          labelText="term.about"
+          onPress={() => navigation.navigate("About")}
+        />
       </ListLayout>
     </>
   );

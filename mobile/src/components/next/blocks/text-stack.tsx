@@ -43,7 +43,7 @@ export function createTextStack(args: {
     if (!props.description && !props.descriptionText)
       return <Label textKey={props.label} />;
     return (
-      <View className="shrink grow gap-1">
+      <View className="w-full shrink">
         <Label textKey={props.label} />
         <Description textKey={props.description} text={props.descriptionText} />
       </View>

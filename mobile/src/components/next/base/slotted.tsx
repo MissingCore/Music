@@ -27,7 +27,7 @@ export function createSlottedComponent<
     return (
       <Wrapper
         {...props}
-        className={cn("flex-row items-center gap-2", className)}
+        className={cn("flex-row items-center gap-4", className)}
       >
         {Leading}
         <Content {...contentConfig} />
