@@ -29,7 +29,7 @@ export default function PackageLicense({
   const licenseInfo = LicensesList[id as keyof typeof LicensesList];
   return (
     <ListLayout>
-      <SettingsList.Container hasIcon={false} className="gap-4">
+      <SettingsList.Container className="gap-4">
         <View className="flex-row items-end gap-4 p-4 pb-2">
           <HeaderTextStack
             label={licenseInfo.name}
@@ -42,7 +42,7 @@ export default function PackageLicense({
             <SettingsList.ActionHint hint="external" />
           </Ripple>
         </View>
-        <SettingsList.Divider />
+        <SettingsList.Divider afterIconItem={false} />
         <Text className="p-4 pt-2 text-xs">{licenseInfo.licenseText}</Text>
       </SettingsList.Container>
     </ListLayout>

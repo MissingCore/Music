@@ -1,9 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { createContext, use } from "react";
-
-import { IS_DEV } from "~/env";
+import { use } from "react";
 
 import { cn } from "~/lib/style";
 import type { Intent } from "~/components/next/base/context";
@@ -19,43 +17,27 @@ import { Ripple } from "~/components/next/base/ripple";
 import { createSlottedComponent } from "~/components/next/base/slotted";
 import { TextStack } from "~/components/next/blocks/text-stack";
 
-const HasIconContext = createContext(true);
-
 const BaseItem = createSlottedComponent({
   Wrapper: Ripple,
   Content: TextStack,
 });
 
-interface ProviderProps {
+export function Container(props: {
   children: React.ReactNode;
   theme?: Intent;
-  hasIcon?: boolean;
-}
-
-export function Provider(props: ProviderProps) {
-  const { theme, hasIcon = true, children } = props;
+  className?: string;
+}) {
   return (
-    <ThemeIntentContext value={theme ?? "unset"}>
-      <HasIconContext value={hasIcon}>{children}</HasIconContext>
+    <ThemeIntentContext value={props.theme ?? "unset"}>
+      <Card padding={false} className={cn("w-full", props.className)}>
+        {props.children}
+      </Card>
     </ThemeIntentContext>
   );
 }
 
-export function Container(
-  props: ProviderProps & { children: React.ReactNode; className?: string },
-) {
-  return (
-    <Provider theme={props.theme} hasIcon={props.hasIcon}>
-      <Card padding={false} className={cn("w-full", props.className)}>
-        {props.children}
-      </Card>
-    </Provider>
-  );
-}
-
-export function Divider() {
-  const hasIcon = use(HasIconContext);
-  return <Separator className={cn("mx-4 -my-px", hasIcon && "ml-14")} />;
+export function Divider({ afterIconItem = true }) {
+  return <Separator className={cn("mx-4 -my-px", afterIconItem && "ml-14")} />;
 }
 
 interface ItemBaseProps extends Omit<
@@ -66,21 +48,6 @@ interface ItemBaseProps extends Omit<
 }
 
 export function Item({ iconName, className, ...props }: ItemBaseProps) {
-  const hasIcon = use(HasIconContext);
-
-  if (IS_DEV) {
-    if (hasIcon && !iconName) {
-      console.warn(
-        `Default \`iconName\` is being used by \`<SettingsList.Item />\`.`,
-      );
-    }
-    if (!hasIcon && iconName) {
-      console.warn(
-        `Unused \`iconName\` (${iconName}) passed to \`<SettingsList.Item />\`.`,
-      );
-    }
-  }
-
   return (
     <BaseItem
       {...props}

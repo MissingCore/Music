@@ -14,25 +14,23 @@ export default function ThirdParty() {
   const navigation = useNavigation();
   return (
     <ListLayout>
-      <SettingsList.Provider hasIcon={false}>
-        <FlatList
-          data={Object.entries(LicensesList)}
-          keyExtractor={([id]) => id}
-          renderItem={({ item: [id, item] }) => (
-            <SettingsList.Item
-              contentConfig={{
-                label: item.name,
-                supporting: `${item.license} (${item.version})`,
-              }}
-              onPress={() => navigation.navigate("PackageLicense", { id })}
-              Trailing={<SettingsList.ActionHint />}
-            />
-          )}
-          ItemSeparatorComponent={<SettingsList.Divider />}
-          scrollEnabled={false}
-          contentContainerClassName="overflow-hidden rounded-3xl bg-surfaceContainerLowest"
-        />
-      </SettingsList.Provider>
+      <FlatList
+        data={Object.entries(LicensesList)}
+        keyExtractor={([id]) => id}
+        renderItem={({ item: [id, item] }) => (
+          <SettingsList.Item
+            contentConfig={{
+              label: item.name,
+              supporting: `${item.license} (${item.version})`,
+            }}
+            onPress={() => navigation.navigate("PackageLicense", { id })}
+            Trailing={<SettingsList.ActionHint />}
+          />
+        )}
+        ItemSeparatorComponent={<SettingsList.Divider afterIconItem={false} />}
+        scrollEnabled={false}
+        contentContainerClassName="overflow-hidden rounded-3xl bg-surfaceContainerLowest"
+      />
     </ListLayout>
   );
 }
