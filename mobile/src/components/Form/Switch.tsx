@@ -9,7 +9,13 @@ import Animated, {
 import { cn } from "~/lib/style";
 import { Pressable } from "../Base/Pressable";
 
-export function Switch({ enabled }: { enabled: boolean }) {
+export function Switch({
+  enabled,
+  interactable = false,
+}: {
+  enabled: boolean;
+  interactable?: boolean;
+}) {
   const thumbStyle = useAnimatedStyle(() => ({
     transform: [
       { translateX: withTiming(enabled ? 20 : 0, { duration: 150 }) },
@@ -17,6 +23,7 @@ export function Switch({ enabled }: { enabled: boolean }) {
   }));
   return (
     <Animated.View
+      pointerEvents={!interactable ? "none" : undefined}
       className={cn(
         "relative h-6 w-11 rounded-full bg-surfaceContainerHigh p-0.5",
         { "bg-primary": enabled },
@@ -43,7 +50,7 @@ export function SwitchInput(props: {
       disabled={props.disabled}
       className="h-8 justify-center disabled:opacity-25"
     >
-      <Switch enabled={props.enabled} />
+      <Switch enabled={props.enabled} interactable />
     </Pressable>
   );
 }

@@ -5,32 +5,32 @@ import { useNavigation } from "@react-navigation/native";
 
 import LicensesList from "~/resources/licenses.json";
 
-import { ListLayout } from "~/navigation/layouts/ListLayout";
-
+import { cn } from "~/lib/style";
 import { FlatList } from "~/components/Base/List";
 import * as SettingsList from "./components/SettingsList";
 
 export default function ThirdParty() {
   const navigation = useNavigation();
+  const data = Object.entries(LicensesList);
   return (
-    <ListLayout>
-      <FlatList
-        data={Object.entries(LicensesList)}
-        keyExtractor={([id]) => id}
-        renderItem={({ item: [id, item] }) => (
-          <SettingsList.Item
-            contentConfig={{
-              label: item.name,
-              supporting: `${item.license} (${item.version})`,
-            }}
-            onPress={() => navigation.navigate("PackageLicense", { id })}
-            Trailing={<SettingsList.ActionHint />}
-          />
-        )}
-        ItemSeparatorComponent={<SettingsList.Divider afterIconItem={false} />}
-        scrollEnabled={false}
-        contentContainerClassName="overflow-hidden rounded-3xl bg-surfaceContainerLowest"
-      />
-    </ListLayout>
+    <FlatList
+      data={data}
+      keyExtractor={([id]) => id}
+      renderItem={({ item: [id, item], index }) => (
+        <SettingsList.Item
+          contentConfig={{
+            label: item.name,
+            supporting: `${item.license} (${item.version})`,
+          }}
+          onPress={() => navigation.navigate("PackageLicense", { id })}
+          Trailing={<SettingsList.ActionHint />}
+          className={cn("overflow-hidden bg-surfaceContainerLowest", {
+            "rounded-t-3xl": index === 0,
+            "rounded-b-3xl": index === data.length - 1,
+          })}
+        />
+      )}
+      contentContainerClassName="p-4 pb-safe-offset-4"
+    />
   );
 }

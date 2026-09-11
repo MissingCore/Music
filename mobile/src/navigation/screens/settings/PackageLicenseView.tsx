@@ -39,7 +39,7 @@ export default function PackageLicense({
             onPress={() => openLink(licenseInfo.source)}
             className="rounded-full"
           >
-            <SettingsList.ActionHint hint="external" />
+            <SettingsList.ActionHint hint="external" size="lg" />
           </Ripple>
         </View>
         <SettingsList.Divider afterIconItem={false} />

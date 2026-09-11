@@ -59,18 +59,25 @@ export function Item({ iconName, className, ...props }: ItemBaseProps) {
 
 export function ActionHint({
   hint = "internal",
+  size,
 }: {
   hint?: "internal" | "external";
+  size?: "lg";
 }) {
   return (
     <Card
+      pointerEvents="none"
       inverse
       padding={false}
-      className="size-8 items-center justify-center rounded-full rtl:-scale-x-100"
+      className={cn(
+        "size-8 items-center justify-center rounded-full rtl:-scale-x-100",
+        { "size-12": size === "lg" },
+      )}
     >
       <Icon
         name={hint === "internal" ? "arrow-right-alt" : "call-made"}
         color={getIntentColor(use(ThemeIntentContext))}
+        size={size === "lg" ? 32 : undefined}
       />
     </Card>
   );
