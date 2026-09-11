@@ -350,10 +350,6 @@
         "adjustWithoutTags": null
       }
     },
-    "ignoreInterrupt": {
-      "title": "Unterbrechungen ignorieren",
-      "brief": "Wiedergabe von Audio fortsetzen, wenn eine Unterbrechung wie eine Benachrichtigung oder ein Anruf auftritt. Du musst die Musik in diesen Situationen manuell pausieren/abspielen."
-    },
     "sleepTimer": {
       "title": "Sleeptimer",
       "description": "Die Wiedergabe wird nach der angegebenen Minutenzahl gestoppt.",

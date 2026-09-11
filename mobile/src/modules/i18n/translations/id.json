@@ -350,10 +350,6 @@
         "adjustWithoutTags": "Sesuaikan Tidak dengan Tag"
       }
     },
-    "ignoreInterrupt": {
-      "title": "Abaikan Interupsi",
-      "brief": "Lanjutkan memutar audio ketika interupsi seperti notifikasi atau panggilan telepon. Anda harus menjeda secara manual dan melanjutkan musik dalam situasi ini."
-    },
     "sleepTimer": {
       "title": "Pewaktu Tidur",
       "description": "Hentikan pemutaran audio setelah pada waktu yang ditentukan.",
