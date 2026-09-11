@@ -5,7 +5,6 @@ import AudioBrowser from "react-native-audio-browser";
 
 import { playbackStore } from "../store";
 import type { RepeatMode } from "../constants";
-import { RepeatModes } from "../constants";
 import { extractTrackId } from "../utils";
 
 import { shuffleArray } from "~/utils/object";
@@ -13,14 +12,12 @@ import { shuffleArray } from "~/utils/object";
 /** Switch to the next repeat mode. */
 export async function cycleRepeat() {
   const { repeat } = playbackStore.getState();
-  let newMode: RepeatMode = RepeatModes.REPEAT;
-  if (repeat === RepeatModes.REPEAT) newMode = RepeatModes.REPEAT_ONE;
-  else if (repeat === RepeatModes.REPEAT_ONE) newMode = RepeatModes.NO_REPEAT;
+  let newMode: RepeatMode = "repeat";
+  if (repeat === "repeat") newMode = "repeat-one";
+  else if (repeat === "repeat-one") newMode = "no-repeat";
   playbackStore.setState({ repeat: newMode });
 
-  AudioBrowser.setRepeatMode(
-    newMode === RepeatModes.REPEAT_ONE ? "track" : "off",
-  );
+  AudioBrowser.setRepeatMode(newMode === "repeat-one" ? "track" : "off");
 }
 
 /** Update the `shuffle` field along with `currentList` & `listIdx`. */

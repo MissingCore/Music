@@ -1,20 +1,18 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { useFocusEffect } from "@react-navigation/native";
 import { Image as ExpoImage } from "expo-image";
-import { useEffect } from "react";
+import { useCallback } from "react";
 import { StatusBar, useWindowDimensions } from "react-native";
-import { ScopedTheme, Uniwind, withUniwind } from "uniwind";
+import { ScopedTheme, withUniwind } from "uniwind";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { getImageUri } from "~/lib/file-system";
 import type { Maybe } from "~/utils/types";
 import { AtmosphereSubtreeContext } from "./store";
-import {
-  deriveAndSetAtmosphereColors,
-  getAtmosphereThemeVariables,
-} from "./util";
+import { deriveAndSetAtmosphereColors } from "./util";
 
 const Image = withUniwind(ExpoImage);
 
@@ -27,19 +25,14 @@ export function AtmosphereBackground(props: {
 
   const imgSize = Math.max(dimensions.height, dimensions.width);
 
-  useEffect(() => {
-    if (!atmosphereEffect) return;
-    const controller = new AbortController();
-    deriveAndSetAtmosphereColors(getImageUri(props.source), controller);
-    return () => controller.abort();
-  }, [atmosphereEffect, props.source]);
-
-  //? Reset the "Atmosphere" Uniwind theme after we no longer show this.
-  useEffect(() => {
-    return () => {
-      Uniwind.updateCSSVariables("atmosphere", getAtmosphereThemeVariables());
-    };
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      if (!atmosphereEffect) return;
+      const controller = new AbortController();
+      deriveAndSetAtmosphereColors(getImageUri(props.source), controller);
+      return () => controller.abort();
+    }, [atmosphereEffect, props.source]),
+  );
 
   if (!atmosphereEffect || !props.source) return props.children;
   return (

@@ -350,10 +350,6 @@
         "adjustWithoutTags": "Etiketsiz Parçalar için Ayar"
       }
     },
-    "ignoreInterrupt": {
-      "title": "Kesintileri Yoksay",
-      "brief": "Bildirim veya çağrı gibi bir kesinti meydana geldiğinde sesi çalmaya devam et. Bu durumlarda müziği manuel olarak duraklatmanız ve devam ettirmeniz gerekecektir."
-    },
     "sleepTimer": {
       "title": "Uyku Zamanlayıcısı",
       "description": "Belirtilen dakika sayısından sonra ses çalmayı durdur.",

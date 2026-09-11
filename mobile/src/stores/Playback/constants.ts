@@ -3,17 +3,10 @@
 
 import type { Track } from "~/data/track/types";
 
-import type { ObjectValues } from "~/utils/types";
 import type { PlayFromSource } from "./types";
 
 //#region Repeat Mode
-export const RepeatModes = {
-  NO_REPEAT: "no-repeat",
-  REPEAT: "repeat",
-  REPEAT_ONE: "repeat-one",
-} as const;
-
-export type RepeatMode = ObjectValues<typeof RepeatModes>;
+export type RepeatMode = "no-repeat" | "repeat" | "repeat-one";
 //#endregion
 
 //#region Store

@@ -350,10 +350,6 @@
         "adjustWithoutTags": "Ajuste sin tags"
       }
     },
-    "ignoreInterrupt": {
-      "title": "Ignorar interrupciones",
-      "brief": "Seguir reproduciendo audio cuando se produce una interrupción como una notificación o una llamada. Tendrá que pausar y reanudar manualmente la música durante estas situaciones."
-    },
     "sleepTimer": {
       "title": "Apagado automático",
       "description": "Detén la reproducción después del tiempo indicado.",
