@@ -1,23 +1,20 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import type { ParseKeys } from "i18next";
 import { View } from "react-native";
 
 import type { TextVariants } from "../base/typography";
-import { Text, TText } from "../base/typography";
+import { Text } from "../base/typography";
 
 interface TextStackProps {
-  label: ParseKeys;
-  /** Prioritized over `descriptionText`. */
-  description?: ParseKeys;
-  descriptionText?: string;
+  label: string;
+  supporting?: string;
 }
 
 /** Generates a React Component that is built to the specified configurations. */
 export function createTextStack(args: {
   labelConfig?: TextVariants;
-  descriptionConfig?: TextVariants;
+  supportingConfig?: TextVariants;
   /** If `numberOfLines = 1` is applied to both fields. */
   clampText?: boolean;
 }) {
@@ -26,36 +23,34 @@ export function createTextStack(args: {
   };
 
   const labelConfig = { ...args.labelConfig, ...additionalProps };
-  const descriptionConfig = { ...args.descriptionConfig, ...additionalProps };
+  const supportingConfig = { ...args.supportingConfig, ...additionalProps };
 
-  function Label(props: { textKey: ParseKeys; singular?: boolean }) {
+  function Label(props: { text: string; singular?: boolean }) {
     return (
-      <TText
+      <Text
         {...labelConfig}
-        textKey={props.textKey}
         className={props.singular ? "shrink grow" : undefined}
-      />
+      >
+        {props.text}
+      </Text>
     );
   }
 
-  function Description(props: { textKey?: ParseKeys; text?: string }) {
-    if (props.textKey)
-      return <TText {...descriptionConfig} textKey={props.textKey} />;
-    return <Text {...descriptionConfig}>{props.text}</Text>;
+  function Supporting(props: { text?: string }) {
+    return <Text {...supportingConfig}>{props.text}</Text>;
   }
 
   return function TextStack(props: TextStackProps) {
-    if (!props.description && !props.descriptionText)
-      return <Label textKey={props.label} singular />;
+    if (!props.supporting) return <Label text={props.label} singular />;
     return (
       <View className="shrink grow">
-        <Label textKey={props.label} />
-        <Description textKey={props.description} text={props.descriptionText} />
+        <Label text={props.label} />
+        <Supporting text={props.supporting} />
       </View>
     );
   };
 }
 
 export const TextStack = createTextStack({
-  descriptionConfig: { muted: true },
+  supportingConfig: { muted: true },
 });

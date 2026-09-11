@@ -44,7 +44,7 @@ const ThemeConfig = {
       Wrapper: Ripple,
       Content: createTextStack({
         labelConfig: { intent: "secondary" },
-        descriptionConfig: { intent: "secondary", muted: true },
+        supportingConfig: { intent: "secondary", muted: true },
       }),
     }),
     colors: {

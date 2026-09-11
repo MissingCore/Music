@@ -3,6 +3,7 @@
 
 import { bundleId } from "@missingcore/native-utils";
 import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
@@ -20,10 +21,11 @@ import * as SettingsList from "./components/SettingsList";
 
 const CustomTextStack = createTextStack({
   labelConfig: { intent: "accent", center: true },
-  descriptionConfig: { muted: true, center: true },
+  supportingConfig: { muted: true, center: true },
 });
 
 export default function AboutApp() {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const { hasNewUpdate } = useHasNewUpdate();
   const checkForUpdates = usePreferenceStore((s) => s.checkForUpdates);
@@ -36,17 +38,15 @@ export default function AboutApp() {
           source={require("~/resources/images/app-icon.png")}
           className="size-24 rounded-full"
         />
-        <CustomTextStack
-          // @ts-expect-error - Will render text if translation key isn't found.
-          label="MissingCore Music"
-          descriptionText={bundleId}
-        />
+        <CustomTextStack label="MissingCore Music" supporting={bundleId} />
 
         <SettingsList.Container theme={hasNewUpdate ? "secondary" : "muted"}>
           <SettingsList.Item
             iconName={hasNewUpdate ? "mobile-arrow-down" : "mobile-check"}
             contentConfig={{
-              label: `feat.appUpdate.${hasNewUpdate ? "brief" : "extra.upToDate"}`,
+              label: t(
+                `feat.appUpdate.${hasNewUpdate ? "brief" : "extra.upToDate"}`,
+              ),
             }}
             onPress={() => navigation.navigate("AppUpdate")}
             disabled={!hasNewUpdate}
@@ -59,8 +59,8 @@ export default function AboutApp() {
         <SettingsList.Item
           iconName="update"
           contentConfig={{
-            label: "feat.appUpdate.extra.viewChangelog",
-            descriptionText: APP_VERSION,
+            label: t("feat.appUpdate.extra.viewChangelog"),
+            supporting: APP_VERSION,
           }}
           onPress={() => openLink(Links.CurrentRelease)}
           Trailing={<SettingsList.FunctionIndicator intent="external" />}
@@ -68,14 +68,14 @@ export default function AboutApp() {
         <SettingsList.Divider />
         <SettingsList.Item
           iconName="release-alert"
-          contentConfig={{ label: "feat.appUpdate.extra.checkUpdates" }}
+          contentConfig={{ label: t("feat.appUpdate.extra.checkUpdates") }}
           onPress={PreferenceTogglers.toggleKey("checkForUpdates")}
           Trailing={<Switch enabled={checkForUpdates} />}
         />
         <SettingsList.Divider />
         <SettingsList.Item
           iconName="flask-filled"
-          contentConfig={{ label: "feat.appUpdate.extra.rcNotification" }}
+          contentConfig={{ label: t("feat.appUpdate.extra.rcNotification") }}
           onPress={PreferenceTogglers.toggleKey("rcNotification")}
           disabled={!checkForUpdates}
           className="disabled:opacity-25"
@@ -86,7 +86,7 @@ export default function AboutApp() {
       <SettingsList.Container>
         <SettingsList.Item
           iconName="translate"
-          contentConfig={{ label: "feat.language.extra.contribute" }}
+          contentConfig={{ label: t("feat.language.extra.contribute") }}
           onPress={() => openLink(Links.Translations)}
           Trailing={<SettingsList.FunctionIndicator intent="external" />}
         />
@@ -94,8 +94,8 @@ export default function AboutApp() {
         <SettingsList.Item
           iconName="logo-github"
           contentConfig={{
-            label: "feat.code.title",
-            description: "feat.code.brief",
+            label: t("feat.code.title"),
+            supporting: t("feat.code.brief"),
           }}
           onPress={() => openLink(Links.GitHub)}
           Trailing={<SettingsList.FunctionIndicator intent="external" />}
@@ -105,7 +105,7 @@ export default function AboutApp() {
       <SettingsList.Container>
         <SettingsList.Item
           iconName="lock"
-          contentConfig={{ label: "feat.privacy.title" }}
+          contentConfig={{ label: t("feat.privacy.title") }}
           onPress={() => openLink(Links.PrivacyPolicy)}
           Trailing={<SettingsList.FunctionIndicator intent="external" />}
         />
@@ -113,8 +113,8 @@ export default function AboutApp() {
         <SettingsList.Item
           iconName="license"
           contentConfig={{
-            label: "feat.license.title",
-            descriptionText: "AGPL-3.0",
+            label: t("feat.license.title"),
+            supporting: "AGPL-3.0",
           }}
           onPress={() => openLink(Links.License)}
           Trailing={<SettingsList.FunctionIndicator intent="external" />}
@@ -123,8 +123,8 @@ export default function AboutApp() {
         <SettingsList.Item
           iconName="license"
           contentConfig={{
-            label: "feat.thirdParty.title",
-            description: "feat.thirdParty.brief",
+            label: t("feat.thirdParty.title"),
+            supporting: t("feat.thirdParty.brief"),
           }}
           onPress={() => navigation.navigate("ThirdParty")}
           Trailing={<SettingsList.FunctionIndicator />}
