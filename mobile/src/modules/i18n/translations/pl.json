@@ -350,10 +350,6 @@
         "adjustWithoutTags": "Regulacja bez tagów"
       }
     },
-    "ignoreInterrupt": {
-      "title": "Ignoruj przerwania",
-      "brief": "Powiadomienia i połączenia nie będą zatrzymywać odtwarzania. Wymagane będzie ręczne zatrzymanie."
-    },
     "sleepTimer": {
       "title": "Wyłącznik czasowy",
       "description": "Zatrzymaj odtwarzanie po upływie określonej ilości minut.",

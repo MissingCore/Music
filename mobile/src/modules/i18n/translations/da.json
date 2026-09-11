@@ -350,10 +350,6 @@
         "adjustWithoutTags": null
       }
     },
-    "ignoreInterrupt": {
-      "title": "Ignorér afbrydelser",
-      "brief": "Fortsæt med at afspille sange, når du får et opkald eller en notifikation. Du bliver nødt til manuelt at pause/afspille musikken i disse situationer."
-    },
     "sleepTimer": {
       "title": "Sleep timer",
       "description": "Stopper med at afspille sange efter det angivne antal minutter.",

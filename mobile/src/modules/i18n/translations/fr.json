@@ -32,8 +32,8 @@
     "playingFrom": "Joue depuis",
     "instructions": "Instructions",
     "disc": "Disque {{count}}",
-    "eps": null,
-    "singles": null
+    "eps": "EPs",
+    "singles": "Singles"
   },
   "template": {
     "entryAdd": "Ajouter {{- name}}",
@@ -199,11 +199,11 @@
       }
     },
     "dbOptimization": {
-      "title": null,
-      "brief": null,
+      "title": "Optimiser la base de données",
+      "brief": "Il y a {{count}} cibles d'optimisation disponibles.",
       "extra": {
-        "start": null,
-        "success": null
+        "start": "Optimisation en cours...",
+        "success": "Optimisations terminées."
       }
     },
     "recap": {
@@ -251,8 +251,8 @@
       "brief": "Ne pas basculer en mode « Répéter » depuis « Répéter le titre » lors du saut."
     },
     "reshuffleOnLaunch": {
-      "title": null,
-      "brief": null
+      "title": "Réorganisation lors du lancement de l'application",
+      "brief": "Réorganise la file d'attente au lancement de l'application si le mode aléatoire est activé."
     },
     "restoreLastPosition": {
       "title": "Restaurer à partir de la dernière position jouée"
@@ -350,10 +350,6 @@
         "adjustWithoutTags": "Ajustement sans balise"
       }
     },
-    "ignoreInterrupt": {
-      "title": "Ignorer les interruptions",
-      "brief": "La lecture audio se poursuit en cas d'interruption, telle qu'une notification ou un appel. Vous devrez alors mettre manuellement la musique en pause et la relancer vous-même."
-    },
     "sleepTimer": {
       "title": "Minuterie",
       "description": "Arrêter la lecture audio au bout du nombre de minutes indiqué.",
@@ -430,7 +426,7 @@
         "name": "Nom",
         "trackNumber": "Numéro de piste",
         "year": "Année",
-        "overrideFields": null
+        "overrideFields": "Si vous attribuez une valeur aux champs suivants, cela remplacera les valeurs attribuées à toutes les pistes de l'album."
       }
     },
     "modalViewPreference": {

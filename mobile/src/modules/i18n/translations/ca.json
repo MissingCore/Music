@@ -350,10 +350,6 @@
         "adjustWithoutTags": null
       }
     },
-    "ignoreInterrupt": {
-      "title": "Ignorar interrupcions",
-      "brief": "Continua reproduint àudio quan es produeixi una interrupció, com ara una notificació o trucada. Haureu de d'aturar i reactivar manualment la música durant aquestes situacions."
-    },
     "sleepTimer": {
       "title": null,
       "description": null,
