@@ -26,6 +26,16 @@ const textStyle = cva({
     muted: { true: "text-xs text-onSurfaceVariant" },
     center: { true: "text-center" },
     uppercase: { true: "tracking-wider uppercase" },
+    size: {
+      unset: null,
+      xs: "text-xs",
+      sm: "text-sm",
+      base: "text-base",
+      lg: "text-lg",
+      xl: "text-xl",
+      "2xl": "text-2xl",
+      "3xl": "text-3xl",
+    },
   },
   compoundVariants: [
     { intent: "primary", muted: true, className: "text-onPrimaryVariant" },
@@ -37,6 +47,7 @@ const textStyle = cva({
     muted: false,
     center: false,
     uppercase: false,
+    size: "unset",
   },
 });
 
@@ -52,6 +63,7 @@ export function Text({
   center,
   uppercase,
   bold: _bold,
+  size,
   className,
   style,
   ...props
@@ -66,7 +78,14 @@ export function Text({
   return (
     <RNText
       {...props}
-      className={textStyle({ intent, muted, center, uppercase, className })}
+      className={textStyle({
+        intent,
+        muted,
+        center,
+        uppercase,
+        size,
+        className,
+      })}
       style={[
         {
           fontFamily: getFont(fontFamily, { headline: asAccent, bold }),

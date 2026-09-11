@@ -50,7 +50,7 @@ export default function AboutApp() {
             }}
             onPress={() => navigation.navigate("AppUpdate")}
             disabled={!hasNewUpdate}
-            Trailing={hasNewUpdate && <SettingsList.FunctionIndicator />}
+            Trailing={hasNewUpdate && <SettingsList.ActionHint />}
           />
         </SettingsList.Container>
       </Card>
@@ -63,7 +63,7 @@ export default function AboutApp() {
             supporting: APP_VERSION,
           }}
           onPress={() => openLink(Links.CurrentRelease)}
-          Trailing={<SettingsList.FunctionIndicator intent="external" />}
+          Trailing={<SettingsList.ActionHint hint="external" />}
         />
         <SettingsList.Divider />
         <SettingsList.Item
@@ -88,7 +88,7 @@ export default function AboutApp() {
           iconName="translate"
           contentConfig={{ label: t("feat.language.extra.contribute") }}
           onPress={() => openLink(Links.Translations)}
-          Trailing={<SettingsList.FunctionIndicator intent="external" />}
+          Trailing={<SettingsList.ActionHint hint="external" />}
         />
         <SettingsList.Divider />
         <SettingsList.Item
@@ -98,7 +98,7 @@ export default function AboutApp() {
             supporting: t("feat.code.brief"),
           }}
           onPress={() => openLink(Links.GitHub)}
-          Trailing={<SettingsList.FunctionIndicator intent="external" />}
+          Trailing={<SettingsList.ActionHint hint="external" />}
         />
       </SettingsList.Container>
 
@@ -107,7 +107,7 @@ export default function AboutApp() {
           iconName="lock"
           contentConfig={{ label: t("feat.privacy.title") }}
           onPress={() => openLink(Links.PrivacyPolicy)}
-          Trailing={<SettingsList.FunctionIndicator intent="external" />}
+          Trailing={<SettingsList.ActionHint hint="external" />}
         />
         <SettingsList.Divider />
         <SettingsList.Item
@@ -117,7 +117,7 @@ export default function AboutApp() {
             supporting: "AGPL-3.0",
           }}
           onPress={() => openLink(Links.License)}
-          Trailing={<SettingsList.FunctionIndicator intent="external" />}
+          Trailing={<SettingsList.ActionHint hint="external" />}
         />
         <SettingsList.Divider />
         <SettingsList.Item
@@ -127,7 +127,7 @@ export default function AboutApp() {
             supporting: t("feat.thirdParty.brief"),
           }}
           onPress={() => navigation.navigate("ThirdParty")}
-          Trailing={<SettingsList.FunctionIndicator />}
+          Trailing={<SettingsList.ActionHint />}
         />
       </SettingsList.Container>
     </ListLayout>

@@ -5,28 +5,34 @@ import { useNavigation } from "@react-navigation/native";
 
 import LicensesList from "~/resources/licenses.json";
 
+import { ListLayout } from "~/navigation/layouts/ListLayout";
+
 import { FlatList } from "~/components/Base/List";
-import { useGeneratedSegmentedList } from "~/components/List/Segmented";
+import * as SettingsList from "./components/SettingsList";
 
 export default function ThirdParty() {
   const navigation = useNavigation();
-  const listContext = useGeneratedSegmentedList({
-    data: Object.entries(LicensesList),
-    renderOptions: {
-      getLabel: ([_, item]) => item.name,
-      getSupportingText: ([_, item]) => `${item.license} (${item.version})`,
-      onPress:
-        ([id]) =>
-        () =>
-          navigation.navigate("PackageLicense", { id }),
-    },
-  });
-
   return (
-    <FlatList
-      keyExtractor={([id]) => id}
-      contentContainerClassName="p-4 pb-safe-offset-4"
-      {...listContext}
-    />
+    <ListLayout>
+      <SettingsList.Provider hasIcon={false}>
+        <FlatList
+          data={Object.entries(LicensesList)}
+          keyExtractor={([id]) => id}
+          renderItem={({ item: [id, item] }) => (
+            <SettingsList.Item
+              contentConfig={{
+                label: item.name,
+                supporting: `${item.license} (${item.version})`,
+              }}
+              onPress={() => navigation.navigate("PackageLicense", { id })}
+              Trailing={<SettingsList.ActionHint />}
+            />
+          )}
+          ItemSeparatorComponent={<SettingsList.Divider />}
+          scrollEnabled={false}
+          contentContainerClassName="overflow-hidden rounded-3xl bg-surfaceContainerLowest"
+        />
+      </SettingsList.Provider>
+    </ListLayout>
   );
 }

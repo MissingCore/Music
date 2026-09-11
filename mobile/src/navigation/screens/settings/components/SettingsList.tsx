@@ -59,24 +59,34 @@ const ThemeConfig = {
   },
 } as const;
 
-export function Container(props: {
+interface ProviderProps {
   children: React.ReactNode;
   theme?: Theme;
   hasIcon?: boolean;
-}) {
+}
+
+export function Provider(props: ProviderProps) {
   const { theme = "base", hasIcon = true, children } = props;
   return (
     <ThemeContext value={theme !== "muted" ? theme : "base"}>
-      <HasIconContext value={hasIcon}>
-        <Card
-          intent={theme !== "base" ? theme : undefined}
-          padding={false}
-          className="w-full"
-        >
-          {children}
-        </Card>
-      </HasIconContext>
+      <HasIconContext value={hasIcon}>{children}</HasIconContext>
     </ThemeContext>
+  );
+}
+
+export function Container(
+  props: ProviderProps & { children: React.ReactNode; className?: string },
+) {
+  return (
+    <Provider theme={props.theme} hasIcon={props.hasIcon}>
+      <Card
+        intent={props.theme !== "base" ? props.theme : undefined}
+        padding={false}
+        className={cn("w-full", props.className)}
+      >
+        {props.children}
+      </Card>
+    </Provider>
   );
 }
 
@@ -128,10 +138,10 @@ export function Item({ iconName, className, ...props }: ItemBaseProps) {
   );
 }
 
-export function FunctionIndicator({
-  intent = "internal",
+export function ActionHint({
+  hint = "internal",
 }: {
-  intent?: "internal" | "external";
+  hint?: "internal" | "external";
 }) {
   const { bgColors, colors } = ThemeConfig[use(ThemeContext)];
   return (
@@ -142,7 +152,7 @@ export function FunctionIndicator({
       )}
     >
       <Icon
-        name={intent === "internal" ? "arrow-right-alt" : "call-made"}
+        name={hint === "internal" ? "arrow-right-alt" : "call-made"}
         color={colors.iconInverse}
       />
     </View>
