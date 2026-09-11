@@ -3,6 +3,7 @@
 
 import type { VariantProps } from "cva/config";
 import type { ParseKeys } from "i18next";
+import { use } from "react";
 import { useTranslation } from "react-i18next";
 import type { TextProps as RNTextProps } from "react-native";
 import { Text as RNText } from "react-native";
@@ -11,6 +12,8 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { cva } from "~/lib/style";
 import { getFont } from "~/modules/customization/font/utils";
+import type { IntentVariant } from "./context";
+import { ThemeIntentContext } from "./context";
 
 const textStyle = cva({
   base: "text-left text-base text-onSurface",
@@ -19,10 +22,12 @@ const textStyle = cva({
       unset: null,
       accent: "text-3xl leading-tight",
       em: "text-xs",
+      //? The `intent = "muted"` will enable the `muted` variant.
+      muted: null,
       primary: "text-onPrimary",
       secondary: "text-onSecondary",
       error: "text-onError",
-    },
+    } satisfies IntentVariant,
     muted: { true: "text-xs text-onSurfaceVariant" },
     center: { true: "text-center" },
     uppercase: { true: "tracking-wider uppercase" },
@@ -58,8 +63,8 @@ interface TextProps extends RNTextProps, TextVariants {
 }
 
 export function Text({
-  intent,
-  muted,
+  intent: _intent,
+  muted: _muted,
   center,
   uppercase,
   bold: _bold,
@@ -68,7 +73,9 @@ export function Text({
   style,
   ...props
 }: TextProps) {
+  const intent = _intent ?? use(ThemeIntentContext);
   const asAccent = intent === "accent";
+  const muted = intent === "muted" || _muted;
   const bold = _bold ?? intent === "em";
 
   const fontFamily = usePreferenceStore(

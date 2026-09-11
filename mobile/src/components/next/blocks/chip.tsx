@@ -3,20 +3,18 @@
 
 import type { ParseKeys } from "i18next";
 
-import type { CardVariants } from "../base/card";
+import type { Intent } from "../base/context";
 import { Card } from "../base/card";
 import { Text, TText } from "../base/typography";
 
-interface ChipProps extends Pick<CardVariants, "intent"> {
+interface ChipProps {
+  intent?: Intent;
   label?: ParseKeys;
   labelText?: string;
 }
 
 export function Chip({ intent, label, labelText }: ChipProps) {
-  const textProps = {
-    intent: intent === "muted" ? "unset" : intent,
-    size: "xs",
-  } as const;
+  const textProps = { intent, size: "xs" } as const;
   return (
     <Card intent={intent} padding={false} className="rounded-sm px-3 py-1">
       {label ? (

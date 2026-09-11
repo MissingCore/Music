@@ -1,11 +1,14 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { use } from "react";
 import { createNanoIconSet } from "react-native-nano-icons";
 
 import type { AppColor } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
 import glyphMap from "~/resources/icons/app-icons.glyphmap.json";
+
+import { getIntentOnColor, ThemeIntentContext } from "./context";
 
 const AppIcons = createNanoIconSet(glyphMap);
 
@@ -20,7 +23,10 @@ interface IconProps {
 }
 
 export function Icon({ name, size = 24, color }: IconProps) {
-  const usedColor = useColor(color, "onSurface");
+  const usedColor = useColor(
+    color ?? getIntentOnColor(use(ThemeIntentContext)),
+    "onSurface",
+  );
   return (
     <AppIcons
       name={name}
