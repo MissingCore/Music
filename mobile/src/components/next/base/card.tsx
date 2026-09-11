@@ -21,10 +21,15 @@ export const cardStyle = cva({
       error: "bg-error",
     } satisfies IntentVariant,
     padding: { true: "p-4" },
+    //! Will not apply to `outline` if it's also enabled.
+    inverse: { true: "bg-inverseSurface" },
     outline: { true: "border border-outlineVariant" },
     overflow: { false: "overflow-hidden" },
   },
   compoundVariants: [
+    { intent: "primary", inverse: true, className: "bg-onPrimary" },
+    { intent: "secondary", inverse: true, className: "bg-onSecondary" },
+    { intent: "error", inverse: true, className: "bg-onError" },
     { intent: "primary", outline: true, className: "border-primaryDim" },
     { intent: "secondary", outline: true, className: "border-secondaryDim" },
     { intent: "error", outline: true, className: "border-errorDim" },
@@ -44,6 +49,7 @@ interface CardProps extends ViewProps, CardVariants {}
 export function Card({
   intent: _intent,
   padding,
+  inverse,
   outline,
   overflow,
   className,
@@ -53,7 +59,14 @@ export function Card({
   return (
     <View
       {...props}
-      className={cardStyle({ intent, padding, outline, overflow, className })}
+      className={cardStyle({
+        intent,
+        padding,
+        inverse,
+        outline,
+        overflow,
+        className,
+      })}
     />
   );
 }

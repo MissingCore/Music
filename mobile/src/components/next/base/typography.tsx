@@ -22,7 +22,7 @@ const textStyle = cva({
       unset: null,
       accent: "text-3xl leading-tight",
       em: "text-xs",
-      //? The `intent = "muted"` will enable the `muted` variant.
+      //! Using `intent = "muted"` will do nothing and not enable the `muted` variant.
       muted: null,
       primary: "text-onPrimary",
       secondary: "text-onSecondary",
@@ -64,7 +64,7 @@ interface TextProps extends RNTextProps, TextVariants {
 
 export function Text({
   intent: _intent,
-  muted: _muted,
+  muted,
   center,
   uppercase,
   bold: _bold,
@@ -75,7 +75,6 @@ export function Text({
 }: TextProps) {
   const intent = _intent ?? use(ThemeIntentContext);
   const asAccent = intent === "accent";
-  const muted = intent === "muted" || _muted;
   const bold = _bold ?? intent === "em";
 
   const fontFamily = usePreferenceStore(
