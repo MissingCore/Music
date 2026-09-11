@@ -87,7 +87,7 @@ export async function deriveAndSetAtmosphereColors(
 }
 
 /** Get the CSS variables used for the "Atmosphere" Uniwind theme. */
-export function getAtmosphereThemeVariables() {
+function getAtmosphereThemeVariables() {
   const deviceScheme = Appearance.getColorScheme();
   const { theme: savedTheme, activeCustomTheme } = preferenceStore.getState();
 
