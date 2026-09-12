@@ -41,6 +41,7 @@
     "cva": "1.0.0-beta.9",
     "drizzle-orm": "0.45.2",
     "expo": "57.0.21",
+    "expo-blur": "57.0.2",
     "expo-drizzle-studio-plugin": "0.2.1",
     "expo-file-system": "57.0.6",
     "expo-font": "57.0.3",

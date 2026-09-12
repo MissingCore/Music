@@ -18,6 +18,7 @@
 | cva | Apache-2.0 | https://github.com/joe-bell/cva |
 | drizzle-orm | Apache-2.0 | https://github.com/drizzle-team/drizzle-orm |
 | expo | MIT | https://github.com/expo/expo/tree/main/packages/expo |
+| expo-blur | MIT | https://github.com/expo/expo/tree/main/packages/expo-blur |
 | expo-drizzle-studio-plugin | MIT | https://github.com/drizzle-team/drizzle-studio-expo |
 | expo-file-system | MIT | https://github.com/expo/expo/tree/main/packages/expo-file-system |
 | expo-font | MIT | https://github.com/expo/expo/tree/main/packages/expo-font |
