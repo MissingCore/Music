@@ -11,6 +11,7 @@
 | @react-navigation/native | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native |
 | @react-navigation/native-stack | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native-stack |
 | @rn-primitives/portal | MIT | https://github.com/roninoss/rn-primitives/tree/main/packages/portal |
+| @sbaiahmed1/react-native-blur | MIT | https://github.com/sbaiahmed1/react-native-blur |
 | @sentry/react-native | MIT | https://github.com/getsentry/sentry-react-native |
 | @tanstack/react-query | MIT | https://github.com/TanStack/query |
 | @zoontek/react-native-navigation-bar | MIT | https://github.com/zoontek/react-native-navigation-bar |
@@ -18,7 +19,6 @@
 | cva | Apache-2.0 | https://github.com/joe-bell/cva |
 | drizzle-orm | Apache-2.0 | https://github.com/drizzle-team/drizzle-orm |
 | expo | MIT | https://github.com/expo/expo/tree/main/packages/expo |
-| expo-blur | MIT | https://github.com/expo/expo/tree/main/packages/expo-blur |
 | expo-drizzle-studio-plugin | MIT | https://github.com/drizzle-team/drizzle-studio-expo |
 | expo-file-system | MIT | https://github.com/expo/expo/tree/main/packages/expo-file-system |
 | expo-font | MIT | https://github.com/expo/expo/tree/main/packages/expo-font |
