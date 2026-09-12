@@ -11,7 +11,6 @@
 | @react-navigation/native | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native |
 | @react-navigation/native-stack | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native-stack |
 | @rn-primitives/portal | MIT | https://github.com/roninoss/rn-primitives/tree/main/packages/portal |
-| @sbaiahmed1/react-native-blur | MIT | https://github.com/sbaiahmed1/react-native-blur |
 | @sentry/react-native | MIT | https://github.com/getsentry/sentry-react-native |
 | @tanstack/react-query | MIT | https://github.com/TanStack/query |
 | @zoontek/react-native-navigation-bar | MIT | https://github.com/zoontek/react-native-navigation-bar |

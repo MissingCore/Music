@@ -46,9 +46,6 @@ importers:
       '@rn-primitives/portal':
         specifier: 1.5.3
         version: 1.5.3(@types/react@19.2.18)(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)(use-sync-external-store@1.6.0(react@19.2.3))
-      '@sbaiahmed1/react-native-blur':
-        specifier: 6.0.1
-        version: 6.0.1(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
       '@sentry/react-native':
         specifier: 8.25.0
         version: 8.25.0(@expo/env@2.4.3)(dotenv@17.4.2)(expo@57.0.21)(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
@@ -1730,12 +1727,6 @@ packages:
 
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
-
-  '@sbaiahmed1/react-native-blur@6.0.1':
-    resolution: {integrity: sha512-RlO4LBE/Wj437LI7KI2oMVzF9IBiHvGe350TvHjEQhBGrHaZfdqzW8HjuoiMo6WIsGpkKSm0HTnhdrPQHl6e8Q==}
-    peerDependencies:
-      react: '>=18.2.0'
-      react-native: '>=0.80.0'
 
   '@sentry/browser-utils@10.73.0':
     resolution: {integrity: sha512-qQygxJZ+RV779+iL1+lrJ4f4sZLgbgW0/JWPNp0YlcEAE62yCsdKbqoTEjB/EugdS4mSjBMX0chZC6rblu2Ycw==}
@@ -7270,11 +7261,6 @@ snapshots:
       - use-sync-external-store
 
   '@rtsao/scc@1.1.0': {}
-
-  '@sbaiahmed1/react-native-blur@6.0.1(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)':
-    dependencies:
-      react: 19.2.3
-      react-native: 0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3)
 
   '@sentry/browser-utils@10.73.0':
     dependencies:
