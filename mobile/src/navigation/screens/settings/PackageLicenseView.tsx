@@ -7,12 +7,12 @@ import { View } from "react-native";
 import LicensesList from "~/resources/licenses.json";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
+import * as SettingsList from "./components/SettingsList";
 
 import { openLink } from "~/lib/web-browser";
 import { Ripple } from "~/components/next/base/ripple";
 import { Text } from "~/components/next/base/typography";
 import { createTextStack } from "~/components/next/blocks/text-stack";
-import * as SettingsList from "./components/SettingsList";
 
 const HeaderTextStack = createTextStack({
   labelConfig: { intent: "accent", size: "2xl" },

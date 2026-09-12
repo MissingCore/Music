@@ -10,6 +10,7 @@ import { PreferenceTogglers } from "~/stores/Preference/actions";
 
 import { useHasNewUpdate } from "~/navigation/hooks/useHasNewUpdate";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
+import * as SettingsList from "./components/SettingsList";
 
 import { APP_VERSION } from "~/constants/Config";
 import { Links, openLink } from "~/lib/web-browser";
@@ -17,7 +18,6 @@ import { Switch } from "~/components/Form/Switch";
 import { Card } from "~/components/next/base/card";
 import { Image } from "~/components/next/base/image";
 import { createTextStack } from "~/components/next/blocks/text-stack";
-import * as SettingsList from "./components/SettingsList";
 
 const CustomTextStack = createTextStack({
   labelConfig: { intent: "accent", center: true },
@@ -50,7 +50,7 @@ export default function AboutApp() {
             }}
             onPress={() => navigation.navigate("AppUpdate")}
             disabled={!hasNewUpdate}
-            Trailing={hasNewUpdate && <SettingsList.ActionHint />}
+            Trailing={hasNewUpdate ? undefined : null}
           />
         </SettingsList.Container>
       </Card>
@@ -62,8 +62,8 @@ export default function AboutApp() {
             label: t("feat.appUpdate.extra.viewChangelog"),
             supporting: APP_VERSION,
           }}
+          hintConfig={{ hint: "external" }}
           onPress={() => openLink(Links.CurrentRelease)}
-          Trailing={<SettingsList.ActionHint hint="external" />}
         />
         <SettingsList.Divider />
         <SettingsList.Item
@@ -87,8 +87,8 @@ export default function AboutApp() {
         <SettingsList.Item
           iconName="translate"
           contentConfig={{ label: t("feat.language.extra.contribute") }}
+          hintConfig={{ hint: "external" }}
           onPress={() => openLink(Links.Translations)}
-          Trailing={<SettingsList.ActionHint hint="external" />}
         />
         <SettingsList.Divider />
         <SettingsList.Item
@@ -97,8 +97,8 @@ export default function AboutApp() {
             label: t("feat.code.title"),
             supporting: t("feat.code.brief"),
           }}
+          hintConfig={{ hint: "external" }}
           onPress={() => openLink(Links.GitHub)}
-          Trailing={<SettingsList.ActionHint hint="external" />}
         />
       </SettingsList.Container>
 
@@ -106,8 +106,8 @@ export default function AboutApp() {
         <SettingsList.Item
           iconName="lock"
           contentConfig={{ label: t("feat.privacy.title") }}
+          hintConfig={{ hint: "external" }}
           onPress={() => openLink(Links.PrivacyPolicy)}
-          Trailing={<SettingsList.ActionHint hint="external" />}
         />
         <SettingsList.Divider />
         <SettingsList.Item
@@ -116,8 +116,8 @@ export default function AboutApp() {
             label: t("feat.license.title"),
             supporting: "AGPL-3.0",
           }}
+          hintConfig={{ hint: "external" }}
           onPress={() => openLink(Links.License)}
-          Trailing={<SettingsList.ActionHint hint="external" />}
         />
         <SettingsList.Divider />
         <SettingsList.Item
@@ -127,7 +127,6 @@ export default function AboutApp() {
             supporting: t("feat.thirdParty.brief"),
           }}
           onPress={() => navigation.navigate("ThirdParty")}
-          Trailing={<SettingsList.ActionHint />}
         />
       </SettingsList.Container>
     </ListLayout>

@@ -5,9 +5,10 @@ import { useNavigation } from "@react-navigation/native";
 
 import LicensesList from "~/resources/licenses.json";
 
+import * as SettingsList from "./components/SettingsList";
+
 import { cn } from "~/lib/style";
 import { FlatList } from "~/components/Base/List";
-import * as SettingsList from "./components/SettingsList";
 
 export default function ThirdParty() {
   const navigation = useNavigation();
@@ -23,7 +24,6 @@ export default function ThirdParty() {
             supporting: `${item.license} (${item.version})`,
           }}
           onPress={() => navigation.navigate("PackageLicense", { id })}
-          Trailing={<SettingsList.ActionHint />}
           className={cn("overflow-hidden bg-surfaceContainerLowest", {
             "rounded-t-3xl": index === 0,
             "rounded-b-3xl": index === data.length - 1,

@@ -45,25 +45,34 @@ interface ItemBaseProps extends Omit<
   "Leading" | "rippleColor"
 > {
   iconName?: SupportedIconName;
+  hintConfig?: ActionHintProps;
 }
 
-export function Item({ iconName, className, ...props }: ItemBaseProps) {
+export function Item({
+  iconName,
+  className,
+  hintConfig,
+  Trailing,
+  ...props
+}: ItemBaseProps) {
   return (
     <BaseItem
       {...props}
       Leading={iconName ? <Icon name={iconName} /> : undefined}
+      Trailing={
+        Trailing !== undefined ? Trailing : <ActionHint {...hintConfig} />
+      }
       className={cn("min-h-16 p-4", className)}
     />
   );
 }
 
-export function ActionHint({
-  hint = "internal",
-  size,
-}: {
+interface ActionHintProps {
   hint?: "internal" | "external";
   size?: "lg";
-}) {
+}
+
+export function ActionHint({ hint = "internal", size }: ActionHintProps) {
   return (
     <Card
       pointerEvents="none"
