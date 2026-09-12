@@ -9,26 +9,25 @@ import { cn } from "~/lib/style";
 
 const BlurView = withUniwind(RawBlurView);
 
-type BlurWrapperProps<TWrapper extends React.ElementType = typeof View> =
-  React.ComponentProps<TWrapper> & {
-    Wrapper?: TWrapper;
-    children: React.ReactNode;
-  };
+export function createBlurWrapper<
+  TWrapper extends React.ElementType = typeof View,
+>(Wrapper?: TWrapper) {
+  const WrapperElement = Wrapper ?? View;
 
-export function BlurWrapper<TWrapper extends React.ElementType = typeof View>({
-  Wrapper = View,
-  className,
-  children,
-  ...props
-}: BlurWrapperProps<TWrapper>) {
-  return (
-    <Wrapper {...props} className={cn("relative", className)}>
-      <BlurView
-        blurType="regular"
-        blurAmount={70}
-        className="absolute inset-0"
-      />
-      {children}
-    </Wrapper>
-  );
+  return function BlurWrapper({
+    className,
+    children,
+    ...props
+  }: React.ComponentProps<TWrapper> & { children: React.ReactNode }) {
+    return (
+      <WrapperElement {...props} className={cn("relative", className)}>
+        <BlurView
+          blurType="regular"
+          blurAmount={70}
+          className="absolute inset-0"
+        />
+        {children}
+      </WrapperElement>
+    );
+  };
 }
