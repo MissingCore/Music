@@ -44,7 +44,7 @@ export function useListLayoutConfig(args: ClampOptions = {}) {
 
 //#region Internal Helpers
 /** Gap used to space items. */
-const CONTENT_GAP = 8;
+const CONTENT_GAP = 4;
 /** Space reserved for horizontal margin on screen. */
 const SCREEN_GUTTERS = 32;
 
