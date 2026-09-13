@@ -58,7 +58,7 @@ const textStyle = cva({
 
 export type TextVariants = VariantProps<typeof textStyle>;
 
-interface TextProps extends RNTextProps, TextVariants {
+export interface TextProps extends RNTextProps, TextVariants {
   bold?: boolean;
 }
 

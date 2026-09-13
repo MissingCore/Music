@@ -4,4 +4,13 @@
 import { Image as ExpoImage } from "expo-image";
 import { withUniwind } from "uniwind";
 
-export const Image = withUniwind(ExpoImage);
+import { usePreferenceStore } from "~/stores/Preference/store";
+
+const WrappedImage = withUniwind(ExpoImage);
+
+export function Image(props: React.ComponentProps<typeof WrappedImage>) {
+  const squareArtwork = usePreferenceStore((s) => s.squareArtwork);
+  return (
+    <WrappedImage contentFit={squareArtwork ? "cover" : "contain"} {...props} />
+  );
+}
