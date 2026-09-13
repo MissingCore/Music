@@ -3,43 +3,40 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 
 import { useAlbums } from "~/data/album/queries";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { useSessionStore } from "~/stores/Session/store";
+import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { useViewOrder } from "~/stores/ViewPreference/hooks/useViewOrder";
-import {
-  useCompactGridLayoutConfig,
-  useGridLayoutConfig,
-  useListLayoutConfig,
-} from "~/hooks/useLayoutConfigs";
+import type { LayoutItem } from "~/stores/ViewPreference/types";
 
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+import * as LibraryLayout from "~/navigation/layouts/LibrayLayout";
 import { AlbumsViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
 
 import type { ExtractQueryData } from "~/lib/react-query";
-import { cn } from "~/lib/style";
-import { LegendList } from "~/components/Base/LegendList";
-import { FilledIconButton } from "~/components/Form/Button/Icon";
-import { Marquee } from "~/components/Marquee";
-import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import {
-  getLargeImageCardHeight,
-  ImageCard,
-  LargeImageCard,
-} from "~/components/next/composed/image-card";
-import { ImageListItem } from "~/components/next/composed/image-list-item";
-import { TText } from "~/components/next/base/typography";
-import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
-import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 
 export default function Albums() {
-  const { data } = useAlbums();
+  return (
+    <>
+      <LibraryLayout.Header
+        titleKey="term.albums"
+        OptionsSheet={AlbumsViewOptionsSheet}
+      />
+      <ScreenContents />
+    </>
+  );
+}
+
+function ScreenContents() {
+  const navigation = useNavigation();
+  const { isPending, data } = useAlbums();
   const minAlbumLength = usePreferenceStore((s) => s.minAlbumLength);
   const showSingles = useSessionStore((s) => s.showSingles);
   const showEPs = useSessionStore((s) => s.showEPs);
   const showAlbums = useSessionStore((s) => s.showAlbums);
+  const asGrid = useViewPreferenceStore((s) => s.albumLayout !== "list");
 
   const filteredData = useMemo(
     () =>
@@ -56,127 +53,41 @@ export default function Albums() {
   const sortedData = useViewOrder("album", filteredData);
 
   const splittedData = useMemo(() => {
-    const favorites: AlbumData[] = [];
-    const nonFavorites: AlbumData[] = [];
+    const favorites: LayoutItem[] = [];
+    const nonFavorites: LayoutItem[] = [];
     sortedData?.forEach((album) => {
-      if (album.isFavorite) favorites.push(album);
-      else nonFavorites.push(album);
+      if (album.isFavorite) favorites.push(formatData(album));
+      else nonFavorites.push(formatData(album));
     });
     return { favorites, nonFavorites };
   }, [sortedData]);
 
-  const forGrid = useViewPreferenceStore((s) => s.albumLayout !== "list");
-
   return (
-    <>
-      <LibraryHeader />
-      <LibraryMedia
-        data={splittedData.nonFavorites}
-        favoritesData={splittedData.favorites}
-        forGrid={forGrid}
-      />
-    </>
-  );
-}
-
-function LibraryHeader() {
-  const { t } = useTranslation();
-  const sheetRef = useSheetRef();
-
-  return (
-    <>
-      <AlbumsViewOptionsSheet ref={sheetRef} />
-      <View className="flex-row items-center justify-between px-4 pt-safe-offset-8 pb-2">
-        <Marquee>
-          <TText textKey="term.albums" intent="accent" size="4xl" />
-        </Marquee>
-        <FilledIconButton
-          icon="more-horiz"
-          accessibilityLabel={t("feat.modalViewPreference.title")}
-          onPress={() => sheetRef.current?.present()}
-        />
-      </View>
-    </>
-  );
-}
-
-function LibraryMedia(props: {
-  data: AlbumData[];
-  favoritesData?: AlbumData[];
-  forGrid?: boolean;
-}) {
-  const navigation = useNavigation();
-  const listLayout = useListLayoutConfig();
-  const compactGridLayout = useCompactGridLayoutConfig();
-  const config = props.forGrid ? compactGridLayout : listLayout;
-
-  const Wrapper = props.forGrid ? ImageCard : ImageListItem;
-
-  const showNavbar = usePreferenceStore((s) => s.showNavbar);
-  const bottomOffset = useBottomActionsOffset({
-    maxRows: showNavbar ? 2 : 1,
-    rowAlwaysVisible: true,
-  });
-
-  return (
-    <LegendList
-      numColumns={config.count}
-      data={props.data}
-      estimatedItemSize={config.width + 4}
-      renderItem={({ item }) => (
-        <Wrapper
-          src={item.artwork}
-          size={config.width}
-          label={item.name}
-          supporting={!props.forGrid ? item.artistName : undefined}
-          onPress={() => navigation.navigate("Album", { id: item.id })}
-          className={cn("mx-0.5 mb-1", !props.forGrid && "pr-4")}
-        />
-      )}
+    <LibraryLayout.MediaList
+      data={splittedData.nonFavorites}
+      onPress={(id) => navigation.navigate("Album", { id })}
+      asGrid={asGrid}
       ListHeaderComponent={
-        <FavoriteMedia data={props.favoritesData} forGrid={props.forGrid} />
-      }
-      className="-mx-0.5 -mb-1"
-      contentContainerStyle={{ paddingBottom: bottomOffset }}
-      contentContainerClassName="p-4"
-    />
-  );
-}
-
-function FavoriteMedia(props: { data?: AlbumData[]; forGrid?: boolean }) {
-  const navigation = useNavigation();
-  const gridLayout = useGridLayoutConfig();
-  const compactGridLayout = useCompactGridLayoutConfig();
-  const config = props.forGrid ? gridLayout : compactGridLayout;
-
-  const estimatedItemSize = props.forGrid
-    ? getLargeImageCardHeight(config.width)
-    : config.width;
-  const Wrapper = props.forGrid ? LargeImageCard : ImageCard;
-
-  if (!props.data || props.data.length === 0) return undefined;
-  return (
-    <LegendList
-      numColumns={config.count}
-      data={props.data}
-      estimatedItemSize={estimatedItemSize + 4}
-      renderItem={({ item }) => (
-        <Wrapper
-          src={item.artwork}
-          size={config.width}
-          label={item.name}
-          supporting={item.artistName}
-          onPress={() => navigation.navigate("Album", { id: item.id })}
-          className="mx-0.5 mb-1"
+        <LibraryLayout.FavoriteMedia
+          data={splittedData.favorites}
+          onPress={(id) => navigation.navigate("Album", { id })}
+          withGrid={asGrid}
         />
-      )}
-      scrollEnabled={false}
-      className="-mx-0.5 -mb-1"
-      contentContainerClassName="pb-4"
+      }
+      ListEmptyComponent={
+        <ContentPlaceholder
+          isPending={isPending || sortedData === undefined}
+          errMsgKey="err.msg.noAlbums"
+        />
+      }
     />
   );
 }
 
 //#region Utils
 type AlbumData = ExtractQueryData<typeof useAlbums>[number];
+
+function formatData({ id, name, artistName, artwork }: AlbumData) {
+  return { id, title: name, description: artistName, imageSource: artwork };
+}
 //#endregion
