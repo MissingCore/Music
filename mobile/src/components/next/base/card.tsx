@@ -11,7 +11,7 @@ import type { IntentVariant } from "./context";
 import { ThemeIntentContext } from "./context";
 
 export const cardStyle = cva({
-  base: "rounded-3xl bg-surfaceContainerLowest",
+  base: "rounded-xl bg-surfaceContainerLowest",
   variants: {
     intent: {
       unset: null,

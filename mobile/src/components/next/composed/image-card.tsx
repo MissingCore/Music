@@ -33,7 +33,7 @@ export function ImageCard(props: ImageCardProps) {
     <Ripple
       pointerEvents="box-only"
       onPress={props.onPress}
-      className={cn("relative rounded-3xl", props.className)}
+      className={cn("relative rounded-xl", props.className)}
     >
       <Image
         source={getImageUri(props.src)}

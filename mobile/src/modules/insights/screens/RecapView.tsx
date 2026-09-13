@@ -102,7 +102,7 @@ export default function Recap() {
       <ListLayout>
         <Ripple
           onPress={() => timeRangeSheetRef.current?.present()}
-          className="flex-row justify-between gap-4 rounded-3xl bg-surfaceContainerLowest p-4"
+          className="flex-row justify-between gap-4 rounded-xl bg-surfaceContainerLowest p-4"
         >
           <View className="gap-2">
             <TStyledText
@@ -195,8 +195,8 @@ function QuickOverview(
   props: Awaited<ReturnType<typeof getRecap>>["overview"],
 ) {
   return (
-    <View className="gap-4 rounded-3xl bg-surfaceContainerLowest p-4">
-      <View className="gap-2 rounded-3xl bg-secondary p-4">
+    <View className="gap-4 rounded-xl bg-surfaceContainerLowest p-4">
+      <View className="gap-2 rounded-xl bg-secondary p-4">
         <TStyledText
           textKey="feat.recap.extra.totalListeningTime"
           className="text-sm text-onSecondaryVariant"
@@ -229,7 +229,7 @@ function TopContent(props: Awaited<ReturnType<typeof getRecap>>["mostPlayed"]) {
       return (
         <View
           key={content}
-          className="flex-row items-center gap-4 rounded-3xl bg-surfaceContainerLowest p-4"
+          className="flex-row items-center gap-4 rounded-xl bg-surfaceContainerLowest p-4"
         >
           <MediaImage type={content} source={item.imgSrc} size={64} />
           <View className="shrink grow">
@@ -295,7 +295,7 @@ function TopList(props: {
               </>
             }
             className={cn(
-              "gap-2 rounded-3xl bg-surfaceContainerLowest p-2 pr-4",
+              "gap-2 rounded-xl bg-surfaceContainerLowest p-2 pr-4",
               {
                 "rounded-t-sm": index !== 0,
                 "rounded-b-sm":
@@ -328,7 +328,7 @@ function TopList(props: {
           ) : null
         }
         scrollEnabled={false}
-        contentContainerClassName="gap-[3px]"
+        contentContainerClassName="gap-0.75"
       />
     </View>
   );
