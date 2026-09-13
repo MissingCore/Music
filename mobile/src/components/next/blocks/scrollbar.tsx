@@ -9,7 +9,7 @@ import {
   usePanGesture,
   useSimultaneousGestures,
 } from "react-native-gesture-handler";
-import type { AnimatedRef } from "react-native-reanimated";
+import type { AnimatedRef, SharedValue } from "react-native-reanimated";
 import Animated, {
   clamp,
   ReduceMotion,
@@ -31,7 +31,7 @@ interface ScrollbarProps {
    * The height of the list including the amount we can scroll. This is
    * obtained from the `onContentSizeChange` prop on the list component.
    */
-  fullListHeight: number;
+  fullListHeight: SharedValue<number>;
 }
 
 const THUMB_SIZE = 48;
@@ -52,11 +52,11 @@ export function Scrollbar({
   // We subtract `THUMB_SIZE / 2` to prevent it from appearing beyond the track.
   const scrollbarHeight = height - top - bottom - THUMB_SIZE / 2;
   // The amount we can scroll.
-  const scrollableArea = fullListHeight - height;
+  const scrollableArea = useDerivedValue(() => fullListHeight.get() - height);
 
   // Scale down `scrollAmount` to fit within `scrollbarHeight`.
   const scaledScrollAmount = useDerivedValue(() => {
-    const scrollPercent = scrollAmount.get() / scrollableArea;
+    const scrollPercent = scrollAmount.get() / scrollableArea.get();
     return scrollPercent * scrollbarHeight || 0;
   });
 
@@ -101,7 +101,7 @@ export function Scrollbar({
 
   //* Enable scrollbar if we have at least 2 screens worth of content.
   useDerivedValue(() => {
-    const hasEnoughContent = fullListHeight / scrollbarHeight > 2;
+    const hasEnoughContent = fullListHeight.get() / scrollbarHeight > 2;
     scheduleOnRN(setIsAvailable, hasEnoughContent && gracePeriod.get() !== 0);
   });
 
@@ -141,7 +141,7 @@ export function Scrollbar({
       );
 
       const scrollPercent = clampedScaledPosition / scrollbarHeight;
-      const unscaledScrollAmount = scrollPercent * scrollableArea;
+      const unscaledScrollAmount = scrollPercent * scrollableArea.get();
 
       nextScrollPosition.set(unscaledScrollAmount);
       prevY.set(absoluteY);

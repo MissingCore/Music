@@ -2,8 +2,14 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import type { ParseKeys } from "i18next";
+import { createContext, use, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
+import type { SharedValue } from "react-native-reanimated";
+import {
+  useAnimatedScrollHandler,
+  useSharedValue,
+} from "react-native-reanimated";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import type { LayoutItem } from "~/stores/ViewPreference/types";
@@ -21,13 +27,70 @@ import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { Marquee } from "~/components/Marquee";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import {
+  ScrollContextProvider,
+  useScrollContext,
+} from "~/components/next/base/scroll-context";
 import { TText } from "~/components/next/base/typography";
+import { Scrollbar } from "~/components/next/blocks/scrollbar";
 import {
   getLargeImageCardHeight,
   ImageCard,
   LargeImageCard,
 } from "~/components/next/composed/image-card";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
+
+//#region Provider
+interface LibraryLayoutInput {
+  asGrid: boolean;
+}
+
+interface LibraryLayoutValue extends LibraryLayoutInput {
+  headerHeight: number;
+  setHeaderHeight: (height: number) => void;
+  fullListHeight: SharedValue<number>;
+  bottomOffset: number;
+}
+
+const LibraryLayoutContext = createContext<LibraryLayoutValue>(null as never);
+
+export function Provider({
+  children,
+  ...props
+}: LibraryLayoutInput & { children: React.ReactNode }) {
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const fullListHeight = useSharedValue(0);
+
+  const showNavbar = usePreferenceStore((s) => s.showNavbar);
+  const bottomOffset = useBottomActionsOffset({
+    maxRows: showNavbar ? 2 : 1,
+    rowAlwaysVisible: true,
+  });
+
+  const contextValue = useMemo(
+    () => ({
+      ...props,
+      headerHeight,
+      setHeaderHeight,
+      fullListHeight,
+      bottomOffset,
+    }),
+    [props, headerHeight, fullListHeight, bottomOffset],
+  );
+
+  return (
+    <ScrollContextProvider>
+      <LibraryLayoutContext value={contextValue}>
+        {children}
+      </LibraryLayoutContext>
+      <Scrollbar
+        fullListHeight={fullListHeight}
+        offset={{ top: headerHeight, bottom: bottomOffset }}
+      />
+    </ScrollContextProvider>
+  );
+}
+//#endregion
 
 //#region Header
 export function Header(props: {
@@ -39,12 +102,17 @@ export function Header(props: {
   Subheader?: React.ReactNode;
 }) {
   const { t } = useTranslation();
+  const { setHeaderHeight } = use(LibraryLayoutContext);
   const sheetRef = useSheetRef();
 
   return (
     <>
       <props.OptionsSheet ref={sheetRef} />
-      <View className="px-4 pt-safe-offset-8 pb-2">
+      <View
+        // Add `16` to signify the gap between the header and the start of the content.
+        onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height + 16)}
+        className="absolute top-0 right-0 left-0 z-50 bg-surface px-4 pt-safe-offset-8 pb-2"
+      >
         <View className="flex-row items-center justify-between gap-4">
           <Marquee>
             <TText textKey={props.titleKey} intent="accent" size="4xl" />
@@ -69,17 +137,16 @@ export function Header(props: {
 export function FavoriteMedia(props: {
   data: LayoutItem[];
   onPress: (id: string) => void;
-  /** If the non-favorite media are rendered as a grid. */
-  withGrid?: boolean;
 }) {
+  const { asGrid: withGrid } = use(LibraryLayoutContext);
   const gridLayout = useGridLayoutConfig();
   const compactGridLayout = useCompactGridLayoutConfig();
-  const config = props.withGrid ? gridLayout : compactGridLayout;
+  const config = withGrid ? gridLayout : compactGridLayout;
 
-  const estimatedItemSize = props.withGrid
+  const estimatedItemSize = withGrid
     ? getLargeImageCardHeight(config.width)
     : config.width;
-  const Wrapper = props.withGrid ? LargeImageCard : ImageCard;
+  const Wrapper = withGrid ? LargeImageCard : ImageCard;
 
   if (props.data.length === 0) return undefined;
   return (
@@ -113,24 +180,25 @@ export function FavoriteMedia(props: {
 export function MediaList(props: {
   data: LayoutItem[];
   onPress: (id: string) => void;
-  asGrid?: boolean;
   ListHeaderComponent?: React.JSX.Element;
   ListEmptyComponent?: React.JSX.Element;
 }) {
+  const { scrollRef, ...scrollHandlers } = useScrollContext();
+  const { asGrid, fullListHeight, headerHeight, bottomOffset } =
+    use(LibraryLayoutContext);
   const listLayout = useListLayoutConfig();
   const compactGridLayout = useCompactGridLayoutConfig();
-  const config = props.asGrid ? compactGridLayout : listLayout;
+  const config = asGrid ? compactGridLayout : listLayout;
 
-  const Wrapper = props.asGrid ? ImageCard : ImageListItem;
+  const Wrapper = asGrid ? ImageCard : ImageListItem;
 
-  const showNavbar = usePreferenceStore((s) => s.showNavbar);
-  const bottomOffset = useBottomActionsOffset({
-    maxRows: showNavbar ? 2 : 1,
-    rowAlwaysVisible: true,
+  const onScroll = useAnimatedScrollHandler({
+    onScroll: scrollHandlers.onScroll,
   });
 
   return (
     <LegendList
+      ref={scrollRef}
       numColumns={config.count}
       data={props.data}
       estimatedItemSize={config.width + 4}
@@ -143,15 +211,20 @@ export function MediaList(props: {
           }
           size={config.width}
           label={item.title}
-          supporting={!props.asGrid ? item.description : undefined}
+          supporting={!asGrid ? item.description : undefined}
           onPress={() => props.onPress(item.id)}
-          className={cn("mx-0.5 mb-1", !props.asGrid && "pr-4")}
+          className={cn("mx-0.5 mb-1", !asGrid && "pr-4")}
         />
       )}
+      onContentSizeChange={(_, height) => fullListHeight.set(height)}
+      onScroll={onScroll}
       ListHeaderComponent={props.ListHeaderComponent}
       ListEmptyComponent={props.ListEmptyComponent}
       className="-mx-0.5 -mb-1"
-      contentContainerStyle={{ paddingBottom: bottomOffset }}
+      contentContainerStyle={{
+        paddingTop: headerHeight,
+        paddingBottom: bottomOffset,
+      }}
       contentContainerClassName="p-4"
     />
   );

@@ -18,14 +18,15 @@ import { AlbumsViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
 import type { ExtractQueryData } from "~/lib/react-query";
 
 export default function Albums() {
+  const asGrid = useViewPreferenceStore((s) => s.albumLayout !== "list");
   return (
-    <>
+    <LibraryLayout.Provider asGrid={asGrid}>
       <LibraryLayout.Header
         titleKey="term.albums"
         OptionsSheet={AlbumsViewOptionsSheet}
       />
       <ScreenContents />
-    </>
+    </LibraryLayout.Provider>
   );
 }
 
@@ -36,7 +37,6 @@ function ScreenContents() {
   const showSingles = useSessionStore((s) => s.showSingles);
   const showEPs = useSessionStore((s) => s.showEPs);
   const showAlbums = useSessionStore((s) => s.showAlbums);
-  const asGrid = useViewPreferenceStore((s) => s.albumLayout !== "list");
 
   const filteredData = useMemo(
     () =>
@@ -66,12 +66,10 @@ function ScreenContents() {
     <LibraryLayout.MediaList
       data={splittedData.nonFavorites}
       onPress={(id) => navigation.navigate("Album", { id })}
-      asGrid={asGrid}
       ListHeaderComponent={
         <LibraryLayout.FavoriteMedia
           data={splittedData.favorites}
           onPress={(id) => navigation.navigate("Album", { id })}
-          withGrid={asGrid}
         />
       }
       ListEmptyComponent={
