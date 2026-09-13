@@ -7,8 +7,8 @@ import { cn } from "~/lib/style";
 import type { AppColor } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
 import { getIntentRippleColor, ThemeIntentContext } from "./context";
-import type { PressableProps } from "../../Base/Pressable";
-import { Pressable } from "../../Base/Pressable";
+import type { PressableProps } from "../primitive/pressable";
+import { Pressable } from "../primitive/pressable";
 
 type RippleConfig = { rippleColor?: AppColor; rippleRadius?: number };
 
