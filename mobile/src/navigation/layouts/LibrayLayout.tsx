@@ -36,7 +36,6 @@ import { useBottomActionsOffset } from "../components/BottomActions/useBottomAct
 
 import { cn } from "~/lib/style";
 import { LegendList } from "~/components/Base/LegendList";
-import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
 import { Marquee } from "~/components/Marquee";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
@@ -46,6 +45,7 @@ import {
   useScrollContext,
 } from "~/components/next/base/scroll-context";
 import { TText } from "~/components/next/base/typography";
+import { IconButton } from "~/components/next/blocks/icon-button";
 import { Scrollbar } from "~/components/next/blocks/scrollbar";
 import {
   getLargeImageCardHeight,
@@ -217,10 +217,11 @@ export function Header(props: {
             </Marquee>
             <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
               {props.Actions}
-              <FilledIconButton
+              <IconButton
                 icon="more-horiz"
                 accessibilityLabel={t("feat.modalViewPreference.title")}
                 onPress={() => sheetRef.current?.present()}
+                filled
               />
             </View>
           </View>

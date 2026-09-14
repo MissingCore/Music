@@ -31,5 +31,6 @@ export function getIntentOnColor(intent: Intent) {
 
 export function getIntentRippleColor(intent: Intent) {
   if (isAccentRole(intent)) return `${intent}Dim` as const;
+  else if (intent === "muted") return "surfaceContainerHighest";
   return "surfaceContainerHigh";
 }
