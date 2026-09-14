@@ -2,7 +2,14 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import type { ParseKeys } from "i18next";
-import { createContext, use, useCallback, useMemo, useState } from "react";
+import {
+  createContext,
+  use,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import type { ScrollHandler, SharedValue } from "react-native-reanimated";
@@ -12,6 +19,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
+  withTiming,
 } from "react-native-reanimated";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -54,6 +62,7 @@ interface LibraryLayoutValue extends LibraryLayoutInput {
   headerHeight: number;
   setHeaderHeight: (height: number) => void;
   headerPosition: SharedValue<number>;
+  resetHeaderPosition: VoidFunction;
   bottomOffset: number;
 }
 
@@ -70,39 +79,47 @@ export function Provider({
   const [headerHeight, setHeaderHeight] = useState(0);
   const headerPosition = useSharedValue(0);
 
+  const resetHeaderPosition = useCallback(() => {
+    headerPosition.set(0);
+  }, [headerPosition]);
+
   const direction = useSharedValue(0);
+  // Boolean to prevent canceling our spring animation from a slow `onScroll`
+  // event called by `scrollTo`.
+  const blockEvents = useSharedValue(-1);
 
   const onScroll = useCallback<ScrollHandler<any>>(
     (e) => {
       "worklet";
       const delta = scrollPosition.get() - e.contentOffset.y;
       direction.set(delta < 0 ? -1 : 0);
+
+      if (blockEvents.get() !== -1) return;
       headerPosition.set(clamp(headerPosition.get() + delta, -headerHeight, 0));
     },
-    [scrollPosition, headerHeight, headerPosition, direction],
+    [scrollPosition, headerHeight, headerPosition, direction, blockEvents],
   );
 
   //* Header snapping logic.
-  const onMomentumEnd = useCallback<ScrollHandler<any>>(
-    (e) => {
-      "worklet";
-      if (e.contentOffset.y > headerHeight) {
-        if (
-          headerPosition.get() >
-          -headerHeight * (direction.get() === -1 ? 0.2 : 0.6)
-        )
-          headerPosition.set(withSpring(0));
-        else headerPosition.set(withSpring(-headerHeight));
-      }
+  const handleScrollEnd = useCallback(() => {
+    "worklet";
+    if (scrollPosition.get() > headerHeight) {
+      blockEvents.set(1);
+
+      const snapToVisible =
+        headerPosition.get() >
+        -headerHeight * (direction.get() === -1 ? 0.2 : 0.6);
+
+      headerPosition.set(withSpring(snapToVisible ? 0 : -headerHeight));
+      blockEvents.set(withTiming(-1, { duration: 50 }));
 
       direction.set(0);
-    },
-    [headerHeight, headerPosition, direction],
-  );
+    }
+  }, [scrollPosition, headerHeight, headerPosition, direction, blockEvents]);
 
   const scrollHandlers = useMemo(
-    () => ({ onScroll, onMomentumEnd }),
-    [onScroll, onMomentumEnd],
+    () => ({ onScroll, onMomentumEnd: handleScrollEnd }),
+    [onScroll, handleScrollEnd],
   );
   //#endregion
 
@@ -118,9 +135,10 @@ export function Provider({
       headerHeight,
       setHeaderHeight,
       headerPosition,
+      resetHeaderPosition,
       bottomOffset,
     }),
-    [props, headerHeight, headerPosition, bottomOffset],
+    [props, headerHeight, headerPosition, resetHeaderPosition, bottomOffset],
   );
 
   return (
@@ -136,7 +154,10 @@ export function Provider({
       <LibraryLayoutContext value={contextValue}>
         {children}
       </LibraryLayoutContext>
-      <Scrollbar offset={{ top: headerHeight, bottom: bottomOffset }} />
+      <Scrollbar
+        offset={{ top: headerHeight, bottom: bottomOffset }}
+        onEnd={handleScrollEnd}
+      />
     </ScrollContextProvider>
   );
 }
@@ -260,14 +281,24 @@ export function MediaList(props: {
   ListEmptyComponent?: React.JSX.Element;
 }) {
   const { scrollRef, scrollableHeight, scrollHandlers } = useScrollContext();
-  const { asGrid, headerHeight, bottomOffset } = use(LibraryLayoutContext);
+  const { asGrid, headerHeight, resetHeaderPosition, bottomOffset } =
+    use(LibraryLayoutContext);
   const listLayout = useListLayoutConfig();
   const compactGridLayout = useCompactGridLayoutConfig();
   const config = asGrid ? compactGridLayout : listLayout;
+  const prevConfig = useRef({ cols: config.count, width: config.width });
 
   const Wrapper = asGrid ? ImageCard : ImageListItem;
 
   const scrollListeners = useAnimatedScrollHandler(scrollHandlers);
+
+  if (
+    prevConfig.current.cols !== config.count ||
+    prevConfig.current.width !== config.width
+  ) {
+    prevConfig.current = { cols: config.count, width: config.width };
+    resetHeaderPosition();
+  }
 
   return (
     <LegendList

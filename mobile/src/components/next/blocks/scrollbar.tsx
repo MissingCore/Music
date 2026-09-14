@@ -27,6 +27,9 @@ import { scheduleOnRN } from "react-native-worklets";
 interface ScrollbarProps {
   /** Absolute positon of where the scrollbar will start & end. */
   offset: { top: number; bottom: number };
+
+  /** Worklet function called when we stop scrolling. */
+  onEnd?: VoidFunction;
 }
 
 const THUMB_SIZE = 48;
@@ -35,7 +38,7 @@ const COLLAPSED_THUMB_SIZE = 6;
 /** Delay before the scrollbar becomes invisible. */
 const HIDE_DELAY = 2000;
 
-export function Scrollbar({ offset: { top, bottom } }: ScrollbarProps) {
+export function Scrollbar({ offset: { top, bottom }, onEnd }: ScrollbarProps) {
   //? As of React Native 0.86, `height` includes the window decorations
   //? (status & navigation bar).
   const { height } = useWindowDimensions();
@@ -142,6 +145,9 @@ export function Scrollbar({ offset: { top, bottom } }: ScrollbarProps) {
       dismissScrollbar();
       nextScrollPosition.set(-1);
       prevY.set(-1);
+    },
+    onFinalize: () => {
+      if (onEnd) onEnd();
     },
   });
 
