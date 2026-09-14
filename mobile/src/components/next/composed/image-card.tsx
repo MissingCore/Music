@@ -4,16 +4,16 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { View } from "react-native";
 
-import { getImageUri } from "~/lib/file-system";
 import { cn } from "~/lib/style";
 import { cardStyle } from "../base/card";
 import { Ripple } from "../base/ripple";
 import { Text } from "../base/typography";
 import { createTextStack } from "../blocks/text-stack";
-import { Image } from "../primitive/image";
+import type { MediaImageSrc } from "./media-image";
+import { MediaImage } from "./media-image";
 
 interface ImageCardProps {
-  src: string | null | undefined;
+  src: MediaImageSrc;
   size: number;
   label: string;
   supporting?: string;
@@ -35,11 +35,7 @@ export function ImageCard(props: ImageCardProps) {
       onPress={props.onPress}
       className={cn("relative rounded-xl", props.className)}
     >
-      <Image
-        source={getImageUri(props.src)}
-        style={{ width: props.size, height: props.size }}
-        className="bg-surfaceContainerHigh"
-      />
+      <MediaImage src={props.src} size={props.size} />
       <LinearGradient
         colors={["#00000000", "#000000E6"]}
         pointerEvents="none"
@@ -84,11 +80,7 @@ export function LargeImageCard(
         className: cn("gap-1 p-1", props.className),
       })}
     >
-      <Image
-        source={getImageUri(props.src)}
-        style={{ width: imgSize, height: imgSize }}
-        className="rounded-[20] bg-surfaceContainerHigh"
-      />
+      <MediaImage src={props.src} size={imgSize} className="rounded-[20]" />
       <LargeCardTextStack label={props.label} supporting={props.supporting} />
     </Ripple>
   );

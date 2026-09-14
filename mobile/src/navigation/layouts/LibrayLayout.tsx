@@ -156,11 +156,7 @@ export function FavoriteMedia(props: {
       estimatedItemSize={estimatedItemSize + 4}
       renderItem={({ item }) => (
         <Wrapper
-          src={
-            Array.isArray(item.imageSource)
-              ? item.imageSource[0]
-              : item.imageSource
-          }
+          src={item.imageSource}
           size={config.width}
           label={item.title}
           supporting={item.description}
@@ -204,11 +200,7 @@ export function MediaList(props: {
       estimatedItemSize={config.width + 4}
       renderItem={({ item }) => (
         <Wrapper
-          src={
-            Array.isArray(item.imageSource)
-              ? item.imageSource[0]
-              : item.imageSource
-          }
+          src={item.imageSource}
           size={config.width}
           label={item.title}
           supporting={!asGrid ? item.description : undefined}

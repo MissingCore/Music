@@ -3,14 +3,14 @@
 
 import { View } from "react-native";
 
-import { getImageUri } from "~/lib/file-system";
 import { cn } from "~/lib/style";
 import { Ripple } from "../base/ripple";
 import { createTextStack } from "../blocks/text-stack";
-import { Image } from "../primitive/image";
+import type { MediaImageSrc } from "./media-image";
+import { MediaImage } from "./media-image";
 
 interface ImageListItemProps {
-  src: string | null | undefined;
+  src: MediaImageSrc;
   label: string;
   supporting?: string;
   /** If provided, will change the wrapper to `Ripple` from `View`. */
@@ -33,10 +33,7 @@ export function ImageListItem(props: ImageListItemProps) {
       onPress={props.onPress}
       className={cn("flex-row items-center gap-2 rounded-lg", props.className)}
     >
-      <Image
-        source={getImageUri(props.src)}
-        className="size-14 rounded-lg bg-surfaceContainerHigh"
-      />
+      <MediaImage src={props.src} size={56} className="rounded-lg" />
       <ListItemTextStack label={props.label} supporting={props.supporting} />
       {props.Trailing}
     </Wrapper>
