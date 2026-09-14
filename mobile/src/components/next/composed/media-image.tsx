@@ -105,7 +105,7 @@ function PlaceholderIcon(props: {
 
 /** Generate a `src` for a "Text" placeholder for `MediaImage`. */
 export function createTextPlaceholder(str: string) {
-  return { type: "str", value: str.replace(/s/g, "").slice(0, 2) } as const;
+  return { type: "str", value: str.replace(/\s/g, "").slice(0, 2) } as const;
 }
 
 function PlaceholderText(props: {

@@ -21,6 +21,8 @@ import Animated, {
   withSpring,
   withTiming,
 } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { scheduleOnUI } from "react-native-worklets";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import type { LayoutItem } from "~/stores/ViewPreference/types";
@@ -29,7 +31,6 @@ import {
   useGridLayoutConfig,
   useListLayoutConfig,
 } from "~/hooks/useLayoutConfigs";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useBottomActionsOffset } from "../components/BottomActions/useBottomActions";
 
@@ -80,6 +81,7 @@ export function Provider({
   const headerPosition = useSharedValue(0);
 
   const resetHeaderPosition = useCallback(() => {
+    "worklet";
     headerPosition.set(0);
   }, [headerPosition]);
 
@@ -297,7 +299,7 @@ export function MediaList(props: {
     prevConfig.current.width !== config.width
   ) {
     prevConfig.current = { cols: config.count, width: config.width };
-    resetHeaderPosition();
+    scheduleOnUI(resetHeaderPosition);
   }
 
   return (

@@ -20,9 +20,9 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
 
 import { useScrollContext } from "../base/scroll-context";
-import { scheduleOnRN } from "react-native-worklets";
 
 interface ScrollbarProps {
   /** Absolute positon of where the scrollbar will start & end. */
