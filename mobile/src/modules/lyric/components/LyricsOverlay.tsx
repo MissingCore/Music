@@ -36,6 +36,7 @@ import { autoDiscoverLyrics } from "../helpers/autoDiscoverLyrics";
 import { removeSynchronizedLyricsJunk } from "../helpers/cleanUpLyricsJunk";
 import { parseLyrics } from "../helpers/parser";
 import type { SynchronizedLine } from "../helpers/parser/utils";
+import { toggleLyricFullScreen } from "../core/actions";
 
 const SCROLL_OFFSET = 64;
 const LINE_GAP = 16;
@@ -130,7 +131,13 @@ function LyricsContent({ trackId }: { trackId: string }) {
           }}
         />
       )}
-
+      <IconButton
+        icon="sort"
+        accessibilityLabel={t("form.fullscreen")}
+        onPress={toggleLyricFullScreen}
+        className="absolute right-10 bottom-0 z-100"
+        size="xs"
+      />
       <IconButton
         icon="edit"
         accessibilityLabel={t("form.edit")}

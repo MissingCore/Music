@@ -38,6 +38,7 @@ import {
 } from "~/modules/media/components/MediaControls";
 import { FavoriteButton } from "~/modules/media/components/Track";
 import { PlaybackControlGestureWrapper } from "./components/PlaybackControlGestureWrapper";
+import { useLyricStore } from "~/modules/lyric/core/store";
 
 export default function NowPlaying() {
   const isLargeScreen = useAlternativeLayout();
@@ -141,7 +142,11 @@ function Metadata({ track }: { track: Track }) {
 
 //#region Playback Controls
 function PlaybackControls() {
-  return (
+  // When lyrics is shown on full screen no need to render playback controls.
+  const showFullscreenLyrics = useLyricStore((s) => s.fullscreen)
+  const isLyricsVisible = useLyricStore((s) => s.visible)
+
+  return ((showFullscreenLyrics && isLyricsVisible) ? null: (
     <View className="mx-auto w-full max-w-96 flex-row items-center justify-between gap-2 rtl:flex-row-reverse">
       <ShuffleButton />
       <PreviousButton />
@@ -149,7 +154,7 @@ function PlaybackControls() {
       <NextButton />
       <RepeatButton />
     </View>
-  );
+  ));
 }
 //#endregion
 
@@ -161,36 +166,41 @@ function BottomAppBar(props: {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const isLargeScreen = useAlternativeLayout();
+  // When lyrics is shown on full screen no need to render playback controls.
+  const showFullscreenLyrics = useLyricStore((s) => s.fullscreen)
+  const isLyricsVisible = useLyricStore((s) => s.visible)
 
-  return (
+  return showFullscreenLyrics && isLyricsVisible ? 
+    <View></View> :
+    (
     <View className="flex-row items-center justify-between gap-4 px-4 pt-2 pb-safe-offset-4">
-      <BackButton />
-      <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
-        <SleepTimerButton present={props.presentSleepTimerSheet} />
-        <IconButton
-          icon="lyrics"
-          accessibilityLabel={t("feat.lyrics.title")}
-          onPress={toggleLyricVisibility}
-          size="lg"
-          _fullRipple
-        />
-        {!isLargeScreen ? (
+        <BackButton />
+        <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
+          <SleepTimerButton present={props.presentSleepTimerSheet} />
           <IconButton
-            icon="view-agenda"
-            accessibilityLabel={t("term.upcoming")}
-            onPress={() => navigation.navigate("Upcoming")}
+            icon="lyrics"
+            accessibilityLabel={t("feat.lyrics.title")}
+            onPress={toggleLyricVisibility}
             size="lg"
             _fullRipple
           />
-        ) : null}
-        <IconButton
-          icon="more-horiz"
-          accessibilityLabel={t("feat.playback.extra.options")}
-          onPress={props.presentPlaybackOptionsSheet}
-          size="lg"
-          _fullRipple
-        />
-      </View>
+          {!isLargeScreen ? (
+            <IconButton
+              icon="view-agenda"
+              accessibilityLabel={t("term.upcoming")}
+              onPress={() => navigation.navigate("Upcoming")}
+              size="lg"
+              _fullRipple
+            />
+          ) : null}
+          <IconButton
+            icon="more-horiz"
+            accessibilityLabel={t("feat.playback.extra.options")}
+            onPress={props.presentPlaybackOptionsSheet}
+            size="lg"
+            _fullRipple
+          />
+        </View>      
     </View>
   );
 }

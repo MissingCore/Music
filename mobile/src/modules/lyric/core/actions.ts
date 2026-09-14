@@ -44,6 +44,10 @@ export function toggleLyricVisibility() {
   lyricStore.setState((prev) => ({ visible: !prev.visible }));
 }
 
+export function toggleLyricFullScreen() {
+  lyricStore.setState((prev) => ({ fullscreen: !prev.fullscreen }));
+}
+
 export function toggleCheckEmbeddedLyrics() {
   lyricStore.setState((prev) => ({ checkEmbedded: !prev.checkEmbedded }));
 }

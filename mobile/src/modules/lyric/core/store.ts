@@ -17,6 +17,7 @@ export const lyricStore = createPersistedStore<LyricStore>(
     visible: false,
     checkEmbedded: true,
     providers: [],
+    fullscreen:false,
   }),
   {
     name: "music::lyric",
