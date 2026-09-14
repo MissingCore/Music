@@ -9,7 +9,7 @@ import {
   usePanGesture,
   useSimultaneousGestures,
 } from "react-native-gesture-handler";
-import type { AnimatedRef, SharedValue } from "react-native-reanimated";
+import type { AnimatedRef } from "react-native-reanimated";
 import Animated, {
   clamp,
   ReduceMotion,
@@ -27,11 +27,6 @@ import { scheduleOnRN } from "react-native-worklets";
 interface ScrollbarProps {
   /** Absolute positon of where the scrollbar will start & end. */
   offset: { top: number; bottom: number };
-  /**
-   * The height of the list including the amount we can scroll. This is
-   * obtained from the `onContentSizeChange` prop on the list component.
-   */
-  fullListHeight: SharedValue<number>;
 }
 
 const THUMB_SIZE = 48;
@@ -40,19 +35,16 @@ const COLLAPSED_THUMB_SIZE = 6;
 /** Delay before the scrollbar becomes invisible. */
 const HIDE_DELAY = 2000;
 
-export function Scrollbar({
-  offset: { top, bottom },
-  fullListHeight,
-}: ScrollbarProps) {
+export function Scrollbar({ offset: { top, bottom } }: ScrollbarProps) {
   //? As of React Native 0.86, `height` includes the window decorations
   //? (status & navigation bar).
   const { height } = useWindowDimensions();
-  const { scrollRef, scrollAmount } = useScrollContext();
+  const { scrollRef, scrollAmount, scrollableHeight } = useScrollContext();
 
-  // We subtract `THUMB_SIZE / 2` to prevent it from appearing beyond the track.
-  const scrollbarHeight = height - top - bottom - THUMB_SIZE / 2;
+  // We subtract `THUMB_SIZE` to prevent it from appearing beyond the track.
+  const scrollbarHeight = height - top - bottom - THUMB_SIZE;
   // The amount we can scroll.
-  const scrollableArea = useDerivedValue(() => fullListHeight.get() - height);
+  const scrollableArea = useDerivedValue(() => scrollableHeight.get() - height);
 
   // Scale down `scrollAmount` to fit within `scrollbarHeight`.
   const scaledScrollAmount = useDerivedValue(() => {
@@ -101,7 +93,7 @@ export function Scrollbar({
 
   //* Enable scrollbar if we have at least 2 screens worth of content.
   useDerivedValue(() => {
-    const hasEnoughContent = fullListHeight.get() / scrollbarHeight > 2;
+    const hasEnoughContent = scrollableHeight.get() / scrollbarHeight > 2;
     scheduleOnRN(setIsAvailable, hasEnoughContent && gracePeriod.get() !== 0);
   });
 
@@ -181,7 +173,7 @@ export function Scrollbar({
   return (
     <Animated.View
       pointerEvents={isAvailable ? "box-none" : "none"}
-      style={{ right: 8, top: top - THUMB_SIZE / 2, bottom }}
+      style={{ right: 8, top, bottom }}
       className="absolute z-50"
     >
       <GestureDetector gesture={gestures}>

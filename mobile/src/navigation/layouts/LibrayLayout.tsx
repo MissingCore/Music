@@ -5,11 +5,7 @@ import type { ParseKeys } from "i18next";
 import { createContext, use, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import type { SharedValue } from "react-native-reanimated";
-import {
-  useAnimatedScrollHandler,
-  useSharedValue,
-} from "react-native-reanimated";
+import { useAnimatedScrollHandler } from "react-native-reanimated";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import type { LayoutItem } from "~/stores/ViewPreference/types";
@@ -48,7 +44,6 @@ interface LibraryLayoutInput {
 interface LibraryLayoutValue extends LibraryLayoutInput {
   headerHeight: number;
   setHeaderHeight: (height: number) => void;
-  fullListHeight: SharedValue<number>;
   bottomOffset: number;
 }
 
@@ -59,7 +54,6 @@ export function Provider({
   ...props
 }: LibraryLayoutInput & { children: React.ReactNode }) {
   const [headerHeight, setHeaderHeight] = useState(0);
-  const fullListHeight = useSharedValue(0);
 
   const showNavbar = usePreferenceStore((s) => s.showNavbar);
   const bottomOffset = useBottomActionsOffset({
@@ -68,14 +62,8 @@ export function Provider({
   });
 
   const contextValue = useMemo(
-    () => ({
-      ...props,
-      headerHeight,
-      setHeaderHeight,
-      fullListHeight,
-      bottomOffset,
-    }),
-    [props, headerHeight, fullListHeight, bottomOffset],
+    () => ({ ...props, headerHeight, setHeaderHeight, bottomOffset }),
+    [props, headerHeight, bottomOffset],
   );
 
   return (
@@ -83,10 +71,7 @@ export function Provider({
       <LibraryLayoutContext value={contextValue}>
         {children}
       </LibraryLayoutContext>
-      <Scrollbar
-        fullListHeight={fullListHeight}
-        offset={{ top: headerHeight, bottom: bottomOffset }}
-      />
+      <Scrollbar offset={{ top: headerHeight, bottom: bottomOffset }} />
     </ScrollContextProvider>
   );
 }
@@ -183,18 +168,15 @@ export function MediaList(props: {
   ListHeaderComponent?: React.JSX.Element;
   ListEmptyComponent?: React.JSX.Element;
 }) {
-  const { scrollRef, ...scrollHandlers } = useScrollContext();
-  const { asGrid, fullListHeight, headerHeight, bottomOffset } =
-    use(LibraryLayoutContext);
+  const { scrollRef, scrollableHeight, onScroll } = useScrollContext();
+  const { asGrid, headerHeight, bottomOffset } = use(LibraryLayoutContext);
   const listLayout = useListLayoutConfig();
   const compactGridLayout = useCompactGridLayoutConfig();
   const config = asGrid ? compactGridLayout : listLayout;
 
   const Wrapper = asGrid ? ImageCard : ImageListItem;
 
-  const onScroll = useAnimatedScrollHandler({
-    onScroll: scrollHandlers.onScroll,
-  });
+  const scrollHandlers = useAnimatedScrollHandler({ onScroll });
 
   return (
     <LegendList
@@ -212,8 +194,8 @@ export function MediaList(props: {
           className={cn("mx-0.5 mb-1", !asGrid && "pr-4")}
         />
       )}
-      onContentSizeChange={(_, height) => fullListHeight.set(height)}
-      onScroll={onScroll}
+      onContentSizeChange={(_, height) => scrollableHeight.set(height)}
+      onScroll={scrollHandlers}
       ListHeaderComponent={props.ListHeaderComponent}
       ListEmptyComponent={props.ListEmptyComponent}
       className="-mx-0.5 -mb-1"
