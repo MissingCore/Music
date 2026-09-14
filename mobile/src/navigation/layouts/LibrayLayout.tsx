@@ -143,9 +143,12 @@ export function FavoriteMedia(props: {
   const compactGridLayout = useCompactGridLayoutConfig();
   const config = withGrid ? gridLayout : compactGridLayout;
 
-  const estimatedItemSize = withGrid
-    ? getLargeImageCardHeight(config.width)
-    : config.width;
+  const estimatedItemSize =
+    (withGrid ? getLargeImageCardHeight(config.width) : config.width) + 4;
+
+  const rowCount = Math.ceil(props.data.length / config.count);
+  const estimatedHeight = rowCount * estimatedItemSize + 16;
+
   const Wrapper = withGrid ? LargeImageCard : ImageCard;
 
   if (props.data.length === 0) return undefined;
@@ -153,7 +156,7 @@ export function FavoriteMedia(props: {
     <LegendList
       numColumns={config.count}
       data={props.data}
-      estimatedItemSize={estimatedItemSize + 4}
+      estimatedItemSize={estimatedItemSize}
       renderItem={({ item }) => (
         <Wrapper
           src={item.imageSource}
@@ -166,6 +169,7 @@ export function FavoriteMedia(props: {
       )}
       scrollEnabled={false}
       className="-mx-0.5 -mb-1"
+      contentContainerStyle={{ minHeight: estimatedHeight }}
       contentContainerClassName="pb-4"
     />
   );
