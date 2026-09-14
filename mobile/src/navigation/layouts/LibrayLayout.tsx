@@ -2,10 +2,17 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import type { ParseKeys } from "i18next";
-import { createContext, use, useMemo, useState } from "react";
+import { createContext, use, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { useAnimatedScrollHandler } from "react-native-reanimated";
+import type { ScrollHandler, SharedValue } from "react-native-reanimated";
+import Animated, {
+  clamp,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import type { LayoutItem } from "~/stores/ViewPreference/types";
@@ -14,12 +21,14 @@ import {
   useGridLayoutConfig,
   useListLayoutConfig,
 } from "~/hooks/useLayoutConfigs";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useBottomActionsOffset } from "../components/BottomActions/useBottomActions";
 
 import { cn } from "~/lib/style";
 import { LegendList } from "~/components/Base/LegendList";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
+import { TopDownGradient } from "~/components/Gradient";
 import { Marquee } from "~/components/Marquee";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
@@ -44,6 +53,7 @@ interface LibraryLayoutInput {
 interface LibraryLayoutValue extends LibraryLayoutInput {
   headerHeight: number;
   setHeaderHeight: (height: number) => void;
+  headerPosition: SharedValue<number>;
   bottomOffset: number;
 }
 
@@ -53,7 +63,48 @@ export function Provider({
   children,
   ...props
 }: LibraryLayoutInput & { children: React.ReactNode }) {
+  const { top } = useSafeAreaInsets();
+  const scrollPosition = useSharedValue(0);
+
+  //#region Shy Header
   const [headerHeight, setHeaderHeight] = useState(0);
+  const headerPosition = useSharedValue(0);
+
+  const direction = useSharedValue(0);
+
+  const onScroll = useCallback<ScrollHandler<any>>(
+    (e) => {
+      "worklet";
+      const delta = scrollPosition.get() - e.contentOffset.y;
+      direction.set(delta < 0 ? -1 : 0);
+      headerPosition.set(clamp(headerPosition.get() + delta, -headerHeight, 0));
+    },
+    [scrollPosition, headerHeight, headerPosition, direction],
+  );
+
+  //* Header snapping logic.
+  const onMomentumEnd = useCallback<ScrollHandler<any>>(
+    (e) => {
+      "worklet";
+      if (e.contentOffset.y > headerHeight) {
+        if (
+          headerPosition.get() >
+          -headerHeight * (direction.get() === -1 ? 0.2 : 0.6)
+        )
+          headerPosition.set(withSpring(0));
+        else headerPosition.set(withSpring(-headerHeight));
+      }
+
+      direction.set(0);
+    },
+    [headerHeight, headerPosition, direction],
+  );
+
+  const scrollHandlers = useMemo(
+    () => ({ onScroll, onMomentumEnd }),
+    [onScroll, onMomentumEnd],
+  );
+  //#endregion
 
   const showNavbar = usePreferenceStore((s) => s.showNavbar);
   const bottomOffset = useBottomActionsOffset({
@@ -62,12 +113,26 @@ export function Provider({
   });
 
   const contextValue = useMemo(
-    () => ({ ...props, headerHeight, setHeaderHeight, bottomOffset }),
-    [props, headerHeight, bottomOffset],
+    () => ({
+      ...props,
+      headerHeight,
+      setHeaderHeight,
+      headerPosition,
+      bottomOffset,
+    }),
+    [props, headerHeight, headerPosition, bottomOffset],
   );
 
   return (
-    <ScrollContextProvider>
+    <ScrollContextProvider
+      scrollHandlers={scrollHandlers}
+      scrollAmount={scrollPosition}
+    >
+      <TopDownGradient
+        height={headerHeight}
+        startFrom={top}
+        className="absolute top-0 left-0 z-50"
+      />
       <LibraryLayoutContext value={contextValue}>
         {children}
       </LibraryLayoutContext>
@@ -78,6 +143,8 @@ export function Provider({
 //#endregion
 
 //#region Header
+const SHADOW_HEIGHT = 24;
+
 export function Header(props: {
   titleKey: ParseKeys;
   OptionsSheet: (props: { ref: TrueSheetRef }) => React.JSX.Element;
@@ -87,32 +154,56 @@ export function Header(props: {
   Subheader?: React.ReactNode;
 }) {
   const { t } = useTranslation();
-  const { setHeaderHeight } = use(LibraryLayoutContext);
+  const { headerHeight, setHeaderHeight, headerPosition } =
+    use(LibraryLayoutContext);
   const sheetRef = useSheetRef();
+  const [containerHeight, setContainerHeight] = useState(0);
+
+  const headerStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: headerPosition.get() }],
+    opacity: clamp(
+      // Start fade after the header is 10% hidden.
+      (headerHeight * 1.1 + headerPosition.get()) / headerHeight,
+      0,
+      1,
+    ),
+  }));
 
   return (
     <>
       <props.OptionsSheet ref={sheetRef} />
-      <View
+      <Animated.View
         // Add `16` to signify the gap between the header and the start of the content.
-        onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height + 16)}
-        className="absolute top-0 right-0 left-0 z-50 bg-surface px-4 pt-safe-offset-8 pb-2"
+        onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}
+        style={headerStyle}
+        className="absolute top-0 right-0 left-0 z-50"
       >
-        <View className="flex-row items-center justify-between gap-4">
-          <Marquee>
-            <TText textKey={props.titleKey} intent="accent" size="4xl" />
-          </Marquee>
-          <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
-            {props.Actions}
-            <FilledIconButton
-              icon="more-horiz"
-              accessibilityLabel={t("feat.modalViewPreference.title")}
-              onPress={() => sheetRef.current?.present()}
-            />
+        <TopDownGradient
+          height={headerHeight}
+          startFrom={containerHeight}
+          className="absolute top-0 left-0"
+        />
+        <View
+          onLayout={(e) => setContainerHeight(e.nativeEvent.layout.height)}
+          style={{ marginBottom: SHADOW_HEIGHT }}
+          className="px-4 pt-safe-offset-8 pb-2"
+        >
+          <View className="flex-row items-center justify-between gap-4">
+            <Marquee>
+              <TText textKey={props.titleKey} intent="accent" size="4xl" />
+            </Marquee>
+            <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
+              {props.Actions}
+              <FilledIconButton
+                icon="more-horiz"
+                accessibilityLabel={t("feat.modalViewPreference.title")}
+                onPress={() => sheetRef.current?.present()}
+              />
+            </View>
           </View>
+          {props.Subheader}
         </View>
-        {props.Subheader}
-      </View>
+      </Animated.View>
     </>
   );
 }
@@ -168,7 +259,7 @@ export function MediaList(props: {
   ListHeaderComponent?: React.JSX.Element;
   ListEmptyComponent?: React.JSX.Element;
 }) {
-  const { scrollRef, scrollableHeight, onScroll } = useScrollContext();
+  const { scrollRef, scrollableHeight, scrollHandlers } = useScrollContext();
   const { asGrid, headerHeight, bottomOffset } = use(LibraryLayoutContext);
   const listLayout = useListLayoutConfig();
   const compactGridLayout = useCompactGridLayoutConfig();
@@ -176,7 +267,7 @@ export function MediaList(props: {
 
   const Wrapper = asGrid ? ImageCard : ImageListItem;
 
-  const scrollHandlers = useAnimatedScrollHandler({ onScroll });
+  const scrollListeners = useAnimatedScrollHandler(scrollHandlers);
 
   return (
     <LegendList
@@ -195,7 +286,7 @@ export function MediaList(props: {
         />
       )}
       onContentSizeChange={(_, height) => scrollableHeight.set(height)}
-      onScroll={scrollHandlers}
+      onScroll={scrollListeners}
       ListHeaderComponent={props.ListHeaderComponent}
       ListEmptyComponent={props.ListEmptyComponent}
       className="-mx-0.5 -mb-1"
