@@ -60,11 +60,11 @@ const LargeCardTextStack = createTextStack({
   labelConfig: { center: true, size: "sm" },
   supportingConfig: { center: true, muted: true },
   clampText: true,
-  wrapperClassName: "px-2",
+  wrapperClassName: "px-2 py-1",
 });
 
 export function getLargeImageCardHeight(imgSize: number) {
-  return imgSize + 40;
+  return imgSize + 44;
 }
 
 export function LargeImageCard(
@@ -77,10 +77,10 @@ export function LargeImageCard(
       onPress={props.onPress}
       className={cardStyle({
         padding: false,
-        className: cn("gap-1 p-1", props.className),
+        className: cn("rounded-lg p-1", props.className),
       })}
     >
-      <MediaImage src={props.src} size={imgSize} className="rounded-[20]" />
+      <MediaImage src={props.src} size={imgSize} className="rounded-md" />
       <LargeCardTextStack label={props.label} supporting={props.supporting} />
     </Ripple>
   );

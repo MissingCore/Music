@@ -29,7 +29,6 @@ export function ImageListItem(props: ImageListItemProps) {
   const Wrapper = props.onPress ? Ripple : View;
   return (
     <Wrapper
-      pointerEvents="box-only"
       onPress={props.onPress}
       className={cn("flex-row items-center gap-2 rounded-lg", props.className)}
     >

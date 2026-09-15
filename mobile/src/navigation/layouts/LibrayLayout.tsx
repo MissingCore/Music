@@ -186,7 +186,7 @@ export function Header(props: {
     transform: [{ translateY: headerPosition.get() }],
     opacity: clamp(
       // Start fade after the header is 10% hidden.
-      (headerHeight * 1.1 + headerPosition.get()) / headerHeight,
+      (headerHeight * 1.1 + headerPosition.get()) / (headerHeight ?? 1),
       0,
       1,
     ),
@@ -268,7 +268,7 @@ export function FavoriteMedia(props: {
         />
       )}
       scrollEnabled={false}
-      className="-mx-0.5 -mb-1"
+      className="-mb-1"
       contentContainerStyle={{ minHeight: estimatedHeight }}
       contentContainerClassName="pb-4"
     />
@@ -303,6 +303,7 @@ export function MediaList(props: {
     scheduleOnUI(resetHeaderPosition);
   }
 
+  if (!headerHeight) return props.ListEmptyComponent;
   return (
     <LegendList
       ref={scrollRef}
