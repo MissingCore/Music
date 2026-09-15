@@ -22,6 +22,7 @@ import { queryClient } from "~/lib/react-query";
 import { pickKeys } from "~/utils/object";
 import { wait } from "~/utils/promise";
 import { generateRecapRange } from "./generateRecapRange";
+import { RECENT_RANGE_MS } from "../core/constants";
 
 /** Return the number of entries that can be optimized. */
 async function countOptimizationTargets() {
@@ -36,9 +37,13 @@ async function countOptimizationTargets() {
 
   //? 2. Count the number of `trackPlayEvents` that can be collapsed.
   const { optimizeInsightsFrom } = preferenceStore.getState();
+  const recentRangeStart = Date.now() - RECENT_RANGE_MS;
   let unneededTracksPlayEvents = await db.$count(
     tracksPlayEvents,
-    gte(tracksPlayEvents.playedAt, optimizeInsightsFrom),
+    and(
+      gte(tracksPlayEvents.playedAt, optimizeInsightsFrom),
+      lt(tracksPlayEvents.playedAt, recentRangeStart),
+    ),
   );
 
   const monthEpoches = generateRecapRange(optimizeInsightsFrom)
@@ -49,7 +54,11 @@ async function countOptimizationTargets() {
     const limit = monthEpoches.at(index + 1);
     const rangeCond = and(
       gte(tracksPlayEvents.playedAt, monthEpoch),
-      limit !== undefined ? lt(tracksPlayEvents.playedAt, limit) : undefined,
+      lt(
+        tracksPlayEvents.playedAt,
+        //? Up to the next month or our hard-cap of collapsing data.
+        limit !== undefined ? limit : recentRangeStart,
+      ),
     );
 
     const [uniqueTracksInMonth] = await db
@@ -93,6 +102,7 @@ async function optimizeDB() {
     await db.delete(lyrics).where(inArray(lyrics.id, unusedLyricIds));
 
     //? 2. Collapse `trackPlayEvents` of each track in each month into a single entry.
+    const recentRangeStart = Date.now() - RECENT_RANGE_MS;
     const monthEpoches = generateRecapRange(
       preferenceStore.getState().optimizeInsightsFrom,
     )
@@ -103,7 +113,11 @@ async function optimizeDB() {
       const limit = monthEpoches.at(index + 1);
       const rangeCond = and(
         gte(tracksPlayEvents.playedAt, monthEpoch),
-        limit !== undefined ? lt(tracksPlayEvents.playedAt, limit) : undefined,
+        lt(
+          tracksPlayEvents.playedAt,
+          //? Up to the next month or our hard-cap of collapsing data.
+          limit !== undefined ? limit : recentRangeStart,
+        ),
       );
 
       // Aggregate all play events for each track in the month into a single entry.
