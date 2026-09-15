@@ -37,7 +37,6 @@ import { useBottomActionsOffset } from "../components/BottomActions/useBottomAct
 import { cn } from "~/lib/style";
 import { LegendList } from "~/components/Base/LegendList";
 import { TopDownGradient } from "~/components/Gradient";
-import { Marquee } from "~/components/Marquee";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import {
@@ -46,6 +45,7 @@ import {
 } from "~/components/next/base/scroll-context";
 import { TText } from "~/components/next/base/typography";
 import { IconButton } from "~/components/next/blocks/icon-button";
+import { Marquee } from "~/components/next/blocks/marquee";
 import { Scrollbar } from "~/components/next/blocks/scrollbar";
 import {
   getLargeImageCardHeight,
