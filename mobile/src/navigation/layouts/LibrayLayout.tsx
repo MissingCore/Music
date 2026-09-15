@@ -166,7 +166,7 @@ export function Provider({
 //#endregion
 
 //#region Header
-const SHADOW_HEIGHT = 24;
+const SHADOW_HEIGHT = 16;
 
 export function Header(props: {
   titleKey: ParseKeys;
@@ -209,7 +209,7 @@ export function Header(props: {
         <View
           onLayout={(e) => setContainerHeight(e.nativeEvent.layout.height)}
           style={{ marginBottom: SHADOW_HEIGHT }}
-          className="px-4 pt-safe-offset-8 pb-2"
+          className="gap-2 px-4 pt-safe-offset-8"
         >
           <View className="flex-row items-center justify-between gap-4">
             <Marquee>
@@ -328,7 +328,7 @@ export function MediaList(props: {
         paddingTop: headerHeight,
         paddingBottom: bottomOffset,
       }}
-      contentContainerClassName="p-4"
+      contentContainerClassName="p-4 pt-0"
     />
   );
 }

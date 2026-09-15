@@ -60,6 +60,7 @@ function ScreenContents() {
         <ContentPlaceholder
           isPending={isPending || sortedData === undefined}
           errMsgKey="err.msg.noGenres"
+          className="absolute inset-0 pt-safe-offset-36"
         />
       }
     />
