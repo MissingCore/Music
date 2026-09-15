@@ -10,7 +10,7 @@ import type { Track } from "~/data/track/types";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
-import { toggleLyricVisibility } from "~/modules/lyric/core/actions";
+import { toggleLyricStoreKey } from "~/modules/lyric/core/actions";
 import { useAlternativeLayout } from "~/hooks/useAlternativeLayout";
 
 import { Back } from "~/navigation/components/Back";
@@ -38,10 +38,13 @@ import {
 } from "~/modules/media/components/MediaControls";
 import { FavoriteButton } from "~/modules/media/components/Track";
 import { PlaybackControlGestureWrapper } from "./components/PlaybackControlGestureWrapper";
+import { useLyricStore } from "~/modules/lyric/core/store";
 
 export default function NowPlaying() {
   const isLargeScreen = useAlternativeLayout();
   const track = usePlaybackStore((s) => s.activeTrack);
+  //? `fullscreen = true` implies `visible = true`.
+  const showFullscreenLyrics = useLyricStore((s) => s.fullscreen);
   const sleepTimerSheetRef = useSheetRef();
   const playbackOptionsSheetRef = useSheetRef();
 
@@ -57,23 +60,27 @@ export default function NowPlaying() {
             <SeekbarContext>
               <PlaybackControlGestureWrapper>
                 <ArtworkSlot artwork={track.artwork} trackId={track.id} />
-                <View className="-mt-4 gap-6 px-4">
+                <View className="-mt-4 gap-6 px-4 pb-safe-offset-4">
                   <Metadata track={track} />
                   <SeekBar
                     id={track.id}
                     uri={track.uri}
                     trackLength={track.duration}
                   />
-                  <PlaybackControls />
+                  {!showFullscreenLyrics && (
+                    <>
+                      <PlaybackControls />
+                      <BottomAppBar
+                        presentSleepTimerSheet={() =>
+                          sleepTimerSheetRef.current?.present()
+                        }
+                        presentPlaybackOptionsSheet={() =>
+                          playbackOptionsSheetRef.current?.present()
+                        }
+                      />
+                    </>
+                  )}
                 </View>
-                <BottomAppBar
-                  presentSleepTimerSheet={() =>
-                    sleepTimerSheetRef.current?.present()
-                  }
-                  presentPlaybackOptionsSheet={() =>
-                    playbackOptionsSheetRef.current?.present()
-                  }
-                />
               </PlaybackControlGestureWrapper>
             </SeekbarContext>
           </View>
@@ -163,14 +170,14 @@ function BottomAppBar(props: {
   const isLargeScreen = useAlternativeLayout();
 
   return (
-    <View className="flex-row items-center justify-between gap-4 px-4 pt-2 pb-safe-offset-4">
+    <View className="flex-row items-center justify-between gap-4 pt-4">
       <BackButton />
       <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
         <SleepTimerButton present={props.presentSleepTimerSheet} />
         <IconButton
           icon="lyrics"
           accessibilityLabel={t("feat.lyrics.title")}
-          onPress={toggleLyricVisibility}
+          onPress={toggleLyricStoreKey("visible")}
           size="lg"
           _fullRipple
         />

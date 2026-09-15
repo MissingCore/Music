@@ -29,6 +29,9 @@ export interface LyricStore {
   checkEmbedded: boolean;
   /** List of online providers we can get lyrics from. */
   providers: LyricProvider[];
+
+  /** If we should adjust the "Now Playing" screen layout to fit more lyrics. */
+  fullscreen: boolean;
 }
 
 export const PersistedFields: string[] = [

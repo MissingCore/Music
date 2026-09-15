@@ -39,7 +39,10 @@
 
     "disc": "Disc {{count}}",
     "eps": "EPs",
-    "singles": "Singles"
+    "singles": "Singles",
+
+    "expand": "Expand",
+    "minimize": "Minimize"
   },
 
   "template": {

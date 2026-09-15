@@ -40,10 +40,10 @@ export function updateLyricProvider(
 }
 //#endregion
 
-export function toggleLyricVisibility() {
-  lyricStore.setState((prev) => ({ visible: !prev.visible }));
-}
+type ToggleableKey = "visible" | "fullscreen" | "checkEmbedded";
 
-export function toggleCheckEmbeddedLyrics() {
-  lyricStore.setState((prev) => ({ checkEmbedded: !prev.checkEmbedded }));
+export function toggleLyricStoreKey(key: ToggleableKey) {
+  return () => {
+    lyricStore.setState((prev) => ({ [key]: !prev[key] }));
+  };
 }
