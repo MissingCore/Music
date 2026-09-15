@@ -11,11 +11,17 @@ import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { useViewOrder } from "~/stores/ViewPreference/hooks/useViewOrder";
 import type { LayoutItem } from "~/stores/ViewPreference/types";
 
-import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import * as LibraryLayout from "~/navigation/layouts/LibrayLayout";
 import { AlbumsViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import type { ExtractQueryData } from "~/lib/react-query";
+
+type AlbumData = ExtractQueryData<typeof useAlbums>[number];
+
+function formatData({ id, name, artistName, artwork }: AlbumData) {
+  return { id, title: name, description: artistName, imageSource: artwork };
+}
 
 export default function Albums() {
   const asGrid = useViewPreferenceStore((s) => s.albumLayout !== "list");
@@ -81,11 +87,3 @@ function ScreenContents() {
     />
   );
 }
-
-//#region Utils
-type AlbumData = ExtractQueryData<typeof useAlbums>[number];
-
-function formatData({ id, name, artistName, artwork }: AlbumData) {
-  return { id, title: name, description: artistName, imageSource: artwork };
-}
-//#endregion

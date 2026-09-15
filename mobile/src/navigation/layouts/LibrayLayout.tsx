@@ -278,7 +278,7 @@ export function FavoriteMedia(props: {
 
 //#region Media List
 export function MediaList(props: {
-  data: LayoutItem[];
+  data: LayoutItem[] | undefined;
   onPress: (id: string) => void;
   ListHeaderComponent?: React.JSX.Element;
   ListEmptyComponent?: React.JSX.Element;

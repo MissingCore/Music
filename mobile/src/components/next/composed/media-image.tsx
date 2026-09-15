@@ -104,8 +104,10 @@ function PlaceholderIcon(props: {
 }
 
 /** Generate a `src` for a "Text" placeholder for `MediaImage`. */
-export function createTextPlaceholder(str: string) {
-  return { type: "str", value: str.replace(/\s/g, "").slice(0, 2) } as const;
+export function createTextPlaceholder(str: string, long = false) {
+  let sanitizedStr = str.replace(/\s/g, "");
+  if (!long) sanitizedStr = sanitizedStr.slice(0, 2);
+  return { type: "str", value: sanitizedStr } as const;
 }
 
 function PlaceholderText(props: {
@@ -114,6 +116,9 @@ function PlaceholderText(props: {
   className?: string;
 }) {
   const { str, size, className } = props;
+
+  const textSize = size / (str.length > 2 ? 4 : 2);
+
   return (
     <View
       style={{ width: size, height: size }}
@@ -122,8 +127,10 @@ function PlaceholderText(props: {
       <Text
         intent="accent"
         center
-        style={{ fontSize: size / 2, lineHeight: size / 2 }}
-        className="text-placeholder"
+        numberOfLines={1}
+        ellipsizeMode="clip"
+        style={{ fontSize: textSize, lineHeight: textSize }}
+        className="mt-1.5 text-placeholder"
       >
         {str}
       </Text>
