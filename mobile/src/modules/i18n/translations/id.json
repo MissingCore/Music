@@ -33,7 +33,9 @@
     "instructions": "Instruksi",
     "disc": "Disk {{count}}",
     "eps": null,
-    "singles": null
+    "singles": null,
+    "expand": null,
+    "minimize": null
   },
   "template": {
     "entryAdd": "Tambahkan {{- name}}",
