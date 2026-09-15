@@ -20,7 +20,7 @@ const textStyle = cva({
   variants: {
     intent: {
       unset: null,
-      accent: "text-3xl leading-tight",
+      accent: "text-3xl leading-normal!",
       em: "text-xs",
       //! Using `intent = "muted"` will do nothing and not enable the `muted` variant.
       muted: null,
