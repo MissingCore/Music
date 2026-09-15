@@ -30,7 +30,7 @@ export interface LyricStore {
   /** List of online providers we can get lyrics from. */
   providers: LyricProvider[];
 
-  /** If lyrics will be shown on fullscreen */
+  /** If we should adjust the "Now Playing" screen layout to fit more lyrics. */
   fullscreen: boolean;
 }
 
