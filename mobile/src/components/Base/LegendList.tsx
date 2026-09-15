@@ -34,7 +34,7 @@ const WrappedAnimatedLegendList = withUniwind(
 export const LegendList = memo(function LegendList(props) {
   return (
     <WrappedAnimatedLegendList
-      key={`list-with-${props.numColumns}-cols`}
+      key={`list-with-${props.numColumns}-cols_${props.estimatedItemSize}-size`}
       maintainVisibleContentPosition={false}
       overScrollMode="never"
       showsHorizontalScrollIndicator={false}
