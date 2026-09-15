@@ -83,11 +83,13 @@ function ScreenContents() {
         />
       }
       ListEmptyComponent={
-        <ContentPlaceholder
-          isPending={isPending || sortedData === undefined}
-          errMsgKey="err.msg.noPlaylists"
-          className="absolute inset-0 pt-safe-offset-36"
-        />
+        splittedData.favorites.length === 0 ? (
+          <ContentPlaceholder
+            isPending={isPending || sortedData === undefined}
+            errMsgKey="err.msg.noPlaylists"
+            className="absolute inset-0 pt-safe-offset-36"
+          />
+        ) : undefined
       }
     />
   );
