@@ -26,6 +26,7 @@ type ToggleableKey =
   | "optimizedImageSave"
   | "rcNotification"
   | "rescanOnLaunch"
+  | "reshuffleOnLaunch"
   | "repeatOnSkip"
   | "restoreLastPosition"
   | "showNavbar"

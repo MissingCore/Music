@@ -15,6 +15,7 @@ import migrations from "~/db/drizzle/migrations";
 
 import { IS_DEV } from "~/env";
 import { playbackStore } from "~/stores/Playback/store";
+import { PlaybackSettings } from "~/stores/Playback/actions";
 import { preferenceStore } from "~/stores/Preference/store";
 import { sessionStore } from "~/stores/Session/store";
 import { viewPreferenceStore } from "~/stores/ViewPreference/store";
@@ -140,19 +141,23 @@ async function startupFlow() {
   //? 5. Apply user preferences.
   const {
     repeat,
+    shuffle,
     playingFrom,
     activeKey,
     isReplayGainEnabled,
     restoreVolume,
     volume,
   } = playbackStore.getState();
-  const { restoreLastPosition, continuePlaybackOnDismiss } =
+  const { restoreLastPosition, continuePlaybackOnDismiss, reshuffleOnLaunch } =
     preferenceStore.getState();
+
+  // Ensure correct playback states.
   if (restoreLastPosition) {
     playbackStore.setState({ _restoredTrackKey: activeKey });
   } else {
     playbackStore.setState({ _hasRestoredPosition: true, lastPosition: 0 });
   }
+  if (reshuffleOnLaunch && shuffle) PlaybackSettings.toggleShuffle(true);
 
   // Ensure correct AudioBrowser settings.
   AudioBrowser.updateOptions(
@@ -191,6 +196,8 @@ async function startupFlow() {
   const endMonth = month === 11 ? 0 : month + 1;
   const endYear = month === 11 ? year + 1 : year;
 
+  const startRecapFrom = firstPlayEvent?.playedAt ?? Date.now();
+
   sessionStore.setState({
     recapStartEpoch: firstPlayEvent?.playedAt ?? Date.now(),
     defaultRecapRange: {
@@ -199,4 +206,15 @@ async function startupFlow() {
       endEpoch: Epoch.from({ month: endMonth, year: endYear }),
     },
   });
+
+  //* Also set when we can optimize our database from.
+  if (preferenceStore.getState().optimizeInsightsFrom === 0) {
+    const optimizeInsightsFromDate = new Date(startRecapFrom);
+    preferenceStore.setState({
+      optimizeInsightsFrom: Epoch.from({
+        month: optimizeInsightsFromDate.getMonth(),
+        year: optimizeInsightsFromDate.getFullYear(),
+      }),
+    });
+  }
 }

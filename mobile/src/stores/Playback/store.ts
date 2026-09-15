@@ -5,11 +5,12 @@ import AudioBrowser from "react-native-audio-browser";
 import { useStore } from "zustand";
 
 import { getTrack } from "~/data/track/api";
+import { TrackListeningSession } from "~/modules/insights/core/TrackListeningSession";
 
 import { createPersistedStore } from "~/lib/zustand";
 import { resetWidgets } from "~/modules/widget/utils/update";
 import type { PlaybackStore } from "./constants";
-import { PersistedFields, RepeatModes } from "./constants";
+import { PersistedFields } from "./constants";
 import { extractTrackId } from "./utils";
 
 export const playbackStore = createPersistedStore<PlaybackStore>(
@@ -45,6 +46,9 @@ export const playbackStore = createPersistedStore<PlaybackStore>(
       }
     },
     reset: async () => {
+      //? We should finalize whatever listening session is active currently.
+      await TrackListeningSession.finalize();
+
       set({
         _hasHydrated: true,
         _hasRestoredPosition: false,
@@ -70,7 +74,7 @@ export const playbackStore = createPersistedStore<PlaybackStore>(
     isPlaying: false,
     lastPosition: 0,
 
-    repeat: RepeatModes.NO_REPEAT,
+    repeat: "no-repeat",
     shuffle: false,
 
     playingFrom: undefined,

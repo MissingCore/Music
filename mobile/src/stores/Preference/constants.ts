@@ -34,6 +34,11 @@ export interface PreferenceStore {
 
   /** If the user has clicked "Start Scanning Tracks" in the onboarding flow. */
   completedOnboarding: boolean;
+  /**
+   * Epoch representing first date of month where we should start collapsing
+   * the `tracksPlayEvents` database entries.
+   */
+  optimizeInsightsFrom: number;
 
   /** Language code of the displayed content. */
   language: string;
@@ -90,6 +95,8 @@ export interface PreferenceStore {
   continuePlaybackOnDismiss: boolean;
   /** Whether we stay on "Repeat One" mode when we skip. */
   repeatOnSkip: boolean;
+  /** Whether the queue gets reshuffled on app launch. */
+  reshuffleOnLaunch: boolean;
   /** Whether we'll restore the track to the last played position. */
   restoreLastPosition: boolean;
   /** Shows button to add track to queue on `<Track />` item. */

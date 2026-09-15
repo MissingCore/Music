@@ -28,7 +28,6 @@ import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { RemovableItem } from "~/components/List/RemovableItem";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 import { SearchResult } from "~/modules/search/components/SearchResult";
-import { RepeatModes } from "~/stores/Playback/constants";
 import { extractTrackId } from "~/stores/Playback/utils";
 
 export default function Upcoming({ renderAsScreen = true }) {
@@ -79,7 +78,7 @@ export default function Upcoming({ renderAsScreen = true }) {
   }, [queryClient]);
 
   // Index where the tracks won't be played.
-  const disableIndex = repeat === RepeatModes.NO_REPEAT ? listIndex : 0;
+  const disableIndex = repeat === "no-repeat" ? listIndex : 0;
 
   //#region Stable Callbacks
   const keyExtractor = useCallback(({ key }: { key: string }) => key, []);

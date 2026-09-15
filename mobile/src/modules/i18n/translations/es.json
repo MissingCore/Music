@@ -31,7 +31,9 @@
     "upcoming": "A continuación",
     "playingFrom": "Reproduciendo desde",
     "instructions": "Instrucciones",
-    "disc": "Disco {{count}}"
+    "disc": "Disco {{count}}",
+    "eps": null,
+    "singles": null
   },
   "template": {
     "entryAdd": "Agregar {{- name}}",
@@ -43,7 +45,7 @@
     "notFound": "{{- name}} no existe",
     "entryMove": "Mover {{- name}}",
     "entryShow": "Mostrar {{- name}}",
-    "entryShowAll": null,
+    "entryShowAll": "Mostrar todas las {{- name}}",
     "entryHide": "Ocultar {{- name}}",
     "entryEnable": "Activar {{- name}}",
     "entryDisable": "Desactivar {{- name}}",
@@ -154,7 +156,7 @@
         "vinylOld": "Vinilo (clásico)",
         "none": "Ninguno",
         "alternativeInfoLayout": "Diseño alternativo de información",
-        "standardVinylSpeed": null
+        "standardVinylSpeed": "Velocidad de Vinilo Estándar"
       }
     },
     "seekbar": {
@@ -196,21 +198,29 @@
         "totalDuration": "Duración total"
       }
     },
-    "recap": {
+    "dbOptimization": {
       "title": null,
       "brief": null,
       "extra": {
-        "recapTemplate": null,
+        "start": null,
+        "success": null
+      }
+    },
+    "recap": {
+      "title": "Recap",
+      "brief": "Tus canciones y artistas más escuchados e historial de reproducción.",
+      "extra": {
+        "recapTemplate": "{{- name}} $t(feat.recap.title)",
         "playCount": "{{count}} reproducciones",
         "mostPlayed": "Más reproducidas {{- name}}",
-        "top": null,
-        "timeRange": null,
-        "allTime": null,
-        "listeningTime": null,
-        "totalListeningTime": null,
-        "totalPlays": null,
-        "uniqueTracks": null,
-        "uniqueArtists": null
+        "top": "Top {{- name}}",
+        "timeRange": "Rango de tiempo",
+        "allTime": "Todo el tiempo",
+        "listeningTime": "Tiempo de reproducción",
+        "totalListeningTime": "Total $t(feat.recap.extra.listeningTime)",
+        "totalPlays": "Reproducciones totales",
+        "uniqueTracks": "Canciones únicas",
+        "uniqueArtists": "Artistas únicos"
       }
     },
     "hiddenTracks": {
@@ -239,6 +249,10 @@
     "repeatOnSkip": {
       "title": "Mantener repetición al saltar",
       "brief": "Evita que \"Repetir una\" cambie al saltar canción."
+    },
+    "reshuffleOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "restoreLastPosition": {
       "title": "Restaurar última posición"
@@ -336,10 +350,6 @@
         "adjustWithoutTags": "Ajuste sin tags"
       }
     },
-    "ignoreInterrupt": {
-      "title": "Ignorar interrupciones",
-      "brief": "Seguir reproduciendo audio cuando se produce una interrupción como una notificación o una llamada. Tendrá que pausar y reanudar manualmente la música durante estas situaciones."
-    },
     "sleepTimer": {
       "title": "Apagado automático",
       "description": "Detén la reproducción después del tiempo indicado.",
@@ -415,7 +425,8 @@
         "disc": "Disco",
         "name": "Nombre",
         "trackNumber": "Número de canción",
-        "year": "Año"
+        "year": "Año",
+        "overrideFields": null
       }
     },
     "modalViewPreference": {

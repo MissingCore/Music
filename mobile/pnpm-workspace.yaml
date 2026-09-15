@@ -16,3 +16,4 @@ minimumReleaseAgeExclude:
 patchedDependencies:
   "@lodev09/react-native-true-sheet": "patches/@lodev09__react-native-true-sheet.patch"
   react-native-android-widget: "patches/react-native-android-widget.patch"
+  react-native-material-palette: patches/react-native-material-palette.patch

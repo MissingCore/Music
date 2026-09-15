@@ -4,8 +4,8 @@
 import AudioBrowser from "react-native-audio-browser";
 
 import { preferenceStore } from "~/stores/Preference/store";
+import { TrackListeningSession } from "~/modules/insights/core/TrackListeningSession";
 import { playbackStore } from "../store";
-import { RepeatModes } from "../constants";
 import type { PlayFromSource } from "../types";
 import {
   arePlaybackSourceEqual,
@@ -81,6 +81,8 @@ export async function stop() {
     _restoredTrackKey: playbackStore.getState().activeKey,
   });
   AudioBrowser.reset();
+  //? Finalize listening session here as it won't through the `onPlaybackChanged` event.
+  TrackListeningSession.finalize();
   revalidateWidgets({ openApp: true });
 }
 
@@ -135,7 +137,7 @@ export async function next(naturalProgression = false) {
 
   if (
     nextTrackContext.queuePosition === 0 &&
-    playbackStore.getState().repeat === RepeatModes.NO_REPEAT
+    playbackStore.getState().repeat === "no-repeat"
   ) {
     await pause();
   }
@@ -258,8 +260,8 @@ export async function playFromList({
 function getNewRepeatState() {
   const { repeat } = playbackStore.getState();
   const { repeatOnSkip } = preferenceStore.getState();
-  if (repeat === RepeatModes.REPEAT_ONE && !repeatOnSkip) {
-    return { repeat: RepeatModes.REPEAT } as const;
+  if (repeat === "repeat-one" && !repeatOnSkip) {
+    return { repeat: "repeat" } as const;
   } else {
     return {};
   }

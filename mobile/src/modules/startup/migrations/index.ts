@@ -1,7 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { inArray } from "drizzle-orm";
+import { gt, inArray } from "drizzle-orm";
 import { Image } from "expo-image";
 import AsyncStorage from "expo-sqlite/kv-store";
 
@@ -12,6 +12,7 @@ import {
   hiddenTracks,
   playlists,
   tracks,
+  tracksPlayEvents,
   tracksToArtists,
   tracksToPlaylists,
   waveformSamples,
@@ -228,5 +229,14 @@ const MigrationFunctionMap: Record<
     if (isString(primaryFont) && removedFonts.includes(primaryFont)) {
       preferenceStore.setState({ primaryFont: "Geist" });
     }
+  },
+  "insane-play-event-time": async () => {
+    //? Delete any `tracksPlayEvents` greater than 30 minutes due to a flaw
+    //? with the sleep timer completion not finalizing the session, resulting
+    //? in the possibility of a giant entry being added when we play a different
+    //? track of close the app.
+    await db
+      .delete(tracksPlayEvents)
+      .where(gt(tracksPlayEvents.playTime, 30 * 60));
   },
 };

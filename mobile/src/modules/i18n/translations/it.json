@@ -31,7 +31,9 @@
     "upcoming": "Prossimamente",
     "playingFrom": "Riproducendo da",
     "instructions": null,
-    "disc": "Disco {{count}}"
+    "disc": "Disco {{count}}",
+    "eps": null,
+    "singles": null
   },
   "template": {
     "entryAdd": null,
@@ -196,6 +198,14 @@
         "totalDuration": "Durata totale"
       }
     },
+    "dbOptimization": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "start": null,
+        "success": null
+      }
+    },
     "recap": {
       "title": null,
       "brief": null,
@@ -239,6 +249,10 @@
     "repeatOnSkip": {
       "title": "Mantieni modalità \"$t(term.repeat)\" al cambio brano",
       "brief": "Non cambiare a \"$t(term.repeat)\" da \"$t(term.repeatOne)\" quando salti un brano."
+    },
+    "reshuffleOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "restoreLastPosition": {
       "title": null
@@ -336,10 +350,6 @@
         "adjustWithoutTags": null
       }
     },
-    "ignoreInterrupt": {
-      "title": "Ignora interruzioni",
-      "brief": "Continua a riprodurre quando si verifica un'interruzione come una notifica o una chiamata. In questi casi dovrai mettere in pausa o far ricominciare la riproduzione manualmente."
-    },
     "sleepTimer": {
       "title": null,
       "description": null,
@@ -415,7 +425,8 @@
         "disc": null,
         "name": null,
         "trackNumber": null,
-        "year": null
+        "year": null,
+        "overrideFields": null
       }
     },
     "modalViewPreference": {

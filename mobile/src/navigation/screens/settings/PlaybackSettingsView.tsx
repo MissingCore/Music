@@ -26,6 +26,7 @@ export default function PlaybackSettings() {
   const quickAddQueue = usePreferenceStore((s) => s.quickAddQueue);
   const quickFavorite = usePreferenceStore((s) => s.quickFavorite);
   const repeatOnSkip = usePreferenceStore((s) => s.repeatOnSkip);
+  const reshuffleOnLaunch = usePreferenceStore((s) => s.reshuffleOnLaunch);
   const restoreLastPosition = usePreferenceStore((s) => s.restoreLastPosition);
 
   return (
@@ -44,12 +45,20 @@ export default function PlaybackSettings() {
         />
       </SegmentedList>
 
-      <SegmentedList.Item
-        labelText="feat.repeatOnSkip.title"
-        supportingText={t("feat.repeatOnSkip.brief")}
-        onPress={PreferenceTogglers.toggleKey("repeatOnSkip")}
-        Trailing={<Switch enabled={repeatOnSkip} />}
-      />
+      <SegmentedList>
+        <SegmentedList.Item
+          labelText="feat.repeatOnSkip.title"
+          supportingText={t("feat.repeatOnSkip.brief")}
+          onPress={PreferenceTogglers.toggleKey("repeatOnSkip")}
+          Trailing={<Switch enabled={repeatOnSkip} />}
+        />
+        <SegmentedList.Item
+          labelText="feat.reshuffleOnLaunch.title"
+          supportingText={t("feat.reshuffleOnLaunch.brief")}
+          onPress={PreferenceTogglers.toggleKey("reshuffleOnLaunch")}
+          Trailing={<Switch enabled={reshuffleOnLaunch} />}
+        />
+      </SegmentedList>
 
       <TEm textKey="feat.miniplayer.title" className="-mb-4" />
       <SegmentedList>

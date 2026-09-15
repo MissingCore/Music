@@ -35,5 +35,5 @@
     "ListFooterComponentClassName",
     "ListHeaderComponentClassName"
   ],
-  "tailwindCSS.classFunctions": ["useResolveClassNames"]
+  "tailwindCSS.classFunctions": ["cn", "cva", "cx", "useResolveClassNames"]
 }

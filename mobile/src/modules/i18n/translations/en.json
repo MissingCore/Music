@@ -225,6 +225,14 @@
         "totalDuration": "Total Duration"
       }
     },
+    "dbOptimization": {
+      "title": "Optimize Database",
+      "brief": "There are {{count}} optimization targets available.",
+      "extra": {
+        "start": "Optimizing...",
+        "success": "Finished optimizations."
+      }
+    },
     "recap": {
       "title": "Recap",
       "brief": "Your top tracks, artists, and playback history.",
@@ -271,6 +279,10 @@
     "repeatOnSkip": {
       "title": "Keep Repeat Mode on Skip",
       "brief": "Don't switch mode to \"Repeat\" from \"Repeat One\" on skip."
+    },
+    "reshuffleOnLaunch": {
+      "title": "Reshuffle on App Launch",
+      "brief": "Reshuffles queue on app launch if shuffle is enabled."
     },
     "restoreLastPosition": {
       "title": "Restore From Last Played Position"
@@ -367,10 +379,6 @@
         "adjustWithTags": "Adjustment With Tags",
         "adjustWithoutTags": "Adjustment Without Tags"
       }
-    },
-    "ignoreInterrupt": {
-      "title": "Ignore Interruptions",
-      "brief": "Continue playing audio when an interruption such as a notification or a call occurs. You will need to manually pause and unpause the music during these situations."
     },
     "sleepTimer": {
       "title": "Sleep Timer",
