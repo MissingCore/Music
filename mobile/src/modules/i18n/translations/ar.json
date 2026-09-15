@@ -33,7 +33,9 @@
     "instructions": null,
     "disc": "قرص {{count}}",
     "eps": null,
-    "singles": null
+    "singles": null,
+    "expand": null,
+    "minimize": null
   },
   "template": {
     "entryAdd": null,
