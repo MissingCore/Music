@@ -1,12 +1,9 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { use } from "react";
-
 import { cn } from "~/lib/style";
 import type { AppColor } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
-import { getIntentRippleColor, ThemeIntentContext } from "./context";
 import type { PressableProps } from "../primitive/pressable";
 import { Pressable } from "../primitive/pressable";
 
@@ -22,10 +19,7 @@ export function Ripple({
   className,
   ...props
 }: RippleProps) {
-  const color = useColor(
-    rippleColor ?? getIntentRippleColor(use(ThemeIntentContext)),
-    "surfaceContainerHigh",
-  );
+  const color = useColor(rippleColor, "surfaceContainerHigh");
   return (
     <Pressable
       {...props}

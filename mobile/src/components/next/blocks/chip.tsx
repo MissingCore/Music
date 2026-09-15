@@ -3,8 +3,8 @@
 
 import type { ParseKeys } from "i18next";
 
-import type { Intent } from "../base/context";
 import { Card } from "../base/card";
+import type { Intent } from "../base/theming";
 import { Text, TText } from "../base/typography";
 
 interface ChipProps {

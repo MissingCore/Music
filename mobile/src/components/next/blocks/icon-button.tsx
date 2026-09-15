@@ -2,20 +2,15 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import type { VariantProps } from "cva/config";
-import { use } from "react";
 
 import { cva } from "~/lib/style";
 import type { AppColor } from "~/modules/customization/theme/core/constants";
-import type { IntentVariant } from "../base/context";
-import {
-  getIntentOnColor,
-  getIntentRippleColor,
-  ThemeIntentContext,
-} from "../base/context";
 import type { SupportedIconName } from "../base/icon";
 import { Icon } from "../base/icon";
 import type { RippleProps } from "../base/ripple";
 import { Ripple } from "../base/ripple";
+import type { IntentVariant } from "../base/theming";
+import { getIntentOnColor, getIntentRippleColor } from "../base/theming";
 
 const iconButtonStyle = cva({
   base: "items-center justify-center rounded-full disabled:opacity-25",
@@ -61,7 +56,7 @@ const IconSizeConfig = { xs: 20, sm: 24, md: 24, lg: 32 };
 
 export function IconButton({
   icon,
-  intent: _intent,
+  intent,
   size = "sm",
   filled,
   wide,
@@ -70,7 +65,6 @@ export function IconButton({
   _iconColor,
   ...props
 }: IconButtonProps) {
-  const intent = _intent ?? use(ThemeIntentContext);
   return (
     <Ripple
       {...props}

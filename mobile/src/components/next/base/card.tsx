@@ -2,13 +2,11 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import type { VariantProps } from "cva/config";
-import { use } from "react";
 import type { ViewProps } from "react-native";
 import { View } from "react-native";
 
 import { cva } from "~/lib/style";
-import type { IntentVariant } from "./context";
-import { ThemeIntentContext } from "./context";
+import type { IntentVariant } from "./theming";
 
 export const cardStyle = cva({
   base: "rounded-xl bg-surfaceContainerLowest",
@@ -47,7 +45,7 @@ export type CardVariants = VariantProps<typeof cardStyle>;
 interface CardProps extends ViewProps, CardVariants {}
 
 export function Card({
-  intent: _intent,
+  intent,
   padding,
   inverse,
   outline,
@@ -55,7 +53,6 @@ export function Card({
   className,
   ...props
 }: CardProps) {
-  const intent = _intent ?? use(ThemeIntentContext);
   return (
     <View
       {...props}

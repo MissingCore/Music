@@ -4,10 +4,10 @@
 import { View } from "react-native";
 
 import { cn } from "~/lib/style";
-import { Ripple } from "../base/ripple";
-import { createTextStack } from "../blocks/text-stack";
 import type { MediaImageSrc } from "./media-image";
 import { MediaImage } from "./media-image";
+import { Ripple } from "../base/ripple";
+import { createTextStack } from "../blocks/text-stack";
 
 interface ImageListItemProps {
   src: MediaImageSrc;

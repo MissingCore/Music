@@ -5,12 +5,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import { View } from "react-native";
 
 import { cn } from "~/lib/style";
+import type { MediaImageSrc } from "./media-image";
+import { MediaImage } from "./media-image";
 import { cardStyle } from "../base/card";
 import { Ripple } from "../base/ripple";
 import { Text } from "../base/typography";
 import { createTextStack } from "../blocks/text-stack";
-import type { MediaImageSrc } from "./media-image";
-import { MediaImage } from "./media-image";
 
 interface ImageCardProps {
   src: MediaImageSrc;

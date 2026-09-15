@@ -3,7 +3,6 @@
 
 import type { VariantProps } from "cva/config";
 import type { ParseKeys } from "i18next";
-import { use } from "react";
 import { useTranslation } from "react-i18next";
 import type { TextProps as RNTextProps } from "react-native";
 import { Text as RNText } from "react-native";
@@ -12,8 +11,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { cva } from "~/lib/style";
 import { getFont } from "~/modules/customization/font/utils";
-import type { IntentVariant } from "./context";
-import { ThemeIntentContext } from "./context";
+import type { IntentVariant } from "./theming";
 
 const textStyle = cva({
   base: "text-left text-base text-onSurface",
@@ -64,7 +62,7 @@ export interface TextProps extends RNTextProps, TextVariants {
 }
 
 export function Text({
-  intent: _intent,
+  intent,
   muted,
   center,
   uppercase,
@@ -74,7 +72,6 @@ export function Text({
   style,
   ...props
 }: TextProps) {
-  const intent = _intent ?? use(ThemeIntentContext);
   const asAccent = intent === "accent";
   const bold = _bold ?? intent === "em";
 
