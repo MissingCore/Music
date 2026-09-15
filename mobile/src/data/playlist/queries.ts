@@ -59,10 +59,15 @@ export function useFavoritePlaylist(playlistName: string) {
       await wait(1);
       return updatePlaylist(playlistName, { isFavorite });
     },
-    onSuccess: () => {
+    onSuccess: (_, isFavorite) => {
       queryClient.invalidateQueries({
         queryKey: q.playlists.detail(playlistName).queryKey,
       });
+      queryClient.setQueryData(q.playlists.all.queryKey, (prevData) =>
+        prevData?.map((entry) =>
+          entry.id === playlistName ? { ...entry, isFavorite } : entry,
+        ),
+      );
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
     },
   });
