@@ -143,10 +143,10 @@ function Metadata({ track }: { track: Track }) {
 //#region Playback Controls
 function PlaybackControls() {
   // When lyrics is shown on full screen no need to render playback controls.
-  const showFullscreenLyrics = useLyricStore((s) => s.fullscreen)
-  const isLyricsVisible = useLyricStore((s) => s.visible)
+  const showFullscreenLyrics = useLyricStore((s) => s.fullscreen);
+  const isLyricsVisible = useLyricStore((s) => s.visible);
 
-  return ((showFullscreenLyrics && isLyricsVisible) ? null: (
+  return showFullscreenLyrics && isLyricsVisible ? null : (
     <View className="mx-auto w-full max-w-96 flex-row items-center justify-between gap-2 rtl:flex-row-reverse">
       <ShuffleButton />
       <PreviousButton />
@@ -154,7 +154,7 @@ function PlaybackControls() {
       <NextButton />
       <RepeatButton />
     </View>
-  ));
+  );
 }
 //#endregion
 
@@ -167,40 +167,40 @@ function BottomAppBar(props: {
   const navigation = useNavigation();
   const isLargeScreen = useAlternativeLayout();
   // When lyrics is shown on full screen no need to render playback controls.
-  const showFullscreenLyrics = useLyricStore((s) => s.fullscreen)
-  const isLyricsVisible = useLyricStore((s) => s.visible)
+  const showFullscreenLyrics = useLyricStore((s) => s.fullscreen);
+  const isLyricsVisible = useLyricStore((s) => s.visible);
 
-  return showFullscreenLyrics && isLyricsVisible ? 
-    <View></View> :
-    (
+  return showFullscreenLyrics && isLyricsVisible ? (
+    <View></View>
+  ) : (
     <View className="flex-row items-center justify-between gap-4 px-4 pt-2 pb-safe-offset-4">
-        <BackButton />
-        <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
-          <SleepTimerButton present={props.presentSleepTimerSheet} />
+      <BackButton />
+      <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
+        <SleepTimerButton present={props.presentSleepTimerSheet} />
+        <IconButton
+          icon="lyrics"
+          accessibilityLabel={t("feat.lyrics.title")}
+          onPress={toggleLyricVisibility}
+          size="lg"
+          _fullRipple
+        />
+        {!isLargeScreen ? (
           <IconButton
-            icon="lyrics"
-            accessibilityLabel={t("feat.lyrics.title")}
-            onPress={toggleLyricVisibility}
+            icon="view-agenda"
+            accessibilityLabel={t("term.upcoming")}
+            onPress={() => navigation.navigate("Upcoming")}
             size="lg"
             _fullRipple
           />
-          {!isLargeScreen ? (
-            <IconButton
-              icon="view-agenda"
-              accessibilityLabel={t("term.upcoming")}
-              onPress={() => navigation.navigate("Upcoming")}
-              size="lg"
-              _fullRipple
-            />
-          ) : null}
-          <IconButton
-            icon="more-horiz"
-            accessibilityLabel={t("feat.playback.extra.options")}
-            onPress={props.presentPlaybackOptionsSheet}
-            size="lg"
-            _fullRipple
-          />
-        </View>      
+        ) : null}
+        <IconButton
+          icon="more-horiz"
+          accessibilityLabel={t("feat.playback.extra.options")}
+          onPress={props.presentPlaybackOptionsSheet}
+          size="lg"
+          _fullRipple
+        />
+      </View>
     </View>
   );
 }
