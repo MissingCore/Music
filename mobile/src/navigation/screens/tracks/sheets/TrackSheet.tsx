@@ -20,6 +20,7 @@ import { useSessionStore } from "~/stores/Session/store";
 import { TrackArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { TrackToPlaylistsSheet } from "./TrackToPlaylistsSheet";
 
+import { shareFile } from "~/lib/file-system";
 import { mutateGuard } from "~/lib/react-query";
 import { Epoch, Seconds } from "~/utils/date";
 import { abbreviateBitRate, abbreviateSize } from "~/utils/number";
@@ -195,6 +196,12 @@ function IconActions(props: { data: Track; editArtwork: VoidFunction }) {
         onPress={sheetAction(() =>
           mutateGuard(hideTrack, { track: props.data }),
         )}
+        size="md"
+      />
+      <IconButton
+        icon="share"
+        accessibilityLabel={t("term.share")}
+        onPress={sheetAction(() => shareFile(props.data.uri))}
         size="md"
       />
     </View>

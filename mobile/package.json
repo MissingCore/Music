@@ -47,6 +47,7 @@
     "expo-image-manipulator": "57.0.19",
     "expo-image-picker": "57.0.19",
     "expo-linear-gradient": "57.0.2",
+    "expo-sharing": "57.0.21",
     "expo-sqlite": "57.0.3",
     "i18next": "26.4.2",
     "intl-pluralrules": "2.0.1",

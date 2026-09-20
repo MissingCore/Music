@@ -4,6 +4,7 @@
 import { Directory, File, Paths } from "expo-file-system";
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import { launchImageLibraryAsync } from "expo-image-picker";
+import { shareAsync } from "expo-sharing";
 
 import { db } from "~/db";
 import { hashedImages } from "~/db/schema";
@@ -119,4 +120,13 @@ async function saveImage({ hash, uri }: { hash: string; uri: string }) {
   await finalLocation.move(new Directory(ImageDirectory));
   finalLocation.rename(`${hash}.jpg`);
   return finalLocation.uri;
+}
+
+/** Opens action sheet showing apps we can share the file to. */
+export async function shareFile(uri: string) {
+  try {
+    await shareAsync(uri, { mimeType: "audio/*" });
+  } catch (err) {
+    console.log(err);
+  }
 }
