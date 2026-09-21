@@ -8,6 +8,12 @@ export const IS_DEV = __DEV__;
 export const CHECK_FOR_UPDATES =
   process.env.EXPO_PUBLIC_CHECK_FOR_UPDATES === "true";
 
+/** Determines how the app is distributed. */
+export const DISTRIBUTION =
+  process.env.EXPO_PUBLIC_DISTRIBUTION === "google-play"
+    ? "google-play"
+    : "apk";
+
 /** Whether Sentry should be initialized in JS. */
 export const INITIALIZE_SENTRY = process.env.EXPO_PUBLIC_WITH_SENTRY === "true";
 
