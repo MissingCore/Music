@@ -128,7 +128,7 @@ export default function AppUpdate() {
       ) : (
         <SegmentedList.Item
           labelText="feat.appUpdate.extra.downloadAPK"
-          supportingText="github.com/MissingCore/Music/releases/latest"
+          supportingText={Links.SpecificRelease(release.version)}
           onPress={() => openLink(Links.SpecificRelease(release.version))}
           Leading={<Icon name="logo-github" />}
         />
