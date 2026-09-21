@@ -33,7 +33,10 @@
     "instructions": "دستورالعمل ها",
     "disc": "دیسک {{count}}",
     "eps": "مینی‌آلبوم‌ها",
-    "singles": "تک‌آهنگ‌ها"
+    "singles": "تک‌آهنگ‌ها",
+    "share": null,
+    "expand": null,
+    "minimize": null
   },
   "template": {
     "entryAdd": "اضافه کردن {{- name}}",

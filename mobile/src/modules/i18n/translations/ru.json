@@ -33,7 +33,10 @@
     "instructions": "Инструкция",
     "disc": "Диск {{count}}",
     "eps": null,
-    "singles": null
+    "singles": null,
+    "share": null,
+    "expand": null,
+    "minimize": null
   },
   "template": {
     "entryAdd": "Добавить {{- name}}",

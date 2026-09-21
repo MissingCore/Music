@@ -32,8 +32,11 @@
     "playingFrom": "Memutar Dari",
     "instructions": "Instruksi",
     "disc": "Disk {{count}}",
-    "eps": null,
-    "singles": null
+    "eps": "EP",
+    "singles": "Single",
+    "share": null,
+    "expand": "Perluas",
+    "minimize": "Minimalkan"
   },
   "template": {
     "entryAdd": "Tambahkan {{- name}}",
@@ -45,11 +48,11 @@
     "notFound": "{{- name}} tidak ditemukan",
     "entryMove": "Pindahkan {{- name}}",
     "entryShow": "Tampilkan {{- name}}",
-    "entryShowAll": null,
+    "entryShowAll": "Tampilkan semua {{- name}}",
     "entryHide": "Sembunyikan {{- name}}",
     "entryEnable": "Aktifkan {{- name}}",
     "entryDisable": "Nonaktifkan {{- name}}",
-    "countSelected": null,
+    "countSelected": "{{count}} Dipilih",
     "noContentFound": "{{- name}} tidak ditemukan"
   },
   "plural": {
@@ -134,8 +137,8 @@
         "light": "Terang",
         "dark": "Gelap",
         "system": "Sistem",
-        "atmosphere": null,
-        "opaqueColors": null
+        "atmosphere": "Efek Atmosfir",
+        "opaqueColors": "Waena Buram"
       }
     },
     "tabsOrder": {
@@ -154,13 +157,13 @@
         "plain": "Plain",
         "vinyl": "Vinyl",
         "vinylOld": "Vinyl (Lama)",
-        "none": null,
-        "alternativeInfoLayout": null,
-        "standardVinylSpeed": null
+        "none": "Tidak Ada",
+        "alternativeInfoLayout": "Tata Letak Info Alternative",
+        "standardVinylSpeed": "Kecepatan Vinyl Standar"
       }
     },
     "seekbar": {
-      "title": null,
+      "title": "Bilah geser",
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": "Waveform",
@@ -199,28 +202,28 @@
       }
     },
     "dbOptimization": {
-      "title": null,
-      "brief": null,
+      "title": "Optimalkan Database",
+      "brief": "Ada {{count}} target yang dioptimalkan tersedia.",
       "extra": {
-        "start": null,
-        "success": null
+        "start": "Mengoptimalkan...",
+        "success": "Selesai dioptimalkan."
       }
     },
     "recap": {
-      "title": null,
-      "brief": null,
+      "title": "Recap",
+      "brief": "Riwayat trek, artis dan pemutaran teratasmu.",
       "extra": {
-        "recapTemplate": null,
+        "recapTemplate": "{{- name}} $t(feat.recap.title)",
         "playCount": "{{count}} pemutaran",
         "mostPlayed": "Sering Diputar {{- name}}",
-        "top": null,
-        "timeRange": null,
-        "allTime": null,
-        "listeningTime": null,
-        "totalListeningTime": null,
-        "totalPlays": null,
-        "uniqueTracks": null,
-        "uniqueArtists": null
+        "top": "Top {{- name}}",
+        "timeRange": "Waktu Rentang",
+        "allTime": "Sepanjang Waktu",
+        "listeningTime": "Waktu Mendengarkan",
+        "totalListeningTime": "Total $t(feat.recap.extra.listeningTime)",
+        "totalPlays": "Total Diputar",
+        "uniqueTracks": "Trek Unik",
+        "uniqueArtists": "Artis Unik"
       }
     },
     "hiddenTracks": {
@@ -251,8 +254,8 @@
       "brief": "Jangan mengalihkan mode ke \"Ulangi\" dari \"Ulangi Sekali\" saat melewati."
     },
     "reshuffleOnLaunch": {
-      "title": null,
-      "brief": null
+      "title": "Mengacak saat App Dijalankan",
+      "brief": "Mengacak ulang antrean saat app diluncurkan jika fitur acak diaktifkan."
     },
     "restoreLastPosition": {
       "title": "Pulihkan Dari Posisi Terakhir Diputar"
@@ -271,8 +274,8 @@
     "scanning": {
       "title": "Memindai",
       "extra": {
-        "useMediaStore": null,
-        "useMediaStoreBrief": null
+        "useMediaStore": "🧪 Gunakan Pemindai MediaStore",
+        "useMediaStoreBrief": "Kecepatan ekstrim, tetapi mungkin tidak akurat. Memerlukan Android 11+."
       }
     },
     "rescan": {
@@ -394,7 +397,7 @@
       }
     },
     "artwork": {
-      "title": null,
+      "title": "Sampul",
       "extra": {
         "change": "Ubah Karya Seni",
         "remove": "Hapus Karya Seni",
@@ -426,7 +429,7 @@
         "name": "Nama",
         "trackNumber": "Nomer Trek",
         "year": "Tahun",
-        "overrideFields": null
+        "overrideFields": "Mengisi kolom berikut akan menimpa value yang telah ditetapkan pada semua trek di dalam album."
       }
     },
     "modalViewPreference": {
@@ -436,8 +439,8 @@
         "list": "Daftar",
         "grid": "Ubin",
         "compactGrid": "Ubin Kompak",
-        "columnSize": null,
-        "columnCount": null,
+        "columnSize": "Ukuran Kolom",
+        "columnCount": "Hitungan Kolom: {{count}}",
         "sort": "urutan penyortiran",
         "asc": "Urutan Naik",
         "discover": "Jelajahi Waktu",
@@ -457,16 +460,16 @@
       }
     },
     "miniplayer": {
-      "title": null,
+      "title": "Pemutar Mini",
       "extra": {
-        "dragToDismiss": null,
-        "swipeControls": null
+        "dragToDismiss": "Seret untuk Menutup",
+        "swipeControls": "Usap Kontrol"
       }
     },
     "nowPlaying": {
-      "title": null,
+      "title": "Sedang Diputar",
       "extra": {
-        "artworkPlaybackToggle": null
+        "artworkPlaybackToggle": "Tombol Sampul Pemutaran"
       }
     },
     "queue": {

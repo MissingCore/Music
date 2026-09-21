@@ -33,7 +33,10 @@
     "instructions": null,
     "disc": "碟片 {{count}}",
     "eps": null,
-    "singles": null
+    "singles": null,
+    "share": null,
+    "expand": null,
+    "minimize": null
   },
   "template": {
     "entryAdd": null,
