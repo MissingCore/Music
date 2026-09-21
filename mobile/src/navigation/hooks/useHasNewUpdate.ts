@@ -104,8 +104,9 @@ function formatGitHubRelease(data: any): ReleaseNotes {
       .flatMap((commentBody) => {
         if (commentBody === undefined) return undefined;
         return commentBody.split(/\r?\n/).map((val) => {
-          if (val.startsWith("flag:")) return val.split("flag:")[1];
-          return undefined;
+          const trimmedVal = val.trim();
+          if (!trimmedVal.startsWith("flag:")) return undefined;
+          return trimmedVal.replace("flag:", "").trim();
         });
       })
       .filter((val) => val !== undefined);
