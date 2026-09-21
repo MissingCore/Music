@@ -33,7 +33,10 @@
     "instructions": "Anweisungen",
     "disc": "CD {{count}}",
     "eps": null,
-    "singles": null
+    "singles": null,
+    "share": null,
+    "expand": null,
+    "minimize": null
   },
   "template": {
     "entryAdd": "{{- name}} hinzufügen",

@@ -33,7 +33,10 @@
     "instructions": "Instructions",
     "disc": "Disque {{count}}",
     "eps": "EPs",
-    "singles": "Singles"
+    "singles": "Singles",
+    "share": null,
+    "expand": "Développer",
+    "minimize": "Réduire"
   },
   "template": {
     "entryAdd": "Ajouter {{- name}}",

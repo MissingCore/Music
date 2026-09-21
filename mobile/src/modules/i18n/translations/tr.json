@@ -33,7 +33,10 @@
     "instructions": "Nasıl Kullanılır",
     "disc": "Disk {{count}}",
     "eps": null,
-    "singles": null
+    "singles": null,
+    "share": null,
+    "expand": null,
+    "minimize": null
   },
   "template": {
     "entryAdd": "{{- name}} ekle",
