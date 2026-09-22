@@ -19,6 +19,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useLyricForTrack } from "~/data/lyric/queries";
 import { PlaybackControls } from "~/stores/Playback/actions";
+import { useLyricStore } from "../core/store";
+import { toggleLyricStoreKey } from "../core/actions";
 
 import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
@@ -63,7 +65,7 @@ export function LyricsOverlay(props: { size: number; trackId: string }) {
             : undefined,
         )}
       >
-        <View style={{ width: props.size }} className="px-2">
+        <View style={{ width: props.size }} className="grow px-2">
           <LyricsContent trackId={props.trackId} />
         </View>
 
@@ -86,8 +88,6 @@ export function LyricsOverlay(props: { size: number; trackId: string }) {
 }
 
 function LyricsContent({ trackId }: { trackId: string }) {
-  const { t } = useTranslation();
-  const navigation = useNavigation();
   const { isPending, data, error } = useLyricForTrack(trackId);
   const cleanupInProgress = useRef<Set<string>>(new Set());
   const { offset, extraTop } = use(LyricOffsetContext);
@@ -130,15 +130,33 @@ function LyricsContent({ trackId }: { trackId: string }) {
           }}
         />
       )}
+      <ExtraActions lyricsId={data.id} />
+    </>
+  );
+}
 
+function ExtraActions({ lyricsId }: { lyricsId?: string }) {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+  const expandLyrics = useLyricStore((s) => s.fullscreen);
+
+  return (
+    <View className="absolute right-0 bottom-0 z-100 flex-row gap-2">
       <IconButton
-        icon="edit"
-        accessibilityLabel={t("form.edit")}
-        onPress={() => navigation.navigate("ModifyLyric", { id: data.id })}
-        className="absolute right-0 bottom-0 z-100"
+        icon={expandLyrics ? "fullscreen-exit" : "fullscreen"}
+        accessibilityLabel={t(`term.${expandLyrics ? "minimize" : "expand"}`)}
+        onPress={toggleLyricStoreKey("fullscreen")}
         size="xs"
       />
-    </>
+      {lyricsId ? (
+        <IconButton
+          icon="edit"
+          accessibilityLabel={t("form.edit")}
+          onPress={() => navigation.navigate("ModifyLyric", { id: lyricsId })}
+          size="xs"
+        />
+      ) : null}
+    </View>
   );
 }
 
@@ -162,17 +180,23 @@ function LyricsNotFound({ trackId }: { trackId: string }) {
   }, []);
 
   return (
-    <View style={{ paddingTop: extraTop }} className="items-center gap-6 pb-4">
-      <TEm textKey="err.msg.noLyrics" className="text-xl" />
-      <ExtendedTButton
-        // @ts-expect-error - Will display text if key doesn't exist.
-        textKey={t("template.entryManage", { name: t("feat.lyrics.title") })}
-        onPress={() => navigation.navigate("Lyrics", { linkTo: trackId })}
-        disabled={checkingEmbeddedLyrics}
-        className="min-h-auto w-full max-w-48"
-        textClassName="text-xs"
-      />
-    </View>
+    <>
+      <View
+        style={{ paddingTop: extraTop }}
+        className="my-auto items-center gap-6 pb-4"
+      >
+        <TEm textKey="err.msg.noLyrics" className="text-xl" />
+        <ExtendedTButton
+          // @ts-expect-error - Will display text if key doesn't exist.
+          textKey={t("template.entryManage", { name: t("feat.lyrics.title") })}
+          onPress={() => navigation.navigate("Lyrics", { linkTo: trackId })}
+          disabled={checkingEmbeddedLyrics}
+          className="min-h-auto w-full max-w-48"
+          textClassName="text-xs"
+        />
+      </View>
+      <ExtraActions />
+    </>
   );
 }
 //#endregion

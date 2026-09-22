@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import { Icon } from "~/resources/icons";
 import { useLyricStore } from "../core/store";
-import { toggleCheckEmbeddedLyrics } from "../core/actions";
+import { toggleLyricStoreKey } from "../core/actions";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 
@@ -37,7 +37,7 @@ export default function LyricsSettings() {
 
       <SegmentedList.Item
         labelText="feat.lyrics.extra.useEmbedded"
-        onPress={toggleCheckEmbeddedLyrics}
+        onPress={toggleLyricStoreKey("checkEmbedded")}
         Trailing={<Switch enabled={checkEmbeddedLyrics} />}
       />
     </ListLayout>

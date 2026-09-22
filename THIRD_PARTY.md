@@ -25,6 +25,7 @@
 | expo-image-manipulator | MIT | https://github.com/expo/expo/tree/main/packages/expo-image-manipulator |
 | expo-image-picker | MIT | https://github.com/expo/expo/tree/main/packages/expo-image-picker |
 | expo-linear-gradient | MIT | https://github.com/expo/expo/tree/main/packages/expo-linear-gradient |
+| expo-sharing | MIT | https://github.com/expo/expo/tree/main/packages/expo-sharing |
 | expo-sqlite | MIT | https://github.com/expo/expo/tree/main/packages/expo-sqlite |
 | Geist Font Family | OFL-1.1 | https://github.com/vercel/geist-font |
 | i18next | MIT | https://github.com/i18next/i18next |

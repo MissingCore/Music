@@ -3,6 +3,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 
+import { DISTRIBUTION } from "~/env";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { APP_VERSION } from "~/constants/Config";
@@ -30,9 +31,20 @@ export function useHasNewUpdate(): UpdateResult {
   const usedRelease =
     isRC || rcNotification ? data.latestRelease : data.latestStable;
 
+  //? Introduced in `v3.6.0`, we may include a flag in the release notes
+  //? to hide the release notification for Google Play releases as we wait
+  //? for it to get reviewed.
+  const hideRelease =
+    DISTRIBUTION === "google-play" &&
+    usedRelease.flags?.includes("hide-google-play");
+
   // Note: We can technically display an older release note if we updated
   // to the lastest version before the GitHub release notes are published.
-  if (!usedRelease.version || usedRelease.version === APP_VERSION) {
+  if (
+    hideRelease ||
+    !usedRelease.version ||
+    usedRelease.version === APP_VERSION
+  ) {
     return { hasNewUpdate: false, release: null, isRC: false };
   } else {
     return {
@@ -74,17 +86,32 @@ const RELEASE_NOTES_LINK =
   "https://api.github.com/repos/MissingCore/Music/releases";
 
 type ReleaseNotes =
-  | { releaseNotes: undefined; version: undefined }
-  | { releaseNotes: string; version: string };
+  | { releaseNotes: undefined; version: undefined; flags: undefined }
+  | { releaseNotes: string; version: string; flags: string[] };
+
+const CommentBodyRegex = /<!--([\s\S]*?)(?:-->)/g;
 
 /** Formats the data returned from the GitHub API. */
 function formatGitHubRelease(data: any): ReleaseNotes {
-  return {
-    version: data.tag_name,
-    // Remove markdown comments w/ regex.
-    releaseNotes: data.body
-      ? data.body.replace(/<!--[\s\S]*?(?:-->)/g, "")
-      : undefined,
-  };
+  let releaseNotes: string | undefined;
+  let flags: string[] | undefined;
+  if (data.body) {
+    releaseNotes = data.body.replace(CommentBodyRegex, "");
+    flags = Array.from(
+      (data.body as string).matchAll(CommentBodyRegex),
+      ([_, commentBody]) => commentBody?.trim(),
+    )
+      .flatMap((commentBody) => {
+        if (commentBody === undefined) return undefined;
+        return commentBody.split(/\r?\n/).map((val) => {
+          const trimmedVal = val.trim();
+          if (!trimmedVal.startsWith("flag:")) return undefined;
+          return trimmedVal.replace("flag:", "").trim();
+        });
+      })
+      .filter((val) => val !== undefined);
+  }
+
+  return { version: data.tag_name, releaseNotes, flags } as ReleaseNotes;
 }
 //#endregion
