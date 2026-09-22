@@ -3,7 +3,13 @@
 
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { BackHandler, useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
@@ -19,12 +25,9 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import type { FileNode } from "~/db/schema";
-
 import { useFolderContent } from "~/data/folder/queries";
-import { useListLayoutConfig } from "~/hooks/useLayoutConfigs";
 
-import { NScrollListLayout } from "~/navigation/layouts/NScrollLayout";
+import * as LibraryLayout from "~/navigation/layouts/LibrayLayout";
 import { FoldersViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
@@ -32,15 +35,15 @@ import { OnRTL, OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { addTrailingSlash } from "~/utils/string";
 import { useAnimatedLegendListRef } from "~/components/Base/LegendList";
-import { Pressable } from "~/components/Base/Pressable";
 import { useAnimatedScrollViewRef } from "~/components/Base/ScrollView";
-import { StyledText } from "~/components/Typography/StyledText";
+import { Text } from "~/components/next/base/typography";
+import { ImageListItem } from "~/components/next/composed/image-list-item";
+import { Pressable } from "~/components/next/primitive/pressable";
 import {
   Track,
   useTrackListPlayingIndication,
 } from "~/modules/media/components/Track";
 import type { TrackContent } from "~/modules/media/components/Track.type";
-import { SearchResult } from "~/modules/search/components/SearchResult";
 
 type Props = StaticScreenProps<{ path?: string }>;
 
@@ -49,7 +52,6 @@ export default function Folders({
     params: { path },
   },
 }: Props) {
-  //#region Directory Management
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const listRef = useAnimatedLegendListRef();
@@ -89,75 +91,31 @@ export default function Folders({
     );
     return () => subscription.remove();
   }, [dirSegments, isFocused, setDirSegments]);
-  //#endregion
-
-  //#region Data Fetching
-  const fullPath = dirSegments.join("/");
-  const trackSource = useMemo(
-    () => ({ type: "folder", id: `${fullPath}/` }) as const,
-    [fullPath],
-  );
-
-  const { isPending, data } = useFolderContent(fullPath);
-  const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
-
-  const renderedData = useMemo(
-    () => [...(data?.directories ?? []), ...(listData ?? [])],
-    [data, listData],
-  );
-  //#endregion
-
-  const listLayout = useListLayoutConfig();
-  const renderItem = useCallback(
-    ({ item }: { item: MergedData }) =>
-      isTrackContent(item) ? (
-        <Track {...item} trackSource={trackSource} className="mx-1 mb-2" />
-      ) : (
-        <SearchResult
-          type="folder"
-          title={item.name}
-          onPress={() => setDirSegments((prev) => [...prev, item.name])}
-          className="mx-1 mb-2 pr-4"
-        />
-      ),
-    [trackSource, setDirSegments],
-  );
 
   return (
-    <NScrollListLayout
-      listRef={listRef}
-      titleKey="term.folders"
-      numColumns={listLayout.count}
-      estimatedItemSize={56} // 48px Height + 8px Margin Bottom
-      data={renderedData}
-      keyExtractor={keyExtractor}
-      renderItem={renderItem}
-      ListEmptyComponent={<ContentPlaceholder isPending={isPending} />}
-      scrollEnabled={!isPending}
-      OptionsSheet={FoldersViewOptionsSheet}
-      Subheader={
-        <Breadcrumbs
-          dirSegments={dirSegments}
-          setDirSegments={setDirSegments}
-        />
-      }
-      estimatedSubheaderHeight={56}
-      className="-mx-1 -mb-2"
-    />
+    <LibraryLayout.Provider ref={listRef} asGrid={false}>
+      <LibraryLayout.Header
+        titleKey="term.folders"
+        OptionsSheet={FoldersViewOptionsSheet}
+        Subheader={
+          <Breadcrumbs
+            dirSegments={dirSegments}
+            setDirSegments={setDirSegments}
+          />
+        }
+      />
+      <ScreenContents
+        dirSegments={dirSegments}
+        setDirSegments={setDirSegments}
+      />
+    </LibraryLayout.Provider>
   );
 }
 
-//#region List Utils
-type MergedData = FileNode | TrackContent;
-
-function isTrackContent(data: unknown): data is TrackContent {
-  return Object.hasOwn(data as TrackContent, "id");
-}
-
-function keyExtractor(item: MergedData) {
-  return isTrackContent(item) ? item.id : item.path;
-}
-//#endregion
+type DirState = {
+  dirSegments: string[];
+  setDirSegments: React.Dispatch<React.SetStateAction<string[]>>;
+};
 
 //#region Breadcrumbs
 /** Animated scrollview supporting gestures. */
@@ -165,13 +123,7 @@ const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
 const RemoveAnimation = OnRTL.decide(FadeOutLeft, FadeOutRight);
 
-function Breadcrumbs({
-  dirSegments,
-  setDirSegments,
-}: {
-  dirSegments: string[];
-  setDirSegments: React.Dispatch<React.SetStateAction<string[]>>;
-}) {
+function Breadcrumbs({ dirSegments, setDirSegments }: DirState) {
   const breadcrumbsRef = useAnimatedScrollViewRef();
   const { width: screenWidth } = useWindowDimensions();
   const lastWidth = useSharedValue(0);
@@ -211,7 +163,7 @@ function Breadcrumbs({
       ref={breadcrumbsRef}
       horizontal
       showsHorizontalScrollIndicator={false}
-      className="mt-2 w-full rounded-md bg-surfaceContainerLowest"
+      className="mt-2 w-full rounded-lg bg-surfaceContainerLowest"
       contentContainerClassName="px-4"
     >
       <Animated.View
@@ -222,7 +174,7 @@ function Breadcrumbs({
           <Fragment key={idx}>
             {idx > 0 ? (
               <Animated.View entering={FadeInLeft} exiting={RemoveAnimation}>
-                <StyledText className="px-1 text-xs">/</StyledText>
+                <Text className="px-1 text-xs">/</Text>
               </Animated.View>
             ) : null}
             <Animated.View entering={FadeInLeft} exiting={RemoveAnimation}>
@@ -235,13 +187,13 @@ function Breadcrumbs({
                 disabled={idx === dirSegments.length}
                 className="min-h-12 min-w-6 items-center justify-center active:opacity-50"
               >
-                <StyledText
+                <Text
                   className={cn("text-xs", {
                     "text-primary": idx === dirSegments.length,
                   })}
                 >
                   {dirName ?? "Root"}
-                </StyledText>
+                </Text>
               </Pressable>
             </Animated.View>
           </Fragment>
@@ -250,6 +202,65 @@ function Breadcrumbs({
       {/* Animated padding to allow exiting scroll animation to look nice. */}
       <Animated.View style={offsetStyle} />
     </AnimatedScrollView>
+  );
+}
+//#endregion
+
+//#region Screen Contents
+function isTrackContent(data: unknown): data is TrackContent {
+  return Object.hasOwn(data as TrackContent, "id");
+}
+
+function ScreenContents({ dirSegments, setDirSegments }: DirState) {
+  const fullPath = dirSegments.join("/");
+  const trackSource = useMemo(
+    () => ({ type: "folder", id: `${fullPath}/` }) as const,
+    [fullPath],
+  );
+
+  const { isPending, data } = useFolderContent(fullPath);
+  const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
+
+  const renderedData = useMemo(
+    () => [...(data?.directories ?? []), ...(listData ?? [])],
+    [data, listData],
+  );
+
+  const renderItemFactory = useCallback(
+    (listItemClass: string) => {
+      const renderItem: LibraryLayout.MediaListRenderItem<
+        (typeof renderedData)[number]
+      > = ({ item }) =>
+        isTrackContent(item) ? (
+          <Track
+            {...item}
+            trackSource={trackSource}
+            className={listItemClass}
+          />
+        ) : (
+          <ImageListItem
+            src={{ type: "icon", value: "folder" }}
+            label={item.name}
+            onPress={() => setDirSegments((prev) => [...prev, item.name])}
+            className={cn(listItemClass, "pr-4")}
+          />
+        );
+      return renderItem;
+    },
+    [trackSource, setDirSegments],
+  );
+
+  return (
+    <LibraryLayout.MediaList
+      data={renderedData}
+      renderItemFactory={renderItemFactory}
+      ListEmptyComponent={
+        <ContentPlaceholder
+          isPending={isPending}
+          className="absolute inset-0 pt-safe-offset-48"
+        />
+      }
+    />
   );
 }
 //#endregion

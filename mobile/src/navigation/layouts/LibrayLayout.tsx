@@ -35,6 +35,10 @@ import {
 import { useBottomActionsOffset } from "../components/BottomActions/useBottomActions";
 
 import { cn } from "~/lib/style";
+import type {
+  AnimatedLegendListRef,
+  ListRenderItemInfo,
+} from "~/components/Base/LegendList";
 import { LegendList } from "~/components/Base/LegendList";
 import { TopDownGradient } from "~/components/Gradient";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
@@ -57,6 +61,7 @@ import { ImageListItem } from "~/components/next/composed/image-list-item";
 //#region Provider
 interface LibraryLayoutInput {
   asGrid: boolean;
+  ref?: AnimatedLegendListRef;
 }
 
 interface LibraryLayoutValue extends LibraryLayoutInput {
@@ -71,6 +76,7 @@ const LibraryLayoutContext = createContext<LibraryLayoutValue>(null as never);
 
 export function Provider({
   children,
+  ref,
   ...props
 }: LibraryLayoutInput & { children: React.ReactNode }) {
   const { top } = useSafeAreaInsets();
@@ -145,6 +151,7 @@ export function Provider({
 
   return (
     <ScrollContextProvider
+      ref={ref}
       scrollHandlers={scrollHandlers}
       scrollAmount={scrollPosition}
     >
@@ -277,21 +284,58 @@ export function FavoriteMedia(props: {
 //#endregion
 
 //#region Media List
-export function MediaList(props: {
-  data: LayoutItem[] | undefined;
-  onPress: (id: string) => void;
+export type MediaListRenderItem<TData> = (
+  props: ListRenderItemInfo<TData>,
+) => React.ReactNode;
+
+type MediaListProps<TData> = {
   ListHeaderComponent?: React.JSX.Element;
   ListEmptyComponent?: React.JSX.Element;
-}) {
+} & (
+  | {
+      data: LayoutItem[] | undefined;
+      onPress: (id: string) => void;
+      renderItemFactory?: never;
+    }
+  | {
+      data: TData[] | undefined;
+      onPress?: never;
+      /** Forces `list` layout. */
+      renderItemFactory: (listItemClass: string) => MediaListRenderItem<TData>;
+    }
+);
+
+export function MediaList<TData>({
+  data,
+  onPress,
+  renderItemFactory,
+  ListHeaderComponent,
+  ListEmptyComponent,
+}: MediaListProps<TData>) {
   const { scrollRef, scrollableHeight, scrollHandlers } = useScrollContext();
   const { asGrid, headerHeight, resetHeaderPosition, bottomOffset } =
     use(LibraryLayoutContext);
   const listLayout = useListLayoutConfig();
   const compactGridLayout = useCompactGridLayoutConfig();
-  const config = asGrid ? compactGridLayout : listLayout;
+  const config = asGrid && !renderItemFactory ? compactGridLayout : listLayout;
   const prevConfig = useRef({ cols: config.count, width: config.width });
 
-  const Wrapper = asGrid ? ImageCard : ImageListItem;
+  const renderItem = useMemo<MediaListRenderItem<any>>(() => {
+    if (renderItemFactory) return renderItemFactory("mx-0.5 mb-1");
+    const Wrapper = asGrid ? ImageCard : ImageListItem;
+    return function RenderBasicItem({ item }: { item: LayoutItem }) {
+      return (
+        <Wrapper
+          src={item.imageSource}
+          size={config.width}
+          label={item.title}
+          supporting={!asGrid ? item.description : undefined}
+          onPress={() => onPress(item.id)}
+          className={cn("mx-0.5 mb-1", !asGrid && "pr-4")}
+        />
+      );
+    };
+  }, [onPress, renderItemFactory, asGrid, config.width]);
 
   const scrollListeners = useAnimatedScrollHandler(scrollHandlers);
 
@@ -303,27 +347,18 @@ export function MediaList(props: {
     scheduleOnUI(resetHeaderPosition);
   }
 
-  if (!headerHeight) return props.ListEmptyComponent;
+  if (!headerHeight) return ListEmptyComponent;
   return (
     <LegendList
       ref={scrollRef}
       numColumns={config.count}
-      data={props.data}
+      data={data}
       estimatedItemSize={config.width + 4}
-      renderItem={({ item }) => (
-        <Wrapper
-          src={item.imageSource}
-          size={config.width}
-          label={item.title}
-          supporting={!asGrid ? item.description : undefined}
-          onPress={() => props.onPress(item.id)}
-          className={cn("mx-0.5 mb-1", !asGrid && "pr-4")}
-        />
-      )}
+      renderItem={renderItem}
       onContentSizeChange={(_, height) => scrollableHeight.set(height)}
       onScroll={scrollListeners}
-      ListHeaderComponent={props.ListHeaderComponent}
-      ListEmptyComponent={props.ListEmptyComponent}
+      ListHeaderComponent={ListHeaderComponent}
+      ListEmptyComponent={ListEmptyComponent}
       className="-mx-0.5 -mb-1"
       contentContainerStyle={{
         paddingTop: headerHeight,

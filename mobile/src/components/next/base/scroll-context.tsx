@@ -14,6 +14,7 @@ interface ScrollContextInput {
 
   // Get access to these properties on the same level as defining the
   // scroll context provider.
+  ref?: AnimatedLegendListRef;
   scrollAmount?: SharedValue<number>;
   scrollableHeight?: SharedValue<number>;
 }
@@ -47,13 +48,15 @@ export function useScrollContext() {
 export function ScrollContextProvider({
   children,
   scrollHandlers,
+  ref: _ref,
   scrollAmount: _scrollAmount,
   scrollableHeight: _scrollableHeight,
 }: ScrollContextInput) {
-  const ref = useAnimatedLegendListRef();
+  const internalRef = useAnimatedLegendListRef();
   const internalScrollAmount = useSharedValue(0);
   const internalScrollableHeight = useSharedValue(0);
 
+  const ref = _ref ?? internalRef;
   const scrollAmount = _scrollAmount ?? internalScrollAmount;
   const scrollableHeight = _scrollableHeight ?? internalScrollableHeight;
 
