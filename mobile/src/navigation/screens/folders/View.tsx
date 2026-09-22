@@ -38,11 +38,9 @@ import { useAnimatedLegendListRef } from "~/components/Base/LegendList";
 import { useAnimatedScrollViewRef } from "~/components/Base/ScrollView";
 import { Text } from "~/components/next/base/typography";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
+import { TrackItem } from "~/components/next/composed/track-item";
 import { Pressable } from "~/components/next/primitive/pressable";
-import {
-  Track,
-  useTrackListPlayingIndication,
-} from "~/modules/media/components/Track";
+import { useTrackListPlayingIndication } from "~/modules/media/components/Track";
 import type { TrackContent } from "~/modules/media/components/Track.type";
 
 type Props = StaticScreenProps<{ path?: string }>;
@@ -232,7 +230,7 @@ function ScreenContents({ dirSegments, setDirSegments }: DirState) {
         (typeof renderedData)[number]
       > = ({ item }) =>
         isTrackContent(item) ? (
-          <Track
+          <TrackItem
             {...item}
             trackSource={trackSource}
             className={listItemClass}

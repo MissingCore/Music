@@ -9,15 +9,19 @@ import { MediaImage } from "./media-image";
 import { Ripple } from "../base/ripple";
 import { createTextStack } from "../blocks/text-stack";
 
-interface ImageListItemProps {
-  src: MediaImageSrc;
+export type ImageListItemProps = {
   label: string;
   supporting?: string;
   /** If provided, will change the wrapper to `Ripple` from `View`. */
   onPress?: VoidFunction;
+  /** If provided, will change the wrapper to `Ripple` from `View`. */
+  onLongPress?: VoidFunction;
   className?: string;
   Trailing?: React.ReactNode;
-}
+} & (
+  | { src: MediaImageSrc; Leading?: never }
+  | { src?: never; Leading: React.ReactNode }
+);
 
 const ListItemTextStack = createTextStack({
   labelConfig: { size: "sm" },
@@ -26,13 +30,18 @@ const ListItemTextStack = createTextStack({
 });
 
 export function ImageListItem(props: ImageListItemProps) {
-  const Wrapper = props.onPress ? Ripple : View;
+  const Wrapper = props.onPress || props.onLongPress ? Ripple : View;
   return (
     <Wrapper
       onPress={props.onPress}
+      onLongPress={props.onLongPress}
       className={cn("flex-row items-center gap-2 rounded-lg", props.className)}
     >
-      <MediaImage src={props.src} size={56} className="rounded-lg" />
+      {props.Leading ? (
+        props.Leading
+      ) : (
+        <MediaImage src={props.src!} size={56} className="rounded-lg" />
+      )}
       <ListItemTextStack label={props.label} supporting={props.supporting} />
       {props.Trailing}
     </Wrapper>
