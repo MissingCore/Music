@@ -1,6 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import BackgroundTimer from "@boterop/react-native-background-timer";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { db } from "~/db";
@@ -12,8 +13,12 @@ import { deleteTracks, toggleTrackInPlaylist } from "./api";
 import type { Track } from "./types";
 import { queries as q } from "../keyStore";
 
-import { clearAllQueries } from "~/lib/react-query";
+import {
+  clearAllQueries,
+  queryClient as globalQueryClient,
+} from "~/lib/react-query";
 import { wait } from "~/utils/promise";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 //#region Queries
 export function useTrack(trackId: string) {
@@ -63,16 +68,30 @@ export function useHideTrack() {
   });
 }
 
+const debouncedFavoritePlaylistInvalidation = (function () {
+  let timeoutId: number | undefined;
+  return function () {
+    if (timeoutId !== undefined) BackgroundTimer.clearTimeout(timeoutId);
+    timeoutId = BackgroundTimer.setTimeout(() => {
+      globalQueryClient.invalidateQueries({
+        queryKey: q.playlists.detail(FavoritesPlaylistKey).queryKey,
+      });
+    }, 500);
+  };
+})();
+
 export function useToggleTrackInPlaylist(trackId: string) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (playlistName: string) =>
       toggleTrackInPlaylist({ trackId, playlistName }),
-    onSuccess: () => {
+    onSuccess: (_, playlistName) => {
       queryClient.invalidateQueries({
         queryKey: q.tracks.detail(trackId).queryKey,
       });
-      queryClient.invalidateQueries({ queryKey: q.playlists._def });
+      if (playlistName === FavoritesPlaylistKey) {
+        debouncedFavoritePlaylistInvalidation();
+      } else queryClient.invalidateQueries({ queryKey: q.playlists._def });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
     },
   });
