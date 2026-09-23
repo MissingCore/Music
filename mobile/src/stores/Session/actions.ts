@@ -15,14 +15,6 @@ import type { PopStrategy } from "./types";
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { wait } from "~/utils/promise";
 
-type ToggleableKey = "showSingles" | "showEPs" | "showAlbums";
-
-export function toggleSessionKey(key: ToggleableKey) {
-  return () => {
-    sessionStore.setState((prev) => ({ [key]: !prev[key] }));
-  };
-}
-
 //#region Track Sheet
 /** Displays the global track sheet. */
 export async function presentTrackSheet(trackId: string) {

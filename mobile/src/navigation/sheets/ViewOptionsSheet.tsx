@@ -2,43 +2,66 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { useShallow } from "zustand/react/shallow";
 
 import { Icon } from "~/resources/icons";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
 import { MinAlbumLengthConfig } from "~/stores/Preference/utils";
-import { useSessionStore } from "~/stores/Session/store";
-import { toggleSessionKey } from "~/stores/Session/actions";
+import { sessionStore, useSessionStore } from "~/stores/Session/store";
 import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { ViewPreferenceSetters } from "~/stores/ViewPreference/actions";
+import { LayoutOptions } from "~/stores/ViewPreference/constants";
+import type { MutableViewLayout } from "~/stores/ViewPreference/types";
 
 import { SortSheet } from "~/navigation/sheets/SortSheet";
 
-import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { NumberStepper } from "~/components/Form/NumberStepper";
-import { SwitchInput } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
 import { DetachedSheet } from "~/components/Sheet";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { LayoutOptions } from "~/stores/ViewPreference/constants";
-import type { MutableViewLayout } from "~/stores/ViewPreference/types";
+import { SegmentedPicker } from "~/components/next/blocks/segmented-picker";
 
 //#region Albums
+const albumScreenContentTypes = [
+  { label: "Singles", value: "singles" },
+  { label: "EPs", value: "eps" },
+  { label: "Albums", value: "albums" },
+] as const;
+
 export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
   const { t } = useTranslation();
   const minAlbumLength = usePreferenceStore((s) => s.minAlbumLength);
-  const showSingles = useSessionStore((s) => s.showSingles);
-  const showEPs = useSessionStore((s) => s.showEPs);
-  const showAlbums = useSessionStore((s) => s.showAlbums);
+  const visibleContentTypes = useSessionStore(
+    useShallow((s) => ({
+      singles: s.showSingles,
+      eps: s.showEPs,
+      albums: s.showAlbums,
+    })),
+  );
   const sortOrderSheetRef = useSheetRef();
+
+  const pickerOptions = albumScreenContentTypes.map((option) => ({
+    label: t(`term.${option.value}`),
+    value: option,
+    selected: visibleContentTypes[option.value],
+  }));
 
   return (
     <>
       <DetachedSheet ref={props.ref}>
         <ScreenLayoutSetting screen="album" />
+        <SegmentedPicker
+          type="checkbox"
+          options={pickerOptions}
+          onSelected={(value) => {
+            const key = `show${value.label}` as const;
+            sessionStore.setState((prev) => ({ [key]: !prev[key] }));
+          }}
+        />
+
         <SheetLabelAction
           labelKey="feat.minAlbumLength.title"
           Trailing={
@@ -46,34 +69,6 @@ export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
               value={minAlbumLength}
               onChange={PreferenceSetters.updateMinAlbumLengthByDelta}
               {...MinAlbumLengthConfig.bound}
-            />
-          }
-        />
-
-        <SheetLabelAction
-          label={t("template.entryShow", { name: t("term.singles") })}
-          Trailing={
-            <SwitchInput
-              enabled={showSingles}
-              onPress={toggleSessionKey("showSingles")}
-            />
-          }
-        />
-        <SheetLabelAction
-          label={t("template.entryShow", { name: t("term.eps") })}
-          Trailing={
-            <SwitchInput
-              enabled={showEPs}
-              onPress={toggleSessionKey("showEPs")}
-            />
-          }
-        />
-        <SheetLabelAction
-          label={t("template.entryShow", { name: t("term.albums") })}
-          Trailing={
-            <SwitchInput
-              enabled={showAlbums}
-              onPress={toggleSessionKey("showAlbums")}
             />
           }
         />
@@ -149,33 +144,22 @@ function ViewOptionsSheetTemplate(props: {
 //#endregion
 
 //#region Screen Layout
-const LayoutIconMap = {
-  list: "view-agenda",
-  grid: "grid-view",
-  compactGrid: "view-module",
-} as const;
-
 function ScreenLayoutSetting({ screen }: { screen: MutableViewLayout }) {
   const { t } = useTranslation();
   const layoutOption = useViewPreferenceStore((s) => s[`${screen}Layout`]);
 
+  const pickerOptions = LayoutOptions.map((option) => ({
+    label: t(`feat.modalViewPreference.extra.${option}`),
+    value: option,
+    selected: layoutOption === option,
+  }));
+
   return (
-    <SheetLabelAction
-      labelKey="feat.modalViewPreference.extra.layout"
-      Trailing={
-        <View className="flex-row gap-2 rounded-full bg-surfaceContainerLowest">
-          {LayoutOptions.map((layout) => (
-            <FilledIconButton
-              key={layout}
-              icon={LayoutIconMap[layout]}
-              accessibilityLabel={t(`feat.modalViewPreference.extra.${layout}`)}
-              onPress={() => ViewPreferenceSetters.setLayout(screen, layout)}
-              _iconColor={layoutOption === layout ? "primary" : undefined}
-              size="xs"
-            />
-          ))}
-        </View>
-      }
+    <SegmentedPicker
+      type="radio"
+      accessibilityLabel={t("feat.modalViewPreference.extra.layout")}
+      options={pickerOptions}
+      onSelected={(value) => ViewPreferenceSetters.setLayout(screen, value)}
     />
   );
 }
