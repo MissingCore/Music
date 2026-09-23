@@ -1,7 +1,8 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
+import type { ViewProps } from "react-native";
 import { useWindowDimensions } from "react-native";
 import {
   GestureDetector,
@@ -11,16 +12,16 @@ import {
 } from "react-native-gesture-handler";
 import type { AnimatedRef } from "react-native-reanimated";
 import Animated, {
-  clamp,
   ReduceMotion,
+  clamp,
   scrollTo,
+  useAnimatedProps,
   useAnimatedReaction,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { scheduleOnRN } from "react-native-worklets";
 
 import { useScrollContext } from "../base/scroll-context";
 
@@ -69,7 +70,7 @@ export function Scrollbar({ offset: { top, bottom }, onEnd }: ScrollbarProps) {
   //#endregion
 
   //#region Availability & Visibility
-  const [isAvailable, setIsAvailable] = useState(false);
+  const isAvailable = useSharedValue(false);
   const isInteracting = useSharedValue(false);
 
   const gracePeriod = useSharedValue(0); // Boolean field
@@ -97,7 +98,7 @@ export function Scrollbar({ offset: { top, bottom }, onEnd }: ScrollbarProps) {
   //* Enable scrollbar if we have at least 2 screens worth of content.
   useDerivedValue(() => {
     const hasEnoughContent = scrollableHeight.get() / scrollbarHeight > 2;
-    scheduleOnRN(setIsAvailable, hasEnoughContent && gracePeriod.get() !== 0);
+    isAvailable.set(hasEnoughContent && gracePeriod.get() !== 0);
   });
 
   //* Scrollbar can only be (potentially) enabled after scrolling the screen.
@@ -110,6 +111,10 @@ export function Scrollbar({ offset: { top, bottom }, onEnd }: ScrollbarProps) {
       startGracePeriodCountdown();
     },
   );
+
+  const wrapperProps = useAnimatedProps<ViewProps>(() => ({
+    pointerEvents: isAvailable.get() ? "box-none" : "none",
+  }));
   //#endregion
 
   //#region Gestures
@@ -158,8 +163,8 @@ export function Scrollbar({ offset: { top, bottom }, onEnd }: ScrollbarProps) {
   const thumbWrapperStyle = useAnimatedStyle(() => ({
     height: THUMB_SIZE,
     width: THUMB_SIZE,
-    opacity: withTiming(isAvailable ? 1 : 0, {
-      duration: isAvailable ? 150 : 500,
+    opacity: withTiming(isAvailable.get() ? 1 : 0, {
+      duration: isAvailable.get() ? 150 : 500,
       reduceMotion: ReduceMotion.Never,
     }),
     transform: [{ translateY: scaledScrollAmount.get() }],
@@ -178,7 +183,7 @@ export function Scrollbar({ offset: { top, bottom }, onEnd }: ScrollbarProps) {
 
   return (
     <Animated.View
-      pointerEvents={isAvailable ? "box-none" : "none"}
+      animatedProps={wrapperProps}
       style={{ right: 8, top, bottom }}
       className="absolute z-50"
     >
