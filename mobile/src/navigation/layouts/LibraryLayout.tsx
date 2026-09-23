@@ -198,7 +198,7 @@ export function Header(props: {
     transform: [{ translateY: headerPosition.get() }],
     opacity: clamp(
       // Start fade after the header is 10% hidden.
-      (headerHeight * 1.1 + headerPosition.get()) / (headerHeight ?? 1),
+      (headerHeight * 1.1 + headerPosition.get()) / (headerHeight || 1),
       0,
       1,
     ),
