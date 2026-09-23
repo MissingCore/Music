@@ -36,9 +36,9 @@ const iconButtonStyle = cva({
     { intent: "primary", filled: true, className: "bg-primary" },
     { intent: "secondary", filled: true, className: "bg-secondary" },
     { intent: "error", filled: true, className: "bg-error" },
-    { size: "xs", wide: true, className: "min-w-12" },
-    { size: "sm", wide: true, className: "min-w-14" },
-    { size: ["md", "lg"], wide: true, className: "min-w-16" },
+    { size: "xs", wide: true, className: "min-w-14" },
+    { size: "sm", wide: true, className: "min-w-16" },
+    { size: ["md", "lg"], wide: true, className: "min-w-18" },
   ],
   defaultVariants: { intent: "unset", size: "sm", filled: false, wide: false },
 });

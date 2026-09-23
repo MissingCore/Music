@@ -23,13 +23,10 @@ const dividerStyle = cva({
   },
 });
 
-type DividerVariants = VariantProps<typeof dividerStyle>;
-
-interface DividerProps extends DividerVariants {
+interface DividerProps extends VariantProps<typeof dividerStyle> {
   className?: string;
 }
 
-/** Simple `1px` tall divider. */
 export function Divider({ intent, className }: DividerProps) {
   return <View className={dividerStyle({ intent, className })} />;
 }
