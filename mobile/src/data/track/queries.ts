@@ -76,7 +76,7 @@ const debouncedFavoritePlaylistInvalidation = (function () {
       globalQueryClient.invalidateQueries({
         queryKey: q.playlists.detail(FavoritesPlaylistKey).queryKey,
       });
-    }, 500);
+    }, 150);
   };
 })();
 
