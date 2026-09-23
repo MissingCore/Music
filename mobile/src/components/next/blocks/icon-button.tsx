@@ -43,10 +43,12 @@ const iconButtonStyle = cva({
   defaultVariants: { intent: "unset", size: "sm", filled: false, wide: false },
 });
 
+type IconButtonVariants = VariantProps<typeof iconButtonStyle>;
+
+export type ButtonSize = IconButtonVariants["size"];
+
 interface IconButtonProps
-  extends
-    Omit<RippleProps, "rippleRadius">,
-    VariantProps<typeof iconButtonStyle> {
+  extends Omit<RippleProps, "rippleRadius">, IconButtonVariants {
   icon: SupportedIconName;
   accessibilityLabel: string;
   _iconColor?: AppColor;

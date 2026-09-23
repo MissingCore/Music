@@ -2,20 +2,31 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
-import { PlaybackControls } from "~/stores/Playback/actions";
+import {
+  useTrackFavoriteStatus,
+  useToggleTrackInPlaylist,
+} from "~/data/track/queries";
+import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import type { PlayFromSource } from "~/stores/Playback/types";
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { presentTrackSheet } from "~/stores/Session/actions";
 import {
   TrackMultiSelect,
   useTrackMultiSelectStore,
 } from "~/modules/media/multiSelect/core/store";
 
+import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
-import { TrackAction } from "~/modules/media/components/Track";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import type { ImageListItemProps } from "./image-list-item";
 import { ImageListItem } from "./image-list-item";
 import type { MediaImageSrc } from "./media-image";
+import type { ButtonSize } from "../blocks/icon-button";
+import { IconButton } from "../blocks/icon-button";
+import { Pressable } from "../primitive/pressable";
 
 interface TrackItemProps {
   id: string;
@@ -79,3 +90,49 @@ export function TrackItem({
     />
   );
 }
+
+//#region Track Actions
+export function TrackAction(props: { id: string; title: string }) {
+  const { t } = useTranslation();
+  const quickAddQueue = usePreferenceStore((s) => s.quickAddQueue);
+  const quickFavorite = usePreferenceStore((s) => s.quickFavorite);
+
+  //? Outer pressable is to prevent touch propagation to parent pressable due to
+  //? the icons not taking up the full height.
+  return (
+    <Pressable className="h-full flex-row items-center gap-1">
+      {quickFavorite ? <FavoriteButton id={props.id} /> : null}
+      {quickAddQueue ? (
+        <IconButton
+          icon="queue-music"
+          accessibilityLabel={t("feat.queue.extra.playNext")}
+          onPress={() => Queue.add({ id: props.id, name: props.title })}
+        />
+      ) : null}
+      <IconButton
+        icon="more-vert"
+        accessibilityLabel={t("template.entrySeeMore", { name: props.title })}
+        onPress={() => presentTrackSheet(props.id)}
+      />
+    </Pressable>
+  );
+}
+
+export function FavoriteButton(props: { id: string; size?: ButtonSize }) {
+  const { t } = useTranslation();
+  const { data: favoriteStatus } = useTrackFavoriteStatus(props.id);
+  const toggleInPlaylist = useToggleTrackInPlaylist(props.id);
+
+  const favStatus = favoriteStatus ?? false;
+  const isFav = toggleInPlaylist.isPending ? !favStatus : favStatus;
+
+  return (
+    <IconButton
+      icon={`favorite${isFav ? "-filled" : ""}`}
+      accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
+      onPress={() => mutateGuard(toggleInPlaylist, FavoritesPlaylistKey)}
+      size={props.size}
+    />
+  );
+}
+//#endregion
