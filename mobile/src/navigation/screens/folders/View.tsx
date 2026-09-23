@@ -240,7 +240,7 @@ function ScreenContents({ dirSegments, setDirSegments }: DirState) {
             src={{ type: "icon", value: "folder" }}
             label={item.name}
             onPress={() => setDirSegments((prev) => [...prev, item.name])}
-            className={cn(listItemClass, "pr-4")}
+            className={listItemClass}
           />
         );
       return renderItem;

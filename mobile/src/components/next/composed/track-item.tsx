@@ -75,7 +75,6 @@ export function TrackItem({
       className={cn(className, {
         "bg-primary/25": showIndicator && !isMultiSelectEnabled,
         "bg-surfaceContainerLowest": isSelected,
-        "pr-4": isMultiSelectEnabled,
       })}
     />
   );

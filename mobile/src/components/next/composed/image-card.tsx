@@ -38,10 +38,9 @@ export function ImageCard(props: ImageCardProps) {
       <MediaImage src={props.src} size={props.size} />
       <LinearGradient
         colors={["#00000000", "#000000E6"]}
-        pointerEvents="none"
         className="absolute inset-0"
       />
-      <View className="absolute right-0 bottom-2 left-0 min-h-8 items-center justify-center px-2">
+      <View className="absolute inset-x-0 bottom-2 min-h-8 items-center justify-center px-2">
         {props.supporting ? (
           <CardTextStack label={props.label} supporting={props.supporting} />
         ) : (

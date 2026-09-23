@@ -34,7 +34,6 @@ import {
 
 import { useBottomActionsOffset } from "../components/BottomActions/useBottomActions";
 
-import { cn } from "~/lib/style";
 import type {
   AnimatedLegendListRef,
   LegendListProps,
@@ -95,7 +94,7 @@ export function Provider({
   const direction = useSharedValue(0);
   // Boolean to prevent canceling our spring animation from a slow `onScroll`
   // event called by `scrollTo`.
-  const blockEvents = useSharedValue(-1);
+  const blockEvents = useSharedValue(0);
 
   const onScroll = useCallback<ScrollHandler<any>>(
     (e) => {
@@ -103,7 +102,7 @@ export function Provider({
       const delta = scrollPosition.get() - e.contentOffset.y;
       direction.set(delta < 0 ? -1 : 0);
 
-      if (blockEvents.get() !== -1) return;
+      if (blockEvents.get() !== 0) return;
       headerPosition.set(clamp(headerPosition.get() + delta, -headerHeight, 0));
     },
     [scrollPosition, headerHeight, headerPosition, direction, blockEvents],
@@ -127,7 +126,7 @@ export function Provider({
       headerPosition.set(withSpring(-scrollPosition.get()));
     }
 
-    blockEvents.set(withTiming(-1, { duration: 50 }));
+    blockEvents.set(withTiming(0, { duration: 50 }));
     direction.set(0);
   }, [scrollPosition, headerHeight, headerPosition, direction, blockEvents]);
 
@@ -211,7 +210,7 @@ export function Header(props: {
       <Animated.View
         onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}
         style={headerStyle}
-        className="absolute top-0 right-0 left-0 z-50"
+        className="absolute inset-x-0 top-0 z-50"
       >
         <TopDownGradient
           height={headerHeight}
@@ -345,7 +344,7 @@ export function MediaList<TData>({
           label={item.title}
           supporting={!asGrid ? item.description : undefined}
           onPress={() => onPress(item.id)}
-          className={cn("mx-0.5 mb-1", !asGrid && "pr-4")}
+          className="mx-0.5 mb-1"
         />
       );
     };

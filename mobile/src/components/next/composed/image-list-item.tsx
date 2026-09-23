@@ -35,7 +35,11 @@ export function ImageListItem(props: ImageListItemProps) {
     <Wrapper
       onPress={props.onPress}
       onLongPress={props.onLongPress}
-      className={cn("flex-row items-center gap-2 rounded-lg", props.className)}
+      className={cn(
+        "flex-row items-center gap-2 rounded-lg pr-2",
+        !props.Trailing && "pr-4",
+        props.className,
+      )}
     >
       {props.Leading ? (
         props.Leading
