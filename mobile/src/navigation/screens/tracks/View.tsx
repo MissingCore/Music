@@ -96,6 +96,7 @@ function ScreenContents() {
   );
 }
 
+//#region Favorite Tracks Link
 const CustomTextStack = createTextStack({
   labelConfig: { intent: "primary", size: "sm" },
   supportingConfig: { intent: "primary", muted: true },
@@ -128,3 +129,4 @@ function FavoritesPlaylistLink() {
     </Ripple>
   );
 }
+//#endregion
