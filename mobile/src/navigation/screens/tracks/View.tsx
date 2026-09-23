@@ -6,7 +6,7 @@ import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { usePlaylist } from "~/data/playlist/queries";
+import { useFavoriteTracksCount } from "~/data/favorite/queries";
 import { useSortedTracks } from "~/data/track/queries";
 import { useDelayedReady } from "~/hooks/useDelayedReady";
 
@@ -113,7 +113,7 @@ const CustomTextStack = createTextStack({
 function FavoritesPlaylistLink() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { data } = usePlaylist(FavoritesPlaylistKey);
+  const { data } = useFavoriteTracksCount();
 
   return (
     <Ripple
@@ -128,7 +128,7 @@ function FavoritesPlaylistLink() {
       </View>
       <CustomTextStack
         label={t("term.favoriteTracks")}
-        supporting={t("plural.track", { count: data?.tracks.length ?? 0 })}
+        supporting={t("plural.track", { count: data ?? 0 })}
       />
       <View className="mr-2 size-10 items-center justify-center rounded-full bg-onPrimary ltr:rotate-180">
         <Icon name="arrow-back" size={32} color="primary" />

@@ -42,4 +42,8 @@ export function useFavoriteListsForCards() {
       }),
   });
 }
+
+export function useFavoriteTracksCount() {
+  return useQuery(q.favorites.favoriteTracksCount);
+}
 //#endregion
