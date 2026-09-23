@@ -21,6 +21,8 @@ import {
 import { updatePlaylist } from "~/data/playlist/api";
 import { playbackStore } from "~/stores/Playback/store";
 import { preferenceStore } from "~/stores/Preference/store";
+import { viewPreferenceStore } from "~/stores/ViewPreference/store";
+import { LayoutOptions } from "~/stores/ViewPreference/constants";
 
 import type { Tab } from "~/stores/Preference/types";
 import type { MigrationOption } from "./constants";
@@ -238,5 +240,15 @@ const MigrationFunctionMap: Record<
     await db
       .delete(tracksPlayEvents)
       .where(gt(tracksPlayEvents.playTime, 30 * 60));
+  },
+
+  //? v4.0.0-rc.0
+  "compact-grid-removal": async () => {
+    (["album", "artist", "genre", "playlist"] as const).map((layoutOption) => {
+      const key = `${layoutOption}Layout` as const;
+      if (!LayoutOptions.includes(viewPreferenceStore.getState()[key])) {
+        viewPreferenceStore.setState({ [key]: "grid" });
+      }
+    });
   },
 };
