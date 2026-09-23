@@ -18,6 +18,13 @@ export type ImageListItemProps = {
   onLongPress?: VoidFunction;
   className?: string;
   Trailing?: React.ReactNode;
+  /**
+   * Applies spacing styles when used in a list. Defaults to `true`.
+   *
+   * **Make sure to apply `-mx-0.5 -mb-1` to the `className` of the scroll
+   * container this is in.**
+   */
+  applySpacing?: boolean;
 } & (
   | { src: MediaImageSrc; Leading?: never }
   | { src?: never; Leading: React.ReactNode }
@@ -37,6 +44,7 @@ export function ImageListItem(props: ImageListItemProps) {
       onLongPress={props.onLongPress}
       className={cn(
         "flex-row items-center gap-2 rounded-lg pr-2",
+        props.applySpacing !== false && "mx-0.5 mb-1",
         !props.Trailing && "pr-4",
         props.className,
       )}

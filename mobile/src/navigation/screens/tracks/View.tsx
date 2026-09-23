@@ -76,24 +76,15 @@ function ScreenContents() {
   );
   const listData = useTrackListPlayingIndication(trackSource, formattedData);
 
-  const renderItemFactory = useCallback((listItemClass: string) => {
-    const renderItem: LibraryLayout.MediaListRenderItem<
-      NonNullable<typeof listData>[number]
-    > = ({ item }) => (
-      <TrackItem
-        {...item}
-        trackSource={trackSource}
-        className={listItemClass}
-      />
-    );
-    return renderItem;
-  }, []);
+  const renderItem = useCallback<
+    LibraryLayout.MediaListRenderItem<NonNullable<typeof listData>[number]>
+  >(({ item }) => <TrackItem {...item} trackSource={trackSource} />, []);
 
   return (
     <LibraryLayout.MediaList
       data={listData}
       keyExtractor={({ id }) => id}
-      renderItemFactory={renderItemFactory}
+      renderItem={renderItem}
       ListHeaderComponent={<FavoritesPlaylistLink />}
       ListEmptyComponent={
         <ContentPlaceholder

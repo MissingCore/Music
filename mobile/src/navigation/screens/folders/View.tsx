@@ -3,13 +3,7 @@
 
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { BackHandler, useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
@@ -224,27 +218,19 @@ function ScreenContents({ dirSegments, setDirSegments }: DirState) {
     [data, listData],
   );
 
-  const renderItemFactory = useCallback(
-    (listItemClass: string) => {
-      const renderItem: LibraryLayout.MediaListRenderItem<
-        (typeof renderedData)[number]
-      > = ({ item }) =>
-        isTrackContent(item) ? (
-          <TrackItem
-            {...item}
-            trackSource={trackSource}
-            className={listItemClass}
-          />
-        ) : (
-          <ImageListItem
-            src={{ type: "icon", value: "folder" }}
-            label={item.name}
-            onPress={() => setDirSegments((prev) => [...prev, item.name])}
-            className={listItemClass}
-          />
-        );
-      return renderItem;
-    },
+  const renderItem = useCallback<
+    LibraryLayout.MediaListRenderItem<(typeof renderedData)[number]>
+  >(
+    ({ item }) =>
+      isTrackContent(item) ? (
+        <TrackItem {...item} trackSource={trackSource} />
+      ) : (
+        <ImageListItem
+          src={{ type: "icon", value: "folder" }}
+          label={item.name}
+          onPress={() => setDirSegments((prev) => [...prev, item.name])}
+        />
+      ),
     [trackSource, setDirSegments],
   );
 
@@ -252,7 +238,7 @@ function ScreenContents({ dirSegments, setDirSegments }: DirState) {
     <LibraryLayout.MediaList
       data={renderedData}
       keyExtractor={(item) => (isTrackContent(item) ? item.id : item.path)}
-      renderItemFactory={renderItemFactory}
+      renderItem={renderItem}
       ListEmptyComponent={
         <ContentPlaceholder
           isPending={isPending}

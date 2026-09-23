@@ -301,14 +301,14 @@ type MediaListProps<TData> = {
       data: LayoutItem[] | undefined;
       onPress: (id: string) => void;
       keyExtractor?: never;
-      renderItemFactory?: never;
+      renderItem?: never;
     }
   | {
       data: TData[] | undefined;
       onPress?: never;
       keyExtractor: NonNullable<LegendListProps<TData>["keyExtractor"]>;
       /** Forces `list` layout. */
-      renderItemFactory: (listItemClass: string) => MediaListRenderItem<TData>;
+      renderItem: MediaListRenderItem<TData>;
     }
 );
 
@@ -316,7 +316,7 @@ export function MediaList<TData>({
   data,
   onPress,
   keyExtractor: _keyExtractor,
-  renderItemFactory,
+  renderItem: _renderItem,
   ListHeaderComponent,
   ListEmptyComponent,
 }: MediaListProps<TData>) {
@@ -325,16 +325,16 @@ export function MediaList<TData>({
     use(LibraryLayoutContext);
   const listLayout = useListLayoutConfig();
   const compactGridLayout = useCompactGridLayoutConfig();
-  const config = asGrid && !renderItemFactory ? compactGridLayout : listLayout;
+  const config = asGrid && !_renderItem ? compactGridLayout : listLayout;
   const prevConfig = useRef({ cols: config.count, width: config.width });
 
   const keyExtractor = useMemo<LegendListProps<any>["keyExtractor"]>(() => {
-    if (renderItemFactory) return _keyExtractor;
+    if (_renderItem) return _keyExtractor;
     return ({ id }) => id;
-  }, [renderItemFactory, _keyExtractor]);
+  }, [_keyExtractor, _renderItem]);
 
   const renderItem = useMemo<MediaListRenderItem<any>>(() => {
-    if (renderItemFactory) return renderItemFactory("mx-0.5 mb-1");
+    if (_renderItem) return _renderItem;
     const Wrapper = asGrid ? ImageCard : ImageListItem;
     return function RenderBasicItem({ item }: { item: LayoutItem }) {
       return (
@@ -344,11 +344,10 @@ export function MediaList<TData>({
           label={item.title}
           supporting={!asGrid ? item.description : undefined}
           onPress={() => onPress(item.id)}
-          className="mx-0.5 mb-1"
         />
       );
     };
-  }, [onPress, renderItemFactory, asGrid, config.width]);
+  }, [onPress, _renderItem, asGrid, config.width]);
 
   const scrollListeners = useAnimatedScrollHandler(scrollHandlers);
 
