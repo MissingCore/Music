@@ -251,6 +251,7 @@ function ScreenContents({ dirSegments, setDirSegments }: DirState) {
   return (
     <LibraryLayout.MediaList
       data={renderedData}
+      keyExtractor={(item) => (isTrackContent(item) ? item.id : item.path)}
       renderItemFactory={renderItemFactory}
       ListEmptyComponent={
         <ContentPlaceholder

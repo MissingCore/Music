@@ -37,6 +37,7 @@ import { useBottomActionsOffset } from "../components/BottomActions/useBottomAct
 import { cn } from "~/lib/style";
 import type {
   AnimatedLegendListRef,
+  LegendListProps,
   ListRenderItemInfo,
 } from "~/components/Base/LegendList";
 import { LegendList } from "~/components/Base/LegendList";
@@ -262,8 +263,9 @@ export function FavoriteMedia(props: {
   return (
     <LegendList
       numColumns={config.count}
-      data={props.data}
       estimatedItemSize={estimatedItemSize}
+      data={props.data}
+      keyExtractor={({ id }) => id}
       renderItem={({ item }) => (
         <Wrapper
           src={item.imageSource}
@@ -295,11 +297,13 @@ type MediaListProps<TData> = {
   | {
       data: LayoutItem[] | undefined;
       onPress: (id: string) => void;
+      keyExtractor?: never;
       renderItemFactory?: never;
     }
   | {
       data: TData[] | undefined;
       onPress?: never;
+      keyExtractor: NonNullable<LegendListProps<TData>["keyExtractor"]>;
       /** Forces `list` layout. */
       renderItemFactory: (listItemClass: string) => MediaListRenderItem<TData>;
     }
@@ -308,6 +312,7 @@ type MediaListProps<TData> = {
 export function MediaList<TData>({
   data,
   onPress,
+  keyExtractor: _keyExtractor,
   renderItemFactory,
   ListHeaderComponent,
   ListEmptyComponent,
@@ -319,6 +324,11 @@ export function MediaList<TData>({
   const compactGridLayout = useCompactGridLayoutConfig();
   const config = asGrid && !renderItemFactory ? compactGridLayout : listLayout;
   const prevConfig = useRef({ cols: config.count, width: config.width });
+
+  const keyExtractor = useMemo<LegendListProps<any>["keyExtractor"]>(() => {
+    if (renderItemFactory) return _keyExtractor;
+    return ({ id }) => id;
+  }, [renderItemFactory, _keyExtractor]);
 
   const renderItem = useMemo<MediaListRenderItem<any>>(() => {
     if (renderItemFactory) return renderItemFactory("mx-0.5 mb-1");
@@ -352,8 +362,9 @@ export function MediaList<TData>({
     <LegendList
       ref={scrollRef}
       numColumns={config.count}
-      data={data}
       estimatedItemSize={config.width + 4}
+      data={data}
+      keyExtractor={keyExtractor}
       renderItem={renderItem}
       onContentSizeChange={(_, height) => scrollableHeight.set(height)}
       onScroll={scrollListeners}

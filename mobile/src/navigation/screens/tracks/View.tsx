@@ -92,6 +92,7 @@ function ScreenContents() {
   return (
     <LibraryLayout.MediaList
       data={listData}
+      keyExtractor={({ id }) => id}
       renderItemFactory={renderItemFactory}
       ListHeaderComponent={<FavoritesPlaylistLink />}
       ListEmptyComponent={
