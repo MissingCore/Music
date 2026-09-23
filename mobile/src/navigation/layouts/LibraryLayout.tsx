@@ -344,6 +344,7 @@ export function MediaList<TData>({
           label={item.title}
           supporting={!asGrid ? item.description : undefined}
           onPress={() => onPress(item.id)}
+          className="mx-0.5 mb-1"
         />
       );
     };
