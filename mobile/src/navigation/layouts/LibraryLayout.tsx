@@ -112,18 +112,23 @@ export function Provider({
   //* Header snapping logic.
   const handleScrollEnd = useCallback(() => {
     "worklet";
-    if (scrollPosition.get() > headerHeight) {
-      blockEvents.set(1);
+    blockEvents.set(1);
 
+    if (scrollPosition.get() > headerHeight) {
       const snapToVisible =
         headerPosition.get() >
         -headerHeight * (direction.get() === -1 ? 0.2 : 0.6);
-
       headerPosition.set(withSpring(snapToVisible ? 0 : -headerHeight));
-      blockEvents.set(withTiming(-1, { duration: 50 }));
-
-      direction.set(0);
+    } else if (
+      //? To prevent snapping the header to it's "resting" position when it's fully visible.
+      headerPosition.get() !== 0 &&
+      headerPosition.get() !== -headerHeight
+    ) {
+      headerPosition.set(withSpring(-scrollPosition.get()));
     }
+
+    blockEvents.set(withTiming(-1, { duration: 50 }));
+    direction.set(0);
   }, [scrollPosition, headerHeight, headerPosition, direction, blockEvents]);
 
   const scrollHandlers = useMemo(
@@ -204,7 +209,6 @@ export function Header(props: {
     <>
       <props.OptionsSheet ref={sheetRef} />
       <Animated.View
-        // Add `16` to signify the gap between the header and the start of the content.
         onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}
         style={headerStyle}
         className="absolute top-0 right-0 left-0 z-50"
