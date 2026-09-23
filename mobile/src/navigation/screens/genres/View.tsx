@@ -9,7 +9,7 @@ import { useGenres } from "~/data/genre/queries";
 import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { useViewOrder } from "~/stores/ViewPreference/hooks/useViewOrder";
 
-import * as LibraryLayout from "~/navigation/layouts/LibrayLayout";
+import * as LibraryLayout from "~/navigation/layouts/LibraryLayout";
 import { GenresViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 

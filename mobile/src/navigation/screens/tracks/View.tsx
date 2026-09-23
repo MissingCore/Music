@@ -10,7 +10,7 @@ import { usePlaylist } from "~/data/playlist/queries";
 import { useSortedTracks } from "~/data/track/queries";
 import { useDelayedReady } from "~/hooks/useDelayedReady";
 
-import * as LibraryLayout from "~/navigation/layouts/LibrayLayout";
+import * as LibraryLayout from "~/navigation/layouts/LibraryLayout";
 import { TracksViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 

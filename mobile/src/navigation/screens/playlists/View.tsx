@@ -10,7 +10,7 @@ import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { useViewOrder } from "~/stores/ViewPreference/hooks/useViewOrder";
 import type { LayoutItem } from "~/stores/ViewPreference/types";
 
-import * as LibraryLayout from "~/navigation/layouts/LibrayLayout";
+import * as LibraryLayout from "~/navigation/layouts/LibraryLayout";
 import { PlaylistsViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 

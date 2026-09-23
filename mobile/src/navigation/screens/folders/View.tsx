@@ -27,7 +27,7 @@ import Animated, {
 
 import { useFolderContent } from "~/data/folder/queries";
 
-import * as LibraryLayout from "~/navigation/layouts/LibrayLayout";
+import * as LibraryLayout from "~/navigation/layouts/LibraryLayout";
 import { FoldersViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
