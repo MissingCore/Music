@@ -15,7 +15,7 @@ import { PlaylistsViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet"
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import type { ExtractQueryData } from "~/lib/react-query";
-import { FilledIconButton } from "~/components/Form/Button/Icon";
+import { IconButton } from "~/components/next/blocks/icon-button";
 
 type PlaylistData = ExtractQueryData<typeof usePlaylists>[number];
 
@@ -36,12 +36,14 @@ export default function Playlists() {
 function PlaylistActions() {
   const { t } = useTranslation();
   const navigation = useNavigation();
+
   return (
-    <FilledIconButton
+    <IconButton
       icon="add"
       accessibilityLabel={t("form.create")}
       onPress={() => navigation.navigate("CreatePlaylist")}
-      theme="primary"
+      intent="primary"
+      filled
     />
   );
 }
