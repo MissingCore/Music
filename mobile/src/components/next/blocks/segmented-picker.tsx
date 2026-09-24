@@ -49,7 +49,6 @@ export function SegmentedPicker<TData>({
         <Ripple
           key={idx}
           {...accessOpts.itemAttributes(option.selected)}
-          rippleColor={`surfaceContainer${option.selected ? "Low" : "High"}`}
           onPress={() => onSelected(option.value)}
           disabled={type === "radio" && option.selected}
           className={cn(
