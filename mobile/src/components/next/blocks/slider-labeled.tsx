@@ -14,7 +14,7 @@ import type { SliderOptions } from "../base/slider-context";
 import { useSlider } from "../base/slider-context";
 import { Text } from "../base/typography";
 
-interface LabeledSliderProps extends SliderOptions {
+export interface LabeledSliderProps extends SliderOptions {
   label: string;
   /** Worklet function to format value for display. */
   formatValue: (value: number) => string;

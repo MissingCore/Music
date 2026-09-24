@@ -1,7 +1,9 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { scheduleOnRN } from "react-native-worklets";
 import { useShallow } from "zustand/react/shallow";
 
 import { Icon } from "~/resources/icons";
@@ -16,13 +18,13 @@ import type { MutableViewLayout } from "~/stores/ViewPreference/types";
 
 import { SortSheet } from "~/navigation/sheets/SortSheet";
 
-import { NumberStepper } from "~/components/Form/NumberStepper";
 import { SegmentedList } from "~/components/List/Segmented";
 import { DetachedSheet } from "~/components/Sheet";
-import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { SegmentedPicker } from "~/components/next/blocks/segmented-picker";
+import type { LabeledSliderProps } from "~/components/next/blocks/slider-labeled";
+import { LabeledSlider } from "~/components/next/blocks/slider-labeled";
 
 //#region Albums
 const albumScreenContentTypes = [
@@ -41,6 +43,7 @@ export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
       albums: s.showAlbums,
     })),
   );
+  const [stopDrag, setStopDrag] = useState(false);
   const sortOrderSheetRef = useSheetRef();
 
   const pickerOptions = albumScreenContentTypes.map((option) => ({
@@ -49,9 +52,29 @@ export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
     selected: visibleContentTypes[option.value],
   }));
 
+  const minAlbumSliderOptions = useMemo<Omit<LabeledSliderProps, "initValue">>(
+    () => ({
+      ...MinAlbumLengthConfig.bound,
+      label: t("feat.minAlbumLength.title"),
+      formatValue: (value) => {
+        "worklet";
+        return String(value);
+      },
+      onChange: (value) => {
+        "worklet";
+        scheduleOnRN(PreferenceSetters.setMinAlbumLength, value);
+      },
+      onStatusChange: (status) => {
+        "worklet";
+        scheduleOnRN(setStopDrag, status !== "idle");
+      },
+    }),
+    [t],
+  );
+
   return (
     <>
-      <DetachedSheet ref={props.ref}>
+      <DetachedSheet ref={props.ref} draggable={!stopDrag}>
         <ScreenLayoutSetting screen="album" />
         <SegmentedPicker
           type="checkbox"
@@ -62,16 +85,7 @@ export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
           }}
         />
 
-        <SheetLabelAction
-          labelKey="feat.minAlbumLength.title"
-          Trailing={
-            <NumberStepper
-              value={minAlbumLength}
-              onChange={PreferenceSetters.updateMinAlbumLengthByDelta}
-              {...MinAlbumLengthConfig.bound}
-            />
-          }
-        />
+        <LabeledSlider initValue={minAlbumLength} {...minAlbumSliderOptions} />
 
         <SegmentedList.Item
           labelText="feat.modalViewPreference.extra.sort"
