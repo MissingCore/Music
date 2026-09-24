@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useState } from "react";
-import { View } from "react-native";
+import { I18nManager, View } from "react-native";
 import { GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedStyle,
@@ -14,7 +14,7 @@ import type { SliderOptions } from "../base/slider-context";
 import { useSlider } from "../base/slider-context";
 import { Text } from "../base/typography";
 
-export interface LabeledSliderProps extends SliderOptions {
+export interface LabeledSliderProps extends Omit<SliderOptions, "inverted"> {
   label: string;
   /** Worklet function to format value for display. */
   formatValue: (value: number) => string;
@@ -25,7 +25,10 @@ export function LabeledSlider({
   formatValue,
   ...props
 }: LabeledSliderProps) {
-  const { sliderRef, sliderUnitLength, value, gestures } = useSlider(props);
+  const { sliderRef, sliderUnitLength, value, gestures } = useSlider({
+    inverted: I18nManager.isRTL,
+    ...props,
+  });
 
   const [displayValue, setDisplayValue] = useState("");
   useDerivedValue(() => {

@@ -15,6 +15,7 @@ import {
   useAnimatedRef,
   useDerivedValue,
   useSharedValue,
+  withTiming,
 } from "react-native-reanimated";
 
 type SliderStatus = "idle" | "busy";
@@ -27,6 +28,10 @@ export interface SliderOptions {
   step?: number;
   /** Defaults to `true`. */
   enabled?: boolean;
+
+  /** If the gesture should go in the opposite direction. */
+  inverted?: boolean;
+
   /** Worklet function called when `value` changes. */
   onChange?: (value: number) => void | Promise<void>;
   /** Worklet function called when interaction ends. Fallbacks to `onChange`. */
@@ -51,6 +56,7 @@ export function useSlider({
   max,
   step = 1,
   enabled = true,
+  inverted = false,
   onChange,
   onComplete: _onComplete,
   onStatusChange,
@@ -68,17 +74,46 @@ export function useSlider({
   }, [sliderRef, sliderLength]);
   //#endregion
 
+  // Length on slider to represent moving `1`.
   const sliderUnitLength = useDerivedValue(() => sliderLength.get() / range);
 
   const calculateNextValue = useCallback(
     (l: number) => {
       "worklet";
-      const clampedValue = clamp(l, 0, sliderLength.get());
+      const adjustedL = inverted ? sliderLength.get() - l : l;
+      const clampedValue = clamp(adjustedL, 0, sliderLength.get());
       const progressPercent = clampedValue / sliderLength.get();
       return roundToStep(progressPercent * range + min, step);
     },
-    [min, range, step, sliderLength],
+    [min, range, step, inverted, sliderLength],
   );
+
+  //#region Debouncing
+  const debounceTimer = useSharedValue(0);
+  const priorDebounceValue = useSharedValue<number | null>(null);
+
+  const clearDebounce = useCallback(() => {
+    "worklet";
+    debounceTimer.set(0);
+    priorDebounceValue.set(null);
+  }, [debounceTimer, priorDebounceValue]);
+
+  const debouncedOnChange = useCallback(
+    (nextVal: number) => {
+      "worklet";
+      if (priorDebounceValue.get() === nextVal) return;
+      priorDebounceValue.set(nextVal);
+      debounceTimer.set(
+        withTiming(1, { duration: 50 }, (finished) => {
+          if (!finished) return;
+          onChange?.(nextVal);
+          clearDebounce();
+        }),
+      );
+    },
+    [onChange, debounceTimer, priorDebounceValue, clearDebounce],
+  );
+  //#endregion
 
   //#region Gestures
   const tapGesture = useTapGesture({
@@ -99,11 +134,12 @@ export function useSlider({
     onUpdate: ({ x }) => {
       const nextValue = calculateNextValue(x);
       value.set(nextValue);
-      onChange?.(nextValue);
+      debouncedOnChange(nextValue);
     },
     onDeactivate: ({ x }) => {
       const finalizedValue = calculateNextValue(x);
       value.set(finalizedValue);
+      clearDebounce();
       onComplete?.(finalizedValue);
     },
     onFinalize: () => onStatusChange?.("idle"),
