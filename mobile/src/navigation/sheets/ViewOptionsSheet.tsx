@@ -27,11 +27,12 @@ import type { LabeledSliderProps } from "~/components/next/blocks/slider-labeled
 import { LabeledSlider } from "~/components/next/blocks/slider-labeled";
 
 //#region Albums
-const albumScreenContentTypes = [
-  { label: "Singles", value: "singles" },
-  { label: "EPs", value: "eps" },
-  { label: "Albums", value: "albums" },
-] as const;
+const AlbumClassification = ["singles", "eps", "albums"] as const;
+const AlbumClassificationMap = {
+  singles: "showSingles",
+  eps: "showEPs",
+  albums: "showAlbums",
+} as const;
 
 export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
   const { t } = useTranslation();
@@ -46,11 +47,15 @@ export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
   const [stopDrag, setStopDrag] = useState(false);
   const sortOrderSheetRef = useSheetRef();
 
-  const pickerOptions = albumScreenContentTypes.map((option) => ({
-    label: t(`term.${option.value}`),
+  const pickerOptions = AlbumClassification.map((option) => ({
+    label: t(`term.${option}`),
     value: option,
-    selected: visibleContentTypes[option.value],
   }));
+  const selectedOptions = Object.entries(visibleContentTypes)
+    .map(([key, enabled]) =>
+      enabled ? (key as (typeof AlbumClassification)[number]) : undefined,
+    )
+    .filter((key) => key !== undefined);
 
   const minAlbumSliderOptions = useMemo<Omit<LabeledSliderProps, "initValue">>(
     () => ({
@@ -79,8 +84,9 @@ export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
         <SegmentedPicker
           type="checkbox"
           options={pickerOptions}
+          selected={selectedOptions}
           onSelected={(value) => {
-            const key = `show${value.label}` as const;
+            const key = AlbumClassificationMap[value];
             sessionStore.setState((prev) => ({ [key]: !prev[key] }));
           }}
         />
@@ -165,7 +171,6 @@ function ScreenLayoutSetting({ screen }: { screen: MutableViewLayout }) {
   const pickerOptions = LayoutOptions.map((option) => ({
     label: t(`feat.modalViewPreference.extra.${option}`),
     value: option,
-    selected: layoutOption === option,
   }));
 
   return (
@@ -173,6 +178,7 @@ function ScreenLayoutSetting({ screen }: { screen: MutableViewLayout }) {
       type="radio"
       accessibilityLabel={t("feat.modalViewPreference.extra.layout")}
       options={pickerOptions}
+      selected={layoutOption}
       onSelected={(value) => ViewPreferenceSetters.setLayout(screen, value)}
     />
   );
