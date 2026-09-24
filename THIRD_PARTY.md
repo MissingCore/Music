@@ -32,6 +32,7 @@
 | intl-pluralrules | ISC | https://github.com/eemeli/intl-pluralrules |
 | ionicons | MIT | https://github.com/ionic-team/ionicons |
 | jotai | MIT | https://github.com/pmndrs/jotai |
+| Lucide | ISC AND MIT | https://github.com/lucide-icons/lucide |
 | Material Symbols | Apache-2.0 | https://github.com/google/material-design-icons |
 | NDot日本語 | OFL-1.1 | https://x.com/NdotJP_Font |
 | react | MIT | https://github.com/facebook/react |

@@ -11,6 +11,11 @@
 
 - We use `color-wand`, `flask-filled`, `logo-github`, `logo-google-playstore`, `repeat`, and `shuffle`.
 
+**Lucide**
+
+- We use `arrow-down-narrow-wide` and `arrow-up-narrow-wide`.
+- Stroke Width: `1px`
+
 **Custom Icons**
 
 - `glyph-face`, `glyph-music`
