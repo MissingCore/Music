@@ -1,0 +1,135 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
+import { useCallback, useLayoutEffect, useMemo } from "react";
+
+import type { ComposedGesture } from "react-native-gesture-handler";
+import {
+  useCompetingGestures,
+  usePanGesture,
+  useTapGesture,
+} from "react-native-gesture-handler";
+import type { AnimatedRef, SharedValue } from "react-native-reanimated";
+import {
+  clamp,
+  useAnimatedRef,
+  useDerivedValue,
+  useSharedValue,
+} from "react-native-reanimated";
+
+type SliderStatus = "idle" | "busy";
+
+export interface SliderOptions {
+  initValue: number;
+  min: number;
+  max: number;
+  /** Defaults to `1`. */
+  step?: number;
+  /** Defaults to `true`. */
+  enabled?: boolean;
+  /** Worklet function called when `value` changes. */
+  onChange?: (value: number) => void | Promise<void>;
+  /** Worklet function called when interaction ends. Fallbacks to `onChange`. */
+  onComplete?: (value: number) => void | Promise<void>;
+  /** Worklet function fired when the status of the slider changes. */
+  onStatusChange?: (status: SliderStatus) => void | Promise<void>;
+}
+
+interface SliderConfigs {
+  /** Used to measure the length of the slider for calculation purposes. */
+  sliderRef: AnimatedRef;
+  /** Distance on slider to move `1`. */
+  sliderUnitLength: SharedValue<number>;
+
+  value: SharedValue<number>;
+  gestures: ComposedGesture;
+}
+
+export function useSlider({
+  initValue,
+  min,
+  max,
+  step = 1,
+  enabled = true,
+  onChange,
+  onComplete: _onComplete,
+  onStatusChange,
+}: SliderOptions): SliderConfigs {
+  const value = useSharedValue(initValue);
+  const range = max - min;
+  const onComplete = _onComplete ?? onChange;
+
+  //#region Measurement
+  const sliderRef = useAnimatedRef();
+  const sliderLength = useSharedValue(0);
+
+  useLayoutEffect(() => {
+    sliderRef.current?.measure((_x, _y, width) => sliderLength.set(width));
+  }, [sliderRef, sliderLength]);
+  //#endregion
+
+  const sliderUnitLength = useDerivedValue(() => sliderLength.get() / range);
+
+  const calculateNextValue = useCallback(
+    (l: number) => {
+      "worklet";
+      const clampedValue = clamp(l, 0, sliderLength.get());
+      const progressPercent = clampedValue / sliderLength.get();
+      return roundToStep(progressPercent * range + min, step);
+    },
+    [min, range, step, sliderLength],
+  );
+
+  //#region Gestures
+  const tapGesture = useTapGesture({
+    enabled,
+    onBegin: () => onStatusChange?.("busy"),
+    onDeactivate: ({ x }) => {
+      const finalizedValue = calculateNextValue(x);
+      value.set(finalizedValue);
+      onComplete?.(finalizedValue);
+    },
+    onFinalize: () => onStatusChange?.("idle"),
+  });
+
+  const panGesture = usePanGesture({
+    enabled,
+    activeOffsetX: [-10, 10],
+    onBegin: () => onStatusChange?.("busy"),
+    onUpdate: ({ x }) => {
+      const nextValue = calculateNextValue(x);
+      value.set(nextValue);
+      onChange?.(nextValue);
+    },
+    onDeactivate: ({ x }) => {
+      const finalizedValue = calculateNextValue(x);
+      value.set(finalizedValue);
+      onComplete?.(finalizedValue);
+    },
+    onFinalize: () => onStatusChange?.("idle"),
+  });
+
+  const gestures = useCompetingGestures(tapGesture, panGesture);
+  //#endregion
+
+  return useMemo(
+    () => ({ sliderRef, sliderUnitLength, value, gestures }),
+    [sliderRef, sliderUnitLength, value, gestures],
+  );
+}
+
+//#region Internal Helpers
+function roundToStep(rawNum: number, step: number) {
+  "worklet";
+  const roundedVal = Math.round(rawNum / step) * step;
+
+  // Figure out number of decimal places we round to.
+  const stepStr = step.toString();
+  const decimalPlaces = stepStr.includes(".")
+    ? stepStr.split(".").at(-1)!.length
+    : 0;
+
+  if (decimalPlaces === 0) return roundedVal;
+  return parseFloat(roundedVal.toFixed(decimalPlaces));
+}
+//#endregion
