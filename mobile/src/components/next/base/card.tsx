@@ -9,7 +9,7 @@ import { cva } from "~/lib/style";
 import type { IntentVariant } from "./theming";
 
 export const cardStyle = cva({
-  base: "rounded-xl bg-surfaceContainerLowest",
+  base: "rounded-lg bg-surfaceContainerLowest",
   variants: {
     intent: {
       unset: null,

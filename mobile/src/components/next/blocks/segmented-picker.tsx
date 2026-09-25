@@ -64,7 +64,7 @@ export function SegmentedPicker<TData extends string>({
             onPress={() => (isActiveRadio ? reselect?.cb() : onSelect(value))}
             disabled={isActiveRadio && !reselect}
             className={cn(
-              "min-h-8 flex-1 flex-row items-center justify-center gap-2 rounded-sm p-1 px-2",
+              "min-h-8 flex-1 flex-row items-center justify-center gap-2 rounded-md p-1 px-2",
               isSelected && "bg-surfaceContainer",
               reselect && "min-h-10 justify-between p-2",
             )}
@@ -83,7 +83,7 @@ export function SegmentedPicker<TData extends string>({
       scrollEnabled={false}
       columnWrapperClassName="gap-1"
       className="shrink-0"
-      contentContainerClassName="gap-1 rounded-md bg-surfaceContainerLowest p-1"
+      contentContainerClassName="gap-1 rounded-lg bg-surfaceContainerLowest p-1"
     />
   );
 }
