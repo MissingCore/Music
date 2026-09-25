@@ -113,6 +113,12 @@ export default function ModifyPlaylist({
             });
           }
 
+          if (isFavoritesList) {
+            queryClient.invalidateQueries({
+              queryKey: q.favorites.favoriteTracksCount.queryKey,
+            });
+          }
+
           queryClient.invalidateQueries({ queryKey: q.playlists._def });
           queryClient.invalidateQueries({ queryKey: q.tracks._def });
           queryClient.invalidateQueries({
