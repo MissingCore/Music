@@ -5,8 +5,9 @@ import { useNavigation } from "@react-navigation/native";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
+import { ScopedTheme } from "uniwind";
 
-import { useFavoriteTracksCount } from "~/data/favorite/queries";
+import { usePlaylist } from "~/data/playlist/queries";
 import { useSortedTracks } from "~/data/track/queries";
 import { useDelayedReady } from "~/hooks/useDelayedReady";
 
@@ -14,10 +15,12 @@ import * as LibraryLayout from "~/navigation/layouts/LibraryLayout";
 import { TracksViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
+import { getImageUri } from "~/lib/file-system";
 import { Icon } from "~/components/next/base/icon";
 import { Ripple } from "~/components/next/base/ripple";
 import { createTextStack } from "~/components/next/blocks/text-stack";
 import { TrackItem } from "~/components/next/composed/track-item";
+import { Image } from "~/components/next/primitive/image";
 import {
   FavoritesPlaylistKey,
   ReservedPlaylists,
@@ -98,35 +101,44 @@ function ScreenContents() {
 
 //#region Favorite Tracks Link
 const CustomTextStack = createTextStack({
-  labelConfig: { intent: "primary", size: "sm" },
-  supportingConfig: { intent: "primary", muted: true },
+  labelConfig: { size: "sm" },
+  supportingConfig: { muted: true },
   clampText: true,
 });
 
 function FavoritesPlaylistLink() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { data } = useFavoriteTracksCount();
+  const { data } = usePlaylist(FavoritesPlaylistKey);
 
   return (
-    <Ripple
-      rippleColor="primaryDim"
-      onPress={() =>
-        navigation.navigate("Playlist", { id: FavoritesPlaylistKey })
-      }
-      className="mx-0.5 mb-4 flex-row items-center gap-2 rounded-lg bg-primary"
-    >
-      <View className="size-14 items-center justify-center">
-        <Icon name="favorite-filled" size={32} color="onPrimary" />
-      </View>
-      <CustomTextStack
-        label={t("term.favoriteTracks")}
-        supporting={t("plural.track", { count: data ?? 0 })}
-      />
-      <View className="mr-2 size-10 items-center justify-center rounded-full bg-onPrimary ltr:rotate-180">
-        <Icon name="arrow-back" size={32} color="primary" />
-      </View>
-    </Ripple>
+    <ScopedTheme theme="atmosphere">
+      <Ripple
+        onPress={() =>
+          navigation.navigate("Playlist", { id: FavoritesPlaylistKey })
+        }
+        className="relative mx-0.5 mb-4 min-h-14 flex-row items-center gap-5 rounded-lg bg-surfaceContainerHigh px-3"
+      >
+        <Image
+          source={getImageUri(
+            Array.isArray(data?.artwork) ? data.artwork[0] : data?.artwork,
+          )}
+          blurRadius={10}
+          // @ts-expect-error - Brightness prop works.
+          style={{ filter: [{ brightness: "75%" }] }}
+          className="absolute inset-0"
+        />
+
+        <Icon name="favorite-filled" size={32} />
+        <CustomTextStack
+          label={t("term.favoriteTracks")}
+          supporting={t("plural.track", { count: data?.tracks.length ?? 0 })}
+        />
+        <View className="ltr:rotate-180">
+          <Icon name="arrow-back" size={32} />
+        </View>
+      </Ripple>
+    </ScopedTheme>
   );
 }
 //#endregion

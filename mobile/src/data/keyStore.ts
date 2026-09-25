@@ -12,7 +12,7 @@ import {
   getArtistsSummary,
   getSortedArtistTracks,
 } from "./artist/api";
-import { getFavoriteLists, getFavoriteTracksCount } from "./favorite/api";
+import { getFavoriteLists } from "./favorite/api";
 import { getGenre, getGenresSummary, getSortedGenreTracks } from "./genre/api";
 import { getLyric, getLyricsSummary } from "./lyric/api";
 import { getPlaylist, getPlaylistsSummary } from "./playlist/api";
@@ -79,12 +79,6 @@ export const queries = {
   /** Query keys used in `useQuery` for favorite media. */
   favorites: {
     _def: ["favorites"] as const,
-    get favoriteTracksCount() {
-      return queryOptions({
-        queryKey: [...this._def, "favorite-tracks-count"],
-        queryFn: getFavoriteTracksCount,
-      });
-    },
     get lists() {
       return queryOptions({
         queryKey: [...this._def, "lists"],

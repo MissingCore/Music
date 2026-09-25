@@ -76,7 +76,7 @@ const debouncedFavoritePlaylistInvalidation = (function () {
       globalQueryClient.invalidateQueries({
         queryKey: q.playlists.detail(FavoritesPlaylistKey).queryKey,
       });
-    }, 150);
+    }, 500);
   };
 })();
 
@@ -94,11 +94,6 @@ export function useToggleTrackInPlaylist(trackId: string) {
         //* "Track Quick Action" will make things feel sluggish - debounce it
         //* to prevent unnecessary work.
         debouncedFavoritePlaylistInvalidation();
-        //* Have a separate query for getting the number of favorite tracks,
-        //* which is much less expensive when spam called.
-        queryClient.invalidateQueries({
-          queryKey: q.favorites.favoriteTracksCount.queryKey,
-        });
       } else {
         queryClient.invalidateQueries({ queryKey: q.playlists._def });
       }
