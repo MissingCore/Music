@@ -80,7 +80,9 @@ export function SegmentedPicker<TData extends string>({
           </Ripple>
         );
       }}
+      scrollEnabled={false}
       columnWrapperClassName="gap-1"
+      className="shrink-0"
       contentContainerClassName="gap-1 rounded-md bg-surfaceContainerLowest p-1"
     />
   );
