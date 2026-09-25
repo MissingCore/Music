@@ -65,7 +65,7 @@ export function SegmentedPicker<TData extends string>({
             disabled={isActiveRadio && !reselect}
             className={cn(
               "min-h-8 flex-1 flex-row items-center justify-center gap-2 rounded-sm p-1 px-2",
-              isSelected && "bg-surfaceContainerHigh",
+              isSelected && "bg-surfaceContainer",
               reselect && "min-h-10 justify-between p-2",
             )}
           >

@@ -49,9 +49,9 @@ export function LabeledSlider({
         <View className="absolute inset-0 flex-row items-center">
           <Animated.View
             style={animatedStyles}
-            className="h-full rounded-r-lg bg-surfaceContainerHigh/50"
+            className="h-full rounded-r-lg bg-surfaceContainer"
           />
-          <View className="h-6 w-1 rounded-full bg-onSurfaceVariant" />
+          <View className="h-6 w-1 rounded-full bg-outline" />
         </View>
         <Text numberOfLines={1} size="sm">
           {label}
