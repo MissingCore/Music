@@ -19,6 +19,7 @@ type SegmentedPickerProps<TData extends string> = {
   options: Array<PickerOption<TData>>;
   onSelect: (value: TData) => void;
   accessibilityLabel?: string;
+  numColumns?: number;
 } & (
   | { type: "radio"; selected: TData; reselect?: never }
   | {
@@ -41,13 +42,14 @@ export function SegmentedPicker<TData extends string>({
   onSelect,
   reselect,
   accessibilityLabel,
+  numColumns,
 }: SegmentedPickerProps<TData>) {
   const accessOpts = AccessibilityOptions[type];
   return (
     <FlatList
       accessibilityLabel={accessibilityLabel}
       role={accessOpts.groupRole}
-      numColumns={reselect ? 2 : options.length}
+      numColumns={numColumns || (reselect ? 2 : options.length)}
       data={options}
       keyExtractor={({ value }) => value}
       renderItem={({ item: { label, value } }) => {
@@ -62,17 +64,17 @@ export function SegmentedPicker<TData extends string>({
             onPress={() => (isActiveRadio ? reselect?.cb() : onSelect(value))}
             disabled={isActiveRadio && !reselect}
             className={cn(
-              "min-h-10 flex-1 flex-row items-center justify-center gap-2 rounded-sm p-2",
+              "min-h-8 flex-1 flex-row items-center justify-center gap-2 rounded-sm p-1 px-2",
               isSelected && "bg-surfaceContainerHigh",
-              reselect && "justify-between",
+              reselect && "min-h-10 justify-between p-2",
             )}
           >
             <Text numberOfLines={1} size="sm" center className="shrink">
               {label}
             </Text>
-            {reselect ? (
+            {reselect && isActiveRadio ? (
               <View className="size-5 shrink-0">
-                {isActiveRadio && <Icon name={reselect.icon} size={20} />}
+                <Icon name={reselect.icon} size={20} />
               </View>
             ) : null}
           </Ripple>
