@@ -61,7 +61,7 @@ export function useSlider({
   onComplete: _onComplete,
   onStatusChange,
 }: SliderOptions): SliderConfigs {
-  const value = useSharedValue(initValue);
+  const value = useSharedValue(clamp(initValue, min, max));
   const range = max - min;
   const onComplete = _onComplete ?? onChange;
 
