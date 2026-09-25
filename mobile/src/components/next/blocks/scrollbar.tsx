@@ -1,0 +1,200 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
+import { useCallback } from "react";
+import type { ViewProps } from "react-native";
+import { useWindowDimensions } from "react-native";
+import {
+  GestureDetector,
+  useLongPressGesture,
+  usePanGesture,
+  useSimultaneousGestures,
+} from "react-native-gesture-handler";
+import type { AnimatedRef } from "react-native-reanimated";
+import Animated, {
+  ReduceMotion,
+  clamp,
+  scrollTo,
+  useAnimatedProps,
+  useAnimatedReaction,
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
+
+import { useScrollContext } from "../base/scroll-context";
+
+interface ScrollbarProps {
+  /** Absolute positon of where the scrollbar will start & end. */
+  offset: { top: number; bottom: number };
+
+  /** Worklet function called when we stop scrolling. */
+  onEnd?: VoidFunction;
+}
+
+const THUMB_SIZE = 48;
+const COLLAPSED_THUMB_SIZE = 6;
+
+/** Delay before the scrollbar becomes invisible. */
+const HIDE_DELAY = 2000;
+
+export function Scrollbar({ offset: { top, bottom }, onEnd }: ScrollbarProps) {
+  //? As of React Native 0.86, `height` includes the window decorations
+  //? (status & navigation bar).
+  const { height } = useWindowDimensions();
+  const { scrollRef, scrollAmount, scrollableHeight } = useScrollContext();
+
+  // We subtract `THUMB_SIZE` to prevent it from appearing beyond the track.
+  const scrollbarHeight = height - top - bottom - THUMB_SIZE;
+  // The amount we can scroll.
+  const scrollableArea = useDerivedValue(() => scrollableHeight.get() - height);
+
+  // Scale down `scrollAmount` to fit within `scrollbarHeight`.
+  const scaledScrollAmount = useDerivedValue(() => {
+    const scrollPercent = scrollAmount.get() / scrollableArea.get();
+    return scrollPercent * scrollbarHeight || 0;
+  });
+
+  //#region Scroll Handing
+  const prevY = useSharedValue(-1);
+  const nextScrollPosition = useSharedValue(-1);
+
+  useDerivedValue(() => {
+    if (nextScrollPosition.get() === -1) return;
+    //? For some reason on the New Architecture, things only work if we set
+    //? this to `false`, like in our original implementation in:
+    //?   - https://github.com/MissingCore/Music/commit/e9a1ff9b66390928210ff054629b6b7d09e1af6a
+    scrollTo(scrollRef as AnimatedRef<any>, 0, nextScrollPosition.get(), false);
+  });
+  //#endregion
+
+  //#region Availability & Visibility
+  const isAvailable = useSharedValue(false);
+  const isInteracting = useSharedValue(false);
+
+  const gracePeriod = useSharedValue(0); // Boolean field
+  const startGracePeriodCountdown = useCallback(() => {
+    "worklet";
+    gracePeriod.set(
+      withTiming(0, { duration: HIDE_DELAY, reduceMotion: ReduceMotion.Never }),
+    );
+  }, [gracePeriod]);
+
+  //* Keeps the scrollbar visible.
+  const persistScrollbar = useCallback(() => {
+    "worklet";
+    isInteracting.set(true);
+    gracePeriod.set(1);
+  }, [isInteracting, gracePeriod]);
+
+  //* Start the timer to hide the scrollbar.
+  const dismissScrollbar = useCallback(() => {
+    "worklet";
+    isInteracting.set(false);
+    startGracePeriodCountdown();
+  }, [isInteracting, startGracePeriodCountdown]);
+
+  //* Enable scrollbar if we have at least 2 screens worth of content.
+  useDerivedValue(() => {
+    const hasEnoughContent = scrollableHeight.get() / scrollbarHeight > 2;
+    isAvailable.set(hasEnoughContent && gracePeriod.get() !== 0);
+  });
+
+  //* Scrollbar can only be (potentially) enabled after scrolling the screen.
+  useAnimatedReaction(
+    () => scrollAmount.get(),
+    (_, prevVal) => {
+      if (prevVal === null) return; //? Don't call on "initialization".
+      gracePeriod.set(1);
+      if (isInteracting.get()) return;
+      startGracePeriodCountdown();
+    },
+  );
+
+  const wrapperProps = useAnimatedProps<ViewProps>(() => ({
+    pointerEvents: isAvailable.get() ? "box-none" : "none",
+  }));
+  //#endregion
+
+  //#region Gestures
+  const pressGesture = useLongPressGesture({
+    enabled: isAvailable,
+    minDuration: 0,
+    onActivate: persistScrollbar,
+    onDeactivate: dismissScrollbar,
+  });
+
+  const scrollGesture = usePanGesture({
+    enabled: isAvailable,
+    onActivate: ({ absoluteY }) => {
+      persistScrollbar();
+      prevY.set(absoluteY);
+    },
+    onUpdate: ({ absoluteY }) => {
+      persistScrollbar();
+      const changeDelta = absoluteY - prevY.get();
+      const clampedScaledPosition = clamp(
+        scaledScrollAmount.get() + changeDelta,
+        0,
+        scrollbarHeight,
+      );
+
+      const scrollPercent = clampedScaledPosition / scrollbarHeight;
+      const unscaledScrollAmount = scrollPercent * scrollableArea.get();
+
+      nextScrollPosition.set(unscaledScrollAmount);
+      prevY.set(absoluteY);
+    },
+    onDeactivate: () => {
+      dismissScrollbar();
+      nextScrollPosition.set(-1);
+      prevY.set(-1);
+    },
+    onFinalize: () => {
+      if (onEnd) onEnd();
+    },
+  });
+
+  const gestures = useSimultaneousGestures(pressGesture, scrollGesture);
+  //#endregion
+
+  //#region Styling
+  const thumbWrapperStyle = useAnimatedStyle(() => ({
+    height: THUMB_SIZE,
+    width: THUMB_SIZE,
+    opacity: withTiming(isAvailable.get() ? 1 : 0, {
+      duration: isAvailable.get() ? 150 : 500,
+      reduceMotion: ReduceMotion.Never,
+    }),
+    transform: [{ translateY: scaledScrollAmount.get() }],
+  }));
+
+  const thumbStyle = useAnimatedStyle(() => ({
+    height: withTiming(
+      isInteracting.get() || prevY.get() !== -1
+        ? THUMB_SIZE
+        : COLLAPSED_THUMB_SIZE,
+      { duration: 150, reduceMotion: ReduceMotion.Never },
+    ),
+    width: THUMB_SIZE,
+  }));
+  //#endregion
+
+  return (
+    <Animated.View
+      animatedProps={wrapperProps}
+      style={{ right: 8, top, bottom }}
+      className="absolute z-50"
+    >
+      <GestureDetector gesture={gestures}>
+        <Animated.View style={thumbWrapperStyle} className="justify-center">
+          <Animated.View
+            style={thumbStyle}
+            className="rounded-full bg-onSurface"
+          />
+        </Animated.View>
+      </GestureDetector>
+    </Animated.View>
+  );
+}

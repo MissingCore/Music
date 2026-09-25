@@ -1,23 +1,39 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useCallback } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useGenres } from "~/data/genre/queries";
-import { useViewLayout } from "~/stores/ViewPreference/hooks/useViewLayout";
+import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { useViewOrder } from "~/stores/ViewPreference/hooks/useViewOrder";
 
+import * as LibraryLayout from "~/navigation/layouts/LibraryLayout";
 import { GenresViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
-import { NScrollListLayout } from "~/navigation/layouts/NScrollLayout";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import type { ExtractQueryData } from "~/lib/react-query";
+import { createTextPlaceholder } from "~/components/next/composed/media-image";
 
 type GenreData = ExtractQueryData<typeof useGenres>[number];
 
 export default function Genres() {
+  const asGrid = useViewPreferenceStore((s) => s.genreLayout !== "list");
+  return (
+    <LibraryLayout.Provider asGrid={asGrid}>
+      <LibraryLayout.Header
+        titleKey="term.genres"
+        OptionsSheet={GenresViewOptionsSheet}
+      />
+      <ScreenContents />
+    </LibraryLayout.Provider>
+  );
+}
+
+function ScreenContents() {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const { isPending, data } = useGenres();
 
   const sortedData = useViewOrder("genre", data);
@@ -26,23 +42,27 @@ export default function Genres() {
       id: item.name,
       title: item.name,
       description: t("plural.track", { count: item.trackCount }),
-      imageSource: item.artwork,
+      imageSource: item.artwork ?? createTextPlaceholder(item.name, true),
     }),
     [t],
   );
-  const presets = useViewLayout("genre", sortedData, formatData);
+
+  const formattedData = useMemo(
+    () => sortedData?.map(formatData),
+    [sortedData, formatData],
+  );
 
   return (
-    <NScrollListLayout
-      titleKey="term.genres"
-      OptionsSheet={GenresViewOptionsSheet}
+    <LibraryLayout.MediaList
+      data={formattedData}
+      onPress={(id) => navigation.navigate("Genre", { id })}
       ListEmptyComponent={
         <ContentPlaceholder
-          isPending={isPending || presets.data === undefined}
+          isPending={isPending || sortedData === undefined}
           errMsgKey="err.msg.noGenres"
+          className="absolute inset-0 pt-safe-offset-36"
         />
       }
-      {...presets}
     />
   );
 }

@@ -1,0 +1,57 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
+import type { VariantProps } from "cva/config";
+import type { ViewProps } from "react-native";
+import { View } from "react-native";
+
+import { cva } from "~/lib/style";
+import type { IntentVariant } from "./theming";
+
+export const cardStyle = cva({
+  base: "rounded-lg bg-surfaceContainerLowest",
+  variants: {
+    intent: {
+      unset: null,
+      muted: "bg-surfaceContainerHigh",
+      primary: "bg-primary",
+      secondary: "bg-secondary",
+      error: "bg-error",
+      inverse: "bg-inverseSurface",
+    } satisfies IntentVariant,
+    padding: { true: "p-4" },
+    outline: { true: "border border-outlineVariant" },
+    overflow: { false: "overflow-hidden" },
+  },
+  compoundVariants: [
+    { intent: "primary", outline: true, className: "border-primaryDim" },
+    { intent: "secondary", outline: true, className: "border-secondaryDim" },
+    { intent: "error", outline: true, className: "border-errorDim" },
+  ],
+  defaultVariants: {
+    intent: "unset",
+    padding: true,
+    outline: false,
+    overflow: false,
+  },
+});
+
+export type CardVariants = VariantProps<typeof cardStyle>;
+
+interface CardProps extends ViewProps, CardVariants {}
+
+export function Card({
+  intent,
+  padding,
+  outline,
+  overflow,
+  className,
+  ...props
+}: CardProps) {
+  return (
+    <View
+      {...props}
+      className={cardStyle({ intent, padding, outline, overflow, className })}
+    />
+  );
+}
