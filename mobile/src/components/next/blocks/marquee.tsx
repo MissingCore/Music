@@ -78,6 +78,9 @@ export function Marquee(props: MarqueeProps) {
     <Animated.View
       //? Key is required to fix issue where `onLayout` doesn't get re-called
       //? after the first screen rotation (so it gets called at most 2 times).
+      //?
+      //? Our prior `Marquee` implementation's `onLayout` on the `ScrollView`
+      //? only re-fired due to styling on the gradients being re-calculated.
       key={String(recalculateLayout)}
       pointerEvents="none"
       className={cn("shrink grow", props.wrapperClassName)}
