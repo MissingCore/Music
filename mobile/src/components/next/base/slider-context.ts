@@ -1,7 +1,8 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useCallback, useLayoutEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
+import type { LayoutChangeEvent } from "react-native";
 
 import type { ComposedGesture } from "react-native-gesture-handler";
 import {
@@ -9,10 +10,9 @@ import {
   usePanGesture,
   useTapGesture,
 } from "react-native-gesture-handler";
-import type { AnimatedRef, SharedValue } from "react-native-reanimated";
+import type { SharedValue } from "react-native-reanimated";
 import {
   clamp,
-  useAnimatedRef,
   useDerivedValue,
   useSharedValue,
   withTiming,
@@ -41,8 +41,8 @@ export interface SliderOptions {
 }
 
 interface SliderConfigs {
-  /** Used to measure the length of the slider for calculation purposes. */
-  sliderRef: AnimatedRef;
+  /** Pass to the `onLayout` prop on the slider. */
+  measureSlider: (e: LayoutChangeEvent) => void;
   /** Distance on slider to move `1`. */
   sliderUnitLength: SharedValue<number>;
 
@@ -66,16 +66,15 @@ export function useSlider({
   const onComplete = _onComplete ?? onChange;
 
   //#region Measurement
-  const sliderRef = useAnimatedRef();
   const sliderLength = useSharedValue(0);
-
-  useLayoutEffect(() => {
-    sliderRef.current?.measure((_x, _y, width) => sliderLength.set(width));
-  }, [sliderRef, sliderLength]);
-  //#endregion
+  const measureSlider = useCallback(
+    (e: LayoutChangeEvent) => sliderLength.set(e.nativeEvent.layout.width),
+    [sliderLength],
+  );
 
   // Length on slider to represent moving `1`.
   const sliderUnitLength = useDerivedValue(() => sliderLength.get() / range);
+  //#endregion
 
   const calculateNextValue = useCallback(
     (l: number) => {
@@ -149,8 +148,8 @@ export function useSlider({
   //#endregion
 
   return useMemo(
-    () => ({ sliderRef, sliderUnitLength, value, gestures }),
-    [sliderRef, sliderUnitLength, value, gestures],
+    () => ({ measureSlider, sliderUnitLength, value, gestures }),
+    [measureSlider, sliderUnitLength, value, gestures],
   );
 }
 

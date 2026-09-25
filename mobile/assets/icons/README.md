@@ -13,7 +13,7 @@
 
 **Lucide**
 
-- We use `arrow-down-narrow-wide` and `arrow-up-narrow-wide`.
+- We use `arrow-down-wide-narrow` and `arrow-up-narrow-wide`.
 - Stroke Width: `1px`
 
 **Custom Icons**

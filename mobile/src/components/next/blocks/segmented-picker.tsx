@@ -30,16 +30,8 @@ type SegmentedPickerProps<TData extends string> = {
 );
 
 const AccessibilityOptions = {
-  checkbox: {
-    groupRole: "group",
-    itemAttributes: (selected: boolean) =>
-      ({ role: "checkbox", "aria-checked": selected }) as const,
-  },
-  radio: {
-    groupRole: "radiogroup",
-    itemAttributes: (selected: boolean) =>
-      ({ role: "radio", "aria-selected": selected }) as const,
-  },
+  checkbox: { groupRole: "group", itemRole: "checkbox" },
+  radio: { groupRole: "radiogroup", itemRole: "radio" },
 } as const satisfies Record<SegmentedPickerType, any>;
 
 export function SegmentedPicker<TData extends string>({
@@ -65,7 +57,8 @@ export function SegmentedPicker<TData extends string>({
         const isActiveRadio = type === "radio" && isSelected;
         return (
           <Ripple
-            {...accessOpts.itemAttributes(isSelected)}
+            role={accessOpts.itemRole}
+            aria-checked={isSelected}
             onPress={() => (isActiveRadio ? reselect?.cb() : onSelect(value))}
             disabled={isActiveRadio && !reselect}
             className={cn(
