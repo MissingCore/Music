@@ -38,7 +38,7 @@ export default (): ExpoConfig => {
     assetBundlePatterns: ["**/*"],
     android: {
       package: "com.cyanchill.missingcore.music",
-      versionCode: 2280,
+      versionCode: 2290,
       allowBackup: false,
       adaptiveIcon: {
         foregroundImage: `./assets/${BUILD_THEME}/adaptive-icon.png`,
