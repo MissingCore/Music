@@ -2,9 +2,12 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useNavigation } from "@react-navigation/native";
+import type { LinearGradientProps } from "expo-linear-gradient";
 import { LinearGradient } from "expo-linear-gradient";
+import { useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { View } from "react-native";
+import { easeGradient } from "react-native-easing-gradient";
 
 import { useSessionStore } from "~/stores/Session/store";
 
@@ -81,13 +84,25 @@ function Header() {
 //#region Weekly Recap
 function WeeklyRecap() {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const { primary } = useTheme();
   const last7DaysEpoch = useSessionStore((s) => s.lastDaysStartEpoch);
   const { data } = useRecap(last7DaysEpoch);
 
+  const { colors, locations } = useMemo(
+    () =>
+      easeGradient({
+        colorStops: {
+          0: { color: primary },
+          1: { color: `${primary}00` },
+        },
+      }) as unknown as Pick<LinearGradientProps, "colors" | "locations">,
+    [primary],
+  );
+
   return (
     <View>
-      <View className="gap-2 bg-primary px-4 pt-40 pb-8">
+      <View className="gap-4 bg-primary px-4 pt-48 pb-8">
         <TText
           textKey="feat.greeting.title"
           intent="accent"
@@ -112,10 +127,21 @@ function WeeklyRecap() {
           components={{ b: <RecapStat /> }}
           className="max-w-md text-onPrimaryVariant"
         />
+        <IconButton
+          icon="arrow-back"
+          accessibilityLabel={t("template.entrySeeMore", {
+            name: t("feat.recap.title"),
+          })}
+          onPress={() => navigation.navigate("Recap", { last7Days: true })}
+          filled
+          wide
+          className="self-start ltr:rotate-180"
+        />
       </View>
       <LinearGradient
-        colors={[`${primary}FF`, `${primary}00`]}
-        className="h-16 w-full"
+        colors={colors}
+        locations={locations}
+        className="h-32 w-full"
       />
     </View>
   );

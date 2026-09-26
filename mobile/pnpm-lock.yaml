@@ -121,6 +121,9 @@ importers:
       react-native-bootsplash:
         specifier: 7.3.3
         version: 7.3.3(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)(typescript@6.0.3)
+      react-native-easing-gradient:
+        specifier: 1.1.1
+        version: 1.1.1(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
       react-native-gesture-handler:
         specifier: 3.3.0
         version: 3.3.0(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
@@ -3112,6 +3115,7 @@ packages:
   eslint@9.39.4:
     resolution: {integrity: sha512-XoMjdBOwe/esVgEvLmNsD3IRHkm7fbKIUGvrleloJXUZgDHig2IPWNniv+GwjyJXzuNqVjlr5+4yVUZjycJwfQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -4773,6 +4777,12 @@ packages:
   react-native-bootsplash@7.3.3:
     resolution: {integrity: sha512-Olyxf2kTHUZtlXTOPl2QhQhOYZ7oS1PGMyicPlNKWtl8HYTbyywzuYfMKA9+2QZHhFXsaT4C7H5UP3Te0QuZcQ==}
     hasBin: true
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+
+  react-native-easing-gradient@1.1.1:
+    resolution: {integrity: sha512-KrGU97kPTMrLNzVXxFirFMgl65uo70gVNoKw2OngDzcDfoswb648I3ggeCnoY+JgMWkPyx4LlG7n3ZNgSPFnLw==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -10551,6 +10561,11 @@ snapshots:
       - '@types/node'
       - supports-color
       - typescript
+
+  react-native-easing-gradient@1.1.1(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3):
+    dependencies:
+      react: 19.2.3
+      react-native: 0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3)
 
   react-native-gesture-handler@3.3.0(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3):
     dependencies:

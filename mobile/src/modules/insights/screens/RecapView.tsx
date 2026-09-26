@@ -1,8 +1,9 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import type { StaticScreenProps } from "@react-navigation/native";
 import type { ActionDispatch } from "react";
-import { useMemo, useReducer, useState } from "react";
+import { useEffect, useMemo, useReducer, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -82,11 +83,24 @@ const recapRangeReducer = (_: State, action: Action): State => {
 };
 //#endregion
 
-export default function Recap() {
+type Props = StaticScreenProps<{ last7Days?: boolean }>;
+
+export default function Recap({
+  route: {
+    params: { last7Days = false },
+  },
+}: Props) {
   const defaultRecapRange = useSessionStore((s) => s.defaultRecapRange);
   const [state, dispatch] = useReducer(recapRangeReducer, defaultRecapRange);
+  const [isReady, setIsReady] = useState(false);
   const timeRangeSheetRef = useSheetRef();
 
+  useEffect(() => {
+    if (last7Days) dispatch({ type: "last-7-days" });
+    setIsReady(true);
+  }, [last7Days]);
+
+  if (!isReady) return null;
   return (
     <>
       <TimeRangeSheet ref={timeRangeSheetRef} dispatch={dispatch} />
