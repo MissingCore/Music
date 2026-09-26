@@ -6,21 +6,15 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Trans, useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { useFavoriteListsForCards } from "~/data/favorite/queries";
-
-import { NScrollLayout } from "~/navigation/layouts/NScrollLayout";
 import { useHasNewUpdate } from "~/navigation/hooks/useHasNewUpdate";
 
-import { LegendList } from "~/components/Base/LegendList";
 import { ScrollView } from "~/components/Base/ScrollView";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
-import { TEm } from "~/components/Typography/StyledText";
 import { Icon } from "~/components/next/base/icon";
 import { Ripple } from "~/components/next/base/ripple";
 import { Text, TText } from "~/components/next/base/typography";
 import { IconButton } from "~/components/next/blocks/icon-button";
 import { useTheme } from "~/modules/customization/theme/hooks";
-import { useMediaCardListPreset } from "~/modules/media/components/MediaCard";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -32,19 +26,11 @@ export default function Home() {
       <ScrollView>
         <WeeklyRecap />
 
-        <NScrollLayout
-          titleKey="term.home"
-          Actions={
-            <FilledIconButton
-              icon="history"
-              accessibilityLabel={t("feat.playedRecent.title")}
-              onPress={() => navigation.navigate("RecentlyPlayed")}
-            />
-          }
-        >
-          <TEm textKey="term.favorites" className="-mb-4" />
-          <Favorites />
-        </NScrollLayout>
+        <FilledIconButton
+          icon="history"
+          accessibilityLabel={t("feat.playedRecent.title")}
+          onPress={() => navigation.navigate("RecentlyPlayed")}
+        />
       </ScrollView>
     </>
   );
@@ -128,14 +114,5 @@ function RecapStat({ children }: { children?: React.ReactNode }) {
       {children}
     </Text>
   );
-}
-//#endregion
-
-//#region Favorites
-/** Display list of content we've favorited. */
-function Favorites() {
-  const { data } = useFavoriteListsForCards();
-  const presets = useMediaCardListPreset({ data });
-  return <LegendList {...presets} />;
 }
 //#endregion

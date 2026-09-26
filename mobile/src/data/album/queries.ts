@@ -73,7 +73,6 @@ export function useFavoriteAlbum(albumId: string) {
           entry.id === albumId ? { ...entry, isFavorite } : entry,
         ),
       );
-      queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
     },
   });
 }
