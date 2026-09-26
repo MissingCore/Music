@@ -14,6 +14,7 @@ export const NowPlayingDesignOptions = [
   "vinyl",
   "vinylOld",
   "none",
+  "immersive"
 ] as const;
 
 export type NowPlayingDesign = (typeof NowPlayingDesignOptions)[number];
