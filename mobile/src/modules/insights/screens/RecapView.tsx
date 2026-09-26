@@ -47,6 +47,7 @@ import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { AccentText } from "~/components/Typography/AccentText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
+import { RECENT_RANGE_MS } from "../core/constants";
 import { generateRecapRange } from "../helpers/generateRecapRange";
 
 //#region Recap Time Range
@@ -58,6 +59,7 @@ interface State {
 
 type Action =
   | { type: "all-time" }
+  | { type: "this-week" }
   | { type: "month"; payload: Date }
   | { type: "year"; payload: Date };
 
@@ -66,6 +68,19 @@ const recapRangeReducer = (_: State, action: Action): State => {
     return {
       rangeLabel: i18next.t("feat.recap.extra.allTime"),
       startEpoch: sessionStore.getState().recapStartEpoch,
+      endEpoch: undefined,
+    };
+  } else if (action.type === "this-week") {
+    const todayDate = new Date();
+    const todayEpoch = Epoch.from({
+      day: todayDate.getDate(),
+      month: todayDate.getMonth(),
+      year: todayDate.getFullYear(),
+    });
+
+    return {
+      rangeLabel: i18next.t("feat.recap.extra.thisWeek"),
+      startEpoch: todayEpoch - RECENT_RANGE_MS,
       endEpoch: undefined,
     };
   } else if (action.type === "month") {
@@ -168,17 +183,30 @@ function TimeRangeSheet(props: {
           </Ripple>
         )}
         ListHeaderComponent={
-          <Ripple
-            onPress={() => {
-              props.dispatch({ type: "all-time" });
-              props.ref.current?.dismiss();
-            }}
-          >
-            <TStyledText
-              textKey="feat.recap.extra.allTime"
-              className="text-lg"
-            />
-          </Ripple>
+          <>
+            <Ripple
+              onPress={() => {
+                props.dispatch({ type: "all-time" });
+                props.ref.current?.dismiss();
+              }}
+            >
+              <TStyledText
+                textKey="feat.recap.extra.allTime"
+                className="text-lg"
+              />
+            </Ripple>
+            <Ripple
+              onPress={() => {
+                props.dispatch({ type: "this-week" });
+                props.ref.current?.dismiss();
+              }}
+            >
+              <TStyledText
+                textKey="feat.recap.extra.thisWeek"
+                className="text-lg"
+              />
+            </Ripple>
+          </>
         }
         nestedScrollEnabled
         contentContainerClassName="pb-4"

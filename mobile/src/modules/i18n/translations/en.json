@@ -248,6 +248,7 @@
 
         "timeRange": "Time Range",
         "allTime": "All-Time",
+        "thisWeek": "This Week",
 
         "listeningTime": "Listening Time",
         "totalListeningTime": "Total $t(feat.recap.extra.listeningTime)",
