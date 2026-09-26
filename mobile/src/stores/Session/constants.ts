@@ -11,6 +11,8 @@ import type { PopStrategy } from "./types";
 export interface SessionStore {
   /** Time since epoch where we started recording play events. */
   recapStartEpoch: number;
+  /** Epoch of time 7 days ago. */
+  lastDaysStartEpoch: number;
   /** Time range we'll display by default on the "Recap" screen. */
   defaultRecapRange: {
     rangeLabel: string;

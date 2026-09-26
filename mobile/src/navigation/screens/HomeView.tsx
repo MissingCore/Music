@@ -6,8 +6,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Trans, useTranslation } from "react-i18next";
 import { View } from "react-native";
 
+import { useSessionStore } from "~/stores/Session/store";
+
 import { useHasNewUpdate } from "~/navigation/hooks/useHasNewUpdate";
 
+import { Seconds } from "~/utils/date";
 import { ScrollView } from "~/components/Base/ScrollView";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { Icon } from "~/components/next/base/icon";
@@ -16,6 +19,7 @@ import { Text, TText } from "~/components/next/base/typography";
 import { IconButton } from "~/components/next/blocks/icon-button";
 import { useTheme } from "~/modules/customization/theme/hooks";
 import { RECENT_DAY_RANGE } from "~/modules/insights/core/constants";
+import { useRecap } from "~/modules/insights/helpers/useRecap";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -78,6 +82,8 @@ function Header() {
 function WeeklyRecap() {
   const { t } = useTranslation();
   const { primary } = useTheme();
+  const last7DaysEpoch = useSessionStore((s) => s.lastDaysStartEpoch);
+  const { data } = useRecap(last7DaysEpoch);
 
   return (
     <View>
@@ -91,11 +97,16 @@ function WeeklyRecap() {
           i18nKey="feat.greeting.extra.weeklyRecap"
           parent={Text}
           values={{
-            listeningTime: `${80} min`,
+            listeningTime: Seconds.toReadableTime(
+              data?.overview.totalListeningTime ?? 0,
+              true,
+            ),
             playCount: t("feat.recap.extra.playCount", {
-              count: 137,
+              count: data?.overview.totalPlays ?? 0,
             }).toLocaleLowerCase(),
-            uniqueTracks: t("plural.track", { count: 87 }).toLocaleLowerCase(),
+            uniqueTracks: t("plural.track", {
+              count: data?.overview.uniqueTracks ?? 0,
+            }).toLocaleLowerCase(),
             amount: RECENT_DAY_RANGE,
           }}
           components={{ b: <RecapStat /> }}
