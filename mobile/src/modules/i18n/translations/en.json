@@ -416,6 +416,13 @@
       }
     },
 
+    "greeting": {
+      "title": "Welcome Back",
+      "extra": {
+        "weeklyRecap": "You listened to <b>{{listeningTime}}</b> of music from <b>{{playCount}}</b> through <b>{{uniqueTracks}}</b> in the past 7 days."
+      }
+    },
+
     "playedRecent": {
       "title": "Recently Played",
       "extra": {

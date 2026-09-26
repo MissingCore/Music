@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useNavigation } from "@react-navigation/native";
-import { useTranslation } from "react-i18next";
+import { LinearGradient } from "expo-linear-gradient";
+import { Trans, useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { useFavoriteListsForCards } from "~/data/favorite/queries";
@@ -16,8 +17,9 @@ import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { TEm } from "~/components/Typography/StyledText";
 import { Icon } from "~/components/next/base/icon";
 import { Ripple } from "~/components/next/base/ripple";
-import { TText } from "~/components/next/base/typography";
+import { Text, TText } from "~/components/next/base/typography";
 import { IconButton } from "~/components/next/blocks/icon-button";
+import { useTheme } from "~/modules/customization/theme/hooks";
 import { useMediaCardListPreset } from "~/modules/media/components/MediaCard";
 
 export default function Home() {
@@ -25,22 +27,26 @@ export default function Home() {
   const navigation = useNavigation();
 
   return (
-    <ScrollView stickyHeaderIndices={[0]}>
+    <>
       <Header />
-      <NScrollLayout
-        titleKey="term.home"
-        Actions={
-          <FilledIconButton
-            icon="history"
-            accessibilityLabel={t("feat.playedRecent.title")}
-            onPress={() => navigation.navigate("RecentlyPlayed")}
-          />
-        }
-      >
-        <TEm textKey="term.favorites" className="-mb-4" />
-        <Favorites />
-      </NScrollLayout>
-    </ScrollView>
+      <ScrollView>
+        <WeeklyRecap />
+
+        <NScrollLayout
+          titleKey="term.home"
+          Actions={
+            <FilledIconButton
+              icon="history"
+              accessibilityLabel={t("feat.playedRecent.title")}
+              onPress={() => navigation.navigate("RecentlyPlayed")}
+            />
+          }
+        >
+          <TEm textKey="term.favorites" className="-mb-4" />
+          <Favorites />
+        </NScrollLayout>
+      </ScrollView>
+    </>
   );
 }
 
@@ -50,7 +56,7 @@ function Header() {
   const navigation = useNavigation();
   const { hasNewUpdate } = useHasNewUpdate();
   return (
-    <View className="z-50 flex-row justify-end gap-4 p-4 pt-safe-offset-8">
+    <View className="absolute inset-x-0 top-0 z-50 flex-row justify-end gap-4 p-4 pt-safe-offset-8">
       {hasNewUpdate ? (
         <Ripple
           rippleColor="secondaryDim"
@@ -77,6 +83,50 @@ function Header() {
         filled
       />
     </View>
+  );
+}
+//#endregion
+
+//#region Weekly Recap
+function WeeklyRecap() {
+  const { t } = useTranslation();
+  const { primary } = useTheme();
+
+  return (
+    <View>
+      <View className="gap-2 bg-primary px-4 pt-40 pb-8">
+        <TText
+          textKey="feat.greeting.title"
+          intent="accent"
+          className="text-5xl leading-none! text-onPrimary"
+        />
+        <Trans
+          i18nKey="feat.greeting.extra.weeklyRecap"
+          parent={Text}
+          values={{
+            listeningTime: `${80} min`,
+            playCount: t("feat.recap.extra.playCount", {
+              count: 137,
+            }).toLocaleLowerCase(),
+            uniqueTracks: t("plural.track", { count: 87 }).toLocaleLowerCase(),
+          }}
+          components={{ b: <RecapStat /> }}
+          className="max-w-md text-onPrimaryVariant"
+        />
+      </View>
+      <LinearGradient
+        colors={[`${primary}FF`, `${primary}00`]}
+        className="h-16 w-full"
+      />
+    </View>
+  );
+}
+
+function RecapStat({ children }: { children?: React.ReactNode }) {
+  return (
+    <Text bold className="text-onPrimary">
+      {children}
+    </Text>
   );
 }
 //#endregion
