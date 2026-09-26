@@ -141,7 +141,10 @@ function WeeklyRecap() {
       <LinearGradient
         colors={colors}
         locations={locations}
-        className="h-32 w-full"
+        //? `-translate-y-1` is to counter-act the Android "grow" navigation
+        //? transition animation, which may cause a gap to show between the
+        //? gradient & 7 day recap container.
+        className="h-32 w-full -translate-y-1"
       />
     </View>
   );
