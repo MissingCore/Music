@@ -15,6 +15,7 @@ import { Ripple } from "~/components/next/base/ripple";
 import { Text, TText } from "~/components/next/base/typography";
 import { IconButton } from "~/components/next/blocks/icon-button";
 import { useTheme } from "~/modules/customization/theme/hooks";
+import { RECENT_DAY_RANGE } from "~/modules/insights/core/constants";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -95,6 +96,7 @@ function WeeklyRecap() {
               count: 137,
             }).toLocaleLowerCase(),
             uniqueTracks: t("plural.track", { count: 87 }).toLocaleLowerCase(),
+            amount: RECENT_DAY_RANGE,
           }}
           components={{ b: <RecapStat /> }}
           className="max-w-md text-onPrimaryVariant"

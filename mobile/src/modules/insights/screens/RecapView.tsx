@@ -47,7 +47,7 @@ import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { AccentText } from "~/components/Typography/AccentText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
-import { RECENT_RANGE_MS } from "../core/constants";
+import { RECENT_DAY_RANGE, RECENT_RANGE_MS } from "../core/constants";
 import { generateRecapRange } from "../helpers/generateRecapRange";
 
 //#region Recap Time Range
@@ -59,7 +59,7 @@ interface State {
 
 type Action =
   | { type: "all-time" }
-  | { type: "this-week" }
+  | { type: "last-7-days" }
   | { type: "month"; payload: Date }
   | { type: "year"; payload: Date };
 
@@ -70,7 +70,7 @@ const recapRangeReducer = (_: State, action: Action): State => {
       startEpoch: sessionStore.getState().recapStartEpoch,
       endEpoch: undefined,
     };
-  } else if (action.type === "this-week") {
+  } else if (action.type === "last-7-days") {
     const todayDate = new Date();
     const todayEpoch = Epoch.from({
       day: todayDate.getDate(),
@@ -79,7 +79,9 @@ const recapRangeReducer = (_: State, action: Action): State => {
     });
 
     return {
-      rangeLabel: i18next.t("feat.recap.extra.thisWeek"),
+      rangeLabel: i18next.t("feat.recap.extra.lastDays", {
+        amount: RECENT_DAY_RANGE,
+      }),
       startEpoch: todayEpoch - RECENT_RANGE_MS,
       endEpoch: undefined,
     };
@@ -156,6 +158,7 @@ function TimeRangeSheet(props: {
   ref: TrueSheetRef;
   dispatch: ActionDispatch<[action: Action]>;
 }) {
+  const { t } = useTranslation();
   const recapStartEpoch = useSessionStore((s) => s.recapStartEpoch);
 
   const options = useMemo(
@@ -197,14 +200,13 @@ function TimeRangeSheet(props: {
             </Ripple>
             <Ripple
               onPress={() => {
-                props.dispatch({ type: "this-week" });
+                props.dispatch({ type: "last-7-days" });
                 props.ref.current?.dismiss();
               }}
             >
-              <TStyledText
-                textKey="feat.recap.extra.thisWeek"
-                className="text-lg"
-              />
+              <StyledText className="text-lg">
+                {t("feat.recap.extra.lastDays", { amount: RECENT_DAY_RANGE })}
+              </StyledText>
             </Ripple>
           </>
         }

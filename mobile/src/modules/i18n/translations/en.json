@@ -248,7 +248,7 @@
 
         "timeRange": "Time Range",
         "allTime": "All-Time",
-        "thisWeek": "This Week",
+        "lastDays": "Last {{amount}} Days",
 
         "listeningTime": "Listening Time",
         "totalListeningTime": "Total $t(feat.recap.extra.listeningTime)",
@@ -420,7 +420,7 @@
     "greeting": {
       "title": "Welcome Back",
       "extra": {
-        "weeklyRecap": "You listened to <b>{{listeningTime}}</b> of music from <b>{{playCount}}</b> through <b>{{uniqueTracks}}</b> in the past 7 days."
+        "weeklyRecap": "You listened to <b>{{listeningTime}}</b> of music from <b>{{playCount}}</b> through <b>{{uniqueTracks}}</b> in the past {{amount}} days."
       }
     },
 
