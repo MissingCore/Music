@@ -32,11 +32,11 @@
     "playingFrom": "Reproduciendo desde",
     "instructions": "Instrucciones",
     "disc": "Disco {{count}}",
-    "eps": null,
-    "singles": null,
-    "share": null,
-    "expand": null,
-    "minimize": null
+    "eps": "EPs",
+    "singles": "Sencillos",
+    "share": "Compartir",
+    "expand": "Expandir",
+    "minimize": "Minimizar"
   },
   "template": {
     "entryAdd": "Agregar {{- name}}",
@@ -202,11 +202,11 @@
       }
     },
     "dbOptimization": {
-      "title": null,
-      "brief": null,
+      "title": "Optimizar base de datos",
+      "brief": "Hay {{count}} objetivos disponibles para optimizar.",
       "extra": {
-        "start": null,
-        "success": null
+        "start": "Optimizando...",
+        "success": "Optimización finalizada."
       }
     },
     "recap": {
@@ -254,8 +254,8 @@
       "brief": "Evita que \"Repetir una\" cambie al saltar canción."
     },
     "reshuffleOnLaunch": {
-      "title": null,
-      "brief": null
+      "title": "Volver a mezclar al lanzar la app",
+      "brief": "Volver a mezclar la cola al lanzar la app si el aleatorio está activado."
     },
     "restoreLastPosition": {
       "title": "Restaurar última posición"
@@ -429,7 +429,7 @@
         "name": "Nombre",
         "trackNumber": "Número de canción",
         "year": "Año",
-        "overrideFields": null
+        "overrideFields": "Proporcionar un valor a los siguientes campos anulará los valores asignados en todas las canciones del álbum."
       }
     },
     "modalViewPreference": {
