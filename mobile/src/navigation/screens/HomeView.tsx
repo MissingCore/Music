@@ -70,7 +70,7 @@ export default function Home() {
       <TopAppBar />
       <ScrollView
         contentContainerStyle={{ paddingBottom: bottomOffset }}
-        contentContainerClassName="gap-6"
+        contentContainerClassName="gap-8"
       >
         <WeeklyRecap />
         <RecentlyPlayed />
@@ -271,7 +271,7 @@ function RecentGroup(props: {
       <Ripple
         accessibilityLabel={t(props.label)}
         onPress={props.onLabelPress}
-        className="-mb-4 flex-row items-center gap-2 px-4"
+        className="-mb-6 flex-row items-center gap-2 px-4 py-1"
       >
         <Marquee wrapperClassName="grow-0">
           <TText
@@ -326,7 +326,7 @@ const linkMap = [
 function HomeLinks() {
   const navigation = useNavigation();
   return (
-    <View className="mt-6 gap-0.75 px-4">
+    <View className="gap-0.75 px-4">
       {linkMap.map(({ icon, labelKey, screen }, idx) => (
         <Ripple
           key={labelKey}
