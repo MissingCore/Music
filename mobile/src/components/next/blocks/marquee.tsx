@@ -88,6 +88,7 @@ export function Marquee(props: MarqueeProps) {
       <ScrollView
         onLayout={(e) => containerWidth.set(e.nativeEvent.layout.width)}
         horizontal
+        contentContainerClassName="items-center"
       >
         <Animated.View
           onLayout={(e) => contentWidth.set(e.nativeEvent.layout.width)}

@@ -30,6 +30,7 @@ import { Icon } from "~/components/next/base/icon";
 import { Ripple } from "~/components/next/base/ripple";
 import { Text, TText } from "~/components/next/base/typography";
 import { IconButton } from "~/components/next/blocks/icon-button";
+import { Marquee } from "~/components/next/blocks/marquee";
 import { TrackItem } from "~/components/next/composed/track-item";
 import { useTheme } from "~/modules/customization/theme/hooks";
 import {
@@ -256,7 +257,13 @@ function RecentGroup(props: {
         onPress={props.onLabelPress}
         className="-mb-4 flex-row items-center gap-2 px-4"
       >
-        <TText textKey={props.label} intent="accent" />
+        <Marquee wrapperClassName="grow-0">
+          <TText
+            textKey={props.label}
+            intent="accent"
+            className="leading-none!"
+          />
+        </Marquee>
         <View className="rtl:rotate-180">
           <Icon name="keyboard-arrow-right" size={32} />
         </View>
