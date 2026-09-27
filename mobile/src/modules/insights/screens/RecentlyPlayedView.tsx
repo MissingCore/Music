@@ -54,7 +54,7 @@ export default function RecentlyPlayed() {
   return (
     <LegendList
       numColumns={listLayout.count}
-      estimatedItemSize={listLayout.width + 4}
+      estimatedItemSize={60} // 56px Height + 4px Margin Bottom
       data={listData}
       keyExtractor={({ id }) => id}
       renderItem={({ item }) => (
@@ -78,7 +78,7 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
       horizontal
       data={props.data}
       keyExtractor={({ id, type }) => `${type}_${id}`}
-      renderItem={({ item, index }) => (
+      renderItem={({ item }) => (
         <ImageCard
           label={item.title}
           supporting={item.description}
@@ -98,10 +98,9 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
             if (linkInfo[0] === "HomeScreens") navigation.popTo(...linkInfo);
             else navigation.navigate(...linkInfo);
           }}
-          className={index > 0 ? "ml-1" : undefined}
         />
       )}
-      className="-mx-4"
+      className="-mx-4 -mb-1"
       contentContainerClassName="px-4 pb-6"
     />
   );

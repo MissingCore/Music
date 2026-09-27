@@ -276,7 +276,6 @@ export function FavoriteMedia(props: {
           label={item.title}
           supporting={item.description}
           onPress={() => props.onPress(item.id)}
-          className="mx-0.5 mb-1"
         />
       )}
       scrollEnabled={false}
@@ -325,8 +324,11 @@ export function MediaList<TData>({
     use(LibraryLayoutContext);
   const listLayout = useListLayoutConfig();
   const compactGridLayout = useCompactGridLayoutConfig();
-  const config = asGrid && !_renderItem ? compactGridLayout : listLayout;
+  const actuallyUseGrid = asGrid && !_renderItem;
+  const config = actuallyUseGrid ? compactGridLayout : listLayout;
   const prevConfig = useRef({ cols: config.count, width: config.width });
+
+  const estimatedItemSize = (actuallyUseGrid ? config.width : 56) + 4;
 
   const keyExtractor = useMemo<LegendListProps<any>["keyExtractor"]>(() => {
     if (_renderItem) return _keyExtractor;
@@ -344,7 +346,6 @@ export function MediaList<TData>({
           label={item.title}
           supporting={!asGrid ? item.description : undefined}
           onPress={() => onPress(item.id)}
-          className="mx-0.5 mb-1"
         />
       );
     };
@@ -365,7 +366,7 @@ export function MediaList<TData>({
     <LegendList
       ref={scrollRef}
       numColumns={config.count}
-      estimatedItemSize={config.width + 4}
+      estimatedItemSize={estimatedItemSize}
       data={data}
       keyExtractor={keyExtractor}
       renderItem={renderItem}

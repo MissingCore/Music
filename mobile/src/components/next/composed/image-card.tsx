@@ -33,7 +33,7 @@ export function ImageCard(props: ImageCardProps) {
     <Ripple
       pointerEvents="box-only"
       onPress={props.onPress}
-      className={cn("relative rounded-lg", props.className)}
+      className={cn("relative mx-0.5 mb-1 rounded-lg", props.className)}
     >
       <MediaImage src={props.src} size={props.size} />
       <LinearGradient
@@ -76,7 +76,7 @@ export function LargeImageCard(
       onPress={props.onPress}
       className={cardStyle({
         padding: false,
-        className: cn("p-1", props.className),
+        className: cn("mx-0.5 mb-1 p-1", props.className),
       })}
     >
       <MediaImage src={props.src} size={imgSize} className="rounded-md" />
