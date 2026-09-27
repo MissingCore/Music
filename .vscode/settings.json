@@ -33,7 +33,8 @@
     "backdropColorClassName",
     "backgroundColorClassName",
     "ListFooterComponentClassName",
-    "ListHeaderComponentClassName"
+    "ListHeaderComponentClassName",
+    "wrapperClassName"
   ],
   "tailwindCSS.classFunctions": ["cn", "cva", "cx", "useResolveClassNames"]
 }
