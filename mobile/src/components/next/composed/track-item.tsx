@@ -38,6 +38,11 @@ interface TrackItemProps {
   showIndicator?: boolean;
   Leading?: React.ReactNode;
   className?: string;
+  /**
+   * Escape hatch to run some logic after we play a track. For example,
+   * we can update the sort order of the track list and refresh the queue.
+   */
+  _onAfterPlayPress?: () => void | Promise<void>;
 }
 
 export function TrackItem({
@@ -46,6 +51,7 @@ export function TrackItem({
   Leading,
   showIndicator,
   className,
+  _onAfterPlayPress,
   ...props
 }: TrackItemProps) {
   const isMultiSelectEnabled = useTrackMultiSelectStore((s) => s.enabled);
@@ -58,12 +64,16 @@ export function TrackItem({
 
   const normalActions: Partial<ImageListItemProps> = useMemo(
     () => ({
-      onPress: () =>
-        PlaybackControls.playFromList({ trackId: id, source: trackSource }),
+      onPress: () => {
+        PlaybackControls.playFromList({
+          trackId: id,
+          source: trackSource,
+        }).then(() => _onAfterPlayPress?.());
+      },
       onLongPress: TrackMultiSelect.enable,
       Trailing: <TrackAction id={id} title={props.title} />,
     }),
-    [id, trackSource, props.title],
+    [id, trackSource, _onAfterPlayPress, props.title],
   );
 
   const multiSelectActions: Partial<ImageListItemProps> = useMemo(

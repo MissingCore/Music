@@ -12,8 +12,10 @@ import { easeGradient } from "react-native-easing-gradient";
 import { ScrollView as GestureScrollView } from "react-native-gesture-handler";
 import { createAnimatedComponent } from "react-native-reanimated";
 
+import { Queue } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { useSessionStore } from "~/stores/Session/store";
+import { viewPreferenceStore } from "~/stores/ViewPreference/store";
 import type { LayoutItem } from "~/stores/ViewPreference/types";
 import { useGetLayoutConfig } from "~/hooks/useLayoutConfigs";
 
@@ -119,7 +121,7 @@ function WeeklyRecap() {
   );
 
   return (
-    <View>
+    <View className="-mb-6">
       <View className="gap-4 bg-primary px-4 pt-48 pb-1">
         <TText
           textKey="feat.greeting.title"
@@ -178,6 +180,24 @@ function RecapStat({ children }: { children?: React.ReactNode }) {
 //#endregion
 
 //#region Recent Sections
+/**
+ * Update track preference to show recently discovered tracks. Returns boolean
+ * indiciating that "Tracks" view preference has been changed.
+ */
+function updateTrackViewPreference() {
+  const { trackIsAsc, trackOrder } = viewPreferenceStore.getState();
+
+  const updatedPreferences: Array<[string, any]> = [];
+  if (trackIsAsc !== false) updatedPreferences.push(["trackIsAsc", false]);
+  if (trackOrder !== "discoverTime")
+    updatedPreferences.push(["trackOrder", "discoverTime"]);
+
+  if (updatedPreferences.length > 0)
+    viewPreferenceStore.setState(Object.fromEntries(updatedPreferences));
+
+  return updatedPreferences.length !== 0;
+}
+
 function RecentlyPlayed() {
   const navigation = useNavigation();
   const { data } = useRecentlyPlayedTracks();
@@ -195,10 +215,14 @@ function RecentlyDiscovered() {
   return (
     <RecentGroup
       label="feat.recent.extra.recentlyDiscovered"
-      onLabelPress={() =>
-        navigation.navigate("HomeScreens", { screen: "Tracks" })
-      }
+      onLabelPress={() => {
+        updateTrackViewPreference();
+        navigation.navigate("HomeScreens", { screen: "Tracks" });
+      }}
       data={data}
+      onTrackPlay={async () => {
+        if (updateTrackViewPreference()) await Queue.synchronize();
+      }}
     />
   );
 }
@@ -214,6 +238,7 @@ function RecentGroup(props: {
   label: ParseKeys;
   onLabelPress: VoidFunction;
   data?: LayoutItem[];
+  onTrackPlay?: () => void | Promise<void>;
 }) {
   const { t } = useTranslation();
   const { width } = useGetLayoutConfig(columnConfigs);
@@ -245,7 +270,11 @@ function RecentGroup(props: {
             data={item}
             keyExtractor={({ id }) => id}
             renderItem={({ item }) => (
-              <TrackItem {...item} trackSource={trackSource} />
+              <TrackItem
+                {...item}
+                trackSource={trackSource}
+                _onAfterPlayPress={props.onTrackPlay}
+              />
             )}
             scrollEnabled={false}
             style={{ width }}
