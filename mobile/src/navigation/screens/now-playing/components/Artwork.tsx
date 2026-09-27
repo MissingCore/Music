@@ -41,7 +41,7 @@ export function ArtworkPicker(props: ArtworkProps) {
   if (usedDesign === "plain") return <PlainArtwork {...props} />;
   else if (usedDesign === "vinyl") return <VinylSeekBar {...props} />;
   else if (usedDesign === "vinylOld") return <VinylLegacy {...props} />;
-  else if (usedDesign === "immersive") return <ImmersiveArtwork artwork={props.source}/>
+  else if (usedDesign === "immersive") return <Immersive {...props}/>
   return null;
 }
 
@@ -151,4 +151,18 @@ function VinylLegacy(props: ArtworkProps) {
       </Animated.View>
     </View>
   );
+}
+
+
+function Immersive(props: ArtworkProps) {
+    const enableTapGesture = usePreferenceStore(
+    (s) => s.nowPlayingArtworkControls,
+  );
+
+  return <ImmersiveArtwork onPress={
+            enableTapGesture
+              ? PlaybackControls.playToggle
+              : undefined
+          }
+          source={props.source}/>
 }

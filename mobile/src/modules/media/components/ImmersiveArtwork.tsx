@@ -20,24 +20,24 @@ const ART_SCALE = 1.35;
 // Opacity of the full-screen black overlay when lyrics are shown.
 const LYRICS_SCRIM_OPACITY = 0.82;
 
-type Props = {
-  artwork: string | null;
-};
-
-export function ImmersiveArtwork({ artwork }: Props) {
+export function ImmersiveArtwork(props: {
+  onPress?: () => Promise<void> | void;
+  source: string | null
+}) {
   const showLyrics = useLyricStore((s) => s.visible);
 
-  if (!artwork) return null;
-  const uri = getImageUri(artwork);
+  if(!props.source) return null;
+  const uri = getImageUri(props.source);
   if (!uri) return null;
 
   const artHeight = width * ART_SCALE;
-
+  
   return (
-    <View pointerEvents="none" style={[StyleSheet.absoluteFill, { width, height }]}>
-      {/* Diffused base: blurred artwork, filling the screen. */}
-      
+    // Wrapper no longer blocks touches itself; individual layers opt out.
+    <View style={[StyleSheet.absoluteFill, { width, height }]}>
+      {/* Diffused base: blurred artwork, filling the screen. Not tappable. */}
       <View
+        pointerEvents="none"
         style={{
           position: "absolute",
           top: 0,
@@ -48,7 +48,8 @@ export function ImmersiveArtwork({ artwork }: Props) {
         }}
       />
 
-      {/* Sharp art on top, alpha-masked so it melts into the diffused base. */}
+      {/* Sharp art on top, alpha-masked so it melts into the diffused base.
+          This layer is tappable. */}
       <Svg
         width={width}
         height={artHeight}
@@ -72,6 +73,7 @@ export function ImmersiveArtwork({ artwork }: Props) {
           height={artHeight}
           preserveAspectRatio="xMidYMid slice"
           mask="url(#artMask)"
+          onPress={props.onPress}
         />
       </Svg>
 
@@ -88,7 +90,7 @@ export function ImmersiveArtwork({ artwork }: Props) {
             backgroundColor: "#000",
             opacity: showLyrics ? LYRICS_SCRIM_OPACITY : 0}, 
         ]}
-      />
+      />    
     </View>
   );
 }
