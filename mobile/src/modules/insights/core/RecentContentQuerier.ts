@@ -28,6 +28,7 @@ import { PlayedListsTracker } from "./PlayedListsTracker";
 const queryKey = {
   recentMedia: ["insights", "recent", "all"],
   recentTracks: ["insights", "recent", "tracks"],
+  recentDiscovered: ["insights", "recent", "discovered"],
 };
 
 export function useRecentlyPlayedMedia() {
@@ -43,6 +44,13 @@ export function useRecentlyPlayedTracks() {
   return useQuery({
     queryKey: queryKey.recentTracks,
     queryFn: () => getRecentTracks(24),
+  });
+}
+
+export function useRecentlyDiscoveredTracks() {
+  return useQuery({
+    queryKey: queryKey.recentDiscovered,
+    queryFn: () => getRecentDiscoveredTracks(24),
   });
 }
 
@@ -158,5 +166,21 @@ async function getRecentListEntry(source: PlayFromSource) {
   } catch {
     return { data: undefined, source, error: true } as const;
   }
+}
+
+/** Return tracks that were recently found by the app. */
+async function getRecentDiscoveredTracks(limit: number) {
+  const results = await db
+    .select(commonTrackColumns)
+    .from(structuredTracksView)
+    .orderBy(desc(structuredTracksView.discoverTime))
+    .limit(limit);
+
+  return results.map((track) => ({
+    id: track.id,
+    title: track.name,
+    description: getArtistsString(fromJSONArrayString(track.artists)),
+    imageSource: track.artwork,
+  }));
 }
 //#endregion

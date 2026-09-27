@@ -30,7 +30,10 @@ import { Text, TText } from "~/components/next/base/typography";
 import { IconButton } from "~/components/next/blocks/icon-button";
 import { TrackItem } from "~/components/next/composed/track-item";
 import { useTheme } from "~/modules/customization/theme/hooks";
-import { useRecentlyPlayedTracks } from "~/modules/insights/core/RecentContentQuerier";
+import {
+  useRecentlyDiscoveredTracks,
+  useRecentlyPlayedTracks,
+} from "~/modules/insights/core/RecentContentQuerier";
 import { RECENT_DAY_RANGE } from "~/modules/insights/core/constants";
 import { useRecap } from "~/modules/insights/helpers/useRecap";
 import { ReservedPlaylists } from "~/modules/media/constants";
@@ -53,6 +56,7 @@ export default function Home() {
       >
         <WeeklyRecap />
         <RecentlyPlayed />
+        <RecentlyDiscovered />
       </ScrollView>
     </>
   );
@@ -181,6 +185,19 @@ function RecentlyPlayed() {
     <RecentGroup
       label="feat.recent.extra.recentlyPlayed"
       onLabelPress={() => navigation.navigate("RecentlyPlayed")}
+      data={data}
+    />
+  );
+}
+function RecentlyDiscovered() {
+  const navigation = useNavigation();
+  const { data } = useRecentlyDiscoveredTracks();
+  return (
+    <RecentGroup
+      label="feat.recent.extra.recentlyDiscovered"
+      onLabelPress={() =>
+        navigation.navigate("HomeScreens", { screen: "Tracks" })
+      }
       data={data}
     />
   );
