@@ -23,6 +23,7 @@ import { useGetLayoutConfig } from "~/hooks/useLayoutConfigs";
 import { useHasNewUpdate } from "../hooks/useHasNewUpdate";
 import { useBottomActionsOffset } from "../components/BottomActions/useBottomActions";
 
+import { cn } from "~/lib/style";
 import { Seconds } from "~/utils/date";
 import { chunkArray } from "~/utils/object";
 import { FlatList } from "~/components/Base/List";
@@ -74,6 +75,7 @@ export default function Home() {
         <WeeklyRecap />
         <RecentlyPlayed />
         <RecentlyDiscovered />
+        <HomeLinks />
       </ScrollView>
     </>
   );
@@ -307,6 +309,44 @@ function RecentGroup(props: {
         contentContainerClassName="px-4"
       />
     </>
+  );
+}
+//#endregion
+
+//#region Home Links
+const linkMap = [
+  { icon: "album", labelKey: "term.albums", screen: "Albums" },
+  { icon: "artist", labelKey: "term.artists", screen: "Artists" },
+  { icon: "folder", labelKey: "term.folders", screen: "Folders" },
+  { icon: "genres", labelKey: "term.genres", screen: "Genres" },
+  { icon: "list", labelKey: "term.playlists", screen: "Playlists" },
+  { icon: "music-note", labelKey: "term.tracks", screen: "Tracks" },
+] as const;
+
+function HomeLinks() {
+  const navigation = useNavigation();
+  return (
+    <View className="mt-6 gap-0.75 px-4">
+      {linkMap.map(({ icon, labelKey, screen }, idx) => (
+        <Ripple
+          key={labelKey}
+          onPress={() => navigation.navigate("HomeScreens", { screen })}
+          className={cn(
+            "flex-row items-center gap-4 rounded-xs bg-surfaceContainerLowest p-3",
+            idx === 0 && "rounded-t-lg",
+            idx === linkMap.length - 1 && "rounded-b-lg",
+          )}
+        >
+          <Icon name={icon} size={32} />
+          <Marquee>
+            <TText textKey={labelKey} />
+          </Marquee>
+          <View className="rtl:rotate-180">
+            <Icon name="keyboard-arrow-right" size={32} />
+          </View>
+        </Ripple>
+      ))}
+    </View>
   );
 }
 //#endregion
