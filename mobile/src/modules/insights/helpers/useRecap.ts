@@ -145,7 +145,7 @@ const queryKey = ["insights", "recap"];
 
 export function useRecap(startEpoch: number, endEpoch?: number) {
   return useQuery({
-    queryKey: [...queryKey, { startEpoch, endEpoch }],
+    queryKey: [...queryKey, startEpoch, endEpoch],
     queryFn: () => getRecap(startEpoch, endEpoch),
   });
 }

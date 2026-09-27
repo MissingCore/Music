@@ -1,11 +1,12 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useQueryClient } from "@tanstack/react-query";
 import type { LinearGradientProps } from "expo-linear-gradient";
 import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { easeGradient } from "react-native-easing-gradient";
@@ -44,11 +45,24 @@ import { ReservedPlaylists } from "~/modules/media/constants";
 const AnimatedGestureScrollView = createAnimatedComponent(GestureScrollView);
 
 export default function Home() {
+  const queryClient = useQueryClient();
   const showNavbar = usePreferenceStore((s) => s.showNavbar);
+  const last7DaysEpoch = useSessionStore((s) => s.lastDaysStartEpoch);
   const bottomOffset = useBottomActionsOffset({
     maxRows: showNavbar ? 2 : 1,
     rowAlwaysVisible: true,
   });
+
+  useFocusEffect(
+    useCallback(() => {
+      queryClient.invalidateQueries({
+        queryKey: ["insights", "recent", "tracks"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["insights", "recap", last7DaysEpoch],
+      });
+    }, [queryClient, last7DaysEpoch]),
+  );
 
   return (
     <>
