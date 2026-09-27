@@ -423,13 +423,15 @@
         "weeklyRecap": "You listened to <b>{{listeningTime}}</b> of music from <b>{{playCount}}</b> through <b>{{uniqueTracks}}</b> in the past {{amount}} days."
       }
     },
-
-    "playedRecent": {
-      "title": "Recently Played",
+    "recent": {
       "extra": {
-        "notFound": "Nothing was played in the last {{amount}} days."
+        "recentlyPlayed": "Recently Played",
+        "recentlyPlayedNone": "Nothing was played in the last {{amount}} days.",
+
+        "recentlyDiscovered": "Recently Discovered"
       }
     },
+
     "search": {
       "title": "Search",
       "extra": {

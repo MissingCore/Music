@@ -44,7 +44,7 @@ export default function RecentlyPlayed() {
     return (
       <PagePlaceholder
         isPending={isPending}
-        errMsg={t("feat.playedRecent.extra.notFound", {
+        errMsg={t("feat.recent.extra.recentlyPlayedNone", {
           amount: RECENT_DAY_RANGE,
         })}
       />

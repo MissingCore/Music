@@ -179,7 +179,7 @@ function RecentlyPlayed() {
   const { data } = useRecentlyPlayedTracks();
   return (
     <RecentGroup
-      label="feat.playedRecent.title"
+      label="feat.recent.extra.recentlyPlayed"
       onLabelPress={() => navigation.navigate("RecentlyPlayed")}
       data={data}
     />

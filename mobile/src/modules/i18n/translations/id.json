@@ -384,10 +384,11 @@
         "saveImages": "Menyimpan Gambar"
       }
     },
-    "playedRecent": {
-      "title": "Baru Saja Diputar",
+    "recent": {
       "extra": {
-        "notFound": "Tidak ada yang diputar dalam {{amount}} hari terakhir."
+        "recentlyPlayed": "Baru Saja Diputar",
+        "recentlyPlayedNone": "Tidak ada yang diputar dalam {{amount}} hari terakhir.",
+        "recentlyDiscovered": null
       }
     },
     "search": {

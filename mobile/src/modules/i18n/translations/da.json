@@ -384,10 +384,11 @@
         "saveImages": "Gemmer billeder"
       }
     },
-    "playedRecent": {
-      "title": "Nyligt afspillet",
+    "recent": {
       "extra": {
-        "notFound": "Intet blev spillet i de seneste {{amount}} dage."
+        "recentlyPlayed": "Nyligt afspillet",
+        "recentlyPlayedNone": "Intet blev spillet i de seneste {{amount}} dage.",
+        "recentlyDiscovered": null
       }
     },
     "search": {

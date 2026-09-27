@@ -384,10 +384,11 @@
         "saveImages": "Desant imatges"
       }
     },
-    "playedRecent": {
-      "title": "Reproduït fa poc",
+    "recent": {
       "extra": {
-        "notFound": null
+        "recentlyPlayed": "Reproduït fa poc",
+        "recentlyPlayedNone": null,
+        "recentlyDiscovered": null
       }
     },
     "search": {

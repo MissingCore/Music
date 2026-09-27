@@ -384,10 +384,11 @@
         "saveImages": "保存图片"
       }
     },
-    "playedRecent": {
-      "title": "最近播放",
+    "recent": {
       "extra": {
-        "notFound": null
+        "recentlyPlayed": "最近播放",
+        "recentlyPlayedNone": null,
+        "recentlyDiscovered": null
       }
     },
     "search": {
