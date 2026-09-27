@@ -384,10 +384,11 @@
         "saveImages": "Guardando imágenes"
       }
     },
-    "playedRecent": {
-      "title": "Reproducido recientemente",
+    "recent": {
       "extra": {
-        "notFound": "No se reprodujo nada en los últimos {{amount}} días."
+        "recentlyPlayed": "Reproducido recientemente",
+        "recentlyPlayedNone": "No se reprodujo nada en los últimos {{amount}} días.",
+        "recentlyDiscovered": null
       }
     },
     "search": {

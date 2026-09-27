@@ -68,7 +68,6 @@ export function useFavoritePlaylist(playlistName: string) {
           entry.id === playlistName ? { ...entry, isFavorite } : entry,
         ),
       );
-      queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
     },
   });
 }

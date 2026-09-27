@@ -29,7 +29,8 @@
     "backdropColorClassName",
     "backgroundColorClassName",
     "ListFooterComponentClassName",
-    "ListHeaderComponentClassName"
+    "ListHeaderComponentClassName",
+    "wrapperClassName"
   ],
   "tailwindFunctions": ["cn", "cva", "cx", "useResolveClassNames"]
 }

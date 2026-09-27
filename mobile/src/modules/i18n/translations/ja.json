@@ -384,10 +384,11 @@
         "saveImages": "画像を保存"
       }
     },
-    "playedRecent": {
-      "title": "最近に再生",
+    "recent": {
       "extra": {
-        "notFound": "過去 {{amount}} 日間何も再生されませんでした。"
+        "recentlyPlayed": "最近に再生",
+        "recentlyPlayedNone": "過去 {{amount}} 日間何も再生されませんでした。",
+        "recentlyDiscovered": null
       }
     },
     "search": {

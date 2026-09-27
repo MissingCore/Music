@@ -41,6 +41,7 @@
 | react-native-android-widget | MIT | https://github.com/sAleksovski/react-native-android-widget |
 | react-native-audio-browser | MIT | https://github.com/radio-garden/react-native-audio-browser |
 | react-native-bootsplash | MIT | https://github.com/zoontek/react-native-bootsplash |
+| react-native-easing-gradient | MIT | https://github.com/tienphaw/react-native-easing-gradient |
 | react-native-gesture-handler | MIT | https://github.com/software-mansion/react-native-gesture-handler |
 | react-native-keyboard-controller | MIT | https://github.com/kirillzyusko/react-native-keyboard-controller |
 | react-native-markdown-renderer | MIT | https://github.com/mientjan/react-native-markdown-renderer |

@@ -51,7 +51,7 @@ export default function Insights() {
       <SegmentedList.Item
         labelText="feat.recap.title"
         supportingText={t("feat.recap.brief")}
-        onPress={() => navigation.navigate("Recap")}
+        onPress={() => navigation.navigate("Recap", {})}
       />
 
       <SegmentedList>

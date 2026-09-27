@@ -384,10 +384,11 @@
         "saveImages": "Salvataggio immagini in corso"
       }
     },
-    "playedRecent": {
-      "title": "Riprodotti di recente",
+    "recent": {
       "extra": {
-        "notFound": null
+        "recentlyPlayed": "Riprodotti di recente",
+        "recentlyPlayedNone": null,
+        "recentlyDiscovered": null
       }
     },
     "search": {

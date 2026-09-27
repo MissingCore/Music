@@ -59,6 +59,7 @@
     "react-native-android-widget": "0.22.1",
     "react-native-audio-browser": "github:MissingCore/react-native-audio-browser#05f7af440edc29222d12a0acc58234f5cb51433d",
     "react-native-bootsplash": "7.3.3",
+    "react-native-easing-gradient": "1.1.1",
     "react-native-gesture-handler": "3.3.0",
     "react-native-keyboard-controller": "1.22.5",
     "react-native-markdown-renderer": "4.1.1",

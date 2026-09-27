@@ -97,7 +97,6 @@ export function useToggleTrackInPlaylist(trackId: string) {
       } else {
         queryClient.invalidateQueries({ queryKey: q.playlists._def });
       }
-      queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
     },
   });
 }

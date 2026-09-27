@@ -47,7 +47,6 @@ export function TrackToPlaylistsSheet({ id }: { id: string }) {
   const handleSheetClose = useCallback(async () => {
     queryClient.invalidateQueries({ queryKey: q.tracks.detail(id).queryKey });
     queryClient.invalidateQueries({ queryKey: q.playlists._def });
-    queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
   }, [queryClient, id]);
 
   return (

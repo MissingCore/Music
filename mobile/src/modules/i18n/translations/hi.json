@@ -384,10 +384,11 @@
         "saveImages": "छवियाँ सहेज रहा है"
       }
     },
-    "playedRecent": {
-      "title": "हाल ही में चलाए गए",
+    "recent": {
       "extra": {
-        "notFound": "पिछले {{amount}} दिनों में कुछ भी नहीं खेला गया।"
+        "recentlyPlayed": "हाल ही में चलाए गए",
+        "recentlyPlayedNone": "पिछले {{amount}} दिनों में कुछ भी नहीं खेला गया।",
+        "recentlyDiscovered": null
       }
     },
     "search": {

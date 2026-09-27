@@ -384,10 +384,11 @@
         "saveImages": "Speicher Bilder"
       }
     },
-    "playedRecent": {
-      "title": "Kürzlich gehört",
+    "recent": {
       "extra": {
-        "notFound": "In den letzten {{amount}} Tagen wurde nichts abgespielt."
+        "recentlyPlayed": "Kürzlich gehört",
+        "recentlyPlayedNone": "In den letzten {{amount}} Tagen wurde nichts abgespielt.",
+        "recentlyDiscovered": null
       }
     },
     "search": {

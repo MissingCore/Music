@@ -384,10 +384,11 @@
         "saveImages": "ذخیره تصاویر"
       }
     },
-    "playedRecent": {
-      "title": "اخیراً پخش شده",
+    "recent": {
       "extra": {
-        "notFound": "هیچ چیز در {{amount}} روز گذشته پخش نشده."
+        "recentlyPlayed": "اخیراً پخش شده",
+        "recentlyPlayedNone": "هیچ چیز در {{amount}} روز گذشته پخش نشده.",
+        "recentlyDiscovered": null
       }
     },
     "search": {
