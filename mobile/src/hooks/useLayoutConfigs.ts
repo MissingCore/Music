@@ -54,7 +54,7 @@ function getColSize(width: number, cols: number, gap: number) {
 }
 
 /** Determine the width a column will take up based on parameters. */
-function useGetLayoutConfig(
+export function useGetLayoutConfig(
   args: ColumnOptions & { fallback?: "compactGrid" | "grid" | "list" },
 ) {
   const { width: screenWidth } = useWindowDimensions();
