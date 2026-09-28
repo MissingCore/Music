@@ -1,4 +1,3 @@
-
 import { StyleSheet, View, Dimensions } from "react-native";
 import Svg, {
   Defs,
@@ -22,16 +21,16 @@ const LYRICS_SCRIM_OPACITY = 0.82;
 
 export function ImmersiveArtwork(props: {
   onPress?: () => Promise<void> | void;
-  source: string | null
+  source: string | null;
 }) {
   const showLyrics = useLyricStore((s) => s.visible);
 
-  if(!props.source) return null;
+  if (!props.source) return null;
   const uri = getImageUri(props.source);
   if (!uri) return null;
 
   const artHeight = width * ART_SCALE;
-  
+
   return (
     // Wrapper no longer blocks touches itself; individual layers opt out.
     <View style={[StyleSheet.absoluteFill, { width, height }]}>
@@ -62,7 +61,13 @@ export function ImmersiveArtwork(props: {
             <Stop offset="1" stopColor="#fff" stopOpacity={0} />
           </LinearGradient>
           <Mask id="artMask">
-            <Rect x="0" y="0" width={width} height={artHeight} fill="url(#fade)" />
+            <Rect
+              x="0"
+              y="0"
+              width={width}
+              height={artHeight}
+              fill="url(#fade)"
+            />
           </Mask>
         </Defs>
         <SvgImage
@@ -82,15 +87,17 @@ export function ImmersiveArtwork(props: {
       <View
         pointerEvents="none"
         style={[
-          { position: "absolute",
+          {
+            position: "absolute",
             top: 0,
             left: 0,
             width,
             height,
             backgroundColor: "#000",
-            opacity: showLyrics ? LYRICS_SCRIM_OPACITY : 0}, 
+            opacity: showLyrics ? LYRICS_SCRIM_OPACITY : 0,
+          },
         ]}
-      />    
+      />
     </View>
   );
 }
