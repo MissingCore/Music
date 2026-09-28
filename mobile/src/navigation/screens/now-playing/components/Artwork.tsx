@@ -160,6 +160,7 @@ function Immersive(props: ArtworkProps) {
     <ImmersiveArtwork
       onPress={enableTapGesture ? PlaybackControls.playToggle : undefined}
       source={props.source}
+      dimensions={props.dimensions}
     />
   );
 }
