@@ -33,7 +33,10 @@
     "instructions": null,
     "disc": "قرص {{count}}",
     "eps": null,
-    "singles": null
+    "singles": null,
+    "share": null,
+    "expand": null,
+    "minimize": null
   },
   "template": {
     "entryAdd": null,
@@ -381,10 +384,11 @@
         "saveImages": "حفظ الصور"
       }
     },
-    "playedRecent": {
-      "title": "تم التشغيل مؤخراً",
+    "recent": {
       "extra": {
-        "notFound": "لم يتم تشغيل أي شيء في آخر {{amount}} يوم."
+        "recentlyPlayed": "تم التشغيل مؤخراً",
+        "recentlyPlayedNone": "لم يتم تشغيل أي شيء في آخر {{amount}} يوم.",
+        "recentlyDiscovered": null
       }
     },
     "search": {

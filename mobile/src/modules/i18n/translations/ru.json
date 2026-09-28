@@ -33,7 +33,10 @@
     "instructions": "Инструкция",
     "disc": "Диск {{count}}",
     "eps": null,
-    "singles": null
+    "singles": null,
+    "share": null,
+    "expand": null,
+    "minimize": null
   },
   "template": {
     "entryAdd": "Добавить {{- name}}",
@@ -381,10 +384,11 @@
         "saveImages": "Сохранение изображений"
       }
     },
-    "playedRecent": {
-      "title": "Недавно сыграно",
+    "recent": {
       "extra": {
-        "notFound": "Вы не во что не играли за последние {{amount}} дней."
+        "recentlyPlayed": "Недавно сыграно",
+        "recentlyPlayedNone": "Вы не во что не играли за последние {{amount}} дней.",
+        "recentlyDiscovered": null
       }
     },
     "search": {

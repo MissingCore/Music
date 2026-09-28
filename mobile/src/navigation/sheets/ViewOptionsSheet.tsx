@@ -1,94 +1,102 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { scheduleOnRN } from "react-native-worklets";
+import { useShallow } from "zustand/react/shallow";
 
-import { Icon } from "~/resources/icons";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
 import { MinAlbumLengthConfig } from "~/stores/Preference/utils";
-import { useSessionStore } from "~/stores/Session/store";
-import { toggleSessionKey } from "~/stores/Session/actions";
+import { sessionStore, useSessionStore } from "~/stores/Session/store";
 import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
-import { ViewPreferenceSetters } from "~/stores/ViewPreference/actions";
+import {
+  ViewPreferenceSetters,
+  ViewPreferenceTogglers,
+} from "~/stores/ViewPreference/actions";
+import {
+  LayoutOptions,
+  SortOptions,
+  SortOptionTranslation,
+} from "~/stores/ViewPreference/constants";
+import type {
+  MutableViewLayout,
+  MutableViewOrder,
+} from "~/stores/ViewPreference/types";
 
-import { SortSheet } from "~/navigation/sheets/SortSheet";
-
-import { FilledIconButton } from "~/components/Form/Button/Icon";
-import { NumberStepper } from "~/components/Form/NumberStepper";
-import { SwitchInput } from "~/components/Form/Switch";
-import { SegmentedList } from "~/components/List/Segmented";
 import { DetachedSheet } from "~/components/Sheet";
-import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { LayoutOptions } from "~/stores/ViewPreference/constants";
-import type { MutableViewLayout } from "~/stores/ViewPreference/types";
+import { TText } from "~/components/next/base/typography";
+import { SegmentedPicker } from "~/components/next/blocks/segmented-picker";
+import type { LabeledSliderProps } from "~/components/next/blocks/slider-labeled";
+import { LabeledSlider } from "~/components/next/blocks/slider-labeled";
 
 //#region Albums
+const AlbumClassification = ["singles", "eps", "albums"] as const;
+const AlbumClassificationMap = {
+  singles: "showSingles",
+  eps: "showEPs",
+  albums: "showAlbums",
+} as const;
+
 export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
   const { t } = useTranslation();
   const minAlbumLength = usePreferenceStore((s) => s.minAlbumLength);
-  const showSingles = useSessionStore((s) => s.showSingles);
-  const showEPs = useSessionStore((s) => s.showEPs);
-  const showAlbums = useSessionStore((s) => s.showAlbums);
-  const sortOrderSheetRef = useSheetRef();
+  const visibleContentTypes = useSessionStore(
+    useShallow((s) => ({
+      singles: s.showSingles,
+      eps: s.showEPs,
+      albums: s.showAlbums,
+    })),
+  );
+  const [stopDrag, setStopDrag] = useState(false);
+
+  const pickerOptions = AlbumClassification.map((option) => ({
+    label: t(`term.${option}`),
+    value: option,
+  }));
+  const selectedOptions = Object.entries(visibleContentTypes)
+    .map(([key, enabled]) =>
+      enabled ? (key as (typeof AlbumClassification)[number]) : undefined,
+    )
+    .filter((key) => key !== undefined);
+
+  const minAlbumSliderOptions = useMemo<Omit<LabeledSliderProps, "initValue">>(
+    () => ({
+      ...MinAlbumLengthConfig.bound,
+      label: t("feat.minAlbumLength.title"),
+      formatValue: (value) => {
+        "worklet";
+        return String(value);
+      },
+      onChange: (value) => {
+        "worklet";
+        scheduleOnRN(PreferenceSetters.setMinAlbumLength, value);
+      },
+      onStatusChange: (status) => {
+        "worklet";
+        scheduleOnRN(setStopDrag, status !== "idle");
+      },
+    }),
+    [t],
+  );
 
   return (
-    <>
-      <DetachedSheet ref={props.ref}>
-        <ScreenLayoutSetting screen="album" />
-        <SheetLabelAction
-          labelKey="feat.minAlbumLength.title"
-          Trailing={
-            <NumberStepper
-              value={minAlbumLength}
-              onChange={PreferenceSetters.updateMinAlbumLengthByDelta}
-              {...MinAlbumLengthConfig.bound}
-            />
-          }
-        />
-
-        <SheetLabelAction
-          label={t("template.entryShow", { name: t("term.singles") })}
-          Trailing={
-            <SwitchInput
-              enabled={showSingles}
-              onPress={toggleSessionKey("showSingles")}
-            />
-          }
-        />
-        <SheetLabelAction
-          label={t("template.entryShow", { name: t("term.eps") })}
-          Trailing={
-            <SwitchInput
-              enabled={showEPs}
-              onPress={toggleSessionKey("showEPs")}
-            />
-          }
-        />
-        <SheetLabelAction
-          label={t("template.entryShow", { name: t("term.albums") })}
-          Trailing={
-            <SwitchInput
-              enabled={showAlbums}
-              onPress={toggleSessionKey("showAlbums")}
-            />
-          }
-        />
-
-        <SegmentedList.Item
-          labelText="feat.modalViewPreference.extra.sort"
-          onPress={() => {
-            props.ref.current?.dismiss();
-            sortOrderSheetRef.current?.present();
-          }}
-          Leading={<Icon name="sort" />}
-        />
-      </DetachedSheet>
-      <SortSheet ref={sortOrderSheetRef} screen="album" />
-    </>
+    <DetachedSheet ref={props.ref} draggable={!stopDrag}>
+      <ScreenLayoutSetting screen="album" />
+      <SegmentedPicker
+        type="checkbox"
+        options={pickerOptions}
+        selected={selectedOptions}
+        onSelect={(value) => {
+          const key = AlbumClassificationMap[value];
+          sessionStore.setState((prev) => ({ [key]: !prev[key] }));
+        }}
+      />
+      <LabeledSlider initValue={minAlbumLength} {...minAlbumSliderOptions} />
+      <SortOptionSetting screen="album" />
+    </DetachedSheet>
   );
 }
 //#endregion
@@ -101,7 +109,11 @@ export function ArtistsViewOptionsSheet(props: { ref: TrueSheetRef }) {
 
 //#region Folders
 export function FoldersViewOptionsSheet(props: { ref: TrueSheetRef }) {
-  return <SortSheet ref={props.ref} screen="folder" />;
+  return (
+    <DetachedSheet ref={props.ref}>
+      <SortOptionSetting screen="folder" />
+    </DetachedSheet>
+  );
 }
 //#endregion
 
@@ -119,7 +131,11 @@ export function PlaylistsViewOptionsSheet(props: { ref: TrueSheetRef }) {
 
 //#region Tracks
 export function TracksViewOptionsSheet(props: { ref: TrueSheetRef }) {
-  return <SortSheet ref={props.ref} screen="track" />;
+  return (
+    <DetachedSheet ref={props.ref}>
+      <SortOptionSetting screen="track" />
+    </DetachedSheet>
+  );
 }
 //#endregion
 
@@ -128,55 +144,67 @@ function ViewOptionsSheetTemplate(props: {
   ref: TrueSheetRef;
   screen: MutableViewLayout;
 }) {
-  const sortOrderSheetRef = useSheetRef();
   return (
-    <>
-      <DetachedSheet ref={props.ref}>
-        <ScreenLayoutSetting screen={props.screen} />
-        <SegmentedList.Item
-          labelText="feat.modalViewPreference.extra.sort"
-          onPress={() => {
-            props.ref.current?.dismiss();
-            sortOrderSheetRef.current?.present();
-          }}
-          Leading={<Icon name="sort" />}
-        />
-      </DetachedSheet>
-      <SortSheet ref={sortOrderSheetRef} screen={props.screen} />
-    </>
+    <DetachedSheet ref={props.ref}>
+      <ScreenLayoutSetting screen={props.screen} />
+      <SortOptionSetting screen={props.screen} />
+    </DetachedSheet>
   );
 }
 //#endregion
 
 //#region Screen Layout
-const LayoutIconMap = {
-  list: "view-agenda",
-  grid: "grid-view",
-  compactGrid: "view-module",
-} as const;
-
 function ScreenLayoutSetting({ screen }: { screen: MutableViewLayout }) {
   const { t } = useTranslation();
   const layoutOption = useViewPreferenceStore((s) => s[`${screen}Layout`]);
 
+  const pickerOptions = LayoutOptions.map((option) => ({
+    label: t(`feat.modalViewPreference.extra.${option}`),
+    value: option,
+  }));
+
   return (
-    <SheetLabelAction
-      labelKey="feat.modalViewPreference.extra.layout"
-      Trailing={
-        <View className="flex-row gap-2 rounded-full bg-surfaceContainerLowest">
-          {LayoutOptions.map((layout) => (
-            <FilledIconButton
-              key={layout}
-              icon={LayoutIconMap[layout]}
-              accessibilityLabel={t(`feat.modalViewPreference.extra.${layout}`)}
-              onPress={() => ViewPreferenceSetters.setLayout(screen, layout)}
-              _iconColor={layoutOption === layout ? "primary" : undefined}
-              size="xs"
-            />
-          ))}
-        </View>
-      }
+    <SegmentedPicker
+      type="radio"
+      accessibilityLabel={t("feat.modalViewPreference.extra.layout")}
+      options={pickerOptions}
+      selected={layoutOption}
+      onSelect={(value) => ViewPreferenceSetters.setLayout(screen, value)}
     />
+  );
+}
+//#endregion
+
+//#region Sort Options
+function SortOptionSetting({ screen }: { screen: MutableViewOrder }) {
+  const { t } = useTranslation();
+  const isAsc = useViewPreferenceStore((s) => s[`${screen}IsAsc`]);
+  const orderedBy = useViewPreferenceStore((s) => s[`${screen}Order`]);
+
+  const pickerOptions = SortOptions[screen].map((option) => ({
+    label: t(SortOptionTranslation[option]),
+    value: option,
+  }));
+
+  return (
+    <>
+      <TText
+        textKey="feat.modalViewPreference.extra.sort"
+        intent="em"
+        className="-mb-4"
+      />
+      <SegmentedPicker
+        type="radio"
+        accessibilityLabel={t("feat.modalViewPreference.extra.sort")}
+        options={pickerOptions}
+        selected={orderedBy}
+        onSelect={(value) => ViewPreferenceSetters.setSortOrder(screen, value)}
+        reselect={{
+          cb: () => ViewPreferenceTogglers.toggleIsAsc(screen),
+          icon: isAsc ? "arrow-up-narrow-wide" : "arrow-down-wide-narrow",
+        }}
+      />
+    </>
   );
 }
 //#endregion

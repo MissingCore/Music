@@ -64,11 +64,15 @@ export function useFavoriteAlbum(albumId: string) {
       await wait(1);
       return updateAlbum(albumId, { isFavorite });
     },
-    onSuccess: () => {
+    onSuccess: (_, isFavorite) => {
       queryClient.invalidateQueries({
         queryKey: q.albums.detail(albumId).queryKey,
       });
-      queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
+      queryClient.setQueryData(q.albums.all.queryKey, (prevData) =>
+        prevData?.map((entry) =>
+          entry.id === albumId ? { ...entry, isFavorite } : entry,
+        ),
+      );
     },
   });
 }

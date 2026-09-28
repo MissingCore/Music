@@ -36,6 +36,7 @@ import { Epoch, Months } from "~/utils/date";
 import { Stopwatch } from "~/utils/debug";
 import { FontDirectory } from "~/modules/customization/font/core/data";
 import { PlayedListsTracker } from "~/modules/insights/core/PlayedListsTracker";
+import { RECENT_RANGE_MS } from "~/modules/insights/core/constants";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { headlessAudioBrowserSetup } from "./audioBrowser";
 import { checkForMigrations } from "./migrations";
@@ -200,6 +201,7 @@ async function startupFlow() {
 
   sessionStore.setState({
     recapStartEpoch: firstPlayEvent?.playedAt ?? Date.now(),
+    lastDaysStartEpoch: Date.now() - RECENT_RANGE_MS,
     defaultRecapRange: {
       rangeLabel: `${Months[month]} ${year}`,
       startEpoch: Epoch.from({ month, year }),

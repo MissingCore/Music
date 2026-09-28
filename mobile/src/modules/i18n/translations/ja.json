@@ -33,7 +33,10 @@
     "instructions": null,
     "disc": "ディスク {{count}}",
     "eps": null,
-    "singles": null
+    "singles": null,
+    "share": null,
+    "expand": null,
+    "minimize": null
   },
   "template": {
     "entryAdd": "{{- name}}を追加する",
@@ -381,10 +384,11 @@
         "saveImages": "画像を保存"
       }
     },
-    "playedRecent": {
-      "title": "最近に再生",
+    "recent": {
       "extra": {
-        "notFound": "過去 {{amount}} 日間何も再生されませんでした。"
+        "recentlyPlayed": "最近に再生",
+        "recentlyPlayedNone": "過去 {{amount}} 日間何も再生されませんでした。",
+        "recentlyDiscovered": null
       }
     },
     "search": {

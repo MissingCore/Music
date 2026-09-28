@@ -33,7 +33,10 @@
     "instructions": "Nasıl Kullanılır",
     "disc": "Disk {{count}}",
     "eps": null,
-    "singles": null
+    "singles": null,
+    "share": null,
+    "expand": null,
+    "minimize": null
   },
   "template": {
     "entryAdd": "{{- name}} ekle",
@@ -381,10 +384,11 @@
         "saveImages": "Görseller Kaydediliyor"
       }
     },
-    "playedRecent": {
-      "title": "Yakın Zamanda Çalınanlar",
+    "recent": {
       "extra": {
-        "notFound": "Son {{amount}} gün içinde hiçbir şey çalınmadı."
+        "recentlyPlayed": "Yakın Zamanda Çalınanlar",
+        "recentlyPlayedNone": "Son {{amount}} gün içinde hiçbir şey çalınmadı.",
+        "recentlyDiscovered": null
       }
     },
     "search": {

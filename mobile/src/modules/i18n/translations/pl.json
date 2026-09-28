@@ -33,7 +33,10 @@
     "instructions": "Instrukcje",
     "disc": "CD {{count}}",
     "eps": null,
-    "singles": null
+    "singles": null,
+    "share": null,
+    "expand": null,
+    "minimize": null
   },
   "template": {
     "entryAdd": "Dodaj {{- name}}",
@@ -381,10 +384,11 @@
         "saveImages": "Dodawanie obrazów..."
       }
     },
-    "playedRecent": {
-      "title": "Ostatnio odtwarzane",
+    "recent": {
       "extra": {
-        "notFound": "Nic nie odtwarzano w ciągu ostatnich {{amount}} dni."
+        "recentlyPlayed": "Ostatnio odtwarzane",
+        "recentlyPlayedNone": "Nic nie odtwarzano w ciągu ostatnich {{amount}} dni.",
+        "recentlyDiscovered": null
       }
     },
     "search": {

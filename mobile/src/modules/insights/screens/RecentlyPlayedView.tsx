@@ -4,7 +4,10 @@
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
-import { useHorizontalListLayoutConfig } from "~/hooks/useLayoutConfigs";
+import {
+  useHorizontalListLayoutConfig,
+  useListLayoutConfig,
+} from "~/hooks/useLayoutConfigs";
 
 import { getMediaLinkContext } from "~/navigation/utils/router";
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
@@ -12,11 +15,12 @@ import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
 import { LegendList } from "~/components/Base/LegendList";
 import { FlatList } from "~/components/Base/List";
-import { HorizontalScrollGradient } from "~/components/Gradient";
+import { ImageCard } from "~/components/next/composed/image-card";
+import { createTextPlaceholder } from "~/components/next/composed/media-image";
+import { TrackItem } from "~/components/next/composed/track-item";
 import { ReservedPlaylists } from "~/modules/media/constants";
-import { MediaCard } from "~/modules/media/components/MediaCard";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
-import { useTrackListPreset } from "~/modules/media/components/Track";
+import { useTrackListPlayingIndication } from "~/modules/media/components/Track";
 import { RECENT_DAY_RANGE } from "../core/constants";
 import { useRecentlyPlayedMedia } from "../core/RecentContentQuerier";
 
@@ -30,13 +34,9 @@ export default function RecentlyPlayed() {
   const { t } = useTranslation();
   const bottomOffset = useBottomActionsOffset();
   const { isPending, error, data } = useRecentlyPlayedMedia();
+  const listLayout = useListLayoutConfig();
 
-  const presets = useTrackListPreset({
-    data: data?.tracks,
-    isPending,
-    trackSource,
-    contentWidthDeduction: 0,
-  });
+  const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
 
   const hasNoContent = data?.lists?.length === 0 && data?.tracks?.length === 0;
 
@@ -44,7 +44,7 @@ export default function RecentlyPlayed() {
     return (
       <PagePlaceholder
         isPending={isPending}
-        errMsg={t("feat.playedRecent.extra.notFound", {
+        errMsg={t("feat.recent.extra.recentlyPlayedNone", {
           amount: RECENT_DAY_RANGE,
         })}
       />
@@ -53,8 +53,15 @@ export default function RecentlyPlayed() {
 
   return (
     <LegendList
-      {...presets}
+      numColumns={listLayout.count}
+      estimatedItemSize={60} // 56px Height + 4px Margin Bottom
+      data={listData}
+      keyExtractor={({ id }) => id}
+      renderItem={({ item }) => (
+        <TrackItem {...item} trackSource={trackSource} />
+      )}
       ListHeaderComponent={<RecentlyPlayedLists data={data.lists} />}
+      className="-mx-0.5 -mb-1"
       contentContainerClassName="p-4"
       contentContainerStyle={{ paddingBottom: bottomOffset }}
     />
@@ -67,26 +74,34 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
 
   if (props.data?.length === 0) return null;
   return (
-    <HorizontalScrollGradient gutter={16}>
-      <FlatList
-        horizontal
-        data={props.data}
-        keyExtractor={({ id, type }) => `${type}_${id}`}
-        renderItem={({ item, index }) => (
-          <MediaCard
-            {...item}
-            size={width}
-            onPress={() => {
-              const linkInfo = getMediaLinkContext(item);
-              // @ts-expect-error - The following is valid.
-              if (linkInfo[0] === "HomeScreens") navigation.popTo(...linkInfo);
-              else navigation.navigate(...linkInfo);
-            }}
-            className={index > 0 ? "ml-2" : undefined}
-          />
-        )}
-        contentContainerClassName="px-4 pb-6"
-      />
-    </HorizontalScrollGradient>
+    <FlatList
+      horizontal
+      data={props.data}
+      keyExtractor={({ id, type }) => `${type}_${id}`}
+      renderItem={({ item }) => (
+        <ImageCard
+          label={item.title}
+          supporting={item.description}
+          src={
+            item.source ??
+            //! FIXME: We want to handle the fallback within our query.
+            (item.type === "folder"
+              ? { type: "icon", value: "folder" }
+              : item.type === "artist" || item.type === "genre"
+                ? createTextPlaceholder(item.title, item.type === "genre")
+                : null)
+          }
+          size={width}
+          onPress={() => {
+            const linkInfo = getMediaLinkContext(item);
+            // @ts-expect-error - The following is valid.
+            if (linkInfo[0] === "HomeScreens") navigation.popTo(...linkInfo);
+            else navigation.navigate(...linkInfo);
+          }}
+        />
+      )}
+      className="-mx-4 -mb-1"
+      contentContainerClassName="px-4 pb-6"
+    />
   );
 }

@@ -6,7 +6,7 @@ import type { ParseKeys } from "i18next";
 import type { MutableViewOrder } from "./types";
 
 //#region Layout
-export const LayoutOptions = ["list", "grid", "compactGrid"] as const;
+export const LayoutOptions = ["list", "grid"] as const;
 
 export type LayoutOption = (typeof LayoutOptions)[number];
 //#endregion

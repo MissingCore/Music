@@ -30,7 +30,6 @@ type InsertedAlbum = typeof albums.$inferInsert;
 const albumFields = omitKeys(getTableColumns(albums), [
   "altArtwork",
   "embeddedArtwork",
-  "isFavorite",
 ]);
 
 //#region GET Methods

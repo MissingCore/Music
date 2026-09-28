@@ -44,7 +44,7 @@ export function useListLayoutConfig(args: ClampOptions = {}) {
 
 //#region Internal Helpers
 /** Gap used to space items. */
-const CONTENT_GAP = 8;
+const CONTENT_GAP = 4;
 /** Space reserved for horizontal margin on screen. */
 const SCREEN_GUTTERS = 32;
 
@@ -54,7 +54,7 @@ function getColSize(width: number, cols: number, gap: number) {
 }
 
 /** Determine the width a column will take up based on parameters. */
-function useGetLayoutConfig(
+export function useGetLayoutConfig(
   args: ColumnOptions & { fallback?: "compactGrid" | "grid" | "list" },
 ) {
   const { width: screenWidth } = useWindowDimensions();

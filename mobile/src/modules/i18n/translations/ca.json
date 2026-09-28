@@ -33,7 +33,10 @@
     "instructions": "Instruccions",
     "disc": "Disc {{count}}",
     "eps": null,
-    "singles": null
+    "singles": null,
+    "share": null,
+    "expand": null,
+    "minimize": null
   },
   "template": {
     "entryAdd": "Afegir {{- name}}",
@@ -381,10 +384,11 @@
         "saveImages": "Desant imatges"
       }
     },
-    "playedRecent": {
-      "title": "Reproduït fa poc",
+    "recent": {
       "extra": {
-        "notFound": null
+        "recentlyPlayed": "Reproduït fa poc",
+        "recentlyPlayedNone": null,
+        "recentlyDiscovered": null
       }
     },
     "search": {

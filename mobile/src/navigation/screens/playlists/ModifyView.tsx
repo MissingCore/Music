@@ -76,9 +76,6 @@ export default function ModifyPlaylist({
 
                   queryClient.invalidateQueries({ queryKey: q.playlists._def });
                   queryClient.invalidateQueries({ queryKey: q.tracks._def });
-                  queryClient.invalidateQueries({
-                    queryKey: q.favorites.lists.queryKey,
-                  });
                   queryClient.invalidateQueries({ queryKey: ["search"] });
 
                   navigation.goBack();
@@ -115,9 +112,6 @@ export default function ModifyPlaylist({
 
           queryClient.invalidateQueries({ queryKey: q.playlists._def });
           queryClient.invalidateQueries({ queryKey: q.tracks._def });
-          queryClient.invalidateQueries({
-            queryKey: q.favorites.lists.queryKey,
-          });
           queryClient.invalidateQueries({ queryKey: ["search"] });
 
           navigation.goBack();

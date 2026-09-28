@@ -20,4 +20,5 @@ export type AlbumSummary = {
   duration: number;
   trackCount: number;
   isEP: boolean;
+  isFavorite: boolean;
 };

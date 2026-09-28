@@ -93,7 +93,6 @@ export function PlaylistArtworkSheet({ id, ref }: ArtworkSheetProps) {
         onSuccess={() => {
           qc.resetQueries({ queryKey: q.playlists._def });
           qc.invalidateQueries({ queryKey: q.tracks._def });
-          qc.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
           qc.invalidateQueries({ queryKey: ["search"] });
         }}
       />

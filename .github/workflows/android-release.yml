@@ -158,6 +158,7 @@ jobs:
       - name: Add any additional environment variables
         run: |
           echo "EXPO_PUBLIC_CHECK_FOR_UPDATES=true" >> .env
+          echo "EXPO_PUBLIC_DISTRIBUTION=google-play" >> .env
 
       - name: Add upload key secrets for signing APKs
         run: |

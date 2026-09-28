@@ -47,6 +47,12 @@ export async function setLanguage(languageCode: string) {
   }
 }
 
+export function setMinAlbumLength(minAlbumLength: number) {
+  preferenceStore.setState({
+    minAlbumLength: MinAlbumLengthConfig.clamp(minAlbumLength),
+  });
+}
+
 export function setMinSeconds(minSeconds: number) {
   preferenceStore.setState({ minSeconds });
 }
@@ -91,12 +97,6 @@ export async function setTheme(theme: DefaultTheme | (string & {})) {
       activeCustomTheme: customTheme,
     });
   }
-}
-
-export function updateMinAlbumLengthByDelta(delta: number) {
-  preferenceStore.setState((prev) => ({
-    minAlbumLength: MinAlbumLengthConfig.clamp(prev.minAlbumLength + delta),
-  }));
 }
 
 export function updatePlaybackDelayByDelta(delta: number) {

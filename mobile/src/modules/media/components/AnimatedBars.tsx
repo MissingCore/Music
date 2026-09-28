@@ -8,9 +8,9 @@ import Animated from "react-native-reanimated";
 import { useInForeground } from "~/stores/ListenerState";
 import { usePlaybackStore } from "~/stores/Playback/store";
 
-export function PlayingIndicator() {
+export function PlayingIndicator({ padding }: { padding?: number }) {
   const isPlaying = usePlaybackStore((s) => s.isPlaying);
-  return <AnimatedBars active={isPlaying} />;
+  return <AnimatedBars active={isPlaying} padding={padding} />;
 }
 
 export const AnimatedBars = memo(function AnimatedBars({

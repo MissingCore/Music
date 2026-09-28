@@ -14,7 +14,10 @@ const InsightsScreenGroup = {
   screens: {
     RecentlyPlayed: {
       screen: RecentlyPlayed,
-      options: { title: "feat.playedRecent.title", animation: "default" },
+      options: {
+        title: "feat.recent.extra.recentlyPlayed",
+        animation: "default",
+      },
     },
 
     Insights: {

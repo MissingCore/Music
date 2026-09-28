@@ -25,14 +25,32 @@ import type { MediaCardContent } from "~/modules/media/components/MediaCard.type
 import { RECENT_RANGE_MS } from "./constants";
 import { PlayedListsTracker } from "./PlayedListsTracker";
 
-const queryKey = ["insights", "recent", "all"];
+const queryKey = {
+  recentMedia: ["insights", "recent", "all"],
+  recentTracks: ["insights", "recent", "tracks"],
+  recentDiscovered: ["insights", "recent", "discovered"],
+};
 
 export function useRecentlyPlayedMedia() {
   return useQuery({
-    queryKey,
+    queryKey: queryKey.recentMedia,
     queryFn: getRecentMedia,
     gcTime: 0,
     staleTime: 0,
+  });
+}
+
+export function useRecentlyPlayedTracks() {
+  return useQuery({
+    queryKey: queryKey.recentTracks,
+    queryFn: () => getRecentTracks(24),
+  });
+}
+
+export function useRecentlyDiscoveredTracks() {
+  return useQuery({
+    queryKey: queryKey.recentDiscovered,
+    queryFn: () => getRecentDiscoveredTracks(24),
   });
 }
 
@@ -67,8 +85,8 @@ async function getRecentLists() {
   return newRecentList;
 }
 
-async function getRecentTracks() {
-  const results = await db
+async function getRecentTracks(limit?: number) {
+  let query = db
     .select({
       ...commonTrackColumns,
       //? Ensures only the latest entry is returned.
@@ -83,7 +101,10 @@ async function getRecentTracks() {
     .where(gt(tracksPlayEvents.playedAt, Date.now() - RECENT_RANGE_MS))
     //? To prevent duplicate tracks from being returned.
     .groupBy(tracksPlayEvents.trackId)
-    .orderBy(desc(tracksPlayEvents.playedAt));
+    .orderBy(desc(tracksPlayEvents.playedAt))
+    .$dynamic();
+  if (limit) query = query.limit(limit);
+  const results = await query;
 
   return results.map((track) => ({
     id: track.id,
@@ -145,5 +166,21 @@ async function getRecentListEntry(source: PlayFromSource) {
   } catch {
     return { data: undefined, source, error: true } as const;
   }
+}
+
+/** Return tracks that were recently found by the app. */
+async function getRecentDiscoveredTracks(limit: number) {
+  const results = await db
+    .select(commonTrackColumns)
+    .from(structuredTracksView)
+    .orderBy(desc(structuredTracksView.discoverTime))
+    .limit(limit);
+
+  return results.map((track) => ({
+    id: track.id,
+    title: track.name,
+    description: getArtistsString(fromJSONArrayString(track.artists)),
+    imageSource: track.artwork,
+  }));
 }
 //#endregion

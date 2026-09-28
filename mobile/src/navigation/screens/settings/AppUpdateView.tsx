@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { Text, View } from "react-native";
 import Markdown from "react-native-markdown-renderer";
 
+import { DISTRIBUTION } from "~/env";
 import { Icon } from "~/resources/icons";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
@@ -118,18 +119,20 @@ export default function AppUpdate() {
         </Markdown>
       </SegmentedList.CustomItem>
 
-      <SegmentedList>
-        <SegmentedList.Item
-          labelText="feat.appUpdate.extra.downloadAPK"
-          onPress={() => openLink(Links.SpecificRelease(release.version))}
-          Leading={<Icon name="logo-github" />}
-        />
+      {DISTRIBUTION === "google-play" ? (
         <SegmentedList.Item
           labelText="feat.appUpdate.extra.updateGoogle"
           onPress={() => openLink(Links.PlayStore)}
           Leading={<Icon name="logo-google-playstore" />}
         />
-      </SegmentedList>
+      ) : (
+        <SegmentedList.Item
+          labelText="feat.appUpdate.extra.downloadAPK"
+          supportingText={Links.SpecificRelease(release.version)}
+          onPress={() => openLink(Links.SpecificRelease(release.version))}
+          Leading={<Icon name="logo-github" />}
+        />
+      )}
     </ListLayout>
   );
 }

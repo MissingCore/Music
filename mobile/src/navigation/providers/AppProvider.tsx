@@ -85,7 +85,7 @@ function SystemBars() {
 
       <View
         style={{ paddingBottom: bottom }}
-        className="absolute right-0 bottom-0 left-0 bg-androidNavbar"
+        className="absolute inset-x-0 bottom-0 bg-androidNavbar"
       />
     </>
   );

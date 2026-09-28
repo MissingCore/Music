@@ -33,7 +33,10 @@
     "instructions": null,
     "disc": "Disco {{count}}",
     "eps": null,
-    "singles": null
+    "singles": null,
+    "share": null,
+    "expand": null,
+    "minimize": null
   },
   "template": {
     "entryAdd": null,
@@ -381,10 +384,11 @@
         "saveImages": "Salvataggio immagini in corso"
       }
     },
-    "playedRecent": {
-      "title": "Riprodotti di recente",
+    "recent": {
       "extra": {
-        "notFound": null
+        "recentlyPlayed": "Riprodotti di recente",
+        "recentlyPlayedNone": null,
+        "recentlyDiscovered": null
       }
     },
     "search": {

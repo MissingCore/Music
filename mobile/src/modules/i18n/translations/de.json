@@ -33,7 +33,10 @@
     "instructions": "Anweisungen",
     "disc": "CD {{count}}",
     "eps": null,
-    "singles": null
+    "singles": null,
+    "share": null,
+    "expand": null,
+    "minimize": null
   },
   "template": {
     "entryAdd": "{{- name}} hinzufügen",
@@ -381,10 +384,11 @@
         "saveImages": "Speicher Bilder"
       }
     },
-    "playedRecent": {
-      "title": "Kürzlich gehört",
+    "recent": {
       "extra": {
-        "notFound": "In den letzten {{amount}} Tagen wurde nichts abgespielt."
+        "recentlyPlayed": "Kürzlich gehört",
+        "recentlyPlayedNone": "In den letzten {{amount}} Tagen wurde nichts abgespielt.",
+        "recentlyDiscovered": null
       }
     },
     "search": {

@@ -10,7 +10,8 @@ export type MigrationOption =
   | "clear-image-cache"
   | "waveform-slider"
   | "geist-font"
-  | "insane-play-event-time";
+  | "insane-play-event-time"
+  | "compact-grid-removal";
 
 /**
  * History of data migrations due to "breaking" changes.
@@ -39,5 +40,9 @@ export const MigrationHistory: Record<
   6: {
     version: "v3.6.0-rc.0",
     changes: ["geist-font", "insane-play-event-time"],
+  },
+  7: {
+    version: "v4.0.0-rc.0",
+    changes: ["compact-grid-removal"],
   },
 };
