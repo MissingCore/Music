@@ -9,22 +9,16 @@ import Svg, {
 } from "react-native-svg";
 
 import { getImageUri } from "~/lib/file-system";
-import { useLyricStore } from "~/modules/lyric/core/store";
 
 const { width, height } = Dimensions.get("screen");
 
 const FADE_START = 0.45;
 const ART_SCALE = 1.35;
 
-// Opacity of the full-screen black overlay when lyrics are shown.
-const LYRICS_SCRIM_OPACITY = 0.82;
-
 export function ImmersiveArtwork(props: {
   onPress?: () => Promise<void> | void;
   source: string | null;
 }) {
-  const showLyrics = useLyricStore((s) => s.visible);
-
   if (!props.source) return null;
   const uri = getImageUri(props.source);
   if (!uri) return null;
@@ -81,23 +75,6 @@ export function ImmersiveArtwork(props: {
           onPress={props.onPress}
         />
       </Svg>
-
-      {/* Lyrics scrim: fades the whole background toward black so white
-          lyric text stays legible. Artwork remains visible underneath. */}
-      <View
-        pointerEvents="none"
-        style={[
-          {
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width,
-            height,
-            backgroundColor: "#000",
-            opacity: showLyrics ? LYRICS_SCRIM_OPACITY : 0,
-          },
-        ]}
-      />
     </View>
   );
 }
