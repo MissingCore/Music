@@ -1,3 +1,6 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Svg, {
@@ -29,6 +32,7 @@ export function ImmersiveArtwork(props: {
   const { height, width } = props.dimensions;
   const artHeight = height + 96;
 
+  const fadeStart = height > 128 ? FADE_START : 0;
   const fadeEnd = showLyrics ? height / artHeight : 1;
 
   return (
@@ -37,7 +41,7 @@ export function ImmersiveArtwork(props: {
         <Defs>
           <LinearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
             <Stop offset="0" stopColor="#fff" stopOpacity={1} />
-            <Stop offset={FADE_START} stopColor="#fff" stopOpacity={1} />
+            <Stop offset={fadeStart} stopColor="#fff" stopOpacity={1} />
             <Stop offset={fadeEnd} stopColor="#fff" stopOpacity={0} />
           </LinearGradient>
           <Mask id="artMask">
