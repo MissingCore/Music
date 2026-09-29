@@ -41,10 +41,8 @@ export function PlaybackOptionsSheet(props: {
   const navigateToList = useCallback(async () => {
     if (!playingSource) return;
     await props.ref.current?.dismiss();
-    // Call `goBack()` to mimic `popTo` since we don't have access
-    // to that function in the sheet.
-    navigation.goBack();
-    navigation.navigate(...getMediaLinkContext(playingSource));
+    // @ts-expect-error - `popTo` method works.
+    navigation.popTo(...getMediaLinkContext(playingSource));
   }, [navigation, props.ref, playingSource]);
 
   const navigateToAudioEffectsScreen = useCallback(async () => {
