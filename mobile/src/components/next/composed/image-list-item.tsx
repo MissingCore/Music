@@ -10,6 +10,7 @@ import { Ripple } from "../base/ripple";
 import { createTextStack } from "../blocks/text-stack";
 
 export type ImageListItemProps = {
+  src: MediaImageSrc;
   label: string;
   supporting?: string;
   /** If provided, will change the wrapper to `Ripple` from `View`. */
@@ -17,6 +18,7 @@ export type ImageListItemProps = {
   /** If provided, will change the wrapper to `Ripple` from `View`. */
   onLongPress?: VoidFunction;
   className?: string;
+  Leading?: React.ReactNode;
   Trailing?: React.ReactNode;
   /**
    * Applies spacing styles when used in a list. Defaults to `true`.
@@ -25,10 +27,9 @@ export type ImageListItemProps = {
    * container this is in.**
    */
   applySpacing?: boolean;
-} & (
-  | { src: MediaImageSrc; Leading?: never }
-  | { src?: never; Leading: React.ReactNode }
-);
+  /** If we don't want to render the `MediaImage` defined by `src`. */
+  leadingOverridesSrc?: boolean;
+};
 
 const ListItemTextStack = createTextStack({
   labelConfig: { size: "sm" },
@@ -49,10 +50,9 @@ export function ImageListItem(props: ImageListItemProps) {
         props.className,
       )}
     >
-      {props.Leading ? (
-        props.Leading
-      ) : (
-        <MediaImage src={props.src!} size={56} className="rounded-lg" />
+      {props.Leading}
+      {props.Leading && props.leadingOverridesSrc ? null : (
+        <MediaImage src={props.src} size={56} className="rounded-lg" />
       )}
       <ListItemTextStack label={props.label} supporting={props.supporting} />
       {props.Trailing}

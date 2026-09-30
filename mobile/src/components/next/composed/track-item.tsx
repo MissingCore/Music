@@ -92,13 +92,13 @@ export function TrackItem({
   );
 
   return (
-    // @ts-expect-error - Props are compatible.
     <ImageListItem
       label={props.title}
       supporting={props.description}
       src={props.imageSource}
       {...(isMultiSelectEnabled ? multiSelectActions : normalActions)}
       Leading={overriddenLeadingElement}
+      leadingOverridesSrc
       className={cn(className, {
         "bg-primary/25": isActiveTrack && !isMultiSelectEnabled,
         "bg-surfaceContainerLowest": isSelected,
