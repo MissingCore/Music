@@ -17,10 +17,12 @@ import { LegendList } from "~/components/Base/LegendList";
 import { FlatList } from "~/components/Base/List";
 import { ImageCard } from "~/components/next/composed/image-card";
 import { createTextPlaceholder } from "~/components/next/composed/media-image";
-import { TrackItem } from "~/components/next/composed/track-item";
+import {
+  TrackItem,
+  TrackListContext,
+} from "~/components/next/composed/track-item";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
-import { useTrackListPlayingIndication } from "~/modules/media/components/Track";
 import { RECENT_DAY_RANGE } from "../core/constants";
 import { useRecentlyPlayedMedia } from "../core/RecentContentQuerier";
 
@@ -36,8 +38,6 @@ export default function RecentlyPlayed() {
   const { isPending, error, data } = useRecentlyPlayedMedia();
   const listLayout = useListLayoutConfig();
 
-  const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
-
   const hasNoContent = data?.lists?.length === 0 && data?.tracks?.length === 0;
 
   if (isPending || error || hasNoContent) {
@@ -52,19 +52,19 @@ export default function RecentlyPlayed() {
   }
 
   return (
-    <LegendList
-      numColumns={listLayout.count}
-      estimatedItemSize={60} // 56px Height + 4px Margin Bottom
-      data={listData}
-      keyExtractor={({ id }) => id}
-      renderItem={({ item }) => (
-        <TrackItem {...item} trackSource={trackSource} />
-      )}
-      ListHeaderComponent={<RecentlyPlayedLists data={data.lists} />}
-      className="-mx-0.5 -mb-1"
-      contentContainerClassName="p-4"
-      contentContainerStyle={{ paddingBottom: bottomOffset }}
-    />
+    <TrackListContext value={trackSource}>
+      <LegendList
+        numColumns={listLayout.count}
+        estimatedItemSize={60} // 56px Height + 4px Margin Bottom
+        data={data?.tracks}
+        keyExtractor={({ id }) => id}
+        renderItem={({ item }) => <TrackItem {...item} />}
+        ListHeaderComponent={<RecentlyPlayedLists data={data.lists} />}
+        className="-mx-0.5 -mb-1"
+        contentContainerClassName="p-4"
+        contentContainerStyle={{ paddingBottom: bottomOffset }}
+      />
+    </TrackListContext>
   );
 }
 

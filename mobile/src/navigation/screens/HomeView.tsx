@@ -33,7 +33,10 @@ import { Ripple } from "~/components/next/base/ripple";
 import { Text, TText } from "~/components/next/base/typography";
 import { IconButton } from "~/components/next/blocks/icon-button";
 import { Marquee } from "~/components/next/blocks/marquee";
-import { TrackItem } from "~/components/next/composed/track-item";
+import {
+  TrackItem,
+  TrackListContext,
+} from "~/components/next/composed/track-item";
 import { useTheme } from "~/modules/customization/theme/hooks";
 import {
   useRecentlyDiscoveredTracks,
@@ -267,7 +270,7 @@ function RecentGroup(props: {
 
   if (!groupedData) return null;
   return (
-    <>
+    <TrackListContext value={trackSource}>
       <Ripple
         accessibilityLabel={t(props.label)}
         onPress={props.onLabelPress}
@@ -293,11 +296,7 @@ function RecentGroup(props: {
             data={item}
             keyExtractor={({ id }) => id}
             renderItem={({ item }) => (
-              <TrackItem
-                {...item}
-                trackSource={trackSource}
-                _onAfterPlayPress={props.onTrackPlay}
-              />
+              <TrackItem {...item} _onAfterPlayPress={props.onTrackPlay} />
             )}
             scrollEnabled={false}
             style={{ width }}
@@ -308,7 +307,7 @@ function RecentGroup(props: {
         className="-mx-0.5 -mb-1"
         contentContainerClassName="px-4"
       />
-    </>
+    </TrackListContext>
   );
 }
 //#endregion

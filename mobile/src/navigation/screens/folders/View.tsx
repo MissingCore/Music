@@ -32,9 +32,11 @@ import { useAnimatedLegendListRef } from "~/components/Base/LegendList";
 import { useAnimatedScrollViewRef } from "~/components/Base/ScrollView";
 import { Text } from "~/components/next/base/typography";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
-import { TrackItem } from "~/components/next/composed/track-item";
+import {
+  TrackItem,
+  TrackListContext,
+} from "~/components/next/composed/track-item";
 import { Pressable } from "~/components/next/primitive/pressable";
-import { useTrackListPlayingIndication } from "~/modules/media/components/Track";
 import type { TrackContent } from "~/modules/media/components/Track.type";
 
 type Props = StaticScreenProps<{ path?: string }>;
@@ -211,11 +213,10 @@ function ScreenContents({ dirSegments, setDirSegments }: DirState) {
   );
 
   const { isPending, data } = useFolderContent(fullPath);
-  const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
 
   const renderedData = useMemo(
-    () => [...(data?.directories ?? []), ...(listData ?? [])],
-    [data, listData],
+    () => [...(data?.directories ?? []), ...(data?.tracks ?? [])],
+    [data],
   );
 
   const renderItem = useCallback<
@@ -223,7 +224,7 @@ function ScreenContents({ dirSegments, setDirSegments }: DirState) {
   >(
     ({ item }) =>
       isTrackContent(item) ? (
-        <TrackItem {...item} trackSource={trackSource} />
+        <TrackItem {...item} />
       ) : (
         <ImageListItem
           src={{ type: "icon", value: "folder" }}
@@ -231,21 +232,23 @@ function ScreenContents({ dirSegments, setDirSegments }: DirState) {
           onPress={() => setDirSegments((prev) => [...prev, item.name])}
         />
       ),
-    [trackSource, setDirSegments],
+    [setDirSegments],
   );
 
   return (
-    <LibraryLayout.MediaList
-      data={renderedData}
-      keyExtractor={(item) => (isTrackContent(item) ? item.id : item.path)}
-      renderItem={renderItem}
-      ListEmptyComponent={
-        <ContentPlaceholder
-          isPending={isPending}
-          className="absolute inset-0 pt-safe-offset-48"
-        />
-      }
-    />
+    <TrackListContext value={trackSource}>
+      <LibraryLayout.MediaList
+        data={renderedData}
+        keyExtractor={(item) => (isTrackContent(item) ? item.id : item.path)}
+        renderItem={renderItem}
+        ListEmptyComponent={
+          <ContentPlaceholder
+            isPending={isPending}
+            className="absolute inset-0 pt-safe-offset-48"
+          />
+        }
+      />
+    </TrackListContext>
   );
 }
 //#endregion
