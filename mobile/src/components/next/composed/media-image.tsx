@@ -5,6 +5,7 @@ import { View } from "react-native";
 
 import { getImageUri } from "~/lib/file-system";
 import { cn } from "~/lib/style";
+import type { Maybe } from "~/utils/types";
 import { isRecord } from "~/utils/validation";
 import type { SupportedIconName } from "../base/icon";
 import { Icon } from "../base/icon";
@@ -12,8 +13,7 @@ import { Text } from "../base/typography";
 import { Image } from "../primitive/image";
 
 export type MediaImageSrc =
-  | string
-  | null
+  | Maybe<string>
   | Array<string | null>
   | { type: "icon"; value: SupportedIconName }
   | { type: "str"; value: string };

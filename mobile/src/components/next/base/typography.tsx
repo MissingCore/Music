@@ -31,6 +31,7 @@ const textStyle = cva({
     uppercase: { true: "tracking-wider uppercase" },
     size: {
       unset: null,
+      xxs: "text-xxs",
       xs: "text-xs",
       sm: "text-sm",
       base: "text-base",

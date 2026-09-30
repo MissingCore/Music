@@ -7,8 +7,9 @@ import type { CircleProps } from "react-native-svg";
 import Svg, { Circle, Defs, Mask, Rect } from "react-native-svg";
 
 import { Colors } from "~/constants/Styles";
+import type { MediaImageSrc } from "~/components/next/composed/media-image";
+import { MediaImage } from "~/components/next/composed/media-image";
 import { useTheme } from "~/modules/customization/theme/hooks";
-import { MediaImage } from "./MediaImage";
 
 const CENTER = { cx: 384, cy: 384 };
 const GROOVES = {
@@ -27,7 +28,7 @@ const GROOVES = {
 export function Vinyl(props: {
   onPress?: () => Promise<void> | void;
   size: number;
-  source: MediaImage.ImageSource;
+  source: MediaImageSrc;
 }) {
   const { surface } = useTheme();
 
@@ -42,8 +43,7 @@ export function Vinyl(props: {
   return (
     <View className="relative items-center justify-center">
       <MediaImage
-        type="playlist"
-        source={props.source}
+        src={props.source}
         size={props.size / 2}
         className="absolute rounded-full bg-primary"
         noPlaceholder
