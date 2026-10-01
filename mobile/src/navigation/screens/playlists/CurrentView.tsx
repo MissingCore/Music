@@ -12,7 +12,7 @@ import {
   usePlaylistForScreen,
 } from "~/data/playlist/queries";
 
-import * as MediaListLayout from "~/navigation/layouts/MediaListLayout";
+import * as MediaListLayout2 from "~/navigation/layouts/MediaListLayout2";
 import { PlaylistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import type { MenuAction } from "~/navigation/components/CurrentListMenu";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
@@ -57,7 +57,7 @@ export default function Playlist({
   );
 
   if (isPending || error) {
-    return <MediaListLayout.Skeleton pending={isPending} />;
+    return <MediaListLayout2.Skeleton pending={isPending} />;
   }
 
   // Add optimistic UI updates.
@@ -73,11 +73,11 @@ export default function Playlist({
       <PlaylistArtworkSheet ref={artworkSheetRef} id={id} />
       <ExportM3USheet ref={exportSheetRef} id={id} />
 
-      <MediaListLayout.Provider
+      <MediaListLayout2.Provider
         imageSource={data.imageSource}
         listSource={trackSource}
       >
-        <MediaListLayout.Header
+        <MediaListLayout2.Header
           imageSource={data.imageSource}
           title={listName}
           metadata={data.metadata}
@@ -103,13 +103,12 @@ export default function Playlist({
             </View>
           }
         />
-        <MediaListLayout.Controls />
-        <MediaListLayout.List
+        <MediaListLayout2.List
           data={data?.tracks}
           keyExtractor={({ id }) => id}
           renderItem={({ item }) => <TrackItem {...item} />}
         />
-      </MediaListLayout.Provider>
+      </MediaListLayout2.Provider>
     </>
   );
 }
