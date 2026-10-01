@@ -29,8 +29,8 @@ import { chunkArray } from "~/utils/object";
 import { FlatList } from "~/components/Base/List";
 import { ScrollView } from "~/components/Base/ScrollView";
 import { Icon } from "~/components/next/base/icon";
-import { Ripple } from "~/components/next/base/ripple";
 import { Text, TText } from "~/components/next/base/typography";
+import { Button } from "~/components/next/blocks/button";
 import { IconButton } from "~/components/next/blocks/icon-button";
 import { Marquee } from "~/components/next/blocks/marquee";
 import {
@@ -92,10 +92,11 @@ function TopAppBar() {
   return (
     <View className="absolute inset-x-0 top-0 z-50 flex-row justify-end gap-4 p-4 pt-safe-offset-8">
       {hasNewUpdate ? (
-        <Ripple
-          rippleColor="secondaryDim"
+        <Button
           onPress={() => navigation.navigate("AppUpdate")}
-          className="shrink grow flex-row items-center gap-3 rounded-full bg-secondary px-3"
+          intent="secondary"
+          filled
+          className="shrink grow gap-3 rounded-full px-3 py-0"
         >
           <Icon name="mobile-arrow-down" color="onSecondary" />
           <TText
@@ -107,7 +108,7 @@ function TopAppBar() {
           <View className="ltr:rotate-180">
             <Icon name="arrow-back" color="onSecondary" />
           </View>
-        </Ripple>
+        </Button>
       ) : null}
       <IconButton
         icon="settings"
@@ -272,10 +273,10 @@ function RecentGroup(props: {
   if (!groupedData) return null;
   return (
     <TrackListContext value={trackSource}>
-      <Ripple
+      <Button
         accessibilityLabel={t(props.label)}
         onPress={props.onLabelPress}
-        className="-mb-6 flex-row items-center gap-2 px-4 py-1"
+        className="-mb-6 justify-start gap-2 rounded-none py-1"
       >
         <Marquee wrapperClassName="grow-0">
           <TText textKey={props.label} accent size="3xl" />
@@ -283,7 +284,7 @@ function RecentGroup(props: {
         <View className="rtl:rotate-180">
           <Icon name="keyboard-arrow-right" size={32} />
         </View>
-      </Ripple>
+      </Button>
       <FlatList
         horizontal
         data={groupedData}
@@ -324,14 +325,14 @@ function HomeLinks() {
   return (
     <View className="gap-0.75 px-4">
       {linkMap.map(({ icon, labelKey, screen }, idx) => (
-        <Ripple
+        <Button
           key={labelKey}
           onPress={() => navigation.navigate("HomeScreens", { screen })}
-          className={cn(
-            "flex-row items-center gap-4 rounded-xs bg-surfaceContainerLowest p-3",
-            idx === 0 && "rounded-t-lg",
-            idx === linkMap.length - 1 && "rounded-b-lg",
-          )}
+          filled
+          className={cn("rounded-xs p-3", {
+            "rounded-t-xl": idx === 0,
+            "rounded-b-xl": idx === linkMap.length - 1,
+          })}
         >
           <Icon name={icon} size={32} />
           <Marquee>
@@ -340,7 +341,7 @@ function HomeLinks() {
           <View className="rtl:rotate-180">
             <Icon name="keyboard-arrow-right" size={32} />
           </View>
-        </Ripple>
+        </Button>
       ))}
     </View>
   );

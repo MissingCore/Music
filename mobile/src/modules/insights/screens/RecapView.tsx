@@ -23,7 +23,7 @@ import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { Card } from "~/components/next/base/card";
 import { Divider } from "~/components/next/base/divider";
 import { Icon } from "~/components/next/base/icon";
-import { Ripple } from "~/components/next/base/ripple";
+import { Button } from "~/components/next/blocks/button";
 import { SequenceNumber } from "~/components/next/blocks/sequence-number";
 import { Text, TText } from "~/components/next/base/typography";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
@@ -106,16 +106,17 @@ export default function Recap({
     <>
       <TimeRangeSheet ref={timeRangeSheetRef} dispatch={dispatch} />
       <ListLayout>
-        <Ripple
+        <Button
           onPress={() => timeRangeSheetRef.current?.present()}
-          className="flex-row items-center justify-between gap-4 rounded-xl bg-surfaceContainerLowest p-4"
+          filled
+          className="justify-between"
         >
           <View className="gap-2">
             <TText textKey="feat.recap.extra.timeRange" muted size="sm" />
             <Text accent>{state.rangeLabel}</Text>
           </View>
           <Icon name="keyboard-arrow-down" />
-        </Ripple>
+        </Button>
         <RecapContent key={state.rangeLabel} {...state} />
       </ListLayout>
     </>
@@ -160,38 +161,38 @@ function TimeRangeSheet(props: {
         data={options}
         keyExtractor={(item) => item.label}
         renderItem={({ item }) => (
-          <Ripple
+          <Button
             onPress={() => {
               props.dispatch(item);
               props.ref.current?.dismiss();
             }}
-            className="min-h-12 items-center justify-center rounded-md"
+            className="rounded-md p-0"
           >
             <Text size="lg">{item.label}</Text>
-          </Ripple>
+          </Button>
         )}
         ListHeaderComponent={
           <>
-            <Ripple
+            <Button
               onPress={() => {
                 props.dispatch({ type: "all-time" });
                 props.ref.current?.dismiss();
               }}
-              className="min-h-12 items-center justify-center rounded-md"
+              className="rounded-md p-0"
             >
               <TText textKey="feat.recap.extra.allTime" size="lg" />
-            </Ripple>
-            <Ripple
+            </Button>
+            <Button
               onPress={() => {
                 props.dispatch({ type: "last-7-days" });
                 props.ref.current?.dismiss();
               }}
-              className="min-h-12 items-center justify-center rounded-md"
+              className="rounded-md p-0"
             >
               <Text size="lg">
                 {t("feat.recap.extra.lastDays", { amount: RECENT_DAY_RANGE })}
               </Text>
-            </Ripple>
+            </Button>
           </>
         }
         nestedScrollEnabled
@@ -306,11 +307,11 @@ function TopList(props: {
         )}
         ListFooterComponent={
           canLimitPreview ? (
-            <Ripple
+            <Button
               onPress={() =>
                 setPreviewLimit((prev) => (prev === 5 ? props.data.length : 5))
               }
-              className="min-h-12 items-center justify-center rounded-full"
+              className="rounded-full"
             >
               <Text size="sm" className="text-primary">
                 {previewLimit === 5
@@ -323,7 +324,7 @@ function TopList(props: {
                       }).toLocaleLowerCase(),
                     })}
               </Text>
-            </Ripple>
+            </Button>
           ) : null
         }
         scrollEnabled={false}
