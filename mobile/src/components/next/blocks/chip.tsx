@@ -10,7 +10,7 @@ import type { Intent } from "../base/theming";
 import { Text, TText } from "../base/typography";
 import type { PressProps } from "../primitive/pressable";
 
-interface ChipProps extends PressProps {
+interface ChipProps extends Pick<PressProps, "onPress" | "disabled"> {
   intent?: Intent;
   label?: ParseKeys;
   labelText?: string;
@@ -26,7 +26,7 @@ export function Chip({
   className,
   ...props
 }: ChipProps) {
-  const Wrapper = Object.keys(props).length > 0 ? Button : View;
+  const Wrapper = props.onPress ? Button : View;
   const textProps = { intent, size: "xs" } as const;
   return (
     <Wrapper
