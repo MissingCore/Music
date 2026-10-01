@@ -12,7 +12,3 @@ export type MediaCardContent = Prettify<
     description: string;
   }
 >;
-
-export type MediaCardProps = Prettify<
-  MediaCardContent & { onPress: VoidFunction; size: number; className?: string }
->;

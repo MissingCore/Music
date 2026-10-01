@@ -2,20 +2,17 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import type { StaticScreenProps } from "@react-navigation/native";
+import { useMemo } from "react";
 
 import { useGenreDetails, useGenreTracks } from "~/data/genre/queries";
 
-import {
-  CurrentListLayout,
-  CurrentListSkeleton,
-} from "~/navigation/layouts/CurrentListLayout";
+import * as MediaListLayout from "~/navigation/layouts/MediaListLayout";
 import { GenreArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { SortSheet } from "~/navigation/sheets/SortSheet";
-import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { useTrackListPreset } from "~/modules/media/components/Track";
+import { TrackItem } from "~/components/next/composed/track-item";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -24,20 +21,15 @@ export default function Genre({
     params: { id },
   },
 }: Props) {
-  const bottomOffset = useBottomActionsOffset();
   const genreDetailsQuery = useGenreDetails(id);
   const genreTracksQuery = useGenreTracks(id);
   const artworkSheetRef = useSheetRef();
   const tracksSortOptionsSheetRef = useSheetRef();
 
-  const trackSource = { type: "genre", id } as const;
-  const presets = useTrackListPreset({
-    data: genreTracksQuery.data,
-    trackSource,
-  });
+  const trackSource = useMemo(() => ({ type: "genre", id }) as const, [id]);
 
   if (genreDetailsQuery.isPending || genreDetailsQuery.error) {
-    return <CurrentListSkeleton pending={genreDetailsQuery.isPending} />;
+    return <MediaListLayout.Skeleton pending={genreDetailsQuery.isPending} />;
   }
 
   return (
@@ -45,12 +37,15 @@ export default function Genre({
       <GenreArtworkSheet ref={artworkSheetRef} id={id} />
       <SortSheet ref={tracksSortOptionsSheetRef} screen="genreTracks" />
 
-      <CurrentListLayout
-        // List Header Props
-        listInfo={{
-          title: genreDetailsQuery.data.name,
-          metadata: genreDetailsQuery.data.metadata,
-          Actions: (
+      <MediaListLayout.Provider
+        imageSource={genreDetailsQuery.data.imageSource}
+        listSource={trackSource}
+      >
+        <MediaListLayout.Header
+          imageSource={genreDetailsQuery.data.imageSource}
+          title={genreDetailsQuery.data.name}
+          metadata={genreDetailsQuery.data.metadata}
+          Actions={
             <CurrentListMenu
               name={genreDetailsQuery.data.name}
               trackIds={genreTracksQuery.data?.map(({ id }) => id) ?? []}
@@ -59,14 +54,15 @@ export default function Genre({
                 tracksSortOptionsSheetRef.current?.present()
               }
             />
-          ),
-        }}
-        listSource={trackSource}
-        imageSource={genreDetailsQuery.data.imageSource}
-        // FlatList Props
-        {...presets}
-        contentContainerStyle={{ paddingBottom: bottomOffset }}
-      />
+          }
+        />
+        <MediaListLayout.Controls />
+        <MediaListLayout.List
+          data={genreTracksQuery.data}
+          keyExtractor={({ id }) => id}
+          renderItem={({ item }) => <TrackItem {...item} />}
+        />
+      </MediaListLayout.Provider>
     </>
   );
 }

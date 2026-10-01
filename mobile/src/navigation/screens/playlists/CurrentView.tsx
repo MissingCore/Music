@@ -56,8 +56,9 @@ export default function Playlist({
     [navigation, id, exportSheetRef],
   );
 
-  if (isPending || error)
+  if (isPending || error) {
     return <MediaListLayout.Skeleton pending={isPending} />;
+  }
 
   // Add optimistic UI updates.
   const isToggled = favoritePlaylist.isPending

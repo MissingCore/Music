@@ -8,32 +8,21 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { useAlbumForScreen, useFavoriteAlbum } from "~/data/album/queries";
-import { TABLET_SIDEBAR_WIDTH_RATIO } from "~/hooks/useAlternativeLayout";
-import { useListLayoutConfig } from "~/hooks/useLayoutConfigs";
 
-import {
-  CurrentListLayout,
-  CurrentListSkeleton,
-} from "~/navigation/layouts/CurrentListLayout";
+import * as MediaListLayout from "~/navigation/layouts/MediaListLayout";
 import { AlbumArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
-import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 import type { MenuAction } from "~/navigation/components/CurrentListMenu";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { isNumber } from "~/utils/validation";
-import { IconButton } from "~/components/Form/Button/Icon";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { Em, StyledText } from "~/components/Typography/StyledText";
-import {
-  Track,
-  useTrackListPlayingIndication,
-} from "~/modules/media/components/Track";
+import { Text } from "~/components/next/base/typography";
+import { IconButton } from "~/components/next/blocks/icon-button";
+import { TrackItem } from "~/components/next/composed/track-item";
 
 type Props = StaticScreenProps<{ id: string }>;
-
-const ColumnLayoutConfig = { percentDeduction: TABLET_SIDEBAR_WIDTH_RATIO };
 
 export default function Album({
   route: {
@@ -42,14 +31,14 @@ export default function Album({
 }: Props) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const listLayout = useListLayoutConfig(ColumnLayoutConfig);
-  const bottomOffset = useBottomActionsOffset();
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
   const artworkSheetRef = useSheetRef();
 
-  const trackSource = { type: "album", id: albumId } as const;
-  const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
+  const trackSource = useMemo(
+    () => ({ type: "album", id: albumId }) as const,
+    [albumId],
+  );
 
   const menuActions = useMemo<MenuAction[]>(
     () => [
@@ -63,14 +52,15 @@ export default function Album({
   );
 
   const formattedData = useMemo(() => {
-    if (!listData) return [];
+    if (!data?.tracks) return [];
 
     // Skip rendering disc number if the album has an assigned disc, but it's just `Disc 1`.
-    const skipDiscs = listData[0]?.disc === 1 && listData.at(-1)?.disc === 1;
+    const skipDiscs =
+      data.tracks[0]?.disc === 1 && data.tracks.at(-1)?.disc === 1;
 
     const foundDisc = new Set<number>();
     const sectionListTracks = [];
-    for (const track of listData) {
+    for (const track of data.tracks) {
       if (track.disc !== null && !foundDisc.has(track.disc)) {
         foundDisc.add(track.disc);
         if (!skipDiscs) sectionListTracks.push(track.disc);
@@ -79,9 +69,11 @@ export default function Album({
     }
 
     return sectionListTracks;
-  }, [listData]);
+  }, [data?.tracks]);
 
-  if (isPending || error) return <CurrentListSkeleton pending={isPending} />;
+  if (isPending || error) {
+    return <MediaListLayout.Skeleton pending={isPending} />;
+  }
 
   // Add optimistic UI updates.
   const isToggled = favoriteAlbum.isPending
@@ -92,13 +84,16 @@ export default function Album({
     <>
       <AlbumArtworkSheet ref={artworkSheetRef} id={albumId} />
 
-      <CurrentListLayout
-        // List Header Props
-        listInfo={{
-          title: data.name,
-          artists: data.artists,
-          metadata: data.metadata,
-          Actions: (
+      <MediaListLayout.Provider
+        imageSource={data.imageSource}
+        listSource={trackSource}
+      >
+        <MediaListLayout.Header
+          imageSource={data.imageSource}
+          title={data.name}
+          artists={data.artists}
+          metadata={data.metadata}
+          Actions={
             <View className="flex-row gap-1">
               <IconButton
                 icon={`favorite${isToggled ? "-filled" : ""}`}
@@ -112,31 +107,30 @@ export default function Album({
                 presentArtworkSheet={() => artworkSheetRef.current?.present()}
               />
             </View>
-          ),
-        }}
-        listSource={trackSource}
-        imageSource={data.imageSource}
-        // FlatList Props
-        numColumns={listLayout.count}
-        data={formattedData}
-        keyExtractor={(item) => (isNumber(item) ? `${item}` : item.id)}
-        renderItem={({ item, index }) =>
-          isNumber(item) ? (
-            <Em className={cn("mx-1 mb-2", { "mt-2": index > 0 })}>
-              {t("term.disc", { count: item })}
-            </Em>
-          ) : (
-            <Track
-              {...item}
-              trackSource={trackSource}
-              Leading={<TrackNumber track={item.track} />}
-              className="mx-1 mb-2"
-            />
-          )
-        }
-        className="-mx-1 -mb-2"
-        contentContainerStyle={{ paddingBottom: bottomOffset }}
-      />
+          }
+        />
+        <MediaListLayout.Controls />
+        <MediaListLayout.List
+          data={formattedData}
+          keyExtractor={(item) => (isNumber(item) ? `${item}` : item.id)}
+          renderItem={({ item, index }) =>
+            isNumber(item) ? (
+              <Text
+                bold
+                size="xs"
+                className={cn("mx-0.5 mb-1", { "mt-1": index > 0 })}
+              >
+                {t("term.disc", { count: item })}
+              </Text>
+            ) : (
+              <TrackItem
+                {...item}
+                Leading={<TrackNumber track={item.track} />}
+              />
+            )
+          }
+        />
+      </MediaListLayout.Provider>
     </>
   );
 }
@@ -144,8 +138,8 @@ export default function Album({
 /** Special track number next to the track content. */
 function TrackNumber({ track }: { track: number | null }) {
   return (
-    <View className="size-12 items-center justify-center">
-      <StyledText>{track !== null ? track : "—"}</StyledText>
+    <View className="size-14 items-center justify-center">
+      <Text>{track !== null ? track : "—"}</Text>
     </View>
   );
 }
