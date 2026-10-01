@@ -148,7 +148,7 @@ function PlaylistForm(props: {
       <AddTracksSheet ref={addTracksSheetRef} />
       <DragList
         pointerEvents={isSubmitting ? "none" : "auto"}
-        estimatedItemSize={60}
+        estimatedItemSize={62} // 56px Height + 6px Margin Bottom
         data={trackIds}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
@@ -161,7 +161,7 @@ function PlaylistForm(props: {
           />
         }
         ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noTracks" />}
-        className="-mb-1"
+        className="-mb-1.5"
         contentContainerStyle={{ paddingBottom: props.bottomOffset }}
         contentContainerClassName="p-4"
       />
@@ -316,9 +316,9 @@ const RenderItem = memo(
             size="xs"
           />
         }
-        applySpacing={false}
+        spacing="row"
         //! `bg-surface` is there to prevent collapsing this View.
-        className={cn("mb-1 bg-surface", {
+        className={cn("bg-surface", {
           "bg-surfaceContainerLowest": isActive,
           "opacity-25": isSubmitting,
         })}

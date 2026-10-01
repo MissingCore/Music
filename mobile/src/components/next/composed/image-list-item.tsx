@@ -6,6 +6,8 @@ import { View } from "react-native";
 import { cn } from "~/lib/style";
 import type { MediaImageSrc } from "./media-image";
 import { MediaImage } from "./media-image";
+import type { Spacing } from "./utils";
+import { getSpacingClasses } from "./utils";
 import { Ripple } from "../base/ripple";
 import { createTextStack } from "../blocks/text-stack";
 
@@ -21,12 +23,12 @@ export type ImageListItemProps = {
   Leading?: React.ReactNode;
   Trailing?: React.ReactNode;
   /**
-   * Applies spacing styles when used in a list. Defaults to `true`.
+   * Applies spacing styles when used in a list. Defaults to `all`.
    *
-   * **Make sure to apply `-mx-0.5 -mb-1` to the `className` of the scroll
-   * container this is in.**
+   * **Make sure to apply `-mx-0.75` and/or `-mb-1.5` to the `className` of
+   * the scroll container this is in.**
    */
-  applySpacing?: boolean;
+  spacing?: Spacing;
   /** If we don't want to render the `MediaImage` defined by `src`. */
   leadingOverridesSrc?: boolean;
 };
@@ -45,7 +47,7 @@ export function ImageListItem(props: ImageListItemProps) {
       onLongPress={props.onLongPress}
       className={cn(
         "flex-row items-center gap-2 rounded-lg pr-2",
-        props.applySpacing !== false && "mx-0.5 mb-1",
+        getSpacingClasses(props.spacing),
         !props.Trailing && "pr-4",
         props.className,
       )}

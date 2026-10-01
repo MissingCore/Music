@@ -104,12 +104,13 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
             onPress={() =>
               navigation.navigate("Album", { id: item.id }, { pop: true })
             }
+            spacing="none"
           />
         )}
-        className="-mx-4.5 -mb-1"
-        contentContainerClassName="p-4"
+        className="-mx-4"
+        contentContainerClassName="gap-1.5 px-4 py-1.5"
       />
-      <TText textKey="term.tracks" bold size="xs" className="mb-4" />
+      <TText textKey="term.tracks" bold size="xs" className="mb-1.5" />
     </View>
   );
 }

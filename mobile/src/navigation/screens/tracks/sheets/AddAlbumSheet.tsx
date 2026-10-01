@@ -27,13 +27,13 @@ export function AddAlbumSheet(props: {
             supporting={item.artistName}
             src={item.artwork}
             onPress={() => props.onSelect(item)}
+            spacing="none"
           />
         )}
         nestedScrollEnabled
         shadowTransitionConfig={{ color: "surfaceBright" }}
         renderOnQuery
-        className="-mx-0.5 -mb-1"
-        contentContainerClassName="pb-4"
+        contentContainerClassName="gap-1.5 pb-4"
       />
     </DetachedSheet>
   );

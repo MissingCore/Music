@@ -112,7 +112,7 @@ function SearchResultsList<TScope extends SearchCategories>(
       <LegendList
         ref={listRef}
         numColumns={props.forSheets ? undefined : listLayout.count}
-        estimatedItemSize={60}
+        estimatedItemSize={62} // 56px Height + 6px Margin Bottom
         data={data}
         // Note: We use `index` instead of the `id` or `name` field on the
         // `entry` due to there being potentially shared values (ie: between
@@ -124,7 +124,7 @@ function SearchResultsList<TScope extends SearchCategories>(
               textKey={`term.${item}`}
               bold
               size="sm"
-              className={cn("mx-0.5 mb-2", { "mt-2": index > 0 })}
+              className={cn("mx-0.75 mb-1.5", { "mt-1.5": index > 0 })}
             />
           ) : (
             <ImageListItem
@@ -152,7 +152,7 @@ function SearchResultsList<TScope extends SearchCategories>(
           ) : undefined
         }
         nestedScrollEnabled={props.forSheets}
-        className="-mx-0.5 -mb-1"
+        className="-mx-0.75 -mb-1.5"
         contentContainerClassName={cn("pb-4", {
           "pb-safe-offset-4": !props.forSheets,
         })}

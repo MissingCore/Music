@@ -296,7 +296,7 @@ function TopList(props: {
             label={item.name}
             supporting={`${t("feat.recap.extra.playCount", { count: item.playCount })} • ${Seconds.toReadableTime(item.totalTime)}`}
             Leading={<SequenceNumber value={index + 1} className="-mr-2" />}
-            applySpacing={false}
+            spacing="none"
             className={cn("rounded-xl bg-surfaceContainerLowest py-2", {
               "rounded-t-sm": index !== 0,
               "rounded-b-sm":

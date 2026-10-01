@@ -121,12 +121,12 @@ export default function Upcoming({ renderAsScreen = true }) {
       ) : (
         <DragList
           initialScrollIndex={listIndex}
-          estimatedItemSize={60}
+          estimatedItemSize={62} // 56px Height + 6px Margin Bottom
           data={modifiedData}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
           onReordered={onMove}
-          className="-mb-1"
+          className="-mb-1.5"
           contentContainerClassName="p-4 pb-safe-offset-4"
         />
       )}
@@ -157,7 +157,7 @@ const RenderItem = memo(
             : PlaybackControls.playAtIndex(index)
         }
         disabled={isDragging}
-        className={cn("mb-1 flex-row items-center gap-4 rounded-xl", {
+        className={cn("mb-1.5 flex-row items-center gap-4 rounded-lg", {
           "bg-surfaceContainerLowest": isActive,
           "opacity-25 active:opacity-100": index < disableAfter && !isActive,
         })}
@@ -183,6 +183,7 @@ const RenderItem = memo(
               size="xs"
             />
           }
+          spacing="none"
           leadingOverridesSrc
           className="shrink grow"
         />

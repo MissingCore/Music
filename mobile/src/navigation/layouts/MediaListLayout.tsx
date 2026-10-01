@@ -117,11 +117,11 @@ function useListLayoutProps() {
     () =>
       ({
         numColumns: count,
-        estimatedItemSize: 60,
+        estimatedItemSize: 62, // 56px Height + 6px Margin Bottom
         getItemType: getItemType,
         overrideItemLayout: overrideItemLayout,
         ListEmptyComponent: <ContentPlaceholder errMsgKey="err.msg.noTracks" />,
-        className: "-mx-0.5 -mb-1",
+        className: "-mx-0.75 -mb-1.5",
         contentContainerClassName: "px-4 pt-safe-offset-18",
         contentContainerStyle: { paddingBottom: bottomOffset },
       }) satisfies Partial<LegendListProps>,
@@ -171,7 +171,7 @@ function MobileLayout({ children }: { children: React.ReactNode }) {
         {...listLayoutProps}
         onScroll={scrollHandler}
         ListHeaderComponent={
-          <View className={cn("gap-6", !ListHeaderComponent && "pb-6")}>
+          <View className={cn("mx-0.75 gap-6", !ListHeaderComponent && "pb-6")}>
             {header}
             <Animated.View ref={controlsRef} className="h-10 w-full" />
             {ListHeaderComponent}
@@ -193,6 +193,8 @@ function TabletLayout({ children }: { children: React.ReactNode }) {
   const { header, list } = useLayoutComponents(children);
   const listLayoutProps = useListLayoutProps();
 
+  const { ListHeaderComponent, ...listProps } = list.props as ListProps<any>;
+
   return (
     <View className="grow flex-row">
       <ScrollView
@@ -209,7 +211,15 @@ function TabletLayout({ children }: { children: React.ReactNode }) {
         </View>
       </ScrollView>
 
-      <LegendList {...list.props} {...listLayoutProps} />
+      <LegendList
+        {...listProps}
+        ListHeaderComponent={
+          ListHeaderComponent && (
+            <View className="mx-0.75">{ListHeaderComponent}</View>
+          )
+        }
+        {...listLayoutProps}
+      />
     </View>
   );
 }

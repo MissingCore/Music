@@ -31,13 +31,13 @@ export function LinkTracksSheet(props: { ref: TrueSheetRef; lyricId: string }) {
                 lyricId: props.lyricId,
               })
             }
+            spacing="none"
           />
         )}
         nestedScrollEnabled
         shadowTransitionConfig={{ color: "surfaceBright" }}
         renderOnQuery
-        className="-mx-0.5 -mb-1"
-        contentContainerClassName="pb-4"
+        contentContainerClassName="gap-1.5 pb-4"
       />
     </DetachedSheet>
   );

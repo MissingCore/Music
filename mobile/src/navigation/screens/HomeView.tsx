@@ -302,7 +302,7 @@ function RecentGroup(props: {
         )}
         // @ts-expect-error - This is compatible.
         renderScrollComponent={AnimatedGestureScrollView}
-        className="-mx-0.5 -mb-1"
+        className="-mx-0.75 -mb-1.5"
         contentContainerClassName="px-4"
       />
     </TrackListContext>

@@ -118,7 +118,7 @@ export default function Album({
               <Text
                 bold
                 size="xs"
-                className={cn("mx-0.5 mb-1", { "mt-1": index > 0 })}
+                className={cn("mx-0.75 mb-1.5", { "mt-1.5": index > 0 })}
               >
                 {t("term.disc", { count: item })}
               </Text>
