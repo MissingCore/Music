@@ -20,6 +20,7 @@ import { isNumber } from "~/utils/validation";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { Text } from "~/components/next/base/typography";
 import { IconButton } from "~/components/next/blocks/icon-button";
+import { SequenceNumber } from "~/components/next/blocks/sequence-number";
 import { TrackItem } from "~/components/next/composed/track-item";
 
 type Props = StaticScreenProps<{ id: string }>;
@@ -124,21 +125,12 @@ export default function Album({
             ) : (
               <TrackItem
                 {...item}
-                Leading={<TrackNumber track={item.track} />}
+                Leading={<SequenceNumber value={item.track ?? "—"} />}
               />
             )
           }
         />
       </MediaListLayout.Provider>
     </>
-  );
-}
-
-/** Special track number next to the track content. */
-function TrackNumber({ track }: { track: number | null }) {
-  return (
-    <View className="size-14 items-center justify-center">
-      <Text>{track !== null ? track : "—"}</Text>
-    </View>
   );
 }

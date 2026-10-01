@@ -88,7 +88,7 @@ export function LargeImageCard(
       className={cardStyle({
         padding: false,
         className: cn(
-          "p-1",
+          "rounded-lg p-1",
           props.applySpacing !== false && "mx-0.5 mb-1",
           props.className,
         ),
