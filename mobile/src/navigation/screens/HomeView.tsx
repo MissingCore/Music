@@ -145,8 +145,9 @@ function WeeklyRecap() {
       <View className="gap-4 bg-primary px-4 pt-48 pb-1">
         <TText
           textKey="feat.greeting.title"
-          intent="accent"
-          className="text-5xl leading-none! text-onPrimary"
+          intent="primary"
+          accent
+          className="text-5xl"
         />
         <Trans
           i18nKey="feat.greeting.extra.weeklyRecap"
@@ -277,11 +278,7 @@ function RecentGroup(props: {
         className="-mb-6 flex-row items-center gap-2 px-4 py-1"
       >
         <Marquee wrapperClassName="grow-0">
-          <TText
-            textKey={props.label}
-            intent="accent"
-            className="leading-none!"
-          />
+          <TText textKey={props.label} accent size="3xl" />
         </Marquee>
         <View className="rtl:rotate-180">
           <Icon name="keyboard-arrow-right" size={32} />

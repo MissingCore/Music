@@ -125,7 +125,7 @@ function PlaceholderText(props: {
       className={cn("items-center justify-center", className)}
     >
       <Text
-        intent="accent"
+        accent
         center
         numberOfLines={1}
         ellipsizeMode="clip"

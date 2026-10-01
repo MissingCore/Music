@@ -224,7 +224,11 @@ export function Header(props: {
         >
           <View className="flex-row items-center justify-between gap-4">
             <Marquee>
-              <TText textKey={props.titleKey} intent="accent" size="4xl" />
+              <TText
+                textKey={props.titleKey}
+                accent
+                className="leading-normal!"
+              />
             </Marquee>
             <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
               {props.Actions}
