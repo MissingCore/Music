@@ -27,6 +27,7 @@ import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { Marquee } from "~/components/Marquee";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
+import { FavoriteButton } from "~/components/next/composed/track-item";
 import { AtmosphereBackground } from "~/modules/customization/atmosphere/AtmosphereBackground";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
 import {
@@ -36,7 +37,6 @@ import {
   RepeatButton,
   ShuffleButton,
 } from "~/modules/media/components/MediaControls";
-import { FavoriteButton } from "~/modules/media/components/Track";
 import { PlaybackControlGestureWrapper } from "./components/PlaybackControlGestureWrapper";
 import { useLyricStore } from "~/modules/lyric/core/store";
 
