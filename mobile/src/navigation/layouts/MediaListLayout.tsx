@@ -22,7 +22,7 @@ import {
 import { useDelayedReady } from "~/hooks/useDelayedReady";
 
 import { useBottomActionsOffset } from "../components/BottomActions/useBottomActions";
-import { PagePlaceholder } from "../components/Placeholder";
+import { ContentPlaceholder, PagePlaceholder } from "../components/Placeholder";
 import { BackButton, TopAppBarTemplate } from "../components/TopAppBar";
 
 import { clamp } from "~/utils/number";
@@ -93,25 +93,32 @@ function Layout(props: { children: React.ReactNode }) {
   );
 
   const stickyIndex = childNodes.findIndex((n) => n.type.name === "Controls");
-  const listIndex = childNodes.findIndex((n) => n.type.name === "List");
 
   if (stickyIndex === -1)
     throw new Error("`<MediaListLayout.Controls />` is missing.");
-  if (listIndex === -1)
+  if (childNodes.findIndex((n) => n.type.name === "List") === -1)
     throw new Error("`<MediaListLayout.List />` is missing.");
 
-  const lazyElements = useMemo(() => childNodes.slice(0, -1), [childNodes]);
-  const lazyElementsCount = childNodes.length - 1;
+  const lazyElements = useMemo(() => {
+    const arr = childNodes.slice(0, -1);
+    arr.splice(
+      stickyIndex + 1,
+      0,
+      <View key="controls-spacer" className="h-6 w-full" />,
+    );
+    return arr;
+  }, [childNodes, stickyIndex]);
+  const lazyElementsCount = lazyElements.length - 1;
 
-  const { data, keyExtractor, renderItem, ListEmptyComponent, ...rest } =
-    childNodes.at(-1)!.props as ListProps<any>;
+  const { data, keyExtractor, renderItem, ...rest } = childNodes.at(-1)!
+    .props as ListProps<any>;
 
   const mergedData = useMemo(() => {
     const arr = [...lazyElements, ...(data ?? [])];
-    if ((!data || data.length === 0) && ListEmptyComponent)
-      arr.push(ListEmptyComponent);
+    if (!data || data.length === 0)
+      arr.push(<ContentPlaceholder errMsgKey="err.msg.noTracks" />);
     return arr;
-  }, [lazyElements, data, ListEmptyComponent]);
+  }, [lazyElements, data]);
 
   const mergedKeyExtractor = useCallback<ListProps<any>["keyExtractor"]>(
     (item, index) =>
@@ -132,15 +139,15 @@ function Layout(props: { children: React.ReactNode }) {
   return (
     <LegendList
       {...rest}
+      //! FIXME: "Hack" to prevent media controls from briefly appearing in the wrong position.
+      estimatedItemSize={999}
       data={mergedData}
       keyExtractor={mergedKeyExtractor}
       renderItem={mergedRenderItem}
       stickyHeaderIndices={[stickyIndex]}
+      className="-mx-0.5 -mb-1"
       contentContainerClassName="px-4 pt-safe-offset-18"
-      contentContainerStyle={[
-        { paddingBottom: bottomOffset },
-        rest.contentContainerStyle,
-      ]}
+      contentContainerStyle={{ paddingBottom: bottomOffset }}
     />
   );
 }
@@ -192,7 +199,7 @@ export function Header(props: HeaderProps) {
 
 export function Controls() {
   return (
-    <View className="self-end pt-safe-offset-2 pb-6">
+    <View className="self-end pt-safe-offset-2">
       <MediaListControls trackSource={use(TrackListContext)} />
     </View>
   );
@@ -280,7 +287,7 @@ function AnimatedVinyl(props: {
 //#endregion
 
 //#region List
-type ListProps<TData> = LegendListProps<TData> &
+type ListProps<TData> = Pick<LegendListProps<TData>, "data"> &
   Required<Pick<LegendListProps<TData>, "keyExtractor" | "renderItem">>;
 
 export function List<TData>(props: ListProps<TData>) {
