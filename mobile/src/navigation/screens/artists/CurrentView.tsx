@@ -4,6 +4,7 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
+import { View } from "react-native";
 
 import { useArtistDetails, useArtistTracks } from "~/data/artist/queries";
 import type { ArtistAlbum } from "~/data/artist/types";
@@ -65,12 +66,13 @@ export default function Artist({
             />
           }
         />
-        <MediaListLayout.Controls />
-        <ArtistAlbums albums={artistDetailsQuery.data.albums} />
         <MediaListLayout.List
           data={artistTracksQuery.data}
           keyExtractor={({ id }) => id}
           renderItem={({ item }) => <TrackItem {...item} />}
+          ListHeaderComponent={
+            <ArtistAlbums albums={artistDetailsQuery.data.albums} />
+          }
         />
       </MediaListLayout.Provider>
     </>
@@ -87,7 +89,7 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
 
   if (!albums) return null;
   return (
-    <>
+    <View>
       <TText textKey="term.albums" bold size="xs" />
       <FlatList
         horizontal
@@ -108,6 +110,6 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
         contentContainerClassName="p-4"
       />
       <TText textKey="term.tracks" bold size="xs" className="mb-4" />
-    </>
+    </View>
   );
 }

@@ -1,10 +1,12 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import React, { use, useCallback, useMemo } from "react";
+import React, { use, useCallback, useLayoutEffect, useMemo } from "react";
 import { useWindowDimensions, View } from "react-native";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, {
+  useAnimatedRef,
+  useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -20,14 +22,17 @@ import {
   useAlternativeLayout,
 } from "~/hooks/useAlternativeLayout";
 import { useDelayedReady } from "~/hooks/useDelayedReady";
+import { useListLayoutConfig } from "~/hooks/useLayoutConfigs";
 
 import { useBottomActionsOffset } from "../components/BottomActions/useBottomActions";
 import { ContentPlaceholder, PagePlaceholder } from "../components/Placeholder";
 import { BackButton, TopAppBarTemplate } from "../components/TopAppBar";
 
+import { cn } from "~/lib/style";
 import { clamp } from "~/utils/number";
 import type { LegendListProps } from "~/components/Base/LegendList";
 import { LegendList } from "~/components/Base/LegendList";
+import { ScrollView } from "~/components/Base/ScrollView";
 import { Icon } from "~/components/next/base/icon";
 import { Text } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";
@@ -42,7 +47,7 @@ import { Vinyl } from "~/modules/media/components/Vinyl";
 //#region Top App Bar
 function TopAppBar() {
   return (
-    <View className="absolute inset-x-0 top-safe z-10">
+    <View pointerEvents="box-none" className="absolute inset-x-0 top-safe z-10">
       <TopAppBarTemplate headerLeftAction={<BackButton />} />
     </View>
   );
@@ -66,89 +71,146 @@ export function Provider(props: {
   listSource: PlayFromSource;
   children: React.ReactNode;
 }) {
+  const isLargeScreen = useAlternativeLayout();
+  const UsedLayout = isLargeScreen ? TabletLayout : MobileLayout;
   return (
     <TrackListContext value={props.listSource}>
       <AtmosphereBackground source={props.imageSource}>
         <TopAppBar />
-        <Layout>{props.children}</Layout>
+        <UsedLayout>{props.children}</UsedLayout>
       </AtmosphereBackground>
     </TrackListContext>
   );
 }
 //#endregion
 
-//#region Layout
-function Layout(props: { children: React.ReactNode }) {
+//#region Layout Handler
+function useLayoutComponents(children: React.ReactNode) {
+  return useMemo(() => {
+    const nodes: React.JSX.Element[] = Array.isArray(children)
+      ? children
+      : // `flat(1)` is to handle fragments.
+        React.Children.toArray(children).flat(1);
+
+    const header = nodes.find((n) => n.type.name === "Header");
+    const list = nodes.find((n) => n.type.name === "List");
+
+    if (!header || !list)
+      throw new Error("`MediaListLayout` is missing the header or list.");
+
+    return { header, list };
+  }, [children]);
+}
+
+function useListLayoutProps() {
   const bottomOffset = useBottomActionsOffset();
 
-  //? Keep defined nodes.
-  const childNodes: React.JSX.Element[] = useMemo(
+  const { count } = useListLayoutConfig({
+    percentDeduction: TABLET_SIDEBAR_WIDTH_RATIO,
+  });
+  const overrideItemLayout = useMemo(
+    () => overrideItemLayoutFactory(count),
+    [count],
+  );
+
+  return useMemo(
     () =>
-      (Array.isArray(props.children)
-        ? props.children
-        : // `flat(1)` is to handle fragments.
-          React.Children.toArray(props.children).flat(1)
-      ).filter((node) => node),
-    [props.children],
+      ({
+        numColumns: count,
+        estimatedItemSize: 60,
+        getItemType: getItemType,
+        overrideItemLayout: overrideItemLayout,
+        ListEmptyComponent: <ContentPlaceholder errMsgKey="err.msg.noTracks" />,
+        className: "-mx-0.5 -mb-1",
+        contentContainerClassName: "px-4 pt-safe-offset-18",
+        contentContainerStyle: { paddingBottom: bottomOffset },
+      }) satisfies Partial<LegendListProps>,
+    [bottomOffset, count, overrideItemLayout],
   );
+}
 
-  const stickyIndex = childNodes.findIndex((n) => n.type.name === "Controls");
+function MobileLayout({ children }: { children: React.ReactNode }) {
+  const { top } = useSafeAreaInsets();
+  const { header, list } = useLayoutComponents(children);
+  const listLayoutProps = useListLayoutProps();
 
-  if (stickyIndex === -1)
-    throw new Error("`<MediaListLayout.Controls />` is missing.");
-  if (childNodes.findIndex((n) => n.type.name === "List") === -1)
-    throw new Error("`<MediaListLayout.List />` is missing.");
+  const { ListHeaderComponent, ...listProps } = list.props as ListProps<any>;
 
-  const lazyElements = useMemo(() => {
-    const arr = childNodes.slice(0, -1);
-    arr.splice(
-      stickyIndex + 1,
-      0,
-      <View key="controls-spacer" className="h-6 w-full" />,
-    );
-    return arr;
-  }, [childNodes, stickyIndex]);
-  const lazyElementsCount = lazyElements.length - 1;
+  const controlsRestPosition = useSharedValue(-1);
+  const controlsRef = useAnimatedRef();
+  useLayoutEffect(() => {
+    controlsRef.current?.measure((_x, _y, _width, _height, _pageX, pageY) => {
+      controlsRestPosition?.set(pageY - top - 8);
+    });
+  }, [top, controlsRef, controlsRestPosition]);
 
-  const { data, keyExtractor, renderItem, ...rest } = childNodes.at(-1)!
-    .props as ListProps<any>;
+  const scrollPosition = useSharedValue(0);
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (e) => {
+      "worklet";
+      scrollPosition.set(e.contentOffset.y);
+    },
+  });
 
-  const mergedData = useMemo(() => {
-    const arr = [...lazyElements, ...(data ?? [])];
-    if (!data || data.length === 0)
-      arr.push(<ContentPlaceholder errMsgKey="err.msg.noTracks" />);
-    return arr;
-  }, [lazyElements, data]);
-
-  const mergedKeyExtractor = useCallback<ListProps<any>["keyExtractor"]>(
-    (item, index) =>
-      item?.$$typeof
-        ? `REACT_NODE-${(item as React.JSX.Element).type.name}`
-        : keyExtractor?.(item, index - lazyElementsCount),
-    [lazyElementsCount, keyExtractor],
-  );
-
-  const mergedRenderItem = useCallback<ListProps<any>["renderItem"]>(
-    (args) =>
-      args.item?.$$typeof
-        ? args.item
-        : renderItem?.({ ...args, index: args.index - lazyElementsCount }),
-    [lazyElementsCount, renderItem],
-  );
+  const stickyStyles = useAnimatedStyle(() => ({
+    opacity: controlsRestPosition.get() === -1 ? 0 : 1,
+    transform: [
+      {
+        translateY: Math.max(
+          0,
+          controlsRestPosition.get() - scrollPosition.get(),
+        ),
+      },
+    ],
+  }));
 
   return (
-    <LegendList
-      {...rest}
-      //! FIXME: "Hack" to prevent media controls from briefly appearing in the wrong position.
-      estimatedItemSize={999}
-      data={mergedData}
-      keyExtractor={mergedKeyExtractor}
-      renderItem={mergedRenderItem}
-      stickyHeaderIndices={[stickyIndex]}
-      className="-mx-0.5 -mb-1"
-      contentContainerClassName="px-4 pt-safe-offset-18"
-      contentContainerStyle={{ paddingBottom: bottomOffset }}
-    />
+    <>
+      <LegendList
+        {...listProps}
+        {...listLayoutProps}
+        onScroll={scrollHandler}
+        ListHeaderComponent={
+          <View className={cn("gap-6", !ListHeaderComponent && "pb-6")}>
+            {header}
+            <Animated.View ref={controlsRef} className="h-10 w-full" />
+            {ListHeaderComponent}
+          </View>
+        }
+      />
+      <Animated.View
+        pointerEvents="box-none"
+        style={stickyStyles}
+        className="absolute inset-x-0 top-0 items-end px-4 pt-safe-offset-2"
+      >
+        <MediaListControls trackSource={use(TrackListContext)} />
+      </Animated.View>
+    </>
+  );
+}
+
+function TabletLayout({ children }: { children: React.ReactNode }) {
+  const { header, list } = useLayoutComponents(children);
+  const listLayoutProps = useListLayoutProps();
+
+  return (
+    <View className="grow flex-row">
+      <ScrollView
+        className="relative my-auto w-full max-w-2/5 shrink-0"
+        contentContainerStyle={listLayoutProps.contentContainerStyle}
+        contentContainerClassName={cn(
+          "gap-6 p-4",
+          listLayoutProps.contentContainerClassName,
+        )}
+      >
+        {header}
+        <View className="self-end">
+          <MediaListControls trackSource={use(TrackListContext)} />
+        </View>
+      </ScrollView>
+
+      <LegendList {...list.props} {...listLayoutProps} />
+    </View>
   );
 }
 //#endregion
@@ -163,9 +225,8 @@ interface HeaderProps {
 }
 
 export function Header(props: HeaderProps) {
-  const { top } = useSafeAreaInsets();
   return (
-    <View style={{ marginBottom: -top + 16 }} className="gap-6">
+    <View className="gap-6">
       <DeferredArtwork imageSource={props.imageSource} />
       <View className="flex-row items-center gap-4">
         <View className="shrink grow gap-1">
@@ -196,16 +257,9 @@ export function Header(props: HeaderProps) {
     </View>
   );
 }
+//#endregion
 
-export function Controls() {
-  return (
-    <View className="self-end pt-safe-offset-2">
-      <MediaListControls trackSource={use(TrackListContext)} />
-    </View>
-  );
-}
-
-//#region Artwork
+//#region Artwork Preview
 function DeferredArtwork(props: { imageSource: MediaImageSrc }) {
   const { width } = useWindowDimensions();
   const isLargeScreen = useAlternativeLayout();
@@ -284,13 +338,29 @@ function AnimatedVinyl(props: {
   );
 }
 //#endregion
-//#endregion
 
 //#region List
 type ListProps<TData> = Pick<LegendListProps<TData>, "data"> &
-  Required<Pick<LegendListProps<TData>, "keyExtractor" | "renderItem">>;
+  Required<Pick<LegendListProps<TData>, "keyExtractor" | "renderItem">> & {
+    ListHeaderComponent?: React.JSX.Element;
+  };
 
 export function List<TData>(props: ListProps<TData>) {
   return <LegendList {...props} />;
+}
+//#endregion
+
+//#region Internal Helpers
+function getItemType(item: any) {
+  if (typeof item === "number" || typeof item === "string") return "label";
+  return "row";
+}
+
+function overrideItemLayoutFactory(numColumns: number) {
+  return (layout: { span?: number }, item: any) => {
+    if (typeof item === "number" || typeof item === "string") {
+      layout.span = numColumns;
+    }
+  };
 }
 //#endregion

@@ -56,7 +56,6 @@ export default function Genre({
             />
           }
         />
-        <MediaListLayout.Controls />
         <MediaListLayout.List
           data={genreTracksQuery.data}
           keyExtractor={({ id }) => id}

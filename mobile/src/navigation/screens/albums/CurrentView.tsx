@@ -109,7 +109,6 @@ export default function Album({
             </View>
           }
         />
-        <MediaListLayout.Controls />
         <MediaListLayout.List
           data={formattedData}
           keyExtractor={(item) => (isNumber(item) ? `${item}` : item.id)}
