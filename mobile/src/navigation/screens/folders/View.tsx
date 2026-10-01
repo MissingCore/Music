@@ -19,6 +19,8 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
+import type { FileNode } from "~/db/schema";
+
 import { useFolderContent } from "~/data/folder/queries";
 
 import * as LibraryLayout from "~/navigation/layouts/LibraryLayout";
@@ -37,7 +39,6 @@ import {
   TrackListContext,
 } from "~/components/next/composed/track-item";
 import { Pressable } from "~/components/next/primitive/pressable";
-import type { TrackContent } from "~/modules/media/components/Track.type";
 
 type Props = StaticScreenProps<{ path?: string }>;
 
@@ -201,8 +202,8 @@ function Breadcrumbs({ dirSegments, setDirSegments }: DirState) {
 //#endregion
 
 //#region Screen Contents
-function isTrackContent(data: unknown): data is TrackContent {
-  return Object.hasOwn(data as TrackContent, "id");
+function isFolderContent(data: unknown): data is FileNode {
+  return Object.hasOwn(data as FileNode, "parentPath");
 }
 
 function ScreenContents({ dirSegments, setDirSegments }: DirState) {
@@ -223,14 +224,14 @@ function ScreenContents({ dirSegments, setDirSegments }: DirState) {
     LibraryLayout.MediaListRenderItem<(typeof renderedData)[number]>
   >(
     ({ item }) =>
-      isTrackContent(item) ? (
-        <TrackItem {...item} />
-      ) : (
+      isFolderContent(item) ? (
         <ImageListItem
           src={{ type: "icon", value: "folder" }}
           label={item.name}
           onPress={() => setDirSegments((prev) => [...prev, item.name])}
         />
+      ) : (
+        <TrackItem {...item} />
       ),
     [setDirSegments],
   );
@@ -239,7 +240,7 @@ function ScreenContents({ dirSegments, setDirSegments }: DirState) {
     <TrackListContext value={trackSource}>
       <LibraryLayout.MediaList
         data={renderedData}
-        keyExtractor={(item) => (isTrackContent(item) ? item.id : item.path)}
+        keyExtractor={(item) => (isFolderContent(item) ? item.path : item.id)}
         renderItem={renderItem}
         ListEmptyComponent={
           <ContentPlaceholder

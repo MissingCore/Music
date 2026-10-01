@@ -5,9 +5,9 @@ import { getArtistsString } from "~/data/artist/utils";
 
 import { DetachedSheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
+import { ImageListItem } from "~/components/next/composed/image-list-item";
 import { useAllMedia } from "~/modules/search/hooks/useSearch";
 import { SearchList } from "~/modules/search/components/SearchList";
-import { SearchResult } from "~/modules/search/components/SearchResult";
 import { containSorter } from "~/modules/search/utils";
 import { linkTrackToLyric } from "../helpers/linkTrackToLyric";
 
@@ -20,11 +20,10 @@ export function LinkTracksSheet(props: { ref: TrueSheetRef; lyricId: string }) {
         keyExtractor={({ id }) => id}
         onFilterData={(query, data) => containSorter(data, query, "name")}
         renderItem={({ item }) => (
-          <SearchResult
-            type="track"
-            title={item.name}
-            description={getArtistsString(item.artists)}
-            imageSource={item.artwork}
+          <ImageListItem
+            label={item.name}
+            supporting={getArtistsString(item.artists)}
+            src={item.artwork}
             onPress={() =>
               linkTrackToLyric({
                 name: item.name,
@@ -32,13 +31,12 @@ export function LinkTracksSheet(props: { ref: TrueSheetRef; lyricId: string }) {
                 lyricId: props.lyricId,
               })
             }
-            className="mb-2 pr-4"
           />
         )}
         nestedScrollEnabled
         shadowTransitionConfig={{ color: "surfaceBright" }}
         renderOnQuery
-        className="-mb-2"
+        className="-mx-0.5 -mb-1"
         contentContainerClassName="pb-4"
       />
     </DetachedSheet>
