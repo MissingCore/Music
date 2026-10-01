@@ -299,10 +299,9 @@ function AnimatedVinyl(props: {
   horizTranslation: SharedValue<number>;
 }) {
   const inForeground = useInForeground();
+  const listSource = use(TrackListContext);
   const canAnimate = usePlaybackStore(
-    (s) =>
-      s.isPlaying &&
-      arePlaybackSourceEqual(s.playingFrom, use(TrackListContext)),
+    (s) => s.isPlaying && arePlaybackSourceEqual(s.playingFrom, listSource),
   );
 
   const onMount = useCallback(() => {
