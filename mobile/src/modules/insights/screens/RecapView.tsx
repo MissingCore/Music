@@ -1,30 +1,10 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useQuery } from "@tanstack/react-query";
-import {
-  and,
-  countDistinct,
-  desc,
-  eq,
-  getTableColumns,
-  gte,
-  lt,
-  sql,
-} from "drizzle-orm";
 import type { ActionDispatch } from "react";
 import { useMemo, useReducer, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-
-import { db } from "~/db";
-import {
-  albums,
-  artists,
-  tracks,
-  tracksPlayEvents,
-  tracksToArtists,
-} from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 import { Icon } from "~/resources/icons";
@@ -35,7 +15,6 @@ import { ListLayout } from "~/navigation/layouts/ListLayout";
 
 import { cn } from "~/lib/style";
 import { Epoch, Months, Seconds } from "~/utils/date";
-import { omitKeys } from "~/utils/object";
 import { LegendList } from "~/components/Base/LegendList";
 import { FlatList } from "~/components/Base/List";
 import { Ripple } from "~/components/Base/Pressable";
@@ -47,7 +26,10 @@ import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { AccentText } from "~/components/Typography/AccentText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
+import { RECENT_DAY_RANGE } from "../core/constants";
 import { generateRecapRange } from "../helpers/generateRecapRange";
+import type { RecapResult } from "../helpers/useRecap";
+import { useRecap } from "../helpers/useRecap";
 
 //#region Recap Time Range
 interface State {
@@ -58,6 +40,7 @@ interface State {
 
 type Action =
   | { type: "all-time" }
+  | { type: "last-7-days" }
   | { type: "month"; payload: Date }
   | { type: "year"; payload: Date };
 
@@ -66,6 +49,14 @@ const recapRangeReducer = (_: State, action: Action): State => {
     return {
       rangeLabel: i18next.t("feat.recap.extra.allTime"),
       startEpoch: sessionStore.getState().recapStartEpoch,
+      endEpoch: undefined,
+    };
+  } else if (action.type === "last-7-days") {
+    return {
+      rangeLabel: i18next.t("feat.recap.extra.lastDays", {
+        amount: RECENT_DAY_RANGE,
+      }),
+      startEpoch: sessionStore.getState().lastDaysStartEpoch,
       endEpoch: undefined,
     };
   } else if (action.type === "month") {
@@ -141,6 +132,7 @@ function TimeRangeSheet(props: {
   ref: TrueSheetRef;
   dispatch: ActionDispatch<[action: Action]>;
 }) {
+  const { t } = useTranslation();
   const recapStartEpoch = useSessionStore((s) => s.recapStartEpoch);
 
   const options = useMemo(
@@ -168,17 +160,29 @@ function TimeRangeSheet(props: {
           </Ripple>
         )}
         ListHeaderComponent={
-          <Ripple
-            onPress={() => {
-              props.dispatch({ type: "all-time" });
-              props.ref.current?.dismiss();
-            }}
-          >
-            <TStyledText
-              textKey="feat.recap.extra.allTime"
-              className="text-lg"
-            />
-          </Ripple>
+          <>
+            <Ripple
+              onPress={() => {
+                props.dispatch({ type: "all-time" });
+                props.ref.current?.dismiss();
+              }}
+            >
+              <TStyledText
+                textKey="feat.recap.extra.allTime"
+                className="text-lg"
+              />
+            </Ripple>
+            <Ripple
+              onPress={() => {
+                props.dispatch({ type: "last-7-days" });
+                props.ref.current?.dismiss();
+              }}
+            >
+              <StyledText className="text-lg">
+                {t("feat.recap.extra.lastDays", { amount: RECENT_DAY_RANGE })}
+              </StyledText>
+            </Ripple>
+          </>
         }
         nestedScrollEnabled
         contentContainerClassName="pb-4"
@@ -191,9 +195,7 @@ function TimeRangeSheet(props: {
 //#region Quick Overview
 const overviewStats = ["totalPlays", "uniqueTracks", "uniqueArtists"] as const;
 
-function QuickOverview(
-  props: Awaited<ReturnType<typeof getRecap>>["overview"],
-) {
+function QuickOverview(props: RecapResult["overview"]) {
   return (
     <View className="gap-4 rounded-3xl bg-surfaceContainerLowest p-4">
       <View className="gap-2 rounded-3xl bg-secondary p-4">
@@ -220,7 +222,7 @@ function QuickOverview(
 //#endregion
 
 //#region Top Content
-function TopContent(props: Awaited<ReturnType<typeof getRecap>>["mostPlayed"]) {
+function TopContent(props: RecapResult["mostPlayed"]) {
   const { t } = useTranslation();
   return (["track", "artist", "album"] as const)
     .filter((content) => props[content] !== undefined)
@@ -328,135 +330,9 @@ function TopList(props: {
           ) : null
         }
         scrollEnabled={false}
-        contentContainerClassName="gap-[3px]"
+        contentContainerClassName="gap-0.75"
       />
     </View>
   );
-}
-//#endregion
-
-//#region Data Query
-async function getRecap(startEpoch: number, endEpoch = Date.now()) {
-  //? Identify range of data we care about.
-  const scopedPlayEventView = db
-    .select({
-      ...omitKeys(getTableColumns(tracksPlayEvents), ["playTime"]),
-      ...omitKeys(getTableColumns(tracks), ["id"]),
-      //? Derive `playCount` from "completion ratio" for best representation based on
-      //? track duration and play time.
-      playCount:
-        sql`ceil(sum(${tracksPlayEvents.playTime}) / ${tracks.duration})`
-          .mapWith(Number)
-          .as("play_count"),
-      //? Derive aggregated play time for track.
-      playTime: sql`sum(${tracksPlayEvents.playTime})`
-        .mapWith(Number)
-        .as("agg_play_time"),
-    })
-    .from(tracksPlayEvents)
-    .where(
-      and(
-        gte(tracksPlayEvents.playedAt, startEpoch),
-        lt(tracksPlayEvents.playedAt, endEpoch),
-      ),
-    )
-    .innerJoin(tracks, eq(tracksPlayEvents.trackId, tracks.id))
-    .groupBy(tracksPlayEvents.trackId)
-    .as("scoped_play_events");
-
-  //? Get "Overview" stats.
-  const [overviewStats] = await db
-    .select({
-      totalListeningTime: sql`sum(${scopedPlayEventView.playTime})`.mapWith(
-        Number,
-      ),
-      totalPlays:
-        sql`coalesce(sum(${scopedPlayEventView.playCount}), 0)`.mapWith(Number),
-      uniqueTracks: countDistinct(scopedPlayEventView.trackId),
-    })
-    .from(scopedPlayEventView);
-  const [uniqueArtistsStat] = await db
-    .select({
-      uniqueArtists: countDistinct(tracksToArtists.artistName),
-    })
-    .from(scopedPlayEventView)
-    .innerJoin(
-      tracksToArtists,
-      eq(scopedPlayEventView.trackId, tracksToArtists.trackId),
-    );
-
-  //? Get "Top Tracks" stats.
-  const topTracks = await db
-    .select({
-      name: scopedPlayEventView.name,
-      imgSrc: sql<
-        string | null
-      >`coalesce(${scopedPlayEventView.artwork}, ${albums.artwork})`,
-      playCount: scopedPlayEventView.playCount,
-      totalTime: scopedPlayEventView.playTime,
-    })
-    .from(scopedPlayEventView)
-    .leftJoin(albums, eq(scopedPlayEventView.albumId, albums.id))
-    .orderBy(
-      desc(scopedPlayEventView.playCount),
-      desc(scopedPlayEventView.playTime),
-    );
-
-  //? Get "Top Artists" stats.
-  const topArtists = await db
-    .select({
-      name: artists.name,
-      imgSrc: artists.artwork,
-      playCount: sql`sum(${scopedPlayEventView.playCount})`.mapWith(Number),
-      totalTime: sql`sum(${scopedPlayEventView.playTime})`.mapWith(Number),
-    })
-    .from(scopedPlayEventView)
-    .innerJoin(
-      tracksToArtists,
-      eq(scopedPlayEventView.trackId, tracksToArtists.trackId),
-    )
-    .innerJoin(artists, eq(tracksToArtists.artistName, artists.name))
-    .groupBy(artists.name)
-    .orderBy(
-      desc(sql`sum(${scopedPlayEventView.playCount})`),
-      desc(sql`sum(${scopedPlayEventView.playTime})`),
-    );
-
-  //? Get "Top Albums" stats.
-  const topAlbums = await db
-    .select({
-      name: albums.name,
-      imgSrc: albums.artwork,
-      playCount: sql`sum(${scopedPlayEventView.playCount})`.mapWith(Number),
-      totalTime: sql`sum(${scopedPlayEventView.playTime})`.mapWith(Number),
-    })
-    .from(scopedPlayEventView)
-    .innerJoin(albums, eq(scopedPlayEventView.albumId, albums.id))
-    .groupBy(albums.id)
-    .orderBy(
-      desc(sql`sum(${scopedPlayEventView.playCount})`),
-      desc(sql`sum(${scopedPlayEventView.playTime})`),
-    );
-
-  return {
-    overview: { ...overviewStats!, ...uniqueArtistsStat! },
-    mostPlayed: {
-      album: topAlbums[0],
-      artist: topArtists[0],
-      track: topTracks[0],
-    },
-    topTracks,
-    topArtists,
-    topAlbums,
-  };
-}
-
-const queryKey = ["insights", "recap"];
-
-function useRecap(startEpoch: number, endEpoch?: number) {
-  return useQuery({
-    queryKey: [...queryKey, { startEpoch, endEpoch }],
-    queryFn: () => getRecap(startEpoch, endEpoch),
-  });
 }
 //#endregion

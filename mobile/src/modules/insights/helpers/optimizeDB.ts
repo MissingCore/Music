@@ -48,7 +48,9 @@ async function countOptimizationTargets() {
 
   const monthEpoches = generateRecapRange(optimizeInsightsFrom)
     .reverse()
-    .map(({ date }) => date.getTime());
+    .map(({ date }) => date.getTime())
+    //? Don't return month if it's after `recentRangeStart`.
+    .filter((epoch) => epoch <= recentRangeStart);
 
   for (const [index, monthEpoch] of monthEpoches.entries()) {
     const limit = monthEpoches.at(index + 1);
@@ -57,7 +59,7 @@ async function countOptimizationTargets() {
       lt(
         tracksPlayEvents.playedAt,
         //? Up to the next month or our hard-cap of collapsing data.
-        limit !== undefined ? limit : recentRangeStart,
+        limit ?? recentRangeStart,
       ),
     );
 
@@ -107,7 +109,9 @@ async function optimizeDB() {
       preferenceStore.getState().optimizeInsightsFrom,
     )
       .reverse()
-      .map(({ date }) => date.getTime());
+      .map(({ date }) => date.getTime())
+      //? Don't return month if it's after `recentRangeStart`.
+      .filter((epoch) => epoch <= recentRangeStart);
 
     for (const [index, monthEpoch] of monthEpoches.entries()) {
       const limit = monthEpoches.at(index + 1);
@@ -116,7 +120,7 @@ async function optimizeDB() {
         lt(
           tracksPlayEvents.playedAt,
           //? Up to the next month or our hard-cap of collapsing data.
-          limit !== undefined ? limit : recentRangeStart,
+          limit ?? recentRangeStart,
         ),
       );
 
