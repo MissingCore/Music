@@ -59,15 +59,13 @@ export function LyricsOverlay(props: { size: number; trackId: string }) {
       <View
         style={{ top: -top, bottom: 0 }}
         className={cn(
-          "absolute w-full items-center justify-center",
+          "absolute w-full items-center justify-center overflow-hidden",
           !hideBackground
             ? cn("bg-surface/85", { "bg-surface/60": scheme === "dark" })
             : undefined,
         )}
       >
-        <View style={{ width: props.size }} className="grow px-2">
-          <LyricsContent trackId={props.trackId} />
-        </View>
+        <LyricsContent trackId={props.trackId} />
 
         {!hideBackground ? (
           <>
@@ -128,6 +126,7 @@ function LyricsContent({ trackId }: { trackId: string }) {
             paddingBottom: offset,
             gap: LINE_GAP,
           }}
+          contentContainerClassName="px-4"
         />
       )}
       <ExtraActions lyricsId={data.id} />
@@ -141,7 +140,7 @@ function ExtraActions({ lyricsId }: { lyricsId?: string }) {
   const expandLyrics = useLyricStore((s) => s.fullscreen);
 
   return (
-    <View className="absolute right-0 bottom-0 z-100 flex-row gap-2">
+    <View className="absolute right-4 bottom-0 z-100 flex-row gap-2">
       <IconButton
         icon={expandLyrics ? "fullscreen-exit" : "fullscreen"}
         accessibilityLabel={t(`term.${expandLyrics ? "minimize" : "expand"}`)}
@@ -360,6 +359,7 @@ const MemoLyricList = memo(
           paddingBottom: offset,
           gap: LINE_GAP,
         }}
+        contentContainerClassName="px-4"
       />
     );
   },

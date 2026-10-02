@@ -183,6 +183,7 @@
         "vinyl": "Vinyl",
         "vinylOld": "Vinyl (Legacy)",
         "none": "None",
+        "immersive": "Immersive",
 
         "alternativeInfoLayout": "Alternative Info Layout",
         "standardVinylSpeed": "Standard Vinyl Speed"

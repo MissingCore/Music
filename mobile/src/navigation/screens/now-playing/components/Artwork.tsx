@@ -23,6 +23,7 @@ import { isSeekingAtom } from "../helpers/Seekbar.context";
 import { useVinylSeekbar } from "../helpers/useVinylSeekbar";
 
 import { Pressable } from "~/components/Base/Pressable";
+import { ImmersiveArtwork } from "~/modules/media/components/ImmersiveArtwork";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import { Vinyl } from "~/modules/media/components/Vinyl";
 
@@ -39,6 +40,7 @@ export function ArtworkPicker(props: ArtworkProps) {
   if (usedDesign === "plain") return <PlainArtwork {...props} />;
   else if (usedDesign === "vinyl") return <VinylSeekBar {...props} />;
   else if (usedDesign === "vinylOld") return <VinylLegacy {...props} />;
+  else if (usedDesign === "immersive") return <Immersive {...props} />;
   return null;
 }
 
@@ -147,5 +149,18 @@ function VinylLegacy(props: ArtworkProps) {
         <MediaImage type="track" {...props} />
       </Animated.View>
     </View>
+  );
+}
+
+function Immersive(props: ArtworkProps) {
+  const enableTapGesture = usePreferenceStore(
+    (s) => s.nowPlayingArtworkControls,
+  );
+  return (
+    <ImmersiveArtwork
+      onPress={enableTapGesture ? PlaybackControls.playToggle : undefined}
+      source={props.source}
+      dimensions={props.dimensions}
+    />
   );
 }
