@@ -102,11 +102,11 @@ function useLayoutComponents(children: React.ReactNode) {
       : // `flat(1)` is to handle fragments.
         React.Children.toArray(children).flat(1);
 
-    const header = nodes.find((n) => n.type.name === "Header");
-    const list = nodes.find((n) => n.type.name === "List");
+    const header = nodes.find((n) => n.type === Header);
+    const list = nodes.find((n) => n.type === List);
 
-    if (!header || !list)
-      throw new Error("`MediaListLayout` is missing the header or list.");
+    if (!header) throw new Error("`MediaListLayout` is missing the header.");
+    if (!list) throw new Error("`MediaListLayout` is missing the list.");
 
     return { header, list };
   }, [children]);
