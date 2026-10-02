@@ -6,8 +6,8 @@ import type { AlbumSummary } from "~/data/album/types";
 
 import { DetachedSheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
+import { ImageListItem } from "~/components/next/composed/image-list-item";
 import { SearchList } from "~/modules/search/components/SearchList";
-import { SearchResult } from "~/modules/search/components/SearchResult";
 import { containSorter } from "~/modules/search/utils";
 
 export function AddAlbumSheet(props: {
@@ -22,20 +22,18 @@ export function AddAlbumSheet(props: {
         keyExtractor={({ id }) => id}
         onFilterData={(query, data) => containSorter(data, query, "name")}
         renderItem={({ item }) => (
-          <SearchResult
-            type="album"
-            title={item.name}
-            description={item.artistName}
-            imageSource={item.artwork}
+          <ImageListItem
+            src={item.artwork}
+            label={item.name}
+            supporting={item.artistName}
             onPress={() => props.onSelect(item)}
-            className="mb-2 pr-4"
+            spacing="none"
           />
         )}
         nestedScrollEnabled
         shadowTransitionConfig={{ color: "surfaceBright" }}
         renderOnQuery
-        className="-mb-2"
-        contentContainerClassName="pb-4"
+        contentContainerClassName="gap-1.5 pb-4"
       />
     </DetachedSheet>
   );

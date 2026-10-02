@@ -21,10 +21,12 @@ import { Resynchronize } from "~/stores/Playback/actions";
 import { pickImage } from "~/lib/file-system";
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
+import { isRecord } from "~/utils/validation";
 import { DetachedSheet } from "~/components/Sheet";
 import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { MediaImage } from "~/modules/media/components/MediaImage";
+import type { MediaImageSrc } from "~/components/next/composed/media-image";
+import { MediaImage } from "~/components/next/composed/media-image";
 import type { MediaType } from "~/stores/Playback/types";
 
 type ArtworkSheetProps = { id: string; ref: TrueSheetRef };
@@ -122,7 +124,7 @@ export function TrackArtworkSheet({ id, ref }: ArtworkSheetProps) {
 /** Reusable sheet for changing the artwork of some media. */
 function BaseArtworkSheetContent(props: {
   type: MediaType;
-  imageSource: MediaImage.ImageSource;
+  imageSource: MediaImageSrc;
   onUpdateArtwork: (artwork: string | null) => Promise<unknown>;
   onSuccess: () => Promise<void> | void;
   disabled?: boolean;
@@ -150,12 +152,7 @@ function BaseArtworkSheetContent(props: {
 
   return (
     <>
-      <MediaImage
-        type={props.type}
-        source={props.imageSource}
-        size={imageSize}
-        className="mx-4"
-      />
+      <MediaImage src={props.imageSource} size={imageSize} className="mx-4" />
       <SheetButtonGroup
         leftButton={{
           textKey: "feat.artwork.extra.remove",
@@ -163,8 +160,9 @@ function BaseArtworkSheetContent(props: {
           disabled:
             props.disabled ||
             disabled ||
-            props.imageSource === null ||
-            Array.isArray(props.imageSource),
+            !props.imageSource ||
+            Array.isArray(props.imageSource) ||
+            isRecord(props.imageSource),
         }}
         rightButton={{
           textKey: "feat.artwork.extra.change",

@@ -5,6 +5,7 @@ import { View } from "react-native";
 
 import { getImageUri } from "~/lib/file-system";
 import { cn } from "~/lib/style";
+import type { Maybe } from "~/utils/types";
 import { isRecord } from "~/utils/validation";
 import type { SupportedIconName } from "../base/icon";
 import { Icon } from "../base/icon";
@@ -12,8 +13,7 @@ import { Text } from "../base/typography";
 import { Image } from "../primitive/image";
 
 export type MediaImageSrc =
-  | string
-  | null
+  | Maybe<string>
   | Array<string | null>
   | { type: "icon"; value: SupportedIconName }
   | { type: "str"; value: string };
@@ -34,7 +34,7 @@ export function MediaImage({
   const shared = {
     size: size,
     style: { width: size, height: size },
-    className: cn("bg-surfaceContainerHigh", className),
+    className: cn("rounded-xl bg-surfaceContainerHigh", className),
   };
 
   if (Array.isArray(src)) {
@@ -45,7 +45,7 @@ export function MediaImage({
       return <PlaceholderIcon icon={value} fullSize={false} {...shared} />;
     }
     return <PlaceholderText str={value} {...shared} />;
-  } else if (src === null) {
+  } else if (!src) {
     if (noPlaceholder) return <View {...shared} />;
     return <PlaceholderIcon icon="glyph-music" {...shared} />;
   }
@@ -104,8 +104,8 @@ function PlaceholderIcon(props: {
 }
 
 /** Generate a `src` for a "Text" placeholder for `MediaImage`. */
-export function createTextPlaceholder(str: string, long = false) {
-  let sanitizedStr = str.replace(/\s/g, "");
+export function createTextPlaceholder(str: string | undefined, long = false) {
+  let sanitizedStr = (str ?? "").replace(/\s/g, "");
   if (!long) sanitizedStr = sanitizedStr.slice(0, 2);
   return { type: "str", value: sanitizedStr } as const;
 }
@@ -125,7 +125,7 @@ function PlaceholderText(props: {
       className={cn("items-center justify-center", className)}
     >
       <Text
-        intent="accent"
+        accent
         center
         numberOfLines={1}
         ellipsizeMode="clip"

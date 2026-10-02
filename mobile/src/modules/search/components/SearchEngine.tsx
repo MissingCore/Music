@@ -16,13 +16,14 @@ import { cn } from "~/lib/style";
 import { isString } from "~/utils/validation";
 import { LegendList, useLegendListRef } from "~/components/Base/LegendList";
 import { FlatList } from "~/components/Base/List";
-import { Button } from "~/components/Form/Button";
 import { TopDownGradient } from "~/components/Gradient";
-import { TEm } from "~/components/Typography/StyledText";
+import { TText } from "~/components/next/base/typography";
+import { Chip } from "~/components/next/blocks/chip";
+import { ImageListItem } from "~/components/next/composed/image-list-item";
+import { createTextPlaceholder } from "~/components/next/composed/media-image";
+import { TrackAction } from "~/components/next/composed/track-item";
 import type { ColorRole } from "~/modules/customization/theme/core/constants";
-import { TrackAction } from "~/modules/media/components/Track";
 import { SearchBar } from "./SearchBar";
-import { SearchResult } from "./SearchResult";
 import { useSearch } from "../hooks/useSearch";
 import type {
   SearchCallbacks,
@@ -112,7 +113,7 @@ function SearchResultsList<TScope extends SearchCategories>(
       <LegendList
         ref={listRef}
         numColumns={props.forSheets ? undefined : listLayout.count}
-        estimatedItemSize={56}
+        estimatedItemSize={62} // 56px Height + 6px Margin Bottom
         data={data}
         // Note: We use `index` instead of the `id` or `name` field on the
         // `entry` due to there being potentially shared values (ie: between
@@ -120,13 +121,17 @@ function SearchResultsList<TScope extends SearchCategories>(
         keyExtractor={(item, index) => (isString(item) ? item : `${index}`)}
         renderItem={({ item, index }) =>
           isString(item) ? (
-            <TEm
+            <TText
               textKey={`term.${item}`}
-              className={cn("mx-1 mb-2", { "mt-2": index > 0 })}
+              bold
+              size="sm"
+              className={cn("mx-0.75 mb-1.5", { "mt-1.5": index > 0 })}
             />
           ) : (
-            <SearchResult
-              {...item}
+            <ImageListItem
+              src={item.imageSource}
+              label={item.title}
+              supporting={item.description}
               /* @ts-expect-error - `type` should be limited to our scope. */
               onPress={() => props.callbacks[item.type](item.entry)}
               Trailing={
@@ -137,10 +142,6 @@ function SearchResultsList<TScope extends SearchCategories>(
                   />
                 ) : undefined
               }
-              className={cn("mx-1 mb-2", {
-                "pr-4": !props.withTrackActions || item.type !== "track",
-                "rounded-full": item.type === "artist",
-              })}
             />
           )
         }
@@ -152,7 +153,7 @@ function SearchResultsList<TScope extends SearchCategories>(
           ) : undefined
         }
         nestedScrollEnabled={props.forSheets}
-        className="-mx-1 -mb-2"
+        className="-mx-0.75 -mb-1.5"
         contentContainerClassName={cn("pb-4", {
           "pb-safe-offset-4": !props.forSheets,
         })}
@@ -186,20 +187,14 @@ function SearchFilters(props: {
       renderItem={({ item: tab }) => {
         const selected = props.selectedTab === tab;
         return (
-          <Button
+          <Chip
+            label={`term.${tab}`}
             onPress={() => props.onSelectTab(tab)}
             disabled={selected}
-            className={cn(
-              "min-h-0 rounded-sm px-3 py-1.5 disabled:opacity-100",
-              { "bg-primary": selected },
-            )}
-          >
-            <TEm
-              textKey={`term.${tab}`}
-              className={cn({ "text-onPrimary": selected })}
-              bold={false}
-            />
-          </Button>
+            intent={selected ? "primary" : undefined}
+            pill={selected}
+            className="py-1.5"
+          />
         );
       }}
       className="absolute top-0 left-0 z-10 -mx-4 py-3"
@@ -249,8 +244,11 @@ function formatResults(results: Partial<SearchResults>, tab: SearchTab) {
         return {
           type: key as SearchCategories[number],
           imageSource:
-            // @ts-expect-error - Values are of correct types.
-            key !== "folder" ? item.artwork : null,
+            key === "folder"
+              ? { type: "icon", value: "folder" }
+              : // @ts-expect-error - Values are of correct types.
+                (item.artwork ??
+                (key === "artist" ? createTextPlaceholder(item.name) : null)),
           title: item.name,
           description,
           entry: item,

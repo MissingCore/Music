@@ -8,25 +8,27 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import i18next from "~/modules/i18n";
-import { Icon } from "~/resources/icons";
 import { sessionStore, useSessionStore } from "~/stores/Session/store";
 
-import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { cn } from "~/lib/style";
 import { Epoch, Months, Seconds } from "~/utils/date";
 import { LegendList } from "~/components/Base/LegendList";
 import { FlatList } from "~/components/Base/List";
-import { Ripple } from "~/components/Base/Pressable";
-import { Divider } from "~/components/Divider";
-import { ListItem } from "~/components/List";
 import { DetachedSheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { StyledText, TStyledText } from "~/components/Typography/StyledText";
-import { AccentText } from "~/components/Typography/AccentText";
-import { MediaImage } from "~/modules/media/components/MediaImage";
+import { Card } from "~/components/next/base/card";
+import { Divider } from "~/components/next/base/divider";
+import { Icon } from "~/components/next/base/icon";
+import { Button } from "~/components/next/blocks/button";
+import { SequenceNumber } from "~/components/next/blocks/sequence-number";
+import { Text, TText } from "~/components/next/base/typography";
+import { ImageListItem } from "~/components/next/composed/image-list-item";
+import type { MediaImageSrc } from "~/components/next/composed/media-image";
+import { MediaImage } from "~/components/next/composed/media-image";
 import { RECENT_DAY_RANGE } from "../core/constants";
 import { generateRecapRange } from "../helpers/generateRecapRange";
 import type { RecapResult } from "../helpers/useRecap";
@@ -105,21 +107,17 @@ export default function Recap({
     <>
       <TimeRangeSheet ref={timeRangeSheetRef} dispatch={dispatch} />
       <ListLayout>
-        <Ripple
+        <Button
           onPress={() => timeRangeSheetRef.current?.present()}
-          className="flex-row justify-between gap-4 rounded-xl bg-surfaceContainerLowest p-4"
+          filled
+          className="justify-between"
         >
           <View className="gap-2">
-            <TStyledText
-              textKey="feat.recap.extra.timeRange"
-              className="text-sm text-onSurfaceVariant"
-            />
-            <AccentText className="text-4xl leading-none!">
-              {state.rangeLabel}
-            </AccentText>
+            <TText textKey="feat.recap.extra.timeRange" muted size="sm" />
+            <Text accent>{state.rangeLabel}</Text>
           </View>
           <Icon name="keyboard-arrow-down" />
-        </Ripple>
+        </Button>
         <RecapContent key={state.rangeLabel} {...state} />
       </ListLayout>
     </>
@@ -164,38 +162,38 @@ function TimeRangeSheet(props: {
         data={options}
         keyExtractor={(item) => item.label}
         renderItem={({ item }) => (
-          <Ripple
+          <Button
             onPress={() => {
               props.dispatch(item);
               props.ref.current?.dismiss();
             }}
+            className="rounded-md p-0"
           >
-            <StyledText className="text-lg">{item.label}</StyledText>
-          </Ripple>
+            <Text size="lg">{item.label}</Text>
+          </Button>
         )}
         ListHeaderComponent={
           <>
-            <Ripple
+            <Button
               onPress={() => {
                 props.dispatch({ type: "all-time" });
                 props.ref.current?.dismiss();
               }}
+              className="rounded-md p-0"
             >
-              <TStyledText
-                textKey="feat.recap.extra.allTime"
-                className="text-lg"
-              />
-            </Ripple>
-            <Ripple
+              <TText textKey="feat.recap.extra.allTime" size="lg" />
+            </Button>
+            <Button
               onPress={() => {
                 props.dispatch({ type: "last-7-days" });
                 props.ref.current?.dismiss();
               }}
+              className="rounded-md p-0"
             >
-              <StyledText className="text-lg">
+              <Text size="lg">
                 {t("feat.recap.extra.lastDays", { amount: RECENT_DAY_RANGE })}
-              </StyledText>
-            </Ripple>
+              </Text>
+            </Button>
           </>
         }
         nestedScrollEnabled
@@ -211,26 +209,30 @@ const overviewStats = ["totalPlays", "uniqueTracks", "uniqueArtists"] as const;
 
 function QuickOverview(props: RecapResult["overview"]) {
   return (
-    <View className="gap-4 rounded-xl bg-surfaceContainerLowest p-4">
-      <View className="gap-2 rounded-xl bg-secondary p-4">
-        <TStyledText
+    <Card className="gap-4">
+      <Card intent="secondary" className="gap-2 rounded-lg">
+        <TText
           textKey="feat.recap.extra.totalListeningTime"
-          className="text-sm text-onSecondaryVariant"
+          intent="secondary"
+          muted
+          size="sm"
         />
-        <AccentText className="text-4xl leading-none! text-onSecondary">
+        <Text intent="secondary" accent>
           {Seconds.toReadableTime(props.totalListeningTime)}
-        </AccentText>
-      </View>
+        </Text>
+      </Card>
       <Divider />
       <View className="flex-row gap-4">
         {overviewStats.map((key) => (
           <View key={key} className="flex-1">
-            <AccentText className="text-lg">{props[key]}</AccentText>
-            <TStyledText textKey={`feat.recap.extra.${key}`} dim />
+            <Text accent size="lg">
+              {props[key]}
+            </Text>
+            <TText textKey={`feat.recap.extra.${key}`} muted />
           </View>
         ))}
       </View>
-    </View>
+    </Card>
   );
 }
 //#endregion
@@ -243,23 +245,20 @@ function TopContent(props: RecapResult["mostPlayed"]) {
     .map((content) => {
       const item = props[content]!;
       return (
-        <View
-          key={content}
-          className="flex-row items-center gap-4 rounded-xl bg-surfaceContainerLowest p-4"
-        >
-          <MediaImage type={content} source={item.imgSrc} size={64} />
+        <Card key={content} className="flex-row items-center gap-4">
+          <MediaImage src={item.imgSrc} size={64} className="rounded-lg" />
           <View className="shrink grow">
-            <StyledText dim className="text-primary">
+            <Text size="xs" className="text-primary">
               {t("feat.recap.extra.mostPlayed", { name: t(`term.${content}`) })}
-            </StyledText>
-            <StyledText numberOfLines={1} className="text-lg">
+            </Text>
+            <Text numberOfLines={1} size="lg">
               {item.name}
-            </StyledText>
-            <StyledText numberOfLines={1} dim>
+            </Text>
+            <Text numberOfLines={1} muted>
               {`${t("feat.recap.extra.playCount", { count: item.playCount })} • ${Seconds.toReadableTime(item.totalTime)}`}
-            </StyledText>
+            </Text>
           </View>
-        </View>
+        </Card>
       );
     });
 }
@@ -268,7 +267,7 @@ function TopContent(props: RecapResult["mostPlayed"]) {
 //#region Top Lists
 type TopItem = {
   name: string;
-  imgSrc: string | null;
+  imgSrc: MediaImageSrc;
   playCount: number;
   totalTime: number;
 };
@@ -286,50 +285,35 @@ function TopList(props: {
   if (props.data.length === 0) return null;
   return (
     <View className="gap-2">
-      <StyledText bold className="text-lg">
+      <Text bold size="lg">
         {t("feat.recap.extra.top", { name: props.label })} ({props.data.length})
-      </StyledText>
+      </Text>
       <FlatList
         data={props.data.slice(0, previewLimit)}
         keyExtractor={(_, index) => String(index)}
         renderItem={({ item, index }) => (
-          <ListItem
-            labelText={item.name}
-            supportingText={`${t("feat.recap.extra.playCount", { count: item.playCount })} • ${Seconds.toReadableTime(item.totalTime)}`}
-            Leading={
-              <>
-                <View className="size-12 items-center justify-center">
-                  <StyledText style={{ fontVariant: ["tabular-nums"] }}>
-                    {index + 1}
-                  </StyledText>
-                </View>
-                <MediaImage
-                  type={props.roundedImage ? "artist" : "track"}
-                  source={item.imgSrc}
-                  size={48}
-                />
-              </>
-            }
-            className={cn(
-              "gap-2 rounded-xl bg-surfaceContainerLowest p-2 pr-4",
-              {
-                "rounded-t-sm": index !== 0,
-                "rounded-b-sm":
-                  index !== Math.min(props.data.length, previewLimit) - 1,
-              },
-            )}
-            _overflow={false}
+          <ImageListItem
+            src={item.imgSrc}
+            label={item.name}
+            supporting={`${t("feat.recap.extra.playCount", { count: item.playCount })} • ${Seconds.toReadableTime(item.totalTime)}`}
+            Leading={<SequenceNumber value={index + 1} className="-mr-2" />}
+            spacing="none"
+            className={cn("rounded-xl bg-surfaceContainerLowest py-2", {
+              "rounded-t-sm": index !== 0,
+              "rounded-b-sm":
+                index !== Math.min(props.data.length, previewLimit) - 1,
+            })}
           />
         )}
         ListFooterComponent={
           canLimitPreview ? (
-            <Ripple
+            <Button
               onPress={() =>
                 setPreviewLimit((prev) => (prev === 5 ? props.data.length : 5))
               }
               className="rounded-full"
             >
-              <StyledText className="text-sm text-primary">
+              <Text size="sm" className="text-primary">
                 {previewLimit === 5
                   ? t("template.entryShowAll", {
                       name: props.label.toLocaleLowerCase(),
@@ -339,8 +323,8 @@ function TopList(props: {
                         name: 5,
                       }).toLocaleLowerCase(),
                     })}
-              </StyledText>
-            </Ripple>
+              </Text>
+            </Button>
           ) : null
         }
         scrollEnabled={false}

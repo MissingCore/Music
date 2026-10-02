@@ -19,7 +19,10 @@ import { getImageUri } from "~/lib/file-system";
 import { Icon } from "~/components/next/base/icon";
 import { Ripple } from "~/components/next/base/ripple";
 import { createTextStack } from "~/components/next/blocks/text-stack";
-import { TrackItem } from "~/components/next/composed/track-item";
+import {
+  TrackItem,
+  TrackListContext,
+} from "~/components/next/composed/track-item";
 import { Image } from "~/components/next/primitive/image";
 import {
   FavoritesPlaylistKey,
@@ -30,7 +33,6 @@ import {
   ShuffleButton,
 } from "~/modules/media/components/MediaControls";
 import { PlayMediaListButton } from "~/modules/media/components/MediaListControls";
-import { useTrackListPlayingIndication } from "~/modules/media/components/Track";
 
 // Information about this track list.
 const trackSource = {
@@ -77,25 +79,26 @@ function ScreenContents() {
       })),
     [data],
   );
-  const listData = useTrackListPlayingIndication(trackSource, formattedData);
 
   const renderItem = useCallback<
-    LibraryLayout.MediaListRenderItem<NonNullable<typeof listData>[number]>
-  >(({ item }) => <TrackItem {...item} trackSource={trackSource} />, []);
+    LibraryLayout.MediaListRenderItem<NonNullable<typeof formattedData>[number]>
+  >(({ item }) => <TrackItem {...item} />, []);
 
   return (
-    <LibraryLayout.MediaList
-      data={listData}
-      keyExtractor={({ id }) => id}
-      renderItem={renderItem}
-      ListHeaderComponent={<FavoritesPlaylistLink />}
-      ListEmptyComponent={
-        <ContentPlaceholder
-          isPending={isPending}
-          className="absolute inset-0 pt-safe-offset-48"
-        />
-      }
-    />
+    <TrackListContext value={trackSource}>
+      <LibraryLayout.MediaList
+        data={formattedData}
+        keyExtractor={({ id }) => id}
+        renderItem={renderItem}
+        ListHeaderComponent={<FavoritesPlaylistLink />}
+        ListEmptyComponent={
+          <ContentPlaceholder
+            isPending={isPending}
+            className="absolute inset-0 pt-safe-offset-48"
+          />
+        }
+      />
+    </TrackListContext>
   );
 }
 

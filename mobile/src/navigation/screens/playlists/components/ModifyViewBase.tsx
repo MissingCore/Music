@@ -21,11 +21,11 @@ import { AddMusicSheet } from "../sheets/AddMusicSheet";
 
 import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
-import { IconButton } from "~/components/Form/Button/Icon";
-import { RemovableItem } from "~/components/List/RemovableItem";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { TStyledText } from "~/components/Typography/StyledText";
+import { TText } from "~/components/next/base/typography";
+import { IconButton } from "~/components/next/blocks/icon-button";
+import { ImageListItem } from "~/components/next/composed/image-list-item";
 import { ZSchema } from "~/modules/form/utils";
 import type { FABWorkflowConfig } from "~/modules/form/FormState";
 import {
@@ -35,7 +35,6 @@ import {
 } from "~/modules/form/FormState";
 import { FormInputImpl, InputLabel } from "~/modules/form/FormState/FormInput";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
-import { SearchResult } from "~/modules/search/components/SearchResult";
 import { useAllMedia } from "~/modules/search/hooks/useSearch";
 import type { SearchCallbacks } from "~/modules/search/types";
 
@@ -149,7 +148,7 @@ function PlaylistForm(props: {
       <AddTracksSheet ref={addTracksSheetRef} />
       <DragList
         pointerEvents={isSubmitting ? "none" : "auto"}
-        estimatedItemSize={56}
+        estimatedItemSize={62} // 56px Height + 6px Margin Bottom
         data={trackIds}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
@@ -162,7 +161,7 @@ function PlaylistForm(props: {
           />
         }
         ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noTracks" />}
-        className="-mb-2"
+        className="-mb-1.5"
         contentContainerStyle={{ paddingBottom: props.bottomOffset }}
         contentContainerClassName="p-4"
       />
@@ -224,7 +223,7 @@ function PlaylistNameField({ isFavoritesList }: { isFavoritesList?: boolean }) {
         <View>
           <InputLabel label="feat.trackMetadata.extra.name" />
           <View className="min-h-12 w-full justify-center rounded-sm border border-outline p-2 opacity-25">
-            <TStyledText textKey="term.favoriteTracks" numberOfLines={1} />
+            <TText textKey="term.favoriteTracks" numberOfLines={1} />
           </View>
         </View>
       ) : (
@@ -236,9 +235,10 @@ function PlaylistNameField({ isFavoritesList }: { isFavoritesList?: boolean }) {
           size={16}
           color={constraintColor}
         />
-        <TStyledText
+        <TText
           textKey="form.validation.unique"
-          className={cn("text-xs", constraintColor)}
+          size="xs"
+          className={constraintColor}
         />
       </View>
     </View>
@@ -294,33 +294,35 @@ const RenderItem = memo(
     const track = useCachedTrack(item);
 
     return (
-      <RemovableItem
+      <ImageListItem
+        src={track.artwork}
         label={track.name}
-        onRemove={() => onRemove(track.id)}
-        disableRemove={isDragging}
+        supporting={getArtistsString(track.artists)}
+        Leading={
+          <IconButton
+            icon="do-not-disturb-on"
+            accessibilityLabel={t("template.entryRemove", { name: track.name })}
+            onPress={() => onRemove(track.id)}
+            disabled={isDragging}
+            size="xs"
+          />
+        }
+        Trailing={
+          <IconButton
+            icon="drag-handle"
+            accessibilityLabel={t("template.entryMove", { name: track.name })}
+            onPressIn={onInitDrag}
+            disabled={isDragging && !isActive}
+            size="xs"
+          />
+        }
+        spacing="row"
         //! `bg-surface` is there to prevent collapsing this View.
-        className={cn("mb-2 rounded-xs bg-surface", {
+        className={cn("bg-surface", {
           "bg-surfaceContainerLowest": isActive,
           "opacity-25": isSubmitting,
         })}
-      >
-        <SearchResult
-          type="track"
-          title={track.name}
-          description={getArtistsString(track.artists)}
-          imageSource={track.artwork}
-          Trailing={
-            <IconButton
-              icon="drag-handle"
-              accessibilityLabel={t("template.entryMove", { name: track.name })}
-              onPressIn={onInitDrag}
-              disabled={isDragging && !isActive}
-              size="xs"
-            />
-          }
-          className="shrink grow"
-        />
-      </RemovableItem>
+      />
     );
   },
   (oldProps, newProps) => {

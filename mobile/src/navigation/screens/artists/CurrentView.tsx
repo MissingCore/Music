@@ -3,26 +3,23 @@
 
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
+import { useMemo } from "react";
+import { View } from "react-native";
 
 import { useArtistDetails, useArtistTracks } from "~/data/artist/queries";
 import type { ArtistAlbum } from "~/data/artist/types";
 import { useHorizontalListLayoutConfig } from "~/hooks/useLayoutConfigs";
 
-import {
-  CurrentListLayout,
-  CurrentListSkeleton,
-} from "~/navigation/layouts/CurrentListLayout";
+import * as MediaListLayout from "~/navigation/layouts/MediaListLayout";
 import { ArtistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { SortSheet } from "~/navigation/sheets/SortSheet";
-import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 
 import { FlatList } from "~/components/Base/List";
-import { HorizontalScrollGradient } from "~/components/Gradient";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { TEm } from "~/components/Typography/StyledText";
-import { MediaCard } from "~/modules/media/components/MediaCard";
-import { useTrackListPreset } from "~/modules/media/components/Track";
+import { TText } from "~/components/next/base/typography";
+import { ImageCard } from "~/components/next/composed/image-card";
+import { TrackItem } from "~/components/next/composed/track-item";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -31,20 +28,18 @@ export default function Artist({
     params: { id: artistName },
   },
 }: Props) {
-  const bottomOffset = useBottomActionsOffset();
   const artistDetailsQuery = useArtistDetails(artistName);
   const artistTracksQuery = useArtistTracks(artistName);
   const artworkSheetRef = useSheetRef();
   const tracksSortOptionsSheetRef = useSheetRef();
 
-  const trackSource = { type: "artist", id: artistName } as const;
-  const presets = useTrackListPreset({
-    data: artistTracksQuery.data,
-    trackSource,
-  });
+  const trackSource = useMemo(
+    () => ({ type: "artist", id: artistName }) as const,
+    [artistName],
+  );
 
   if (artistDetailsQuery.isPending || artistDetailsQuery.error) {
-    return <CurrentListSkeleton pending={artistDetailsQuery.isPending} />;
+    return <MediaListLayout.Skeleton pending={artistDetailsQuery.isPending} />;
   }
 
   return (
@@ -52,12 +47,14 @@ export default function Artist({
       <ArtistArtworkSheet ref={artworkSheetRef} id={artistName} />
       <SortSheet ref={tracksSortOptionsSheetRef} screen="artistTracks" />
 
-      <CurrentListLayout
-        // List Header Props
-        listInfo={{
-          title: artistDetailsQuery.data.name,
-          metadata: artistDetailsQuery.data.metadata,
-          Actions: (
+      <MediaListLayout.Provider
+        imageSource={artistDetailsQuery.data.imageSource}
+        listSource={trackSource}
+      >
+        <MediaListLayout.Header
+          title={artistDetailsQuery.data.name}
+          metadata={artistDetailsQuery.data.metadata}
+          Actions={
             <CurrentListMenu
               name={artistDetailsQuery.data.name}
               trackIds={artistTracksQuery.data?.map(({ id }) => id) ?? []}
@@ -66,15 +63,17 @@ export default function Artist({
                 tracksSortOptionsSheetRef.current?.present()
               }
             />
-          ),
-        }}
-        listSource={trackSource}
-        imageSource={artistDetailsQuery.data.imageSource}
-        SubHeader={<ArtistAlbums albums={artistDetailsQuery.data.albums} />}
-        // FlatList Props
-        {...presets}
-        contentContainerStyle={{ paddingBottom: bottomOffset }}
-      />
+          }
+        />
+        <MediaListLayout.List
+          data={artistTracksQuery.data}
+          keyExtractor={({ id }) => id}
+          renderItem={({ item }) => <TrackItem {...item} />}
+          ListHeaderComponent={
+            <ArtistAlbums albums={artistDetailsQuery.data.albums} />
+          }
+        />
+      </MediaListLayout.Provider>
     </>
   );
 }
@@ -89,31 +88,28 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
 
   if (!albums) return null;
   return (
-    <>
-      <TEm textKey="term.albums" className="mb-2" />
-      <HorizontalScrollGradient gutter={16}>
-        <FlatList
-          horizontal
-          data={albums}
-          keyExtractor={({ id }) => id}
-          renderItem={({ item, index }) => (
-            <MediaCard
-              type="album"
-              id={item.id}
-              size={width}
-              source={item.artwork}
-              title={item.name}
-              description={item.year}
-              onPress={() =>
-                navigation.navigate("Album", { id: item.id }, { pop: true })
-              }
-              className={index > 0 ? "ml-2" : undefined}
-            />
-          )}
-          contentContainerClassName="px-4"
-        />
-      </HorizontalScrollGradient>
-      <TEm textKey="term.tracks" className="mt-4 mb-2" />
-    </>
+    <View>
+      <TText textKey="term.albums" bold size="xs" />
+      <FlatList
+        horizontal
+        data={albums}
+        keyExtractor={({ id }) => id}
+        renderItem={({ item }) => (
+          <ImageCard
+            src={item.artwork}
+            size={width}
+            label={item.name}
+            supporting={item.year}
+            onPress={() =>
+              navigation.navigate("Album", { id: item.id }, { pop: true })
+            }
+            spacing="none"
+          />
+        )}
+        className="-mx-4"
+        contentContainerClassName="gap-1.5 px-4 py-1.5"
+      />
+      <TText textKey="term.tracks" bold size="xs" className="mb-1.5" />
+    </View>
   );
 }

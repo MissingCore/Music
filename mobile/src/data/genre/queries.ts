@@ -8,6 +8,8 @@ import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { queries as q } from "../keyStore";
 import { getArtistsString } from "../artist/utils";
 
+import { createTextPlaceholder } from "~/components/next/composed/media-image";
+
 //#region Queries
 export function useGenreDetails(genreName: string) {
   const { t } = useTranslation();
@@ -15,7 +17,7 @@ export function useGenreDetails(genreName: string) {
     ...q.genres.detail(genreName),
     select: ({ name, artwork, tracks, duration }) => ({
       name,
-      imageSource: artwork,
+      imageSource: artwork ?? createTextPlaceholder(name, true),
       metadata: [
         t("term.genre"),
         t("plural.track", { count: tracks.length }),

@@ -11,7 +11,6 @@ import i18next from "~/modules/i18n";
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { Seconds } from "~/utils/date";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
-import type { MediaImage } from "~/modules/media/components/MediaImage";
 import type { PlaylistSummary, PlaylistSummaryTrack } from "./types";
 import { sanitizePlaylistName } from "./utils";
 import type { CommonTrack, DrizzleFilter } from "../types";
@@ -49,7 +48,7 @@ export async function getPlaylistDetails(id: string) {
     getPlaylistTracks(id, false, 4),
   ]);
 
-  let derivedArtwork: MediaImage.ImageSource =
+  let derivedArtwork: string | null | Array<string | null> =
     details.artwork ?? trackArtwork.map((t) => t.artwork);
   if (derivedArtwork.length === 0) derivedArtwork = null;
 

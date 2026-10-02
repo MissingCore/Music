@@ -1,15 +1,17 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useMemo } from "react";
+import { createContext, use, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
   useTrackFavoriteStatus,
   useToggleTrackInPlaylist,
 } from "~/data/track/queries";
+import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import type { PlayFromSource } from "~/stores/Playback/types";
+import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
 import {
@@ -28,14 +30,14 @@ import type { ButtonSize } from "../blocks/icon-button";
 import { IconButton } from "../blocks/icon-button";
 import { Pressable } from "../primitive/pressable";
 
+/** Obtain the list the track belongs to from a context to encourage memoization. */
+export const TrackListContext = createContext<PlayFromSource>(null as never);
+
 interface TrackItemProps {
   id: string;
-  trackSource: PlayFromSource;
   title: string;
   description?: string;
   imageSource: MediaImageSrc;
-  /** Indicate that this track is being played. */
-  showIndicator?: boolean;
   Leading?: React.ReactNode;
   className?: string;
   /**
@@ -47,19 +49,23 @@ interface TrackItemProps {
 
 export function TrackItem({
   id,
-  trackSource,
   Leading,
-  showIndicator,
   className,
   _onAfterPlayPress,
   ...props
 }: TrackItemProps) {
+  const trackSource = use(TrackListContext);
+  const isActiveTrack = usePlaybackStore(
+    (s) =>
+      arePlaybackSourceEqual(s.playingFrom, trackSource) &&
+      s.activeTrack?.id === id,
+  );
   const isMultiSelectEnabled = useTrackMultiSelectStore((s) => s.enabled);
   const isSelected = useTrackMultiSelectStore((s) => s.selected.has(id));
 
   const overriddenLeadingElement = useMemo(
-    () => (showIndicator ? <PlayingIndicator padding={16} /> : Leading),
-    [Leading, showIndicator],
+    () => (isActiveTrack ? <PlayingIndicator padding={16} /> : Leading),
+    [Leading, isActiveTrack],
   );
 
   const normalActions: Partial<ImageListItemProps> = useMemo(
@@ -86,15 +92,15 @@ export function TrackItem({
   );
 
   return (
-    // @ts-expect-error - Props are compatible.
     <ImageListItem
+      src={props.imageSource}
       label={props.title}
       supporting={props.description}
-      src={props.imageSource}
       {...(isMultiSelectEnabled ? multiSelectActions : normalActions)}
       Leading={overriddenLeadingElement}
+      leadingOverridesSrc
       className={cn(className, {
-        "bg-primary/25": showIndicator && !isMultiSelectEnabled,
+        "bg-primary/25": isActiveTrack && !isMultiSelectEnabled,
         "bg-surfaceContainerLowest": isSelected,
       })}
     />

@@ -12,21 +12,17 @@ import {
   usePlaylistForScreen,
 } from "~/data/playlist/queries";
 
-import {
-  CurrentListLayout,
-  CurrentListSkeleton,
-} from "~/navigation/layouts/CurrentListLayout";
+import * as MediaListLayout from "~/navigation/layouts/MediaListLayout";
 import { PlaylistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
-import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 import type { MenuAction } from "~/navigation/components/CurrentListMenu";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 import { ExportM3USheet } from "./sheets/ExportM3USheet";
 
 import { mutateGuard } from "~/lib/react-query";
-import { IconButton } from "~/components/Form/Button/Icon";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import { IconButton } from "~/components/next/blocks/icon-button";
+import { TrackItem } from "~/components/next/composed/track-item";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
-import { useTrackListPreset } from "~/modules/media/components/Track";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -37,14 +33,12 @@ export default function Playlist({
 }: Props) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const bottomOffset = useBottomActionsOffset();
   const { isPending, error, data } = usePlaylistForScreen(id);
   const favoritePlaylist = useFavoritePlaylist(id);
   const artworkSheetRef = useSheetRef();
   const exportSheetRef = useSheetRef();
 
-  const trackSource = { type: "playlist", id } as const;
-  const presets = useTrackListPreset({ data: data?.tracks, trackSource });
+  const trackSource = useMemo(() => ({ type: "playlist", id }) as const, [id]);
 
   const menuActions = useMemo<MenuAction[]>(
     () => [
@@ -62,7 +56,9 @@ export default function Playlist({
     [navigation, id, exportSheetRef],
   );
 
-  if (isPending || error) return <CurrentListSkeleton pending={isPending} />;
+  if (isPending || error) {
+    return <MediaListLayout.Skeleton pending={isPending} />;
+  }
 
   // Add optimistic UI updates.
   const isToggled = favoritePlaylist.isPending
@@ -77,12 +73,14 @@ export default function Playlist({
       <PlaylistArtworkSheet ref={artworkSheetRef} id={id} />
       <ExportM3USheet ref={exportSheetRef} id={id} />
 
-      <CurrentListLayout
-        // List Header Props
-        listInfo={{
-          title: listName,
-          metadata: data.metadata,
-          Actions: (
+      <MediaListLayout.Provider
+        imageSource={data.imageSource}
+        listSource={trackSource}
+      >
+        <MediaListLayout.Header
+          title={listName}
+          metadata={data.metadata}
+          Actions={
             <View className="flex-row gap-1">
               {id !== FavoritesPlaylistKey ? (
                 <IconButton
@@ -102,14 +100,14 @@ export default function Playlist({
                 presentArtworkSheet={() => artworkSheetRef.current?.present()}
               />
             </View>
-          ),
-        }}
-        listSource={trackSource}
-        imageSource={data.imageSource}
-        // FlatList Props
-        {...presets}
-        contentContainerStyle={{ paddingBottom: bottomOffset }}
-      />
+          }
+        />
+        <MediaListLayout.List
+          data={data?.tracks}
+          keyExtractor={({ id }) => id}
+          renderItem={({ item }) => <TrackItem {...item} />}
+        />
+      </MediaListLayout.Provider>
     </>
   );
 }

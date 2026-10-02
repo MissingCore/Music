@@ -30,11 +30,11 @@ import { IconButton } from "~/components/Form/Button/Icon";
 import { Marquee } from "~/components/Marquee";
 import { Swipeable } from "~/components/Swipeable";
 import { StyledText } from "~/components/Typography/StyledText";
+import { MediaImage } from "~/components/next/composed/media-image";
 import {
   NextButton,
   PreviousButton,
 } from "~/modules/media/components/MediaControls";
-import { MediaImage } from "~/modules/media/components/MediaImage";
 
 /**
  * Displays a player that appears at the bottom of the screen if we have
@@ -104,12 +104,7 @@ export function MiniPlayer() {
           onPress={() => navigation.navigate("NowPlaying")}
           className="relative h-14 flex-row gap-0 px-1"
         >
-          <MediaImage
-            type="track"
-            size={48}
-            source={track.artwork}
-            className="rounded-full"
-          />
+          <MediaImage size={48} src={track.artwork} className="rounded-full" />
 
           <TextWrapper
             activationThreshold={32}

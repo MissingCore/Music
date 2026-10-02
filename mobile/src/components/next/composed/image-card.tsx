@@ -7,6 +7,8 @@ import { View } from "react-native";
 import { cn } from "~/lib/style";
 import type { MediaImageSrc } from "./media-image";
 import { MediaImage } from "./media-image";
+import type { Spacing } from "./utils";
+import { getSpacingClasses } from "./utils";
 import { cardStyle } from "../base/card";
 import { Ripple } from "../base/ripple";
 import { Text } from "../base/typography";
@@ -19,6 +21,13 @@ interface ImageCardProps {
   supporting?: string;
   onPress: VoidFunction;
   className?: string;
+  /**
+   * Applies spacing styles when used in a list. Defaults to `all`.
+   *
+   * **Make sure to apply `-mx-0.75` and/or `-mb-1.5` to the `className` of
+   * the scroll container this is in.**
+   */
+  spacing?: Spacing;
 }
 
 //#region Image Card
@@ -33,9 +42,13 @@ export function ImageCard(props: ImageCardProps) {
     <Ripple
       pointerEvents="box-only"
       onPress={props.onPress}
-      className={cn("relative mx-0.5 mb-1 rounded-lg", props.className)}
+      className={cn(
+        "relative rounded-lg",
+        getSpacingClasses(props.spacing),
+        props.className,
+      )}
     >
-      <MediaImage src={props.src} size={props.size} />
+      <MediaImage src={props.src} size={props.size} className="rounded-none" />
       <LinearGradient
         colors={["#00000000", "#000000E6"]}
         className="absolute inset-0"
@@ -76,7 +89,11 @@ export function LargeImageCard(
       onPress={props.onPress}
       className={cardStyle({
         padding: false,
-        className: cn("mx-0.5 mb-1 p-1", props.className),
+        className: cn(
+          "rounded-lg p-1",
+          getSpacingClasses(props.spacing),
+          props.className,
+        ),
       })}
     >
       <MediaImage src={props.src} size={imgSize} className="rounded-md" />

@@ -6,10 +6,13 @@ import { View } from "react-native";
 import { cn } from "~/lib/style";
 import type { MediaImageSrc } from "./media-image";
 import { MediaImage } from "./media-image";
+import type { Spacing } from "./utils";
+import { getSpacingClasses } from "./utils";
 import { Ripple } from "../base/ripple";
 import { createTextStack } from "../blocks/text-stack";
 
 export type ImageListItemProps = {
+  src: MediaImageSrc;
   label: string;
   supporting?: string;
   /** If provided, will change the wrapper to `Ripple` from `View`. */
@@ -17,18 +20,18 @@ export type ImageListItemProps = {
   /** If provided, will change the wrapper to `Ripple` from `View`. */
   onLongPress?: VoidFunction;
   className?: string;
+  Leading?: React.ReactNode;
   Trailing?: React.ReactNode;
   /**
-   * Applies spacing styles when used in a list. Defaults to `true`.
+   * Applies spacing styles when used in a list. Defaults to `all`.
    *
-   * **Make sure to apply `-mx-0.5 -mb-1` to the `className` of the scroll
-   * container this is in.**
+   * **Make sure to apply `-mx-0.75` and/or `-mb-1.5` to the `className` of
+   * the scroll container this is in.**
    */
-  applySpacing?: boolean;
-} & (
-  | { src: MediaImageSrc; Leading?: never }
-  | { src?: never; Leading: React.ReactNode }
-);
+  spacing?: Spacing;
+  /** If we don't want to render the `MediaImage` defined by `src`. */
+  leadingOverridesSrc?: boolean;
+};
 
 const ListItemTextStack = createTextStack({
   labelConfig: { size: "sm" },
@@ -44,15 +47,14 @@ export function ImageListItem(props: ImageListItemProps) {
       onLongPress={props.onLongPress}
       className={cn(
         "flex-row items-center gap-2 rounded-lg pr-2",
-        props.applySpacing !== false && "mx-0.5 mb-1",
+        getSpacingClasses(props.spacing),
         !props.Trailing && "pr-4",
         props.className,
       )}
     >
-      {props.Leading ? (
-        props.Leading
-      ) : (
-        <MediaImage src={props.src!} size={56} className="rounded-lg" />
+      {props.Leading}
+      {props.Leading && props.leadingOverridesSrc ? null : (
+        <MediaImage src={props.src} size={56} className="rounded-lg" />
       )}
       <ListItemTextStack label={props.label} supporting={props.supporting} />
       {props.Trailing}

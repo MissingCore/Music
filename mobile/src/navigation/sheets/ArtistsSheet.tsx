@@ -9,7 +9,8 @@ import { navigateToArtist } from "~/stores/Session/actions";
 
 import { FlatList } from "~/components/Base/List";
 import { DetachedSheet } from "~/components/Sheet";
-import { SearchResult } from "~/modules/search/components/SearchResult";
+import { ImageListItem } from "~/components/next/composed/image-list-item";
+import { createTextPlaceholder } from "~/components/next/composed/media-image";
 
 const GLOBAL_SHEET_KEY = "ArtistsSheet";
 
@@ -24,18 +25,17 @@ export function ArtistsSheet() {
         data={artistsInfo.artists}
         keyExtractor={({ name }) => name}
         renderItem={({ item: { name, artwork } }) => (
-          <SearchResult
-            type="artist"
-            title={name}
-            imageSource={artwork}
+          <ImageListItem
+            src={artwork ?? createTextPlaceholder(name)}
+            label={name}
             onPress={() => {
               TrueSheet.dismiss(GLOBAL_SHEET_KEY);
               navigateToArtist(navigation, name, artistsInfo.popStrategy);
             }}
-            className="rounded-full pr-4"
+            spacing="none"
           />
         )}
-        contentContainerClassName="gap-2"
+        contentContainerClassName="gap-1.5"
       />
     </DetachedSheet>
   );

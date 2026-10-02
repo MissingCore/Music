@@ -23,6 +23,7 @@ import {
 } from "~/db/schema";
 
 import { omitKeys } from "~/utils/object";
+import { createTextPlaceholder } from "~/components/next/composed/media-image";
 
 async function getRecap(startEpoch: number, endEpoch = Date.now()) {
   //? Identify range of data we care about.
@@ -109,6 +110,10 @@ async function getRecap(startEpoch: number, endEpoch = Date.now()) {
       desc(sql`sum(${scopedPlayEventView.playCount})`),
       desc(sql`sum(${scopedPlayEventView.playTime})`),
     );
+  const topArtistsWithFallback = topArtists.map(({ imgSrc, ...rest }) => ({
+    ...rest,
+    imgSrc: imgSrc ?? createTextPlaceholder(rest.name),
+  }));
 
   //? Get "Top Albums" stats.
   const topAlbums = await db
@@ -130,11 +135,11 @@ async function getRecap(startEpoch: number, endEpoch = Date.now()) {
     overview: { ...overviewStats!, ...uniqueArtistsStat! },
     mostPlayed: {
       album: topAlbums[0],
-      artist: topArtists[0],
+      artist: topArtistsWithFallback[0],
       track: topTracks[0],
     },
     topTracks,
-    topArtists,
+    topArtists: topArtistsWithFallback,
     topAlbums,
   };
 }

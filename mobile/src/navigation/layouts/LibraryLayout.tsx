@@ -224,7 +224,11 @@ export function Header(props: {
         >
           <View className="flex-row items-center justify-between gap-4">
             <Marquee>
-              <TText textKey={props.titleKey} intent="accent" size="4xl" />
+              <TText
+                textKey={props.titleKey}
+                accent
+                className="leading-normal!"
+              />
             </Marquee>
             <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
               {props.Actions}
@@ -255,7 +259,7 @@ export function FavoriteMedia(props: {
   const config = withGrid ? gridLayout : compactGridLayout;
 
   const estimatedItemSize =
-    (withGrid ? getLargeImageCardHeight(config.width) : config.width) + 4;
+    (withGrid ? getLargeImageCardHeight(config.width) : config.width) + 6;
 
   const rowCount = Math.ceil(props.data.length / config.count);
   const estimatedHeight = rowCount * estimatedItemSize + 16;
@@ -279,7 +283,7 @@ export function FavoriteMedia(props: {
         />
       )}
       scrollEnabled={false}
-      className="-mb-1"
+      className="-mb-1.5"
       contentContainerStyle={{ minHeight: estimatedHeight }}
       contentContainerClassName="pb-4"
     />
@@ -328,7 +332,7 @@ export function MediaList<TData>({
   const config = actuallyUseGrid ? compactGridLayout : listLayout;
   const prevConfig = useRef({ cols: config.count, width: config.width });
 
-  const estimatedItemSize = (actuallyUseGrid ? config.width : 56) + 4;
+  const estimatedItemSize = (actuallyUseGrid ? config.width : 56) + 6;
 
   const keyExtractor = useMemo<LegendListProps<any>["keyExtractor"]>(() => {
     if (_renderItem) return _keyExtractor;
@@ -374,7 +378,7 @@ export function MediaList<TData>({
       onScroll={scrollListeners}
       ListHeaderComponent={ListHeaderComponent}
       ListEmptyComponent={ListEmptyComponent}
-      className="-mx-0.5 -mb-1"
+      className="-mx-0.75 -mb-1.5"
       contentContainerStyle={{
         paddingTop: headerHeight,
         paddingBottom: bottomOffset,

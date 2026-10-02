@@ -9,7 +9,7 @@ import type { PlayedMediaList } from "~/db/schema";
 import { playedMediaLists, tracks, tracksPlayEvents } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import type { PlayFromSource } from "~/stores/Playback/types";
+import type { MediaType, PlayFromSource } from "~/stores/Playback/types";
 import { getAlbumDetails } from "~/data/album/api";
 import { AlbumArtistsKey } from "~/data/album/utils";
 import { getArtist } from "~/data/artist/api";
@@ -20,8 +20,9 @@ import { getPlaylist } from "~/data/playlist/api";
 import { fromJSONArrayString } from "~/data/utils";
 import { commonTrackColumns, structuredTracksView } from "~/data/views";
 
+import type { MediaImageSrc } from "~/components/next/composed/media-image";
+import { createTextPlaceholder } from "~/components/next/composed/media-image";
 import { ReservedPlaylists } from "~/modules/media/constants";
-import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
 import { RECENT_RANGE_MS } from "./constants";
 import { PlayedListsTracker } from "./PlayedListsTracker";
 
@@ -70,7 +71,7 @@ async function getRecentLists() {
     orderBy: desc(playedMediaLists.lastPlayedAt),
   })) as PlayedMediaList[];
 
-  const newRecentList: MediaCardContent[] = [];
+  const newRecentList: RecentListCardContent[] = [];
   const errors: PlayFromSource[] = [];
 
   const results = await Promise.all(sources.map(getRecentListEntry));
@@ -114,23 +115,31 @@ async function getRecentTracks(limit?: number) {
   }));
 }
 
+export type RecentListCardContent = {
+  type: MediaType;
+  src: MediaImageSrc;
+  id: string;
+  title: string;
+  description: string;
+};
+
 /** Get a `MediaCardContent` from a source in the recent list. */
 async function getRecentListEntry(source: PlayFromSource) {
   try {
-    const entry: MediaCardContent = {
+    const entry: RecentListCardContent = {
       ...source,
-      source: null,
+      src: null,
       title: "",
       description: "",
     };
     if (source.type === "album") {
       const data = await getAlbumDetails(source.id);
-      entry.source = data.artwork;
+      entry.src = data.artwork;
       entry.title = data.name;
       entry.description = AlbumArtistsKey.toString(data.artistsKey);
     } else if (source.type === "artist") {
       const data = await getArtist(source.id, true);
-      entry.source = data.artwork;
+      entry.src = data.artwork ?? createTextPlaceholder(data.name);
       entry.title = data.name;
       entry.description = i18next.t("plural.track", {
         count: data.tracks.length,
@@ -138,11 +147,12 @@ async function getRecentListEntry(source: PlayFromSource) {
     } else if (source.type === "folder") {
       const numTracks = (await getSortedFolderTracks(source.id, true)).length;
       if (numTracks === 0) throw new Error("Folder is empty.");
+      entry.src = { type: "icon", value: "folder" };
       entry.title = source.id.split("/").at(-2) ?? source.id;
       entry.description = i18next.t("plural.track", { count: numTracks });
     } else if (source.type === "genre") {
       const data = await getGenre(source.id, true);
-      entry.source = data.artwork;
+      entry.src = data.artwork ?? createTextPlaceholder(data.name, true);
       entry.title = data.name;
       entry.description = i18next.t("plural.track", {
         count: data.tracks.length,
@@ -151,12 +161,12 @@ async function getRecentListEntry(source: PlayFromSource) {
       if (source.id === ReservedPlaylists.tracks) {
         const numTracks = await db.$count(tracks);
         entry.title = i18next.t("term.tracks");
-        entry.source = null;
+        entry.src = null;
         entry.description = i18next.t("plural.track", { count: numTracks });
       } else {
         const data = await getPlaylist(source.id, true);
         entry.title = data.name;
-        entry.source = data.artwork;
+        entry.src = data.artwork;
         entry.description = i18next.t("plural.track", {
           count: data.tracks.length,
         });

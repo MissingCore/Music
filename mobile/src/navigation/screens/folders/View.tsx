@@ -19,6 +19,8 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
+import type { FileNode } from "~/db/schema";
+
 import { useFolderContent } from "~/data/folder/queries";
 
 import * as LibraryLayout from "~/navigation/layouts/LibraryLayout";
@@ -32,10 +34,11 @@ import { useAnimatedLegendListRef } from "~/components/Base/LegendList";
 import { useAnimatedScrollViewRef } from "~/components/Base/ScrollView";
 import { Text } from "~/components/next/base/typography";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
-import { TrackItem } from "~/components/next/composed/track-item";
+import {
+  TrackItem,
+  TrackListContext,
+} from "~/components/next/composed/track-item";
 import { Pressable } from "~/components/next/primitive/pressable";
-import { useTrackListPlayingIndication } from "~/modules/media/components/Track";
-import type { TrackContent } from "~/modules/media/components/Track.type";
 
 type Props = StaticScreenProps<{ path?: string }>;
 
@@ -199,8 +202,8 @@ function Breadcrumbs({ dirSegments, setDirSegments }: DirState) {
 //#endregion
 
 //#region Screen Contents
-function isTrackContent(data: unknown): data is TrackContent {
-  return Object.hasOwn(data as TrackContent, "id");
+function isFolderContent(data: unknown): data is FileNode {
+  return Object.hasOwn(data as FileNode, "parentPath");
 }
 
 function ScreenContents({ dirSegments, setDirSegments }: DirState) {
@@ -211,41 +214,42 @@ function ScreenContents({ dirSegments, setDirSegments }: DirState) {
   );
 
   const { isPending, data } = useFolderContent(fullPath);
-  const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
 
   const renderedData = useMemo(
-    () => [...(data?.directories ?? []), ...(listData ?? [])],
-    [data, listData],
+    () => [...(data?.directories ?? []), ...(data?.tracks ?? [])],
+    [data],
   );
 
   const renderItem = useCallback<
     LibraryLayout.MediaListRenderItem<(typeof renderedData)[number]>
   >(
     ({ item }) =>
-      isTrackContent(item) ? (
-        <TrackItem {...item} trackSource={trackSource} />
-      ) : (
+      isFolderContent(item) ? (
         <ImageListItem
           src={{ type: "icon", value: "folder" }}
           label={item.name}
           onPress={() => setDirSegments((prev) => [...prev, item.name])}
         />
+      ) : (
+        <TrackItem {...item} />
       ),
-    [trackSource, setDirSegments],
+    [setDirSegments],
   );
 
   return (
-    <LibraryLayout.MediaList
-      data={renderedData}
-      keyExtractor={(item) => (isTrackContent(item) ? item.id : item.path)}
-      renderItem={renderItem}
-      ListEmptyComponent={
-        <ContentPlaceholder
-          isPending={isPending}
-          className="absolute inset-0 pt-safe-offset-48"
-        />
-      }
-    />
+    <TrackListContext value={trackSource}>
+      <LibraryLayout.MediaList
+        data={renderedData}
+        keyExtractor={(item) => (isFolderContent(item) ? item.path : item.id)}
+        renderItem={renderItem}
+        ListEmptyComponent={
+          <ContentPlaceholder
+            isPending={isPending}
+            className="absolute inset-0 pt-safe-offset-48"
+          />
+        }
+      />
+    </TrackListContext>
   );
 }
 //#endregion

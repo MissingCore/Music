@@ -18,7 +18,6 @@ const textStyle = cva({
   variants: {
     intent: {
       unset: null,
-      accent: "text-3xl leading-normal!",
       em: "text-xs",
       //! Using `intent = "muted"` will do nothing and not enable the `muted` variant.
       muted: null,
@@ -26,11 +25,13 @@ const textStyle = cva({
       secondary: "text-onSecondary",
       error: "text-onError",
     } satisfies IntentVariant,
+    accent: { true: "text-4xl leading-none!" },
     muted: { true: "text-xs text-onSurfaceVariant" },
     center: { true: "text-center" },
     uppercase: { true: "tracking-wider uppercase" },
     size: {
       unset: null,
+      xxs: "text-xxs",
       xs: "text-xs",
       sm: "text-sm",
       base: "text-base",
@@ -48,6 +49,7 @@ const textStyle = cva({
   ],
   defaultVariants: {
     intent: "unset",
+    accent: false,
     muted: false,
     center: false,
     uppercase: false,
@@ -63,6 +65,7 @@ export interface TextProps extends RNTextProps, TextVariants {
 
 export function Text({
   intent,
+  accent,
   muted,
   center,
   uppercase,
@@ -72,11 +75,10 @@ export function Text({
   style,
   ...props
 }: TextProps) {
-  const asAccent = intent === "accent";
   const bold = _bold ?? intent === "em";
 
   const fontFamily = usePreferenceStore(
-    (s) => s[`${asAccent ? "accent" : "primary"}Font`],
+    (s) => s[`${accent ? "accent" : "primary"}Font`],
   );
 
   return (
@@ -84,6 +86,7 @@ export function Text({
       {...props}
       className={textStyle({
         intent,
+        accent,
         muted,
         center,
         uppercase,
@@ -92,7 +95,7 @@ export function Text({
       })}
       style={[
         {
-          fontFamily: getFont(fontFamily, { headline: asAccent, bold }),
+          fontFamily: getFont(fontFamily, { headline: accent, bold }),
           //? Setting a `fontWeight` on a custom font uses the bolded variant
           //? of the system font.
           fontWeight: bold && fontFamily === "System" ? "bold" : undefined,

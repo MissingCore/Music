@@ -24,10 +24,10 @@ import {
 import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
 import { wait } from "~/utils/promise";
-import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
-import { RemovableItem } from "~/components/List/RemovableItem";
+import { Ripple } from "~/components/next/base/ripple";
+import { IconButton } from "~/components/next/blocks/icon-button";
+import { ImageListItem } from "~/components/next/composed/image-list-item";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
-import { SearchResult } from "~/modules/search/components/SearchResult";
 import { extractTrackId } from "~/stores/Playback/utils";
 
 export default function Upcoming({ renderAsScreen = true }) {
@@ -107,11 +107,12 @@ export default function Upcoming({ renderAsScreen = true }) {
         title="term.upcoming"
         headerLeftAction={renderAsScreen ? <BackButton /> : undefined}
         headerRightAction={
-          <FilledIconButton
+          <IconButton
             icon="cached"
             accessibilityLabel={t("form.reset")}
             onPress={onSynchronizeQueue}
             disabled={isSynchronizing}
+            filled
           />
         }
       />
@@ -120,12 +121,12 @@ export default function Upcoming({ renderAsScreen = true }) {
       ) : (
         <DragList
           initialScrollIndex={listIndex}
-          estimatedItemSize={56}
+          estimatedItemSize={62} // 56px Height + 6px Margin Bottom
           data={modifiedData}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
           onReordered={onMove}
-          className="-mb-2"
+          className="-mb-1.5"
           contentContainerClassName="p-4 pb-safe-offset-4"
         />
       )}
@@ -149,27 +150,30 @@ const RenderItem = memo(
     const { t } = useTranslation();
     const { isActive, isDragging, onInitDrag } = useDragListState(index);
     return (
-      <RemovableItem
-        label={item.name}
-        onRemove={() => onRemove(item.key)}
-        disableRemove={item.active || isDragging}
+      <Ripple
         onPress={() =>
           item.active
             ? PlaybackControls.playToggle()
             : PlaybackControls.playAtIndex(index)
         }
         disabled={isDragging}
-        className={cn("mb-2 rounded-xs", {
+        className={cn("mb-1.5 flex-row items-center gap-4 rounded-lg", {
           "bg-surfaceContainerLowest": isActive,
           "opacity-25 active:opacity-100": index < disableAfter && !isActive,
         })}
       >
-        <SearchResult
-          type="track"
-          title={item.name}
-          description={getArtistsString(item.artists)}
-          imageSource={item.artwork}
-          Leading={item.active ? <PlayingIndicator /> : undefined}
+        <IconButton
+          icon="do-not-disturb-on"
+          accessibilityLabel={t("template.entryRemove", { name: item.name })}
+          onPress={() => onRemove(item.key)}
+          disabled={item.active || isDragging}
+          size="xs"
+        />
+        <ImageListItem
+          src={item.artwork}
+          label={item.name}
+          supporting={getArtistsString(item.artists)}
+          Leading={item.active ? <PlayingIndicator padding={16} /> : undefined}
           Trailing={
             <IconButton
               icon="drag-handle"
@@ -179,10 +183,11 @@ const RenderItem = memo(
               size="xs"
             />
           }
-          poppyLabel={item.active}
+          spacing="none"
+          leadingOverridesSrc
           className="shrink grow"
         />
-      </RemovableItem>
+      </Ripple>
     );
   },
   (oldProps, newProps) => {
