@@ -37,7 +37,7 @@ export function Vinyl(props: {
 
   // Render indicator if we have an empty array or no defined image.
   const renderIndicator = useMemo(
-    () => (Array.isArray(src) && src.length === 0) || src === null,
+    () => (Array.isArray(src) && src.length === 0) || !src,
     [src],
   );
 

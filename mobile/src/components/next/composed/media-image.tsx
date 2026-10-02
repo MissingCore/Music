@@ -45,7 +45,7 @@ export function MediaImage({
       return <PlaceholderIcon icon={value} fullSize={false} {...shared} />;
     }
     return <PlaceholderText str={value} {...shared} />;
-  } else if (src === null) {
+  } else if (!src) {
     if (noPlaceholder) return <View {...shared} />;
     return <PlaceholderIcon icon="glyph-music" {...shared} />;
   }

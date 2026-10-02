@@ -160,7 +160,7 @@ function BaseArtworkSheetContent(props: {
           disabled:
             props.disabled ||
             disabled ||
-            props.imageSource === null ||
+            !props.imageSource ||
             Array.isArray(props.imageSource) ||
             isRecord(props.imageSource),
         }}
