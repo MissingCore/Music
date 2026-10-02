@@ -51,6 +51,13 @@ export const LANGUAGES = [
     ],
   },
   {
+    code: "el",
+    name: "Ελληνικά",
+    translators: [
+      { display: "thana", link: "https://github.com/thana" },
+    ],
+  },
+  {
     code: "en",
     name: "English",
     translators: [{ display: "—", link: "https://github.com/cyanChill" }],
