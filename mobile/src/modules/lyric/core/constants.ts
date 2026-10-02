@@ -1,5 +1,6 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
+import type { ParseKeys } from "i18next";
 
 export interface LyricProvider {
   id: string;
@@ -39,4 +40,16 @@ export const PersistedFields: string[] = [
   "checkEmbedded",
   "providers",
 ] satisfies Array<keyof LyricStore>;
+
+//#region Lyric Provider Form
+type EndpointTemplateButtonConfig = {
+  label: ParseKeys;
+  value: string;
+};
+export const ENDPOINT_TEMPLATES: EndpointTemplateButtonConfig[] = [
+  { label: "term.track", value: "name" },
+  { label: "term.artist", value: "artistName" },
+  { label: "term.album", value: "albumName" },
+  { label: "feat.modalViewPreference.extra.duration", value: "duration" },
+];
 //#endregion

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { View } from "react-native";
-
+import type { TextInputProps } from "react-native";
 import type { TranslationKeyOrString } from "~/modules/i18n/core";
 import { useMaybeT } from "~/modules/i18n/core";
 import { useFormStateContext } from ".";
@@ -144,6 +144,10 @@ export function TextareaImpl<TData extends Record<string, any>>() {
     label: TranslationKeyOrString;
     field: KeysOfValue<TData, string>;
     oneLine?: boolean;
+    selection?: TextInputProps["selection"];
+    onSelectionChange?: TextInputProps["onSelectionChange"];
+    onFocus?: TextInputProps["onFocus"];
+    onBlur?: TextInputProps["onBlur"];
   }) {
     const { data, setField, isSubmitting } = useFormState<TData>();
     return (
@@ -163,6 +167,10 @@ export function TextareaImpl<TData extends Record<string, any>>() {
           textAlignVertical="top"
           //? Don't display an "Enter" key.
           submitBehavior={props.oneLine ? "blurAndSubmit" : undefined}
+          selection={props.selection}
+          onSelectionChange={props.onSelectionChange}
+          onFocus={props.onFocus}
+          onBlur={props.onBlur}
           className={cn("w-full rounded-sm border border-outline px-2 py-3", {
             "min-h-64": !props.oneLine,
           })}
