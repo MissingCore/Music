@@ -27,6 +27,7 @@ import { Button } from "~/components/next/blocks/button";
 import { SequenceNumber } from "~/components/next/blocks/sequence-number";
 import { Text, TText } from "~/components/next/base/typography";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
+import type { MediaImageSrc } from "~/components/next/composed/media-image";
 import { MediaImage } from "~/components/next/composed/media-image";
 import { RECENT_DAY_RANGE } from "../core/constants";
 import { generateRecapRange } from "../helpers/generateRecapRange";
@@ -266,7 +267,7 @@ function TopContent(props: RecapResult["mostPlayed"]) {
 //#region Top Lists
 type TopItem = {
   name: string;
-  imgSrc: string | null;
+  imgSrc: MediaImageSrc;
   playCount: number;
   totalTime: number;
 };

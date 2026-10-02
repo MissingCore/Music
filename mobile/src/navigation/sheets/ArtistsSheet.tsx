@@ -10,6 +10,7 @@ import { navigateToArtist } from "~/stores/Session/actions";
 import { FlatList } from "~/components/Base/List";
 import { DetachedSheet } from "~/components/Sheet";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
+import { createTextPlaceholder } from "~/components/next/composed/media-image";
 
 const GLOBAL_SHEET_KEY = "ArtistsSheet";
 
@@ -26,7 +27,7 @@ export function ArtistsSheet() {
         renderItem={({ item: { name, artwork } }) => (
           <ImageListItem
             label={name}
-            src={artwork}
+            src={artwork ?? createTextPlaceholder(name)}
             onPress={() => {
               TrueSheet.dismiss(GLOBAL_SHEET_KEY);
               navigateToArtist(navigation, name, artistsInfo.popStrategy);

@@ -7,6 +7,8 @@ import { useTranslation } from "react-i18next";
 import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { queries as q } from "../keyStore";
 
+import { createTextPlaceholder } from "~/components/next/composed/media-image";
+
 //#region Queries
 export function useArtistDetails(artistName: string) {
   const { t } = useTranslation();
@@ -14,7 +16,7 @@ export function useArtistDetails(artistName: string) {
     ...q.artists.detail(artistName),
     select: ({ name, artwork, albums, tracks, duration }) => ({
       name,
-      imageSource: artwork,
+      imageSource: artwork ?? createTextPlaceholder(name),
       metadata: [
         t("term.artist"),
         t("plural.track", { count: tracks.length }),

@@ -10,7 +10,6 @@ import i18next from "~/modules/i18n";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { Seconds } from "~/utils/date";
-import type { MediaImageSrc } from "~/components/next/composed/media-image";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import type { PlaylistSummary, PlaylistSummaryTrack } from "./types";
 import { sanitizePlaylistName } from "./utils";
@@ -49,7 +48,7 @@ export async function getPlaylistDetails(id: string) {
     getPlaylistTracks(id, false, 4),
   ]);
 
-  let derivedArtwork: MediaImageSrc =
+  let derivedArtwork: string | null | Array<string | null> =
     details.artwork ?? trackArtwork.map((t) => t.artwork);
   if (derivedArtwork.length === 0) derivedArtwork = null;
 

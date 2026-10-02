@@ -20,6 +20,7 @@ import { TopDownGradient } from "~/components/Gradient";
 import { TText } from "~/components/next/base/typography";
 import { Chip } from "~/components/next/blocks/chip";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
+import { createTextPlaceholder } from "~/components/next/composed/media-image";
 import { TrackAction } from "~/components/next/composed/track-item";
 import type { ColorRole } from "~/modules/customization/theme/core/constants";
 import { SearchBar } from "./SearchBar";
@@ -243,8 +244,11 @@ function formatResults(results: Partial<SearchResults>, tab: SearchTab) {
         return {
           type: key as SearchCategories[number],
           imageSource:
-            // @ts-expect-error - Values are of correct types.
-            key !== "folder" ? item.artwork : null,
+            key === "folder"
+              ? { type: "icon", value: "folder" }
+              : // @ts-expect-error - Values are of correct types.
+                (item.artwork ??
+                (key === "artist" ? createTextPlaceholder(item.name) : null)),
           title: item.name,
           description,
           entry: item,

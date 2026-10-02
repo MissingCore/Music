@@ -16,14 +16,13 @@ import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { LegendList } from "~/components/Base/LegendList";
 import { FlatList } from "~/components/Base/List";
 import { ImageCard } from "~/components/next/composed/image-card";
-import { createTextPlaceholder } from "~/components/next/composed/media-image";
 import {
   TrackItem,
   TrackListContext,
 } from "~/components/next/composed/track-item";
 import { ReservedPlaylists } from "~/modules/media/constants";
-import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
 import { RECENT_DAY_RANGE } from "../core/constants";
+import type { RecentListCardContent } from "../core/RecentContentQuerier";
 import { useRecentlyPlayedMedia } from "../core/RecentContentQuerier";
 
 // Information about this track list.
@@ -68,7 +67,7 @@ export default function RecentlyPlayed() {
   );
 }
 
-function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
+function RecentlyPlayedLists(props: { data?: RecentListCardContent[] }) {
   const navigation = useNavigation();
   const { width } = useHorizontalListLayoutConfig();
 
@@ -80,15 +79,7 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
       keyExtractor={({ id, type }) => `${type}_${id}`}
       renderItem={({ item }) => (
         <ImageCard
-          src={
-            item.source ??
-            //! FIXME: We want to handle the fallback within our query.
-            (item.type === "folder"
-              ? { type: "icon", value: "folder" }
-              : item.type === "artist" || item.type === "genre"
-                ? createTextPlaceholder(item.title, item.type === "genre")
-                : null)
-          }
+          src={item.src}
           size={width}
           label={item.title}
           supporting={item.description}
