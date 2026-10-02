@@ -90,7 +90,6 @@ export default function Album({
         listSource={trackSource}
       >
         <MediaListLayout.Header
-          imageSource={data.imageSource}
           title={data.name}
           artists={data.artists}
           metadata={data.metadata}

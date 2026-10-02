@@ -52,7 +52,6 @@ export default function Artist({
         listSource={trackSource}
       >
         <MediaListLayout.Header
-          imageSource={artistDetailsQuery.data.imageSource}
           title={artistDetailsQuery.data.name}
           metadata={artistDetailsQuery.data.metadata}
           Actions={

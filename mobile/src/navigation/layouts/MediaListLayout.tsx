@@ -1,7 +1,13 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import React, { use, useCallback, useLayoutEffect, useMemo } from "react";
+import React, {
+  createContext,
+  use,
+  useCallback,
+  useLayoutEffect,
+  useMemo,
+} from "react";
 import { useWindowDimensions, View } from "react-native";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, {
@@ -66,6 +72,8 @@ export function Skeleton({ pending = false }) {
 //#endregion
 
 //#region Provider
+const ImageSourceContext = createContext<MediaImageSrc>(null);
+
 export function Provider(props: {
   imageSource: MediaImageSrc;
   listSource: PlayFromSource;
@@ -75,10 +83,12 @@ export function Provider(props: {
   const UsedLayout = isLargeScreen ? TabletLayout : MobileLayout;
   return (
     <TrackListContext value={props.listSource}>
-      <AtmosphereBackground source={props.imageSource}>
-        <TopAppBar />
-        <UsedLayout>{props.children}</UsedLayout>
-      </AtmosphereBackground>
+      <ImageSourceContext value={props.imageSource}>
+        <AtmosphereBackground source={props.imageSource}>
+          <TopAppBar />
+          <UsedLayout>{props.children}</UsedLayout>
+        </AtmosphereBackground>
+      </ImageSourceContext>
     </TrackListContext>
   );
 }
@@ -227,7 +237,6 @@ function TabletLayout({ children }: { children: React.ReactNode }) {
 
 //#region Header
 interface HeaderProps {
-  imageSource: MediaImageSrc;
   title: string;
   artists?: string[];
   metadata: string[];
@@ -237,7 +246,7 @@ interface HeaderProps {
 export function Header(props: HeaderProps) {
   return (
     <View className="gap-6">
-      <DeferredArtwork imageSource={props.imageSource} />
+      <DeferredArtwork />
       <View className="flex-row items-center gap-4">
         <View className="shrink grow gap-1">
           <Marquee>
@@ -270,7 +279,7 @@ export function Header(props: HeaderProps) {
 //#endregion
 
 //#region Artwork Preview
-function DeferredArtwork(props: { imageSource: MediaImageSrc }) {
+function DeferredArtwork() {
   const { width } = useWindowDimensions();
   const isLargeScreen = useAlternativeLayout();
   // Defer rendering vinyl as it's "heavy" and causes stutters when navigating to this screen.
@@ -292,19 +301,14 @@ function DeferredArtwork(props: { imageSource: MediaImageSrc }) {
   return (
     <Animated.View style={coverStyle} className="relative mx-auto">
       {isReady && showVinyl ? (
-        <AnimatedVinyl
-          imageSource={props.imageSource}
-          size={size}
-          horizTranslation={horizTranslation}
-        />
+        <AnimatedVinyl size={size} horizTranslation={horizTranslation} />
       ) : null}
-      <MediaImage src={props.imageSource} size={size} />
+      <MediaImage src={use(ImageSourceContext)} size={size} />
     </Animated.View>
   );
 }
 
 function AnimatedVinyl(props: {
-  imageSource: MediaImageSrc;
   size: number;
   horizTranslation: SharedValue<number>;
 }) {
@@ -341,7 +345,7 @@ function AnimatedVinyl(props: {
           animationPlayState: canAnimate && inForeground ? "running" : "paused",
         }}
       >
-        <Vinyl src={props.imageSource} size={props.size} />
+        <Vinyl src={use(ImageSourceContext)} size={props.size} />
       </Animated.View>
     </Animated.View>
   );

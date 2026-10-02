@@ -78,7 +78,6 @@ export default function Playlist({
         listSource={trackSource}
       >
         <MediaListLayout.Header
-          imageSource={data.imageSource}
           title={listName}
           metadata={data.metadata}
           Actions={

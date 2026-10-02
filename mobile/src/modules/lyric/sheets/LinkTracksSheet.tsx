@@ -21,9 +21,9 @@ export function LinkTracksSheet(props: { ref: TrueSheetRef; lyricId: string }) {
         onFilterData={(query, data) => containSorter(data, query, "name")}
         renderItem={({ item }) => (
           <ImageListItem
+            src={item.artwork}
             label={item.name}
             supporting={getArtistsString(item.artists)}
-            src={item.artwork}
             onPress={() =>
               linkTrackToLyric({
                 name: item.name,

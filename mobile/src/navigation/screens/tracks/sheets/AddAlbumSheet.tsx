@@ -23,9 +23,9 @@ export function AddAlbumSheet(props: {
         onFilterData={(query, data) => containSorter(data, query, "name")}
         renderItem={({ item }) => (
           <ImageListItem
+            src={item.artwork}
             label={item.name}
             supporting={item.artistName}
-            src={item.artwork}
             onPress={() => props.onSelect(item)}
             spacing="none"
           />

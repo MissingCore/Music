@@ -93,9 +93,9 @@ export function TrackItem({
 
   return (
     <ImageListItem
+      src={props.imageSource}
       label={props.title}
       supporting={props.description}
-      src={props.imageSource}
       {...(isMultiSelectEnabled ? multiSelectActions : normalActions)}
       Leading={overriddenLeadingElement}
       leadingOverridesSrc

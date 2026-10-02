@@ -42,7 +42,6 @@ export default function Genre({
         listSource={trackSource}
       >
         <MediaListLayout.Header
-          imageSource={genreDetailsQuery.data.imageSource}
           title={genreDetailsQuery.data.name}
           metadata={genreDetailsQuery.data.metadata}
           Actions={

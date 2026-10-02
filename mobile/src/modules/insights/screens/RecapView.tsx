@@ -248,7 +248,7 @@ function TopContent(props: RecapResult["mostPlayed"]) {
         <Card key={content} className="flex-row items-center gap-4">
           <MediaImage src={item.imgSrc} size={64} className="rounded-lg" />
           <View className="shrink grow">
-            <Text muted className="text-primary">
+            <Text size="xs" className="text-primary">
               {t("feat.recap.extra.mostPlayed", { name: t(`term.${content}`) })}
             </Text>
             <Text numberOfLines={1} size="lg">

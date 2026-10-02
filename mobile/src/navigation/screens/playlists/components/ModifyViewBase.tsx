@@ -237,7 +237,7 @@ function PlaylistNameField({ isFavoritesList }: { isFavoritesList?: boolean }) {
         />
         <TText
           textKey="form.validation.unique"
-          size="sm"
+          size="xs"
           className={constraintColor}
         />
       </View>

@@ -26,8 +26,8 @@ export function ArtistsSheet() {
         keyExtractor={({ name }) => name}
         renderItem={({ item: { name, artwork } }) => (
           <ImageListItem
-            label={name}
             src={artwork ?? createTextPlaceholder(name)}
+            label={name}
             onPress={() => {
               TrueSheet.dismiss(GLOBAL_SHEET_KEY);
               navigateToArtist(navigation, name, artistsInfo.popStrategy);
