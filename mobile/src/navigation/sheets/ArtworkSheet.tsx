@@ -21,6 +21,7 @@ import { Resynchronize } from "~/stores/Playback/actions";
 import { pickImage } from "~/lib/file-system";
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
+import { isRecord } from "~/utils/validation";
 import { DetachedSheet } from "~/components/Sheet";
 import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
@@ -160,7 +161,8 @@ function BaseArtworkSheetContent(props: {
             props.disabled ||
             disabled ||
             props.imageSource === null ||
-            Array.isArray(props.imageSource),
+            Array.isArray(props.imageSource) ||
+            isRecord(props.imageSource),
         }}
         rightButton={{
           textKey: "feat.artwork.extra.change",
