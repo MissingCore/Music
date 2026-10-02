@@ -80,8 +80,6 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
       keyExtractor={({ id, type }) => `${type}_${id}`}
       renderItem={({ item }) => (
         <ImageCard
-          label={item.title}
-          supporting={item.description}
           src={
             item.source ??
             //! FIXME: We want to handle the fallback within our query.
@@ -92,6 +90,8 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
                 : null)
           }
           size={width}
+          label={item.title}
+          supporting={item.description}
           onPress={() => {
             const linkInfo = getMediaLinkContext(item);
             // @ts-expect-error - The following is valid.

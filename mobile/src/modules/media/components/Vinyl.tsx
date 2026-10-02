@@ -28,22 +28,21 @@ const GROOVES = {
 export function Vinyl(props: {
   onPress?: () => Promise<void> | void;
   size: number;
-  source: MediaImageSrc;
+  src: MediaImageSrc;
 }) {
   const { surface } = useTheme();
 
   const renderIndicator = useMemo(() => {
     // Render indicator if we have an empty array or no defined image.
     return (
-      (Array.isArray(props.source) && props.source.length === 0) ||
-      props.source === null
+      (Array.isArray(props.src) && props.src.length === 0) || props.src === null
     );
-  }, [props.source]);
+  }, [props.src]);
 
   return (
     <View className="relative items-center justify-center">
       <MediaImage
-        src={props.source}
+        src={props.src}
         size={props.size / 2}
         className="absolute rounded-full bg-primary"
         noPlaceholder

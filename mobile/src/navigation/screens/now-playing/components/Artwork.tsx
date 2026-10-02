@@ -23,12 +23,12 @@ import { isSeekingAtom } from "../helpers/Seekbar.context";
 import { useVinylSeekbar } from "../helpers/useVinylSeekbar";
 
 import { Pressable } from "~/components/Base/Pressable";
+import { MediaImage } from "~/components/next/composed/media-image";
 import { ImmersiveArtwork } from "~/modules/media/components/ImmersiveArtwork";
-import { MediaImage } from "~/modules/media/components/MediaImage";
 import { Vinyl } from "~/modules/media/components/Vinyl";
 
 type ArtworkProps = {
-  source: string | null;
+  src: string | null;
   size: number;
   dimensions: { height: number; width: number };
 };
@@ -52,13 +52,14 @@ function PlainArtwork(props: ArtworkProps) {
     (s) => s.nowPlayingArtworkControls,
   );
 
-  if (!enableTapGesture) return <MediaImage type="track" {...props} />;
+  if (!enableTapGesture)
+    return <MediaImage {...props} className="rounded-xl" />;
   return (
     <Pressable
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
       onPress={() => PlaybackControls.playToggle()}
     >
-      <MediaImage type="track" {...props} />
+      <MediaImage {...props} className="rounded-xl" />
     </Pressable>
   );
 }
@@ -146,7 +147,7 @@ function VinylLegacy(props: ArtworkProps) {
         style={coverStyle}
         className="absolute bottom-0 left-0 z-10"
       >
-        <MediaImage type="track" {...props} />
+        <MediaImage {...props} className="rounded-xl" />
       </Animated.View>
     </View>
   );
@@ -159,7 +160,7 @@ function Immersive(props: ArtworkProps) {
   return (
     <ImmersiveArtwork
       onPress={enableTapGesture ? PlaybackControls.playToggle : undefined}
-      source={props.source}
+      source={props.src}
       dimensions={props.dimensions}
     />
   );

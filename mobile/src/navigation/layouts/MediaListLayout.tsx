@@ -298,7 +298,7 @@ function DeferredArtwork(props: { imageSource: MediaImageSrc }) {
           horizTranslation={horizTranslation}
         />
       ) : null}
-      <MediaImage src={props.imageSource} size={size} className="rounded-lg" />
+      <MediaImage src={props.imageSource} size={size} className="rounded-xl" />
     </Animated.View>
   );
 }
@@ -341,7 +341,7 @@ function AnimatedVinyl(props: {
           animationPlayState: canAnimate && inForeground ? "running" : "paused",
         }}
       >
-        <Vinyl source={props.imageSource} size={props.size} />
+        <Vinyl src={props.imageSource} size={props.size} />
       </Animated.View>
     </Animated.View>
   );

@@ -21,8 +21,8 @@ import { PlaybackControls } from "~/stores/Playback/actions";
 
 import { getImageUri, PlaceholderImageFile } from "~/lib/file-system";
 import { capitalize, getSafeUri } from "~/utils/string";
+import type { MediaImageSrc } from "~/components/next/composed/media-image";
 import { ReservedPlaylists } from "~/modules/media/constants";
-import type { MediaImage } from "~/modules/media/components/MediaImage";
 import type { MediaType, PlayFromSource } from "~/stores/Playback/types";
 
 /** Structure to represent Android Auto. */
@@ -106,7 +106,7 @@ async function getMediaCategoryRoute(
       id?: string;
       artistName?: string;
       trackCount: number;
-      artwork: MediaImage.ImageSource;
+      artwork: MediaImageSrc;
     }>
   >,
 ): Promise<ResolvedTrack> {
@@ -115,15 +115,15 @@ async function getMediaCategoryRoute(
     url: `/${category}`,
     title: `${capitalize(category)}s`,
     children: data.map(({ artwork, ...item }) => {
+      const _imgSrc = Array.isArray(artwork) ? artwork[0] : artwork;
+      const imgSrc = getImageUri(typeof _imgSrc === "string" ? _imgSrc : null);
       return {
         url: `/${category}/${encodeURIComponent(item.id ?? item.name)}`,
         title: item.name,
         description:
           item.artistName ||
           i18next.t("plural.track", { count: item.trackCount }),
-        artwork:
-          getImageUri(Array.isArray(artwork) ? artwork[0] : artwork) ||
-          PlaceholderImageFile,
+        artwork: imgSrc || PlaceholderImageFile,
       };
     }),
   };

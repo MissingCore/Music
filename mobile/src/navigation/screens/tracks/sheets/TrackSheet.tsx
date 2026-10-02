@@ -32,9 +32,9 @@ import { DetachedSheet } from "~/components/Sheet";
 import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
+import { MediaImage } from "~/components/next/composed/media-image";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
-import { MediaImage } from "~/modules/media/components/MediaImage";
 
 const GLOBAL_SHEET_KEY = "TrackSheet";
 
@@ -75,12 +75,7 @@ function TrackIntro({ data }: { data: Track }) {
 
   return (
     <View className="flex-row items-end gap-2">
-      <MediaImage
-        type="track"
-        size={64}
-        source={data.artwork}
-        className="rounded-sm"
-      />
+      <MediaImage size={64} src={data.artwork} className="rounded-lg" />
       <View className="shrink py-1">
         <Marquee color="surfaceBright">
           <StyledText style={{ fontSize: 18 }} className="leading-tight">

@@ -28,7 +28,7 @@ export function ArtworkSlot(props: {
       >
         {!hideArtwork || !showLyrics ? (
           <ArtworkPicker
-            source={props.artwork}
+            src={props.artwork}
             size={size}
             dimensions={dimensions}
           />
