@@ -298,7 +298,7 @@ function DeferredArtwork(props: { imageSource: MediaImageSrc }) {
           horizTranslation={horizTranslation}
         />
       ) : null}
-      <MediaImage src={props.imageSource} size={size} className="rounded-xl" />
+      <MediaImage src={props.imageSource} size={size} />
     </Animated.View>
   );
 }

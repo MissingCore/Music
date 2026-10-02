@@ -151,11 +151,7 @@ function BaseArtworkSheetContent(props: {
 
   return (
     <>
-      <MediaImage
-        src={props.imageSource}
-        size={imageSize}
-        className="mx-4 rounded-xl"
-      />
+      <MediaImage src={props.imageSource} size={imageSize} className="mx-4" />
       <SheetButtonGroup
         leftButton={{
           textKey: "feat.artwork.extra.remove",

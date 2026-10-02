@@ -34,7 +34,7 @@ export function MediaImage({
   const shared = {
     size: size,
     style: { width: size, height: size },
-    className: cn("bg-surfaceContainerHigh", className),
+    className: cn("rounded-xl bg-surfaceContainerHigh", className),
   };
 
   if (Array.isArray(src)) {

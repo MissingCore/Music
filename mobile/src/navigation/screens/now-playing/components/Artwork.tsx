@@ -52,14 +52,13 @@ function PlainArtwork(props: ArtworkProps) {
     (s) => s.nowPlayingArtworkControls,
   );
 
-  if (!enableTapGesture)
-    return <MediaImage {...props} className="rounded-xl" />;
+  if (!enableTapGesture) return <MediaImage {...props} />;
   return (
     <Pressable
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
       onPress={() => PlaybackControls.playToggle()}
     >
-      <MediaImage {...props} className="rounded-xl" />
+      <MediaImage {...props} />
     </Pressable>
   );
 }
@@ -147,7 +146,7 @@ function VinylLegacy(props: ArtworkProps) {
         style={coverStyle}
         className="absolute bottom-0 left-0 z-10"
       >
-        <MediaImage {...props} className="rounded-xl" />
+        <MediaImage {...props} />
       </Animated.View>
     </View>
   );

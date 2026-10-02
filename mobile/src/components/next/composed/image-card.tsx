@@ -48,7 +48,7 @@ export function ImageCard(props: ImageCardProps) {
         props.className,
       )}
     >
-      <MediaImage src={props.src} size={props.size} />
+      <MediaImage src={props.src} size={props.size} className="rounded-none" />
       <LinearGradient
         colors={["#00000000", "#000000E6"]}
         className="absolute inset-0"
