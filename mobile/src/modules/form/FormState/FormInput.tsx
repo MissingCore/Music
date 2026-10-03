@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { View } from "react-native";
+
 import type { TranslationKeyOrString } from "~/modules/i18n/core";
 import { useMaybeT } from "~/modules/i18n/core";
 import { useFormStateContext } from ".";

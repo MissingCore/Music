@@ -109,7 +109,7 @@ function LyricProviderForm({ bottomOffset }: { bottomOffset: number }) {
             key={value}
             onPress={() => insertPlaceholder(value)}
             disabled={isSubmitting || !isEndpointInputFocused}
-            className="min-h-0 rounded-full bg-surfaceContainerLow px-3 py-1.5"
+            className="min-h-0 rounded-full px-3 py-1.5"
           >
             <StyledText bold className="text-xs">
               {value}

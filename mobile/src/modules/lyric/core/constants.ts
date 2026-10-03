@@ -48,3 +48,4 @@ export const PersistedFields: string[] = [
   "checkEmbedded",
   "providers",
 ] satisfies Array<keyof LyricStore>;
+//#endregion
