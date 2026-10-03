@@ -11,6 +11,7 @@ import { cn } from "~/lib/style";
 import type { KeysOfValue } from "~/utils/types";
 import { FlatList } from "~/components/Base/List";
 import { IconButton } from "~/components/Form/Button/Icon";
+import type { InputProps } from "~/components/Form/Input";
 import { TextInput } from "~/components/Form/Input";
 import { RemovableItem } from "~/components/List/RemovableItem";
 import { Em } from "~/components/Typography/StyledText";
@@ -140,11 +141,16 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
 
 //#region Textarea
 export function TextareaImpl<TData extends Record<string, any>>() {
-  return function Textarea(props: {
-    label: TranslationKeyOrString;
-    field: KeysOfValue<TData, string>;
-    oneLine?: boolean;
-  }) {
+  return function Textarea(
+    props: {
+      label: TranslationKeyOrString;
+      field: KeysOfValue<TData, string>;
+      oneLine?: boolean;
+    } & Pick<
+      InputProps,
+      "selection" | "onSelectionChange" | "onFocus" | "onBlur"
+    >,
+  ) {
     const { data, setField, isSubmitting } = useFormState<TData>();
     return (
       <View className="flex-1">
@@ -163,6 +169,10 @@ export function TextareaImpl<TData extends Record<string, any>>() {
           textAlignVertical="top"
           //? Don't display an "Enter" key.
           submitBehavior={props.oneLine ? "blurAndSubmit" : undefined}
+          selection={props.selection}
+          onSelectionChange={props.onSelectionChange}
+          onFocus={props.onFocus}
+          onBlur={props.onBlur}
           className={cn("w-full rounded-sm border border-outline px-2 py-3", {
             "min-h-64": !props.oneLine,
           })}
