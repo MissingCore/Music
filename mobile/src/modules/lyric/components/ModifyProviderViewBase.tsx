@@ -13,7 +13,7 @@ import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { Button } from "~/components/Form/Button";
 import { SwitchInput } from "~/components/Form/Switch";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
-import { StyledText } from "~/components/Typography/StyledText";
+import { Em } from "~/components/Typography/StyledText";
 import { ZSchema } from "~/modules/form/utils";
 import type { FABWorkflowConfig } from "~/modules/form/FormState";
 import {
@@ -111,9 +111,7 @@ function LyricProviderForm({ bottomOffset }: { bottomOffset: number }) {
             disabled={isSubmitting || !isEndpointInputFocused}
             className="min-h-0 rounded-full px-3 py-1.5"
           >
-            <StyledText bold className="text-xs">
-              {value}
-            </StyledText>
+            <Em>{value}</Em>
           </Button>
         ))}
       </View>
