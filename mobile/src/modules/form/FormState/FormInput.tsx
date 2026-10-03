@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { View } from "react-native";
-import type { TextInputProps } from "react-native";
 import type { TranslationKeyOrString } from "~/modules/i18n/core";
 import { useMaybeT } from "~/modules/i18n/core";
 import { useFormStateContext } from ".";
@@ -11,6 +10,7 @@ import { cn } from "~/lib/style";
 import type { KeysOfValue } from "~/utils/types";
 import { FlatList } from "~/components/Base/List";
 import { IconButton } from "~/components/Form/Button/Icon";
+import type { InputProps } from "~/components/Form/Input";
 import { TextInput } from "~/components/Form/Input";
 import { RemovableItem } from "~/components/List/RemovableItem";
 import { Em } from "~/components/Typography/StyledText";
@@ -140,15 +140,16 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
 
 //#region Textarea
 export function TextareaImpl<TData extends Record<string, any>>() {
-  return function Textarea(props: {
-    label: TranslationKeyOrString;
-    field: KeysOfValue<TData, string>;
-    oneLine?: boolean;
-    selection?: TextInputProps["selection"];
-    onSelectionChange?: TextInputProps["onSelectionChange"];
-    onFocus?: TextInputProps["onFocus"];
-    onBlur?: TextInputProps["onBlur"];
-  }) {
+  return function Textarea(
+    props: {
+      label: TranslationKeyOrString;
+      field: KeysOfValue<TData, string>;
+      oneLine?: boolean;
+    } & Pick<
+      InputProps,
+      "selection" | "onSelectionChange" | "onFocus" | "onBlur"
+    >,
+  ) {
     const { data, setField, isSubmitting } = useFormState<TData>();
     return (
       <View className="flex-1">

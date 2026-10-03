@@ -2,18 +2,18 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { z } from "zod/mini";
-import { cn } from "~/lib/style";
+import { useState } from "react";
+import { View } from "react-native";
 
-import { useRef, useState } from "react";
-import { View, Text, TextInputProps } from "react-native";
-import { useTranslation } from "react-i18next";
+import { LyricProviderEndpointPlaceholders } from "../core/constants";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 
-import { Pressable } from "~/components/Base/Pressable";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
+import { Button } from "~/components/Form/Button";
 import { SwitchInput } from "~/components/Form/Switch";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
+import { StyledText } from "~/components/Typography/StyledText";
 import { ZSchema } from "~/modules/form/utils";
 import type { FABWorkflowConfig } from "~/modules/form/FormState";
 import {
@@ -26,8 +26,6 @@ import {
   FormInputImpl,
   TextareaImpl,
 } from "~/modules/form/FormState/FormInput";
-
-import { ENDPOINT_TEMPLATES } from "../core/constants";
 
 function useFormState() {
   return useFormStateContext<LyricProviderEntry>();
@@ -69,57 +67,29 @@ const ArrayFormInput = ArrayFormInputImpl<LyricProviderEntry>();
 const Textarea = TextareaImpl<LyricProviderEntry>();
 
 function LyricProviderForm({ bottomOffset }: { bottomOffset: number }) {
-  const { t } = useTranslation();
-
   const { data, setFields, isSubmitting } = useFormState();
 
-  const [isEndpointTextAreaFocused, setIsEndpointTextAreaFocused] =
-    useState(false);
-  const selectionRef = useRef({ start: 0, end: 0 });
-  const [selection, setSelection] = useState<
-    { start: number; end: number } | undefined
-  >(undefined);
+  //#region Placeholder Helper
+  const [isEndpointInputFocused, setIsEndpointInputFocused] = useState(false);
+  const [inputSelection, setInputSelection] = useState({ start: 0, end: 0 });
 
-  // Insert the template value endpoint text area.
-  const insertTemplateToEndpointTextArea = (char: string) => {
-    // If the focus is not on the endpoint text area,
-    // then we need not insert the values.
-    if (!isEndpointTextAreaFocused) return;
-    
-    char = "%" + char + "%";
-    const currentText = data.endpoint || "";
-    const { start, end } = selectionRef.current;
-
-    // Insert character at current cursor position (or replace selected text).
-    const updatedText =
-      currentText.slice(0, start) + char + currentText.slice(end);
-
-    setFields((prev) => ({
-      ...prev,
-      endpoint: updatedText,
-    }));
-
-    // Update cursor position to sit right after the newly inserted character.
-    const newCursor = start + char.length;
-    selectionRef.current = { start: newCursor, end: newCursor };
-    setSelection({ start: newCursor, end: newCursor });
+  const insertPlaceholder = (placeholder: string) => {
+    if (!isEndpointInputFocused) return;
+    const { start, end } = inputSelection;
+    // Insert/replace placeholder at current cursor position/range..
+    setFields({
+      endpoint:
+        data.endpoint.slice(0, start) + placeholder + data.endpoint.slice(end),
+    });
+    // Update cursor position to sit right after inserted placeholder.
+    const newCursor = start + placeholder.length;
+    setInputSelection({ start: newCursor, end: newCursor });
   };
-
-  const handleSelectionChange: TextInputProps["onSelectionChange"] = (e) => {
-    const sel = e.nativeEvent.selection;
-    // Keep ref updated synchronously
-    selectionRef.current = sel;
-    setSelection(sel);
-  };
-
-  // Check if we are submitting or
-  // if the end point the text area is not in the focus
-  // then we need to disable the template buttons.
-  const isTemplateButtonDisabled = isSubmitting || !isEndpointTextAreaFocused;
+  //#endregion
 
   return (
     <KeyboardAwareScrollView
-      keyboardShouldPersistTaps="always"
+      keyboardShouldPersistTaps={isEndpointInputFocused ? "always" : undefined}
       contentContainerStyle={{ paddingBottom: bottomOffset }}
       contentContainerClassName="gap-6 p-4"
     >
@@ -128,28 +98,23 @@ function LyricProviderForm({ bottomOffset }: { bottomOffset: number }) {
         label="Endpoint"
         field="endpoint"
         oneLine
-        selection={selection}
-        onSelectionChange={handleSelectionChange}
-        onFocus={() => setIsEndpointTextAreaFocused(true)}
-        onBlur={() => setIsEndpointTextAreaFocused(false)}
+        selection={inputSelection}
+        onSelectionChange={(e) => setInputSelection(e.nativeEvent.selection)}
+        onFocus={() => setIsEndpointInputFocused(true)}
+        onBlur={() => setIsEndpointInputFocused(false)}
       />
-      <View className="flex-row flex-wrap justify-between gap-y-2">
-        {ENDPOINT_TEMPLATES.map(({ label, value }) => (
-          <Pressable
-            key={t(label)}
-            className="min-h-10 w-[49%] items-center justify-center rounded-md bg-neutral-200 active:opacity-70"
-            onPressIn={() => insertTemplateToEndpointTextArea(value)}
-            disabled={isTemplateButtonDisabled}
+      <View className="-mt-4 flex-row flex-wrap gap-1.5">
+        {LyricProviderEndpointPlaceholders.map((value) => (
+          <Button
+            key={value}
+            onPress={() => insertPlaceholder(value)}
+            disabled={isSubmitting || !isEndpointInputFocused}
+            className="min-h-0 rounded-full bg-surfaceContainerLow px-3 py-1.5"
           >
-            <Text
-              className={cn("text-base font-semibold", {
-                "text-neutral-800": !isTemplateButtonDisabled,
-                "text-neutral-400": isTemplateButtonDisabled, // Grey color when disabled
-              })}
-            >
-              {t(label)}
-            </Text>
-          </Pressable>
+            <StyledText bold className="text-xs">
+              {value}
+            </StyledText>
+          </Button>
         ))}
       </View>
 

@@ -17,7 +17,7 @@ export function useInputRef() {
   return useRef<RNTextInput | RNGHTextInput>(null);
 }
 
-type InputProps = TextInputProps & {
+export type InputProps = TextInputProps & {
   ref?: React.Ref<RNTextInput | RNGHTextInput>;
   forSheet?: boolean;
 };
