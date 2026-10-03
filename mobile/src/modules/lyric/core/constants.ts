@@ -1,6 +1,15 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+//#region Lyric Provider Form
+export const LyricProviderEndpointPlaceholders = [
+  "%name%",
+  "%artistName%",
+  "%albumName%",
+  "%duration%",
+] as const;
+//#endregion
+
 export interface LyricProvider {
   id: string;
   name: string;
