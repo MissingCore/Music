@@ -7,7 +7,7 @@ buildscript {
   }
   dependencies {
     if (findProperty('music.WITH_SENTRY')?.toBoolean()) {
-      classpath("io.sentry:sentry-android-gradle-plugin:6.22.0")
+      classpath("io.sentry:sentry-android-gradle-plugin:6.23.0")
     }
     classpath('com.android.tools.build:gradle')
     classpath('com.facebook.react:react-native-gradle-plugin')
@@ -20,6 +20,12 @@ allprojects {
     google()
     mavenCentral()
     maven { url 'https://jitpack.io' }
+  }
+}
+
+subprojects {
+  configurations.all {
+    exclude group: 'io.sentry', module: 'sentry-android-replay'
   }
 }
 
