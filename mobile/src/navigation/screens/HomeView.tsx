@@ -1,6 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import BackgroundTimer from "@boterop/react-native-background-timer";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import type { LinearGradientProps } from "expo-linear-gradient";
@@ -26,7 +27,7 @@ import { useBottomActionsOffset } from "../components/BottomActions/useBottomAct
 import { cn } from "~/lib/style";
 import { Seconds } from "~/utils/date";
 import { chunkArray } from "~/utils/object";
-import { FlatList } from "~/components/Base/List";
+import { LegendList } from "~/components/Base/LegendList";
 import { ScrollView } from "~/components/Base/ScrollView";
 import { Icon } from "~/components/next/base/icon";
 import { Text, TText } from "~/components/next/base/typography";
@@ -48,6 +49,11 @@ import { ReservedPlaylists } from "~/modules/media/constants";
 
 const AnimatedGestureScrollView = createAnimatedComponent(GestureScrollView);
 
+const trackSource = {
+  type: "playlist",
+  id: ReservedPlaylists.tracks,
+} as const;
+
 export default function Home() {
   const queryClient = useQueryClient();
   const showNavbar = usePreferenceStore((s) => s.showNavbar);
@@ -59,12 +65,15 @@ export default function Home() {
 
   useFocusEffect(
     useCallback(() => {
-      queryClient.invalidateQueries({
-        queryKey: ["insights", "recent", "tracks"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["insights", "recap", last7DaysEpoch],
-      });
+      const timeoutId = BackgroundTimer.setTimeout(() => {
+        queryClient.invalidateQueries({
+          queryKey: ["insights", "recent", "tracks"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["insights", "recap", last7DaysEpoch],
+        });
+      }, 150);
+      return () => BackgroundTimer.clearTimeout(timeoutId);
     }, [queryClient, last7DaysEpoch]),
   );
 
@@ -76,8 +85,10 @@ export default function Home() {
         contentContainerClassName="gap-8"
       >
         <WeeklyRecap />
-        <RecentlyPlayed />
-        <RecentlyDiscovered />
+        <TrackListContext value={trackSource}>
+          <RecentlyPlayed />
+          <RecentlyDiscovered />
+        </TrackListContext>
         <HomeLinks />
       </ScrollView>
     </>
@@ -249,11 +260,6 @@ function RecentlyDiscovered() {
   );
 }
 
-const trackSource = {
-  type: "playlist",
-  id: ReservedPlaylists.tracks,
-} as const;
-
 const columnConfigs = { minWidth: 300, minCols: 1.25, gap: 8 };
 
 function RecentGroup(props: {
@@ -272,7 +278,7 @@ function RecentGroup(props: {
 
   if (!groupedData) return null;
   return (
-    <TrackListContext value={trackSource}>
+    <>
       <Button
         accessibilityLabel={t(props.label)}
         onPress={props.onLabelPress}
@@ -285,12 +291,14 @@ function RecentGroup(props: {
           <Icon name="keyboard-arrow-right" size={32} />
         </View>
       </Button>
-      <FlatList
+      <LegendList
         horizontal
+        estimatedItemSize={186}
         data={groupedData}
         keyExtractor={(_, idx) => String(idx)}
         renderItem={({ item }) => (
-          <FlatList
+          <LegendList
+            estimatedItemSize={62} // 56px Height + 6px Margin Bottom
             data={item}
             keyExtractor={({ id }) => id}
             renderItem={({ item }) => (
@@ -305,7 +313,7 @@ function RecentGroup(props: {
         className="-mx-0.75 -mb-1.5"
         contentContainerClassName="px-4"
       />
-    </TrackListContext>
+    </>
   );
 }
 //#endregion
