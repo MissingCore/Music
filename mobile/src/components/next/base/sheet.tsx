@@ -86,7 +86,8 @@ function useSheetComponents(children: React.ReactNode) {
           <ScrollView
             // @ts-expect-error - Ref should still work.
             ref={listRef}
-            contentContainerClassName="-mb-4 gap-6 pb-4"
+            className="-mb-4"
+            contentContainerClassName="gap-6 pb-4"
           >
             {contentNodes}
           </ScrollView>
