@@ -53,7 +53,9 @@ export const LANGUAGES = [
   {
     code: "el",
     name: "Ελληνικά",
-    translators: [{ display: "aprountzos", link: "https://github.com/aprountzos" }],
+    translators: [
+      { display: "aprountzos", link: "https://github.com/aprountzos" },
+    ],
   },
   {
     code: "en",

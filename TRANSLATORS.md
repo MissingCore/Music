@@ -87,4 +87,4 @@
 
 ## [Ελληνικά] Greek
 
-- [@thana](https://github.com/thana)
+- [@aprountzos](https://github.com/aprountzos)
