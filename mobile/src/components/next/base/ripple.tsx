@@ -7,18 +7,13 @@ import { useColor } from "~/modules/customization/theme/hooks";
 import type { PressableProps } from "../primitive/pressable";
 import { Pressable } from "../primitive/pressable";
 
-type RippleConfig = { rippleColor?: AppColor; rippleRadius?: number };
+type RippleConfig = { rippleColor?: AppColor };
 
 export type RippleProps = Omit<PressableProps, "android_ripple"> & RippleConfig;
 
 export type RipplePressProps = PressableProps & RippleConfig;
 
-export function Ripple({
-  rippleColor,
-  rippleRadius,
-  className,
-  ...props
-}: RippleProps) {
+export function Ripple({ rippleColor, className, ...props }: RippleProps) {
   const color = useColor(rippleColor, "surfaceContainerHigh");
   return (
     <Pressable
@@ -30,7 +25,6 @@ export function Ripple({
         //? Otherwise, we use 50% opacity of a valid color.
         color: color.length > 7 ? `#FFFFFF40` : `${color}80`,
         foreground: true,
-        radius: rippleRadius,
       }}
       className={cn("overflow-hidden", className)}
     />

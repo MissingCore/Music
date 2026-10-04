@@ -15,7 +15,7 @@ import { PlaylistsViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet"
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import type { ExtractQueryData } from "~/lib/react-query";
-import { IconButton } from "~/components/next/blocks/icon-button";
+import { IconButton } from "~/components/next/base/button-icon";
 
 type PlaylistData = ExtractQueryData<typeof usePlaylists>[number];
 

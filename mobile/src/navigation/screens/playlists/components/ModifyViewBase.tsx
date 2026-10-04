@@ -23,8 +23,8 @@ import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import { IconButton } from "~/components/next/base/button-icon";
 import { TText } from "~/components/next/base/typography";
-import { IconButton } from "~/components/next/blocks/icon-button";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
 import { ZSchema } from "~/modules/form/utils";
 import type { FABWorkflowConfig } from "~/modules/form/FormState";
@@ -318,7 +318,7 @@ const RenderItem = memo(
         }
         spacing="row"
         //! `bg-surface` is there to prevent collapsing this View.
-        className={cn("bg-surface", {
+        className={cn("bg-surface pr-0", {
           "bg-surfaceContainerLowest": isActive,
           "opacity-25": isSubmitting,
         })}

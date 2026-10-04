@@ -17,8 +17,8 @@ import { isString } from "~/utils/validation";
 import { LegendList, useLegendListRef } from "~/components/Base/LegendList";
 import { FlatList } from "~/components/Base/List";
 import { TopDownGradient } from "~/components/Gradient";
+import { Chip } from "~/components/next/base/chip";
 import { TText } from "~/components/next/base/typography";
-import { Chip } from "~/components/next/blocks/chip";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
 import { createTextPlaceholder } from "~/components/next/composed/media-image";
 import { TrackAction } from "~/components/next/composed/track-item";
@@ -178,6 +178,7 @@ function SearchFilters(props: {
   onSelectTab: (tab: SearchTab) => void;
   getHeight: (containerHeight: number) => void;
 }) {
+  const { t } = useTranslation();
   if (props.tabs.length === 0) return null;
   return (
     <FlatList
@@ -188,12 +189,11 @@ function SearchFilters(props: {
         const selected = props.selectedTab === tab;
         return (
           <Chip
-            label={`term.${tab}`}
+            label={t(`term.${tab}`)}
             onPress={() => props.onSelectTab(tab)}
             disabled={selected}
             intent={selected ? "primary" : undefined}
             pill={selected}
-            className="py-1.5"
           />
         );
       }}

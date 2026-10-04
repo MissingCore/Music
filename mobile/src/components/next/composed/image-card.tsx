@@ -9,8 +9,8 @@ import type { MediaImageSrc } from "./media-image";
 import { MediaImage } from "./media-image";
 import type { Spacing } from "./utils";
 import { getSpacingClasses } from "./utils";
-import { cardStyle } from "../base/card";
 import { Ripple } from "../base/ripple";
+import { baseContainerStyle } from "../base/styles";
 import { Text } from "../base/typography";
 import { createTextStack } from "../blocks/text-stack";
 
@@ -87,8 +87,8 @@ export function LargeImageCard(
     <Ripple
       pointerEvents="box-only"
       onPress={props.onPress}
-      className={cardStyle({
-        padding: false,
+      className={baseContainerStyle({
+        filled: true,
         className: cn(
           "rounded-lg p-1",
           getSpacingClasses(props.spacing),

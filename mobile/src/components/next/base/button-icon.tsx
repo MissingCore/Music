@@ -7,9 +7,9 @@ import { cva } from "~/lib/style";
 import type { AppColor } from "~/modules/customization/theme/core/constants";
 import type { ButtonProps } from "./button";
 import { Button } from "./button";
-import type { SupportedIconName } from "../base/icon";
-import { Icon } from "../base/icon";
-import { getIntentOnColor } from "../base/theming";
+import type { SupportedIconName } from "./icon";
+import { Icon } from "./icon";
+import { getIntentOnColor } from "./styles";
 
 const iconButtonStyle = cva({
   base: "rounded-full p-0",
@@ -32,15 +32,19 @@ const iconButtonStyle = cva({
 
 type IconButtonVariants = VariantProps<typeof iconButtonStyle>;
 
-export type ButtonSize = IconButtonVariants["size"];
-
 interface IconButtonProps extends ButtonProps, IconButtonVariants {
   icon: SupportedIconName;
   accessibilityLabel: string;
   _iconColor?: AppColor;
 }
 
-const IconSizeConfig = { xs: 20, sm: 24, md: 24, lg: 32 };
+export type ButtonSize = IconButtonVariants["size"];
+const IconSizeConfig = {
+  xs: 20,
+  sm: 24,
+  md: 24,
+  lg: 32,
+} as const satisfies Record<NonNullable<ButtonSize>, number>;
 
 export function IconButton({
   icon,

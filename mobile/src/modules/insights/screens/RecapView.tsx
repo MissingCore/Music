@@ -20,10 +20,10 @@ import { FlatList } from "~/components/Base/List";
 import { DetachedSheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import { Button } from "~/components/next/base/button";
 import { Card } from "~/components/next/base/card";
 import { Divider } from "~/components/next/base/divider";
 import { Icon } from "~/components/next/base/icon";
-import { Button } from "~/components/next/blocks/button";
 import { SequenceNumber } from "~/components/next/blocks/sequence-number";
 import { Text, TText } from "~/components/next/base/typography";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
@@ -167,7 +167,7 @@ function TimeRangeSheet(props: {
               props.dispatch(item);
               props.ref.current?.dismiss();
             }}
-            className="rounded-md p-0"
+            className="rounded-md py-2"
           >
             <Text size="lg">{item.label}</Text>
           </Button>
@@ -179,7 +179,7 @@ function TimeRangeSheet(props: {
                 props.dispatch({ type: "all-time" });
                 props.ref.current?.dismiss();
               }}
-              className="rounded-md p-0"
+              className="rounded-md py-2"
             >
               <TText textKey="feat.recap.extra.allTime" size="lg" />
             </Button>
@@ -188,7 +188,7 @@ function TimeRangeSheet(props: {
                 props.dispatch({ type: "last-7-days" });
                 props.ref.current?.dismiss();
               }}
-              className="rounded-md p-0"
+              className="rounded-md py-2"
             >
               <Text size="lg">
                 {t("feat.recap.extra.lastDays", { amount: RECENT_DAY_RANGE })}

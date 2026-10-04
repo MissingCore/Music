@@ -5,7 +5,7 @@ import type { VariantProps } from "cva/config";
 import { View } from "react-native";
 
 import { cva } from "~/lib/style";
-import type { IntentVariant } from "./theming";
+import type { IntentVariant } from "./styles";
 
 const dividerStyle = cva({
   base: "h-px bg-outlineVariant",

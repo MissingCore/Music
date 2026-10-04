@@ -26,8 +26,8 @@ import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import type { ImageListItemProps } from "./image-list-item";
 import { ImageListItem } from "./image-list-item";
 import type { MediaImageSrc } from "./media-image";
-import type { ButtonSize } from "../blocks/icon-button";
-import { IconButton } from "../blocks/icon-button";
+import type { ButtonSize } from "../base/button-icon";
+import { IconButton } from "../base/button-icon";
 import { Pressable } from "../primitive/pressable";
 
 /** Obtain the list the track belongs to from a context to encourage memoization. */

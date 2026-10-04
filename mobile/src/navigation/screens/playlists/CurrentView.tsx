@@ -20,7 +20,7 @@ import { ExportM3USheet } from "./sheets/ExportM3USheet";
 
 import { mutateGuard } from "~/lib/react-query";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { IconButton } from "~/components/next/blocks/icon-button";
+import { IconButton } from "~/components/next/base/button-icon";
 import { TrackItem } from "~/components/next/composed/track-item";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 

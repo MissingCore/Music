@@ -24,8 +24,8 @@ import {
 import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
 import { wait } from "~/utils/promise";
+import { IconButton } from "~/components/next/base/button-icon";
 import { Ripple } from "~/components/next/base/ripple";
-import { IconButton } from "~/components/next/blocks/icon-button";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 import { extractTrackId } from "~/stores/Playback/utils";
@@ -157,7 +157,7 @@ const RenderItem = memo(
             : PlaybackControls.playAtIndex(index)
         }
         disabled={isDragging}
-        className={cn("mb-1.5 flex-row items-center gap-4 rounded-lg", {
+        className={cn("mb-1.5 flex-row items-center gap-2 rounded-lg", {
           "bg-surfaceContainerLowest": isActive,
           "opacity-25 active:opacity-100": index < disableAfter && !isActive,
         })}
@@ -185,7 +185,7 @@ const RenderItem = memo(
           }
           spacing="none"
           leadingOverridesSrc
-          className="shrink grow"
+          className="shrink grow pr-0"
         />
       </Ripple>
     );

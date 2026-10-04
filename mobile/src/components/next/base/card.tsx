@@ -6,52 +6,19 @@ import type { ViewProps } from "react-native";
 import { View } from "react-native";
 
 import { cva } from "~/lib/style";
-import type { IntentVariant } from "./theming";
+import { baseContainerStyle } from "./styles";
 
-export const cardStyle = cva({
-  base: "rounded-xl bg-surfaceContainerLowest",
-  variants: {
-    intent: {
-      unset: null,
-      muted: "bg-surfaceContainerHigh",
-      primary: "bg-primary",
-      secondary: "bg-secondary",
-      error: "bg-error",
-      inverse: "bg-inverseSurface",
-    } satisfies IntentVariant,
-    padding: { true: "p-4" },
-    outline: { true: "border border-outlineVariant" },
-    overflow: { false: "overflow-hidden" },
-  },
-  compoundVariants: [
-    { intent: "primary", outline: true, className: "border-primaryDim" },
-    { intent: "secondary", outline: true, className: "border-secondaryDim" },
-    { intent: "error", outline: true, className: "border-errorDim" },
-  ],
-  defaultVariants: {
-    intent: "unset",
-    padding: true,
-    outline: false,
-    overflow: false,
-  },
+const cardStyle = cva({
+  composes: [baseContainerStyle],
+  base: "rounded-xl p-4",
+  defaultVariants: { filled: true },
 });
 
-export type CardVariants = VariantProps<typeof cardStyle>;
+interface CardProps
+  extends ViewProps, Omit<VariantProps<typeof cardStyle>, "filled"> {}
 
-interface CardProps extends ViewProps, CardVariants {}
-
-export function Card({
-  intent,
-  padding,
-  outline,
-  overflow,
-  className,
-  ...props
-}: CardProps) {
+export function Card({ intent, outline, className, ...props }: CardProps) {
   return (
-    <View
-      {...props}
-      className={cardStyle({ intent, padding, outline, overflow, className })}
-    />
+    <View {...props} className={cardStyle({ intent, outline, className })} />
   );
 }

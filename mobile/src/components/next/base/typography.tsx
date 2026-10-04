@@ -11,7 +11,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { cva } from "~/lib/style";
 import { getFont } from "~/modules/customization/font/utils";
-import type { IntentVariant } from "./theming";
+import type { IntentVariant } from "./styles";
 
 const textStyle = cva({
   base: "text-left text-base text-onSurface",
@@ -57,9 +57,7 @@ const textStyle = cva({
   },
 });
 
-export type TextVariants = VariantProps<typeof textStyle>;
-
-export interface TextProps extends RNTextProps, TextVariants {
+export interface TextProps extends RNTextProps, VariantProps<typeof textStyle> {
   bold?: boolean;
 }
 
