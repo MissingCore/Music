@@ -8,10 +8,10 @@ import { useAnimatedRef } from "react-native-reanimated";
 import { withUniwind } from "uniwind";
 
 import { cn } from "~/lib/style";
+import { GestureHandlerRootView } from "~/components/Base/GestureHandlerRootView";
 import type { LegendListProps } from "~/components/Base/LegendList";
 import { LegendList } from "~/components/Base/LegendList";
 import { ScrollView } from "~/components/Base/ScrollView";
-import { GestureHandlerRootView } from "~/components/Base/GestureHandlerRootView";
 import { Text } from "./typography";
 import { Marquee } from "../blocks/marquee";
 
@@ -51,7 +51,6 @@ export function Sheet(props: SheetProps) {
             <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-surfaceContainerHigh" />
             {header}
           </View>
-
           {children}
         </View>
       </GestureHandlerRootView>
@@ -84,8 +83,11 @@ function useSheetComponents(children: React.ReactNode) {
         header,
         scrollableRef: listRef,
         children: (
-          // @ts-expect-error - Ref should still work.
-          <ScrollView ref={listRef} contentContainerClassName="-mb-4 pb-4">
+          <ScrollView
+            // @ts-expect-error - Ref should still work.
+            ref={listRef}
+            contentContainerClassName="-mb-4 gap-6 pb-4"
+          >
             {contentNodes}
           </ScrollView>
         ),
