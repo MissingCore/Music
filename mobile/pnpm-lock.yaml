@@ -5,7 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
-  '@lodev09/react-native-true-sheet': e629511ec9a360ce64c6f2cbcb19d75a7b9b47d7dd1d172d57695cb35845ebce
   react-native-android-widget: 700a44715e685edefbbcca4d1c8a1a80c90ea32f567b124241138d01b981b064
   react-native-material-palette: ca661be3d7b9fbd98cd220f41e2799035f7b6ca339abc6a95b04ceea775d2c79
 
@@ -20,8 +19,8 @@ importers:
         specifier: 3.6.0
         version: 3.6.0(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
       '@lodev09/react-native-true-sheet':
-        specifier: 3.4.2
-        version: 3.4.2(patch_hash=e629511ec9a360ce64c6f2cbcb19d75a7b9b47d7dd1d172d57695cb35845ebce)(34b56315b98d61942f8426249640670d)
+        specifier: 4.0.0-beta.23
+        version: 4.0.0-beta.23(34b56315b98d61942f8426249640670d)
       '@missingcore/react-native-actual-path':
         specifier: 0.1.0
         version: 0.1.0(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
@@ -1519,23 +1518,35 @@ packages:
       react-native:
         optional: true
 
-  '@lodev09/react-native-true-sheet@3.4.2':
-    resolution: {integrity: sha512-8JObgYHo0iUCHzBWfgtfeX243SEMxVKyLh+j+9zExvSDxfKcdE9dc3rpfnQ+d0Nk2g/psyoekH5RgyFmGf/R+g==}
+  '@lodev09/react-native-true-sheet@4.0.0-beta.23':
+    resolution: {integrity: sha512-8+H2I5xFkNbmfWiyKII3TdwlYgJHPd0khDrxeWDfexyfgLU8SpcevjFZpFDnmHQQJv9C6Ls2TmJVdeFgo8OoIA==}
     peerDependencies:
-      '@gorhom/bottom-sheet': '>=5'
-      '@react-navigation/native': '>=7'
+      '@radix-ui/react-dialog': '>=1'
+      '@radix-ui/react-presence': '>=1'
+      '@react-navigation/native': '>=7.3.0'
+      expo-router: '>=57.0.0'
       react: '*'
-      react-native: '*'
+      react-dom: '*'
+      react-native: '>=0.82.0'
       react-native-reanimated: '>=4'
       react-native-worklets: '*'
+      standard-navigation: '>=0.0.9'
     peerDependenciesMeta:
-      '@gorhom/bottom-sheet':
+      '@radix-ui/react-dialog':
+        optional: true
+      '@radix-ui/react-presence':
         optional: true
       '@react-navigation/native':
+        optional: true
+      expo-router:
+        optional: true
+      react-dom:
         optional: true
       react-native-reanimated:
         optional: true
       react-native-worklets:
+        optional: true
+      standard-navigation:
         optional: true
 
   '@missingcore/react-native-actual-path@0.1.0':
@@ -7022,7 +7033,7 @@ snapshots:
     optionalDependencies:
       react-native: 0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3)
 
-  '@lodev09/react-native-true-sheet@3.4.2(patch_hash=e629511ec9a360ce64c6f2cbcb19d75a7b9b47d7dd1d172d57695cb35845ebce)(34b56315b98d61942f8426249640670d)':
+  '@lodev09/react-native-true-sheet@4.0.0-beta.23(34b56315b98d61942f8426249640670d)':
     dependencies:
       react: 19.2.3
       react-native: 0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3)
@@ -8622,7 +8633,7 @@ snapshots:
       '@typescript-eslint/eslint-plugin': 8.71.0(@typescript-eslint/parser@8.71.0(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3))(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3)
       '@typescript-eslint/parser': 8.71.0(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3)
       eslint: 9.39.4(jiti@2.7.0)
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.4(jiti@2.7.0))
+      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.71.0(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))
       eslint-plugin-expo: 1.1.0(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3)
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.71.0(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4(jiti@2.7.0))
       eslint-plugin-react: 7.37.5(eslint@9.39.4(jiti@2.7.0))
@@ -8646,7 +8657,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.4(jiti@2.7.0)):
+  eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.71.0(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.3
@@ -8661,14 +8672,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.14.0(@typescript-eslint/parser@8.71.0(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4(jiti@2.7.0)):
+  eslint-module-utils@2.14.0(@typescript-eslint/parser@8.71.0(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.71.0(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 8.71.0(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3)
       eslint: 9.39.4(jiti@2.7.0)
       eslint-import-resolver-node: 0.3.10
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.4(jiti@2.7.0))
+      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.71.0(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))
     transitivePeerDependencies:
       - supports-color
 
@@ -8696,7 +8707,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.39.4(jiti@2.7.0)
       eslint-import-resolver-node: 0.3.10
-      eslint-module-utils: 2.14.0(@typescript-eslint/parser@8.71.0(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4(jiti@2.7.0))
+      eslint-module-utils: 2.14.0(@typescript-eslint/parser@8.71.0(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.71.0(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))
       hasown: 2.0.4
       is-core-module: 2.17.0
       is-glob: 4.0.3
