@@ -5,6 +5,7 @@ import ar from "./ar.json";
 import ca from "./ca.json";
 import da from "./da.json";
 import de from "./de.json";
+import el from "./el.json";
 import en from "./en.json";
 import es from "./es.json";
 import fa from "./fa.json";
@@ -23,6 +24,7 @@ export const resources = {
   ca: { translation: ca },
   da: { translation: da },
   de: { translation: de },
+  el: { translation: el },
   en: { translation: en },
   es: { translation: es },
   fa: { translation: fa },
