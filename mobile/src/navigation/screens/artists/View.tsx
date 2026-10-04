@@ -14,7 +14,7 @@ import { ArtistsViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import type { ExtractQueryData } from "~/lib/react-query";
-import { createTextPlaceholder } from "~/components/next/composed/media-image";
+import { createTextPlaceholder } from "~/components/next/blocks/media-image";
 
 type ArtistData = ExtractQueryData<typeof useArtists>[number];
 

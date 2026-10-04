@@ -1,7 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import type { MediaImageSrc } from "~/components/next/composed/media-image";
+import type { MediaImageSrc } from "~/components/next/blocks/media-image";
 
 /** Screens where the layout of the content can be change. */
 export type MutableViewLayout = "album" | "artist" | "genre" | "playlist";

@@ -20,8 +20,8 @@ import { getPlaylist } from "~/data/playlist/api";
 import { fromJSONArrayString } from "~/data/utils";
 import { commonTrackColumns, structuredTracksView } from "~/data/views";
 
-import type { MediaImageSrc } from "~/components/next/composed/media-image";
-import { createTextPlaceholder } from "~/components/next/composed/media-image";
+import type { MediaImageSrc } from "~/components/next/blocks/media-image";
+import { createTextPlaceholder } from "~/components/next/blocks/media-image";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { RECENT_RANGE_MS } from "./constants";
 import { PlayedListsTracker } from "./PlayedListsTracker";

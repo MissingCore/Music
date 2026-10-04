@@ -25,8 +25,8 @@ import { isRecord } from "~/utils/validation";
 import { DetachedSheet } from "~/components/Sheet";
 import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import type { MediaImageSrc } from "~/components/next/composed/media-image";
-import { MediaImage } from "~/components/next/composed/media-image";
+import type { MediaImageSrc } from "~/components/next/blocks/media-image";
+import { MediaImage } from "~/components/next/blocks/media-image";
 import type { MediaType } from "~/stores/Playback/types";
 
 type ArtworkSheetProps = { id: string; ref: TrueSheetRef };

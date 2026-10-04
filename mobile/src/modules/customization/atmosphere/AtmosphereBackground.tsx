@@ -10,7 +10,7 @@ import { ScopedTheme, withUniwind } from "uniwind";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { getImageUri } from "~/lib/file-system";
-import type { MediaImageSrc } from "~/components/next/composed/media-image";
+import type { MediaImageSrc } from "~/components/next/blocks/media-image";
 import { AtmosphereSubtreeContext } from "./store";
 import { deriveAndSetAtmosphereColors } from "./util";
 

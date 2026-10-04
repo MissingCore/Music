@@ -25,9 +25,9 @@ import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import type { ImageListItemProps } from "./image-list-item";
 import { ImageListItem } from "./image-list-item";
-import type { MediaImageSrc } from "./media-image";
 import type { ButtonSize } from "../base/button-icon";
 import { IconButton } from "../base/button-icon";
+import type { MediaImageSrc } from "../blocks/media-image";
 import { Pressable } from "../primitive/pressable";
 
 /** Obtain the list the track belongs to from a context to encourage memoization. */

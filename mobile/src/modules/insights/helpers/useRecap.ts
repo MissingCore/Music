@@ -23,7 +23,7 @@ import {
 } from "~/db/schema";
 
 import { omitKeys } from "~/utils/object";
-import { createTextPlaceholder } from "~/components/next/composed/media-image";
+import { createTextPlaceholder } from "~/components/next/blocks/media-image";
 
 async function getRecap(startEpoch: number, endEpoch = Date.now()) {
   //? Identify range of data we care about.

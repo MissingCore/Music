@@ -32,7 +32,7 @@ import { DetachedSheet } from "~/components/Sheet";
 import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
-import { MediaImage } from "~/components/next/composed/media-image";
+import { MediaImage } from "~/components/next/blocks/media-image";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
 

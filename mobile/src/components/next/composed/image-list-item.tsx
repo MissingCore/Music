@@ -4,11 +4,11 @@
 import { View } from "react-native";
 
 import { cn } from "~/lib/style";
-import type { MediaImageSrc } from "./media-image";
-import { MediaImage } from "./media-image";
 import type { Spacing } from "./utils";
 import { getSpacingClasses } from "./utils";
 import { Ripple } from "../base/ripple";
+import type { MediaImageSrc } from "../blocks/media-image";
+import { MediaImage } from "../blocks/media-image";
 import { createTextStack } from "../blocks/text-stack";
 
 export type ImageListItemProps = {

@@ -8,8 +8,8 @@ import Svg, { Circle, Defs, Mask, Rect } from "react-native-svg";
 
 import { isRecord } from "~/utils/validation";
 import { Colors } from "~/constants/Styles";
-import type { MediaImageSrc } from "~/components/next/composed/media-image";
-import { MediaImage } from "~/components/next/composed/media-image";
+import type { MediaImageSrc } from "~/components/next/blocks/media-image";
+import { MediaImage } from "~/components/next/blocks/media-image";
 import { useTheme } from "~/modules/customization/theme/hooks";
 
 const CENTER = { cx: 384, cy: 384 };

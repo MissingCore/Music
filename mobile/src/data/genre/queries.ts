@@ -8,7 +8,7 @@ import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { queries as q } from "../keyStore";
 import { getArtistsString } from "../artist/utils";
 
-import { createTextPlaceholder } from "~/components/next/composed/media-image";
+import { createTextPlaceholder } from "~/components/next/blocks/media-image";
 
 //#region Queries
 export function useGenreDetails(genreName: string) {

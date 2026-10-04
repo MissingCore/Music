@@ -30,7 +30,7 @@ import { IconButton } from "~/components/Form/Button/Icon";
 import { Marquee } from "~/components/Marquee";
 import { Swipeable } from "~/components/Swipeable";
 import { StyledText } from "~/components/Typography/StyledText";
-import { MediaImage } from "~/components/next/composed/media-image";
+import { MediaImage } from "~/components/next/blocks/media-image";
 import {
   NextButton,
   PreviousButton,

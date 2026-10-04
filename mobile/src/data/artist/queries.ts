@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { queries as q } from "../keyStore";
 
-import { createTextPlaceholder } from "~/components/next/composed/media-image";
+import { createTextPlaceholder } from "~/components/next/blocks/media-image";
 
 //#region Queries
 export function useArtistDetails(artistName: string) {

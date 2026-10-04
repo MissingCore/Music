@@ -9,8 +9,8 @@ import { navigateToArtist } from "~/stores/Session/actions";
 
 import { FlatList } from "~/components/Base/List";
 import { DetachedSheet } from "~/components/Sheet";
+import { createTextPlaceholder } from "~/components/next/blocks/media-image";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
-import { createTextPlaceholder } from "~/components/next/composed/media-image";
 
 const GLOBAL_SHEET_KEY = "ArtistsSheet";
 

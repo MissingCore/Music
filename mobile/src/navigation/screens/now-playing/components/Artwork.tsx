@@ -23,7 +23,7 @@ import { isSeekingAtom } from "../helpers/Seekbar.context";
 import { useVinylSeekbar } from "../helpers/useVinylSeekbar";
 
 import { Pressable } from "~/components/Base/Pressable";
-import { MediaImage } from "~/components/next/composed/media-image";
+import { MediaImage } from "~/components/next/blocks/media-image";
 import { ImmersiveArtwork } from "~/modules/media/components/ImmersiveArtwork";
 import { Vinyl } from "~/modules/media/components/Vinyl";
 

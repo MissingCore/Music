@@ -21,7 +21,7 @@ import { PlaybackControls } from "~/stores/Playback/actions";
 
 import { getImageUri, PlaceholderImageFile } from "~/lib/file-system";
 import { capitalize, getSafeUri } from "~/utils/string";
-import type { MediaImageSrc } from "~/components/next/composed/media-image";
+import type { MediaImageSrc } from "~/components/next/blocks/media-image";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaType, PlayFromSource } from "~/stores/Playback/types";
 
