@@ -9,15 +9,14 @@ import { useInForeground } from "~/stores/ListenerState";
 import { useSleepTimerStore } from "./store";
 
 import { wait } from "~/utils/promise";
-import { ExtendedTButton } from "~/components/Form/Button";
 import { ClickwrapCheckbox } from "~/components/Form/Checkbox";
 import { NumericInput } from "~/components/Form/Input";
-import { DetachedSheet } from "~/components/Sheet";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { AccentText } from "~/components/Typography/AccentText";
-import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet } from "~/components/next/base/sheet";
+import { Text, TText } from "~/components/next/base/typography";
+import { ActionButton } from "~/components/next/blocks/button-action";
 
-export function SleepTimerSheet(props: { ref: TrueSheetRef }) {
+export function SleepTimerSheet(props: { ref: SheetRef }) {
   const { t } = useTranslation();
   const sleepTimerLength = useSleepTimerStore((s) => s.duration);
   const extendTimer = useSleepTimerStore((s) => s.extension);
@@ -54,12 +53,10 @@ export function SleepTimerSheet(props: { ref: TrueSheetRef }) {
   };
 
   return (
-    <DetachedSheet ref={props.ref} titleKey="feat.sleepTimer.title">
-      <TStyledText
-        textKey="feat.sleepTimer.description"
-        dim
-        className="text-sm"
-      />
+    <Sheet ref={props.ref}>
+      <Sheet.Header label={t("feat.sleepTimer.title")} />
+
+      <TText textKey="feat.sleepTimer.description" muted size="sm" />
       {hasTimer ? (
         <CountdownTimer endAt={endAt} />
       ) : (
@@ -71,21 +68,21 @@ export function SleepTimerSheet(props: { ref: TrueSheetRef }) {
           forSheet
         />
       )}
-      <StyledText dim>
+      <Text muted>
         {t("feat.sleepTimer.extra.stopTime", { time: endString })}
-      </StyledText>
+      </Text>
       <ClickwrapCheckbox
         textKey="feat.sleepTimer.extra.extend"
         checked={extendTimer}
         onCheck={toggleExtension}
         disabled={hasTimer}
       />
-      <ExtendedTButton
-        textKey={hasTimer ? "form.clear" : "feat.sleepTimer.extra.start"}
+      <ActionButton
+        label={t(hasTimer ? "form.clear" : "feat.sleepTimer.extra.start")}
         onPress={hasTimer ? clearTimer : onSubmit}
         className="rounded-full"
       />
-    </DetachedSheet>
+    </Sheet>
   );
 }
 
@@ -112,9 +109,10 @@ function CountdownTimer({ endAt }: { endAt: number }) {
   }, [inForeground, getInitialTimerState]);
 
   return (
-    <AccentText
+    <Text
+      accent
       style={{ fontVariant: ["tabular-nums"] }}
       className="text-center text-5xl"
-    >{`${String(timer.hour).padStart(2, "0")} : ${String(timer.minute).padStart(2, "0")} : ${String(timer.second).padStart(2, "0")}`}</AccentText>
+    >{`${String(timer.hour).padStart(2, "0")} : ${String(timer.minute).padStart(2, "0")} : ${String(timer.second).padStart(2, "0")}`}</Text>
   );
 }

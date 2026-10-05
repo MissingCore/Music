@@ -6,18 +6,18 @@ import {
   PreferenceSetters,
   PreferenceTogglers,
 } from "~/stores/Preference/actions";
-
-import { RadioChipField } from "~/components/Form/Radio";
-import { SwitchInput } from "~/components/Form/Switch";
-import { DetachedSheet } from "~/components/Sheet";
-import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import {
   NowPlayingDesignOptions,
   SeekbarDesignOptions,
 } from "~/stores/Preference/constants";
 
-export function AppearanceSheet(props: { ref: TrueSheetRef }) {
+import { RadioChipField } from "~/components/Form/Radio";
+import { SwitchInput } from "~/components/Form/Switch";
+import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet } from "~/components/next/base/sheet";
+
+export function AppearanceSheet(props: { ref: SheetRef }) {
   const nowPlayingDesign = usePreferenceStore((s) => s.nowPlayingDesign);
   const alternativeInfoLayout = usePreferenceStore(
     (s) => s.alternativeInfoLayout,
@@ -26,7 +26,7 @@ export function AppearanceSheet(props: { ref: TrueSheetRef }) {
   const seekbarDesign = usePreferenceStore((s) => s.seekbarDesign);
 
   return (
-    <DetachedSheet ref={props.ref}>
+    <Sheet ref={props.ref}>
       <SheetLabelAction
         labelKey="feat.nowPlayingDesign.extra.alternativeInfoLayout"
         Trailing={
@@ -67,6 +67,6 @@ export function AppearanceSheet(props: { ref: TrueSheetRef }) {
           />
         ))}
       </RadioChipField>
-    </DetachedSheet>
+    </Sheet>
   );
 }
