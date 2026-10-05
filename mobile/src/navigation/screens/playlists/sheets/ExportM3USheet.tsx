@@ -5,22 +5,24 @@ import { toast } from "@missingcore/ui/toast";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { ExtendedTButton } from "~/components/Form/Button";
-import type { PickerOption } from "~/components/Form/SegmentedPicker";
-import { SegmentedPicker } from "~/components/Form/SegmentedPicker";
-import { DetachedSheet } from "~/components/Sheet";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
+import { Button } from "~/components/next/base/button";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet } from "~/components/next/base/sheet";
+import { TText } from "~/components/next/base/typography";
+import { SegmentedPicker } from "~/components/next/blocks/segmented-picker";
 import { exportPlaylistAsM3U } from "~/modules/backup/M3U";
 
-export function ExportM3USheet(props: { ref: TrueSheetRef; id: string }) {
+type ExportOption = "absolute" | "relative";
+
+export function ExportM3USheet(props: { ref: SheetRef; id: string }) {
   const { t } = useTranslation();
-  const [selectedIdx, setSelectedIdx] = useState(0);
+  const [exportOption, setExportOption] = useState<ExportOption>("absolute");
   const [isExporting, setIsExporting] = useState(false);
 
-  const pickerOptions: PickerOption[] = useMemo(
+  const pickerOptions = useMemo(
     () => [
-      { icon: "conversion-path", label: t("feat.playlist.extra.absolute") },
-      { icon: "graph-1", label: t("feat.playlist.extra.relative") },
+      { label: t("feat.playlist.extra.absolute"), value: "absolute" as const },
+      { label: t("feat.playlist.extra.relative"), value: "relative" as const },
     ],
     [t],
   );
@@ -28,7 +30,7 @@ export function ExportM3USheet(props: { ref: TrueSheetRef; id: string }) {
   const onExport = async () => {
     setIsExporting(true);
     try {
-      await exportPlaylistAsM3U(props.id, selectedIdx === 0);
+      await exportPlaylistAsM3U(props.id, exportOption === "absolute");
       toast.t("feat.backup.extra.exportSuccess");
     } catch (err) {
       toast.error((err as Error).message);
@@ -38,22 +40,30 @@ export function ExportM3USheet(props: { ref: TrueSheetRef; id: string }) {
   };
 
   return (
-    <DetachedSheet
-      ref={props.ref}
-      titleKey="feat.playlist.extra.m3uExport"
-      onCleanup={() => setSelectedIdx(0)}
-    >
+    <Sheet ref={props.ref} onCleanup={() => setExportOption("absolute")}>
+      <Sheet.Header label={t("feat.playlist.extra.m3uExport")} />
+
       <SegmentedPicker
+        type="radio"
         options={pickerOptions}
-        selectedIndex={selectedIdx}
-        onOptionSelected={setSelectedIdx}
+        selected={exportOption}
+        onSelect={setExportOption}
       />
-      <ExtendedTButton
-        textKey="feat.backup.extra.export"
+
+      <Button
         onPress={onExport}
         disabled={isExporting}
+        filled
         className="mt-4 rounded-full"
-      />
-    </DetachedSheet>
+      >
+        <TText
+          textKey="feat.backup.extra.export"
+          numberOfLines={1}
+          bold
+          size="sm"
+          className="shrink"
+        />
+      </Button>
+    </Sheet>
   );
 }

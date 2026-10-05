@@ -109,11 +109,7 @@ export function ArtistsViewOptionsSheet(props: { ref: SheetRef }) {
 
 //#region Folders
 export function FoldersViewOptionsSheet(props: { ref: SheetRef }) {
-  return (
-    <Sheet ref={props.ref}>
-      <SortOptionSetting screen="folder" />
-    </Sheet>
-  );
+  return <SortOptionsSheet ref={props.ref} screen="folder" />;
 }
 //#endregion
 
@@ -131,11 +127,7 @@ export function PlaylistsViewOptionsSheet(props: { ref: SheetRef }) {
 
 //#region Tracks
 export function TracksViewOptionsSheet(props: { ref: SheetRef }) {
-  return (
-    <Sheet ref={props.ref}>
-      <SortOptionSetting screen="track" />
-    </Sheet>
-  );
+  return <SortOptionsSheet ref={props.ref} screen="track" />;
 }
 //#endregion
 
@@ -176,6 +168,17 @@ function ScreenLayoutSetting({ screen }: { screen: MutableViewLayout }) {
 //#endregion
 
 //#region Sort Options
+export function SortOptionsSheet(props: {
+  ref: SheetRef;
+  screen: MutableViewOrder;
+}) {
+  return (
+    <Sheet ref={props.ref}>
+      <SortOptionSetting screen={props.screen} />
+    </Sheet>
+  );
+}
+
 function SortOptionSetting({ screen }: { screen: MutableViewOrder }) {
   const { t } = useTranslation();
   const isAsc = useViewPreferenceStore((s) => s[`${screen}IsAsc`]);

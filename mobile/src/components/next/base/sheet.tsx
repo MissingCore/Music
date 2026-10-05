@@ -27,8 +27,11 @@ export function useSheetRef() {
 //#region Sheet
 interface SheetProps {
   ref?: SheetRef;
+  /** Makes sheet accessible globally using this key. */
   name?: string;
   draggable?: boolean;
+  /** Fires when the sheet is dismissed. */
+  onCleanup?: VoidFunction;
   children: React.ReactNode;
 }
 
@@ -51,6 +54,9 @@ export function Sheet(props: SheetProps) {
       grabber={false}
       cornerRadius={0}
       elevation={0}
+      onDidDismiss={() => {
+        if (props.onCleanup) props.onCleanup();
+      }}
       className="p-4 pt-0"
     >
       <View className="overflow-hidden rounded-xl bg-surfaceBright p-4 pt-0">
