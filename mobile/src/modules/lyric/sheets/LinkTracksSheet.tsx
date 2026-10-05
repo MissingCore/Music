@@ -14,7 +14,7 @@ import { linkTrackToLyric } from "../helpers/linkTrackToLyric";
 export function LinkTracksSheet(props: { ref: SheetRef; lyricId: string }) {
   const { data } = useAllMedia();
   return (
-    <Search.Provider>
+    <Search.Provider shadowColor="surfaceBright">
       <Sheet ref={props.ref} snapTop>
         <Sheet.Header>
           <Search.Input />

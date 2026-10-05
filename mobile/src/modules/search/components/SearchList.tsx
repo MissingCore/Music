@@ -14,23 +14,30 @@ import { cn } from "~/lib/style";
 import type { FlatListProps, ListRenderItemInfo } from "~/components/Base/List";
 import { FlatList } from "~/components/Base/List";
 import { TextInput, useInputRef } from "~/components/Form/Input";
+import { TopDownGradient } from "~/components/Gradient";
 import { IconButton } from "~/components/next/base/button-icon";
 import { Icon } from "~/components/next/base/icon";
+import type { ColorRole } from "~/modules/customization/theme/core/constants";
 
 //#region Provider
 interface SearchStore {
+  shadowColor: ColorRole;
   query: string;
   setQuery: (query: string) => void;
 }
 
 const SearchContext = createContext<StoreApi<SearchStore>>(null as never);
 
-function Provider(props: { children: React.ReactNode }) {
+function Provider(props: {
+  children: React.ReactNode;
+  shadowColor?: ColorRole;
+}) {
   const storeRef = useRef<StoreApi<SearchStore>>(null);
   if (!storeRef.current) {
     storeRef.current = createStore<SearchStore>()((set) => ({
       query: "",
       setQuery: (query: string) => set({ query }),
+      shadowColor: props.shadowColor ?? "surface",
     }));
   }
   return (
@@ -49,32 +56,36 @@ function Input(props: { placeholder?: string; autoFocus?: boolean }) {
   const { t } = useTranslation();
   const query = useSearchStore((s) => s.query);
   const setQuery = useSearchStore((s) => s.setQuery);
+  const shadowColor = useSearchStore((s) => s.shadowColor);
   const inputRef = useInputRef();
 
   return (
-    <View className="flex-row items-center gap-2 rounded-full bg-surfaceContainerLowest">
-      <View className="absolute inset-y-0 left-0 justify-center pl-4">
-        <Icon name="search" />
+    <View className="relative z-10 -mb-6">
+      <View className="flex-row items-center gap-2 rounded-full bg-surfaceContainerLowest">
+        <View className="absolute inset-y-0 left-0 justify-center pl-4">
+          <Icon name="search" />
+        </View>
+        <TextInput
+          ref={inputRef}
+          autoFocus={props.autoFocus}
+          defaultValue={query}
+          onChangeText={setQuery}
+          placeholder={props.placeholder ?? t("feat.search.title")}
+          className="shrink grow pl-12"
+          forSheet
+        />
+        <IconButton
+          icon="close"
+          accessibilityLabel={t("form.clear")}
+          onPress={() => {
+            inputRef.current?.clear();
+            setQuery("");
+          }}
+          disabled={query === ""}
+          className="mr-1 disabled:invisible"
+        />
       </View>
-      <TextInput
-        ref={inputRef}
-        autoFocus={props.autoFocus}
-        defaultValue={query}
-        onChangeText={setQuery}
-        placeholder={props.placeholder ?? t("feat.search.title")}
-        className="shrink grow pl-12"
-        forSheet
-      />
-      <IconButton
-        icon="close"
-        accessibilityLabel={t("form.clear")}
-        onPress={() => {
-          inputRef.current?.clear();
-          setQuery("");
-        }}
-        disabled={query === ""}
-        className="mr-1 disabled:invisible"
-      />
+      <TopDownGradient height={24} color={shadowColor} />
     </View>
   );
 }

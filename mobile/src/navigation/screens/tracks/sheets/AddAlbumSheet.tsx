@@ -16,7 +16,7 @@ export function AddAlbumSheet(props: {
 }) {
   const { data } = useAlbums();
   return (
-    <Search.Provider>
+    <Search.Provider shadowColor="surfaceBright">
       <Sheet ref={props.ref} snapTop>
         <Sheet.Header>
           <Search.Input />
