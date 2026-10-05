@@ -132,7 +132,7 @@ export function Header(props: {
 }) {
   return (
     <View>
-      <View className="mb-4 flex-row items-center gap-2">
+      <View className="mb-6 flex-row items-center gap-2">
         {props.Leading}
         <Marquee
           wrapperClassName={cn(

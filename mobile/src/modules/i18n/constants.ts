@@ -3,7 +3,7 @@
 
 type LanguageItem = {
   code: string;
-  name: string;
+  label: string;
   rtl?: true;
   translators: Array<{ display: string; link: string }>;
 };
@@ -12,7 +12,7 @@ type LanguageItem = {
 export const LANGUAGES = [
   {
     code: "ar",
-    name: "العربية",
+    label: "العربية",
     rtl: true,
     translators: [
       { display: "Tariq Said", link: "https://github.com/tariqsaidofficial" },
@@ -20,7 +20,7 @@ export const LANGUAGES = [
   },
   {
     code: "ca",
-    name: "Català",
+    label: "Català",
     translators: [
       { display: "JPQ", link: "https://www.github.com/T-K-Y-M" },
       { display: "Miquel Roca", link: "https://github.com/MiquelRoca08" },
@@ -32,14 +32,14 @@ export const LANGUAGES = [
   },
   {
     code: "da",
-    name: "Dansk",
+    label: "Dansk",
     translators: [
       { display: "friiskoch", link: "https://github.com/friiskoch" },
     ],
   },
   {
     code: "de",
-    name: "Deutsch",
+    label: "Deutsch",
     translators: [
       { display: "Ladle", link: "https://www.github.com/The-Ladle" },
       { display: "friiskoch", link: "https://github.com/friiskoch" },
@@ -52,12 +52,12 @@ export const LANGUAGES = [
   },
   {
     code: "en",
-    name: "English",
+    label: "English",
     translators: [{ display: "—", link: "https://github.com/cyanChill" }],
   },
   {
     code: "es",
-    name: "Español",
+    label: "Español",
     translators: [
       { display: "G4b-0", link: "https://www.github.com/G4b-0" },
       { display: "JPQ", link: "https://www.github.com/T-K-Y-M" },
@@ -65,7 +65,7 @@ export const LANGUAGES = [
   },
   {
     code: "fa",
-    name: "فارسی",
+    label: "فارسی",
     rtl: true,
     translators: [
       { display: "Sourosh Tahvilian", link: "https://github.com/soorosh-st" },
@@ -74,7 +74,7 @@ export const LANGUAGES = [
   },
   {
     code: "fr",
-    name: "Français",
+    label: "Français",
     translators: [
       { display: "Nino", link: "https://www.github.com/nin7o" },
       {
@@ -87,7 +87,7 @@ export const LANGUAGES = [
   },
   {
     code: "hi",
-    name: "हिंदी",
+    label: "हिंदी",
     translators: [
       { display: "Sourabh Mishra", link: "https://www.github.com/OxSourabh" },
       { display: "Earendel", link: "https://github.com/Earendel-lab" },
@@ -95,7 +95,7 @@ export const LANGUAGES = [
   },
   {
     code: "id",
-    name: "Indonesia",
+    label: "Indonesia",
     translators: [
       {
         display: "Lieba Natur Brilian",
@@ -105,12 +105,12 @@ export const LANGUAGES = [
   },
   {
     code: "it",
-    name: "Italiano",
+    label: "Italiano",
     translators: [{ display: "R1D3R175", link: "https://github.com/R1D3R175" }],
   },
   {
     code: "ja",
-    name: "日本語",
+    label: "日本語",
     translators: [
       {
         display: "Re*Index. (ot_inc)",
@@ -120,14 +120,14 @@ export const LANGUAGES = [
   },
   {
     code: "pl",
-    name: "Polski",
+    label: "Polski",
     translators: [
       { display: "Krystian Piątek", link: "https://www.github.com/p-krystian" },
     ],
   },
   {
     code: "ru",
-    name: "Русский",
+    label: "Русский",
     translators: [
       { display: "klinoff0", link: "https://www.github.com/klinoff0" },
       {
@@ -146,7 +146,7 @@ export const LANGUAGES = [
   },
   {
     code: "tr",
-    name: "Türkçe",
+    label: "Türkçe",
     translators: [
       { display: "𝗛𝗼𝗹𝗶", link: "https://www.github.com/mikropsoft" },
       {
@@ -157,7 +157,7 @@ export const LANGUAGES = [
   },
   {
     code: "zh-Hans",
-    name: "简体中文",
+    label: "简体中文",
     translators: [
       { display: "yang1206", link: "https://www.github.com/yang1206" },
     ],
