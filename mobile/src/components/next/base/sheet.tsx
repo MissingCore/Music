@@ -69,13 +69,15 @@ export function Sheet(props: SheetProps) {
 function useSheetComponents(children: React.ReactNode) {
   const listRef = useAnimatedRef();
   return useMemo(() => {
-    const nodes: React.JSX.Element[] = Array.isArray(children)
-      ? children
-      : // `flat(1)` is to handle fragments.
-        React.Children.toArray(children).flat(1);
+    const nodes: React.JSX.Element[] = (
+      Array.isArray(children)
+        ? children
+        : // `flat(1)` is to handle fragments.
+          React.Children.toArray(children).flat(1)
+    ).filter((node) => node);
 
-    const header = nodes.find((n) => n.type === Header);
-    const contentNodes = nodes.filter((n) => n.type !== Header);
+    const header = nodes.find((n) => n?.type === Header);
+    const contentNodes = nodes.filter((n) => n?.type !== Header);
 
     //? We assume that if `Sheet.List` is rendered, then
     const list = contentNodes.find((n) => n.type === List);
