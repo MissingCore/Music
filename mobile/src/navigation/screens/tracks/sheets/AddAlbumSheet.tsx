@@ -4,37 +4,41 @@
 import { useAlbums } from "~/data/album/queries";
 import type { AlbumSummary } from "~/data/album/types";
 
-import { DetachedSheet } from "~/components/Sheet";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet } from "~/components/next/base/sheet";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
-import { SearchList } from "~/modules/search/components/SearchList";
+import { Search } from "~/modules/search/components/SearchList";
 import { containSorter } from "~/modules/search/utils";
 
 export function AddAlbumSheet(props: {
-  ref: TrueSheetRef;
+  ref: SheetRef;
   onSelect: (data: AlbumSummary) => void;
 }) {
   const { data } = useAlbums();
   return (
-    <DetachedSheet ref={props.ref} snapTop>
-      <SearchList
-        data={data}
-        keyExtractor={({ id }) => id}
-        onFilterData={(query, data) => containSorter(data, query, "name")}
-        renderItem={({ item }) => (
-          <ImageListItem
-            src={item.artwork}
-            label={item.name}
-            supporting={item.artistName}
-            onPress={() => props.onSelect(item)}
-            spacing="none"
-          />
-        )}
-        nestedScrollEnabled
-        shadowTransitionConfig={{ color: "surfaceBright" }}
-        renderOnQuery
-        contentContainerClassName="gap-1.5 pb-4"
-      />
-    </DetachedSheet>
+    <Search.Provider>
+      <Sheet ref={props.ref} snapTop>
+        <Sheet.Header>
+          <Search.Input />
+        </Sheet.Header>
+        <Search.List
+          CustomList={Sheet.FlatList}
+          data={data}
+          keyExtractor={({ id }) => id}
+          onFilterData={(query, data) => containSorter(data, query, "name")}
+          renderItem={({ item }) => (
+            <ImageListItem
+              src={item.artwork}
+              label={item.name}
+              supporting={item.artistName}
+              onPress={() => props.onSelect(item)}
+              spacing="row"
+            />
+          )}
+          renderOnQuery
+          className="-mb-5.5"
+        />
+      </Sheet>
+    </Search.Provider>
   );
 }

@@ -12,6 +12,8 @@ import { cn } from "~/lib/style";
 import { GestureHandlerRootView } from "~/components/Base/GestureHandlerRootView";
 import type { LegendListProps } from "~/components/Base/LegendList";
 import { LegendList } from "~/components/Base/LegendList";
+import type { FlatListProps } from "~/components/Base/List";
+import { FlatList as NativeFlatList } from "~/components/Base/List";
 import { ScrollView } from "~/components/Base/ScrollView";
 import { Text } from "./typography";
 import { Marquee } from "../blocks/marquee";
@@ -30,6 +32,8 @@ interface SheetProps {
   /** Makes sheet accessible globally using this key. */
   name?: string;
   draggable?: boolean;
+  /** Render sheet at its max height. */
+  snapTop?: boolean;
   /** Fires when the sheet is dismissed. */
   onCleanup?: VoidFunction;
   children: React.ReactNode;
@@ -48,7 +52,7 @@ function Sheet(props: SheetProps) {
     <WrappedSheet
       ref={props.ref}
       name={props.name}
-      detents={["auto"]}
+      detents={[props.snapTop ? 1 : "auto"]}
       scrollableRef={scrollableRef}
       scrollableOptions={{ contentInsetAdjustment: "never" }}
       draggable={props.draggable}
@@ -68,11 +72,22 @@ function Sheet(props: SheetProps) {
             <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-surfaceContainerHigh" />
             {header}
           </View>
-          <View style={{ maxHeight }}>{children}</View>
+          <View
+            style={{ maxHeight, height: props.snapTop ? maxHeight : undefined }}
+          >
+            {children}
+          </View>
         </GestureHandlerRootView>
       </View>
     </WrappedSheet>
   );
+}
+
+function isListNode<TComponent extends React.FC<any>>(
+  node: React.JSX.Element | null | undefined,
+  component: TComponent,
+) {
+  return node?.type === component || node?.props?.CustomList === component;
 }
 
 function useSheetComponents(children: React.ReactNode) {
@@ -89,7 +104,9 @@ function useSheetComponents(children: React.ReactNode) {
     const contentNodes = nodes.filter((n) => n?.type !== Header);
 
     //? We assume that if `Sheet.List` is rendered, then
-    const list = contentNodes.find((n) => n.type === List);
+    const list = contentNodes.find(
+      (n) => isListNode(n, List) || isListNode(n, FlatList),
+    );
     if (list) {
       const scrollableRef = list.props.ref ?? listRef;
       const children =
@@ -127,7 +144,7 @@ function useScrollableMaxHeight() {
   return useMemo(
     () => ({
       maxHeight:
-        Math.min(height, MAX_SHEET_HEIGHT) - top - bottom - headerHeight - 64,
+        Math.min(height, MAX_SHEET_HEIGHT) - top - bottom - headerHeight,
       setHeaderHeight,
     }),
     [height, top, bottom, headerHeight],
@@ -142,26 +159,28 @@ function useScrollableMaxHeight() {
  * Should be rendered as a direct child of `Sheet`.
  */
 function Header(props: {
-  label: string;
+  label?: string;
   children?: React.ReactNode;
   Leading?: React.ReactNode;
   Trailing?: React.ReactNode;
 }) {
   return (
     <View>
-      <View className="mb-6 flex-row items-center gap-2">
-        {props.Leading}
-        <Marquee
-          wrapperClassName={cn(
-            Boolean(props.Leading && props.Trailing) && "items-center",
-          )}
-        >
-          <Text bold size="lg">
-            {props.label}
-          </Text>
-        </Marquee>
-        {props.Trailing}
-      </View>
+      {props.label || props.Leading || props.Trailing ? (
+        <View className="mb-6 flex-row items-center gap-2">
+          {props.Leading}
+          <Marquee
+            wrapperClassName={cn(
+              Boolean(props.Leading && props.Trailing) && "items-center",
+            )}
+          >
+            <Text bold size="lg">
+              {props.label}
+            </Text>
+          </Marquee>
+          {props.Trailing}
+        </View>
+      ) : null}
       {props.children}
     </View>
   );
@@ -184,11 +203,28 @@ function List<TData>(props: LegendListProps<TData>) {
     />
   );
 }
+
+/**
+ * Displays a list of items in the sheet. If rendered, will be the only
+ * child rendered by the sheet.
+ *
+ * Should be rendered as a direct child of `Sheet`.
+ */
+function FlatList<TData>(props: FlatListProps<TData>) {
+  return (
+    <NativeFlatList
+      {...props}
+      className={cn("-mb-4", props.className)}
+      contentContainerClassName={cn("pb-4", props.contentContainerClassName)}
+    />
+  );
+}
 //#endregion
 
 //#region Exports
 Sheet.Header = Header;
 Sheet.List = List;
+Sheet.FlatList = FlatList;
 
 export { Sheet };
 //#endregion
