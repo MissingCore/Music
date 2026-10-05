@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
-import React, { useMemo } from "react";
-import { View } from "react-native";
+import React, { useMemo, useRef, useState } from "react";
+import { View, useWindowDimensions } from "react-native";
 import { useAnimatedRef } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { withUniwind } from "uniwind";
 
 import { cn } from "~/lib/style";
@@ -19,6 +20,10 @@ const WrappedSheet = withUniwind(TrueSheet);
 
 export type SheetRef = React.RefObject<TrueSheet | null>;
 
+export function useSheetRef() {
+  return useRef<TrueSheet>(null);
+}
+
 //#region Sheet
 interface SheetProps {
   ref?: SheetRef;
@@ -32,12 +37,15 @@ export function Sheet(props: SheetProps) {
   const { header, scrollableRef, children } = useSheetComponents(
     props.children,
   );
+  const { maxHeight, setHeaderHeight } = useScrollableMaxHeight();
+
   return (
     <WrappedSheet
       ref={props.ref}
       name={props.name}
       detents={["auto"]}
       scrollableRef={scrollableRef}
+      scrollableOptions={{ contentInsetAdjustment: "never" }}
       draggable={props.draggable}
       backgroundColor="transparent"
       grabber={false}
@@ -45,15 +53,15 @@ export function Sheet(props: SheetProps) {
       elevation={0}
       className="p-4 pt-0"
     >
-      <GestureHandlerRootView className="grow">
-        <View className="overflow-hidden rounded-xl bg-surface p-4 pt-0">
-          <View>
+      <View className="overflow-hidden rounded-xl bg-surfaceBright p-4 pt-0">
+        <GestureHandlerRootView className="grow">
+          <View onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}>
             <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-surfaceContainerHigh" />
             {header}
           </View>
-          {children}
-        </View>
-      </GestureHandlerRootView>
+          <View style={{ maxHeight }}>{children}</View>
+        </GestureHandlerRootView>
+      </View>
     </WrappedSheet>
   );
 }
@@ -96,6 +104,23 @@ function useSheetComponents(children: React.ReactNode) {
     }
   }, [children, listRef]);
 }
+
+/**
+ * Identifoes the max height of the inner scrollable since it's auto-height
+ * gets really funky when we render other components adjacent to it.
+ */
+function useScrollableMaxHeight() {
+  const { height } = useWindowDimensions();
+  const { top, bottom } = useSafeAreaInsets();
+  const [headerHeight, setHeaderHeight] = useState(0);
+  return useMemo(
+    () => ({
+      maxHeight: height - top - bottom - headerHeight - 64,
+      setHeaderHeight,
+    }),
+    [height, top, bottom, headerHeight],
+  );
+}
 //#endregion
 
 //#region Header
@@ -129,6 +154,12 @@ export function Header(props: {
 //#region List
 /** If rendered, will be the only child rendered by the sheet. */
 export function List<TData>(props: LegendListProps<TData>) {
-  return <LegendList {...props} />;
+  return (
+    <LegendList
+      {...props}
+      className={cn("-mb-4", props.className)}
+      contentContainerClassName={cn("pb-4", props.contentContainerClassName)}
+    />
+  );
 }
 //#endregion
