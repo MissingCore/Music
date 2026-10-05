@@ -5,11 +5,10 @@ import { toast } from "@missingcore/ui/toast";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Button } from "~/components/next/base/button";
 import type { SheetRef } from "~/components/next/base/sheet";
 import { Sheet } from "~/components/next/base/sheet";
-import { TText } from "~/components/next/base/typography";
 import { SegmentedPicker } from "~/components/next/blocks/segmented-picker";
+import { ActionButton } from "~/components/next/composed/button-action";
 import { exportPlaylistAsM3U } from "~/modules/backup/M3U";
 
 type ExportOption = "absolute" | "relative";
@@ -49,21 +48,12 @@ export function ExportM3USheet(props: { ref: SheetRef; id: string }) {
         selected={exportOption}
         onSelect={setExportOption}
       />
-
-      <Button
+      <ActionButton
+        label={t("feat.backup.extra.export")}
         onPress={onExport}
         disabled={isExporting}
-        filled
         className="mt-4 rounded-full"
-      >
-        <TText
-          textKey="feat.backup.extra.export"
-          numberOfLines={1}
-          bold
-          size="sm"
-          className="shrink"
-        />
-      </Button>
+      />
     </Sheet>
   );
 }

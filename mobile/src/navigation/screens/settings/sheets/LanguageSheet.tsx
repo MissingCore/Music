@@ -12,13 +12,13 @@ import {
 
 import { Links, openLink } from "~/lib/web-browser";
 import { ClickwrapCheckbox } from "~/components/Form/Checkbox";
-import { Button } from "~/components/next/base/button";
 import { Icon } from "~/components/next/base/icon";
 import { Ripple } from "~/components/next/base/ripple";
 import type { SheetRef } from "~/components/next/base/sheet";
 import { Sheet, useSheetRef } from "~/components/next/base/sheet";
 import { Text, TText } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";
+import { ActionButton } from "~/components/next/composed/button-action";
 import { RadioSheet } from "~/components/next/composed/sheet-radio";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
@@ -61,20 +61,12 @@ export function LanguageSheet(props: { ref: SheetRef }) {
           />
         ) : null}
 
-        <Button
+        <ActionButton
+          label={t("feat.language.extra.contribute")}
           onPress={() => openLink(Links.Translations)}
-          filled
-          className="gap-2 rounded-full"
-        >
-          <TText
-            textKey="feat.language.extra.contribute"
-            numberOfLines={1}
-            bold
-            size="sm"
-            className="shrink"
-          />
-          <Icon name="open-in-new" size={20} />
-        </Button>
+          trailingIcon="open-in-new"
+          className="rounded-full"
+        />
       </Sheet>
 
       <RadioSheet
