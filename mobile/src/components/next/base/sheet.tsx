@@ -52,7 +52,7 @@ function Sheet(props: SheetProps) {
     <WrappedSheet
       ref={props.ref}
       name={props.name}
-      detents={[props.snapTop ? 1 : "auto"]}
+      detents={["auto"]}
       scrollableRef={scrollableRef}
       scrollableOptions={{ contentInsetAdjustment: "never" }}
       draggable={props.draggable}
@@ -144,7 +144,7 @@ function useScrollableMaxHeight() {
   return useMemo(
     () => ({
       maxHeight:
-        Math.min(height, MAX_SHEET_HEIGHT) - top - bottom - headerHeight,
+        Math.min(height, MAX_SHEET_HEIGHT) - top - bottom - headerHeight - 32,
       setHeaderHeight,
     }),
     [height, top, bottom, headerHeight],
