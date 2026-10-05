@@ -3,7 +3,7 @@
 
 import { Button } from "../base/button";
 import type { SheetRef } from "../base/sheet";
-import { Sheet, List } from "../base/sheet";
+import { Sheet } from "../base/sheet";
 import { Text } from "../base/typography";
 
 interface RadioSheetProps<TData extends { label: string }> {
@@ -18,7 +18,7 @@ export function RadioSheet<TData extends { label: string }>(
 ) {
   return (
     <Sheet ref={props.ref}>
-      <List
+      <Sheet.List
         estimatedItemSize={54} // 48px Height + 6px Margin Bottom
         data={props.data}
         keyExtractor={(item) => item.label}

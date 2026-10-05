@@ -16,7 +16,7 @@ import { Button } from "~/components/next/base/button";
 import { Icon } from "~/components/next/base/icon";
 import { Ripple } from "~/components/next/base/ripple";
 import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet, Header, useSheetRef } from "~/components/next/base/sheet";
+import { Sheet, useSheetRef } from "~/components/next/base/sheet";
 import { Text, TText } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";
 import { RadioSheet } from "~/components/next/composed/sheet-radio";
@@ -36,7 +36,7 @@ export function LanguageSheet(props: { ref: SheetRef }) {
   return (
     <>
       <Sheet ref={props.ref}>
-        <Header label={t("feat.language.title")} />
+        <Sheet.Header label={t("feat.language.title")} />
 
         <Ripple
           onPress={() => languageSelectionSheetRef.current?.present()}

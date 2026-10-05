@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useSessionStore } from "~/stores/Session/store";
 import { navigateToArtist } from "~/stores/Session/actions";
 
-import { Sheet, List } from "~/components/next/base/sheet";
+import { Sheet } from "~/components/next/base/sheet";
 import { createTextPlaceholder } from "~/components/next/blocks/media-image";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
 
@@ -20,7 +20,7 @@ export function ArtistsSheet() {
   if (!artistsInfo || artistsInfo.artists.length === 0) return null;
   return (
     <Sheet name={GLOBAL_SHEET_KEY}>
-      <List
+      <Sheet.List
         estimatedItemSize={62} // 56px Height + 6px Margin Bottom
         data={artistsInfo.artists}
         keyExtractor={({ name }) => name}

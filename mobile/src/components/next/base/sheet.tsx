@@ -35,8 +35,10 @@ interface SheetProps {
   children: React.ReactNode;
 }
 
+const MAX_SHEET_HEIGHT = 640;
+
 /** Child nodes will automatically be wrapped with a `ScrollView`. */
-export function Sheet(props: SheetProps) {
+function Sheet(props: SheetProps) {
   const { header, scrollableRef, children } = useSheetComponents(
     props.children,
   );
@@ -50,6 +52,7 @@ export function Sheet(props: SheetProps) {
       scrollableRef={scrollableRef}
       scrollableOptions={{ contentInsetAdjustment: "never" }}
       draggable={props.draggable}
+      maxContentHeight={MAX_SHEET_HEIGHT}
       backgroundColor="transparent"
       grabber={false}
       cornerRadius={0}
@@ -123,7 +126,8 @@ function useScrollableMaxHeight() {
   const [headerHeight, setHeaderHeight] = useState(0);
   return useMemo(
     () => ({
-      maxHeight: height - top - bottom - headerHeight - 64,
+      maxHeight:
+        Math.min(height, MAX_SHEET_HEIGHT) - top - bottom - headerHeight - 64,
       setHeaderHeight,
     }),
     [height, top, bottom, headerHeight],
@@ -132,7 +136,12 @@ function useScrollableMaxHeight() {
 //#endregion
 
 //#region Header
-export function Header(props: {
+/**
+ * Non-scrolling content we want appearing at the top of the sheet.
+ *
+ * Should be rendered as a direct child of `Sheet`.
+ */
+function Header(props: {
   label: string;
   children?: React.ReactNode;
   Leading?: React.ReactNode;
@@ -160,8 +169,13 @@ export function Header(props: {
 //#endregion
 
 //#region List
-/** If rendered, will be the only child rendered by the sheet. */
-export function List<TData>(props: LegendListProps<TData>) {
+/**
+ * Displays a list of items in the sheet. If rendered, will be the only
+ * child rendered by the sheet.
+ *
+ * Should be rendered as a direct child of `Sheet`.
+ */
+function List<TData>(props: LegendListProps<TData>) {
   return (
     <LegendList
       {...props}
@@ -170,4 +184,11 @@ export function List<TData>(props: LegendListProps<TData>) {
     />
   );
 }
+//#endregion
+
+//#region Exports
+Sheet.Header = Header;
+Sheet.List = List;
+
+export { Sheet };
 //#endregion
