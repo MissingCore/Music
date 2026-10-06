@@ -32,7 +32,7 @@ import type {
 
 type SearchTab = SearchCategories[number] | "all";
 
-type SearchResultsListProps<TScope extends SearchCategories> = {
+type SearchEngineListProps<TScope extends SearchCategories> = {
   searchScope: TScope;
   callbacks: Pick<SearchCallbacks, TScope[number]>;
   forSheets?: boolean;
@@ -47,7 +47,7 @@ type SearchResultsListProps<TScope extends SearchCategories> = {
 export function SearchEngineList<TScope extends SearchCategories>({
   CustomList = LegendList,
   ...props
-}: SearchResultsListProps<TScope>) {
+}: SearchEngineListProps<TScope>) {
   const listLayout = useListLayoutConfig();
   const query = useSearchStore((s) => s.query);
   const shadowColor = useSearchStore((s) => s.shadowColor);
