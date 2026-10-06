@@ -41,13 +41,13 @@ import type {
 } from "~/components/Base/LegendList";
 import { LegendList } from "~/components/Base/LegendList";
 import { TopDownGradient } from "~/components/Gradient";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { IconButton } from "~/components/next/base/button-icon";
 import {
   ScrollContextProvider,
   useScrollContext,
 } from "~/components/next/base/scroll-context";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { useSheetRef } from "~/components/next/base/sheet";
 import { TText } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";
 import { Scrollbar } from "~/components/next/blocks/scrollbar";
@@ -182,7 +182,7 @@ const SHADOW_HEIGHT = 16;
 
 export function Header(props: {
   titleKey: ParseKeys;
-  OptionsSheet: (props: { ref: TrueSheetRef }) => React.JSX.Element;
+  OptionsSheet: (props: { ref: SheetRef }) => React.JSX.Element;
   /** Additional "actions" which will appear before the "Screen Options" button. */
   Actions?: React.ReactNode;
   /** Component rendered after the header but before the shadow. */

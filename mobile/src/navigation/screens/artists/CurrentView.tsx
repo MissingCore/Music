@@ -16,7 +16,7 @@ import { SortOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 
 import { FlatList } from "~/components/Base/List";
-import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import { useSheetRef } from "~/components/next/base/sheet";
 import { TText } from "~/components/next/base/typography";
 import { ImageCard } from "~/components/next/composed/image-card";
 import { TrackItem } from "~/components/next/composed/track-item";

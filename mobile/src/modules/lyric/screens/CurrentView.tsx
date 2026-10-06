@@ -23,12 +23,12 @@ import { queryClient } from "~/lib/react-query";
 import { Divider } from "~/components/Divider";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { SegmentedList } from "~/components/List/Segmented";
-import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import {
   Em,
   StyledText,
   TStyledText,
 } from "~/components/Typography/StyledText";
+import { useSheetRef } from "~/components/next/base/sheet";
 import { LinkTracksSheet } from "../sheets/LinkTracksSheet";
 
 type Props = StaticScreenProps<{ id: string }>;

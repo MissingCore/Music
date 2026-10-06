@@ -18,8 +18,8 @@ import { mutateGuard } from "~/lib/react-query";
 import { Switch } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
 import { ConfirmableAction } from "~/components/Modal";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { useSheetRef } from "~/components/next/base/sheet";
 
 export default function ScanningSettings() {
   const { t } = useTranslation();
@@ -110,10 +110,10 @@ export function MediaStoreScannerSetting() {
 
 //#region Scanning Configurations
 type ScanningSheetRefs = {
-  allowListSheetRef: TrueSheetRef;
-  blockListSheetRef: TrueSheetRef;
-  minDurationSheetRef: TrueSheetRef;
-  separatorsSheetRef: TrueSheetRef;
+  allowListSheetRef: SheetRef;
+  blockListSheetRef: SheetRef;
+  minDurationSheetRef: SheetRef;
+  separatorsSheetRef: SheetRef;
 };
 
 export const ScanningConfigurations = {

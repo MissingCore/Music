@@ -18,7 +18,7 @@ import { Links, openLink } from "~/lib/web-browser";
 import { Divider } from "~/components/Divider";
 import { Switch } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
-import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import { useSheetRef } from "~/components/next/base/sheet";
 
 export default function Settings() {
   const { t } = useTranslation();
