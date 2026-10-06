@@ -9,9 +9,10 @@ import { View } from "react-native";
 
 import { PlaybackControls } from "~/stores/Playback/actions";
 
-import { AccentText } from "~/components/Typography/AccentText";
+import { TText } from "~/components/next/base/typography";
 import { ReservedPlaylists } from "~/modules/media/constants";
-import { SearchEngine } from "../components/SearchEngine";
+import { Search as SearchBuilder } from "../components/SearchList";
+import { SearchEngineList } from "../components/SearchEngine";
 import type { SearchCallbacks } from "../types";
 
 /** List of media we want to appear in the search. */
@@ -55,12 +56,20 @@ export default function Search() {
 
   return (
     <View className="shrink grow gap-6 px-4 pt-2">
-      <AccentText>{t("feat.search.title")}</AccentText>
-      <SearchEngine
-        searchScope={searchScope}
-        callbacks={searchCallbacks}
-        withTrackActions
-      />
+      <TText textKey="feat.search.title" accent className="leading-tight!" />
+      <View className="shrink grow">
+        <SearchBuilder.Provider>
+          <SearchBuilder.Input
+            placeholder={t("feat.search.extra.searchMedia")}
+            autoFocus
+          />
+          <SearchEngineList
+            searchScope={searchScope}
+            callbacks={searchCallbacks}
+            withTrackActions
+          />
+        </SearchBuilder.Provider>
+      </View>
     </View>
   );
 }
