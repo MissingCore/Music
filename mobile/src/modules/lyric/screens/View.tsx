@@ -50,6 +50,7 @@ export default function Lyrics({
         <View className="shrink grow px-4 pt-4">
           <Search.Input />
           <Search.List
+            estimatedItemSize={73} // ~73px Min Height + 3px Top Margin
             data={data}
             keyExtractor={({ id }) => id}
             onFilterData={(query, data) => containSorter(data, query, "name")}

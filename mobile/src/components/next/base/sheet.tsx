@@ -13,8 +13,6 @@ import { cn } from "~/lib/style";
 import { GestureHandlerRootView } from "~/components/Base/GestureHandlerRootView";
 import type { LegendListProps } from "~/components/Base/LegendList";
 import { LegendList } from "~/components/Base/LegendList";
-import type { FlatListProps } from "~/components/Base/List";
-import { FlatList as NativeFlatList } from "~/components/Base/List";
 import { ScrollView } from "~/components/Base/ScrollView";
 import { Text } from "./typography";
 import { Marquee } from "../blocks/marquee";
@@ -88,13 +86,6 @@ function Sheet(props: SheetProps) {
   );
 }
 
-function isListNode<TComponent extends React.FC<any>>(
-  node: React.JSX.Element | null | undefined,
-  component: TComponent,
-) {
-  return node?.type === component || node?.props?.CustomList === component;
-}
-
 function useSheetComponents(children: React.ReactNode) {
   const listRef = useAnimatedRef();
   return useMemo(() => {
@@ -111,9 +102,9 @@ function useSheetComponents(children: React.ReactNode) {
       (n) => n?.type !== Header && n?.type !== Footer,
     );
 
-    //? We assume that if `Sheet.List` is rendered, then
+    //? We assume that if `Sheet.List` is rendered, then no other content is rendered.
     const list = contentNodes.find(
-      (n) => isListNode(n, List) || isListNode(n, FlatList),
+      (n) => n?.type === List || n?.props?.CustomList === List,
     );
     if (list) {
       const scrollableRef = list.props.ref ?? listRef;
@@ -230,28 +221,11 @@ function List<TData>(props: LegendListProps<TData>) {
     />
   );
 }
-
-/**
- * Displays a list of items in the sheet. If rendered, will be the only
- * child rendered by the sheet.
- *
- * Should be rendered as a direct child of `Sheet`.
- */
-function FlatList<TData>(props: FlatListProps<TData>) {
-  return (
-    <NativeFlatList
-      {...props}
-      className={cn("-mb-4", props.className)}
-      contentContainerClassName={cn("pb-4", props.contentContainerClassName)}
-    />
-  );
-}
 //#endregion
 
 //#region Exports
 Sheet.Header = Header;
 Sheet.List = List;
-Sheet.FlatList = FlatList;
 Sheet.Footer = Footer;
 
 export { Sheet };

@@ -11,8 +11,11 @@ import { createStore, useStore } from "zustand";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { cn } from "~/lib/style";
-import type { FlatListProps, ListRenderItemInfo } from "~/components/Base/List";
-import { FlatList } from "~/components/Base/List";
+import type {
+  LegendListProps,
+  ListRenderItemInfo,
+} from "~/components/Base/LegendList";
+import { LegendList } from "~/components/Base/LegendList";
 import { TextInput, useInputRef } from "~/components/Form/Input";
 import { TopDownGradient } from "~/components/Gradient";
 import { IconButton } from "~/components/next/base/button-icon";
@@ -93,7 +96,7 @@ function Input(props: { placeholder?: string; autoFocus?: boolean }) {
 
 //#region List
 interface SearchListProps<TData> extends Omit<
-  FlatListProps,
+  LegendListProps,
   "data" | "keyExtractor" | "renderItem"
 > {
   data: TData[] | undefined;
@@ -107,7 +110,7 @@ interface SearchListProps<TData> extends Omit<
   /** If content should be rendered only when a query is specified. */
   renderOnQuery?: boolean;
 
-  CustomList?: typeof FlatList;
+  CustomList?: typeof LegendList;
 }
 
 function List<TData>({
@@ -117,7 +120,7 @@ function List<TData>({
   onFilterData,
   emptyMsgKey,
   renderOnQuery = false,
-  CustomList = FlatList,
+  CustomList = LegendList,
   contentContainerClassName,
   ...props
 }: SearchListProps<TData>) {

@@ -22,7 +22,8 @@ export function AddAlbumSheet(props: {
           <Search.Input />
         </Sheet.Header>
         <Search.List
-          CustomList={Sheet.FlatList}
+          CustomList={Sheet.List}
+          estimatedItemSize={62} // 56px Height + 6px Margin Bottom
           data={data}
           keyExtractor={({ id }) => id}
           onFilterData={(query, data) => containSorter(data, query, "name")}
