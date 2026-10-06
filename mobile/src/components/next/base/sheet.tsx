@@ -3,6 +3,7 @@
 
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import React, { useMemo, useRef, useState } from "react";
+import type { ViewProps } from "react-native";
 import { View, useWindowDimensions } from "react-native";
 import { useAnimatedRef } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -43,10 +44,11 @@ const MAX_SHEET_HEIGHT = 640;
 
 /** Child nodes will automatically be wrapped with a `ScrollView`. */
 function Sheet(props: SheetProps) {
-  const { header, scrollableRef, children } = useSheetComponents(
+  const { header, footer, scrollableRef, children } = useSheetComponents(
     props.children,
   );
-  const { maxHeight, setHeaderHeight } = useScrollableMaxHeight();
+  const { maxHeight, setHeaderHeight, setFooterHeight } =
+    useScrollableMaxHeight();
 
   return (
     <WrappedSheet
@@ -77,6 +79,9 @@ function Sheet(props: SheetProps) {
           >
             {children}
           </View>
+          <View onLayout={(e) => setFooterHeight(e.nativeEvent.layout.height)}>
+            {footer}
+          </View>
         </GestureHandlerRootView>
       </View>
     </WrappedSheet>
@@ -101,7 +106,10 @@ function useSheetComponents(children: React.ReactNode) {
     ).filter((node) => node);
 
     const header = nodes.find((n) => n?.type === Header);
-    const contentNodes = nodes.filter((n) => n?.type !== Header);
+    const footer = nodes.find((n) => n?.type === Footer);
+    const contentNodes = nodes.filter(
+      (n) => n?.type !== Header && n?.type !== Footer,
+    );
 
     //? We assume that if `Sheet.List` is rendered, then
     const list = contentNodes.find(
@@ -113,10 +121,11 @@ function useSheetComponents(children: React.ReactNode) {
         list.props.ref == null
           ? React.cloneElement(list, { ref: listRef })
           : list;
-      return { header, scrollableRef, children };
+      return { header, footer, scrollableRef, children };
     } else {
       return {
         header,
+        footer,
         scrollableRef: listRef,
         children: (
           <ScrollView
@@ -141,13 +150,20 @@ function useScrollableMaxHeight() {
   const { height } = useWindowDimensions();
   const { top, bottom } = useSafeAreaInsets();
   const [headerHeight, setHeaderHeight] = useState(0);
+  const [footerHeight, setFooterHeight] = useState(0);
   return useMemo(
     () => ({
       maxHeight:
-        Math.min(height, MAX_SHEET_HEIGHT) - top - bottom - headerHeight - 32,
+        Math.min(height, MAX_SHEET_HEIGHT) -
+        top -
+        bottom -
+        headerHeight -
+        footerHeight -
+        32,
       setHeaderHeight,
+      setFooterHeight,
     }),
-    [height, top, bottom, headerHeight],
+    [height, top, bottom, headerHeight, footerHeight],
   );
 }
 //#endregion
@@ -184,6 +200,17 @@ function Header(props: {
       {props.children}
     </View>
   );
+}
+//#endregion
+
+//#region Footer
+/**
+ * Non-scrolling content we want appearing at the bottom of the sheet.
+ *
+ * Should be rendered as a direct child of `Sheet`.
+ */
+function Footer({ className, ...props }: Omit<ViewProps, "onLayout">) {
+  return <View {...props} className={cn("pt-4", className)} />;
 }
 //#endregion
 
@@ -225,6 +252,7 @@ function FlatList<TData>(props: FlatListProps<TData>) {
 Sheet.Header = Header;
 Sheet.List = List;
 Sheet.FlatList = FlatList;
+Sheet.Footer = Footer;
 
 export { Sheet };
 //#endregion

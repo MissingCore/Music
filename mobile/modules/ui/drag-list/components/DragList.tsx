@@ -64,6 +64,8 @@ interface DragListProps<TData> extends Pick<
 
   /** Indicates to LegendList when the list should re-render. */
   extraData?: Record<string, any>;
+
+  CustomList?: typeof WrappedAnimatedLegendList;
 }
 
 export function DragList<TData>(props: DragListProps<TData>) {
@@ -87,12 +89,12 @@ function DragListImpl<TData>({
   onDragEnd,
   onReordered,
   extraData: _extraData = {},
+  CustomList = WrappedAnimatedLegendList,
   ...props
 }: DragListProps<TData>) {
-  const enabled = useSharedValue(true);
-
   const dataRef = useRef(data);
   const pan = useDragListStore((s) => s.pan);
+  const panGestureId = useDragListStore((s) => s.panGestureId);
   const shifted = useDragListStore((s) => s.shifted);
   const activeIndex = useDragListStore((s) => s.activeIndex);
   const reactiveActiveIndex = useDragListStore((s) => s.reactiveActiveIndex);
@@ -158,10 +160,8 @@ function DragListImpl<TData>({
       autoScrollAmount.set(0);
       pan.set(0);
       shifted.set(0);
-      enabled.set(true);
     });
   }, [
-    enabled,
     setReactiveActiveIndex,
     autoScrollDirection,
     autoScrollAmount,
@@ -171,11 +171,9 @@ function DragListImpl<TData>({
   ]);
 
   const panListenerGesture = usePanGesture({
-    enabled,
-    onActivate: () => {
-      // Bail out of gesture early.
-      if (activeIndex.get() === INACTIVE) enabled.set(false);
-    },
+    // Wait for an explicit drag start before claiming the gesture.
+    manualActivation: true,
+    onTouchesDown: ({ handlerTag }) => panGestureId.set(handlerTag),
     onUpdate: ({ translationY, y }) => {
       //? Stop auto-scroll when we move (clears the timer which continues the auto-scroll).
       autoScrollDirection.set(0);
@@ -190,15 +188,13 @@ function DragListImpl<TData>({
       autoScrollDirection.set(direction);
     },
     onFinalize: () => {
-      // Ensure we reset the gesture focus.
-      enabled.set(false);
-      if (activeIndex.get() !== INACTIVE) {
-        if (onDragEnd) scheduleOnRN(onDragEnd);
-        const startIndex = activeIndex.get();
-        const endIndex = activeIndex.get() + shifted.get();
-        scheduleOnRN(setIsInReRenderRange, startIndex, endIndex);
-        scheduleOnRN(onReordered, startIndex, endIndex);
-      }
+      panGestureId.set(-1);
+      if (activeIndex.get() === INACTIVE) return;
+      if (onDragEnd) scheduleOnRN(onDragEnd);
+      const startIndex = activeIndex.get();
+      const endIndex = activeIndex.get() + shifted.get();
+      scheduleOnRN(setIsInReRenderRange, startIndex, endIndex);
+      scheduleOnRN(onReordered, startIndex, endIndex);
       scheduleOnRN(onCleanup);
     },
   });
@@ -270,7 +266,7 @@ function DragListImpl<TData>({
 
   return (
     <GestureDetector gesture={gestures}>
-      <WrappedAnimatedLegendList
+      <CustomList
         {...props}
         // @ts-expect-error - Ref is compatible.
         ref={listRef}

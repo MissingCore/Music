@@ -6,45 +6,35 @@ import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
 
 import i18next from "~/modules/i18n";
-import { Icon } from "~/resources/icons";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 
-import { FlatList } from "~/components/Base/List";
-import { Divider } from "~/components/Divider";
-import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
-import { Marquee } from "~/components/Marquee";
-import { DetachedSheet } from "~/components/Sheet";
-import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import { IconButton } from "~/components/next/base/button-icon";
+import { Divider } from "~/components/next/base/divider";
+import { Icon } from "~/components/next/base/icon";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet } from "~/components/next/base/sheet";
+import { Text, TText } from "~/components/next/base/typography";
+import { Marquee } from "~/components/next/blocks/marquee";
 import { useInputForm } from "~/modules/form/useInputForm";
 
-export function SeparatorsSheet(props: { ref: TrueSheetRef }) {
+export function SeparatorsSheet(props: { ref: SheetRef }) {
   const { t } = useTranslation();
   const delimiters = usePreferenceStore((s) => s.separators);
-  const sheetListHandlers = useEnableSheetScroll();
-
   return (
-    <DetachedSheet
-      ref={props.ref}
-      titleKey="feat.separators.title"
-      snapTop
-      contentContainerClassName="pb-4"
-    >
-      <TStyledText
-        textKey="feat.separators.description.line1"
-        dim
-        className="text-sm"
-      />
-      <SeparatorForm />
-      <FlatList
+    <Sheet ref={props.ref} snapTop>
+      <Sheet.Header label={t("feat.separators.title")}>
+        <TText textKey="feat.separators.description.line1" muted size="sm" />
+        <SeparatorForm />
+      </Sheet.Header>
+      <Sheet.List
+        estimatedItemSize={46} // 40px Height + 6px Margin Bottom
         data={delimiters}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <View className="flex-row items-center justify-between gap-2">
-            <Marquee color="surfaceBright">
-              <StyledText>{item}</StyledText>
+            <Marquee>
+              <Text>{item}</Text>
             </Marquee>
             <IconButton
               icon="close"
@@ -53,21 +43,20 @@ export function SeparatorsSheet(props: { ref: TrueSheetRef }) {
             />
           </View>
         )}
-        {...sheetListHandlers}
-        className="-my-6"
-        contentContainerClassName="gap-2 pt-6 pr-1 pb-4"
+        contentContainerClassName="gap-1.5 pt-4 pr-1"
       />
-
-      <Divider />
-      <View className="flex-row gap-2 pb-2">
-        <Icon name="info" size={16} color="onSurfaceVariant" />
-        <TStyledText
-          textKey="feat.separators.description.line2"
-          dim
-          className="shrink grow"
-        />
-      </View>
-    </DetachedSheet>
+      <Sheet.Footer className="gap-6">
+        <Divider />
+        <View className="flex-row gap-2 pb-2">
+          <Icon name="info" size={16} color="onSurfaceVariant" />
+          <TText
+            textKey="feat.separators.description.line2"
+            muted
+            className="shrink grow"
+          />
+        </View>
+      </Sheet.Footer>
+    </Sheet>
   );
 }
 
@@ -85,7 +74,7 @@ function SeparatorForm() {
   });
 
   return (
-    <View className="flex-row gap-2">
+    <View className="flex-row gap-2 pt-4">
       <TextInput
         editable={!inputForm.isSubmitting}
         value={inputForm.value}
@@ -93,7 +82,7 @@ function SeparatorForm() {
         className="shrink grow border-b border-outline"
         forSheet
       />
-      <FilledIconButton
+      <IconButton
         icon="add"
         accessibilityLabel={t("template.entryAdd", { name: inputForm.value })}
         onPress={async () => {
@@ -101,9 +90,10 @@ function SeparatorForm() {
           await inputForm.onSubmit();
         }}
         disabled={!inputForm.canSubmit || inputForm.isSubmitting}
-        className="rounded-md"
+        intent="primary"
+        filled
         size="md"
-        theme="primary"
+        className="rounded-md"
       />
     </View>
   );
