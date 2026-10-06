@@ -24,15 +24,14 @@ import { shareFile } from "~/lib/file-system";
 import { mutateGuard } from "~/lib/react-query";
 import { Epoch, Seconds } from "~/utils/date";
 import { abbreviateBitRate, abbreviateSize } from "~/utils/number";
-import { Pressable } from "~/components/Base/Pressable";
-import { Divider } from "~/components/Divider";
-import { IconButton } from "~/components/Form/Button/Icon";
-import { Marquee } from "~/components/Marquee";
-import { DetachedSheet } from "~/components/Sheet";
 import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
-import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { StyledText } from "~/components/Typography/StyledText";
+import { IconButton } from "~/components/next/base/button-icon";
+import { Divider } from "~/components/next/base/divider";
+import { Sheet, useSheetRef } from "~/components/next/base/sheet";
+import { Text } from "~/components/next/base/typography";
+import { Marquee } from "~/components/next/blocks/marquee";
 import { MediaImage } from "~/components/next/blocks/media-image";
+import { Pressable } from "~/components/next/primitive/pressable";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
 
@@ -45,7 +44,7 @@ export function TrackSheet() {
 
   return (
     <>
-      <DetachedSheet globalKey={GLOBAL_SHEET_KEY} gap={16}>
+      <Sheet name={GLOBAL_SHEET_KEY}>
         {data !== null ? (
           <>
             <TrackIntro data={data} />
@@ -57,7 +56,7 @@ export function TrackSheet() {
             <QueueActions id={data.id} name={data.name} />
           </>
         ) : null}
-      </DetachedSheet>
+      </Sheet>
       <TrackToPlaylistsSheet key={data?.id} id={data?.id ?? ""} />
       {data !== null ? (
         <TrackArtworkSheet ref={trackArtworkSheetRef} id={data.id} />
@@ -77,26 +76,25 @@ function TrackIntro({ data }: { data: Track }) {
     <View className="flex-row items-end gap-2">
       <MediaImage size={64} src={data.artwork} className="rounded-lg" />
       <View className="shrink py-1">
-        <Marquee color="surfaceBright">
-          <StyledText style={{ fontSize: 18 }} className="leading-tight">
+        <Marquee>
+          <Text style={{ fontSize: 18 }} className="leading-tight">
             {data.name}
-          </StyledText>
+          </Text>
         </Marquee>
         <ArtistsLink
           artists={data.artists}
           beforeNavigation={() => TrueSheet.dismiss(GLOBAL_SHEET_KEY)}
           popStrategy={onNowPlaying ? "popScreen" : undefined}
-          marqueeShadowColor="surfaceBright"
         />
         {data.albumName ? (
-          <Marquee color="surfaceBright">
+          <Marquee>
             <Pressable
               onPress={sheetAction(() => {
                 if (onNowPlaying) navigation.goBack();
                 navigation.navigate("Album", { id: data.albumId! });
               })}
             >
-              <StyledText dim>{data.albumName}</StyledText>
+              <Text muted>{data.albumName}</Text>
             </Pressable>
           </Marquee>
         ) : null}
@@ -110,30 +108,25 @@ function TrackIntro({ data }: { data: Track }) {
 function TrackMetadata({ data }: { data: Track }) {
   return (
     <View className="gap-4 rounded-md bg-surfaceContainerLowest p-4">
-      <Marquee
-        color="surfaceContainerLowest"
-        contentContainerClassName="grow justify-between gap-4"
-      >
-        <StyledText className="text-xxs/tight">
+      <Marquee contentContainerClassName="grow flex-row justify-between gap-4">
+        <Text className="text-xxs/tight">
           {data.bitrate !== null ? abbreviateBitRate(data.bitrate) : "—"}
-        </StyledText>
-        <StyledText className="text-xxs/tight">
+        </Text>
+        <Text className="text-xxs/tight">
           {data.sampleRate !== null ? `${data.sampleRate} Hz` : "—"}
-        </StyledText>
-        <StyledText className="text-xxs/tight">
-          {abbreviateSize(data.size)}
-        </StyledText>
+        </Text>
+        <Text className="text-xxs/tight">{abbreviateSize(data.size)}</Text>
         <View className="flex-row items-center gap-1">
           <Icon name="edit" size={14} />
-          <StyledText className="text-xxs/tight">
+          <Text className="text-xxs/tight">
             {Epoch.toDateAbbreviation(data.modificationTime)}
-          </StyledText>
+          </Text>
         </View>
       </Marquee>
       <Divider />
       <View className="flex-row items-center justify-between gap-4">
-        <Marquee color="surfaceContainerLowest">
-          <StyledText className="text-xxs/tight">{data.uri}</StyledText>
+        <Marquee>
+          <Text className="text-xxs/tight">{data.uri}</Text>
         </Marquee>
         <View className="flex-row gap-2">
           {data.format ? <Badge>{data.format.toUpperCase()}</Badge> : null}
@@ -227,7 +220,7 @@ function Badge(props: { icon?: SupportedIconName; children: string }) {
   return (
     <View className="flex-row items-center gap-1 rounded-[6px] bg-surfaceContainerHigh px-2 py-1">
       {props.icon ? <Icon name={props.icon} size={14} /> : null}
-      <StyledText className="text-xxs/tight">{props.children}</StyledText>
+      <Text className="text-xxs/tight">{props.children}</Text>
     </View>
   );
 }

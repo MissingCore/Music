@@ -3,6 +3,7 @@
 
 import { toast } from "@missingcore/ui/toast";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { usePlaylistsNames } from "~/data/playlist/queries";
 import { TrackMultiSelect, useTrackMultiSelectStore } from "../core/store";
@@ -12,19 +13,17 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
-import { FlatList, getListItemLayout } from "~/components/Base/List";
 import { CheckboxField } from "~/components/Form/Checkbox";
-import { Marquee } from "~/components/Marquee";
-import { DetachedSheet } from "~/components/Sheet";
-import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { StyledText } from "~/components/Typography/StyledText";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet } from "~/components/next/base/sheet";
+import { Text } from "~/components/next/base/typography";
+import { Marquee } from "~/components/next/blocks/marquee";
 
-export function AddToPlaylistsSheet(props: { ref: TrueSheetRef }) {
+export function AddToPlaylistsSheet(props: { ref: SheetRef }) {
+  const { t } = useTranslation();
   const { data: playlistsNames } = usePlaylistsNames();
   const amountSelected = useTrackMultiSelectStore((s) => s.selected.size);
   const [inLists, setInLists] = useState(new Set<string>());
-  const sheetListHandlers = useEnableSheetScroll();
 
   const toggleInPlaylist = useCallback(
     async (playlistName: string, remove = false) => {
@@ -48,35 +47,29 @@ export function AddToPlaylistsSheet(props: { ref: TrueSheetRef }) {
   }, [amountSelected]);
 
   return (
-    <DetachedSheet
-      ref={props.ref}
-      titleKey="feat.modalTrack.extra.addToPlaylist"
-      onCleanup={resolveAddAction}
-      snapTop
-    >
-      <FlatList
+    <Sheet ref={props.ref} onCleanup={resolveAddAction} snapTop>
+      <Sheet.Header label={t("feat.modalTrack.extra.addToPlaylist")} />
+      <Sheet.List
+        estimatedItemSize={52} // 48px Height + 6px Gap
         data={playlistsNames}
         keyExtractor={(name) => name}
+        extraData={inLists}
         renderItem={({ item: name }) => (
           <CheckboxField
             checked={inLists.has(name)}
             onCheck={() => toggleInPlaylist(name, inLists.has(name))}
-            className="mb-2"
           >
-            <Marquee color="surfaceBright">
-              <StyledText>{name}</StyledText>
+            <Marquee>
+              <Text>{name}</Text>
             </Marquee>
           </CheckboxField>
         )}
-        getItemLayout={getListItemLayout}
         ListEmptyComponent={
           <ContentPlaceholder errMsgKey="err.msg.noPlaylists" />
         }
-        {...sheetListHandlers}
-        className="-mb-2"
-        contentContainerClassName="pb-4"
+        contentContainerClassName="gap-1.5"
       />
-    </DetachedSheet>
+    </Sheet>
   );
 }
 

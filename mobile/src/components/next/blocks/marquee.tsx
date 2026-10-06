@@ -22,6 +22,7 @@ import { ScrollView } from "~/components/Base/ScrollView";
 
 interface MarqueeProps {
   children: React.ReactNode;
+  center?: boolean;
   /** Applies to the outer most `<View />`. */
   wrapperClassName?: string;
   /** Applies to the `<View />` wrapping `children`. */
@@ -82,13 +83,15 @@ export function Marquee(props: MarqueeProps) {
       //? Our prior `Marquee` implementation's `onLayout` on the `ScrollView`
       //? only re-fired due to styling on the gradients being re-calculated.
       key={String(recalculateLayout)}
-      pointerEvents="none"
       className={cn("shrink grow", props.wrapperClassName)}
     >
       <ScrollView
         onLayout={(e) => containerWidth.set(e.nativeEvent.layout.width)}
         horizontal
-        contentContainerClassName="items-center"
+        scrollEnabled={false}
+        contentContainerClassName={cn("grow items-center", {
+          "justify-center": props.center,
+        })}
       >
         <Animated.View
           onLayout={(e) => contentWidth.set(e.nativeEvent.layout.width)}
