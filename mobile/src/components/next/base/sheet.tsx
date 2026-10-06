@@ -61,9 +61,7 @@ function Sheet(props: SheetProps) {
       grabber={false}
       cornerRadius={0}
       elevation={0}
-      onDidDismiss={() => {
-        if (props.onCleanup) props.onCleanup();
-      }}
+      onDidDismiss={() => props.onCleanup?.()}
       className="p-4 pt-0"
     >
       <View className="overflow-hidden rounded-xl bg-surfaceBright p-4 pt-0">

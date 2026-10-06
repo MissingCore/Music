@@ -39,7 +39,10 @@ export function LanguageSheet(props: { ref: SheetRef }) {
         <Sheet.Header label={t("feat.language.title")} />
 
         <Ripple
-          onPress={() => languageSelectionSheetRef.current?.present()}
+          onPress={() => {
+            languageSelectionSheetRef.current?.present();
+            props.ref.current?.dismiss();
+          }}
           className="min-h-10 flex-row items-center gap-1 border-b border-outline"
         >
           <Text className="shrink grow pl-1">{selectedLanguage?.label}</Text>
@@ -72,7 +75,10 @@ export function LanguageSheet(props: { ref: SheetRef }) {
       <RadioSheet
         ref={languageSelectionSheetRef}
         data={LANGUAGES}
-        onSelect={(item) => PreferenceSetters.setLanguage(item.code)}
+        onSelect={async (item) => {
+          await props.ref.current?.present();
+          PreferenceSetters.setLanguage(item.code);
+        }}
         isSelected={(item) => languageCode === item.code}
       />
     </>

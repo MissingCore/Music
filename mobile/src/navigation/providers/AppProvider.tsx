@@ -32,20 +32,14 @@ const SafeAreaProvider = withUniwind(RawSafeAreaProvider);
 /** All providers used by the app. */
 export function AppProvider(props: { children: React.ReactNode }) {
   return (
-    <SafeAreaProvider className="bg-surface">
-      <UniwindListeners>
-        <KeyboardProvider>
-          <GestureHandlerRootView>
-            <QueryClientProvider client={queryClient}>
-              <ListenerStateStoreProvider />
-              {props.children}
-              <ToastProvider />
-              <SystemBars />
-            </QueryClientProvider>
-          </GestureHandlerRootView>
-        </KeyboardProvider>
-      </UniwindListeners>
-    </SafeAreaProvider>
+    <MinimumAppProvider>
+      <QueryClientProvider client={queryClient}>
+        <ListenerStateStoreProvider />
+        {props.children}
+        <ToastProvider />
+        <SystemBars />
+      </QueryClientProvider>
+    </MinimumAppProvider>
   );
 }
 
