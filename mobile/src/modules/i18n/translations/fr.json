@@ -158,6 +158,7 @@
         "vinyl": "Vinyle",
         "vinylOld": "Vinyle (édition classique)",
         "none": "Aucun",
+        "immersive": "Immersif",
         "alternativeInfoLayout": "Autre présentation des informations",
         "standardVinylSpeed": "Vitesse standard du vinyle"
       }
@@ -219,6 +220,7 @@
         "top": "Top {{- name}}",
         "timeRange": "Période",
         "allTime": "De tous les temps",
+        "lastDays": "Il y a {{amount}} jours",
         "listeningTime": "Durée d'écoute",
         "totalListeningTime": "Total $t(feat.recap.extra.listeningTime)",
         "totalPlays": "Nombre total de lectures",
