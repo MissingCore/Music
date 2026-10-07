@@ -4,7 +4,14 @@ import type {
 } from "@legendapp/list/react-native";
 import type { AnimatedLegendListProps } from "@legendapp/list/reanimated";
 import { AnimatedLegendList } from "@legendapp/list/reanimated";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   GestureDetector,
   useNativeGesture,
@@ -65,6 +72,7 @@ interface DragListProps<TData> extends Pick<
   /** Indicates to LegendList when the list should re-render. */
   extraData?: Record<string, any>;
 
+  ref?: React.RefObject<any>;
   CustomList?: typeof WrappedAnimatedLegendList;
 }
 
@@ -103,6 +111,7 @@ function DragListImpl<TData>({
   );
 
   const listRef = useAnimatedRef();
+  useImperativeHandle(props.ref, () => listRef.current);
   const listHeight = useSharedValue(-1);
   const scrollPosition = useSharedValue(0);
   const autoScrollDirection = useSharedValue(0);
