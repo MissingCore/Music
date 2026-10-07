@@ -17,7 +17,9 @@ export function RadioSheet<TData extends { label: string }>(
   props: RadioSheetProps<TData>,
 ) {
   return (
-    <Sheet ref={props.ref}>
+    //? ~11 items will have the sheet at its current max height, meaning
+    //? it should be safe to enable the short dismiss threshold.
+    <Sheet ref={props.ref} snapTop={props.data.length > 10}>
       <Sheet.List
         estimatedItemSize={54} // 48px Height + 6px Margin Bottom
         data={props.data}

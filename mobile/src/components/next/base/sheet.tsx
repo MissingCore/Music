@@ -56,6 +56,7 @@ function Sheet(props: SheetProps) {
       detents={["auto"]}
       scrollableRef={scrollableRef}
       scrollableOptions={{ contentInsetAdjustment: "never" }}
+      dismissThreshold={props.snapTop ? "short" : undefined}
       draggable={props.draggable}
       maxContentHeight={MAX_SHEET_HEIGHT}
       backgroundColor="transparent"
