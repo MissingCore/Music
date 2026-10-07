@@ -8,6 +8,7 @@ import React, {
   useLayoutEffect,
   useMemo,
 } from "react";
+import flattenChildren from "react-keyed-flatten-children";
 import { useWindowDimensions, View } from "react-native";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, {
@@ -97,9 +98,7 @@ export function Provider(props: {
 //#region Layout Handler
 function useLayoutComponents(children: React.ReactNode) {
   return useMemo(() => {
-    const nodes = (
-      React.Children.toArray(children) as React.JSX.Element[]
-    ).filter((node) => node);
+    const nodes = flattenChildren(children) as React.JSX.Element[];
 
     const header = nodes.find((n) => n?.type === Header);
     const list = nodes.find((n) => n?.type === List);

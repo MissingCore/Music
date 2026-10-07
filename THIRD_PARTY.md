@@ -37,6 +37,8 @@
 | NDot日本語 | OFL-1.1 | https://x.com/NdotJP_Font |
 | react | MIT | https://github.com/facebook/react |
 | react-i18next | MIT | https://github.com/i18next/react-i18next |
+| react-is | MIT | https://github.com/facebook/react |
+| react-keyed-flatten-children | MIT | https://github.com/grrowl/react-keyed-flatten-children |
 | react-native | MIT | https://github.com/react/react-native |
 | react-native-android-widget | MIT | https://github.com/sAleksovski/react-native-android-widget |
 | react-native-audio-browser | MIT | https://github.com/radio-garden/react-native-audio-browser |

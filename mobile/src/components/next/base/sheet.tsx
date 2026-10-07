@@ -3,6 +3,7 @@
 
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import React, { useMemo, useRef, useState } from "react";
+import flattenChildren from "react-keyed-flatten-children";
 import type { ViewProps } from "react-native";
 import { View, useWindowDimensions } from "react-native";
 import { useAnimatedRef } from "react-native-reanimated";
@@ -87,9 +88,7 @@ function Sheet(props: SheetProps) {
 function useSheetComponents(children: React.ReactNode) {
   const listRef = useAnimatedRef();
   return useMemo(() => {
-    const nodes = (
-      React.Children.toArray(children) as React.JSX.Element[]
-    ).filter((node) => node);
+    const nodes = flattenChildren(children) as React.JSX.Element[];
 
     const header = nodes.find((n) => n?.type === Header);
     const footer = nodes.find((n) => n?.type === Footer);
