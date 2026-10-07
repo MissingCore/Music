@@ -3,7 +3,7 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { useWindowDimensions } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 
 import { queries as q } from "~/data/keyStore";
 import { updateAlbum } from "~/data/album/api";
@@ -22,31 +22,28 @@ import { pickImage } from "~/lib/file-system";
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
 import { isRecord } from "~/utils/validation";
-import { DetachedSheet } from "~/components/Sheet";
 import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet } from "~/components/next/base/sheet";
 import type { MediaImageSrc } from "~/components/next/blocks/media-image";
 import { MediaImage } from "~/components/next/blocks/media-image";
-import type { MediaType } from "~/stores/Playback/types";
 
-type ArtworkSheetProps = { id: string; ref: TrueSheetRef };
+type ArtworkSheetProps = { id: string; ref: SheetRef };
 
 /** Sheet allowing us to change the artwork of an album. */
 export function AlbumArtworkSheet({ id, ref }: ArtworkSheetProps) {
   const { data } = useAlbum(id);
   return (
-    <DetachedSheet ref={ref} contentContainerClassName="items-center">
-      <BaseArtworkSheetContent
-        type="album"
-        imageSource={data?.artwork ?? null}
-        onUpdateArtwork={(altArtwork) => updateAlbum(id, { altArtwork })}
-        onSuccess={async () => {
-          clearAllQueries();
-          await Resynchronize.onActiveTrack({ type: "album", id });
-        }}
-        disabled={data?.altArtwork === null}
-      />
-    </DetachedSheet>
+    <BaseArtworkSheet
+      ref={ref}
+      imageSource={data?.artwork ?? null}
+      onUpdateArtwork={(altArtwork) => updateAlbum(id, { altArtwork })}
+      onSuccess={async () => {
+        clearAllQueries();
+        await Resynchronize.onActiveTrack({ type: "album", id });
+      }}
+      disabled={data?.altArtwork === null}
+    />
   );
 }
 
@@ -55,14 +52,12 @@ export function ArtistArtworkSheet({ id, ref }: ArtworkSheetProps) {
   const qc = useQueryClient();
   const { data } = useArtistDetails(id);
   return (
-    <DetachedSheet ref={ref} contentContainerClassName="items-center">
-      <BaseArtworkSheetContent
-        type="artist"
-        imageSource={data?.imageSource ?? null}
-        onUpdateArtwork={(artwork) => updateArtist(id, { artwork })}
-        onSuccess={() => qc.invalidateQueries({ queryKey: q.artists._def })}
-      />
-    </DetachedSheet>
+    <BaseArtworkSheet
+      ref={ref}
+      imageSource={data?.imageSource ?? null}
+      onUpdateArtwork={(artwork) => updateArtist(id, { artwork })}
+      onSuccess={() => qc.invalidateQueries({ queryKey: q.artists._def })}
+    />
   );
 }
 
@@ -71,14 +66,12 @@ export function GenreArtworkSheet({ id, ref }: ArtworkSheetProps) {
   const qc = useQueryClient();
   const { data } = useGenreDetails(id);
   return (
-    <DetachedSheet ref={ref} contentContainerClassName="items-center">
-      <BaseArtworkSheetContent
-        type="genre"
-        imageSource={data?.imageSource ?? null}
-        onUpdateArtwork={(artwork) => updateGenre(id, { artwork })}
-        onSuccess={() => qc.invalidateQueries({ queryKey: q.genres._def })}
-      />
-    </DetachedSheet>
+    <BaseArtworkSheet
+      ref={ref}
+      imageSource={data?.imageSource ?? null}
+      onUpdateArtwork={(artwork) => updateGenre(id, { artwork })}
+      onSuccess={() => qc.invalidateQueries({ queryKey: q.genres._def })}
+    />
   );
 }
 
@@ -87,18 +80,16 @@ export function PlaylistArtworkSheet({ id, ref }: ArtworkSheetProps) {
   const qc = useQueryClient();
   const { data } = usePlaylist(id);
   return (
-    <DetachedSheet ref={ref} contentContainerClassName="items-center">
-      <BaseArtworkSheetContent
-        type="playlist"
-        imageSource={data?.artwork ?? null}
-        onUpdateArtwork={(artwork) => updatePlaylist(id, { artwork })}
-        onSuccess={() => {
-          qc.resetQueries({ queryKey: q.playlists._def });
-          qc.invalidateQueries({ queryKey: q.tracks._def });
-          qc.invalidateQueries({ queryKey: ["search"] });
-        }}
-      />
-    </DetachedSheet>
+    <BaseArtworkSheet
+      ref={ref}
+      imageSource={data?.artwork ?? null}
+      onUpdateArtwork={(artwork) => updatePlaylist(id, { artwork })}
+      onSuccess={() => {
+        qc.resetQueries({ queryKey: q.playlists._def });
+        qc.invalidateQueries({ queryKey: q.tracks._def });
+        qc.invalidateQueries({ queryKey: ["search"] });
+      }}
+    />
   );
 }
 
@@ -106,24 +97,22 @@ export function PlaylistArtworkSheet({ id, ref }: ArtworkSheetProps) {
 export function TrackArtworkSheet({ id, ref }: ArtworkSheetProps) {
   const { data } = useTrack(id);
   return (
-    <DetachedSheet ref={ref} contentContainerClassName="items-center">
-      <BaseArtworkSheetContent
-        type="track"
-        imageSource={data?.artwork ?? null}
-        onUpdateArtwork={(altArtwork) => updateTrack(id, { altArtwork })}
-        onSuccess={async () => {
-          clearAllQueries();
-          await Resynchronize.onActiveTrack({ type: "track", id });
-        }}
-        disabled={data?.altArtwork === null}
-      />
-    </DetachedSheet>
+    <BaseArtworkSheet
+      ref={ref}
+      imageSource={data?.artwork ?? null}
+      onUpdateArtwork={(altArtwork) => updateTrack(id, { altArtwork })}
+      onSuccess={async () => {
+        clearAllQueries();
+        await Resynchronize.onActiveTrack({ type: "track", id });
+      }}
+      disabled={data?.altArtwork === null}
+    />
   );
 }
 
 /** Reusable sheet for changing the artwork of some media. */
-function BaseArtworkSheetContent(props: {
-  type: MediaType;
+function BaseArtworkSheet(props: {
+  ref: SheetRef;
   imageSource: MediaImageSrc;
   onUpdateArtwork: (artwork: string | null) => Promise<unknown>;
   onSuccess: () => Promise<void> | void;
@@ -151,8 +140,10 @@ function BaseArtworkSheetContent(props: {
   };
 
   return (
-    <>
-      <MediaImage src={props.imageSource} size={imageSize} className="mx-4" />
+    <Sheet ref={props.ref}>
+      <View className="mx-auto px-4">
+        <MediaImage src={props.imageSource} size={imageSize} />
+      </View>
       <SheetButtonGroup
         leftButton={{
           textKey: "feat.artwork.extra.remove",
@@ -170,6 +161,6 @@ function BaseArtworkSheetContent(props: {
           disabled,
         }}
       />
-    </>
+    </Sheet>
   );
 }

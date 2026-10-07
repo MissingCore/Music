@@ -15,20 +15,19 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { cn } from "~/lib/style";
 import { Epoch, Months, Seconds } from "~/utils/date";
-import { LegendList } from "~/components/Base/LegendList";
 import { FlatList } from "~/components/Base/List";
-import { DetachedSheet } from "~/components/Sheet";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { Button } from "~/components/next/base/button";
 import { Card } from "~/components/next/base/card";
 import { Divider } from "~/components/next/base/divider";
 import { Icon } from "~/components/next/base/icon";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { useSheetRef } from "~/components/next/base/sheet";
 import { Text, TText } from "~/components/next/base/typography";
 import type { MediaImageSrc } from "~/components/next/blocks/media-image";
 import { MediaImage } from "~/components/next/blocks/media-image";
 import { SequenceNumber } from "~/components/next/blocks/sequence-number";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
+import { RadioSheet } from "~/components/next/composed/sheet-radio";
 import { RECENT_DAY_RANGE } from "../core/constants";
 import { generateRecapRange } from "../helpers/generateRecapRange";
 import type { RecapResult } from "../helpers/useRecap";
@@ -105,7 +104,11 @@ export default function Recap({
   if (!isReady) return null;
   return (
     <>
-      <TimeRangeSheet ref={timeRangeSheetRef} dispatch={dispatch} />
+      <TimeRangeSheet
+        ref={timeRangeSheetRef}
+        selectedItem={state.rangeLabel}
+        dispatch={dispatch}
+      />
       <ListLayout>
         <Button
           onPress={() => timeRangeSheetRef.current?.present()}
@@ -141,65 +144,35 @@ function RecapContent(props: { startEpoch: number; endEpoch?: number }) {
 
 //#region Time Range Sheet
 function TimeRangeSheet(props: {
-  ref: TrueSheetRef;
+  ref: SheetRef;
+  selectedItem: string;
   dispatch: ActionDispatch<[action: Action]>;
 }) {
   const { t } = useTranslation();
   const recapStartEpoch = useSessionStore((s) => s.recapStartEpoch);
 
   const options = useMemo(
-    () =>
-      generateRecapRange(recapStartEpoch, true).map(({ date, ...rest }) => ({
+    () => [
+      { type: "all-time", label: t("feat.recap.extra.allTime") } as const,
+      {
+        type: "last-7-days",
+        label: t("feat.recap.extra.lastDays", { amount: RECENT_DAY_RANGE }),
+      } as const,
+      ...generateRecapRange(recapStartEpoch, true).map(({ date, ...rest }) => ({
         payload: date,
         ...rest,
       })),
-    [recapStartEpoch],
+    ],
+    [t, recapStartEpoch],
   );
 
   return (
-    <DetachedSheet ref={props.ref} contentContainerClassName="pb-0">
-      <LegendList
-        data={options}
-        keyExtractor={(item) => item.label}
-        renderItem={({ item }) => (
-          <Button
-            onPress={() => {
-              props.dispatch(item);
-              props.ref.current?.dismiss();
-            }}
-            className="rounded-md py-2"
-          >
-            <Text size="lg">{item.label}</Text>
-          </Button>
-        )}
-        ListHeaderComponent={
-          <>
-            <Button
-              onPress={() => {
-                props.dispatch({ type: "all-time" });
-                props.ref.current?.dismiss();
-              }}
-              className="rounded-md py-2"
-            >
-              <TText textKey="feat.recap.extra.allTime" size="lg" />
-            </Button>
-            <Button
-              onPress={() => {
-                props.dispatch({ type: "last-7-days" });
-                props.ref.current?.dismiss();
-              }}
-              className="rounded-md py-2"
-            >
-              <Text size="lg">
-                {t("feat.recap.extra.lastDays", { amount: RECENT_DAY_RANGE })}
-              </Text>
-            </Button>
-          </>
-        }
-        nestedScrollEnabled
-        contentContainerClassName="pb-4"
-      />
-    </DetachedSheet>
+    <RadioSheet
+      ref={props.ref}
+      data={options}
+      onSelect={props.dispatch}
+      isSelected={(item) => props.selectedItem === item.label}
+    />
   );
 }
 //#endregion

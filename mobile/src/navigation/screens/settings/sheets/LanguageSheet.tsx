@@ -1,9 +1,9 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Icon } from "~/resources/icons";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import {
   PreferenceSetters,
@@ -11,27 +11,22 @@ import {
 } from "~/stores/Preference/actions";
 
 import { Links, openLink } from "~/lib/web-browser";
-import { FlatList } from "~/components/Base/List";
-import { Ripple } from "~/components/Base/Pressable";
-import { ExtendedTButton } from "~/components/Form/Button";
 import { ClickwrapCheckbox } from "~/components/Form/Checkbox";
-import { RadioField } from "~/components/Form/Radio";
-import { Marquee } from "~/components/Marquee";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { DetachedSheet } from "~/components/Sheet";
-import {
-  DetachedDimView,
-  useDetachedDimViewContext,
-} from "~/components/Sheet/DetachedDimView";
-import { StyledText, TEm } from "~/components/Typography/StyledText";
+import { Icon } from "~/components/next/base/icon";
+import { Ripple } from "~/components/next/base/ripple";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet, useSheetRef } from "~/components/next/base/sheet";
+import { Text, TText } from "~/components/next/base/typography";
+import { ActionButton } from "~/components/next/blocks/button-action";
+import { Marquee } from "~/components/next/blocks/marquee";
+import { RadioSheet } from "~/components/next/composed/sheet-radio";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
-export function LanguageSheet(props: { ref: TrueSheetRef }) {
+export function LanguageSheet(props: { ref: SheetRef }) {
+  const { t } = useTranslation();
   const languageCode = usePreferenceStore((s) => s.language);
   const forceLTR = usePreferenceStore((s) => s.forceLTR);
   const languageSelectionSheetRef = useSheetRef();
-  const { dimViewHandlers, dimness } = useDetachedDimViewContext();
 
   const selectedLanguage = LANGUAGES.find(({ code }) => code === languageCode);
   const translatorsString = selectedLanguage?.translators
@@ -40,22 +35,25 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
 
   return (
     <>
-      <DetachedSheet ref={props.ref} titleKey="feat.language.title">
+      <Sheet ref={props.ref}>
+        <Sheet.Header label={t("feat.language.title")} />
+
         <Ripple
-          onPress={() => languageSelectionSheetRef.current?.present()}
-          className="min-h-10 flex-row gap-1 rounded-none border-b border-outline"
+          onPress={() => {
+            languageSelectionSheetRef.current?.present();
+            props.ref.current?.dismiss();
+          }}
+          className="min-h-10 flex-row items-center gap-1 border-b border-outline"
         >
-          <StyledText className="shrink grow pl-1">
-            {selectedLanguage?.name}
-          </StyledText>
+          <Text className="shrink grow pl-1">{selectedLanguage?.label}</Text>
           <View className="-rotate-90 rtl:rotate-90">
             <Icon name="keyboard-arrow-down" />
           </View>
         </Ripple>
         <View className="gap-1">
-          <TEm textKey="feat.language.extra.translators" dim />
-          <Marquee color="surfaceBright">
-            <StyledText className="text-xs">{translatorsString}</StyledText>
+          <TText textKey="feat.language.extra.translators" bold muted />
+          <Marquee>
+            <Text size="xs">{translatorsString}</Text>
           </Marquee>
         </View>
         {selectedLanguage?.rtl ? (
@@ -66,40 +64,23 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
           />
         ) : null}
 
-        <ExtendedTButton
-          textKey="feat.language.extra.contribute"
+        <ActionButton
+          label={t("feat.language.extra.contribute")}
           onPress={() => openLink(Links.Translations)}
-          Trailing={<Icon name="open-in-new" size={20} />}
+          trailingIcon="open-in-new"
           className="rounded-full"
         />
+      </Sheet>
 
-        <DetachedDimView dimness={dimness} />
-      </DetachedSheet>
-
-      <DetachedSheet
+      <RadioSheet
         ref={languageSelectionSheetRef}
-        snapTop
-        {...dimViewHandlers}
-      >
-        <FlatList
-          accessibilityRole="radiogroup"
-          data={LANGUAGES}
-          keyExtractor={({ code }) => code}
-          renderItem={({ item }) => (
-            <RadioField
-              selected={languageCode === item.code}
-              onSelect={async () => {
-                await PreferenceSetters.setLanguage(item.code);
-                languageSelectionSheetRef.current?.dismiss();
-              }}
-            >
-              <StyledText>{item.name}</StyledText>
-            </RadioField>
-          )}
-          nestedScrollEnabled
-          contentContainerClassName="gap-2 pb-4"
-        />
-      </DetachedSheet>
+        data={LANGUAGES}
+        onSelect={async (item) => {
+          await props.ref.current?.present();
+          PreferenceSetters.setLanguage(item.code);
+        }}
+        isSelected={(item) => languageCode === item.code}
+      />
     </>
   );
 }

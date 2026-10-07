@@ -12,14 +12,12 @@ import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 
 import { pickDirectory } from "~/lib/file-system";
 import { addTrailingSlash, getSafeUri } from "~/utils/string";
-import { FlatList } from "~/components/Base/List";
-import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
-import { Marquee } from "~/components/Marquee";
-import { DetachedSheet } from "~/components/Sheet";
-import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import { IconButton } from "~/components/next/base/button-icon";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet } from "~/components/next/base/sheet";
+import { Text, TText } from "~/components/next/base/typography";
+import { Marquee } from "~/components/next/blocks/marquee";
 import { useInputForm } from "~/modules/form/useInputForm";
 
 type FilterList = "listAllow" | "listBlock";
@@ -27,31 +25,24 @@ type FilterList = "listAllow" | "listBlock";
 /** Enables us to specify the paths in the allowlist or blocklist. */
 export function ScanFilterListSheet(props: {
   listType: FilterList;
-  ref: TrueSheetRef;
+  ref: SheetRef;
 }) {
   const { t } = useTranslation();
   const listEntries = usePreferenceStore((s) => s[props.listType]);
-  const sheetListHandlers = useEnableSheetScroll();
-
   return (
-    <DetachedSheet
-      ref={props.ref}
-      titleKey={`feat.${props.listType}.title`}
-      snapTop
-    >
-      <TStyledText
-        textKey={`feat.${props.listType}.description`}
-        dim
-        className="text-sm"
-      />
-      <FilterForm listType={props.listType} listEntries={listEntries} />
-      <FlatList
+    <Sheet ref={props.ref} snapTop>
+      <Sheet.Header label={t(`feat.${props.listType}.title`)}>
+        <TText textKey={`feat.${props.listType}.description`} muted size="sm" />
+        <FilterForm listType={props.listType} listEntries={listEntries} />
+      </Sheet.Header>
+      <Sheet.List
+        estimatedItemSize={46} // 40px Height + 6px Margin Bottom
         data={listEntries}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <View className="flex-row items-center justify-between gap-2">
-            <Marquee color="surfaceBright">
-              <StyledText>{item}</StyledText>
+            <Marquee>
+              <Text>{item}</Text>
             </Marquee>
             <IconButton
               icon="close"
@@ -60,11 +51,9 @@ export function ScanFilterListSheet(props: {
             />
           </View>
         )}
-        {...sheetListHandlers}
-        className="-mt-6"
-        contentContainerClassName="gap-2 pt-6 pr-1 pb-4"
+        contentContainerClassName="gap-1.5 pt-4 pr-1"
       />
-    </DetachedSheet>
+    </Sheet>
   );
 }
 
@@ -103,7 +92,7 @@ function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
   };
 
   return (
-    <View className="flex-row gap-2">
+    <View className="flex-row gap-2 pt-4">
       {/* FIXME: Noticed w/ RN 0.79, but having a border seems to contribute to the height when it shouldn't. */}
       <View className="h-12 shrink grow flex-row items-center gap-2 border-b border-outline">
         <TextInput
@@ -122,7 +111,7 @@ function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
           size="md"
         />
       </View>
-      <FilledIconButton
+      <IconButton
         icon="add"
         accessibilityLabel={t("feat.directory.extra.add")}
         onPress={async () => {
@@ -130,9 +119,10 @@ function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
           await inputForm.onSubmit();
         }}
         disabled={!inputForm.canSubmit || inputForm.isSubmitting}
-        className="rounded-md"
+        intent="primary"
+        filled
         size="md"
-        theme="primary"
+        className="rounded-md"
       />
     </View>
   );

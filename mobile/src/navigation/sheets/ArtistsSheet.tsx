@@ -7,8 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useSessionStore } from "~/stores/Session/store";
 import { navigateToArtist } from "~/stores/Session/actions";
 
-import { FlatList } from "~/components/Base/List";
-import { DetachedSheet } from "~/components/Sheet";
+import { Sheet } from "~/components/next/base/sheet";
 import { createTextPlaceholder } from "~/components/next/blocks/media-image";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
 
@@ -20,8 +19,9 @@ export function ArtistsSheet() {
 
   if (!artistsInfo || artistsInfo.artists.length === 0) return null;
   return (
-    <DetachedSheet globalKey={GLOBAL_SHEET_KEY}>
-      <FlatList
+    <Sheet name={GLOBAL_SHEET_KEY}>
+      <Sheet.List
+        estimatedItemSize={62} // 56px Height + 6px Margin Bottom
         data={artistsInfo.artists}
         keyExtractor={({ name }) => name}
         renderItem={({ item: { name, artwork } }) => (
@@ -32,11 +32,11 @@ export function ArtistsSheet() {
               TrueSheet.dismiss(GLOBAL_SHEET_KEY);
               navigateToArtist(navigation, name, artistsInfo.popStrategy);
             }}
-            spacing="none"
+            spacing="row"
           />
         )}
-        contentContainerClassName="gap-1.5"
+        className="-mb-5.5"
       />
-    </DetachedSheet>
+    </Sheet>
   );
 }

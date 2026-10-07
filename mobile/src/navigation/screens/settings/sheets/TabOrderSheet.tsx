@@ -9,36 +9,36 @@ import { View } from "react-native";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { Tabs } from "~/stores/Preference/actions";
+import type { Tab } from "~/stores/Preference/types";
 
 import { cn } from "~/lib/style";
-import { IconButton } from "~/components/Form/Button/Icon";
 import { CheckboxInput } from "~/components/Form/Checkbox";
-import { DetachedSheet } from "~/components/Sheet";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { TStyledText } from "~/components/Typography/StyledText";
-import type { Tab } from "~/stores/Preference/types";
+import { IconButton } from "~/components/next/base/button-icon";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet } from "~/components/next/base/sheet";
+import { TText } from "~/components/next/base/typography";
 
 type RenderItemProps = DragListRenderItemInfo<Tab>;
 
-export function TabOrderSheet(props: { ref: TrueSheetRef }) {
+export function TabOrderSheet(props: { ref: SheetRef }) {
   const data = usePreferenceStore((s) => s.tabsOrder);
   const [draggable, setDraggable] = useState(true);
 
   return (
-    <DetachedSheet ref={props.ref} draggable={draggable}>
+    <Sheet ref={props.ref} draggable={draggable}>
       <DragList
+        CustomList={Sheet.List}
         data={data}
         keyExtractor={(tabKey) => tabKey}
-        estimatedItemSize={64}
+        estimatedItemSize={62}
         renderItem={(args) => <RenderItem {...args} />}
         onDragBegin={() => setDraggable(false)}
         onDragEnd={() => setDraggable(true)}
         onReordered={Tabs.move}
-        style={{ height: 440 }}
-        contentContainerClassName="gap-2"
+        contentContainerClassName="gap-1.5"
         alwaysKeyRenderedItems
       />
-    </DetachedSheet>
+    </Sheet>
   );
 }
 
@@ -85,7 +85,7 @@ const RenderItem = memo(
           })}
           size="md"
         />
-        <TStyledText
+        <TText
           textKey={tabNameKey}
           numberOfLines={1}
           className="shrink grow px-2"

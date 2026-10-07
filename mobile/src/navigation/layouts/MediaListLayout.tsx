@@ -8,6 +8,7 @@ import React, {
   useLayoutEffect,
   useMemo,
 } from "react";
+import flattenChildren from "react-keyed-flatten-children";
 import { useWindowDimensions, View } from "react-native";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, {
@@ -97,13 +98,10 @@ export function Provider(props: {
 //#region Layout Handler
 function useLayoutComponents(children: React.ReactNode) {
   return useMemo(() => {
-    const nodes: React.JSX.Element[] = Array.isArray(children)
-      ? children
-      : // `flat(1)` is to handle fragments.
-        React.Children.toArray(children).flat(1);
+    const nodes = flattenChildren(children) as React.JSX.Element[];
 
-    const header = nodes.find((n) => n.type === Header);
-    const list = nodes.find((n) => n.type === List);
+    const header = nodes.find((n) => n?.type === Header);
+    const list = nodes.find((n) => n?.type === List);
 
     if (!header) throw new Error("`MediaListLayout` is missing the header.");
     if (!list) throw new Error("`MediaListLayout` is missing the list.");

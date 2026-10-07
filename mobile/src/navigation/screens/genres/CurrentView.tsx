@@ -8,10 +8,10 @@ import { useGenreDetails, useGenreTracks } from "~/data/genre/queries";
 
 import * as MediaListLayout from "~/navigation/layouts/MediaListLayout";
 import { GenreArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
-import { SortSheet } from "~/navigation/sheets/SortSheet";
+import { SortOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 
-import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import { useSheetRef } from "~/components/next/base/sheet";
 import { TrackItem } from "~/components/next/composed/track-item";
 
 type Props = StaticScreenProps<{ id: string }>;
@@ -35,7 +35,7 @@ export default function Genre({
   return (
     <>
       <GenreArtworkSheet ref={artworkSheetRef} id={id} />
-      <SortSheet ref={tracksSortOptionsSheetRef} screen="genreTracks" />
+      <SortOptionsSheet ref={tracksSortOptionsSheetRef} screen="genreTracks" />
 
       <MediaListLayout.Provider
         imageSource={genreDetailsQuery.data.imageSource}

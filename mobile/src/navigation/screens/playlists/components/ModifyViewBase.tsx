@@ -21,9 +21,9 @@ import { AddMusicSheet } from "../sheets/AddMusicSheet";
 
 import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { IconButton } from "~/components/next/base/button-icon";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { useSheetRef } from "~/components/next/base/sheet";
 import { TText } from "~/components/next/base/typography";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
 import { ZSchema } from "~/modules/form/utils";
@@ -170,7 +170,7 @@ function PlaylistForm(props: {
 }
 
 //#region Add Tracks Sheet
-function AddTracksSheet(props: { ref: TrueSheetRef }) {
+function AddTracksSheet(props: { ref: SheetRef }) {
   const { t } = useTranslation();
   const { setFields } = useFormState();
 

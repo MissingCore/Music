@@ -3,6 +3,7 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { queries as q } from "~/data/keyStore";
 import { usePlaylistsNames } from "~/data/playlist/queries";
@@ -11,21 +12,19 @@ import { useTrackPlaylists } from "~/data/track/queries";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
-import { FlatList, getListItemLayout } from "~/components/Base/List";
 import { CheckboxField } from "~/components/Form/Checkbox";
-import { Marquee } from "~/components/Marquee";
-import { DetachedSheet } from "~/components/Sheet";
-import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
-import { StyledText } from "~/components/Typography/StyledText";
+import { Sheet } from "~/components/next/base/sheet";
+import { Text } from "~/components/next/base/typography";
+import { Marquee } from "~/components/next/blocks/marquee";
 
 const GLOBAL_SHEET_KEY = "TrackToPlaylistsSheet";
 
 export function TrackToPlaylistsSheet({ id }: { id: string }) {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { data: playlistsNames } = usePlaylistsNames();
   const { data: inList } = useTrackPlaylists(id);
   const [inListSet, setInListSet] = useState(new Set<string>());
-  const sheetListHandlers = useEnableSheetScroll();
 
   const toggleInPlaylist = useCallback(
     async (playlistName: string) => {
@@ -50,13 +49,10 @@ export function TrackToPlaylistsSheet({ id }: { id: string }) {
   }, [queryClient, id]);
 
   return (
-    <DetachedSheet
-      globalKey={GLOBAL_SHEET_KEY}
-      titleKey="feat.modalTrack.extra.addToPlaylist"
-      onCleanup={handleSheetClose}
-      snapTop
-    >
-      <FlatList
+    <Sheet name={GLOBAL_SHEET_KEY} onCleanup={handleSheetClose} snapTop>
+      <Sheet.Header label={t("feat.modalTrack.extra.addToPlaylist")} />
+      <Sheet.List
+        estimatedItemSize={52} // 48px Height + 6px Gap
         data={playlistsNames}
         keyExtractor={(name) => name}
         extraData={inListSet}
@@ -64,21 +60,17 @@ export function TrackToPlaylistsSheet({ id }: { id: string }) {
           <CheckboxField
             checked={inListSet.has(name)}
             onCheck={() => toggleInPlaylist(name)}
-            className="mb-2"
           >
-            <Marquee color="surfaceBright">
-              <StyledText>{name}</StyledText>
+            <Marquee>
+              <Text>{name}</Text>
             </Marquee>
           </CheckboxField>
         )}
-        getItemLayout={getListItemLayout}
         ListEmptyComponent={
           <ContentPlaceholder errMsgKey="err.msg.noPlaylists" />
         }
-        {...sheetListHandlers}
-        className="-mb-2"
-        contentContainerClassName="pb-4"
+        contentContainerClassName="gap-1.5"
       />
-    </DetachedSheet>
+    </Sheet>
   );
 }

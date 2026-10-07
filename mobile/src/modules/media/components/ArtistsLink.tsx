@@ -3,18 +3,17 @@
 
 import { useNavigation } from "@react-navigation/native";
 
+import { getArtistsString } from "~/data/artist/utils";
 import {
   navigateToArtist,
   presentArtistsSheet,
 } from "~/stores/Session/actions";
-import { getArtistsString } from "~/data/artist/utils";
+import type { PopStrategy } from "~/stores/Session/types";
 
 import { cn } from "~/lib/style";
-import { Pressable } from "~/components/Base/Pressable";
-import { Marquee } from "~/components/Marquee";
-import { StyledText } from "~/components/Typography/StyledText";
-import type { ColorRole } from "~/modules/customization/theme/core/constants";
-import type { PopStrategy } from "~/stores/Session/types";
+import { Text } from "~/components/next/base/typography";
+import { Marquee } from "~/components/next/blocks/marquee";
+import { Pressable } from "~/components/next/primitive/pressable";
 
 /** Renders display string for artists, with different onPress actions based on the number of artists. */
 export function ArtistsLink(props: {
@@ -24,7 +23,6 @@ export function ArtistsLink(props: {
   /** Optional screen popping strategy to navigate to the artist screen. */
   popStrategy?: PopStrategy;
   center?: boolean;
-  marqueeShadowColor?: ColorRole;
   className?: string;
 }) {
   const navigation = useNavigation();
@@ -32,7 +30,7 @@ export function ArtistsLink(props: {
   if (props.artists === null || props.artists.length === 0) return null;
   const artists = props.artists as [string, ...string[]];
   return (
-    <Marquee color={props.marqueeShadowColor} center={props.center}>
+    <Marquee center={props.center}>
       <Pressable
         onPress={() => {
           if (props.beforeNavigation) props.beforeNavigation();
@@ -43,9 +41,9 @@ export function ArtistsLink(props: {
           }
         }}
       >
-        <StyledText className={cn("text-xs text-primary", props.className)}>
+        <Text size="xs" className={cn("text-primary", props.className)}>
           {getArtistsString(props.artists)}
-        </StyledText>
+        </Text>
       </Pressable>
     </Marquee>
   );

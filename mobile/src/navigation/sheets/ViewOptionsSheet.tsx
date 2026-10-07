@@ -25,8 +25,8 @@ import type {
   MutableViewOrder,
 } from "~/stores/ViewPreference/types";
 
-import { DetachedSheet } from "~/components/Sheet";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet } from "~/components/next/base/sheet";
 import { TText } from "~/components/next/base/typography";
 import { SegmentedPicker } from "~/components/next/blocks/segmented-picker";
 import type { LabeledSliderProps } from "~/components/next/blocks/slider-labeled";
@@ -40,7 +40,7 @@ const AlbumClassificationMap = {
   albums: "showAlbums",
 } as const;
 
-export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
+export function AlbumsViewOptionsSheet(props: { ref: SheetRef }) {
   const { t } = useTranslation();
   const minAlbumLength = usePreferenceStore((s) => s.minAlbumLength);
   const visibleContentTypes = useSessionStore(
@@ -83,7 +83,7 @@ export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
   );
 
   return (
-    <DetachedSheet ref={props.ref} draggable={!stopDrag}>
+    <Sheet ref={props.ref} draggable={!stopDrag}>
       <ScreenLayoutSetting screen="album" />
       <SegmentedPicker
         type="checkbox"
@@ -96,59 +96,51 @@ export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
       />
       <LabeledSlider initValue={minAlbumLength} {...minAlbumSliderOptions} />
       <SortOptionSetting screen="album" />
-    </DetachedSheet>
+    </Sheet>
   );
 }
 //#endregion
 
 //#region Artists
-export function ArtistsViewOptionsSheet(props: { ref: TrueSheetRef }) {
+export function ArtistsViewOptionsSheet(props: { ref: SheetRef }) {
   return <ViewOptionsSheetTemplate ref={props.ref} screen="artist" />;
 }
 //#endregion
 
 //#region Folders
-export function FoldersViewOptionsSheet(props: { ref: TrueSheetRef }) {
-  return (
-    <DetachedSheet ref={props.ref}>
-      <SortOptionSetting screen="folder" />
-    </DetachedSheet>
-  );
+export function FoldersViewOptionsSheet(props: { ref: SheetRef }) {
+  return <SortOptionsSheet ref={props.ref} screen="folder" />;
 }
 //#endregion
 
 //#region Genres
-export function GenresViewOptionsSheet(props: { ref: TrueSheetRef }) {
+export function GenresViewOptionsSheet(props: { ref: SheetRef }) {
   return <ViewOptionsSheetTemplate ref={props.ref} screen="genre" />;
 }
 //#endregion
 
 //#region Playlists
-export function PlaylistsViewOptionsSheet(props: { ref: TrueSheetRef }) {
+export function PlaylistsViewOptionsSheet(props: { ref: SheetRef }) {
   return <ViewOptionsSheetTemplate ref={props.ref} screen="playlist" />;
 }
 //#endregion
 
 //#region Tracks
-export function TracksViewOptionsSheet(props: { ref: TrueSheetRef }) {
-  return (
-    <DetachedSheet ref={props.ref}>
-      <SortOptionSetting screen="track" />
-    </DetachedSheet>
-  );
+export function TracksViewOptionsSheet(props: { ref: SheetRef }) {
+  return <SortOptionsSheet ref={props.ref} screen="track" />;
 }
 //#endregion
 
 //#region Sheet Template
 function ViewOptionsSheetTemplate(props: {
-  ref: TrueSheetRef;
+  ref: SheetRef;
   screen: MutableViewLayout;
 }) {
   return (
-    <DetachedSheet ref={props.ref}>
+    <Sheet ref={props.ref}>
       <ScreenLayoutSetting screen={props.screen} />
       <SortOptionSetting screen={props.screen} />
-    </DetachedSheet>
+    </Sheet>
   );
 }
 //#endregion
@@ -176,6 +168,17 @@ function ScreenLayoutSetting({ screen }: { screen: MutableViewLayout }) {
 //#endregion
 
 //#region Sort Options
+export function SortOptionsSheet(props: {
+  ref: SheetRef;
+  screen: MutableViewOrder;
+}) {
+  return (
+    <Sheet ref={props.ref}>
+      <SortOptionSetting screen={props.screen} />
+    </Sheet>
+  );
+}
+
 function SortOptionSetting({ screen }: { screen: MutableViewOrder }) {
   const { t } = useTranslation();
   const isAsc = useViewPreferenceStore((s) => s[`${screen}IsAsc`]);
@@ -191,6 +194,7 @@ function SortOptionSetting({ screen }: { screen: MutableViewOrder }) {
       <TText
         textKey="feat.modalViewPreference.extra.sort"
         intent="em"
+        size="sm"
         className="-mb-4"
       />
       <SegmentedPicker

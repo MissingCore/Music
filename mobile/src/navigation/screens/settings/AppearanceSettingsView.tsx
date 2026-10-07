@@ -29,12 +29,12 @@ import { Divider } from "~/components/Divider";
 import { LabeledSlider } from "~/components/Form/Slider.variant";
 import { Switch } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
-import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import {
   StyledText,
   TEm,
   TStyledText,
 } from "~/components/Typography/StyledText";
+import { useSheetRef } from "~/components/next/base/sheet";
 import { getFontDisplayName } from "~/modules/customization/font/utils";
 
 export default function AppearanceSettings() {

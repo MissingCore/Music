@@ -5,21 +5,20 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Icon } from "~/resources/icons";
 import { usePlaylistsNames } from "~/data/playlist/queries";
 import { sanitizePlaylistName } from "~/data/playlist/utils";
 import { addSelectedToCreatedPlaylist } from "../core/actions";
 
-import { cn } from "~/lib/style";
-import { ExtendedTButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
-import { DetachedSheet } from "~/components/Sheet";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { TStyledText } from "~/components/Typography/StyledText";
+import { Icon } from "~/components/next/base/icon";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet } from "~/components/next/base/sheet";
+import { TText } from "~/components/next/base/typography";
+import { ActionButton } from "~/components/next/blocks/button-action";
 import { useInputForm } from "~/modules/form/useInputForm";
 import { FavoritesPlaylistKey } from "../../constants";
 
-export function AddToCreatedPlaylistSheet(props: { ref: TrueSheetRef }) {
+export function AddToCreatedPlaylistSheet(props: { ref: SheetRef }) {
   const { t } = useTranslation();
   const { data: playlistsNames } = usePlaylistsNames();
   const invalidPlaylistNames = useMemo(
@@ -46,10 +45,9 @@ export function AddToCreatedPlaylistSheet(props: { ref: TrueSheetRef }) {
   const constraintColor = !inputForm.canSubmit ? "onSurfaceVariant" : undefined;
 
   return (
-    <DetachedSheet
-      ref={props.ref}
-      titleKey="feat.modalTrack.extra.addToPlaylist"
-    >
+    <Sheet ref={props.ref}>
+      <Sheet.Header label={t("feat.modalTrack.extra.addToPlaylist")} />
+
       <TextInput
         editable={!inputForm.isSubmitting}
         value={inputForm.value}
@@ -58,24 +56,25 @@ export function AddToCreatedPlaylistSheet(props: { ref: TrueSheetRef }) {
         className="shrink grow rounded-sm border border-outline p-2"
         forSheet
       />
-      <View className="-mt-5 shrink flex-row items-center gap-0.5">
+      <View className="-mt-4 shrink flex-row items-center gap-0.5">
         <Icon
           name={inputForm.canSubmit ? "check-circle" : "cancel"}
           size={16}
           color={constraintColor}
         />
-        <TStyledText
+        <TText
           textKey="form.validation.unique"
-          className={cn("text-xs", constraintColor)}
+          size="xs"
+          className={constraintColor}
         />
       </View>
-      <ExtendedTButton
-        textKey="form.create"
+      <ActionButton
+        label={t("form.create")}
         onPress={inputForm.onSubmit}
         disabled={!inputForm.canSubmit || inputForm.isSubmitting}
+        intent="secondary"
         className="rounded-full"
-        theme="secondary"
       />
-    </DetachedSheet>
+    </Sheet>
   );
 }

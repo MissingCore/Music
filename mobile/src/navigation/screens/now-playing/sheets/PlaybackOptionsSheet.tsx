@@ -14,19 +14,16 @@ import { PlaybackDelayConfig } from "~/stores/Preference/utils";
 import { getMediaLinkContext } from "~/navigation/utils/router";
 import { AppearanceSheet } from "./AppearanceSheet";
 
-import { ScrollView } from "~/components/Base/ScrollView";
 import { NumberStepper } from "~/components/Form/NumberStepper";
 import { NothingSlider } from "~/components/Form/Slider.variant";
 import { SegmentedList } from "~/components/List/Segmented";
-import { DetachedSheet } from "~/components/Sheet";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
-import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet, useSheetRef } from "~/components/next/base/sheet";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 
 export function PlaybackOptionsSheet(props: {
-  ref: TrueSheetRef;
+  ref: SheetRef;
   trackId: string;
 }) {
   const navigation = useNavigation();
@@ -36,7 +33,6 @@ export function PlaybackOptionsSheet(props: {
   const playbackDelay = usePreferenceStore((s) => s.playbackDelay);
   const volume = usePlaybackStore((s) => s.volume);
   const appearanceSheetRef = useSheetRef();
-  const sheetListHandlers = useEnableSheetScroll(true);
 
   const navigateToList = useCallback(async () => {
     if (!playingSource) return;
@@ -61,56 +57,47 @@ export function PlaybackOptionsSheet(props: {
     <>
       <AppearanceSheet ref={appearanceSheetRef} />
 
-      <DetachedSheet
-        ref={props.ref}
-        draggable={!stopDrag}
-        contentContainerClassName="pb-0"
-      >
-        <ScrollView
-          {...sheetListHandlers}
-          contentContainerClassName="gap-6 pb-4"
-        >
+      <Sheet ref={props.ref} draggable={!stopDrag}>
+        <SegmentedList.Item
+          labelText="term.playingFrom"
+          supportingText={sourceName || "—"}
+          onPress={navigateToList}
+          disabled={!sourceName}
+          Leading={<PlayingIndicator />}
+          className="py-2 pl-2"
+          _overflow={false}
+        />
+        <NothingSlider
+          initValue={volume}
+          getInteractionStatus={setStopDrag}
+          {...VolumeSliderOptions}
+        />
+
+        <SheetLabelAction
+          labelKey="feat.playback.extra.delay"
+          Trailing={
+            <NumberStepper
+              value={playbackDelay}
+              onChange={PreferenceSetters.updatePlaybackDelayByDelta}
+              {...PlaybackDelayConfig.bound}
+              suffix="s"
+            />
+          }
+        />
+
+        <SegmentedList>
           <SegmentedList.Item
-            labelText="term.playingFrom"
-            supportingText={sourceName || "—"}
-            onPress={navigateToList}
-            disabled={!sourceName}
-            Leading={<PlayingIndicator />}
-            className="py-2 pl-2"
-            _overflow={false}
+            labelText="feat.appearance.title"
+            onPress={presentAppearanceSheet}
+            Leading={<Icon name="format-paint" />}
           />
-          <NothingSlider
-            initValue={volume}
-            getInteractionStatus={setStopDrag}
-            {...VolumeSliderOptions}
+          <SegmentedList.Item
+            labelText="feat.audioEffects.title"
+            onPress={navigateToAudioEffectsScreen}
+            Leading={<Icon name="graphic-eq" />}
           />
-
-          <SheetLabelAction
-            labelKey="feat.playback.extra.delay"
-            Trailing={
-              <NumberStepper
-                value={playbackDelay}
-                onChange={PreferenceSetters.updatePlaybackDelayByDelta}
-                {...PlaybackDelayConfig.bound}
-                suffix="s"
-              />
-            }
-          />
-
-          <SegmentedList>
-            <SegmentedList.Item
-              labelText="feat.appearance.title"
-              onPress={presentAppearanceSheet}
-              Leading={<Icon name="format-paint" />}
-            />
-            <SegmentedList.Item
-              labelText="feat.audioEffects.title"
-              onPress={navigateToAudioEffectsScreen}
-              Leading={<Icon name="graphic-eq" />}
-            />
-          </SegmentedList>
-        </ScrollView>
-      </DetachedSheet>
+        </SegmentedList>
+      </Sheet>
     </>
   );
 }

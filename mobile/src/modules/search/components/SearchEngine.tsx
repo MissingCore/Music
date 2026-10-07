@@ -1,7 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useMemo, useState } from "react";
+import { useImperativeHandle, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -22,8 +22,7 @@ import { TText } from "~/components/next/base/typography";
 import { createTextPlaceholder } from "~/components/next/blocks/media-image";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
 import { TrackAction } from "~/components/next/composed/track-item";
-import type { ColorRole } from "~/modules/customization/theme/core/constants";
-import { SearchBar } from "./SearchBar";
+import { useSearchStore } from "./SearchList";
 import { useSearch } from "../hooks/useSearch";
 import type {
   SearchCallbacks,
@@ -33,43 +32,30 @@ import type {
 
 type SearchTab = SearchCategories[number] | "all";
 
-/** All-in-one search - tracks the query and displays results. */
-export function SearchEngine<TScope extends SearchCategories>(
-  props: SearchResultsListProps<TScope>,
-) {
-  const { t } = useTranslation();
-  const [query, setQuery] = useState("");
-
-  return (
-    <View className="shrink grow">
-      <SearchBar
-        searchPlaceholder={t("feat.search.extra.searchMedia")}
-        setQuery={setQuery}
-        isEmpty={query === ""}
-        autoFocus={!props.forSheets}
-      />
-      <SearchResultsList {...props} query={query} />
-    </View>
-  );
-}
-
-type SearchResultsListProps<TScope extends SearchCategories> = {
+type SearchEngineListProps<TScope extends SearchCategories> = {
   searchScope: TScope;
   callbacks: Pick<SearchCallbacks, TScope[number]>;
-  bgColor?: ColorRole;
   forSheets?: boolean;
   /** If we should render the track actions via the results. */
   withTrackActions?: boolean;
+
+  ref?: React.RefObject<any>;
+  CustomList?: typeof LegendList;
 };
 
-function SearchResultsList<TScope extends SearchCategories>(
-  props: SearchResultsListProps<TScope> & { query: string },
-) {
+/** An extension to the `SearchList` API, which handles searching through all media types. */
+export function SearchEngineList<TScope extends SearchCategories>({
+  CustomList = LegendList,
+  ...props
+}: SearchEngineListProps<TScope>) {
   const listLayout = useListLayoutConfig();
-  const results = useSearch(props.searchScope, props.query);
+  const query = useSearchStore((s) => s.query);
+  const shadowColor = useSearchStore((s) => s.shadowColor);
+  const results = useSearch(props.searchScope, query);
   const [selectedTab, setSelectedTab] = useState<TScope[number] | "all">("all");
   const [filterHeight, setFilterHeight] = useState(52); // Height will be ~52px
   const listRef = useLegendListRef();
+  useImperativeHandle(props.ref, () => listRef.current);
 
   const overrideItemLayout = useMemo(
     () => overrideItemLayoutFactory(listLayout.count),
@@ -79,7 +65,7 @@ function SearchResultsList<TScope extends SearchCategories>(
   // Reset tab if we're on a tab with no results or clear the query.
   if (
     selectedTab !== "all" &&
-    (results?.[selectedTab]?.length === 0 || props.query === "")
+    (results?.[selectedTab]?.length === 0 || query === "")
   ) {
     // Scroll to top of list when we change tabs.
     listRef.current?.scrollToOffset({ offset: 0 });
@@ -110,7 +96,7 @@ function SearchResultsList<TScope extends SearchCategories>(
         onSelectTab={setSelectedTab}
         getHeight={setFilterHeight}
       />
-      <LegendList
+      <CustomList
         ref={listRef}
         numColumns={props.forSheets ? undefined : listLayout.count}
         estimatedItemSize={62} // 56px Height + 6px Margin Bottom
@@ -148,14 +134,15 @@ function SearchResultsList<TScope extends SearchCategories>(
         getItemType={getItemType}
         overrideItemLayout={overrideItemLayout}
         ListEmptyComponent={
-          props.query.length > 0 && data !== undefined ? (
+          query.length > 0 && data !== undefined ? (
             <ContentPlaceholder errMsgKey="err.msg.noResults" />
           ) : undefined
         }
-        nestedScrollEnabled={props.forSheets}
-        className="-mx-0.75 -mb-1.5"
-        contentContainerClassName={cn("pb-4", {
-          "pb-safe-offset-4": !props.forSheets,
+        className={cn("-mx-0.75 -mb-1.5", {
+          "-mb-5.5": props.forSheets,
+        })}
+        contentContainerClassName={cn("pb-safe-offset-4", {
+          "pb-4": props.forSheets,
         })}
         contentContainerStyle={{
           paddingTop: tabsWithData.length > 0 ? filterHeight : 24,
@@ -164,7 +151,7 @@ function SearchResultsList<TScope extends SearchCategories>(
 
       <TopDownGradient
         height={filterHeight}
-        color={props.bgColor}
+        color={shadowColor}
         className="absolute top-0 left-0"
       />
     </View>

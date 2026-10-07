@@ -1,23 +1,28 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { useTranslation } from "react-i18next";
+
 import { useExportBackup, useImportBackup } from "~/modules/backup/JSON";
 
 import { mutateGuard } from "~/lib/react-query";
-import { DetachedSheet } from "~/components/Sheet";
 import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
-import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { TStyledText } from "~/components/Typography/StyledText";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet } from "~/components/next/base/sheet";
+import { TText } from "~/components/next/base/typography";
 
-export function BackupSheet(props: { ref: TrueSheetRef }) {
+export function BackupSheet(props: { ref: SheetRef }) {
+  const { t } = useTranslation();
   const exportBackup = useExportBackup();
   const importBackup = useImportBackup();
 
   const inProgress = exportBackup.isPending || importBackup.isPending;
 
   return (
-    <DetachedSheet ref={props.ref} titleKey="feat.backup.title">
-      <TStyledText textKey="feat.backup.description" dim className="text-sm" />
+    <Sheet ref={props.ref}>
+      <Sheet.Header label={t("feat.backup.title")} />
+
+      <TText textKey="feat.backup.description" muted size="sm" />
       <SheetButtonGroup
         leftButton={{
           textKey: "feat.backup.extra.export",
@@ -30,6 +35,6 @@ export function BackupSheet(props: { ref: TrueSheetRef }) {
           disabled: inProgress,
         }}
       />
-    </DetachedSheet>
+    </Sheet>
   );
 }

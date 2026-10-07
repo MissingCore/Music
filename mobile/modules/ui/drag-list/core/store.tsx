@@ -1,4 +1,5 @@
 import { createContext, use, useRef } from "react";
+import { GestureStateManager } from "react-native-gesture-handler";
 import type { SharedValue } from "react-native-reanimated";
 import { useSharedValue } from "react-native-reanimated";
 import { scheduleOnUI } from "react-native-worklets";
@@ -10,6 +11,8 @@ interface DragListStore {
   estimatedItemSize: number;
 
   activeIndex: SharedValue<number>;
+  /** Id assigned to pan gesture instance. */
+  panGestureId: SharedValue<number>;
   /** How much the dragged item was moved (includes auto-scroll & manual pan amounts). */
   pan: SharedValue<number>;
   /** How many spots we moved the item. */
@@ -33,6 +36,7 @@ export function DragListStoreProvider(props: {
   children: React.ReactNode;
 }) {
   const activeIndex = useSharedValue(INACTIVE);
+  const panGestureId = useSharedValue(-1);
   const pan = useSharedValue(0);
   const shifted = useSharedValue(0);
   const storeRef = useRef<StoreApi<DragListStore>>(null);
@@ -41,6 +45,7 @@ export function DragListStoreProvider(props: {
     storeRef.current = createStore<DragListStore>()((set) => ({
       estimatedItemSize: props.estimatedItemSize,
       activeIndex,
+      panGestureId,
       pan,
       shifted,
 
@@ -50,7 +55,14 @@ export function DragListStoreProvider(props: {
       onInitDrag: (index) => {
         if (props.onDragBegin) props.onDragBegin();
         set({ reactiveActiveIndex: index });
-        scheduleOnUI(() => activeIndex.set(index));
+        scheduleOnUI(() => {
+          activeIndex.set(index);
+          //? Use RNGH's gesture state manager to control gesture lifecycle,
+          //? allowing us to only list to the pan gesture when we initiate
+          //? the drag.
+          const handlerTag = panGestureId.get();
+          if (handlerTag !== -1) GestureStateManager.activate(handlerTag);
+        });
       },
     }));
   }
