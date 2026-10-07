@@ -7,8 +7,8 @@
     "artists": "艺术家",
     "folder": "文件夹",
     "folders": "文件夹",
-    "genre": null,
-    "genres": null,
+    "genre": "流派",
+    "genres": "流派",
     "playlist": "播放列表",
     "playlists": "播放列表",
     "track": "歌曲",
@@ -30,30 +30,30 @@
     "settings": "设置",
     "upcoming": "即将播放",
     "playingFrom": "正在播放来自",
-    "instructions": null,
+    "instructions": "说明",
     "disc": "碟片 {{count}}",
-    "eps": null,
-    "singles": null,
-    "share": null,
-    "expand": null,
-    "minimize": null
+    "eps": "EP",
+    "singles": "单曲",
+    "share": "分享",
+    "expand": "展开",
+    "minimize": "最小化"
   },
   "template": {
-    "entryAdd": null,
+    "entryAdd": "添加 {{- name}}",
     "entryAdded": "已添加 {{- name}}",
     "entryRemove": "移除 {{- name}}",
     "entryRemoved": "已移除 {{- name}}",
-    "entryManage": null,
+    "entryManage": "管理 {{- name}}",
     "entrySeeMore": "查看更多关于 {{- name}} 的信息",
     "notFound": "{{- name}} 不存在",
-    "entryMove": null,
+    "entryMove": "移动 {{- name}}",
     "entryShow": "显示{{- name}}",
-    "entryShowAll": null,
+    "entryShowAll": "显示全部 {{- name}}",
     "entryHide": "隐藏 {{- name}}",
     "entryEnable": "启用{{- name}}",
     "entryDisable": "禁用{{- name}}",
-    "countSelected": null,
-    "noContentFound": null
+    "countSelected": "已选择 {{count}} 项",
+    "noContentFound": "未找到 {{- name}}"
   },
   "plural": {
     "entry_one": "{{count}} 条记录",
@@ -71,10 +71,10 @@
     "unsaved": "可能有未保存的更改。",
     "stay": "留在此处",
     "leave": "离开",
-    "close": null,
-    "create": null,
-    "delete": null,
-    "edit": null,
+    "close": "关闭",
+    "create": "创建",
+    "delete": "删除",
+    "edit": "编辑",
     "clear": "清除",
     "reset": "重置",
     "validation": {
@@ -102,11 +102,11 @@
       "noResults": "未找到结果。",
       "noAlbums": "未找到专辑。",
       "noArtists": "未找到艺术家。",
-      "noGenres": null,
+      "noGenres": "未找到流派。",
       "noPlaylists": "未找到播放列表。",
       "noTracks": "未找到歌曲。",
-      "noHiddenTracks": "未找到隐藏的曲目。",
-      "noLyrics": null
+      "noHiddenTracks": "未找到隐藏的歌曲。",
+      "noLyrics": "未找到歌词。"
     }
   },
   "feat": {
@@ -117,15 +117,15 @@
         "downloadAPK": "下载最新版本的 APK",
         "updateGoogle": "从 Play Store 更新",
         "version": "版本",
-        "checkUpdates": null,
-        "rcNotification": null
+        "checkUpdates": "检查更新",
+        "rcNotification": "预发布通知"
       }
     },
     "appearance": {
       "title": "外观"
     },
     "font": {
-      "title": null,
+      "title": "字体",
       "extra": {
         "accent": "强调字体",
         "primary": "首选字体"
@@ -137,8 +137,8 @@
         "light": "浅色",
         "dark": "深色",
         "system": "跟随系统",
-        "atmosphere": null,
-        "opaqueColors": null
+        "atmosphere": "氛围效果",
+        "opaqueColors": "不透明颜色"
       }
     },
     "tabsOrder": {
@@ -146,30 +146,31 @@
       "brief": "自定义标签的顺序和可见性。",
       "extra": {
         "setHomeTab": "应用启动时打开{{- name}} tab",
-        "showNavbar": null
+        "showNavbar": "显示导航栏"
       }
     },
     "minAlbumLength": {
-      "title": null
+      "title": "最短专辑时长"
     },
     "nowPlayingDesign": {
       "extra": {
         "plain": "普通封面",
         "vinyl": "黑胶唱片",
         "vinylOld": "黑胶唱片(经典)",
-        "none": null,
-        "alternativeInfoLayout": null,
-        "standardVinylSpeed": null
+        "none": "无",
+        "immersive": "沉浸式",
+        "alternativeInfoLayout": "另一种信息布局",
+        "standardVinylSpeed": "标准黑胶转速"
       }
     },
     "seekbar": {
-      "title": null,
+      "title": "进度条",
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
-        "waveform": null,
-        "waveformPurgeCache": null,
-        "waveformPurgeCacheBrief": null,
-        "waveformPurgeCacheToast": null
+        "waveform": "波形图",
+        "waveformPurgeCache": "清除波形缓存",
+        "waveformPurgeCacheBrief": "释放存储空间，重新计算已播放歌曲的波形。",
+        "waveformPurgeCacheToast": "波形缓存已清除。"
       }
     },
     "language": {
@@ -177,7 +178,7 @@
       "extra": {
         "contribute": "协助翻译",
         "useLTR": "使用RTL 语言时使用 LTR 布局，重新启动后生效。",
-        "translators": null
+        "translators": "翻译贡献者"
       }
     },
     "backup": {
@@ -185,9 +186,9 @@
       "description": "通过 `music_backup.json` 文件在设备间传输应用数据。",
       "extra": {
         "export": "导出",
-        "exportSuccess": null,
+        "exportSuccess": "导出成功。",
         "import": "导入",
-        "importSuccess": null
+        "importSuccess": "导入成功。"
       }
     },
     "insights": {
@@ -202,33 +203,34 @@
       }
     },
     "dbOptimization": {
-      "title": null,
-      "brief": null,
+      "title": "优化数据库",
+      "brief": "有 {{count}} 个优化目标可用。",
       "extra": {
-        "start": null,
-        "success": null
+        "start": "正在优化……",
+        "success": "优化完成。"
       }
     },
     "recap": {
-      "title": null,
-      "brief": null,
+      "title": "回顾",
+      "brief": "你收听最多的歌曲、艺人以及播放历史。",
       "extra": {
-        "recapTemplate": null,
-        "playCount": null,
-        "mostPlayed": null,
-        "top": null,
-        "timeRange": null,
-        "allTime": null,
-        "listeningTime": null,
-        "totalListeningTime": null,
-        "totalPlays": null,
-        "uniqueTracks": null,
-        "uniqueArtists": null
+        "recapTemplate": "{{- name}} $t(feat.recap.title)",
+        "playCount": "播放 {{count}} 次",
+        "mostPlayed": "最常播放的 {{- name}}",
+        "top": "热门{{- name}}",
+        "timeRange": "时间范围",
+        "allTime": "全部时间",
+        "lastDays": "最近 {{amount}} 天",
+        "listeningTime": "收听时长",
+        "totalListeningTime": "总$t(feat.recap.extra.listeningTime)",
+        "totalPlays": "总播放次数",
+        "uniqueTracks": "不重复歌曲",
+        "uniqueArtists": "不重复艺人"
       }
     },
     "hiddenTracks": {
-      "title": "隐藏曲目",
-      "brief": "曲目未在应用中显示。"
+      "title": "隐藏歌曲",
+      "brief": "歌曲未在应用中显示。"
     },
     "saveErrors": {
       "title": "保存错误",
@@ -237,45 +239,45 @@
     "playback": {
       "title": "回放",
       "extra": {
-        "delay": null,
+        "delay": "播放延迟",
         "options": "播放选项",
-        "pitch": null,
+        "pitch": "播放音高",
         "speed": "倍速",
-        "restoreVolume": null,
+        "restoreVolume": "恢复应用音量",
         "volume": "应用音量"
       }
     },
     "continuePlaybackOnDismiss": {
-      "title": null,
-      "description": null
+      "title": "在关闭时继续播放",
+      "description": "从最近任务中关闭应用后，让音乐继续播放。强制停止应用即可停止播放。"
     },
     "repeatOnSkip": {
       "title": "跳过时保持单曲循环",
       "brief": "不要在跳过时从“单曲循环”切换模式到“循环播放”。"
     },
     "reshuffleOnLaunch": {
-      "title": null,
-      "brief": null
+      "title": "应用启动时重新随机播放",
+      "brief": "如果已启用随机播放，则在应用启动时重新排列队列。"
     },
     "restoreLastPosition": {
-      "title": null
+      "title": "从上次播放位置恢复"
     },
     "lyrics": {
-      "title": null,
+      "title": "歌词",
       "extra": {
-        "useEmbedded": null,
-        "providers": null,
+        "useEmbedded": "使用内嵌歌词",
+        "providers": "歌词提供者",
         "providersInstructions": {
-          "line1": null,
-          "line2": null
+          "line1": "出于法律原因，我们不会像提供音乐播放那样自动提供歌词的在线来源，因为我们并未获得相关许可。相反，我们支持第三方歌词服务提供商，您可以借此指定歌词的获取渠道。",
+          "line2": "点击了解如何创建歌词来源。"
         }
       }
     },
     "scanning": {
       "title": "扫描",
       "extra": {
-        "useMediaStore": null,
-        "useMediaStoreBrief": null
+        "useMediaStore": "🧪 使用 MediaStore 扫描器",
+        "useMediaStoreBrief": "速度极快，但可能不够准确。需要 Android 11 或更高版本。"
       }
     },
     "rescan": {
@@ -292,20 +294,20 @@
       "brief": "忽略任何可以加速正常重新扫描功能的跳过措施。"
     },
     "optimizedImageSave": {
-      "title": null,
-      "brief": null,
+      "title": "优化图片保存",
+      "brief": "歌曲与所属专辑共用同一封面。",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "禁用此功能后，由于封面会保存在本地，应用将占用更多的存储空间，并可能减慢扫描速度。",
+        "line2": "需要使用“深度重新扫描”功能才能应用更改。"
       }
     },
     "rescanOnLaunch": {
-      "title": null,
-      "brief": null
+      "title": "启动时重新扫描",
+      "brief": "如果禁用，请使用“重新扫描”功能来检测新增、更新和移除的歌曲。"
     },
     "listAllow": {
       "title": "允许列表",
-      "description": null
+      "description": "指定歌曲的查找位置。如果留空，将在所有位置查找。"
     },
     "listBlock": {
       "title": "阻止列表",
@@ -316,50 +318,50 @@
       "description": "不想保存的音频时长（秒）。"
     },
     "separators": {
-      "title": null,
+      "title": "多值分隔符",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "适用于新歌曲。使用“深度重新扫描”功能更新现有歌曲。",
+        "line2": "警告：这可能导致某些标签被错误地识别为具有多个值。此设置不适用于您手动修改的音轨。"
       }
     },
     "experimental": {
-      "title": null
+      "title": "实验性功能"
     },
     "audioEffects": {
-      "title": null
+      "title": "音频效果"
     },
     "equalizer": {
-      "title": null,
+      "title": "均衡器",
       "extra": {
-        "Custom": null,
-        "Normal": null,
-        "Classical": null,
-        "Dance": null,
-        "Flat": null,
-        "Folk": null,
-        "Heavy Metal": null,
-        "Hip Hop": null,
-        "Jazz": null,
-        "Pop": null,
-        "Rock": null
+        "Custom": "自定义",
+        "Normal": "标准",
+        "Classical": "古典",
+        "Dance": "舞曲",
+        "Flat": "平直",
+        "Folk": "民谣",
+        "Heavy Metal": "重金属",
+        "Hip Hop": "嘻哈",
+        "Jazz": "爵士",
+        "Pop": "流行",
+        "Rock": "摇滚"
       }
     },
     "replayGain": {
-      "title": null,
+      "title": "回放增益",
       "extra": {
-        "preAmp": null,
-        "preAmpDescription": null,
-        "adjustWithTags": null,
-        "adjustWithoutTags": null
+        "preAmp": "回放增益前置放大",
+        "preAmpDescription": "启用回放增益时调整响度。某些歌曲可能会出现峰值。更改将在下一曲目生效。",
+        "adjustWithTags": "使用标签调整",
+        "adjustWithoutTags": "不使用标签调整"
       }
     },
     "sleepTimer": {
-      "title": null,
-      "description": null,
+      "title": "睡眠定时器",
+      "description": "达到指定分钟后停止播放音频。",
       "extra": {
         "start": "启动",
-        "stopTime": null,
-        "extend": null
+        "stopTime": "音频将在 {{- time}} 停止播放。",
+        "extend": "将定时器延长至歌曲播放结束。"
       }
     },
     "code": {
@@ -378,8 +380,8 @@
     },
     "onboarding": {
       "extra": {
-        "configureSettings": null,
-        "startScan": null,
+        "configureSettings": "配置设置",
+        "startScan": "开始扫描歌曲",
         "saveTracks": "保存歌曲",
         "saveImages": "保存图片"
       }
@@ -387,7 +389,7 @@
     "playedRecent": {
       "title": "最近播放",
       "extra": {
-        "notFound": null
+        "notFound": "最近 {{amount}} 天内没有播放任何内容。"
       }
     },
     "search": {
@@ -397,11 +399,11 @@
       }
     },
     "artwork": {
-      "title": null,
+      "title": "封面",
       "extra": {
         "change": "更改封面",
         "remove": "移除封面",
-        "square": null
+        "square": "方形封面"
       }
     },
     "directory": {
@@ -412,41 +414,41 @@
     },
     "playlist": {
       "extra": {
-        "m3uImport": null,
-        "m3uExport": null,
-        "absolute": null,
-        "relative": null
+        "m3uImport": "导入 M3U 播放列表",
+        "m3uExport": "导出为 M3U 播放列表",
+        "absolute": "绝对路径",
+        "relative": "相对路径"
       }
     },
     "trackMetadata": {
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "编辑该歌曲在本应用中的显示方式。这不会修改文件本身。",
+        "line2": "注意：如果此文件发生变化，你的修改可能会被重置。"
       },
       "extra": {
         "albumArtists": "专辑艺人",
         "disc": "唱片",
         "name": "名称",
-        "trackNumber": "曲目编号",
+        "trackNumber": "歌曲编号",
         "year": "年份",
-        "overrideFields": null
+        "overrideFields": "为以下字段填写值，将覆盖专辑中所有歌曲的已分配值。"
       }
     },
     "modalViewPreference": {
-      "title": null,
+      "title": "屏幕选项",
       "extra": {
-        "layout": null,
-        "list": null,
-        "grid": null,
-        "compactGrid": null,
-        "columnSize": null,
-        "columnCount": null,
+        "layout": "布局",
+        "list": "列表",
+        "grid": "网格",
+        "compactGrid": "紧凑网格",
+        "columnSize": "列宽",
+        "columnCount": "列数：{{count}}",
         "sort": "排序方式",
         "asc": "升序",
-        "discover": null,
-        "duration": null,
+        "discover": "发现时间",
+        "duration": "持续时间",
         "modified": "最后修改",
-        "trackCount": null
+        "trackCount": "歌曲数量"
       }
     },
     "modalTrack": {
@@ -455,31 +457,31 @@
         "filePath": "文件路径",
         "sampleRate": "采样率",
         "size": "大小",
-        "trackQuickActions": null,
+        "trackQuickActions": "歌曲快捷操作",
         "addToPlaylist": "添加到播放列表"
       }
     },
     "miniplayer": {
-      "title": null,
+      "title": "迷你播放器",
       "extra": {
-        "dragToDismiss": null,
-        "swipeControls": null
+        "dragToDismiss": "拖动关闭",
+        "swipeControls": "滑动控制"
       }
     },
     "nowPlaying": {
-      "title": null,
+      "title": "正在播放",
       "extra": {
-        "artworkPlaybackToggle": null
+        "artworkPlaybackToggle": "封面播放切换"
       }
     },
     "queue": {
       "extra": {
         "add": "添加到队列",
-        "playNext": null,
-        "playLast": null,
+        "playNext": "播放下一个",
+        "playLast": "播放上一个",
         "toast": "已将 {{- name}} 添加到队列。",
-        "queueAwareNext": null,
-        "queueAwareNextBrief": null
+        "queueAwareNext": "队列感知的播放下一个",
+        "queueAwareNextBrief": "尝试将歌曲添加到最后一个“播放下一个”的歌曲之后。"
       }
     }
   }

@@ -158,6 +158,7 @@
         "vinyl": "Plak",
         "vinylOld": "Plak (Eski)",
         "none": "Hiçbiri",
+        "immersive": null,
         "alternativeInfoLayout": "Alternatif bilgi düzeni",
         "standardVinylSpeed": null
       }
@@ -219,6 +220,7 @@
         "top": null,
         "timeRange": null,
         "allTime": null,
+        "lastDays": null,
         "listeningTime": null,
         "totalListeningTime": null,
         "totalPlays": null,

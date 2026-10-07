@@ -167,6 +167,7 @@ export const LANGUAGES = [
     name: "简体中文",
     translators: [
       { display: "yang1206", link: "https://www.github.com/yang1206" },
+      { display: "dgwqc", link: "https://www.github.com/dgwqc" },
     ],
   },
 ] satisfies LanguageItem[];
