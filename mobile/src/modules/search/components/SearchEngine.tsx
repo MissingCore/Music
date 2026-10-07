@@ -138,7 +138,6 @@ export function SearchEngineList<TScope extends SearchCategories>({
             <ContentPlaceholder errMsgKey="err.msg.noResults" />
           ) : undefined
         }
-        nestedScrollEnabled={props.forSheets}
         className={cn("-mx-0.75 -mb-1.5", {
           "-mb-5.5": props.forSheets,
         })}
