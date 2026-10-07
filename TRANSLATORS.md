@@ -37,6 +37,7 @@
 ## [简体中文] Chinese (Simplified)
 
 - [@yang1206](https://www.github.com/yang1206)
+- [@dgwqc](https://www.github.com/dgwqc)
 
 ## [Русский] Russian
 
