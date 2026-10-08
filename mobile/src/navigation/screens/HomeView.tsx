@@ -116,9 +116,11 @@ function TopAppBar() {
             numberOfLines={2}
             className="shrink grow text-sm"
           />
-          <View className="ltr:rotate-180">
-            <Icon name="arrow-back" color="onSecondary" />
-          </View>
+          <Icon
+            name="arrow-back"
+            color="onSecondary"
+            className="ltr:rotate-180"
+          />
         </Button>
       ) : null}
       <IconButton
@@ -287,9 +289,11 @@ function RecentGroup(props: {
         <Marquee wrapperClassName="grow-0">
           <TText textKey={props.label} accent size="3xl" />
         </Marquee>
-        <View className="rtl:rotate-180">
-          <Icon name="keyboard-arrow-right" size={32} />
-        </View>
+        <Icon
+          name="keyboard-arrow-right"
+          size={32}
+          className="rtl:rotate-180"
+        />
       </Button>
       <LegendList
         horizontal
@@ -346,9 +350,11 @@ function HomeLinks() {
           <Marquee>
             <TText textKey={labelKey} />
           </Marquee>
-          <View className="rtl:rotate-180">
-            <Icon name="keyboard-arrow-right" size={32} />
-          </View>
+          <Icon
+            name="keyboard-arrow-right"
+            size={32}
+            className="rtl:rotate-180"
+          />
         </Button>
       ))}
     </View>

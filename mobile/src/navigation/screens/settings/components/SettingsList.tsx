@@ -1,8 +1,6 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { View } from "react-native";
-
 import { cn } from "~/lib/style";
 import { openLink } from "~/lib/web-browser";
 import { Card } from "~/components/next/base/card";
@@ -32,11 +30,7 @@ export function ExternalLinkItem({
     <ItemBase
       {...props}
       onPress={() => openLink(href)}
-      Trailing={
-        <View pointerEvents="none" className="rtl:-scale-x-100">
-          <Icon name="call-made" />
-        </View>
-      }
+      Trailing={<Icon name="call-made" className="rtl:-scale-x-100" />}
     />
   );
 }
@@ -45,11 +39,7 @@ export function Item(props: ItemBaseProps & { onPress: VoidFunction }) {
   return (
     <ItemBase
       {...props}
-      Trailing={
-        <View pointerEvents="none" className="rtl:-scale-x-100">
-          <Icon name="east" size={24} />
-        </View>
-      }
+      Trailing={<Icon name="east" size={24} className="rtl:-scale-x-100" />}
     />
   );
 }

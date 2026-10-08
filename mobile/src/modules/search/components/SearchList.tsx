@@ -65,9 +65,10 @@ function Input(props: { placeholder?: string; autoFocus?: boolean }) {
   return (
     <View className="relative z-10 -mb-6">
       <View className="flex-row items-center gap-2 rounded-full bg-surfaceContainerLowest">
-        <View className="absolute inset-y-0 left-0 justify-center pl-4">
-          <Icon name="search" />
-        </View>
+        <Icon
+          name="search"
+          className="absolute inset-y-0 left-0 justify-center pl-4"
+        />
         <TextInput
           ref={inputRef}
           autoFocus={props.autoFocus}

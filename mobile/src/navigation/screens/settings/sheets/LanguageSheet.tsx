@@ -46,9 +46,10 @@ export function LanguageSheet(props: { ref: SheetRef }) {
           className="min-h-10 flex-row items-center gap-1 border-b border-outline"
         >
           <Text className="shrink grow pl-1">{selectedLanguage?.label}</Text>
-          <View className="-rotate-90 rtl:rotate-90">
-            <Icon name="keyboard-arrow-down" />
-          </View>
+          <Icon
+            name="keyboard-arrow-down"
+            className="-rotate-90 rtl:rotate-90"
+          />
         </Ripple>
         <View className="gap-1">
           <TText textKey="feat.language.extra.translators" bold muted />

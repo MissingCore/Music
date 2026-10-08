@@ -4,7 +4,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 import { ScopedTheme } from "uniwind";
 
 import { usePlaylist } from "~/data/playlist/queries";
@@ -137,9 +136,7 @@ function FavoritesPlaylistLink() {
           label={t("term.favoriteTracks")}
           supporting={t("plural.track", { count: data?.tracks.length ?? 0 })}
         />
-        <View className="ltr:rotate-180">
-          <Icon name="arrow-back" size={32} />
-        </View>
+        <Icon name="arrow-back" size={32} className="ltr:rotate-180" />
       </Ripple>
     </ScopedTheme>
   );

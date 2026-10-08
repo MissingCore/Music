@@ -1,8 +1,6 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { View } from "react-native";
-
 import { cn } from "~/lib/style";
 import { isString } from "~/utils/validation";
 import { FlatList } from "~/components/Base/List";
@@ -73,9 +71,11 @@ export function SegmentedPicker<TData extends string>({
               {label}
             </Text>
             {reselect && isActiveRadio ? (
-              <View className="size-5 shrink-0">
-                <Icon name={reselect.icon} size={20} />
-              </View>
+              <Icon
+                name={reselect.icon}
+                size={20}
+                className="size-5 shrink-0"
+              />
             ) : null}
           </Ripple>
         );
