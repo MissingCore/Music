@@ -33,7 +33,7 @@ export function ExternalLinkListItem({
       {...props}
       onPress={() => openLink(href)}
       Trailing={
-        <View className="rtl:-scale-x-100">
+        <View pointerEvents="none" className="rtl:-scale-x-100">
           <Icon name="call-made" />
         </View>
       }
@@ -46,7 +46,7 @@ export function ListItem(props: ListItemBaseProps & { onPress: VoidFunction }) {
     <ListItemBase
       {...props}
       Trailing={
-        <View className="rtl:-scale-x-100">
+        <View pointerEvents="none" className="rtl:-scale-x-100">
           <Icon name="east" size={24} />
         </View>
       }
