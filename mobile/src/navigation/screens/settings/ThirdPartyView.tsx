@@ -5,28 +5,36 @@ import { useNavigation } from "@react-navigation/native";
 
 import LicensesList from "~/resources/licenses.json";
 
-import { FlatList } from "~/components/Base/List";
-import { useGeneratedSegmentedList } from "~/components/List/Segmented";
+import { cn } from "~/lib/style";
+import { LegendList } from "~/components/Base/LegendList";
+import { Button } from "~/components/next/base/button";
+import { Icon } from "~/components/next/base/icon";
+import { TextStack } from "~/components/next/blocks/text-stack";
 
 export default function ThirdParty() {
   const navigation = useNavigation();
-  const listContext = useGeneratedSegmentedList({
-    data: Object.entries(LicensesList),
-    renderOptions: {
-      getLabel: ([_, item]) => item.name,
-      getSupportingText: ([_, item]) => `${item.license} (${item.version})`,
-      onPress:
-        ([id]) =>
-        () =>
-          navigation.navigate("PackageLicense", { id }),
-    },
-  });
-
+  const data = Object.entries(LicensesList);
   return (
-    <FlatList
+    <LegendList
+      data={data}
       keyExtractor={([id]) => id}
-      contentContainerClassName="p-4 pb-safe-offset-4"
-      {...listContext}
+      renderItem={({ item: [id, item], index }) => (
+        <Button
+          onPress={() => navigation.navigate("PackageLicense", { id })}
+          filled
+          className={cn({
+            "rounded-t-xs": index > 0,
+            "rounded-b-xs": index < data.length - 1,
+          })}
+        >
+          <TextStack
+            label={item.name}
+            supporting={`${item.license} (${item.version})`}
+          />
+          <Icon name="east" size={24} className="rtl:-scale-x-100" />
+        </Button>
+      )}
+      contentContainerClassName="gap-0.75 p-4 pb-safe-offset-4"
     />
   );
 }

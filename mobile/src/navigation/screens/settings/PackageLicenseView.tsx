@@ -6,12 +6,13 @@ import { useTranslation } from "react-i18next";
 
 import LicensesList from "~/resources/licenses.json";
 
+import { ListLayout } from "~/navigation/layouts/ListLayout";
+import { ScreenOptions } from "~/navigation/components/ScreenOptions";
+
 import { openLink } from "~/lib/web-browser";
-import { FilledIconButton } from "~/components/Form/Button/Icon";
-import { SegmentedList } from "~/components/List/Segmented";
-import { AccentText } from "~/components/Typography/AccentText";
-import { StyledText } from "~/components/Typography/StyledText";
-import { ScreenOptions } from "../../components/ScreenOptions";
+import { IconButton } from "~/components/next/base/button-icon";
+import { Card } from "~/components/next/base/card";
+import { Text } from "~/components/next/base/typography";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -21,38 +22,32 @@ export default function PackageLicense({
   },
 }: Props) {
   const { t } = useTranslation();
-
   const licenseInfo = LicensesList[id as keyof typeof LicensesList];
-
   return (
     <>
       <ScreenOptions
         headerRight={() => (
-          <FilledIconButton
-            icon="open-in-new"
+          <IconButton
+            icon="call-made"
             accessibilityLabel={t("template.entrySeeMore", {
               name: licenseInfo.name,
             })}
             onPress={() => openLink(licenseInfo.source)}
+            filled
           />
         )}
       />
-      <SegmentedList
-        scrollEnabled
-        contentContainerClassName="p-4 pb-safe-offset-4"
-      >
-        <SegmentedList.CustomItem className="gap-2 p-4">
-          <AccentText className="text-xl" originalText>
+      <ListLayout contentContainerClassName="gap-0.75">
+        <Card className="rounded-b-xs">
+          <Text accent size="xl">
             {licenseInfo.name}
-          </AccentText>
-          <StyledText dim>
-            {`${licenseInfo.license} (${licenseInfo.version})`}
-          </StyledText>
-        </SegmentedList.CustomItem>
-        <SegmentedList.CustomItem className="p-4">
-          <StyledText className="text-xs">{licenseInfo.licenseText}</StyledText>
-        </SegmentedList.CustomItem>
-      </SegmentedList>
+          </Text>
+          <Text muted>{`${licenseInfo.license} (${licenseInfo.version})`}</Text>
+        </Card>
+        <Card className="rounded-t-xs">
+          <Text size="xs">{licenseInfo.licenseText}</Text>
+        </Card>
+      </ListLayout>
     </>
   );
 }
