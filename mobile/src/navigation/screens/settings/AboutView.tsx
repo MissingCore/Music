@@ -41,66 +41,66 @@ export default function AboutApp() {
         </View>
       </Card>
 
-      <SettingsList.Container>
-        <SettingsList.ExternalLinkListItem
+      <SettingsList.Group>
+        <SettingsList.ExternalLinkItem
           icon="update"
           label={t("feat.appUpdate.extra.viewChangelog")}
           supporting={APP_VERSION}
           href={Links.CurrentRelease}
         />
         <SettingsList.Divider />
-        <SettingsList.SwitchListItem
+        <SettingsList.ToggleItem
           icon="release-alert"
           label={t("feat.appUpdate.extra.checkUpdates")}
           onToggle={PreferenceTogglers.toggleKey("checkForUpdates")}
           enabled={checkForUpdates}
         />
         <SettingsList.Divider />
-        <SettingsList.SwitchListItem
+        <SettingsList.ToggleItem
           icon="flask-filled"
           label={t("feat.appUpdate.extra.rcNotification")}
           onToggle={PreferenceTogglers.toggleKey("rcNotification")}
           enabled={showRCNotification}
           disabled={!checkForUpdates}
         />
-      </SettingsList.Container>
+      </SettingsList.Group>
 
-      <SettingsList.Container>
-        <SettingsList.ExternalLinkListItem
+      <SettingsList.Group>
+        <SettingsList.ExternalLinkItem
           icon="translate"
           label={t("feat.language.extra.contribute")}
           href={Links.Translations}
         />
         <SettingsList.Divider />
-        <SettingsList.ExternalLinkListItem
+        <SettingsList.ExternalLinkItem
           icon="logo-github"
           label={t("feat.code.title")}
           supporting={t("feat.code.brief")}
           href={Links.GitHub}
         />
-      </SettingsList.Container>
+      </SettingsList.Group>
 
-      <SettingsList.Container>
-        <SettingsList.ExternalLinkListItem
+      <SettingsList.Group>
+        <SettingsList.ExternalLinkItem
           icon="lock"
           label={t("feat.privacy.title")}
           href={Links.PrivacyPolicy}
         />
         <SettingsList.Divider />
-        <SettingsList.ExternalLinkListItem
+        <SettingsList.ExternalLinkItem
           icon="license"
           label={t("feat.license.title")}
           supporting="AGPL-3.0"
           href={Links.License}
         />
         <SettingsList.Divider />
-        <SettingsList.ListItem
+        <SettingsList.Item
           icon="license"
           label={t("feat.thirdParty.title")}
           supporting={t("feat.thirdParty.brief")}
           onPress={() => navigation.navigate("ThirdParty")}
         />
-      </SettingsList.Container>
+      </SettingsList.Group>
     </ListLayout>
   );
 }

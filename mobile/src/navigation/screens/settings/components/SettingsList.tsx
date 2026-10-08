@@ -14,7 +14,7 @@ import { Switch } from "~/components/next/base/switch";
 import { TextStack } from "~/components/next/blocks/text-stack";
 import type { PressProps } from "~/components/next/primitive/pressable";
 
-export function Container(props: { children: React.ReactNode }) {
+export function Group(props: { children: React.ReactNode }) {
   return <Card className="p-0">{props.children}</Card>;
 }
 
@@ -22,14 +22,14 @@ export function Divider({ adjustForIcon = true }) {
   return <DividerBase className={cn("mx-4", adjustForIcon && "ml-14")} />;
 }
 
-export function ExternalLinkListItem({
+export function ExternalLinkItem({
   href,
   ...props
-}: ListItemBaseProps & {
+}: ItemBaseProps & {
   href: string;
 }) {
   return (
-    <ListItemBase
+    <ItemBase
       {...props}
       onPress={() => openLink(href)}
       Trailing={
@@ -41,9 +41,9 @@ export function ExternalLinkListItem({
   );
 }
 
-export function ListItem(props: ListItemBaseProps & { onPress: VoidFunction }) {
+export function Item(props: ItemBaseProps & { onPress: VoidFunction }) {
   return (
-    <ListItemBase
+    <ItemBase
       {...props}
       Trailing={
         <View pointerEvents="none" className="rtl:-scale-x-100">
@@ -54,17 +54,17 @@ export function ListItem(props: ListItemBaseProps & { onPress: VoidFunction }) {
   );
 }
 
-export function SwitchListItem({
+export function ToggleItem({
   onToggle,
   enabled,
   ...props
-}: ListItemBaseProps & {
+}: ItemBaseProps & {
   onToggle: VoidFunction;
   enabled: boolean;
   disabled?: boolean;
 }) {
   return (
-    <ListItemBase
+    <ItemBase
       {...props}
       onPress={onToggle}
       Trailing={<Switch enabled={enabled} />}
@@ -73,19 +73,19 @@ export function SwitchListItem({
 }
 
 //#region Internal Helpers
-interface ListItemBaseProps {
+interface ItemBaseProps {
   icon: SupportedIconName;
   label: string;
   supporting?: string;
 }
 
-function ListItemBase({
+function ItemBase({
   icon,
   label,
   supporting,
   Trailing,
   ...props
-}: ListItemBaseProps & PressProps & { Trailing: React.ReactNode }) {
+}: ItemBaseProps & PressProps & { Trailing: React.ReactNode }) {
   return (
     <Ripple
       {...props}
