@@ -9,6 +9,7 @@ import LicensesList from "~/resources/licenses.json";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
+import { OnRTL } from "~/lib/react";
 import { openLink } from "~/lib/web-browser";
 import { IconButton } from "~/components/next/base/button-icon";
 import { Card } from "~/components/next/base/card";
@@ -28,7 +29,7 @@ export default function PackageLicense({
       <ScreenOptions
         headerRight={() => (
           <IconButton
-            icon="call-made"
+            icon={OnRTL.decide("north-west", "north-east")}
             accessibilityLabel={t("template.entrySeeMore", {
               name: licenseInfo.name,
             })}

@@ -1,6 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { openLink } from "~/lib/web-browser";
 import { Card } from "~/components/next/base/card";
@@ -30,7 +31,7 @@ export function ExternalLinkItem({
     <ItemBase
       {...props}
       onPress={() => openLink(href)}
-      Trailing={<Icon name="call-made" className="rtl:-scale-x-100" />}
+      Trailing={<Icon name={OnRTL.decide("north-west", "north-east")} />}
     />
   );
 }
@@ -39,7 +40,7 @@ export function Item(props: ItemBaseProps & { onPress: VoidFunction }) {
   return (
     <ItemBase
       {...props}
-      Trailing={<Icon name="east" size={24} className="rtl:-scale-x-100" />}
+      Trailing={<Icon name={OnRTL.decide("west", "east")} />}
     />
   );
 }
