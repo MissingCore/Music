@@ -6,6 +6,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
+import { OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { Pressable } from "../primitive/pressable";
 
@@ -18,20 +19,23 @@ export function Switch({
 }) {
   const thumbStyle = useAnimatedStyle(() => ({
     transform: [
-      { translateX: withTiming(enabled ? 16 : 0, { duration: 150 }) },
+      {
+        translateX: withTiming(enabled ? OnRTLWorklet.decide(-16, 16) : 0, {
+          duration: 150,
+        }),
+      },
     ],
   }));
   return (
     <Animated.View
       pointerEvents={!interactable ? "none" : undefined}
-      className={cn(
-        "relative h-7 w-13 rounded-full bg-surfaceContainerHigh p-0.5",
-        { "bg-primary": enabled },
-      )}
+      className={cn("w-13 rounded-full bg-surfaceContainerHigh p-0.5", {
+        "bg-primary": enabled,
+      })}
     >
       <Animated.View
         style={thumbStyle}
-        className="absolute top-0.5 h-6 w-8 rounded-full bg-onPrimary ltr:left-0.5 rtl:right-0.5"
+        className="h-6 w-8 rounded-full bg-onPrimary"
       />
     </Animated.View>
   );
