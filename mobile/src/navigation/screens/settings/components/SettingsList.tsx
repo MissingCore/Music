@@ -1,6 +1,8 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { View } from "react-native";
+
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { openLink } from "~/lib/web-browser";
@@ -10,11 +12,22 @@ import type { SupportedIconName } from "~/components/next/base/icon";
 import { Icon } from "~/components/next/base/icon";
 import { Ripple } from "~/components/next/base/ripple";
 import { Switch } from "~/components/next/base/switch";
+import { Text } from "~/components/next/base/typography";
 import { TextStack } from "~/components/next/blocks/text-stack";
 import type { PressProps } from "~/components/next/primitive/pressable";
 
-export function Group(props: { children: React.ReactNode }) {
-  return <Card className="p-0">{props.children}</Card>;
+export function Group(props: { children: React.ReactNode; label?: string }) {
+  const renderedComponent = <Card className="p-0">{props.children}</Card>;
+
+  if (!props.label) return renderedComponent;
+  return (
+    <View>
+      <Text bold size="sm" className="mb-2">
+        {props.label}
+      </Text>
+      {renderedComponent}
+    </View>
+  );
 }
 
 export function Divider({ adjustForIcon = true }) {

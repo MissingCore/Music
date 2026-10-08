@@ -31,6 +31,7 @@
     "all": "All",
     "more": "More",
     "home": "Home",
+    "homeScreens": "Home Screens",
     "settings": "Settings",
     "about": "About",
     "upcoming": "Upcoming",
@@ -44,7 +45,8 @@
 
     "share": "Share",
     "expand": "Expand",
-    "minimize": "Minimize"
+    "minimize": "Minimize",
+    "misc": "Misc."
   },
 
   "template": {

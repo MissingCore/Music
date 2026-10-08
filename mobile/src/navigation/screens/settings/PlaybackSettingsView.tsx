@@ -10,21 +10,12 @@ import { ListLayout } from "~/navigation/layouts/ListLayout";
 
 import { Switch } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
-import { TEm } from "~/components/Typography/StyledText";
 
 export default function PlaybackSettings() {
   const { t } = useTranslation();
   const continuePlaybackOnDismiss = usePreferenceStore(
     (s) => s.continuePlaybackOnDismiss,
   );
-  const dragClearPlayback = usePreferenceStore((s) => s.dragClearPlayback);
-  const miniplayerGestures = usePreferenceStore((s) => s.miniplayerGestures);
-  const nowPlayingArtworkControls = usePreferenceStore(
-    (s) => s.nowPlayingArtworkControls,
-  );
-  const nowPlayingGestures = usePreferenceStore((s) => s.nowPlayingGestures);
-  const quickAddQueue = usePreferenceStore((s) => s.quickAddQueue);
-  const quickFavorite = usePreferenceStore((s) => s.quickFavorite);
   const repeatOnSkip = usePreferenceStore((s) => s.repeatOnSkip);
   const reshuffleOnLaunch = usePreferenceStore((s) => s.reshuffleOnLaunch);
   const restoreLastPosition = usePreferenceStore((s) => s.restoreLastPosition);
@@ -57,51 +48,6 @@ export default function PlaybackSettings() {
           supportingText={t("feat.reshuffleOnLaunch.brief")}
           onPress={PreferenceTogglers.toggleKey("reshuffleOnLaunch")}
           Trailing={<Switch enabled={reshuffleOnLaunch} />}
-        />
-      </SegmentedList>
-
-      <TEm textKey="feat.miniplayer.title" className="-mb-4" />
-      <SegmentedList>
-        <SegmentedList.Item
-          labelText="feat.miniplayer.extra.swipeControls"
-          onPress={PreferenceTogglers.toggleKey("miniplayerGestures")}
-          Trailing={<Switch enabled={miniplayerGestures} />}
-        />
-        <SegmentedList.Item
-          labelText="feat.miniplayer.extra.dragToDismiss"
-          onPress={PreferenceTogglers.toggleKey("dragClearPlayback")}
-          Trailing={<Switch enabled={dragClearPlayback} />}
-        />
-      </SegmentedList>
-
-      <TEm textKey="feat.nowPlaying.title" className="-mb-4" />
-      <SegmentedList>
-        <SegmentedList.Item
-          labelText="feat.nowPlaying.extra.artworkPlaybackToggle"
-          onPress={PreferenceTogglers.toggleKey("nowPlayingArtworkControls")}
-          Trailing={<Switch enabled={nowPlayingArtworkControls} />}
-        />
-        <SegmentedList.Item
-          labelText="feat.miniplayer.extra.swipeControls"
-          onPress={PreferenceTogglers.toggleKey("nowPlayingGestures")}
-          Trailing={<Switch enabled={nowPlayingGestures} />}
-        />
-      </SegmentedList>
-
-      <TEm
-        textKey="feat.modalTrack.extra.trackQuickActions"
-        className="-mb-4"
-      />
-      <SegmentedList>
-        <SegmentedList.Item
-          labelText="term.favorite"
-          onPress={PreferenceTogglers.toggleKey("quickFavorite")}
-          Trailing={<Switch enabled={quickFavorite} />}
-        />
-        <SegmentedList.Item
-          labelText="feat.queue.extra.add"
-          onPress={PreferenceTogglers.toggleKey("quickAddQueue")}
-          Trailing={<Switch enabled={quickAddQueue} />}
         />
       </SegmentedList>
     </ListLayout>

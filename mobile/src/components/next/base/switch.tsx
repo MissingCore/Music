@@ -20,7 +20,7 @@ export function Switch({
   const thumbStyle = useAnimatedStyle(() => ({
     transform: [
       {
-        translateX: withTiming(enabled ? OnRTLWorklet.decide(-16, 16) : 0, {
+        translateX: withTiming(enabled ? OnRTLWorklet.decide(-12, 12) : 0, {
           duration: 150,
         }),
       },
@@ -29,13 +29,13 @@ export function Switch({
   return (
     <Animated.View
       pointerEvents={!interactable ? "none" : undefined}
-      className={cn("w-13 rounded-full bg-surfaceContainerHigh p-0.5", {
+      className={cn("w-10 rounded-full bg-surfaceContainerHigh p-0.5", {
         "bg-primary": enabled,
       })}
     >
       <Animated.View
         style={thumbStyle}
-        className="h-6 w-8 rounded-full bg-onPrimary"
+        className="size-6 rounded-full bg-onPrimary"
       />
     </Animated.View>
   );
