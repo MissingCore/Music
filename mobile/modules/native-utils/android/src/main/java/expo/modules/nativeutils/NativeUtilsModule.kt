@@ -29,6 +29,10 @@ class NativeUtilsModule : Module() {
     // The module will be accessible from `requireNativeModule('NativeUtils')` in JavaScript.
     Name("NativeUtils")
 
+    Constant("bundleId") {
+      context?.packageName ?: ""
+    }
+
     // Based on:
     //  - https://github.com/zoontek/react-native-bootsplash/blob/7.1.0/android/src/main/java/com/zoontek/rnbootsplash/RNBootSplashModuleImpl.kt#L226
     Constant("isSystemDarkMode") {

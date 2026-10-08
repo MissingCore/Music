@@ -34,6 +34,7 @@ import CreatePlaylist from "./screens/playlists/CreateView";
 import Playlist from "./screens/playlists/CurrentView";
 import ModifyPlaylist from "./screens/playlists/ModifyView";
 import Playlists from "./screens/playlists/View";
+import AboutApp from "./screens/settings/AboutView";
 import AppearanceSettings from "./screens/settings/AppearanceSettingsView";
 import AppUpdate from "./screens/settings/AppUpdateView";
 import ExperimentalSettings from "./screens/settings/ExperimentalSettingsView";
@@ -336,6 +337,10 @@ export const RootStack = createNativeStackNavigator({
         ExperimentalSettings: {
           screen: ExperimentalSettings,
           options: { title: "feat.experimental.title" },
+        },
+        About: {
+          screen: AboutApp,
+          options: { title: "term.about" },
         },
         ThirdParty: {
           screen: ThirdParty,
