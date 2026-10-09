@@ -36,6 +36,12 @@ interface IconButtonProps extends ButtonProps, IconButtonVariants {
   icon: SupportedIconName;
   accessibilityLabel: string;
   _iconColor?: AppColor;
+  /**
+   * Used to override the default styling.
+   *
+   * @deprecated We want to reconsider the icon scaling based on the button size.
+   */
+  _iconSize?: number;
 }
 
 export type ButtonSize = IconButtonVariants["size"];
@@ -52,6 +58,7 @@ export function IconButton({
   wide,
   className,
   _iconColor,
+  _iconSize,
   filled = false,
   ...props
 }: IconButtonProps) {
@@ -63,7 +70,7 @@ export function IconButton({
     >
       <Icon
         name={icon}
-        size={IconSizeConfig[size]}
+        size={_iconSize || IconSizeConfig[size]}
         color={_iconColor ?? getIntentOnColor(props.intent)}
       />
     </Button>

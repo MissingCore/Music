@@ -131,7 +131,17 @@ export function FontSheet(props: {
 
   return (
     <Sheet ref={props.ref}>
-      <Sheet.Header label={t(label)} />
+      <Sheet.Header
+        label={t(label)}
+        Trailing={
+          <IconButton
+            icon="upload"
+            accessibilityLabel={t("feat.backup.extra.import")}
+            onPress={importFont}
+            _iconSize={32}
+          />
+        }
+      />
       <Sheet.List
         ref={listRef}
         onLayout={() => scrollSelectedIntoView(false)}
@@ -181,16 +191,6 @@ export function FontSheet(props: {
         className="-mx-4.75 mb-0"
         contentContainerClassName="px-4 pb-0"
       />
-      <Sheet.Footer>
-        <IconButton
-          icon="upload"
-          accessibilityLabel={t("feat.backup.extra.import")}
-          onPress={importFont}
-          filled
-          wide
-          className="self-center"
-        />
-      </Sheet.Footer>
     </Sheet>
   );
 }
