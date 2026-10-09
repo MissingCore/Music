@@ -30,12 +30,7 @@ export function ActionButton({
   ...props
 }: ActionButtonProps) {
   return (
-    <Button
-      {...props}
-      intent={intent}
-      filled
-      className={cn("gap-2", className)}
-    >
+    <Button {...props} intent={intent} className={cn("gap-2", className)}>
       {leadingIcon && (
         <Icon name={leadingIcon} size={20} color={getIntentOnColor(intent)} />
       )}

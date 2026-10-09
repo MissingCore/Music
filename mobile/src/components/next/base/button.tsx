@@ -11,6 +11,7 @@ import { baseContainerStyle, getIntentRippleColor } from "./styles";
 const buttonStyle = cva({
   composes: [baseContainerStyle],
   base: "min-h-10 flex-row items-center justify-center gap-4 rounded-xl p-4 disabled:opacity-25",
+  defaultVariants: { filled: true },
 });
 
 export interface ButtonProps

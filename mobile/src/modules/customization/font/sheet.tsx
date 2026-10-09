@@ -161,7 +161,6 @@ export function FontSheet(props: {
               <Button
                 onPress={() => setFont(font)}
                 disabled={selected}
-                filled
                 style={{ width }}
                 className="aspect-video disabled:opacity-100"
               >

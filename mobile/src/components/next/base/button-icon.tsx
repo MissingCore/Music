@@ -52,10 +52,15 @@ export function IconButton({
   wide,
   className,
   _iconColor,
+  filled = false,
   ...props
 }: IconButtonProps) {
   return (
-    <Button {...props} className={iconButtonStyle({ size, wide, className })}>
+    <Button
+      {...props}
+      filled={filled}
+      className={iconButtonStyle({ size, wide, className })}
+    >
       <Icon
         name={icon}
         size={IconSizeConfig[size]}

@@ -106,7 +106,6 @@ function TopAppBar() {
         <Button
           onPress={() => navigation.navigate("AppUpdate")}
           intent="secondary"
-          filled
           className="shrink grow gap-3 rounded-full px-3 py-0"
         >
           <Icon name="mobile-arrow-down" color="onSecondary" />
@@ -284,6 +283,7 @@ function RecentGroup(props: {
       <Button
         accessibilityLabel={t(props.label)}
         onPress={props.onLabelPress}
+        filled={false}
         className="-mb-6 justify-start gap-2 rounded-none py-1"
       >
         <Marquee wrapperClassName="grow-0">
@@ -340,7 +340,6 @@ function HomeLinks() {
         <Button
           key={labelKey}
           onPress={() => navigation.navigate("HomeScreens", { screen })}
-          filled
           className={cn("rounded-xs p-3", {
             "rounded-t-xl": idx === 0,
             "rounded-b-xl": idx === linkMap.length - 1,

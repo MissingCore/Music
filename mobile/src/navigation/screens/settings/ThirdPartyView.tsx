@@ -21,7 +21,6 @@ export default function ThirdParty() {
       renderItem={({ item: [id, item], index }) => (
         <Button
           onPress={() => navigation.navigate("PackageLicense", { id })}
-          filled
           className={cn({
             "rounded-t-xs": index > 0,
             "rounded-b-xs": index < data.length - 1,
