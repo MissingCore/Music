@@ -10,6 +10,7 @@ import {
   PreferenceTogglers,
 } from "~/stores/Preference/actions";
 
+import { OnRTL } from "~/lib/react";
 import { Links, openLink } from "~/lib/web-browser";
 import { ClickwrapCheckbox } from "~/components/Form/Checkbox";
 import { Icon } from "~/components/next/base/icon";
@@ -46,10 +47,7 @@ export function LanguageSheet(props: { ref: SheetRef }) {
           className="min-h-10 flex-row items-center gap-1 border-b border-outline"
         >
           <Text className="shrink grow pl-1">{selectedLanguage?.label}</Text>
-          <Icon
-            name="keyboard-arrow-down"
-            className="-rotate-90 rtl:rotate-90"
-          />
+          <Icon name={`keyboard-arrow-${OnRTL.decide("left", "right")}`} />
         </Ripple>
         <View className="gap-1">
           <TText textKey="feat.language.extra.translators" bold muted />
@@ -68,7 +66,7 @@ export function LanguageSheet(props: { ref: SheetRef }) {
         <ActionButton
           label={t("feat.language.extra.contribute")}
           onPress={() => openLink(Links.Translations)}
-          trailingIcon="open-in-new"
+          trailingIcon={`north-${OnRTL.decide("west", "east")}`}
           className="rounded-full"
         />
       </Sheet>

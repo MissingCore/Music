@@ -29,7 +29,7 @@ export default function PackageLicense({
       <ScreenOptions
         headerRight={() => (
           <IconButton
-            icon={OnRTL.decide("north-west", "north-east")}
+            icon={`north-${OnRTL.decide("west", "east")}`}
             accessibilityLabel={t("template.entrySeeMore", {
               name: licenseInfo.name,
             })}
