@@ -3,7 +3,7 @@
 
 import { getFontName } from "@missingcore/native-utils";
 import { toast } from "@missingcore/ui/toast";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -11,11 +11,9 @@ import type { CustomFont } from "~/db/schema";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
-import { useGetLayoutConfig } from "~/hooks/useLayoutConfigs";
 
 import { pickFile } from "~/lib/file-system";
 import { cn } from "~/lib/style";
-import { useLegendListRef } from "~/components/Base/LegendList";
 import { Button } from "~/components/next/base/button";
 import { IconButton } from "~/components/next/base/button-icon";
 import type { SheetRef } from "~/components/next/base/sheet";
@@ -53,14 +51,8 @@ const FontConfig = {
   },
 } as const;
 
-const columnConfigs = { minWidth: 160, minCols: 1.75, gap: 6 };
-
-export function FontSheet(props: {
-  ref: SheetRef;
-  type: "Accent" | "Primary";
-}) {
+function FontSheet(props: { ref: SheetRef; type: "Accent" | "Primary" }) {
   const { t } = useTranslation();
-  const { width } = useGetLayoutConfig(columnConfigs);
 
   const { data } = useCustomFonts();
   const fontOptions = useMemo(() => {
@@ -75,11 +67,6 @@ export function FontSheet(props: {
   const selectedFont = props.type === "Accent" ? accentFont : primaryFont;
 
   //#region Helpers
-  const isFontSelected = useCallback(
-    (font: Font) => areFontEqual(selectedFont, font),
-    [selectedFont],
-  );
-
   const canDeleteFont = useCallback(
     (font: Font): font is CustomFont => {
       if (isBundledFont(font)) return false;
@@ -91,44 +78,6 @@ export function FontSheet(props: {
   );
   //#endregion
 
-  //#region Auto-Scroll
-  const listRef = useLegendListRef();
-  const prevSelectedFont = useRef<Font | null>(null);
-
-  const scrollSelectedIntoView = useCallback(
-    (animated = true) =>
-      listRef.current?.scrollToIndex({
-        index: fontOptions.findIndex(isFontSelected),
-        animated,
-        viewPosition: 0.5,
-      }),
-    [listRef, fontOptions, isFontSelected],
-  );
-
-  useEffect(() => {
-    if (prevSelectedFont.current !== selectedFont) {
-      prevSelectedFont.current = selectedFont;
-      scrollSelectedIntoView();
-    }
-  }, [fontOptions, selectedFont, scrollSelectedIntoView]);
-  //#endregion
-
-  //#region Actions
-  const importFont = useCallback(async () => {
-    try {
-      const { uri } = await pickFile(["font/otf", "font/ttf"]);
-      const name = await getFontName(uri);
-      const result = await saveCustomFont({ name, uri });
-      if (result) {
-        await loadCustomFont(result.uri);
-        setFont(result);
-      }
-    } catch (err) {
-      toast.error((err as Error).message);
-    }
-  }, [setFont]);
-  //#endregion
-
   return (
     <Sheet ref={props.ref}>
       <Sheet.Header
@@ -137,38 +86,36 @@ export function FontSheet(props: {
           <IconButton
             icon="upload"
             accessibilityLabel={t("feat.backup.extra.import")}
-            onPress={importFont}
+            onPress={() => importFont(setFont)}
             _iconSize={32}
           />
         }
       />
       <Sheet.List
-        ref={listRef}
-        onLayout={() => scrollSelectedIntoView(false)}
-        horizontal
+        numColumns={2}
         data={fontOptions}
         keyExtractor={(font) => (isBundledFont(font) ? font : font.id)}
-        extraData={isFontSelected}
+        extraData={selectedFont}
         renderItem={({ item: font }) => {
-          const selected = isFontSelected(font);
+          const selected = areFontEqual(selectedFont, font);
           return (
             <View
               className={cn(
-                "relative mx-0.75 rounded-[27] border border-transparent p-0.5",
+                "relative flex-1 rounded-[27] border border-transparent p-0.5",
                 { "border-onSurfaceVariant": selected },
               )}
             >
               <Button
                 onPress={() => setFont(font)}
                 disabled={selected}
-                style={{ width }}
-                className="aspect-video disabled:opacity-100"
+                className="h-24 p-2 disabled:opacity-100"
               >
                 <Text
                   numberOfLines={2}
                   center
-                  size="2xl"
+                  size="lg"
                   style={{ fontFamily: getFont(font, { headline }) }}
+                  className="leading-tight"
                 >
                   {getFontDisplayName(font)}
                 </Text>
@@ -188,9 +135,23 @@ export function FontSheet(props: {
             </View>
           );
         }}
-        className="-mx-4.75 mb-0"
-        contentContainerClassName="px-4 pb-0"
       />
     </Sheet>
   );
 }
+
+//#region Helpers
+async function importFont(setFont: (font: Font) => void) {
+  try {
+    const { uri } = await pickFile(["font/otf", "font/ttf"]);
+    const name = await getFontName(uri);
+    const result = await saveCustomFont({ name, uri });
+    if (result) {
+      await loadCustomFont(result.uri);
+      setFont(result);
+    }
+  } catch (err) {
+    toast.error((err as Error).message);
+  }
+}
+//#endregion
