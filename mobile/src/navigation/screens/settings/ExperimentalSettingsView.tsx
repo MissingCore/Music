@@ -27,7 +27,7 @@ import * as SettingsList from "./components/SettingsList";
 import { ImageDirectory } from "~/lib/file-system";
 import { queryClient } from "~/lib/react-query";
 import { Links } from "~/lib/web-browser";
-import { ConfirmableAction } from "~/components/Modal";
+import { ConfirmAction } from "~/components/next/blocks/confirm-action";
 
 export default function ExperimentalSettings() {
   const { t } = useTranslation();
@@ -74,32 +74,30 @@ export default function ExperimentalSettings() {
       </SettingsList.Group>
 
       <SettingsList.Group>
-        <ConfirmableAction
-          Component={SettingsList.Item}
-          componentProps={{
-            icon: "delete",
-            label: t("feat.seekbar.extra.waveformPurgeCache"),
-            supporting: t("feat.seekbar.extra.waveformPurgeCacheBrief"),
-            onPress: purgeWaveformCache,
-          }}
-          modalMessage={["feat.seekbar.extra.waveformPurgeCache"]}
-        />
+        <ConfirmAction prompt={[t("feat.seekbar.extra.waveformPurgeCache")]}>
+          <SettingsList.Item
+            icon="delete"
+            label={t("feat.seekbar.extra.waveformPurgeCache")}
+            supporting={t("feat.seekbar.extra.waveformPurgeCacheBrief")}
+            onPress={purgeWaveformCache}
+          />
+        </ConfirmAction>
         {unhashedImagesCount !== undefined && unhashedImagesCount !== 0 ? (
           <>
             <SettingsList.Divider />
-            <ConfirmableAction
-              Component={SettingsList.Item}
-              componentProps={{
-                icon: "delete",
-                label: `Delete ${unhashedImagesCount} Unhashed Images`,
-                supporting: `Delete ${unhashedImagesCount} unhashed images to switch to the new hashed artwork strategy, which should make disabling the \`Optimized Image Saving\` feature less impactful (ie: using more storage from saving the same artwork over and over again).`,
-                onPress: deleteAllUnhashedImages,
-              }}
-              modalMessage={[
+            <ConfirmAction
+              prompt={[
                 "Re-launching the app is necessary after confirming this action.",
                 "You will need to re-add any images you manually assigned to albums/artists/genres/playlists/tracks.",
               ]}
-            />
+            >
+              <SettingsList.Item
+                icon="delete"
+                label={`Delete ${unhashedImagesCount} Unhashed Images`}
+                supporting={`Delete ${unhashedImagesCount} unhashed images to switch to the new hashed artwork strategy, which should make disabling the \`Optimized Image Saving\` feature less impactful (ie: using more storage from saving the same artwork over and over again).`}
+                onPress={deleteAllUnhashedImages}
+              />
+            </ConfirmAction>
           </>
         ) : null}
       </SettingsList.Group>
