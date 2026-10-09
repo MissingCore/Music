@@ -68,7 +68,6 @@ export default function ExperimentalSettings() {
         <SettingsList.ExternalLinkItem
           icon="directions-car"
           label="Android Auto"
-          supporting={t("feat.queue.extra.queueAwareNextBrief")}
           href={Links.AndroidAuto}
         />
       </SettingsList.Group>
