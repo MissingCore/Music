@@ -1,8 +1,6 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { View } from "react-native";
-
 import { cn } from "~/lib/style";
 import { Button } from "../base/button";
 import type { SupportedIconName } from "../base/icon";
@@ -13,20 +11,20 @@ import type { PressableProps } from "../primitive/pressable";
 
 interface ActionButtonProps extends Omit<PressableProps, "android_ripple"> {
   label: string;
-  supporting?: string;
   intent?: Intent;
   leadingIcon?: SupportedIconName;
   trailingIcon?: SupportedIconName;
   className?: string;
+  labelClassName?: string;
 }
 
 export function ActionButton({
   label,
-  supporting,
   intent,
   leadingIcon,
   trailingIcon,
   className,
+  labelClassName,
   ...props
 }: ActionButtonProps) {
   return (
@@ -34,16 +32,15 @@ export function ActionButton({
       {leadingIcon && (
         <Icon name={leadingIcon} size={20} color={getIntentOnColor(intent)} />
       )}
-      <View className="shrink items-center justify-center">
-        <Text numberOfLines={1} intent={intent} bold size="sm">
-          {label}
-        </Text>
-        {supporting ? (
-          <Text numberOfLines={1} intent={intent} muted>
-            {supporting}
-          </Text>
-        ) : null}
-      </View>
+      <Text
+        numberOfLines={1}
+        intent={intent}
+        bold
+        size="sm"
+        className={cn(labelClassName, "shrink")}
+      >
+        {label}
+      </Text>
       {trailingIcon && (
         <Icon name={trailingIcon} size={20} color={getIntentOnColor(intent)} />
       )}

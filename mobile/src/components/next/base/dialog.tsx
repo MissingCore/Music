@@ -1,13 +1,13 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import type { GestureResponderEvent } from "react-native";
+import { cloneElement, useMemo } from "react";
+import flattenChildren from "react-keyed-flatten-children";
 import { Modal, View } from "react-native";
 
+import { cn } from "~/lib/style";
 import { GestureHandlerRootView } from "~/components/Base/GestureHandlerRootView";
-import { Button } from "./button";
 import { Card } from "./card";
-import { TText } from "./typography";
 
 function Dialog(props: { visible: boolean; children: React.ReactNode }) {
   return (
@@ -26,32 +26,23 @@ function Dialog(props: { visible: boolean; children: React.ReactNode }) {
 }
 
 //#region Actions
-function Actions(props: {
-  onConfirm: (e: GestureResponderEvent) => void;
-  onCancel: (e: GestureResponderEvent) => void;
-}) {
-  return (
-    <View className="gap-0.75">
-      <Button
-        onPress={props.onConfirm}
-        className="rounded-b-xs bg-surfaceContainer"
-      >
-        <TText
-          textKey="form.confirm"
-          numberOfLines={1}
-          bold
-          size="sm"
-          className="text-error"
-        />
-      </Button>
-      <Button
-        onPress={props.onCancel}
-        className="rounded-t-xs bg-surfaceContainer"
-      >
-        <TText textKey="form.cancel" numberOfLines={1} bold size="sm" />
-      </Button>
-    </View>
-  );
+function Actions(props: { children: React.JSX.Element[] }) {
+  const styledComponents = useMemo(() => {
+    const nodes = flattenChildren(props.children) as React.JSX.Element[];
+    return nodes.map((node, index) =>
+      cloneElement(node, {
+        className: cn(
+          "bg-surfaceContainer",
+          {
+            "rounded-t-xs": index > 0,
+            "rounded-b-xs": index < nodes.length - 1,
+          },
+          node.props.className,
+        ),
+      }),
+    );
+  }, [props.children]);
+  return <View className="gap-0.75">{styledComponents}</View>;
 }
 //#endregion
 

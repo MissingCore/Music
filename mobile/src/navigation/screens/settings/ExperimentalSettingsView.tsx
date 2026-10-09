@@ -27,7 +27,7 @@ import * as SettingsList from "./components/SettingsList";
 import { ImageDirectory } from "~/lib/file-system";
 import { queryClient } from "~/lib/react-query";
 import { Links } from "~/lib/web-browser";
-import { ConfirmAction } from "~/components/next/blocks/confirm-action";
+import { ConfirmAction } from "~/components/next/composed/confirm-action";
 
 export default function ExperimentalSettings() {
   const { t } = useTranslation();
