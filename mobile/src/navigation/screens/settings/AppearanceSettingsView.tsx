@@ -1,7 +1,6 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -17,11 +16,11 @@ import {
   AccentFontSheet,
   PrimaryFontSheet,
 } from "~/modules/customization/font/sheet";
+import { ThemeSheet } from "~/modules/customization/theme/sheet";
 import { getFontDisplayName } from "~/modules/customization/font/utils";
 
 export default function AppearanceSettings() {
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const accentFont = usePreferenceStore((s) => s.accentFont);
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
   const theme = usePreferenceStore((s) => s.theme);
@@ -38,6 +37,7 @@ export default function AppearanceSettings() {
   const squareArtwork = usePreferenceStore((s) => s.squareArtwork);
   const accentFontSheetRef = useSheetRef();
   const primaryFontSheetRef = useSheetRef();
+  const themeSheetRef = useSheetRef();
   const columnSizeSheetRef = useSheetRef();
   const tabOrderSheetRef = useSheetRef();
 
@@ -45,6 +45,7 @@ export default function AppearanceSettings() {
     <>
       <AccentFontSheet ref={accentFontSheetRef} />
       <PrimaryFontSheet ref={primaryFontSheetRef} />
+      <ThemeSheet ref={themeSheetRef} />
       <ColumnSizeSheet ref={columnSizeSheetRef} />
       <TabOrderSheet ref={tabOrderSheetRef} />
 
@@ -70,7 +71,7 @@ export default function AppearanceSettings() {
             supporting={
               activeCustomTheme?.name ?? t(`feat.theme.extra.${theme}`)
             }
-            onPress={() => navigation.navigate("Themes")}
+            onPress={() => themeSheetRef.current?.present()}
           />
         </SettingsList.Group>
 
