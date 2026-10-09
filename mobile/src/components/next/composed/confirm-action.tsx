@@ -49,10 +49,12 @@ export function ConfirmAction(props: {
               setVisible(false);
             }}
             labelClassName="text-error"
+            className="rounded-lg"
           />
           <ActionButton
             label={t("form.cancel")}
             onPress={() => setVisible(false)}
+            className="rounded-lg"
           />
         </Dialog.Actions>
       </Dialog>

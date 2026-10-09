@@ -19,7 +19,9 @@ function Dialog(props: { visible: boolean; children: React.ReactNode }) {
       transparent
     >
       <GestureHandlerRootView className="flex-1 items-center justify-center bg-black/50 px-4">
-        <Card className="w-full max-w-xl gap-8 pt-6">{props.children}</Card>
+        <Card className="w-full max-w-xl gap-8 bg-surfaceBright pt-6">
+          {props.children}
+        </Card>
       </GestureHandlerRootView>
     </Modal>
   );
@@ -31,14 +33,10 @@ function Actions(props: { children: React.JSX.Element[] }) {
     const nodes = flattenChildren(props.children) as React.JSX.Element[];
     return nodes.map((node, index) =>
       cloneElement(node, {
-        className: cn(
-          "bg-surfaceContainer",
-          {
-            "rounded-t-xs": index > 0,
-            "rounded-b-xs": index < nodes.length - 1,
-          },
-          node.props.className,
-        ),
+        className: cn("bg-surfaceContainerLowest", node.props.className, {
+          "rounded-t-xs": index > 0,
+          "rounded-b-xs": index < nodes.length - 1,
+        }),
       }),
     );
   }, [props.children]);

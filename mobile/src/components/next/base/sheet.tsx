@@ -224,12 +224,12 @@ function Actions(props: { children: React.JSX.Element[] }) {
     return nodes.map((node, index) =>
       cloneElement(node, {
         className: cn(
-          "flex-1 bg-surfaceContainer",
+          "flex-1 bg-surfaceContainerLowest",
+          node.props.className,
           {
             "rounded-l-xs": index > 0,
             "rounded-r-xs": index < nodes.length - 1,
           },
-          node.props.className,
         ),
       }),
     );
