@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import android.net.Uri
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
+import expo.modules.nativeutils.font.getFontName
 import expo.modules.nativeutils.media.AssetsOptions
 import expo.modules.nativeutils.media.assets.getAssets
 import java.io.File
@@ -76,6 +77,12 @@ class NativeUtilsModule : Module() {
       val currentContext = context
       if (currentContext == null) throw Exception("React Context is currently undefined.")
       return@AsyncFunction getAssets(currentContext, assetOptions)
+    }
+
+    AsyncFunction("getFontName") { fontUri: String ->
+      val currentContext = context
+      if (currentContext == null) throw IllegalStateException("React Context is currently undefined.")
+      return@AsyncFunction getFontName(currentContext, Uri.parse(fontUri))
     }
   }
 

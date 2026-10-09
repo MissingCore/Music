@@ -13,6 +13,10 @@ import { TabOrderSheet } from "./sheets/TabOrderSheet";
 import * as SettingsList from "./components/SettingsList";
 
 import { useSheetRef } from "~/components/next/base/sheet";
+import {
+  AccentFontSheet,
+  PrimaryFontSheet,
+} from "~/modules/customization/font/sheet";
 import { getFontDisplayName } from "~/modules/customization/font/utils";
 
 export default function AppearanceSettings() {
@@ -32,11 +36,15 @@ export default function AppearanceSettings() {
   const quickAddQueue = usePreferenceStore((s) => s.quickAddQueue);
   const quickFavorite = usePreferenceStore((s) => s.quickFavorite);
   const squareArtwork = usePreferenceStore((s) => s.squareArtwork);
+  const accentFontSheetRef = useSheetRef();
+  const primaryFontSheetRef = useSheetRef();
   const columnSizeSheetRef = useSheetRef();
   const tabOrderSheetRef = useSheetRef();
 
   return (
     <>
+      <AccentFontSheet ref={accentFontSheetRef} />
+      <PrimaryFontSheet ref={primaryFontSheetRef} />
       <ColumnSizeSheet ref={columnSizeSheetRef} />
       <TabOrderSheet ref={tabOrderSheetRef} />
 
@@ -46,14 +54,14 @@ export default function AppearanceSettings() {
             icon="brand-family"
             label={t("feat.font.extra.accent")}
             supporting={getFontDisplayName(accentFont)}
-            onPress={() => navigation.navigate("AccentFonts")}
+            onPress={() => accentFontSheetRef.current?.present()}
           />
           <SettingsList.Divider />
           <SettingsList.Item
             icon="match-case"
             label={t("feat.font.extra.primary")}
             supporting={getFontDisplayName(primaryFont)}
-            onPress={() => navigation.navigate("PrimaryFonts")}
+            onPress={() => primaryFontSheetRef.current?.present()}
           />
           <SettingsList.Divider />
           <SettingsList.Item

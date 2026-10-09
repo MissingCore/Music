@@ -48,7 +48,6 @@ import Tracks from "./screens/tracks/View";
 import { TrackSheet } from "./screens/tracks/sheets/TrackSheet";
 import { ArtistsSheet } from "./sheets/ArtistsSheet";
 import AudioEffectScreenGroup from "~/modules/audio/_screens";
-import FontScreenGroup from "~/modules/customization/font/screens";
 import ThemeScreenGroup from "~/modules/customization/theme/screens";
 import InsightsScreenGroup from "~/modules/insights/screens";
 import LyricScreenGroup from "~/modules/lyric/screens";
@@ -290,7 +289,6 @@ export const RootStack = createNativeStackNavigator({
         Genre,
       },
     },
-    Font: FontScreenGroup,
     Form: {
       screens: {
         ModifyAlbum: {
