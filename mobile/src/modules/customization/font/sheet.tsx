@@ -127,16 +127,6 @@ export function FontSheet(props: {
       toast.error((err as Error).message);
     }
   }, [setFont]);
-
-  const deleteFont = useCallback(
-    async (id: string, index: number) => {
-      await deleteCustomFont(id);
-      listRef.current?.scrollToOffset({
-        offset: (index - 1) * (width + 6),
-      });
-    },
-    [listRef, width],
-  );
   //#endregion
 
   return (
@@ -149,7 +139,7 @@ export function FontSheet(props: {
         data={fontOptions}
         keyExtractor={(font) => (isBundledFont(font) ? font : font.id)}
         extraData={isFontSelected}
-        renderItem={({ item: font, index }) => {
+        renderItem={({ item: font }) => {
           const selected = isFontSelected(font);
           return (
             <View
@@ -177,7 +167,7 @@ export function FontSheet(props: {
                 <IconButton
                   icon="delete"
                   accessibilityLabel={t("form.delete")}
-                  onPress={() => deleteFont(font.id, index)}
+                  onPress={() => deleteCustomFont(font.id)}
                   intent="error"
                   filled
                   size="xs"
