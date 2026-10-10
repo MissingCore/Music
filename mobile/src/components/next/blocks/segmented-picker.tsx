@@ -71,11 +71,7 @@ export function SegmentedPicker<TData extends string>({
               {label}
             </Text>
             {reselect && isActiveRadio ? (
-              <Icon
-                name={reselect.icon}
-                size={20}
-                className="size-5 shrink-0"
-              />
+              <Icon name={reselect.icon} size={20} />
             ) : null}
           </Ripple>
         );
