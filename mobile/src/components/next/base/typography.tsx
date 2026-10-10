@@ -24,6 +24,7 @@ const textStyle = cva({
       primary: "text-onPrimary",
       secondary: "text-onSecondary",
       error: "text-onError",
+      inverse: "text-inverseOnSurface",
     } satisfies IntentVariant,
     accent: { true: "text-4xl leading-none!" },
     muted: { true: "text-xs text-onSurfaceVariant" },
@@ -46,6 +47,7 @@ const textStyle = cva({
     { intent: "primary", muted: true, className: "text-onPrimaryVariant" },
     { intent: "secondary", muted: true, className: "text-onSecondaryVariant" },
     { intent: "error", muted: true, className: "text-onErrorVariant" },
+    { intent: "inverse", muted: true, className: "text-outlineVariant" },
   ],
   defaultVariants: {
     intent: "unset",

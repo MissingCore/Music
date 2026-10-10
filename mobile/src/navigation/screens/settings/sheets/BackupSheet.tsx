@@ -20,8 +20,6 @@ export function BackupSheet(props: { ref: SheetRef }) {
 
   return (
     <Sheet ref={props.ref}>
-      <Sheet.Header label={t("feat.backup.title")} />
-
       <TText textKey="feat.backup.description" muted size="sm" />
       <Sheet.Actions>
         <ActionButton

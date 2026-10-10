@@ -40,12 +40,10 @@ export function PrimaryFontSheet(props: { ref: SheetRef }) {
 
 const FontConfig = {
   Accent: {
-    label: "feat.font.extra.accent",
     setFont: PreferenceSetters.setAccentFont,
     headline: true,
   },
   Primary: {
-    label: "feat.font.extra.primary",
     setFont: PreferenceSetters.setPrimaryFont,
     headline: false,
   },
@@ -63,7 +61,7 @@ function FontSheet(props: { ref: SheetRef; type: "Accent" | "Primary" }) {
   const accentFont = usePreferenceStore((s) => s.accentFont);
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
 
-  const { label, setFont, headline } = FontConfig[props.type];
+  const { setFont, headline } = FontConfig[props.type];
   const selectedFont = props.type === "Accent" ? accentFont : primaryFont;
 
   //#region Helpers
@@ -80,17 +78,6 @@ function FontSheet(props: { ref: SheetRef; type: "Accent" | "Primary" }) {
 
   return (
     <Sheet ref={props.ref}>
-      <Sheet.Header
-        label={t(label)}
-        Trailing={
-          <IconButton
-            icon="upload"
-            accessibilityLabel={t("feat.backup.extra.import")}
-            onPress={() => importFont(setFont)}
-            _iconSize={32}
-          />
-        }
-      />
       <Sheet.List
         numColumns={2}
         data={fontOptions}
@@ -135,7 +122,21 @@ function FontSheet(props: { ref: SheetRef; type: "Accent" | "Primary" }) {
             </View>
           );
         }}
+        className="mb-0"
+        contentContainerClassName="pb-0"
       />
+      <Sheet.Footer>
+        <IconButton
+          icon="upload"
+          accessibilityLabel={t("feat.backup.extra.import")}
+          onPress={() => importFont(setFont)}
+          intent="inverse"
+          filled
+          wide
+          className="self-center"
+          _iconSize={32}
+        />
+      </Sheet.Footer>
     </Sheet>
   );
 }

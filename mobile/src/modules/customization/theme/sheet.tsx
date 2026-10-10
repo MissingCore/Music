@@ -39,17 +39,6 @@ export function ThemeSheet(props: { ref: SheetRef }) {
 
   return (
     <Sheet ref={props.ref}>
-      <Sheet.Header
-        label={t("feat.theme.title")}
-        Trailing={
-          <IconButton
-            icon="add"
-            accessibilityLabel={t("form.create")}
-            onPress={() => navigation.navigate("CreateTheme")}
-            _iconSize={32}
-          />
-        }
-      />
       <Sheet.List
         data={themeOptions}
         keyExtractor={(id) => id}
@@ -108,7 +97,21 @@ export function ThemeSheet(props: { ref: SheetRef }) {
           );
         }}
         ListHeaderComponent={<BundledThemePicker />}
+        className="mb-0"
+        contentContainerClassName="pb-0"
       />
+      <Sheet.Footer>
+        <IconButton
+          icon="add"
+          accessibilityLabel={t("form.create")}
+          onPress={() => navigation.navigate("CreateTheme")}
+          intent="inverse"
+          filled
+          wide
+          className="self-center"
+          _iconSize={32}
+        />
+      </Sheet.Footer>
     </Sheet>
   );
 }

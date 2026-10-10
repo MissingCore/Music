@@ -23,9 +23,9 @@ const iconButtonStyle = cva({
     wide: { true: null },
   },
   compoundVariants: [
-    { size: "xs", wide: true, className: "min-w-14" },
-    { size: "sm", wide: true, className: "min-w-16" },
-    { size: ["md", "lg"], wide: true, className: "min-w-18" },
+    { size: "xs", wide: true, className: "min-w-16" },
+    { size: "sm", wide: true, className: "min-w-18" },
+    { size: ["md", "lg"], wide: true, className: "min-w-20" },
   ],
   defaultVariants: { size: "sm", wide: false },
 });
