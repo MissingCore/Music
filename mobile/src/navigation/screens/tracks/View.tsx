@@ -15,6 +15,7 @@ import { TracksViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { getImageUri } from "~/lib/file-system";
+import { OnRTL } from "~/lib/react";
 import { Icon } from "~/components/next/base/icon";
 import { Ripple } from "~/components/next/base/ripple";
 import { createTextStack } from "~/components/next/blocks/text-stack";
@@ -136,7 +137,7 @@ function FavoritesPlaylistLink() {
           label={t("term.favoriteTracks")}
           supporting={t("plural.track", { count: data?.tracks.length ?? 0 })}
         />
-        <Icon name="arrow-back" size={32} className="ltr:rotate-180" />
+        <Icon name={OnRTL.decide("west", "east")} size={32} />
       </Ripple>
     </ScopedTheme>
   );

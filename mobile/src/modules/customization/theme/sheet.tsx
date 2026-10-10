@@ -79,7 +79,7 @@ export function ThemeSheet(props: { ref: SheetRef }) {
                 <Text
                   numberOfLines={1}
                   style={{ color: onSurface }}
-                  className="shrink grow leading-tight"
+                  className="shrink grow"
                 >
                   {name}
                 </Text>
