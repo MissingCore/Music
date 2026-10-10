@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import LicensesList from "~/resources/licenses.json";
 
+import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { LegendList } from "~/components/Base/LegendList";
 import { Button } from "~/components/next/base/button";
@@ -30,7 +31,7 @@ export default function ThirdParty() {
             label={item.name}
             supporting={`${item.license} (${item.version})`}
           />
-          <Icon name="east" size={24} className="rtl:-scale-x-100" />
+          <Icon name={OnRTL.decide("west", "east")} />
         </Button>
       )}
       contentContainerClassName="gap-0.75 p-4 pb-safe-offset-4"

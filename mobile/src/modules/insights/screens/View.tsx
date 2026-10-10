@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { sum } from "drizzle-orm";
 import { Directory, Paths } from "expo-file-system";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 
 import { db } from "~/db";
 import {
@@ -19,6 +20,7 @@ import {
 } from "~/db/schema";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
+import * as SettingsList from "~/navigation/screens/settings/components/SettingsList";
 
 import { Colors } from "~/constants/Styles";
 import { ImageDirectory } from "~/lib/file-system";
@@ -27,8 +29,10 @@ import { mutateGuard } from "~/lib/react-query";
 import { Seconds } from "~/utils/date";
 import { abbreviateSize } from "~/utils/number";
 import { SegmentedList } from "~/components/List/Segmented";
-import { Legend } from "~/components/UI/Legend";
-import { ProgressBar } from "~/components/UI/ProgressBar";
+import {
+  LegendItem,
+  ProgressBar,
+} from "~/components/next/composed/visualization";
 import { FontDirectory } from "~/modules/customization/font/core/data";
 import { useTheme } from "~/modules/customization/theme/hooks";
 import {
@@ -42,36 +46,45 @@ export default function Insights() {
 
   return (
     <ListLayout>
-      <SegmentedList>
+      <SettingsList.Group>
         <StorageWidget />
+        <SettingsList.Divider adjustForIcon={false} />
         <DBSummaryWidget />
+        <SettingsList.Divider adjustForIcon={false} />
         <DatabaseOptimizationWidget />
-      </SegmentedList>
+      </SettingsList.Group>
 
-      <SegmentedList.Item
-        labelText="feat.recap.title"
-        supportingText={t("feat.recap.brief")}
-        onPress={() => navigation.navigate("Recap", {})}
-      />
+      <SettingsList.Group>
+        <SettingsList.Item
+          icon="bar-chart-4-bars"
+          label={t("feat.recap.title")}
+          supporting={t("feat.recap.brief")}
+          onPress={() => navigation.navigate("Recap", {})}
+        />
+      </SettingsList.Group>
 
-      <SegmentedList>
-        <SegmentedList.Item
-          labelText="feat.hiddenTracks.title"
-          supportingText={t("feat.hiddenTracks.brief")}
+      <SettingsList.Group>
+        <SettingsList.Item
+          icon="visibility-off-filled"
+          label={t("feat.hiddenTracks.title")}
+          supporting={t("feat.hiddenTracks.brief")}
           onPress={() => navigation.navigate("HiddenTracks")}
         />
-        <SegmentedList.Item
-          labelText="feat.saveErrors.title"
-          supportingText={t("feat.saveErrors.brief")}
+        <SettingsList.Divider />
+        <SettingsList.Item
+          icon="error"
+          label={t("feat.saveErrors.title")}
+          supporting={t("feat.saveErrors.brief")}
           onPress={() => navigation.navigate("SaveErrors")}
         />
-      </SegmentedList>
+      </SettingsList.Group>
     </ListLayout>
   );
 }
 
 //#region Storage Summary
 function StorageWidget() {
+  const { t } = useTranslation();
   const { outline } = useTheme();
   const { data } = useStorageSummary();
 
@@ -93,35 +106,35 @@ function StorageWidget() {
         ]}
         total={data?.total ?? 0}
       />
-      <Legend>
-        <Legend.Item
-          labelTextKey="feat.insights.extra.images"
+      <View className="gap-2">
+        <LegendItem
+          label={t("feat.insights.extra.images")}
           value={getValue("images")}
           color={Colors.red}
         />
-        <Legend.Item
-          labelTextKey="feat.insights.extra.database"
+        <LegendItem
+          label={t("feat.insights.extra.database")}
           value={getValue("database")}
           color={Colors.yellow}
         />
-        <Legend.Item
-          labelTextKey="feat.font.title"
+        <LegendItem
+          label={t("feat.font.title")}
           value={getValue("fonts")}
           color={Colors.green}
         />
-        <Legend.Item
-          labelTextKey="feat.insights.extra.other"
+        <LegendItem
+          label={t("feat.insights.extra.other")}
           value={getValue("other")}
           color={Colors.blue}
         />
-        <Legend.Item
-          labelTextKey="feat.insights.extra.cache"
+        <LegendItem
+          label={t("feat.insights.extra.cache")}
           value={getValue("cache")}
           color={outline}
         />
-      </Legend>
-      <Legend.Item
-        labelTextKey="feat.insights.extra.total"
+      </View>
+      <LegendItem
+        label={t("feat.insights.extra.total")}
         value={getValue("total")}
       />
     </SegmentedList.CustomItem>
@@ -158,6 +171,7 @@ function useStorageSummary() {
 
 //#region DB Summary
 function DBSummaryWidget() {
+  const { t } = useTranslation();
   const { data } = useDatabaseSummary();
 
   const getValue = (
@@ -170,32 +184,29 @@ function DBSummaryWidget() {
 
   return (
     <SegmentedList.CustomItem className="gap-4 p-4">
-      <Legend>
-        <Legend.Item labelTextKey="term.albums" value={getValue("albums")} />
-        <Legend.Item labelTextKey="term.artists" value={getValue("artists")} />
-        <Legend.Item labelTextKey="term.genres" value={getValue("genres")} />
-        <Legend.Item
-          labelTextKey="feat.insights.extra.images"
+      <View className="gap-2">
+        <LegendItem label={t("term.albums")} value={getValue("albums")} />
+        <LegendItem label={t("term.artists")} value={getValue("artists")} />
+        <LegendItem label={t("term.genres")} value={getValue("genres")} />
+        <LegendItem
+          label={t("feat.insights.extra.images")}
           value={getValue("images")}
         />
-        <Legend.Item
-          labelTextKey="term.playlists"
-          value={getValue("playlists")}
-        />
-        <Legend.Item labelTextKey="term.tracks" value={getValue("tracks")} />
-      </Legend>
-      <Legend>
-        <Legend.Item
-          labelTextKey="feat.hiddenTracks.title"
+        <LegendItem label={t("term.playlists")} value={getValue("playlists")} />
+        <LegendItem label={t("term.tracks")} value={getValue("tracks")} />
+      </View>
+      <View className="gap-2">
+        <LegendItem
+          label={t("feat.hiddenTracks.title")}
           value={getValue("hiddenTracks")}
         />
-        <Legend.Item
-          labelTextKey="feat.saveErrors.title"
+        <LegendItem
+          label={t("feat.saveErrors.title")}
           value={getValue("saveErrors")}
         />
-      </Legend>
-      <Legend.Item
-        labelTextKey="feat.insights.extra.totalDuration"
+      </View>
+      <LegendItem
+        label={t("feat.insights.extra.totalDuration")}
         value={getValue("totalDuration")}
       />
     </SegmentedList.CustomItem>
@@ -241,11 +252,12 @@ function DatabaseOptimizationWidget() {
   const count = data ?? 0;
 
   return (
-    <SegmentedList.Item
-      labelText="feat.dbOptimization.title"
-      supportingText={t("feat.dbOptimization.brief", { count })}
-      disabled={count === 0 || optimizeDB.isPending}
+    <SettingsList.Item
+      icon="delete"
+      label={t("feat.dbOptimization.title")}
+      supporting={t("feat.dbOptimization.brief", { count })}
       onPress={() => mutateGuard(optimizeDB, undefined)}
+      disabled={count === 0 || optimizeDB.isPending}
     />
   );
 }

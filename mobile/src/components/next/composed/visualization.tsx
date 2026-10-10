@@ -7,8 +7,34 @@ import Animated from "react-native-reanimated";
 
 import { cn } from "~/lib/style";
 import { partitionArray } from "~/utils/object";
+import { Text } from "../base/typography";
 
-/** Animated progress bar that can display several progresses. */
+//#region Legend
+export function LegendItem(props: {
+  label: string;
+  value: string | number;
+  color?: string;
+}) {
+  return (
+    <View className="flex-row items-center gap-2">
+      {props.color ? (
+        <View
+          style={{ backgroundColor: props.color }}
+          className="size-2.25 rounded-full"
+        />
+      ) : null}
+      <Text size="xs" className="shrink">
+        {props.label}
+      </Text>
+      <Text muted size="xs" className="ml-auto">
+        {props.value}
+      </Text>
+    </View>
+  );
+}
+//#endregion
+
+//#region Progress Bar
 export function ProgressBar(props: {
   entries: Array<{ color: string; value: number }>;
   total: number;
@@ -65,3 +91,4 @@ function ProgressSegment(props: {
     />
   );
 }
+//#endregion

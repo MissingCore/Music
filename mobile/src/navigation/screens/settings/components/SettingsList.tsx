@@ -37,9 +37,7 @@ export function Divider({ adjustForIcon = true }) {
 export function ExternalLinkItem({
   href,
   ...props
-}: ItemBaseProps & {
-  href: string;
-}) {
+}: ItemBaseProps & { href: string }) {
   return (
     <ItemBase
       {...props}
@@ -62,11 +60,7 @@ export function ToggleItem({
   onToggle,
   enabled,
   ...props
-}: ItemBaseProps & {
-  onToggle: VoidFunction;
-  enabled: boolean;
-  disabled?: boolean;
-}) {
+}: ItemBaseProps & { onToggle: VoidFunction; enabled: boolean }) {
   return (
     <ItemBase
       {...props}
@@ -81,6 +75,7 @@ interface ItemBaseProps {
   icon: SupportedIconName;
   label: string;
   supporting?: string;
+  disabled?: boolean;
 }
 
 function ItemBase({
@@ -95,7 +90,7 @@ function ItemBase({
       {...props}
       className="flex-row items-center gap-4 p-4 disabled:opacity-25"
     >
-      <Icon name={icon} size={24} />
+      <Icon name={icon} />
       <TextStack label={label} supporting={supporting} />
       {Trailing}
     </Ripple>

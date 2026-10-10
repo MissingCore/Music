@@ -11,18 +11,18 @@ import { db } from "~/db";
 import type { HiddenTrack } from "~/db/schema";
 import { hiddenTracks } from "~/db/schema";
 
+import * as SettingsList from "~/navigation/screens/settings/components/SettingsList";
 import {
   ContentPlaceholder,
   PagePlaceholder,
 } from "~/navigation/components/Placeholder";
 
-import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
 import { FlatList } from "~/components/Base/List";
-import { Divider } from "~/components/Divider";
-import { IconButton } from "~/components/Form/Button/Icon";
-import { SegmentedList } from "~/components/List/Segmented";
-import { Em, StyledText } from "~/components/Typography/StyledText";
+import { IconButton } from "~/components/next/base/button-icon";
+import { Divider } from "~/components/next/base/divider";
+import { TextStack } from "~/components/next/blocks/text-stack";
+import { SequenceNumber } from "~/components/next/blocks/sequence-number";
 
 export default function HiddenTracks() {
   const { isPending, data } = useHiddenTracks();
@@ -97,40 +97,30 @@ function ScreenContents(props: { data: HiddenTrack[] }) {
     <FlatList
       data={groupedHiddenTracks}
       keyExtractor={({ monthYearStr }) => monthYearStr}
-      renderItem={({ item, index }) => (
-        <View className={cn("gap-2", { "mt-4": index > 0 })}>
-          <Em>{item.monthYearStr}</Em>
-          <SegmentedList>
-            {item.dayEntries.map(({ day, tracks }, index) => (
-              <SegmentedList.CustomItem
-                key={`${item.monthYearStr}_${day}`}
-                //! For some reason, the gap in `SegmentedList` doesn't work.
-                className={cn("flex-row p-1", { "mt-0.75": index > 0 })}
-              >
-                <DayIndicator day={day} />
+      renderItem={({ item }) => (
+        <SettingsList.Group label={item.monthYearStr}>
+          <FlatList
+            data={item.dayEntries}
+            keyExtractor={({ day }) => `${item.monthYearStr}_${day}`}
+            renderItem={({ item: { day, tracks } }) => (
+              <View className="flex-row p-1">
+                <SequenceNumber value={day} />
                 <HiddenTrackList tracks={tracks} onShowTrack={onShowTrack} />
-              </SegmentedList.CustomItem>
-            ))}
-          </SegmentedList>
-        </View>
+              </View>
+            )}
+            scrollEnabled={false}
+          />
+        </SettingsList.Group>
       )}
       ListEmptyComponent={
         <ContentPlaceholder errMsgKey="err.msg.noHiddenTracks" />
       }
-      contentContainerClassName="px-4 pt-2 pb-safe-offset-4"
+      contentContainerClassName="gap-4 px-4 pt-2 pb-safe-offset-4"
     />
   );
 }
 
 //#region List Components
-function DayIndicator({ day }: { day: number }) {
-  return (
-    <View className="size-12 items-center justify-center">
-      <StyledText>{day}</StyledText>
-    </View>
-  );
-}
-
 function HiddenTrackList(props: {
   tracks: HiddenTrack[];
   onShowTrack: (trackId: string) => void;
@@ -142,12 +132,7 @@ function HiddenTrackList(props: {
       keyExtractor={({ id }) => id}
       renderItem={({ item: { id, name, uri } }) => (
         <View className="flex-row items-center gap-2">
-          <View className="shrink grow">
-            <StyledText className="text-sm">{name}</StyledText>
-            <StyledText dim className="text-xs">
-              {uri}
-            </StyledText>
-          </View>
+          <TextStack label={name} supporting={uri} />
           <IconButton
             icon="visibility-off-filled"
             accessibilityLabel={t("template.entryShow", { name })}
@@ -156,6 +141,7 @@ function HiddenTrackList(props: {
         </View>
       )}
       ItemSeparatorComponent={() => <Divider className="my-2 mr-2" />}
+      scrollEnabled={false}
       className="shrink grow p-2 pr-1"
     />
   );

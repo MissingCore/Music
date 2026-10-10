@@ -284,7 +284,6 @@ function TopList(props: {
                 setPreviewLimit((prev) => (prev === 5 ? props.data.length : 5))
               }
               filled={false}
-              className="rounded-full"
             >
               <Text size="sm" className="text-primary">
                 {previewLimit === 5
