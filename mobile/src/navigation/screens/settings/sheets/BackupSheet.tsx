@@ -8,8 +8,8 @@ import { useExportBackup, useImportBackup } from "~/modules/backup/JSON";
 import { mutateGuard } from "~/lib/react-query";
 import type { SheetRef } from "~/components/next/base/sheet";
 import { Sheet } from "~/components/next/base/sheet";
-import { TText } from "~/components/next/base/typography";
 import { ActionButton } from "~/components/next/blocks/button-action";
+import { Hint } from "~/components/next/blocks/hint";
 
 export function BackupSheet(props: { ref: SheetRef }) {
   const { t } = useTranslation();
@@ -20,7 +20,7 @@ export function BackupSheet(props: { ref: SheetRef }) {
 
   return (
     <Sheet ref={props.ref}>
-      <TText textKey="feat.backup.description" muted size="sm" />
+      <Hint hint={t("feat.backup.description")} className="mt-2" />
       <Sheet.Actions>
         <ActionButton
           label={t("feat.backup.extra.export")}

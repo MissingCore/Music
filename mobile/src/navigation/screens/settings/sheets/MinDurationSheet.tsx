@@ -10,7 +10,7 @@ import { PreferenceSetters } from "~/stores/Preference/actions";
 
 import type { SheetRef } from "~/components/next/base/sheet";
 import { Sheet } from "~/components/next/base/sheet";
-import { TText } from "~/components/next/base/typography";
+import { Hint } from "~/components/next/blocks/hint";
 import type { LabeledSliderProps } from "~/components/next/blocks/slider-labeled";
 import { LabeledSlider } from "~/components/next/blocks/slider-labeled";
 
@@ -44,7 +44,7 @@ export function MinDurationSheet(props: { ref: SheetRef }) {
 
   return (
     <Sheet ref={props.ref} draggable={!stopDrag}>
-      <TText textKey="feat.minTrackDuration.description" muted size="sm" />
+      <Hint hint={t("feat.minTrackDuration.description")} className="mt-2" />
       <LabeledSlider initValue={minSeconds} {...columnSizeSliderOptions} />
     </Sheet>
   );
