@@ -11,7 +11,7 @@ import { Text } from "../base/typography";
 import { ActionButton } from "../blocks/button-action";
 
 export function ConfirmAction(props: {
-  /** Element with an `onPress` prop. */
+  /** Element with an `onPress` or `onToggle` prop. */
   children: React.JSX.Element;
   prompt: [string] | [string, string];
   skipConfirmation?: boolean;
@@ -20,12 +20,17 @@ export function ConfirmAction(props: {
   const [visible, setVisible] = useState(false);
 
   const { Anchor, onPress } = useMemo(() => {
-    const onPress = props.children.props.onPress as Maybe<
-      (e: GestureResponderEvent) => void
-    >;
+    const nodeProps = props.children.props;
+    const [property, onPress]: [
+      string,
+      Maybe<(e: GestureResponderEvent) => void>,
+    ] = nodeProps.onPress
+      ? ["onPress", nodeProps.onPress]
+      : ["onToggle", nodeProps.onToggle];
+
     return {
       Anchor: cloneElement(props.children, {
-        onPress: (e: GestureResponderEvent) =>
+        [property]: (e: GestureResponderEvent) =>
           props.skipConfirmation ? onPress?.(e) : setVisible(true),
       }),
       onPress,

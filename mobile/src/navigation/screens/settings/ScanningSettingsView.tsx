@@ -12,14 +12,13 @@ import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { MinDurationSheet } from "./sheets/MinDurationSheet";
 import { ScanFilterListSheet } from "./sheets/ScanFilterListSheet";
 import { SeparatorsSheet } from "./sheets/SeparatorsSheet";
+import * as SettingsList from "./components/SettingsList";
 
 import { getAPIVersionCode } from "~/lib/device";
 import { mutateGuard } from "~/lib/react-query";
-import { Switch } from "~/components/Form/Switch";
-import { SegmentedList } from "~/components/List/Segmented";
-import { ConfirmableAction } from "~/components/Modal";
 import type { SheetRef } from "~/components/next/base/sheet";
 import { useSheetRef } from "~/components/next/base/sheet";
+import { ConfirmAction } from "~/components/next/composed/confirm-action";
 
 export default function ScanningSettings() {
   const { t } = useTranslation();
@@ -31,36 +30,39 @@ export default function ScanningSettings() {
     <>
       <ScanningConfigurations.Sheets {...sheetRefs} />
       <ListLayout>
-        <SegmentedList>
-          <SegmentedList.Item
-            labelText="feat.rescan.title"
-            supportingText={t("feat.rescan.brief")}
-            disabled={rescan.isPending}
+        <SettingsList.Group>
+          <SettingsList.Item
+            icon="search"
+            label={t("feat.rescan.title")}
+            supporting={t("feat.rescan.brief")}
             onPress={() => mutateGuard(rescan, undefined)}
+            disabled={rescan.isPending}
           />
-          <ConfirmableAction
-            Component={SegmentedList.Item}
-            componentProps={{
-              labelText: "feat.deepRescan.title",
-              supportingText: t("feat.deepRescan.brief"),
-              disabled: rescan.isPending,
-              onPress: () => mutateGuard(rescan, true),
-            }}
-            modalMessage={["feat.deepRescan.title"]}
-          />
-        </SegmentedList>
+          <SettingsList.Divider />
+          <ConfirmAction prompt={[t("feat.deepRescan.title")]}>
+            <SettingsList.Item
+              icon="find-replace"
+              label={t("feat.deepRescan.title")}
+              supporting={t("feat.deepRescan.brief")}
+              onPress={() => mutateGuard(rescan, true)}
+              disabled={rescan.isPending}
+            />
+          </ConfirmAction>
+        </SettingsList.Group>
 
-        <SegmentedList>
-          <SegmentedList.Item
-            labelText="feat.rescanOnLaunch.title"
-            supportingText={t("feat.rescanOnLaunch.brief")}
-            onPress={PreferenceTogglers.toggleKey("rescanOnLaunch")}
-            Trailing={<Switch enabled={rescanOnLaunch} />}
+        <SettingsList.Group>
+          <SettingsList.ToggleItem
+            icon="search-off"
+            label={t("feat.rescanOnLaunch.title")}
+            supporting={t("feat.rescanOnLaunch.brief")}
+            onToggle={PreferenceTogglers.toggleKey("rescanOnLaunch")}
+            enabled={rescanOnLaunch}
           />
+          <SettingsList.Divider />
           <OptimizedImageSavingSetting />
-        </SegmentedList>
-
-        <MediaStoreScannerSetting />
+          <SettingsList.Divider />
+          <MediaStoreScannerSetting />
+        </SettingsList.Group>
 
         <ScanningConfigurations.Settings {...sheetRefs} />
       </ListLayout>
@@ -72,22 +74,22 @@ export default function ScanningSettings() {
 export function OptimizedImageSavingSetting() {
   const { t } = useTranslation();
   const optimizedImageSave = usePreferenceStore((s) => s.optimizedImageSave);
-
   return (
-    <ConfirmableAction
-      Component={SegmentedList.Item}
-      componentProps={{
-        labelText: "feat.optimizedImageSave.title",
-        supportingText: t("feat.optimizedImageSave.brief"),
-        onPress: PreferenceTogglers.toggleKey("optimizedImageSave"),
-        Trailing: <Switch enabled={optimizedImageSave} />,
-      }}
-      modalMessage={[
-        "feat.optimizedImageSave.description.line1",
-        "feat.optimizedImageSave.description.line2",
+    <ConfirmAction
+      prompt={[
+        t("feat.optimizedImageSave.description.line1"),
+        t("feat.optimizedImageSave.description.line2"),
       ]}
-      disableModal={!optimizedImageSave}
-    />
+      skipConfirmation={!optimizedImageSave}
+    >
+      <SettingsList.ToggleItem
+        icon="image"
+        label={t("feat.optimizedImageSave.title")}
+        supporting={t("feat.optimizedImageSave.brief")}
+        onToggle={PreferenceTogglers.toggleKey("optimizedImageSave")}
+        enabled={optimizedImageSave}
+      />
+    </ConfirmAction>
   );
 }
 //#endregion
@@ -96,13 +98,13 @@ export function OptimizedImageSavingSetting() {
 export function MediaStoreScannerSetting() {
   const { t } = useTranslation();
   const mediaStoreScanner = usePreferenceStore((s) => s.mediaStoreScanner);
-
   return getAPIVersionCode() >= 30 ? (
-    <SegmentedList.Item
-      labelText="feat.scanning.extra.useMediaStore"
-      supportingText={t("feat.scanning.extra.useMediaStoreBrief")}
-      onPress={PreferenceTogglers.toggleKey("mediaStoreScanner")}
-      Trailing={<Switch enabled={mediaStoreScanner} />}
+    <SettingsList.ToggleItem
+      icon="database-search"
+      label={t("feat.scanning.extra.useMediaStore")}
+      supporting={t("feat.scanning.extra.useMediaStoreBrief")}
+      onToggle={PreferenceTogglers.toggleKey("mediaStoreScanner")}
+      enabled={mediaStoreScanner}
     />
   ) : null;
 }
@@ -127,29 +129,37 @@ export const ScanningConfigurations = {
 
     return (
       <>
-        <SegmentedList>
-          <SegmentedList.Item
-            labelText="feat.listAllow.title"
-            supportingText={t("plural.entry", { count: allowList.length })}
+        <SettingsList.Group>
+          <SettingsList.Item
+            icon="playlist-add-check"
+            label={t("feat.listAllow.title")}
+            supporting={t("plural.entry", { count: allowList.length })}
             onPress={() => props.allowListSheetRef.current?.present()}
           />
-          <SegmentedList.Item
-            labelText="feat.listBlock.title"
-            supportingText={t("plural.entry", { count: blockList.length })}
+          <SettingsList.Divider />
+          <SettingsList.Item
+            icon="playlist-remove"
+            label={t("feat.listBlock.title")}
+            supporting={t("plural.entry", { count: blockList.length })}
             onPress={() => props.blockListSheetRef.current?.present()}
           />
-          <SegmentedList.Item
-            labelText="feat.minTrackDuration.title"
-            supportingText={t("plural.second", { count: ignoreDuration })}
+          <SettingsList.Divider />
+          <SettingsList.Item
+            icon="timer"
+            label={t("feat.minTrackDuration.title")}
+            supporting={t("plural.second", { count: ignoreDuration })}
             onPress={() => props.minDurationSheetRef.current?.present()}
           />
-        </SegmentedList>
+        </SettingsList.Group>
 
-        <SegmentedList.Item
-          labelText="feat.separators.title"
-          supportingText={t("plural.entry", { count: delimiters.length })}
-          onPress={() => props.separatorsSheetRef.current?.present()}
-        />
+        <SettingsList.Group>
+          <SettingsList.Item
+            icon="glyphs"
+            label={t("feat.separators.title")}
+            supporting={t("plural.entry", { count: delimiters.length })}
+            onPress={() => props.separatorsSheetRef.current?.present()}
+          />
+        </SettingsList.Group>
       </>
     );
   }),
