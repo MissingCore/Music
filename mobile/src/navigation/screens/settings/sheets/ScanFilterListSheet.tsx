@@ -12,11 +12,12 @@ import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 
 import { pickDirectory } from "~/lib/file-system";
 import { addTrailingSlash, getSafeUri } from "~/utils/string";
-import { TextInput } from "~/components/Form/Input";
 import { IconButton } from "~/components/next/base/button-icon";
+import { TextInput } from "~/components/next/base/input";
 import type { SheetRef } from "~/components/next/base/sheet";
 import { Sheet } from "~/components/next/base/sheet";
-import { Text, TText } from "~/components/next/base/typography";
+import { Text } from "~/components/next/base/typography";
+import { Hint } from "~/components/next/blocks/hint";
 import { Marquee } from "~/components/next/blocks/marquee";
 import { useInputForm } from "~/modules/form/useInputForm";
 
@@ -30,11 +31,7 @@ export function ScanFilterListSheet(props: {
   const { t } = useTranslation();
   const listEntries = usePreferenceStore((s) => s[props.listType]);
   return (
-    <Sheet ref={props.ref} snapTop>
-      <Sheet.Header label={t(`feat.${props.listType}.title`)}>
-        <TText textKey={`feat.${props.listType}.description`} muted size="sm" />
-        <FilterForm listType={props.listType} listEntries={listEntries} />
-      </Sheet.Header>
+    <Sheet ref={props.ref}>
       <Sheet.List
         estimatedItemSize={46} // 40px Height + 6px Margin Bottom
         data={listEntries}
@@ -51,8 +48,13 @@ export function ScanFilterListSheet(props: {
             />
           </View>
         )}
-        contentContainerClassName="gap-1.5 pt-4 pr-1"
+        className="mb-0"
+        contentContainerClassName="gap-1.5 pb-0"
       />
+      <Sheet.Footer className="gap-4">
+        <FilterForm listType={props.listType} listEntries={listEntries} />
+        <Hint hint={t(`feat.${props.listType}.description`)} />
+      </Sheet.Footer>
     </Sheet>
   );
 }
@@ -92,39 +94,36 @@ function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
   };
 
   return (
-    <View className="flex-row gap-2 pt-4">
-      {/* FIXME: Noticed w/ RN 0.79, but having a border seems to contribute to the height when it shouldn't. */}
-      <View className="h-12 shrink grow flex-row items-center gap-2 border-b border-outline">
-        <TextInput
-          editable={!inputForm.isSubmitting}
-          value={inputForm.value}
-          onChangeText={inputForm.onChange}
-          placeholder="/storage/emulated/0"
-          className="shrink grow"
-          forSheet
-        />
-        <IconButton
-          icon="create-new-folder"
-          accessibilityLabel={t("feat.directory.extra.select")}
-          onPress={selectDirectory}
-          disabled={inputForm.isSubmitting}
-          size="md"
-        />
-      </View>
-      <IconButton
-        icon="add"
-        accessibilityLabel={t("feat.directory.extra.add")}
-        onPress={async () => {
-          Keyboard.dismiss();
-          await inputForm.onSubmit();
-        }}
-        disabled={!inputForm.canSubmit || inputForm.isSubmitting}
-        intent="primary"
-        filled
-        size="md"
-        className="rounded-md"
-      />
-    </View>
+    <TextInput.Pill
+      editable={!inputForm.isSubmitting}
+      value={inputForm.value}
+      onChangeText={inputForm.onChange}
+      placeholder="/storage/emulated/0"
+      forSheet
+      TrailingActions={
+        <View className="flex-row items-center">
+          <IconButton
+            icon="create-new-folder"
+            accessibilityLabel={t("feat.directory.extra.select")}
+            onPress={selectDirectory}
+            disabled={inputForm.isSubmitting}
+            size="md"
+          />
+          <IconButton
+            icon="add"
+            accessibilityLabel={t("feat.directory.extra.add")}
+            onPress={async () => {
+              Keyboard.dismiss();
+              await inputForm.onSubmit();
+            }}
+            disabled={!inputForm.canSubmit || inputForm.isSubmitting}
+            intent="primary"
+            filled
+            size="md"
+          />
+        </View>
+      }
+    />
   );
 }
 //#endregion
