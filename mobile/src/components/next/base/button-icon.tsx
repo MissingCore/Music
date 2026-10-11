@@ -32,7 +32,7 @@ const iconButtonStyle = cva({
 
 type IconButtonVariants = VariantProps<typeof iconButtonStyle>;
 
-interface IconButtonProps extends ButtonProps, IconButtonVariants {
+export interface IconButtonProps extends ButtonProps, IconButtonVariants {
   icon: SupportedIconName;
   accessibilityLabel: string;
   _iconColor?: AppColor;
