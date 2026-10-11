@@ -44,8 +44,10 @@ export function MinDurationSheet(props: { ref: SheetRef }) {
 
   return (
     <Sheet ref={props.ref} draggable={!stopDrag}>
-      <Hint hint={t("feat.minTrackDuration.description")} className="mt-2" />
       <LabeledSlider initValue={minSeconds} {...columnSizeSliderOptions} />
+      <Sheet.Footer>
+        <Hint hint={t("feat.minTrackDuration.description")} />
+      </Sheet.Footer>
     </Sheet>
   );
 }

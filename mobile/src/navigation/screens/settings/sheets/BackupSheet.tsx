@@ -20,21 +20,25 @@ export function BackupSheet(props: { ref: SheetRef }) {
 
   return (
     <Sheet ref={props.ref}>
-      <Hint hint={t("feat.backup.description")} className="mt-2" />
       <Sheet.Actions>
         <ActionButton
           label={t("feat.backup.extra.export")}
           onPress={() => mutateGuard(exportBackup, undefined)}
           disabled={inProgress}
+          leadingIcon="download"
           className="rounded-lg"
         />
         <ActionButton
           label={t("feat.backup.extra.import")}
           onPress={() => mutateGuard(importBackup, undefined)}
           disabled={inProgress}
+          leadingIcon="upload"
           className="rounded-lg"
         />
       </Sheet.Actions>
+      <Sheet.Footer>
+        <Hint hint={t("feat.backup.description")} />
+      </Sheet.Footer>
     </Sheet>
   );
 }
