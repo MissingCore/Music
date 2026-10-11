@@ -14,7 +14,7 @@ import { Ripple } from "~/components/next/base/ripple";
 import { Switch } from "~/components/next/base/switch";
 import { Text } from "~/components/next/base/typography";
 import { TextStack } from "~/components/next/blocks/text-stack";
-import type { PressProps } from "~/components/next/primitive/pressable";
+import type { PressableProps } from "~/components/next/primitive/pressable";
 
 export function Group(props: { children: React.ReactNode; label?: string }) {
   const renderedComponent = <Card className="p-0">{props.children}</Card>;
@@ -64,6 +64,8 @@ export function ToggleItem({
   return (
     <ItemBase
       {...props}
+      accessibilityRole="switch"
+      accessibilityState={{ checked: enabled, disabled: props.disabled }}
       onPress={onToggle}
       Trailing={<Switch enabled={enabled} />}
     />
@@ -84,7 +86,7 @@ function ItemBase({
   supporting,
   Trailing,
   ...props
-}: ItemBaseProps & PressProps & { Trailing: React.ReactNode }) {
+}: ItemBaseProps & PressableProps & { Trailing: React.ReactNode }) {
   return (
     <Ripple
       {...props}
