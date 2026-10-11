@@ -317,43 +317,25 @@ export const RootStack = createNativeStackNavigator({
       ),
       screenOptions: {
         animation: "fade",
+        headerShown: false,
       },
       screens: {
         Settings: {
           screen: Settings,
-          options: {
-            title: "term.settings",
-            animation: "default",
-          },
+          options: { animation: "default" },
         },
         AppUpdate: {
           screen: AppUpdate,
           options: { title: "feat.appUpdate.title" },
         },
-        AppearanceSettings: {
-          screen: AppearanceSettings,
-          options: { title: "feat.appearance.title" },
-        },
-        PlaybackSettings: {
-          screen: PlaybackSettings,
-          options: { title: "feat.playback.title" },
-        },
-        ScanningSettings: {
-          screen: ScanningSettings,
-          options: { title: "feat.scanning.title" },
-        },
-        ExperimentalSettings: {
-          screen: ExperimentalSettings,
-          options: { title: "feat.experimental.title" },
-        },
+        AppearanceSettings,
+        PlaybackSettings,
+        ScanningSettings,
+        ExperimentalSettings,
         About: {
           screen: AboutApp,
-          options: { title: "term.about" },
         },
-        ThirdParty: {
-          screen: ThirdParty,
-          options: { title: "feat.thirdParty.title" },
-        },
+        ThirdParty,
         PackageLicense,
       },
     },

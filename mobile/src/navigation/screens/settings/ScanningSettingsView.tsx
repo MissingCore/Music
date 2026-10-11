@@ -8,7 +8,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { useRescanForTracks } from "~/modules/startup/scanning/core/rescan";
 
-import { ListLayout } from "~/navigation/layouts/ListLayout";
+import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
 import { MinDurationSheet } from "./sheets/MinDurationSheet";
 import { ScanFilterListSheet } from "./sheets/ScanFilterListSheet";
 import { SeparatorsSheet } from "./sheets/SeparatorsSheet";
@@ -29,7 +29,7 @@ export default function ScanningSettings() {
   return (
     <>
       <ScanningConfigurations.Sheets {...sheetRefs} />
-      <ListLayout>
+      <ScrollLayout title="feat.scanning.title">
         <SettingsList.Group>
           <SettingsList.Item
             icon="search"
@@ -65,7 +65,7 @@ export default function ScanningSettings() {
         </SettingsList.Group>
 
         <ScanningConfigurations.Settings {...sheetRefs} />
-      </ListLayout>
+      </ScrollLayout>
     </>
   );
 }

@@ -18,6 +18,7 @@ const InsightsScreenGroup = {
   ),
   screenOptions: {
     animation: "fade",
+    headerShown: false,
   },
   screens: {
     RecentlyPlayed: {
@@ -26,25 +27,14 @@ const InsightsScreenGroup = {
       options: {
         title: "feat.recent.extra.recentlyPlayed",
         animation: "default",
+        headerShown: true,
       },
     },
 
-    Insights: {
-      screen: Insights,
-      options: { title: "feat.insights.title" },
-    },
-    HiddenTracks: {
-      screen: HiddenTracks,
-      options: { title: "feat.hiddenTracks.title" },
-    },
-    Recap: {
-      screen: Recap,
-      options: { title: "feat.recap.title" },
-    },
-    SaveErrors: {
-      screen: SaveErrors,
-      options: { title: "feat.saveErrors.title" },
-    },
+    Insights,
+    HiddenTracks,
+    Recap,
+    SaveErrors,
   },
 } as const;
 

@@ -6,11 +6,13 @@ import { View } from "react-native";
 
 import { db } from "~/db";
 
+import { ScrollLayoutTitle } from "~/navigation/layouts/ScrollLayout";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { cn } from "~/lib/style";
 import { LegendList } from "~/components/Base/LegendList";
 import { TextStack } from "~/components/next/blocks/text-stack";
+import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 
 export default function SaveErrors() {
   const { data } = useSaveErrors();
@@ -31,8 +33,11 @@ export default function SaveErrors() {
           />
         </View>
       )}
+      ListHeaderComponent={
+        <ScrollLayoutTitle title="feat.saveErrors.title" className="mb-5.25" />
+      }
       ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noErrors" />}
-      contentContainerClassName="gap-0.75 p-4 pb-safe-offset-4"
+      contentContainerClassName={cn("gap-0.75 p-4", ToolbarScreenOffset)}
     />
   );
 }

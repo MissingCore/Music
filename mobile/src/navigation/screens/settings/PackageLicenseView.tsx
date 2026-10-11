@@ -6,14 +6,13 @@ import { useTranslation } from "react-i18next";
 
 import LicensesList from "~/resources/licenses.json";
 
-import { ListLayout } from "~/navigation/layouts/ListLayout";
-import { ScreenOptions } from "~/navigation/components/ScreenOptions";
+import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
 
 import { OnRTL } from "~/lib/react";
 import { openLink } from "~/lib/web-browser";
-import { IconButton } from "~/components/next/base/button-icon";
 import { Card } from "~/components/next/base/card";
 import { Text } from "~/components/next/base/typography";
+import { Toolbar } from "~/components/next/composed/toolbar";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -26,29 +25,29 @@ export default function PackageLicense({
   const licenseInfo = LicensesList[id as keyof typeof LicensesList];
   return (
     <>
-      <ScreenOptions
-        headerRight={() => (
-          <IconButton
-            icon={`north-${OnRTL.decide("west", "east")}`}
-            accessibilityLabel={t("template.entrySeeMore", {
-              name: licenseInfo.name,
-            })}
-            onPress={() => openLink(licenseInfo.source)}
-            filled
-          />
-        )}
-      />
-      <ListLayout contentContainerClassName="gap-0.75">
-        <Card className="rounded-b-xs">
-          <Text accent size="xl">
-            {licenseInfo.name}
-          </Text>
+      <Toolbar>
+        <Toolbar.Contents>
+          <Toolbar.Back />
+        </Toolbar.Contents>
+        <Toolbar.FAB
+          icon={`north-${OnRTL.decide("west", "east")}`}
+          accessibilityLabel={t("template.entrySeeMore", {
+            name: licenseInfo.name,
+          })}
+          onPress={() => openLink(licenseInfo.source)}
+          intent="inverse"
+        />
+      </Toolbar>
+
+      {/* @ts-expect-error - If the key doesn't exist, then the string is outputted. */}
+      <ScrollLayout title={licenseInfo.name}>
+        <Card className="-mb-5.25 rounded-b-xs">
           <Text muted>{`${licenseInfo.license} (${licenseInfo.version})`}</Text>
         </Card>
         <Card className="rounded-t-xs">
           <Text size="xs">{licenseInfo.licenseText}</Text>
         </Card>
-      </ListLayout>
+      </ScrollLayout>
     </>
   );
 }

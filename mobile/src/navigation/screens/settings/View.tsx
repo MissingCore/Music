@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
-import { ListLayout } from "~/navigation/layouts/ListLayout";
+import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
 import { BackupSheet } from "./sheets/BackupSheet";
 import { LanguageSheet } from "./sheets/LanguageSheet";
 import * as SettingsList from "./components/SettingsList";
@@ -28,7 +28,7 @@ export default function Settings() {
       <LanguageSheet ref={languageSheetRef} />
       <BackupSheet ref={backupSheetRef} />
 
-      <ListLayout>
+      <ScrollLayout title="term.settings">
         <SettingsList.Group>
           <SettingsList.Item
             icon="format-paint"
@@ -97,7 +97,7 @@ export default function Settings() {
             onPress={() => navigation.navigate("About")}
           />
         </SettingsList.Group>
-      </ListLayout>
+      </ScrollLayout>
     </>
   );
 }

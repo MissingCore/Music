@@ -14,7 +14,7 @@ import { useTheme } from "~/modules/customization/theme/hooks";
 import type { IconButtonProps } from "../base/button-icon";
 import { IconButton } from "../base/button-icon";
 
-export const ToolbarOffset = "pb-safe-offset-20" as const;
+export const ToolbarScreenOffset = "py-safe-offset-20" as const;
 
 export function useToolbarOffset(extra = 0) {
   const { bottom } = useSafeAreaInsets();
@@ -78,18 +78,24 @@ function FAB(props: Omit<IconButtonProps, "filled" | "size">) {
 
 //#region Pre-Build
 function Default() {
-  const { t } = useTranslation();
-  const navigation = useNavigation();
   return (
     <Toolbar>
       <Contents>
-        <IconButton
-          icon={OnRTL.decide("east", "west")}
-          accessibilityLabel={t("form.back")}
-          onPress={() => navigation.goBack()}
-        />
+        <Back />
       </Contents>
     </Toolbar>
+  );
+}
+
+function Back() {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+  return (
+    <IconButton
+      icon={OnRTL.decide("east", "west")}
+      accessibilityLabel={t("form.back")}
+      onPress={() => navigation.goBack()}
+    />
   );
 }
 //#endregion
@@ -99,6 +105,7 @@ Toolbar.Contents = Contents;
 Toolbar.FAB = FAB;
 
 Toolbar.Default = Default;
+Toolbar.Back = Back;
 
 export { Toolbar };
 //#endregion

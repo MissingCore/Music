@@ -11,18 +11,21 @@ import { db } from "~/db";
 import type { HiddenTrack } from "~/db/schema";
 import { hiddenTracks } from "~/db/schema";
 
+import { ScrollLayoutTitle } from "~/navigation/layouts/ScrollLayout";
 import * as SettingsList from "~/navigation/screens/settings/components/SettingsList";
 import {
   ContentPlaceholder,
   PagePlaceholder,
 } from "~/navigation/components/Placeholder";
 
+import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
 import { FlatList } from "~/components/Base/List";
 import { IconButton } from "~/components/next/base/button-icon";
 import { Divider } from "~/components/next/base/divider";
 import { TextStack } from "~/components/next/blocks/text-stack";
 import { SequenceNumber } from "~/components/next/blocks/sequence-number";
+import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 
 export default function HiddenTracks() {
   const { isPending, data } = useHiddenTracks();
@@ -112,10 +115,13 @@ function ScreenContents(props: { data: HiddenTrack[] }) {
           />
         </SettingsList.Group>
       )}
+      ListHeaderComponent={
+        <ScrollLayoutTitle title="feat.hiddenTracks.title" />
+      }
       ListEmptyComponent={
         <ContentPlaceholder errMsgKey="err.msg.noHiddenTracks" />
       }
-      contentContainerClassName="gap-4 px-4 pt-2 pb-safe-offset-4"
+      contentContainerClassName={cn("gap-6 px-4", ToolbarScreenOffset)}
     />
   );
 }

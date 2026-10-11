@@ -19,7 +19,7 @@ import {
   tracks,
 } from "~/db/schema";
 
-import { ListLayout } from "~/navigation/layouts/ListLayout";
+import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
 import * as SettingsList from "~/navigation/screens/settings/components/SettingsList";
 
 import { Colors } from "~/constants/Styles";
@@ -44,7 +44,7 @@ export default function Insights() {
   const navigation = useNavigation();
 
   return (
-    <ListLayout>
+    <ScrollLayout title="feat.insights.title">
       <SettingsList.Group>
         <StorageWidget />
         <SettingsList.Divider adjustForIcon={false} />
@@ -77,7 +77,7 @@ export default function Insights() {
           onPress={() => navigation.navigate("SaveErrors")}
         />
       </SettingsList.Group>
-    </ListLayout>
+    </ScrollLayout>
   );
 }
 

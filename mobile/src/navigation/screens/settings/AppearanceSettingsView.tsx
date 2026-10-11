@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 
-import { ListLayout } from "~/navigation/layouts/ListLayout";
+import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
 import { ColumnSizeSheet } from "./sheets/ColumnSizeSheet";
 import { TabOrderSheet } from "./sheets/TabOrderSheet";
 import * as SettingsList from "./components/SettingsList";
@@ -49,7 +49,7 @@ export default function AppearanceSettings() {
       <ColumnSizeSheet ref={columnSizeSheetRef} />
       <TabOrderSheet ref={tabOrderSheetRef} />
 
-      <ListLayout>
+      <ScrollLayout title="feat.appearance.title">
         <SettingsList.Group label={t("feat.theme.title")}>
           <SettingsList.Item
             icon="brand-family"
@@ -155,7 +155,7 @@ export default function AppearanceSettings() {
             enabled={squareArtwork}
           />
         </SettingsList.Group>
-      </ListLayout>
+      </ScrollLayout>
     </>
   );
 }

@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 
-import { ListLayout } from "~/navigation/layouts/ListLayout";
+import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
 import * as SettingsList from "./components/SettingsList";
 
 export default function PlaybackSettings() {
@@ -19,7 +19,7 @@ export default function PlaybackSettings() {
   const restoreLastPosition = usePreferenceStore((s) => s.restoreLastPosition);
 
   return (
-    <ListLayout>
+    <ScrollLayout title="feat.playback.title">
       <SettingsList.Group>
         <SettingsList.ToggleItem
           icon="autoplay"
@@ -54,6 +54,6 @@ export default function PlaybackSettings() {
           enabled={reshuffleOnLaunch}
         />
       </SettingsList.Group>
-    </ListLayout>
+    </ScrollLayout>
   );
 }

@@ -21,7 +21,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { sessionStore } from "~/stores/Session/store";
 
-import { ListLayout } from "~/navigation/layouts/ListLayout";
+import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
 import * as SettingsList from "./components/SettingsList";
 
 import { ImageDirectory } from "~/lib/file-system";
@@ -37,7 +37,7 @@ export default function ExperimentalSettings() {
   const { data: unhashedImagesCount } = useUnhashedImagesCount();
 
   return (
-    <ListLayout>
+    <ScrollLayout title="feat.experimental.title">
       <SettingsList.Group>
         <SettingsList.ToggleItem
           icon="mist"
@@ -100,7 +100,7 @@ export default function ExperimentalSettings() {
           </>
         ) : null}
       </SettingsList.Group>
-    </ListLayout>
+    </ScrollLayout>
   );
 }
 
