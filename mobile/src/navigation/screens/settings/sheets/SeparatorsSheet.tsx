@@ -41,7 +41,7 @@ export function SeparatorsSheet(props: { ref: SheetRef }) {
         className="mb-0"
         contentContainerClassName="gap-1.5 pb-0"
       />
-      <Sheet.Footer className="gap-4">
+      <Sheet.Footer>
         <SeparatorForm />
         <Hint hint={t("feat.separators.description.line1")} />
       </Sheet.Footer>

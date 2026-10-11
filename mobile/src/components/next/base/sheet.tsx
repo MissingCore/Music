@@ -116,7 +116,7 @@ function useSheetComponents(children: React.ReactNode) {
             // @ts-expect-error - Ref should still work.
             ref={listRef}
             className="-mb-4"
-            contentContainerClassName="gap-6 pb-4"
+            contentContainerClassName="gap-4 pb-4"
           >
             {contentNodes}
           </ScrollView>
@@ -167,7 +167,7 @@ function Header(props: {
   return (
     <View>
       {props.label || props.Leading || props.Trailing ? (
-        <View className="mb-6 flex-row items-center gap-2">
+        <View className="mb-6 flex-row items-center gap-3">
           {props.Leading}
           <Marquee
             wrapperClassName={cn(
@@ -194,7 +194,7 @@ function Header(props: {
  * Should be rendered as a direct child of `Sheet`.
  */
 function Footer({ className, ...props }: Omit<ViewProps, "onLayout">) {
-  return <View {...props} className={cn("pt-4", className)} />;
+  return <View {...props} className={cn("gap-4 pt-4", className)} />;
 }
 //#endregion
 

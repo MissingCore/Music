@@ -51,7 +51,7 @@ export function ScanFilterListSheet(props: {
         className="mb-0"
         contentContainerClassName="gap-1.5 pb-0"
       />
-      <Sheet.Footer className="gap-4">
+      <Sheet.Footer>
         <FilterForm listType={props.listType} listEntries={listEntries} />
         <Hint hint={t(`feat.${props.listType}.description`)} />
       </Sheet.Footer>
