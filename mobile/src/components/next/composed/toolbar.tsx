@@ -24,10 +24,16 @@ export function useToolbarOffset(extra = 0) {
 
 //#region Toolbar
 function Toolbar(props: { children: React.JSX.Element | React.JSX.Element[] }) {
-  const [id, setId] = useState(0);
-  useFocusEffect(useCallback(() => setId(Date.now()), []));
+  const [visible, setVisible] = useState(false);
+  useFocusEffect(
+    useCallback(() => {
+      setVisible(true);
+      return () => setVisible(false);
+    }, []),
+  );
+  if (!visible) return null;
   return (
-    <Portal key={id} name="toolbar">
+    <Portal name="toolbar">
       <Backdrop />
       <View className="absolute inset-x-0 bottom-0 flex-row items-center justify-between px-4 pb-safe-offset-4">
         {props.children}

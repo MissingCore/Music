@@ -7,13 +7,22 @@ import RecentlyPlayed from "./RecentlyPlayedView";
 import SaveErrors from "./SaveErrorsView";
 import Insights from "./View";
 
+import { Toolbar } from "~/components/next/composed/toolbar";
+
 const InsightsScreenGroup = {
+  screenLayout: ({ children }: { children: React.JSX.Element }) => (
+    <>
+      <Toolbar.Default />
+      {children}
+    </>
+  ),
   screenOptions: {
     animation: "fade",
   },
   screens: {
     RecentlyPlayed: {
       screen: RecentlyPlayed,
+      layout: ({ children }: { children: React.JSX.Element }) => children,
       options: {
         title: "feat.recent.extra.recentlyPlayed",
         animation: "default",
