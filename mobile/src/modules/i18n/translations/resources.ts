@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import ar from "./ar.json";
+import br from "./br.json";
 import ca from "./ca.json";
 import da from "./da.json";
 import de from "./de.json";
@@ -20,6 +21,7 @@ import zhHans from "./zh-Hans.json";
 
 export const resources = {
   ar: { translation: ar },
+  br: { translation: br },
   ca: { translation: ca },
   da: { translation: da },
   de: { translation: de },
