@@ -39,7 +39,6 @@ export default function PackageLicense({
         />
       </Toolbar>
 
-      {/* @ts-expect-error - If the key doesn't exist, then the string is outputted. */}
       <ScrollLayout title={licenseInfo.name}>
         <Card className="-mb-5.25 rounded-b-xs">
           <Text muted>{`${licenseInfo.license} (${licenseInfo.version})`}</Text>

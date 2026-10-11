@@ -2,24 +2,26 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import Markdown from "react-native-markdown-renderer";
 
 import { DISTRIBUTION } from "~/env";
-import { Icon } from "~/resources/icons";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { useHasNewUpdate } from "~/navigation/hooks/useHasNewUpdate";
-import { ListLayout } from "~/navigation/layouts/ListLayout";
+import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
+import * as SettingsList from "~/navigation/screens/settings/components/SettingsList";
 
 import { FontSize } from "~/constants/Styles";
 import { Links, openLink } from "~/lib/web-browser";
-import { SegmentedList } from "~/components/List/Segmented";
-import { AccentText } from "~/components/Typography/AccentText";
+import { Card } from "~/components/next/base/card";
+import { Icon } from "~/components/next/base/icon";
 import { getFont } from "~/modules/customization/font/utils";
 import { useTheme } from "~/modules/customization/theme/hooks";
 
 export default function AppUpdate() {
+  const { t } = useTranslation();
   const { release } = useHasNewUpdate();
   const { scheme, onSurface, onSurfaceVariant, outlineVariant } = useTheme();
   const accentFont = usePreferenceStore((s) => s.accentFont);
@@ -40,12 +42,8 @@ export default function AppUpdate() {
   const codeBg = `${onSurface}${scheme === "dark" ? "26" : "0D"}`;
 
   return (
-    <ListLayout>
-      <SegmentedList.CustomItem className="gap-4 p-4">
-        <AccentText className="text-xl" originalText>
-          {release.version}
-        </AccentText>
-
+    <ScrollLayout title={release.version}>
+      <Card>
         <Markdown
           style={{
             root: { gap: 12 },
@@ -80,14 +78,14 @@ export default function AppUpdate() {
           }}
           rules={{
             blockquote: (node, children, _parent, _styles) => (
-              <SegmentedList.CustomItem
+              <Card
                 key={node.key}
                 style={{ backgroundColor: codeBg }}
-                className="gap-1 p-2"
+                className="gap-1 rounded-lg"
               >
                 <Icon name="info" size={20} color="onSurfaceVariant" />
                 {children}
-              </SegmentedList.CustomItem>
+              </Card>
             ),
             // Override the 'code' rule to render code blocks as plain text.
             code_inline: (node, _children, _parent, _styles) => (
@@ -117,22 +115,24 @@ export default function AppUpdate() {
         >
           {parsedReleaseNotes}
         </Markdown>
-      </SegmentedList.CustomItem>
+      </Card>
 
-      {DISTRIBUTION === "google-play" ? (
-        <SegmentedList.Item
-          labelText="feat.appUpdate.extra.updateGoogle"
-          onPress={() => openLink(Links.PlayStore)}
-          Leading={<Icon name="logo-google-playstore" />}
-        />
-      ) : (
-        <SegmentedList.Item
-          labelText="feat.appUpdate.extra.downloadAPK"
-          supportingText={Links.SpecificRelease(release.version)}
-          onPress={() => openLink(Links.SpecificRelease(release.version))}
-          Leading={<Icon name="logo-github" />}
-        />
-      )}
-    </ListLayout>
+      <SettingsList.Group>
+        {DISTRIBUTION === "google-play" ? (
+          <SettingsList.ExternalLinkItem
+            icon="logo-google-playstore"
+            label={t("feat.appUpdate.extra.updateGoogle")}
+            href={Links.PlayStore}
+          />
+        ) : (
+          <SettingsList.ExternalLinkItem
+            icon="logo-github"
+            label={t("feat.appUpdate.extra.downloadAPK")}
+            supporting={Links.SpecificRelease(release.version)}
+            href={Links.SpecificRelease(release.version)}
+          />
+        )}
+      </SettingsList.Group>
+    </ScrollLayout>
   );
 }

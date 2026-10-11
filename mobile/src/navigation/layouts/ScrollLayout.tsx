@@ -1,20 +1,20 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import type { ParseKeys } from "i18next";
-
 import { cn } from "~/lib/style";
 import type { ScrollViewProps } from "~/components/Base/ScrollView";
 import { ScrollView } from "~/components/Base/ScrollView";
-import { TText } from "~/components/next/base/typography";
+import { Text } from "~/components/next/base/typography";
 import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
+import type { TranslationKeyOrString } from "~/modules/i18n/core";
+import { useMaybeT } from "~/modules/i18n/core";
 
 /** Layout rendering a screen with a title, list of contents, and toolbar. */
 export function ScrollLayout({
   title,
   children,
   ...props
-}: ScrollViewProps & { title: ParseKeys }) {
+}: ScrollViewProps & { title: TranslationKeyOrString }) {
   return (
     <ScrollView
       {...props}
@@ -31,8 +31,13 @@ export function ScrollLayout({
 }
 
 export function ScrollLayoutTitle(props: {
-  title: ParseKeys;
+  title: TranslationKeyOrString;
   className?: string;
 }) {
-  return <TText textKey={props.title} accent className={props.className} />;
+  const t = useMaybeT();
+  return (
+    <Text accent className={props.className}>
+      {t(props.title)}
+    </Text>
+  );
 }
