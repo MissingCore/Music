@@ -1,8 +1,9 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Portal } from "@rn-primitives/portal";
+import { useCallback, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -13,6 +14,8 @@ import { useTheme } from "~/modules/customization/theme/hooks";
 import type { IconButtonProps } from "../base/button-icon";
 import { IconButton } from "../base/button-icon";
 
+export const ToolbarOffset = "pb-safe-offset-20" as const;
+
 export function useToolbarOffset(extra = 0) {
   const { bottom } = useSafeAreaInsets();
   // Android Navbar Height + Toolbar Height + 16px Bottom Gap + 16px Top Gap
@@ -21,8 +24,10 @@ export function useToolbarOffset(extra = 0) {
 
 //#region Toolbar
 function Toolbar(props: { children: React.JSX.Element | React.JSX.Element[] }) {
+  const [id, setId] = useState(0);
+  useFocusEffect(useCallback(() => setId(Date.now()), []));
   return (
-    <Portal name="toolbar">
+    <Portal key={id} name="toolbar">
       <Backdrop />
       <View className="absolute inset-x-0 bottom-0 flex-row items-center justify-between px-4 pb-safe-offset-4">
         {props.children}
