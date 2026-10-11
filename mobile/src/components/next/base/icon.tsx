@@ -1,6 +1,8 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import type { ViewStyle } from "react-native";
+import { View } from "react-native";
 import { createNanoIconSet } from "react-native-nano-icons";
 
 import glyphMap from "~/resources/icons/app-icons.glyphmap.json";
@@ -18,16 +20,26 @@ interface IconProps {
   size?: number;
   /** Defaults to theme's `onSurface` color. */
   color?: AppColor;
+  className?: string;
+  style?: ViewStyle;
 }
 
-export function Icon({ name, size = 24, color }: IconProps) {
+export function Icon({ name, size = 24, color, className, style }: IconProps) {
   const usedColor = useColor(color, "onSurface");
-  return (
+
+  const renderedComponent = (
     <AppIcons
       name={name}
       size={size}
       color={usedColor}
       allowFontScaling={false}
     />
+  );
+
+  if (!className && !style) return renderedComponent;
+  return (
+    <View pointerEvents="none" className={className} style={style}>
+      {renderedComponent}
+    </View>
   );
 }

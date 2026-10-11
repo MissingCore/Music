@@ -112,7 +112,6 @@ export default function Recap({
       <ListLayout>
         <Button
           onPress={() => timeRangeSheetRef.current?.present()}
-          filled
           className="justify-between"
         >
           <View className="gap-2">
@@ -284,7 +283,7 @@ function TopList(props: {
               onPress={() =>
                 setPreviewLimit((prev) => (prev === 5 ? props.data.length : 5))
               }
-              className="rounded-full"
+              filled={false}
             >
               <Text size="sm" className="text-primary">
                 {previewLimit === 5

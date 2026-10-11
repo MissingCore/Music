@@ -17,19 +17,17 @@ import {
   waveformSamples,
 } from "~/db/schema";
 
-import { Icon } from "~/resources/icons";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { sessionStore } from "~/stores/Session/store";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
+import * as SettingsList from "./components/SettingsList";
 
 import { ImageDirectory } from "~/lib/file-system";
 import { queryClient } from "~/lib/react-query";
-import { Links, openLink } from "~/lib/web-browser";
-import { Switch } from "~/components/Form/Switch";
-import { SegmentedList } from "~/components/List/Segmented";
-import { ConfirmableAction } from "~/components/Modal";
+import { Links } from "~/lib/web-browser";
+import { ConfirmAction } from "~/components/next/composed/confirm-action";
 
 export default function ExperimentalSettings() {
   const { t } = useTranslation();
@@ -40,56 +38,68 @@ export default function ExperimentalSettings() {
 
   return (
     <ListLayout>
-      <SegmentedList.Item
-        labelText="feat.queue.extra.queueAwareNext"
-        supportingText={t("feat.queue.extra.queueAwareNextBrief")}
-        onPress={PreferenceTogglers.toggleQueueAwareNext}
-        Trailing={<Switch enabled={queueAwareNext} />}
-      />
-
-      <SegmentedList>
-        <SegmentedList.Item
-          labelText="feat.theme.extra.atmosphere"
-          onPress={PreferenceTogglers.toggleKey("atmosphereEffect")}
-          Trailing={<Switch enabled={atmosphereEffect} />}
+      <SettingsList.Group>
+        <SettingsList.ToggleItem
+          icon="mist"
+          label={t("feat.theme.extra.atmosphere")}
+          onToggle={PreferenceTogglers.toggleKey("atmosphereEffect")}
+          enabled={atmosphereEffect}
         />
-        <SegmentedList.Item
-          labelText="feat.theme.extra.opaqueColors"
-          onPress={PreferenceTogglers.toggleKey("opaqueColors")}
-          Trailing={<Switch enabled={opaqueColors} />}
+        <SettingsList.Divider />
+        <SettingsList.ToggleItem
+          icon="opacity"
+          label={t("feat.theme.extra.opaqueColors")}
+          onToggle={PreferenceTogglers.toggleKey("opaqueColors")}
+          enabled={opaqueColors}
         />
-      </SegmentedList>
+      </SettingsList.Group>
 
-      <ConfirmableAction
-        Component={SegmentedList.Item}
-        componentProps={{
-          labelText: "feat.seekbar.extra.waveformPurgeCache",
-          supportingText: t("feat.seekbar.extra.waveformPurgeCacheBrief"),
-          onPress: purgeWaveformCache,
-        }}
-        modalMessage={["feat.seekbar.extra.waveformPurgeCache"]}
-      />
-
-      <SegmentedList.Item
-        labelText="Android Auto"
-        onPress={() => openLink(Links.AndroidAuto)}
-        Trailing={<Icon name="open-in-new" />}
-      />
-
-      {unhashedImagesCount !== undefined && unhashedImagesCount !== 0 ? (
-        <ConfirmableAction
-          Component={SegmentedList.Item}
-          componentProps={{
-            labelText: `Delete ${unhashedImagesCount} Unhashed Images`,
-            supportingText: `Delete ${unhashedImagesCount} unhashed images to switch to the new hashed artwork strategy, which should make disabling the \`Optimized Image Saving\` feature less impactful (ie: using more storage from saving the same artwork over and over again).`,
-            onPress: deleteAllUnhashedImages,
-          }}
-          modalMessage={[
-            "Re-launching the app is necessary after confirming this action.",
-            "You will need to re-add any images you manually assigned to albums/artists/genres/playlists/tracks.",
-          ]}
+      <SettingsList.Group>
+        <SettingsList.ToggleItem
+          icon="queue-music"
+          label={t("feat.queue.extra.queueAwareNext")}
+          supporting={t("feat.queue.extra.queueAwareNextBrief")}
+          onToggle={PreferenceTogglers.toggleQueueAwareNext}
+          enabled={queueAwareNext}
         />
-      ) : null}
+      </SettingsList.Group>
+
+      <SettingsList.Group>
+        <SettingsList.ExternalLinkItem
+          icon="directions-car"
+          label="Android Auto"
+          href={Links.AndroidAuto}
+        />
+      </SettingsList.Group>
+
+      <SettingsList.Group>
+        <ConfirmAction prompt={[t("feat.seekbar.extra.waveformPurgeCache")]}>
+          <SettingsList.Item
+            icon="delete"
+            label={t("feat.seekbar.extra.waveformPurgeCache")}
+            supporting={t("feat.seekbar.extra.waveformPurgeCacheBrief")}
+            onPress={purgeWaveformCache}
+          />
+        </ConfirmAction>
+        {unhashedImagesCount !== undefined && unhashedImagesCount !== 0 ? (
+          <>
+            <SettingsList.Divider />
+            <ConfirmAction
+              prompt={[
+                "Re-launching the app is necessary after confirming this action.",
+                "You will need to re-add any images you manually assigned to albums/artists/genres/playlists/tracks.",
+              ]}
+            >
+              <SettingsList.Item
+                icon="delete"
+                label={`Delete ${unhashedImagesCount} Unhashed Images`}
+                supporting={`Delete ${unhashedImagesCount} unhashed images to switch to the new hashed artwork strategy, which should make disabling the \`Optimized Image Saving\` feature less impactful (ie: using more storage from saving the same artwork over and over again).`}
+                onPress={deleteAllUnhashedImages}
+              />
+            </ConfirmAction>
+          </>
+        ) : null}
+      </SettingsList.Group>
     </ListLayout>
   );
 }

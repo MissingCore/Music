@@ -31,7 +31,9 @@
     "all": "All",
     "more": "More",
     "home": "Home",
+    "homeScreens": "Home Screens",
     "settings": "Settings",
+    "about": "About",
     "upcoming": "Upcoming",
     "playingFrom": "Playing From",
 
@@ -43,7 +45,8 @@
 
     "share": "Share",
     "expand": "Expand",
-    "minimize": "Minimize"
+    "minimize": "Minimize",
+    "misc": "Misc."
   },
 
   "template": {
@@ -140,6 +143,7 @@
         "downloadAPK": "Download the latest APK",
         "updateGoogle": "Update via Play Store",
 
+        "viewChangelog": "View Changelog",
         "version": "Version",
         "checkUpdates": "Check for Updates",
         "rcNotification": "Pre-Release Notification"

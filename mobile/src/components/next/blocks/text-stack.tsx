@@ -56,5 +56,6 @@ export function createTextStack(args: {
 }
 
 export const TextStack = createTextStack({
+  labelConfig: { size: "sm" },
   supportingConfig: { muted: true },
 });

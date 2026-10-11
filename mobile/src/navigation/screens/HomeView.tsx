@@ -24,6 +24,7 @@ import { useGetLayoutConfig } from "~/hooks/useLayoutConfigs";
 import { useHasNewUpdate } from "../hooks/useHasNewUpdate";
 import { useBottomActionsOffset } from "../components/BottomActions/useBottomActions";
 
+import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { Seconds } from "~/utils/date";
 import { chunkArray } from "~/utils/object";
@@ -106,7 +107,6 @@ function TopAppBar() {
         <Button
           onPress={() => navigation.navigate("AppUpdate")}
           intent="secondary"
-          filled
           className="shrink grow gap-3 rounded-full px-3 py-0"
         >
           <Icon name="mobile-arrow-down" color="onSecondary" />
@@ -116,9 +116,7 @@ function TopAppBar() {
             numberOfLines={2}
             className="shrink grow text-sm"
           />
-          <View className="ltr:rotate-180">
-            <Icon name="arrow-back" color="onSecondary" />
-          </View>
+          <Icon name={OnRTL.decide("west", "east")} color="onSecondary" />
         </Button>
       ) : null}
       <IconButton
@@ -181,14 +179,14 @@ function WeeklyRecap() {
           className="max-w-md text-onPrimaryVariant"
         />
         <IconButton
-          icon="arrow-back"
+          icon={OnRTL.decide("west", "east")}
           accessibilityLabel={t("template.entrySeeMore", {
             name: t("feat.recap.title"),
           })}
           onPress={() => navigation.navigate("Recap", { last7Days: true })}
           filled
           wide
-          className="self-start ltr:rotate-180"
+          className="self-start"
         />
       </View>
       <LinearGradient
@@ -282,14 +280,16 @@ function RecentGroup(props: {
       <Button
         accessibilityLabel={t(props.label)}
         onPress={props.onLabelPress}
+        filled={false}
         className="-mb-6 justify-start gap-2 rounded-none py-1"
       >
         <Marquee wrapperClassName="grow-0">
           <TText textKey={props.label} accent size="3xl" />
         </Marquee>
-        <View className="rtl:rotate-180">
-          <Icon name="keyboard-arrow-right" size={32} />
-        </View>
+        <Icon
+          name={`keyboard-arrow-${OnRTL.decide("left", "right")}`}
+          size={32}
+        />
       </Button>
       <LegendList
         horizontal
@@ -336,7 +336,6 @@ function HomeLinks() {
         <Button
           key={labelKey}
           onPress={() => navigation.navigate("HomeScreens", { screen })}
-          filled
           className={cn("rounded-xs p-3", {
             "rounded-t-xl": idx === 0,
             "rounded-b-xl": idx === linkMap.length - 1,
@@ -346,9 +345,10 @@ function HomeLinks() {
           <Marquee>
             <TText textKey={labelKey} />
           </Marquee>
-          <View className="rtl:rotate-180">
-            <Icon name="keyboard-arrow-right" size={32} />
-          </View>
+          <Icon
+            name={`keyboard-arrow-${OnRTL.decide("left", "right")}`}
+            size={32}
+          />
         </Button>
       ))}
     </View>

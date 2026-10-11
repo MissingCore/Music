@@ -16,6 +16,7 @@ const dividerStyle = cva({
       primary: "bg-primaryDim",
       secondary: "bg-secondaryDim",
       error: "bg-errorDim",
+      inverse: "bg-outlineVariant",
     } satisfies IntentVariant,
   },
   defaultVariants: {

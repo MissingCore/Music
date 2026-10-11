@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
-import React, { useMemo, useRef, useState } from "react";
+import { cloneElement, useMemo, useRef, useState } from "react";
 import flattenChildren from "react-keyed-flatten-children";
 import type { ViewProps } from "react-native";
 import { View, useWindowDimensions } from "react-native";
@@ -104,9 +104,7 @@ function useSheetComponents(children: React.ReactNode) {
     if (list) {
       const scrollableRef = list.props.ref ?? listRef;
       const children =
-        list.props.ref == null
-          ? React.cloneElement(list, { ref: listRef })
-          : list;
+        list.props.ref == null ? cloneElement(list, { ref: listRef }) : list;
       return { header, footer, scrollableRef, children };
     } else {
       return {
@@ -118,7 +116,7 @@ function useSheetComponents(children: React.ReactNode) {
             // @ts-expect-error - Ref should still work.
             ref={listRef}
             className="-mb-4"
-            contentContainerClassName="gap-6 pb-4"
+            contentContainerClassName="gap-4 pb-4"
           >
             {contentNodes}
           </ScrollView>
@@ -169,7 +167,7 @@ function Header(props: {
   return (
     <View>
       {props.label || props.Leading || props.Trailing ? (
-        <View className="mb-6 flex-row items-center gap-2">
+        <View className="mb-6 flex-row items-center gap-3">
           {props.Leading}
           <Marquee
             wrapperClassName={cn(
@@ -196,7 +194,7 @@ function Header(props: {
  * Should be rendered as a direct child of `Sheet`.
  */
 function Footer({ className, ...props }: Omit<ViewProps, "onLayout">) {
-  return <View {...props} className={cn("pt-4", className)} />;
+  return <View {...props} className={cn("gap-4 pt-4", className)} />;
 }
 //#endregion
 
@@ -218,10 +216,35 @@ function List<TData>(props: LegendListProps<TData>) {
 }
 //#endregion
 
+//#region Actions
+/** A list of buttons in a row. */
+function Actions(props: { children: React.JSX.Element[] }) {
+  const styledComponents = useMemo(() => {
+    const nodes = flattenChildren(props.children) as React.JSX.Element[];
+    return nodes.map((node, index) =>
+      cloneElement(node, {
+        className: cn(
+          "flex-1 bg-surfaceContainerLowest",
+          node.props.className,
+          {
+            "rounded-l-xs": index > 0,
+            "rounded-r-xs": index < nodes.length - 1,
+          },
+        ),
+      }),
+    );
+  }, [props.children]);
+  return (
+    <View className="flex-row items-center gap-0.75">{styledComponents}</View>
+  );
+}
+//#endregion
+
 //#region Exports
 Sheet.Header = Header;
 Sheet.List = List;
 Sheet.Footer = Footer;
+Sheet.Actions = Actions;
 
 export { Sheet };
 //#endregion

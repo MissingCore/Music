@@ -56,7 +56,7 @@ export function AddToCreatedPlaylistSheet(props: { ref: SheetRef }) {
         className="shrink grow rounded-sm border border-outline p-2"
         forSheet
       />
-      <View className="-mt-4 shrink flex-row items-center gap-0.5">
+      <View className="-mt-2 shrink flex-row items-center gap-0.5">
         <Icon
           name={inputForm.canSubmit ? "check-circle" : "cancel"}
           size={16}

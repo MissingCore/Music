@@ -94,12 +94,13 @@ function PlaceholderIcon(props: {
 }) {
   const { icon, size, fullSize = true, className } = props;
   return (
-    <View
+    <Icon
+      name={icon}
+      size={size / (fullSize ? 1 : 2)}
+      color="placeholder"
       style={fullSize ? undefined : { padding: size / 4 }}
       className={className}
-    >
-      <Icon name={icon} size={size / (fullSize ? 1 : 2)} color="placeholder" />
-    </View>
+    />
   );
 }
 

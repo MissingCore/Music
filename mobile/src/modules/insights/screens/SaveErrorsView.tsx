@@ -2,30 +2,37 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useQuery } from "@tanstack/react-query";
+import { View } from "react-native";
 
 import { db } from "~/db";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
-import { FlatList } from "~/components/Base/List";
-import { useGeneratedSegmentedList } from "~/components/List/Segmented";
+import { cn } from "~/lib/style";
+import { LegendList } from "~/components/Base/LegendList";
+import { TextStack } from "~/components/next/blocks/text-stack";
 
 export default function SaveErrors() {
   const { data } = useSaveErrors();
-  const listContext = useGeneratedSegmentedList({
-    data,
-    renderOptions: {
-      getLabel: (item) => item.uri,
-      getSupportingText: (item) => `[${item.errorName}] ${item.errorMessage}`,
-    },
-  });
-
   return (
-    <FlatList
+    <LegendList
+      data={data}
       keyExtractor={({ id }) => id}
+      renderItem={({ item, index }) => (
+        <View
+          className={cn("rounded-xl bg-surfaceContainerLowest p-4", {
+            "rounded-t-xs": index > 0,
+            "rounded-b-xs": index < (data?.length ?? 0) - 1,
+          })}
+        >
+          <TextStack
+            label={item.uri}
+            supporting={`[${item.errorName}] ${item.errorMessage}`}
+          />
+        </View>
+      )}
       ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noErrors" />}
-      contentContainerClassName="p-4 pb-safe-offset-4"
-      {...listContext}
+      contentContainerClassName="gap-0.75 p-4 pb-safe-offset-4"
     />
   );
 }

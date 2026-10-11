@@ -7,103 +7,53 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
-
-import { Switch } from "~/components/Form/Switch";
-import { SegmentedList } from "~/components/List/Segmented";
-import { TEm } from "~/components/Typography/StyledText";
+import * as SettingsList from "./components/SettingsList";
 
 export default function PlaybackSettings() {
   const { t } = useTranslation();
   const continuePlaybackOnDismiss = usePreferenceStore(
     (s) => s.continuePlaybackOnDismiss,
   );
-  const dragClearPlayback = usePreferenceStore((s) => s.dragClearPlayback);
-  const miniplayerGestures = usePreferenceStore((s) => s.miniplayerGestures);
-  const nowPlayingArtworkControls = usePreferenceStore(
-    (s) => s.nowPlayingArtworkControls,
-  );
-  const nowPlayingGestures = usePreferenceStore((s) => s.nowPlayingGestures);
-  const quickAddQueue = usePreferenceStore((s) => s.quickAddQueue);
-  const quickFavorite = usePreferenceStore((s) => s.quickFavorite);
   const repeatOnSkip = usePreferenceStore((s) => s.repeatOnSkip);
   const reshuffleOnLaunch = usePreferenceStore((s) => s.reshuffleOnLaunch);
   const restoreLastPosition = usePreferenceStore((s) => s.restoreLastPosition);
 
   return (
     <ListLayout>
-      <SegmentedList>
-        <SegmentedList.Item
-          labelText="feat.continuePlaybackOnDismiss.title"
-          supportingText={t("feat.continuePlaybackOnDismiss.description")}
-          onPress={PreferenceTogglers.toggleContinuePlaybackOnDismiss}
-          Trailing={<Switch enabled={continuePlaybackOnDismiss} />}
+      <SettingsList.Group>
+        <SettingsList.ToggleItem
+          icon="autoplay"
+          label={t("feat.continuePlaybackOnDismiss.title")}
+          supporting={t("feat.continuePlaybackOnDismiss.description")}
+          onToggle={PreferenceTogglers.toggleContinuePlaybackOnDismiss}
+          enabled={continuePlaybackOnDismiss}
         />
-        <SegmentedList.Item
-          labelText="feat.restoreLastPosition.title"
-          onPress={PreferenceTogglers.toggleKey("restoreLastPosition")}
-          Trailing={<Switch enabled={restoreLastPosition} />}
+        <SettingsList.Divider />
+        <SettingsList.ToggleItem
+          icon="history"
+          label={t("feat.restoreLastPosition.title")}
+          onToggle={PreferenceTogglers.toggleKey("restoreLastPosition")}
+          enabled={restoreLastPosition}
         />
-      </SegmentedList>
+      </SettingsList.Group>
 
-      <SegmentedList>
-        <SegmentedList.Item
-          labelText="feat.repeatOnSkip.title"
-          supportingText={t("feat.repeatOnSkip.brief")}
-          onPress={PreferenceTogglers.toggleKey("repeatOnSkip")}
-          Trailing={<Switch enabled={repeatOnSkip} />}
+      <SettingsList.Group>
+        <SettingsList.ToggleItem
+          icon="repeat-one"
+          label={t("feat.repeatOnSkip.title")}
+          supporting={t("feat.repeatOnSkip.brief")}
+          onToggle={PreferenceTogglers.toggleKey("repeatOnSkip")}
+          enabled={repeatOnSkip}
         />
-        <SegmentedList.Item
-          labelText="feat.reshuffleOnLaunch.title"
-          supportingText={t("feat.reshuffleOnLaunch.brief")}
-          onPress={PreferenceTogglers.toggleKey("reshuffleOnLaunch")}
-          Trailing={<Switch enabled={reshuffleOnLaunch} />}
+        <SettingsList.Divider />
+        <SettingsList.ToggleItem
+          icon="shuffle"
+          label={t("feat.reshuffleOnLaunch.title")}
+          supporting={t("feat.reshuffleOnLaunch.brief")}
+          onToggle={PreferenceTogglers.toggleKey("reshuffleOnLaunch")}
+          enabled={reshuffleOnLaunch}
         />
-      </SegmentedList>
-
-      <TEm textKey="feat.miniplayer.title" className="-mb-4" />
-      <SegmentedList>
-        <SegmentedList.Item
-          labelText="feat.miniplayer.extra.swipeControls"
-          onPress={PreferenceTogglers.toggleKey("miniplayerGestures")}
-          Trailing={<Switch enabled={miniplayerGestures} />}
-        />
-        <SegmentedList.Item
-          labelText="feat.miniplayer.extra.dragToDismiss"
-          onPress={PreferenceTogglers.toggleKey("dragClearPlayback")}
-          Trailing={<Switch enabled={dragClearPlayback} />}
-        />
-      </SegmentedList>
-
-      <TEm textKey="feat.nowPlaying.title" className="-mb-4" />
-      <SegmentedList>
-        <SegmentedList.Item
-          labelText="feat.nowPlaying.extra.artworkPlaybackToggle"
-          onPress={PreferenceTogglers.toggleKey("nowPlayingArtworkControls")}
-          Trailing={<Switch enabled={nowPlayingArtworkControls} />}
-        />
-        <SegmentedList.Item
-          labelText="feat.miniplayer.extra.swipeControls"
-          onPress={PreferenceTogglers.toggleKey("nowPlayingGestures")}
-          Trailing={<Switch enabled={nowPlayingGestures} />}
-        />
-      </SegmentedList>
-
-      <TEm
-        textKey="feat.modalTrack.extra.trackQuickActions"
-        className="-mb-4"
-      />
-      <SegmentedList>
-        <SegmentedList.Item
-          labelText="term.favorite"
-          onPress={PreferenceTogglers.toggleKey("quickFavorite")}
-          Trailing={<Switch enabled={quickFavorite} />}
-        />
-        <SegmentedList.Item
-          labelText="feat.queue.extra.add"
-          onPress={PreferenceTogglers.toggleKey("quickAddQueue")}
-          Trailing={<Switch enabled={quickAddQueue} />}
-        />
-      </SegmentedList>
+      </SettingsList.Group>
     </ListLayout>
   );
 }

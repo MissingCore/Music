@@ -195,7 +195,7 @@ function SortOptionSetting({ screen }: { screen: MutableViewOrder }) {
         textKey="feat.modalViewPreference.extra.sort"
         intent="em"
         size="sm"
-        className="-mb-4"
+        className="-mb-2"
       />
       <SegmentedPicker
         type="radio"

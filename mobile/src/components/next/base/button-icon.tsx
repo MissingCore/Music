@@ -23,9 +23,9 @@ const iconButtonStyle = cva({
     wide: { true: null },
   },
   compoundVariants: [
-    { size: "xs", wide: true, className: "min-w-14" },
-    { size: "sm", wide: true, className: "min-w-16" },
-    { size: ["md", "lg"], wide: true, className: "min-w-18" },
+    { size: "xs", wide: true, className: "min-w-16" },
+    { size: "sm", wide: true, className: "min-w-18" },
+    { size: ["md", "lg"], wide: true, className: "min-w-20" },
   ],
   defaultVariants: { size: "sm", wide: false },
 });
@@ -36,6 +36,12 @@ interface IconButtonProps extends ButtonProps, IconButtonVariants {
   icon: SupportedIconName;
   accessibilityLabel: string;
   _iconColor?: AppColor;
+  /**
+   * Used to override the default styling.
+   *
+   * @deprecated We want to reconsider the icon scaling based on the button size.
+   */
+  _iconSize?: number;
 }
 
 export type ButtonSize = IconButtonVariants["size"];
@@ -52,13 +58,19 @@ export function IconButton({
   wide,
   className,
   _iconColor,
+  _iconSize,
+  filled = false,
   ...props
 }: IconButtonProps) {
   return (
-    <Button {...props} className={iconButtonStyle({ size, wide, className })}>
+    <Button
+      {...props}
+      filled={filled}
+      className={iconButtonStyle({ size, wide, className })}
+    >
       <Icon
         name={icon}
-        size={IconSizeConfig[size]}
+        size={_iconSize || IconSizeConfig[size]}
         color={_iconColor ?? getIntentOnColor(props.intent)}
       />
     </Button>
