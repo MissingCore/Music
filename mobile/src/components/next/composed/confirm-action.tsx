@@ -40,7 +40,7 @@ export function ConfirmAction(props: {
   return (
     <>
       {Anchor}
-      <Dialog visible={visible}>
+      <Dialog visible={visible} onClose={() => setVisible(false)}>
         {props.prompt.map((msg) => (
           <Text key={msg} style={{ fontSize: 18 }}>
             {msg}
