@@ -9,6 +9,7 @@ import { resources } from "./translations/resources";
 i18next.use(initReactI18next).init({
   lng: "en",
   fallbackLng: () => ({
+    pt: ["pt-BR", "en"],
     zh: ["zh-Hans", "en"],
     default: ["en"],
   }),

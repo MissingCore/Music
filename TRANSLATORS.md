@@ -89,3 +89,7 @@
 ## [Ελληνικά] Greek
 
 - [@aprountzos](https://github.com/aprountzos)
+
+## [Português brasileiro] Brazilian Portuguese
+
+- [@joaqmiu](https://www.github.com/joaqmiu)

@@ -133,6 +133,13 @@ export const LANGUAGES = [
     ],
   },
   {
+    code: "pt-BR",
+    name: "Português brasileiro",
+    translators: [
+      { display: "Joaquim", link: "https://www.github.com/joaqmiu" },
+    ],
+  },
+  {
     code: "ru",
     name: "Русский",
     translators: [

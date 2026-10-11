@@ -1,0 +1,488 @@
+{
+  "language": "Português brasileiro",
+  "term": {
+    "album": "Álbum",
+    "albums": "Álbuns",
+    "artist": "Artista",
+    "artists": "Artistas",
+    "folder": "Pasta",
+    "folders": "Pastas",
+    "genre": "Gênero",
+    "genres": "Gêneros",
+    "playlist": "Lista de reprodução",
+    "playlists": "Listas de reprodução",
+    "track": "Faixa",
+    "tracks": "Faixas",
+    "play": "Reproduzir",
+    "pause": "Pausar",
+    "prev": "Anterior",
+    "next": "Próxima",
+    "shuffle": "Aleatório",
+    "repeat": "Repetir",
+    "repeatOne": "Repetir uma faixa",
+    "favorite": "Favorito",
+    "favorites": "Favoritos",
+    "unFavorite": "Remover dos favoritos",
+    "favoriteTracks": "Faixas favoritas",
+    "all": "Tudo",
+    "more": "Mais",
+    "home": "Início",
+    "settings": "Configurações",
+    "upcoming": "A seguir",
+    "playingFrom": "Reproduzindo de",
+    "instructions": "Instruções",
+    "disc": "Disco {{count}}",
+    "eps": "EPs",
+    "singles": "Singles",
+    "share": "Compartilhar",
+    "expand": "Expandir",
+    "minimize": "Minimizar"
+  },
+  "template": {
+    "entryAdd": "Adicionar {{- name}}",
+    "entryAdded": "{{- name}} adicionado",
+    "entryRemove": "Remover {{- name}}",
+    "entryRemoved": "{{- name}} removido",
+    "entryManage": "Gerenciar {{- name}}",
+    "entrySeeMore": "Ver mais sobre {{- name}}",
+    "notFound": "{{- name}} não existe",
+    "entryMove": "Mover {{- name}}",
+    "entryShow": "Mostrar {{- name}}",
+    "entryShowAll": "Mostrar todos os itens de {{- name}}",
+    "entryHide": "Ocultar {{- name}}",
+    "entryEnable": "Ativar {{- name}}",
+    "entryDisable": "Desativar {{- name}}",
+    "countSelected": "{{count}} selecionados",
+    "noContentFound": "Nenhum(a) {{- name}} encontrado(a)"
+  },
+  "plural": {
+    "entry_one": "{{count}} item",
+    "entry_other": "{{count}} itens",
+    "second_one": "{{count}} segundo",
+    "second_other": "{{count}} segundos",
+    "track_one": "{{count}} $t(term.track)",
+    "track_other": "{{count}} $t(term.tracks)"
+  },
+  "form": {
+    "apply": "Aplicar alterações",
+    "back": "Voltar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "unsaved": "Você pode ter alterações não salvas.",
+    "stay": "Ficar",
+    "leave": "Sair",
+    "close": "Fechar",
+    "create": "Criar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "clear": "Limpar",
+    "reset": "Redefinir",
+    "validation": {
+      "unique": "Único"
+    }
+  },
+  "err": {
+    "flow": {
+      "generic": {
+        "title": "Algo deu errado",
+        "brief": "Ocorreu um erro inesperado."
+      },
+      "report": {
+        "title": "Relatar problema",
+        "brief": "Inclua uma captura de tela desta tela."
+      }
+    },
+    "msg": {
+      "actionCancel": "Ação cancelada.",
+      "invalidStructure": "Estrutura inválida.",
+      "noSelect": "Nada selecionado.",
+      "usedName": "Esse nome não pode ser usado.",
+      "noContent": "Nenhum conteúdo encontrado.",
+      "noErrors": "Nenhum erro encontrado.",
+      "noResults": "Nenhum resultado encontrado.",
+      "noAlbums": "Nenhum álbum encontrado.",
+      "noArtists": "Nenhum artista encontrado.",
+      "noGenres": "Nenhum gênero encontrado.",
+      "noPlaylists": "Nenhuma lista de reprodução encontrada.",
+      "noTracks": "Nenhuma faixa encontrada.",
+      "noHiddenTracks": "Nenhuma faixa oculta encontrada.",
+      "noLyrics": "Nenhuma letra encontrada."
+    }
+  },
+  "feat": {
+    "appUpdate": {
+      "title": "Atualização do aplicativo",
+      "brief": "Uma nova atualização está disponível!",
+      "extra": {
+        "downloadAPK": "Baixar o APK mais recente",
+        "updateGoogle": "Atualizar pela Play Store",
+        "version": "Versão",
+        "checkUpdates": "Verificar atualizações",
+        "rcNotification": "Notificação de pré-lançamento"
+      }
+    },
+    "appearance": {
+      "title": "Aparência"
+    },
+    "font": {
+      "title": "Fontes",
+      "extra": {
+        "accent": "Fonte de destaque",
+        "primary": "Fonte principal"
+      }
+    },
+    "theme": {
+      "title": "Tema",
+      "extra": {
+        "light": "Claro",
+        "dark": "Escuro",
+        "system": "Sistema",
+        "atmosphere": "Efeito de atmosfera",
+        "opaqueColors": "Cores opacas"
+      }
+    },
+    "tabsOrder": {
+      "title": "Ordem das abas",
+      "brief": "Personalize a ordem e a visibilidade das abas.",
+      "extra": {
+        "setHomeTab": "Abrir a aba {{- name}} ao iniciar o aplicativo.",
+        "showNavbar": "Mostrar barra de navegação"
+      }
+    },
+    "minAlbumLength": {
+      "title": "Duração mínima do álbum"
+    },
+    "nowPlayingDesign": {
+      "extra": {
+        "plain": "Simples",
+        "vinyl": "Vinil",
+        "vinylOld": "Vinil (clássico)",
+        "none": "Nenhum",
+        "immersive": "Imersivo",
+        "alternativeInfoLayout": "Layout alternativo de informações",
+        "standardVinylSpeed": "Velocidade padrão do vinil"
+      }
+    },
+    "seekbar": {
+      "title": "Barra de progresso",
+      "extra": {
+        "normal": "Normal",
+        "waveform": "Forma de onda",
+        "waveformPurgeCache": "Limpar formas de onda em cache",
+        "waveformPurgeCacheBrief": "Libera espaço de armazenamento para recalcular as formas de onda das faixas reproduzidas.",
+        "waveformPurgeCacheToast": "Cache das formas de onda limpo."
+      }
+    },
+    "language": {
+      "title": "Idioma",
+      "extra": {
+        "contribute": "Contribuir com traduções",
+        "useLTR": "Usar layout da esquerda para a direita (LTR). É necessário reiniciar.",
+        "translators": "Tradutores"
+      }
+    },
+    "backup": {
+      "title": "Backup",
+      "description": "Transfira os dados deste aplicativo entre dispositivos usando um arquivo `music_backup.json`.",
+      "extra": {
+        "export": "Exportar",
+        "exportSuccess": "Exportação concluída com sucesso.",
+        "import": "Importar",
+        "importSuccess": "Importação concluída com sucesso."
+      }
+    },
+    "insights": {
+      "title": "Estatísticas",
+      "extra": {
+        "cache": "Cache",
+        "database": "Banco de dados",
+        "images": "Imagens",
+        "other": "Outros",
+        "total": "Total",
+        "totalDuration": "Duração total"
+      }
+    },
+    "dbOptimization": {
+      "title": "Otimizar banco de dados",
+      "brief": "Há {{count}} itens disponíveis para otimização.",
+      "extra": {
+        "start": "Otimizando...",
+        "success": "Otimizações concluídas."
+      }
+    },
+    "recap": {
+      "title": "Retrospectiva",
+      "brief": "Suas principais faixas, artistas e histórico de reprodução.",
+      "extra": {
+        "recapTemplate": "Retrospectiva de {{- name}}",
+        "playCount": "{{count}} reproduções",
+        "mostPlayed": "{{- name}} mais reproduzido(a)",
+        "top": "Principais {{- name}}",
+        "timeRange": "Período",
+        "allTime": "Desde sempre",
+        "lastDays": "Últimos {{amount}} dias",
+        "listeningTime": "Tempo de audição",
+        "totalListeningTime": "Tempo total de audição",
+        "totalPlays": "Total de reproduções",
+        "uniqueTracks": "Faixas únicas",
+        "uniqueArtists": "Artistas únicos"
+      }
+    },
+    "hiddenTracks": {
+      "title": "Faixas ocultas",
+      "brief": "Faixas que não são exibidas no aplicativo."
+    },
+    "saveErrors": {
+      "title": "Erros ao salvar",
+      "brief": "Veja por que algumas faixas não foram salvas."
+    },
+    "playback": {
+      "title": "Reprodução",
+      "extra": {
+        "delay": "Atraso da reprodução",
+        "options": "Opções de reprodução",
+        "pitch": "Tom da reprodução",
+        "speed": "Velocidade de reprodução",
+        "restoreVolume": "Restaurar volume do aplicativo",
+        "volume": "Volume do aplicativo"
+      }
+    },
+    "continuePlaybackOnDismiss": {
+      "title": "Continuar reprodução ao sair",
+      "description": "Permite que a música continue tocando quando você fechar o aplicativo na tela de tarefas recentes. Force a parada do aplicativo para interromper a reprodução."
+    },
+    "repeatOnSkip": {
+      "title": "Manter modo de repetição ao pular faixa",
+      "brief": "Não mudar de “Repetir uma faixa” para “Repetir” ao pular uma faixa."
+    },
+    "reshuffleOnLaunch": {
+      "title": "Embaralhar novamente ao iniciar",
+      "brief": "Embaralha novamente a fila ao iniciar o aplicativo, se o modo aleatório estiver ativado."
+    },
+    "restoreLastPosition": {
+      "title": "Retomar da última posição reproduzida"
+    },
+    "lyrics": {
+      "title": "Letras",
+      "extra": {
+        "useEmbedded": "Usar letras incorporadas",
+        "providers": "Provedores de letras",
+        "providersInstructions": {
+          "line1": "Por razões legais, não fornecemos automaticamente fontes on-line para exibir letras, pois não temos licença para isso. Em vez disso, oferecemos suporte a provedores que você pode configurar para indicar de onde obter as letras.",
+          "line2": "Clique para saber mais sobre como criar um provedor."
+        }
+      }
+    },
+    "scanning": {
+      "title": "Verificação",
+      "extra": {
+        "useMediaStore": "🧪 Usar o scanner MediaStore",
+        "useMediaStoreBrief": "Extremamente rápido, mas pode ser menos preciso. Requer Android 11 ou superior."
+      }
+    },
+    "rescan": {
+      "title": "Verificar novamente",
+      "brief": "Procurar novas mídias.",
+      "extra": {
+        "start": "Verificando a biblioteca novamente...",
+        "success": "Nova verificação da biblioteca concluída.",
+        "fail": "Falha ao verificar a biblioteca novamente."
+      }
+    },
+    "deepRescan": {
+      "title": "Verificação profunda",
+      "brief": "Ignora as medidas de otimização que aceleram a verificação normal."
+    },
+    "optimizedImageSave": {
+      "title": "Salvamento otimizado de imagens",
+      "brief": "As faixas compartilham a mesma arte da capa do álbum.",
+      "description": {
+        "line1": "Desativar esse recurso fará o aplicativo usar muito mais armazenamento e poderá tornar a verificação mais lenta, pois as capas serão salvas localmente.",
+        "line2": "É necessário usar a verificação profunda para aplicar as alterações."
+      }
+    },
+    "rescanOnLaunch": {
+      "title": "Verificar ao iniciar",
+      "brief": "Se desativado, use o recurso “Verificar novamente” para detectar faixas novas, atualizadas ou removidas."
+    },
+    "listAllow": {
+      "title": "Lista de permissões",
+      "description": "Especifique onde as faixas podem ser encontradas. Se estiver vazia, a busca será feita em todos os lugares."
+    },
+    "listBlock": {
+      "title": "Lista de bloqueio",
+      "description": "Tem prioridade sobre os itens da lista de permissões."
+    },
+    "minTrackDuration": {
+      "title": "Duração mínima da faixa",
+      "description": "Duração mínima, em segundos, para que uma faixa seja salva."
+    },
+    "separators": {
+      "title": "Separadores de múltiplos valores",
+      "description": {
+        "line1": "Aplica-se às novas faixas. Use a verificação profunda para atualizar as faixas existentes.",
+        "line2": "Aviso: algumas tags podem ser identificadas incorretamente como tendo vários valores. Não se aplica às faixas que você modificou manualmente."
+      }
+    },
+    "experimental": {
+      "title": "Recursos experimentais"
+    },
+    "audioEffects": {
+      "title": "Efeitos de áudio"
+    },
+    "equalizer": {
+      "title": "Equalizador",
+      "extra": {
+        "Custom": "Personalizado",
+        "Normal": "Normal",
+        "Classical": "Clássica",
+        "Dance": "Dance",
+        "Flat": "Uniforme",
+        "Folk": "Folk",
+        "Heavy Metal": "Heavy metal",
+        "Hip Hop": "Hip-hop",
+        "Jazz": "Jazz",
+        "Pop": "Pop",
+        "Rock": "Rock"
+      }
+    },
+    "replayGain": {
+      "title": "ReplayGain",
+      "extra": {
+        "preAmp": "Pré-amplificação do ReplayGain",
+        "preAmpDescription": "Ajusta o volume quando o ReplayGain está ativado. Pode causar picos em algumas faixas. As alterações serão aplicadas na próxima faixa.",
+        "adjustWithTags": "Ajuste com tags",
+        "adjustWithoutTags": "Ajuste sem tags"
+      }
+    },
+    "sleepTimer": {
+      "title": "Temporizador de desligamento",
+      "description": "Interrompe a reprodução de áudio após o número de minutos especificado.",
+      "extra": {
+        "start": "Iniciar",
+        "stopTime": "O áudio deixará de tocar às {{- time}}.",
+        "extend": "Prolongar o temporizador até o fim da faixa."
+      }
+    },
+    "code": {
+      "title": "Repositório no GitHub",
+      "brief": "Relate problemas, contribua ou solicite novos recursos."
+    },
+    "license": {
+      "title": "Licença"
+    },
+    "privacy": {
+      "title": "Política de privacidade"
+    },
+    "thirdParty": {
+      "title": "Software de terceiros",
+      "brief": "O que torna este aplicativo possível."
+    },
+    "onboarding": {
+      "extra": {
+        "configureSettings": "Configurar ajustes",
+        "startScan": "Começar a verificar as faixas",
+        "saveTracks": "Salvando faixas",
+        "saveImages": "Salvando imagens"
+      }
+    },
+    "playedRecent": {
+      "title": "Reproduzidas recentemente",
+      "extra": {
+        "notFound": "Nada foi reproduzido nos últimos {{amount}} dias."
+      }
+    },
+    "search": {
+      "title": "Pesquisar",
+      "extra": {
+        "searchMedia": "Pesquisar mídias"
+      }
+    },
+    "artwork": {
+      "title": "Capa",
+      "extra": {
+        "change": "Alterar capa",
+        "remove": "Remover capa",
+        "square": "Capa quadrada"
+      }
+    },
+    "directory": {
+      "extra": {
+        "add": "Adicionar diretório",
+        "select": "Selecionar diretório"
+      }
+    },
+    "playlist": {
+      "extra": {
+        "m3uImport": "Importar lista M3U",
+        "m3uExport": "Exportar como M3U",
+        "absolute": "Absoluto",
+        "relative": "Relativo"
+      }
+    },
+    "trackMetadata": {
+      "description": {
+        "line1": "Edite como a faixa aparece neste aplicativo. Isso não modifica o arquivo em si.",
+        "line2": "Observação: suas alterações poderão ser redefinidas se este arquivo for alterado."
+      },
+      "extra": {
+        "albumArtists": "Artistas do álbum",
+        "disc": "Disco",
+        "name": "Nome",
+        "trackNumber": "Número da faixa",
+        "year": "Ano",
+        "overrideFields": "Preencher os campos a seguir substituirá os valores atribuídos a todas as faixas do álbum."
+      }
+    },
+    "modalViewPreference": {
+      "title": "Opções de tela",
+      "extra": {
+        "layout": "Layout",
+        "list": "Lista",
+        "grid": "Grade",
+        "compactGrid": "Grade compacta",
+        "columnSize": "Tamanho da coluna",
+        "columnCount": "Número de colunas: {{count}}",
+        "sort": "Ordem de classificação",
+        "asc": "Ordem crescente",
+        "discover": "Data de descoberta",
+        "duration": "Duração",
+        "modified": "Última modificação",
+        "trackCount": "Número de faixas"
+      }
+    },
+    "modalTrack": {
+      "extra": {
+        "bitrate": "Taxa de bits",
+        "filePath": "Caminho do arquivo",
+        "sampleRate": "Taxa de amostragem",
+        "size": "Tamanho",
+        "trackQuickActions": "Ações rápidas da faixa",
+        "addToPlaylist": "Adicionar à lista de reprodução"
+      }
+    },
+    "miniplayer": {
+      "title": "Minirreprodutor",
+      "extra": {
+        "dragToDismiss": "Arraste para fechar",
+        "swipeControls": "Controles por gesto de deslizar"
+      }
+    },
+    "nowPlaying": {
+      "title": "Tocando agora",
+      "extra": {
+        "artworkPlaybackToggle": "Controle de reprodução pela capa"
+      }
+    },
+    "queue": {
+      "extra": {
+        "add": "Adicionar à fila",
+        "playNext": "Reproduzir a seguir",
+        "playLast": "Reproduzir por último",
+        "toast": "{{- name}} adicionado(a) à fila.",
+        "queueAwareNext": "Reproduzir a seguir, respeitando a fila",
+        "queueAwareNextBrief": "Tenta adicionar a faixa após a última faixa marcada como “Reproduzir a seguir”."
+      }
+    }
+  }
+}
