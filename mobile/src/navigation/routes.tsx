@@ -324,10 +324,7 @@ export const RootStack = createNativeStackNavigator({
           screen: Settings,
           options: { animation: "default" },
         },
-        AppUpdate: {
-          screen: AppUpdate,
-          options: { title: "feat.appUpdate.title" },
-        },
+        AppUpdate,
         AppearanceSettings,
         PlaybackSettings,
         ScanningSettings,
