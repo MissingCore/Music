@@ -28,7 +28,6 @@ import type { ExtractQueryData } from "~/lib/react-query";
 import { mutateGuard } from "~/lib/react-query";
 import { Seconds } from "~/utils/date";
 import { abbreviateSize } from "~/utils/number";
-import { SegmentedList } from "~/components/List/Segmented";
 import {
   LegendItem,
   ProgressBar,
@@ -95,7 +94,7 @@ function StorageWidget() {
   };
 
   return (
-    <SegmentedList.CustomItem className="gap-4 p-4">
+    <View className="gap-4 p-4">
       <ProgressBar
         entries={[
           { color: Colors.red, value: data?.images ?? 0 },
@@ -137,7 +136,7 @@ function StorageWidget() {
         label={t("feat.insights.extra.total")}
         value={getValue("total")}
       />
-    </SegmentedList.CustomItem>
+    </View>
   );
 }
 
@@ -183,7 +182,7 @@ function DBSummaryWidget() {
   };
 
   return (
-    <SegmentedList.CustomItem className="gap-4 p-4">
+    <View className="gap-4 p-4">
       <View className="gap-2">
         <LegendItem label={t("term.albums")} value={getValue("albums")} />
         <LegendItem label={t("term.artists")} value={getValue("artists")} />
@@ -209,7 +208,7 @@ function DBSummaryWidget() {
         label={t("feat.insights.extra.totalDuration")}
         value={getValue("totalDuration")}
       />
-    </SegmentedList.CustomItem>
+    </View>
   );
 }
 
