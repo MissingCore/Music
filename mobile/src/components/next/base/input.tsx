@@ -1,10 +1,9 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useMemo, useRef } from "react";
+import { useRef } from "react";
 import type { TextInputProps } from "react-native";
 import { TextInput as RNTextInput, View } from "react-native";
-import { TextInput as RNGHTextInput } from "react-native-gesture-handler";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
@@ -15,24 +14,18 @@ import type { SupportedIconName } from "./icon";
 import { Icon } from "./icon";
 
 export function useInputRef() {
-  return useRef<RNTextInput | RNGHTextInput>(null);
+  return useRef<RNTextInput>(null);
 }
 
 export type InputProps = TextInputProps & {
-  ref?: React.Ref<RNTextInput | RNGHTextInput>;
-  forSheet?: boolean;
+  ref?: React.Ref<RNTextInput>;
 };
 
 //#region Text Input
-function TextInput({ className, style, forSheet, ...props }: InputProps) {
+function TextInput({ className, style, ...props }: InputProps) {
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
-  const Input = useMemo(
-    () => (forSheet ? RNGHTextInput : RNTextInput),
-    [forSheet],
-  );
-
   return (
-    <Input
+    <RNTextInput
       textAlign={OnRTL.decide("right", "left")}
       placeholderTextColorClassName="accent-onSurfaceVariant"
       // FIXME: For some random reason, inputs have a default vertical padding

@@ -99,7 +99,6 @@ function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
       value={inputForm.value}
       onChangeText={inputForm.onChange}
       placeholder="/storage/emulated/0"
-      forSheet
       TrailingActions={
         <View className="flex-row items-center">
           <IconButton

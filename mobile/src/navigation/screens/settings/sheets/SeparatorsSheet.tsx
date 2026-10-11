@@ -67,7 +67,6 @@ function SeparatorForm() {
       editable={!inputForm.isSubmitting}
       value={inputForm.value}
       onChangeText={inputForm.onChange}
-      forSheet
       TrailingActions={
         <IconButton
           icon="add"

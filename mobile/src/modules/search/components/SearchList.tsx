@@ -69,7 +69,6 @@ function Input(props: { placeholder?: string; autoFocus?: boolean }) {
         defaultValue={query}
         onChangeText={setQuery}
         placeholder={props.placeholder ?? t("feat.search.title")}
-        forSheet
         leadingIcon="search"
         TrailingActions={
           <IconButton
