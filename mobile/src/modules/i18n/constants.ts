@@ -126,6 +126,13 @@ export const LANGUAGES = [
     ],
   },
   {
+    code: "pt-BR",
+    label: "Português brasileiro",
+    translators: [
+      { display: "Joaquim", link: "https://www.github.com/joaqmiu" },
+    ],
+  },
+  {
     code: "ru",
     label: "Русский",
     translators: [

@@ -84,3 +84,7 @@
 
 - [@soorosh-st](https://github.com/soorosh-st)
 - [@therealbardiakhan](https://github.com/therealbardiakhan)
+
+## [Português brasileiro] Brazilian Portuguese
+
+- [@joaqmiu](https://www.github.com/joaqmiu)
