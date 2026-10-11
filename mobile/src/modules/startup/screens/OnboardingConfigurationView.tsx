@@ -29,7 +29,10 @@ export function OnboardingConfiguration() {
     <Animated.View entering={FadeIn} className="flex-1">
       <ScanningConfigurations.Sheets {...sheetRefs} />
 
-      <ListLayout contentContainerClassName="pt-safe-offset-16 pb-safe-offset-4">
+      <ListLayout
+        withToolbar={false}
+        contentContainerClassName="pt-safe-offset-16 pb-safe-offset-4"
+      >
         <AccentText>{t("feat.onboarding.extra.configureSettings")}</AccentText>
 
         <TEm textKey="feat.scanning.title" className="-mb-4" />

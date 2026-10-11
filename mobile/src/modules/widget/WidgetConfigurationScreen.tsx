@@ -66,7 +66,10 @@ function WidgetConfigurationScreenPropsImpl({
   }, [setResult]);
 
   return (
-    <ListLayout contentContainerClassName="pt-safe-offset-16 pb-safe-offset-4">
+    <ListLayout
+      withToolbar={false}
+      contentContainerClassName="pt-safe-offset-16 pb-safe-offset-4"
+    >
       <AccentText>Customize Widget</AccentText>
 
       <WidgetConfigForm
