@@ -56,14 +56,11 @@ function Backdrop() {
   const { surface } = useTheme();
   const { bottom } = useSafeAreaInsets();
   const height = useToolbarOffset();
-
-  const endGradientAt = bottom / height;
-
   return (
     <Animated.View exiting={FadeOut}>
       <LinearGradient
         colors={[`${surface}00`, `${surface}FF`]}
-        locations={endGradientAt !== 0 ? [0, endGradientAt] : undefined}
+        locations={[0, 1 - bottom / height]}
         style={{ height }}
         className="absolute inset-x-0 bottom-0"
       />
