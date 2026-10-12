@@ -34,7 +34,7 @@ interface ImageCardProps {
 const CardTextStack = createTextStack({
   labelConfig: { center: true, size: "xs", className: "text-white" },
   supportingConfig: { center: true, size: "xs", className: "text-[#ADADAD]" },
-  clampText: true,
+  clamp: true,
 });
 
 export function ImageCard(props: ImageCardProps) {
@@ -71,8 +71,8 @@ export function ImageCard(props: ImageCardProps) {
 const LargeCardTextStack = createTextStack({
   labelConfig: { center: true, size: "sm" },
   supportingConfig: { center: true, muted: true },
-  clampText: true,
-  wrapperClassName: "px-2 py-1",
+  clamp: true,
+  containerClassName: "px-2 py-1",
 });
 
 export function getLargeImageCardHeight(imgSize: number) {

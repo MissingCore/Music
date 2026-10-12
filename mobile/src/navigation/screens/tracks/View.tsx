@@ -18,7 +18,7 @@ import { getImageUri } from "~/lib/file-system";
 import { OnRTL } from "~/lib/react";
 import { Icon } from "~/components/next/base/icon";
 import { Ripple } from "~/components/next/base/ripple";
-import { createTextStack } from "~/components/next/blocks/text-stack";
+import { TextStack } from "~/components/next/blocks/text-stack";
 import {
   TrackItem,
   TrackListContext,
@@ -103,12 +103,6 @@ function ScreenContents() {
 }
 
 //#region Favorite Tracks Link
-const CustomTextStack = createTextStack({
-  labelConfig: { size: "sm" },
-  supportingConfig: { muted: true },
-  clampText: true,
-});
-
 function FavoritesPlaylistLink() {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -133,9 +127,10 @@ function FavoritesPlaylistLink() {
         />
 
         <Icon name="favorite-filled" size={32} />
-        <CustomTextStack
+        <TextStack
           label={t("term.favoriteTracks")}
           supporting={t("plural.track", { count: data?.tracks.length ?? 0 })}
+          clamp
         />
         <Icon name={OnRTL.decide("west", "east")} size={32} />
       </Ripple>

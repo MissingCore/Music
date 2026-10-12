@@ -4,7 +4,6 @@
 import { bundleId } from "@missingcore/native-utils";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
@@ -15,8 +14,14 @@ import * as SettingsList from "./components/SettingsList";
 import { APP_VERSION } from "~/constants/Config";
 import { Links } from "~/lib/web-browser";
 import { Card } from "~/components/next/base/card";
-import { Text } from "~/components/next/base/typography";
+import { createTextStack } from "~/components/next/blocks/text-stack";
 import { Image } from "~/components/next/primitive/image";
+
+const CTATextStack = createTextStack({
+  labelConfig: { accent: true, center: true },
+  supportingConfig: { muted: true, center: true },
+  containerClassName: "gap-1.5",
+});
 
 export default function AboutApp() {
   const { t } = useTranslation();
@@ -31,14 +36,7 @@ export default function AboutApp() {
           source={require("~/resources/images/app-icon.png")}
           className="size-24 rounded-full"
         />
-        <View className="gap-1">
-          <Text accent center>
-            MissingCore Music
-          </Text>
-          <Text muted center>
-            {bundleId}
-          </Text>
-        </View>
+        <CTATextStack label="MissingCore Music" supporting={bundleId} />
       </Card>
 
       <SettingsList.Group>

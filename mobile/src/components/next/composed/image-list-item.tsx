@@ -9,7 +9,7 @@ import { getSpacingClasses } from "./utils";
 import { Ripple } from "../base/ripple";
 import type { MediaImageSrc } from "../blocks/media-image";
 import { MediaImage } from "../blocks/media-image";
-import { createTextStack } from "../blocks/text-stack";
+import { TextStack } from "../blocks/text-stack";
 
 export type ImageListItemProps = {
   src: MediaImageSrc;
@@ -33,12 +33,6 @@ export type ImageListItemProps = {
   leadingOverridesSrc?: boolean;
 };
 
-const ListItemTextStack = createTextStack({
-  labelConfig: { size: "sm" },
-  supportingConfig: { muted: true },
-  clampText: true,
-});
-
 export function ImageListItem(props: ImageListItemProps) {
   const Wrapper = props.onPress || props.onLongPress ? Ripple : View;
   return (
@@ -56,7 +50,7 @@ export function ImageListItem(props: ImageListItemProps) {
       {props.Leading && props.leadingOverridesSrc ? null : (
         <MediaImage src={props.src} size={56} className="rounded-lg" />
       )}
-      <ListItemTextStack label={props.label} supporting={props.supporting} />
+      <TextStack label={props.label} supporting={props.supporting} clamp />
       {props.Trailing}
     </Wrapper>
   );

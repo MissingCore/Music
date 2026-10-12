@@ -10,46 +10,53 @@ import { Text } from "../base/typography";
 interface TextStackProps {
   label: string;
   supporting?: string;
+  labelConfig?: TextProps;
+  supportingConfig?: TextProps;
+  /** Applies `numberOfLines = 1`. */
+  clamp?: boolean;
+  /** Styles the `View` wrapping the text. */
+  containerClassName?: string;
 }
 
 /** Generates a React Component that is built to the specified configurations. */
-export function createTextStack(args: {
-  labelConfig?: TextProps;
-  supportingConfig?: TextProps;
-  /** If `numberOfLines = 1` is applied to both fields. */
-  clampText?: boolean;
-  wrapperClassName?: string;
-}) {
-  const additionalProps = args.clampText ? { numberOfLines: 1 } : {};
+export function createTextStack({
+  labelConfig,
+  supportingConfig,
+  clamp = false,
+  containerClassName,
+}: Omit<TextStackProps, "label" | "supporting">) {
+  return function TextStack(props: TextStackProps) {
+    const numLines = clamp || props.clamp ? 1 : undefined;
 
-  const labelConfig = { ...args.labelConfig, ...additionalProps };
-  const supportingConfig = { ...args.supportingConfig, ...additionalProps };
-
-  function Label(props: { text: string; singular?: boolean }) {
     return (
-      <Text
-        {...labelConfig}
+      <View
         className={cn(
-          labelConfig.className,
-          props.singular ? "shrink grow" : undefined,
-          props.singular ? args.wrapperClassName : undefined,
+          "shrink grow",
+          containerClassName,
+          props.containerClassName,
         )}
       >
-        {props.text}
-      </Text>
-    );
-  }
-
-  function Supporting(props: { text?: string }) {
-    return <Text {...supportingConfig}>{props.text}</Text>;
-  }
-
-  return function TextStack(props: TextStackProps) {
-    if (!props.supporting) return <Label text={props.label} singular />;
-    return (
-      <View className={cn("shrink grow", args.wrapperClassName)}>
-        <Label text={props.label} />
-        <Supporting text={props.supporting} />
+        <Text
+          {...labelConfig}
+          {...props.labelConfig}
+          numberOfLines={numLines}
+          className={cn(labelConfig?.className, props.labelConfig?.className)}
+        >
+          {props.label}
+        </Text>
+        {props.supporting ? (
+          <Text
+            {...supportingConfig}
+            {...props.supportingConfig}
+            numberOfLines={numLines}
+            className={cn(
+              supportingConfig?.className,
+              props.supportingConfig?.className,
+            )}
+          >
+            {props.supporting}
+          </Text>
+        ) : null}
       </View>
     );
   };
