@@ -9,7 +9,7 @@ import { View } from "react-native";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 
-import { ListLayout } from "~/navigation/layouts/ListLayout";
+import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
 import * as SettingsList from "./components/SettingsList";
 
 import { APP_VERSION } from "~/constants/Config";
@@ -25,7 +25,7 @@ export default function AboutApp() {
   const showRCNotification = usePreferenceStore((s) => s.rcNotification);
 
   return (
-    <ListLayout>
+    <ScrollLayout title="term.about">
       <Card className="items-center gap-4 p-6">
         <Image
           source={require("~/resources/images/app-icon.png")}
@@ -101,6 +101,6 @@ export default function AboutApp() {
           onPress={() => navigation.navigate("ThirdParty")}
         />
       </SettingsList.Group>
-    </ListLayout>
+    </ScrollLayout>
   );
 }

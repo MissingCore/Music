@@ -10,7 +10,7 @@ import { View } from "react-native";
 import i18next from "~/modules/i18n";
 import { sessionStore, useSessionStore } from "~/stores/Session/store";
 
-import { ListLayout } from "~/navigation/layouts/ListLayout";
+import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { cn } from "~/lib/style";
@@ -109,7 +109,7 @@ export default function Recap({
         selectedItem={state.rangeLabel}
         dispatch={dispatch}
       />
-      <ListLayout>
+      <ScrollLayout title="feat.recap.title">
         <Button
           onPress={() => timeRangeSheetRef.current?.present()}
           className="justify-between"
@@ -121,7 +121,7 @@ export default function Recap({
           <Icon name="keyboard-arrow-down" />
         </Button>
         <RecapContent key={state.rangeLabel} {...state} />
-      </ListLayout>
+      </ScrollLayout>
     </>
   );
 }

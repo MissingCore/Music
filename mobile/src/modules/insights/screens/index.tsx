@@ -7,35 +7,34 @@ import RecentlyPlayed from "./RecentlyPlayedView";
 import SaveErrors from "./SaveErrorsView";
 import Insights from "./View";
 
+import { Toolbar } from "~/components/next/composed/toolbar";
+
 const InsightsScreenGroup = {
+  screenLayout: ({ children }: { children: React.JSX.Element }) => (
+    <>
+      <Toolbar.Default />
+      {children}
+    </>
+  ),
   screenOptions: {
     animation: "fade",
+    headerShown: false,
   },
   screens: {
     RecentlyPlayed: {
       screen: RecentlyPlayed,
+      layout: ({ children }: { children: React.JSX.Element }) => children,
       options: {
         title: "feat.recent.extra.recentlyPlayed",
         animation: "default",
+        headerShown: true,
       },
     },
 
-    Insights: {
-      screen: Insights,
-      options: { title: "feat.insights.title" },
-    },
-    HiddenTracks: {
-      screen: HiddenTracks,
-      options: { title: "feat.hiddenTracks.title" },
-    },
-    Recap: {
-      screen: Recap,
-      options: { title: "feat.recap.title" },
-    },
-    SaveErrors: {
-      screen: SaveErrors,
-      options: { title: "feat.saveErrors.title" },
-    },
+    Insights,
+    HiddenTracks,
+    Recap,
+    SaveErrors,
   },
 } as const;
 

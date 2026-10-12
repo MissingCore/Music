@@ -58,6 +58,7 @@ import { useTabsByVisibility } from "~/stores/Preference/hooks";
 
 import { capitalize } from "~/utils/string";
 import type { Tab } from "~/stores/Preference/types";
+import { Toolbar } from "~/components/next/composed/toolbar";
 import { TrackMultiSelectListeners } from "~/modules/media/multiSelect/components/TrackMultiSelectListeners";
 import { BottomActions } from "./components/BottomActions";
 import { DeferredRender } from "./components/DeferredRender";
@@ -263,10 +264,6 @@ export const RootStack = createNativeStackNavigator({
       },
     },
     Search,
-    Settings: {
-      screen: Settings,
-      options: { title: "term.settings" },
-    },
     Upcoming: {
       screen: Upcoming,
       options: {
@@ -312,38 +309,30 @@ export const RootStack = createNativeStackNavigator({
     Insights: InsightsScreenGroup,
     Lyric: LyricScreenGroup,
     Setting: {
+      screenLayout: ({ children }) => (
+        <>
+          <Toolbar.Default />
+          {children}
+        </>
+      ),
       screenOptions: {
         animation: "fade",
+        headerShown: false,
       },
       screens: {
-        AppUpdate: {
-          screen: AppUpdate,
-          options: { title: "feat.appUpdate.title" },
+        Settings: {
+          screen: Settings,
+          options: { animation: "default" },
         },
-        AppearanceSettings: {
-          screen: AppearanceSettings,
-          options: { title: "feat.appearance.title" },
-        },
-        PlaybackSettings: {
-          screen: PlaybackSettings,
-          options: { title: "feat.playback.title" },
-        },
-        ScanningSettings: {
-          screen: ScanningSettings,
-          options: { title: "feat.scanning.title" },
-        },
-        ExperimentalSettings: {
-          screen: ExperimentalSettings,
-          options: { title: "feat.experimental.title" },
-        },
+        AppUpdate,
+        AppearanceSettings,
+        PlaybackSettings,
+        ScanningSettings,
+        ExperimentalSettings,
         About: {
           screen: AboutApp,
-          options: { title: "term.about" },
         },
-        ThirdParty: {
-          screen: ThirdParty,
-          options: { title: "feat.thirdParty.title" },
-        },
+        ThirdParty,
         PackageLicense,
       },
     },
