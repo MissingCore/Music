@@ -32,7 +32,7 @@ function Toolbar(props: { children: React.JSX.Element | React.JSX.Element[] }) {
   const [visible, setVisible] = useState(false);
 
   // Used to re-create the portal after navigating back (since on screen
-  // unmount, the portal is destroyed since we update the same portal).
+  // unmount, the portal is destroyed).
   useFocusEffect(
     useCallback(() => {
       setVisible(true);
@@ -76,7 +76,8 @@ function Backdrop() {
 function Contents(props: { children: React.ReactNode }) {
   return (
     <Animated.View
-      // Layout animation does not work when navigating back.
+      // Layout animation does not work when navigating back (when navigation
+      // forwards, we update the existing portal).
       layout={LinearTransition}
       entering={FadeIn}
       exiting={FadeOut}
