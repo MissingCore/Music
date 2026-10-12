@@ -7,6 +7,11 @@ import { useCallback, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
+import Animated, {
+  FadeIn,
+  FadeOut,
+  LinearTransition,
+} from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { OnRTL } from "~/lib/react";
@@ -18,19 +23,24 @@ export const ToolbarScreenOffset = "py-safe-offset-20" as const;
 
 export function useToolbarOffset(extra = 0) {
   const { bottom } = useSafeAreaInsets();
-  // Android Navbar Height + Toolbar Height + 16px Bottom Gap + 16px Top Gap
+  // Android Navbar Height + Toolbar Height + 16px Bottom Offset + 16px Top Offset
   return bottom + 48 + 16 + 16 + extra;
 }
 
 //#region Toolbar
 function Toolbar(props: { children: React.JSX.Element | React.JSX.Element[] }) {
   const [visible, setVisible] = useState(false);
+
+  // Used to re-create the portal after navigating back (since on screen
+  // unmount, the portal is destroyed since we update the same portal).
   useFocusEffect(
     useCallback(() => {
       setVisible(true);
       return () => setVisible(false);
     }, []),
   );
+
+  // Hide the toolbar on screens that don't support it.
   if (!visible) return null;
   return (
     <Portal name="toolbar">
@@ -50,12 +60,14 @@ function Backdrop() {
   const endGradientAt = bottom / height;
 
   return (
-    <LinearGradient
-      colors={[`${surface}00`, `${surface}FF`]}
-      locations={endGradientAt !== 0 ? [0, endGradientAt] : undefined}
-      style={{ height }}
-      className="absolute inset-x-0 bottom-0"
-    />
+    <Animated.View exiting={FadeOut}>
+      <LinearGradient
+        colors={[`${surface}00`, `${surface}FF`]}
+        locations={endGradientAt !== 0 ? [0, endGradientAt] : undefined}
+        style={{ height }}
+        className="absolute inset-x-0 bottom-0"
+      />
+    </Animated.View>
   );
 }
 //#endregion
@@ -63,16 +75,26 @@ function Backdrop() {
 //#region Contents
 function Contents(props: { children: React.ReactNode }) {
   return (
-    <View className="my-1 h-10 flex-row items-center overflow-hidden rounded-full bg-surfaceContainerLowest">
+    <Animated.View
+      // Layout animation does not work when navigating back.
+      layout={LinearTransition}
+      entering={FadeIn}
+      exiting={FadeOut}
+      className="my-1 h-10 flex-row items-center overflow-hidden rounded-full bg-surfaceContainerLowest"
+    >
       {props.children}
-    </View>
+    </Animated.View>
   );
 }
 //#endregion
 
 //#region FAB
 function FAB(props: Omit<IconButtonProps, "filled" | "size">) {
-  return <IconButton {...props} filled size="lg" />;
+  return (
+    <Animated.View entering={FadeIn} exiting={FadeOut}>
+      <IconButton {...props} filled size="lg" />
+    </Animated.View>
+  );
 }
 //#endregion
 
