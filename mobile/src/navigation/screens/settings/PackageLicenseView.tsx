@@ -26,9 +26,9 @@ export default function PackageLicense({
   return (
     <>
       <Toolbar>
-        <Toolbar.Contents>
+        <Toolbar.Actions>
           <Toolbar.Back />
-        </Toolbar.Contents>
+        </Toolbar.Actions>
         <Toolbar.FAB
           icon={`north-${OnRTL.decide("west", "east")}`}
           accessibilityLabel={t("template.entrySeeMore", {

@@ -236,6 +236,7 @@ export const RootStack = createNativeStackNavigator({
       <ArtistsSheet />
       <TrackMultiSelectListeners />
       <PortalHost />
+      <Toolbar.Provider />
     </>
   ),
   screenLayout: ({ children }) => <DeferredRender>{children}</DeferredRender>,

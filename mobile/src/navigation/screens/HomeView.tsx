@@ -157,7 +157,7 @@ function WeeklyRecap() {
           textKey="feat.greeting.title"
           intent="primary"
           accent
-          className="text-5xl"
+          className="text-5xl/tight"
         />
         <Trans
           i18nKey="feat.greeting.extra.weeklyRecap"

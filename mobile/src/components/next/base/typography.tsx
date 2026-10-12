@@ -26,7 +26,7 @@ const textStyle = cva({
       error: "text-onError",
       inverse: "text-inverseOnSurface",
     } satisfies IntentVariant,
-    accent: { true: "text-4xl leading-none!" },
+    accent: { true: "text-4xl/none" },
     muted: { true: "text-xs text-onSurfaceVariant" },
     center: { true: "text-center" },
     uppercase: { true: "tracking-wider uppercase" },

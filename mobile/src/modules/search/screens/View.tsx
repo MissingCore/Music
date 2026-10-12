@@ -56,7 +56,7 @@ export default function Search() {
 
   return (
     <View className="shrink grow gap-6 px-4 pt-2">
-      <TText textKey="feat.search.title" accent className="leading-tight!" />
+      <TText textKey="feat.search.title" accent className="leading-tight" />
       <View className="shrink grow">
         <SearchBuilder.Provider>
           <SearchBuilder.Input

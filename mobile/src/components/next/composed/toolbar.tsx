@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { Portal } from "@rn-primitives/portal";
+import { Portal, PortalHost } from "@rn-primitives/portal";
 import { useCallback, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
@@ -27,6 +27,26 @@ export function useToolbarOffset(extra = 0) {
   return bottom + 48 + 16 + 16 + extra;
 }
 
+//#region Provider
+/**
+ * Render once at the root to provide a smoother animation for the "actions"
+ * portion of the toolbar.
+ */
+function Provider() {
+  return (
+    <View className="absolute inset-x-0 bottom-0 flex-row items-center justify-between px-4 pb-safe-offset-4">
+      <Animated.View
+        layout={LinearTransition}
+        className="my-1 h-10 flex-row items-center overflow-hidden rounded-full bg-surfaceContainerLowest"
+      >
+        <PortalHost name="toolbar-actions-host" />
+      </Animated.View>
+      <PortalHost name="toolbar-FAB-host" />
+    </View>
+  );
+}
+//#endregion
+
 //#region Toolbar
 function Toolbar(props: { children: React.JSX.Element | React.JSX.Element[] }) {
   const [visible, setVisible] = useState(false);
@@ -45,9 +65,7 @@ function Toolbar(props: { children: React.JSX.Element | React.JSX.Element[] }) {
   return (
     <Portal name="toolbar">
       <Backdrop />
-      <View className="absolute inset-x-0 bottom-0 flex-row items-center justify-between px-4 pb-safe-offset-4">
-        {props.children}
-      </View>
+      {props.children}
     </Portal>
   );
 }
@@ -69,19 +87,12 @@ function Backdrop() {
 }
 //#endregion
 
-//#region Contents
-function Contents(props: { children: React.ReactNode }) {
+//#region Actions
+function Actions(props: { children: React.ReactNode }) {
   return (
-    <Animated.View
-      // Layout animation does not work when navigating back (when navigation
-      // forwards, we update the existing portal).
-      layout={LinearTransition}
-      entering={FadeIn}
-      exiting={FadeOut}
-      className="my-1 h-10 flex-row items-center overflow-hidden rounded-full bg-surfaceContainerLowest"
-    >
+    <Portal name="toolbar-actions" hostName="toolbar-actions-host">
       {props.children}
-    </Animated.View>
+    </Portal>
   );
 }
 //#endregion
@@ -89,9 +100,11 @@ function Contents(props: { children: React.ReactNode }) {
 //#region FAB
 function FAB(props: Omit<IconButtonProps, "filled" | "size">) {
   return (
-    <Animated.View entering={FadeIn} exiting={FadeOut}>
-      <IconButton {...props} filled size="lg" />
-    </Animated.View>
+    <Portal name="toolbar-FAB" hostName="toolbar-FAB-host">
+      <Animated.View entering={FadeIn} exiting={FadeOut}>
+        <IconButton {...props} filled size="lg" />
+      </Animated.View>
+    </Portal>
   );
 }
 //#endregion
@@ -100,9 +113,9 @@ function FAB(props: Omit<IconButtonProps, "filled" | "size">) {
 function Default() {
   return (
     <Toolbar>
-      <Contents>
+      <Actions>
         <Back />
-      </Contents>
+      </Actions>
     </Toolbar>
   );
 }
@@ -121,7 +134,9 @@ function Back() {
 //#endregion
 
 //#region Exports
-Toolbar.Contents = Contents;
+Toolbar.Provider = Provider;
+
+Toolbar.Actions = Actions;
 Toolbar.FAB = FAB;
 
 Toolbar.Default = Default;

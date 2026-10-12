@@ -227,7 +227,7 @@ export function Header(props: {
               <TText
                 textKey={props.titleKey}
                 accent
-                className="leading-normal!"
+                className="leading-tight"
               />
             </Marquee>
             <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">

@@ -36,7 +36,7 @@ export function ScrollLayoutTitle(props: {
 }) {
   const t = useMaybeT();
   return (
-    <Text accent className={props.className}>
+    <Text accent className={cn("leading-tight", props.className)}>
       {t(props.title)}
     </Text>
   );
