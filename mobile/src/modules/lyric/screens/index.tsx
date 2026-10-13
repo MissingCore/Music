@@ -5,8 +5,9 @@ import CreateLyricProvider from "./CreateProviderView";
 import CreateLyric from "./CreateView";
 import ModifyLyricProvider from "./ModifyProviderView";
 import ModifyLyric from "./ModifyView";
-import LyricsProviders from "./ProviderView";
 import LyricsSettings from "./SettingsView";
+
+import { Toolbar } from "~/components/next/composed/toolbar";
 
 const LyricScreenGroup = {
   screenOptions: {
@@ -15,7 +16,13 @@ const LyricScreenGroup = {
   screens: {
     LyricsSettings: {
       screen: LyricsSettings,
-      options: { title: "feat.lyrics.title" },
+      layout: ({ children }: { children: React.JSX.Element }) => (
+        <>
+          <Toolbar.Default />
+          {children}
+        </>
+      ),
+      options: { headerShown: false },
     },
 
     CreateLyric: {
@@ -27,10 +34,6 @@ const LyricScreenGroup = {
       options: { title: "form.edit" },
     },
 
-    LyricsProviders: {
-      screen: LyricsProviders,
-      options: { title: "feat.lyrics.extra.providers" },
-    },
     CreateLyricProvider: {
       screen: CreateLyricProvider,
       options: { title: "form.create" },
