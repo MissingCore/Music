@@ -30,6 +30,10 @@ export function useTrackFavoriteStatus(trackId: string) {
   return useQuery({ ...q.tracks.detail(trackId)._ctx.isFavorite });
 }
 
+export function useTrackLyrics(trackId: string) {
+  return useQuery({ ...q.tracks.detail(trackId)._ctx.lyrics });
+}
+
 export function useTrackGenres(trackId: string) {
   return useQuery({ ...q.tracks.detail(trackId)._ctx.genres });
 }

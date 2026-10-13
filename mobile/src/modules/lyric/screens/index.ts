@@ -3,12 +3,10 @@
 
 import CreateLyricProvider from "./CreateProviderView";
 import CreateLyric from "./CreateView";
-import Lyric from "./CurrentView";
 import ModifyLyricProvider from "./ModifyProviderView";
 import ModifyLyric from "./ModifyView";
 import LyricsProviders from "./ProviderView";
 import LyricsSettings from "./SettingsView";
-import Lyrics from "./View";
 
 const LyricScreenGroup = {
   screenOptions: {
@@ -20,10 +18,6 @@ const LyricScreenGroup = {
       options: { title: "feat.lyrics.title" },
     },
 
-    Lyrics: {
-      screen: Lyrics,
-      options: { title: "feat.lyrics.title" },
-    },
     CreateLyric: {
       screen: CreateLyric,
       options: { title: "form.create" },
@@ -32,7 +26,6 @@ const LyricScreenGroup = {
       screen: ModifyLyric,
       options: { title: "form.edit" },
     },
-    Lyric,
 
     LyricsProviders: {
       screen: LyricsProviders,

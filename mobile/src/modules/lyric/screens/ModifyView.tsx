@@ -8,7 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { queries as q } from "~/data/keyStore";
 import { deleteLyric, updateLyric } from "~/data/lyric/api";
-import { useLyric } from "~/data/lyric/queries";
+// import { useLyric } from "~/data/lyric/queries";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
@@ -22,6 +22,8 @@ export default function ModifyLyric({
     params: { id: lyricId },
   },
 }: Props) {
+  return null;
+
   const navigation = useNavigation();
   const queryClient = useQueryClient();
   const { isPending, isRefetching, error, data } = useLyric(lyricId);

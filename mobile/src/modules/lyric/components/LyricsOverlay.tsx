@@ -17,14 +17,13 @@ import { Text, View } from "react-native";
 import { usePolledProgress } from "react-native-audio-browser";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { useLyricForTrack } from "~/data/lyric/queries";
+import { useTrackLyrics } from "~/data/track/queries";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { useLyricStore } from "../core/store";
 import { toggleLyricStoreKey } from "../core/actions";
 
 import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
-import { isString } from "~/utils/validation";
 import type { FlatListProps, FlatListRef } from "~/components/Base/List";
 import { FlatList, useFlatListRef } from "~/components/Base/List";
 import { Pressable } from "~/components/Base/Pressable";
@@ -35,7 +34,6 @@ import { Em, TEm } from "~/components/Typography/StyledText";
 import { useIsAtmosphereActive } from "~/modules/customization/atmosphere/store";
 import { useTheme } from "~/modules/customization/theme/hooks";
 import { autoDiscoverLyrics } from "../helpers/autoDiscoverLyrics";
-import { removeSynchronizedLyricsJunk } from "../helpers/cleanUpLyricsJunk";
 import { parseLyrics } from "../helpers/parser";
 import type { SynchronizedLine } from "../helpers/parser/utils";
 
@@ -86,26 +84,13 @@ export function LyricsOverlay(props: { size: number; trackId: string }) {
 }
 
 function LyricsContent({ trackId }: { trackId: string }) {
-  const { isPending, data, error } = useLyricForTrack(trackId);
-  const cleanupInProgress = useRef<Set<string>>(new Set());
+  const { isPending, data, error } = useTrackLyrics(trackId);
   const { offset, extraTop } = use(LyricOffsetContext);
 
   const formattedLyrics = useMemo(() => {
-    if (!data?.lyrics) return;
-    return parseLyrics(data.lyrics);
-  }, [data?.lyrics]);
-
-  //! TODO: Remove in `v4.0.0`.
-  //! Temporary "hack" to clean up cached lyrics with "junk" in front, which
-  //! was fixed in `v3.3.0`.
-  useEffect(() => {
-    if (!isString(formattedLyrics) || !data?.id) return;
-    if (cleanupInProgress.current.has(data.id)) return;
-    cleanupInProgress.current.add(data.id);
-    removeSynchronizedLyricsJunk(data.id)
-      .catch((err) => console.log(`[LRC_CLEANUP_ERR]`, err))
-      .finally(() => cleanupInProgress.current.delete(data.id));
-  }, [trackId, data?.id, formattedLyrics]);
+    if (!data?.lyricText) return;
+    return parseLyrics(data.lyricText);
+  }, [data?.lyricText]);
 
   if (isPending) return null;
   else if (error || !data) {
@@ -129,12 +114,12 @@ function LyricsContent({ trackId }: { trackId: string }) {
           contentContainerClassName="px-4"
         />
       )}
-      <ExtraActions lyricsId={data.id} />
+      <ExtraActions trackId={data.trackId} />
     </>
   );
 }
 
-function ExtraActions({ lyricsId }: { lyricsId?: string }) {
+function ExtraActions({ trackId }: { trackId?: string }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const expandLyrics = useLyricStore((s) => s.fullscreen);
@@ -147,11 +132,12 @@ function ExtraActions({ lyricsId }: { lyricsId?: string }) {
         onPress={toggleLyricStoreKey("fullscreen")}
         size="xs"
       />
-      {lyricsId ? (
+      {trackId ? (
         <IconButton
           icon="edit"
           accessibilityLabel={t("form.edit")}
-          onPress={() => navigation.navigate("ModifyLyric", { id: lyricsId })}
+          //! FIXME: Currently "inaccurate".
+          onPress={() => navigation.navigate("ModifyLyric", { id: trackId })}
           size="xs"
         />
       ) : null}
@@ -188,6 +174,8 @@ function LyricsNotFound({ trackId }: { trackId: string }) {
         <ExtendedTButton
           // @ts-expect-error - Will display text if key doesn't exist.
           textKey={t("template.entryManage", { name: t("feat.lyrics.title") })}
+          //! FIXME: Current "inaccurate".
+          // @ts-expect-error - Screen does not exist.
           onPress={() => navigation.navigate("Lyrics", { linkTo: trackId })}
           disabled={checkingEmbeddedLyrics}
           className="min-h-auto w-full max-w-48"

@@ -14,7 +14,6 @@ import { fetchLyricFromProvider } from "../core/data";
 import { queryClient } from "~/lib/react-query";
 import { bgWait } from "~/utils/promise";
 import { getSafeUri } from "~/utils/string";
-import { linkTrackToLyric } from "./linkTrackToLyric";
 
 const BUFFER_MS = 30000;
 let lastRequestAt = 0;
@@ -66,16 +65,13 @@ export async function autoDiscoverLyrics(abortController: AbortController) {
     if (activeTrack.albumName) lrcEntryName.push(activeTrack.albumName);
 
     const newLyric = await createLyric({
-      name: lrcEntryName.join(" - "),
-      lyrics: foundLyrics.trim(),
+      trackId: activeTrack.id,
+      lyricText: foundLyrics.trim(),
     });
     if (!newLyric) throw new Error("Lyric not returned after insertion.");
-    await linkTrackToLyric(
-      { name: activeTrack.name, trackId: activeTrack.id, lyricId: newLyric.id },
-      false,
-    );
-
-    queryClient.invalidateQueries({ queryKey: q.lyrics._def });
+    queryClient.invalidateQueries({
+      queryKey: q.tracks.detail(activeTrack.id)._ctx.lyrics.queryKey,
+    });
   } catch (err) {
     console.log(err);
   }
