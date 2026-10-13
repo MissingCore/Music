@@ -137,9 +137,11 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
     const parsedData = schemaRef.current.safeParse(data);
     if (!parsedData.data) return;
     setIsSubmitting(true);
-    // Slight buffer before running heavy async task.
-    await wait(1);
-    await onSubmitRef.current(parsedData.data);
+    try {
+      // Slight buffer before running heavy async task.
+      await wait(1);
+      await onSubmitRef.current(parsedData.data);
+    } catch {}
     setIsSubmitting(false);
   }, [canSubmit, data]);
 

@@ -175,7 +175,6 @@ export function TextareaImpl<TData extends Record<string, any>>() {
           onBlur={props.onBlur}
           className={cn(
             "w-full rounded-sm border border-outline px-2 py-3",
-            { "min-h-64": !props.oneLine },
             props.className,
           )}
         />

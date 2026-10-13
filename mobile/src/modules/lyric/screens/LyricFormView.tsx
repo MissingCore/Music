@@ -154,14 +154,14 @@ function Form(props: { actionConfig: FormActionConfig<LyricEntry> }) {
       <Textarea
         label="feat.lyrics.title"
         field="lyricText"
-        className="shrink grow rounded-lg px-4 py-0"
+        className="shrink grow rounded-lg px-4 py-4"
       />
 
       <View className="flex-row items-center gap-1.5">
         <FormAction {...props.actionConfig} />
         <IconButton
           icon={OnRTL.decide("east", "west")}
-          accessibilityLabel={t("feat.backup.extra.import")}
+          accessibilityLabel={t("form.cancel")}
           onPress={() => navigation.goBack()}
           disabled={isSubmitting}
           wide
@@ -169,7 +169,7 @@ function Form(props: { actionConfig: FormActionConfig<LyricEntry> }) {
         />
         <IconButton
           icon="save"
-          accessibilityLabel={t("feat.backup.extra.import")}
+          accessibilityLabel={t("form.apply")}
           onPress={onSubmit}
           disabled={!canSubmit || isSubmitting}
           intent="inverse"
