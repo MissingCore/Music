@@ -4,7 +4,7 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
-import { BackHandler, useWindowDimensions } from "react-native";
+import { useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
   FadeInLeft,
@@ -22,6 +22,7 @@ import Animated, {
 import type { FileNode } from "~/db/schema";
 
 import { useFolderContent } from "~/data/folder/queries";
+import { useBackHandler } from "~/hooks/useBackHandler";
 
 import * as LibraryLayout from "~/navigation/layouts/LibraryLayout";
 import { FoldersViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
@@ -73,19 +74,16 @@ export default function Folders({
   }, [navigation, isFocused, path, setDirSegments]);
 
   //? Treat each directory as part of the stack which gets popped when a back gesture is detected.
-  useEffect(() => {
-    if (!isFocused) return;
-    const subscription = BackHandler.addEventListener(
-      "hardwareBackPress",
+  useBackHandler(
+    () => {
       // Pop a directory segment if we detect a back gesture/action.
-      () => {
-        if (dirSegments.length === 0) return false;
-        setDirSegments((prev) => prev.toSpliced(-1, 1));
-        return true;
-      },
-    );
-    return () => subscription.remove();
-  }, [dirSegments, isFocused, setDirSegments]);
+      if (dirSegments.length === 0) return false;
+      setDirSegments((prev) => prev.toSpliced(-1, 1));
+      return true;
+    },
+    [dirSegments, setDirSegments],
+    isFocused,
+  );
 
   return (
     <LibraryLayout.Provider ref={listRef} asGrid={false}>
