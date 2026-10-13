@@ -25,6 +25,7 @@ import { IconButton } from "~/components/next/base/button-icon";
 import { Dialog } from "~/components/next/base/dialog";
 import { TText } from "~/components/next/base/typography";
 import { ActionButton } from "~/components/next/blocks/button-action";
+import { ConfirmAction } from "~/components/next/composed/confirm-action";
 
 type InitialArguments<TSchema extends ZodMiniObject> = {
   schema: TSchema;
@@ -183,46 +184,26 @@ export type FormActionConfig<TData extends Record<string, any>> = {
 /** Additional action that can be displayed in the form. */
 export function FormAction(props: FormActionConfig<any>) {
   const { t } = useTranslation();
-  const [lastChance, setLastChance] = useState(false);
   const { setFields, isSubmitting, setIsSubmitting } = useFormStateContext();
 
   const triggerAction = async () => {
-    if (props.danger) setLastChance(false);
     setIsSubmitting(true);
     await props.action({ setFields });
     setIsSubmitting(false);
   };
 
+  const renderedAction = (
+    <IconButton
+      {...props.actionConfig}
+      accessibilityLabel={t(props.label)}
+      onPress={triggerAction}
+      disabled={isSubmitting}
+    />
+  );
+
+  if (!props.danger) return renderedAction;
   return (
-    <>
-      <IconButton
-        {...props.actionConfig}
-        accessibilityLabel={t(props.label)}
-        onPress={() => (props.danger ? setLastChance(true) : triggerAction())}
-        disabled={lastChance || isSubmitting}
-      />
-      {props.danger ? (
-        <Dialog visible={lastChance} onClose={() => setLastChance(false)}>
-          <TText textKey={props.label} style={{ fontSize: 18 }} />
-          <Dialog.Actions>
-            <ActionButton
-              label={t("form.confirm")}
-              onPress={async () => {
-                await triggerAction();
-                setLastChance(false);
-              }}
-              labelClassName="text-error"
-              className="rounded-lg"
-            />
-            <ActionButton
-              label={t("form.cancel")}
-              onPress={() => setLastChance(false)}
-              className="rounded-lg"
-            />
-          </Dialog.Actions>
-        </Dialog>
-      ) : null}
-    </>
+    <ConfirmAction prompt={[t(props.label)]}>{renderedAction}</ConfirmAction>
   );
 }
 //#endregion
