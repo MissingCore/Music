@@ -1,45 +1,35 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import CreateLyricProvider from "./CreateProviderView";
-import ModifyLyricProvider from "./ModifyProviderView";
 import LyricForm from "./LyricFormView";
+import LyricProviderForm from "./LyricProviderFormView";
 import LyricsSettings from "./SettingsView";
 
 import { Toolbar } from "~/components/next/composed/toolbar";
 
 const LyricScreenGroup = {
+  screenLayout: ({ children }: { children: React.JSX.Element }) => (
+    <>
+      <Toolbar.Default />
+      {children}
+    </>
+  ),
   screenOptions: {
     animation: "fade",
+    headerShown: false,
   },
   screens: {
-    LyricsSettings: {
-      screen: LyricsSettings,
-      layout: ({ children }: { children: React.JSX.Element }) => (
-        <>
-          <Toolbar.Default />
-          {children}
-        </>
-      ),
-      options: { headerShown: false },
-    },
+    LyricsSettings,
 
     LyricForm: {
       screen: LyricForm,
+      layout: ({ children }: { children: React.JSX.Element }) => children,
       options: {
         presentation: "transparentModal",
-        headerShown: false,
       },
     },
 
-    CreateLyricProvider: {
-      screen: CreateLyricProvider,
-      options: { title: "form.create" },
-    },
-    ModifyLyricProvider: {
-      screen: ModifyLyricProvider,
-      options: { title: "form.edit" },
-    },
+    LyricProviderForm,
   },
 } as const;
 
