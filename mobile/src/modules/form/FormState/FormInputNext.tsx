@@ -10,11 +10,12 @@ import { useFormStateContext } from "./next";
 import { cn } from "~/lib/style";
 import type { KeysOfValue } from "~/utils/types";
 import { FlatList } from "~/components/Base/List";
-import { IconButton } from "~/components/Form/Button/Icon";
-import type { InputProps } from "~/components/Form/Input";
-import { TextInput } from "~/components/Form/Input";
-import { RemovableItem } from "~/components/List/RemovableItem";
-import { Em } from "~/components/Typography/StyledText";
+import { IconButton } from "~/components/next/base/button-icon";
+import type { InputProps } from "~/components/next/base/input";
+import { TextInput } from "~/components/next/base/input";
+import { SwitchInput } from "~/components/next/base/switch";
+import { Text } from "~/components/next/base/typography";
+import { Marquee } from "~/components/next/blocks/marquee";
 
 //#region Label
 export function InputLabel(props: {
@@ -24,7 +25,7 @@ export function InputLabel(props: {
   const t = useMaybeT();
   return (
     <View className="mb-1 min-h-8 flex-row items-center justify-between gap-4">
-      <Em>{t(props.label)}</Em>
+      <Text intent="em">{t(props.label)}</Text>
       {props.Trailing}
     </View>
   );
@@ -103,18 +104,21 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
           data={values}
           keyExtractor={(_, index) => `${index}`}
           renderItem={({ item: value, index: row }) => (
-            <RemovableItem
-              label={value}
-              onRemove={() =>
-                setField((prev) => ({
-                  ...prev,
-                  [field]: (prev[field] as string[]).filter(
-                    (_, idx) => idx !== row,
-                  ),
-                }))
-              }
-              disableRemove={isSubmitting}
-            >
+            <View className="min-h-12 flex-row items-center gap-1">
+              <IconButton
+                icon="do-not-disturb-on"
+                accessibilityLabel={t("template.entryRemove", { name: value })}
+                onPress={() =>
+                  setField((prev) => ({
+                    ...prev,
+                    [field]: (prev[field] as string[]).filter(
+                      (_, idx) => idx !== row,
+                    ),
+                  }))
+                }
+                disabled={isSubmitting}
+                size="xs"
+              />
               <TextInput
                 editable={!isSubmitting}
                 value={value}
@@ -128,7 +132,7 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
                 }
                 className="shrink grow rounded-sm border border-outline p-2"
               />
-            </RemovableItem>
+            </View>
           )}
           scrollEnabled={false}
           contentContainerClassName="gap-2"
@@ -177,6 +181,31 @@ export function TextareaImpl<TData extends Record<string, any>>() {
             "w-full rounded-sm border border-outline px-2 py-3",
             props.className,
           )}
+        />
+      </View>
+    );
+  };
+}
+//#endregion
+
+//#region Switch Input
+export function SwitchInputImpl<TData extends Record<string, any>>() {
+  return function Textarea(props: {
+    label: TranslationKeyOrString;
+    field: KeysOfValue<TData, boolean>;
+  }) {
+    const { data, setField, isSubmitting } = useFormState<TData>();
+    return (
+      <View className="min-h-8 flex-row items-center justify-between gap-2">
+        <Marquee>
+          <InputLabel label={props.label} />
+        </Marquee>
+        <SwitchInput
+          enabled={data[props.field]}
+          onPress={() =>
+            setField((prev) => ({ ...prev, [props.field]: !prev[props.field] }))
+          }
+          disabled={isSubmitting}
         />
       </View>
     );

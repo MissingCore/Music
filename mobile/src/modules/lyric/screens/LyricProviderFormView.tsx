@@ -19,11 +19,9 @@ import { LyricProviderEndpointPlaceholders } from "../core/constants";
 
 import { cn } from "~/lib/style";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
-import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import { Em } from "~/components/Typography/StyledText";
 import { Button } from "~/components/next/base/button";
 import { IconButton } from "~/components/next/base/button-icon";
-import { SwitchInput } from "~/components/next/base/switch";
 import { ConfirmAction } from "~/components/next/composed/confirm-action";
 import {
   Toolbar,
@@ -37,6 +35,7 @@ import {
 import {
   ArrayFormInputImpl,
   FormInputImpl,
+  SwitchInputImpl,
   TextareaImpl,
 } from "~/modules/form/FormState/FormInputNext";
 
@@ -143,6 +142,7 @@ function FormToolbar(props: { onDelete?: VoidFunction }) {
 //#region Lyric Form
 const FormInput = FormInputImpl<LyricProviderEntry>();
 const ArrayFormInput = ArrayFormInputImpl<LyricProviderEntry>();
+const SwitchInput = SwitchInputImpl<LyricProviderEntry>();
 const Textarea = TextareaImpl<LyricProviderEntry>();
 
 function Form() {
@@ -194,18 +194,7 @@ function Form() {
         ))}
       </View>
       <ArrayFormInput label="Traversed Fields" field="traversedFields" />
-      <SheetLabelAction
-        label="isJSONResponse"
-        Trailing={
-          <SwitchInput
-            enabled={data.isJSONResponse}
-            onPress={() =>
-              setFields((prev) => ({ isJSONResponse: !prev.isJSONResponse }))
-            }
-            disabled={isSubmitting}
-          />
-        }
-      />
+      <SwitchInput label="isJSONResponse" field="isJSONResponse" />
       <Textarea label="Headers" field="headers" />
     </KeyboardAwareScrollView>
   );
