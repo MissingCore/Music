@@ -2,9 +2,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import CreateLyricProvider from "./CreateProviderView";
-import CreateLyric from "./CreateView";
 import ModifyLyricProvider from "./ModifyProviderView";
-import ModifyLyric from "./ModifyView";
+import LyricForm from "./LyricFormView";
 import LyricsSettings from "./SettingsView";
 
 import { Toolbar } from "~/components/next/composed/toolbar";
@@ -25,13 +24,12 @@ const LyricScreenGroup = {
       options: { headerShown: false },
     },
 
-    CreateLyric: {
-      screen: CreateLyric,
-      options: { title: "form.create" },
-    },
-    ModifyLyric: {
-      screen: ModifyLyric,
-      options: { title: "form.edit" },
+    LyricForm: {
+      screen: LyricForm,
+      options: {
+        presentation: "transparentModal",
+        headerShown: false,
+      },
     },
 
     CreateLyricProvider: {

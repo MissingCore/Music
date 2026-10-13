@@ -136,8 +136,7 @@ function ExtraActions({ trackId }: { trackId?: string }) {
         <IconButton
           icon="edit"
           accessibilityLabel={t("form.edit")}
-          //! FIXME: Currently "inaccurate".
-          onPress={() => navigation.navigate("ModifyLyric", { id: trackId })}
+          onPress={() => navigation.navigate("LyricForm", { trackId })}
           size="xs"
         />
       ) : null}
@@ -174,9 +173,7 @@ function LyricsNotFound({ trackId }: { trackId: string }) {
         <ExtendedTButton
           // @ts-expect-error - Will display text if key doesn't exist.
           textKey={t("template.entryManage", { name: t("feat.lyrics.title") })}
-          //! FIXME: Current "inaccurate".
-          // @ts-expect-error - Screen does not exist.
-          onPress={() => navigation.navigate("Lyrics", { linkTo: trackId })}
+          onPress={() => navigation.navigate("LyricForm", { trackId })}
           disabled={checkingEmbeddedLyrics}
           className="min-h-auto w-full max-w-48"
           textClassName="text-xs"
