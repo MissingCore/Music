@@ -23,7 +23,7 @@ import { isBoolean, isNumber, isString } from "~/utils/validation";
 import type { IconButtonProps } from "~/components/next/base/button-icon";
 import { IconButton } from "~/components/next/base/button-icon";
 import { Dialog } from "~/components/next/base/dialog";
-import { Text, TText } from "~/components/next/base/typography";
+import { TText } from "~/components/next/base/typography";
 import { ActionButton } from "~/components/next/blocks/button-action";
 
 type InitialArguments<TSchema extends ZodMiniObject> = {
@@ -256,7 +256,6 @@ function UnsavedChangesPrompt() {
       onClose={() => setShowConfirmation(false)}
     >
       <TText textKey="form.unsaved" style={{ fontSize: 18 }} />
-      <Text></Text>
       <Dialog.Actions>
         <ActionButton
           label={t("form.leave")}
