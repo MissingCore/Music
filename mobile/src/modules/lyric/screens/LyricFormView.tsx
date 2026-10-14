@@ -154,12 +154,9 @@ function Form(props: { actionConfig: FormActionConfig<LyricEntry> }) {
   return (
     <Card className="size-full max-h-192 max-w-xl gap-6">
       <TText textKey="feat.lyrics.title" bold size="lg" className="-mb-4" />
-      <View className="shrink grow rounded-lg border border-outline">
-        <KeyboardAwareScrollView contentContainerClassName="shrink grow p-2">
-          <Textarea
-            field="lyricText"
-            className="shrink grow rounded-none border-0 p-0"
-          />
+      <View className="shrink grow overflow-hidden rounded-lg border border-outline">
+        <KeyboardAwareScrollView contentContainerClassName="grow">
+          <Textarea field="lyricText" className="grow rounded-none border-0" />
         </KeyboardAwareScrollView>
       </View>
 
