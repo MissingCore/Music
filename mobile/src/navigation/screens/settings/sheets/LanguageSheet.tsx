@@ -66,6 +66,7 @@ export function LanguageSheet(props: { ref: SheetRef }) {
             icon={`north-${OnRTL.decide("west", "east")}`}
             accessibilityLabel={t("feat.language.extra.contribute")}
             onPress={() => openLink(Links.Translations)}
+            intent="inverse"
             filled
           />
         </View>
