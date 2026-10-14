@@ -17,6 +17,7 @@ import { useTrackLyrics } from "~/data/track/queries";
 import { pickFile } from "~/lib/file-system";
 import { OnRTL } from "~/lib/react";
 import { wait } from "~/utils/promise";
+import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { IconButton } from "~/components/next/base/button-icon";
 import { Card } from "~/components/next/base/card";
 import { ZSchema } from "~/modules/form/utils";
@@ -27,6 +28,7 @@ import {
   useFormStateContext,
 } from "~/modules/form/FormState/next";
 import { TextareaImpl } from "~/modules/form/FormState/FormInputNext";
+import { TText } from "~/components/next/base/typography";
 
 type Props = StaticScreenProps<{ trackId: string }>;
 
@@ -151,11 +153,12 @@ function Form(props: { actionConfig: FormActionConfig<LyricEntry> }) {
 
   return (
     <Card className="size-full max-h-192 max-w-xl gap-4">
-      <Textarea
-        label="feat.lyrics.title"
-        field="lyricText"
-        className="shrink grow rounded-lg px-4 py-4"
-      />
+      <TText textKey="feat.lyrics.title" bold size="sm" className="-mb-2" />
+      <View className="shrink grow rounded-lg border border-outline">
+        <KeyboardAwareScrollView contentContainerClassName="p-4">
+          <Textarea field="lyricText" className="rounded-none border-0 p-0!" />
+        </KeyboardAwareScrollView>
+      </View>
 
       <View className="flex-row items-center gap-1.5">
         <FormAction {...props.actionConfig} />

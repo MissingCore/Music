@@ -147,7 +147,7 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
 export function TextareaImpl<TData extends Record<string, any>>() {
   return function Textarea(
     props: {
-      label: TranslationKeyOrString;
+      label?: TranslationKeyOrString;
       field: KeysOfValue<TData, string>;
       oneLine?: boolean;
     } & Pick<
@@ -156,32 +156,38 @@ export function TextareaImpl<TData extends Record<string, any>>() {
     >,
   ) {
     const { data, setField, isSubmitting } = useFormState<TData>();
+
+    const renderedInput = (
+      <TextInput
+        editable={!isSubmitting}
+        value={data[props.field]}
+        onChangeText={(_text) =>
+          setField((prev) => {
+            let text = _text;
+            if (props.oneLine) text = text.replace(/\r?\n|\r/g, "");
+            return { ...prev, [props.field]: text };
+          })
+        }
+        multiline
+        textAlignVertical="top"
+        //? Don't display an "Enter" key.
+        submitBehavior={props.oneLine ? "blurAndSubmit" : undefined}
+        selection={props.selection}
+        onSelectionChange={props.onSelectionChange}
+        onFocus={props.onFocus}
+        onBlur={props.onBlur}
+        className={cn(
+          "w-full rounded-sm border border-outline px-2 py-3",
+          props.className,
+        )}
+      />
+    );
+
+    if (!props.label) return renderedInput;
     return (
       <View className="shrink grow">
         <InputLabel label={props.label} />
-        <TextInput
-          editable={!isSubmitting}
-          value={data[props.field]}
-          onChangeText={(_text) =>
-            setField((prev) => {
-              let text = _text;
-              if (props.oneLine) text = text.replace(/\r?\n|\r/g, "");
-              return { ...prev, [props.field]: text };
-            })
-          }
-          multiline
-          textAlignVertical="top"
-          //? Don't display an "Enter" key.
-          submitBehavior={props.oneLine ? "blurAndSubmit" : undefined}
-          selection={props.selection}
-          onSelectionChange={props.onSelectionChange}
-          onFocus={props.onFocus}
-          onBlur={props.onBlur}
-          className={cn(
-            "w-full rounded-sm border border-outline px-2 py-3",
-            props.className,
-          )}
-        />
+        {renderedInput}
       </View>
     );
   };
