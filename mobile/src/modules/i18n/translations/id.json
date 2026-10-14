@@ -158,6 +158,7 @@
         "vinyl": "Vinyl",
         "vinylOld": "Vinyl (Lama)",
         "none": "Tidak Ada",
+        "immersive": null,
         "alternativeInfoLayout": "Tata Letak Info Alternative",
         "standardVinylSpeed": "Kecepatan Vinyl Standar"
       }
@@ -219,6 +220,7 @@
         "top": "Top {{- name}}",
         "timeRange": "Waktu Rentang",
         "allTime": "Sepanjang Waktu",
+        "lastDays": null,
         "listeningTime": "Waktu Mendengarkan",
         "totalListeningTime": "Total $t(feat.recap.extra.listeningTime)",
         "totalPlays": "Total Diputar",

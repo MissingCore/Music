@@ -37,6 +37,7 @@
 ## [简体中文] Chinese (Simplified)
 
 - [@yang1206](https://www.github.com/yang1206)
+- [@dgwqc](https://www.github.com/dgwqc)
 
 ## [Русский] Russian
 
@@ -84,6 +85,10 @@
 
 - [@soorosh-st](https://github.com/soorosh-st)
 - [@therealbardiakhan](https://github.com/therealbardiakhan)
+
+## [Ελληνικά] Greek
+
+- [@aprountzos](https://github.com/aprountzos)
 
 ## [Português brasileiro] Brazilian Portuguese
 

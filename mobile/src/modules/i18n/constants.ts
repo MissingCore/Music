@@ -51,6 +51,13 @@ export const LANGUAGES = [
     ],
   },
   {
+    code: "el",
+    label: "Ελληνικά",
+    translators: [
+      { display: "aprountzos", link: "https://github.com/aprountzos" },
+    ],
+  },
+  {
     code: "en",
     label: "English",
     translators: [{ display: "—", link: "https://github.com/cyanChill" }],
@@ -167,6 +174,7 @@ export const LANGUAGES = [
     label: "简体中文",
     translators: [
       { display: "yang1206", link: "https://www.github.com/yang1206" },
+      { display: "dgwqc", link: "https://www.github.com/dgwqc" },
     ],
   },
 ] satisfies LanguageItem[];

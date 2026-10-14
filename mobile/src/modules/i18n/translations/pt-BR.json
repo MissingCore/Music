@@ -170,7 +170,7 @@
     "seekbar": {
       "title": "Barra de progresso",
       "extra": {
-        "normal": "Normal",
+        "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": "Forma de onda",
         "waveformPurgeCache": "Limpar formas de onda em cache",
         "waveformPurgeCacheBrief": "Libera espaço de armazenamento para recalcular as formas de onda das faixas reproduzidas.",

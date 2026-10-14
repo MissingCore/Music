@@ -158,6 +158,7 @@
         "vinyl": "گرامافون",
         "vinylOld": "گرامافون (قدیمی)",
         "none": "هیچ کدام",
+        "immersive": null,
         "alternativeInfoLayout": "چیدمان جایگزین اطلاعات",
         "standardVinylSpeed": "سرعت استاندارد گرامافون"
       }
@@ -219,6 +220,7 @@
         "top": "برترین {{- name}}",
         "timeRange": "بازهٔ زمانی",
         "allTime": "از ابتدا تاکنون",
+        "lastDays": null,
         "listeningTime": "زمان گوش‌دادن",
         "totalListeningTime": "مجموع $t(feat.recap.extra.listeningTime)",
         "totalPlays": "مجموع پخش‌ها",
