@@ -62,7 +62,7 @@ export function FormInputImpl<TData extends Record<string, any>>() {
           editable={!isSubmitting}
           value={value !== null ? String(value) : ""}
           onChangeText={onChange}
-          className="w-full rounded-sm border border-outline p-2"
+          className="w-full rounded-lg border border-outline p-2"
         />
       </View>
     );
@@ -130,7 +130,7 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
                     ),
                   }))
                 }
-                className="shrink grow rounded-sm border border-outline p-2"
+                className="shrink grow rounded-lg border border-outline p-2"
               />
             </View>
           )}
@@ -177,7 +177,7 @@ export function TextareaImpl<TData extends Record<string, any>>() {
         onFocus={props.onFocus}
         onBlur={props.onBlur}
         className={cn(
-          "w-full rounded-sm border border-outline px-2 py-3",
+          "w-full rounded-lg border border-outline p-2",
           props.className,
         )}
       />

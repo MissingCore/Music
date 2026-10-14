@@ -146,7 +146,7 @@ const SwitchInput = SwitchInputImpl<LyricProviderEntry>();
 const Textarea = TextareaImpl<LyricProviderEntry>();
 
 function Form() {
-  const { data, isSubmitting, setFields } = useFormState();
+  const { data, setFields, isSubmitting } = useFormState();
 
   //#region Placeholder Helper
   const [isEndpointInputFocused, setIsEndpointInputFocused] = useState(false);

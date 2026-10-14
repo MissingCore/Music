@@ -152,11 +152,14 @@ function Form(props: { actionConfig: FormActionConfig<LyricEntry> }) {
   const { canSubmit, isSubmitting, onSubmit } = useFormState();
 
   return (
-    <Card className="size-full max-h-192 max-w-xl gap-4">
-      <TText textKey="feat.lyrics.title" bold size="sm" className="-mb-2" />
+    <Card className="size-full max-h-192 max-w-xl gap-6">
+      <TText textKey="feat.lyrics.title" bold size="lg" className="-mb-4" />
       <View className="shrink grow rounded-lg border border-outline">
-        <KeyboardAwareScrollView contentContainerClassName="p-4">
-          <Textarea field="lyricText" className="rounded-none border-0 p-0!" />
+        <KeyboardAwareScrollView contentContainerClassName="shrink grow p-2">
+          <Textarea
+            field="lyricText"
+            className="shrink grow rounded-none border-0 p-0"
+          />
         </KeyboardAwareScrollView>
       </View>
 
