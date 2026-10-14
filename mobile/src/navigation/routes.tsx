@@ -11,13 +11,14 @@ import type {
 } from "@react-navigation/native";
 import {
   createStaticNavigation,
-  useFocusEffect,
+  useIsFocused,
   useNavigation,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { PortalHost } from "@rn-primitives/portal";
 import { useCallback, useMemo, useRef } from "react";
-import { BackHandler } from "react-native";
+
+import { useBackHandler } from "~/hooks/useBackHandler";
 
 import Home from "./screens/HomeView";
 import Album from "./screens/albums/CurrentView";
@@ -107,6 +108,7 @@ function getHomeScreenName(tabKey: Tab) {
 
 function RootScreens(_: RootScreensProps) {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const homeTab = usePreferenceStore((s) => s.homeTab);
   const { displayedTabs, hiddenTabs } = useTabsByVisibility();
   // Should be fine to store history stack in ref as it doesn't affect rendering.
@@ -155,29 +157,25 @@ function RootScreens(_: RootScreensProps) {
   }, [displayedTabs, homeTab]);
 
   /** Manually handle the back gesture since the old strategy no longer works. */
-  const onBackGesture = useCallback(() => {
-    const subscription = BackHandler.addEventListener(
-      "hardwareBackPress",
-      () => {
-        // Remove hidden tabs before handling back gesture.
-        historyStack.current = historyStack.current.filter(
-          (screenName) =>
-            !hiddenTabs.some((t) =>
-              screenName.startsWith(`${getHomeScreenName(t)}-`),
-            ),
-        );
-        if (historyStack.current.length === 1) return false;
-        const prevScreenName = historyStack.current.at(-2)!.split("-")[0]!;
-        navigation.navigate("HomeScreens", {
-          screen: prevScreenName as HomeScreenNames,
-        });
-        return true;
-      },
-    );
-    return () => subscription.remove();
-  }, [navigation, hiddenTabs]);
-
-  useFocusEffect(onBackGesture);
+  useBackHandler(
+    () => {
+      // Remove hidden tabs before handling back gesture.
+      historyStack.current = historyStack.current.filter(
+        (screenName) =>
+          !hiddenTabs.some((t) =>
+            screenName.startsWith(`${getHomeScreenName(t)}-`),
+          ),
+      );
+      if (historyStack.current.length === 1) return false;
+      const prevScreenName = historyStack.current.at(-2)!.split("-")[0]!;
+      navigation.navigate("HomeScreens", {
+        screen: prevScreenName as HomeScreenNames,
+      });
+      return true;
+    },
+    [navigation, hiddenTabs],
+    isFocused,
+  );
 
   /** Have Tab history operate like Stack history. */
   const trackHistoryStack = useCallback((e: TabState) => {

@@ -4,7 +4,7 @@
 import { Portal } from "@rn-primitives/portal";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ViewStyle } from "react-native";
-import { BackHandler, useWindowDimensions } from "react-native";
+import { useWindowDimensions } from "react-native";
 import type { AnimatedProps } from "react-native-reanimated";
 import Animated, {
   FadeInDown,
@@ -15,6 +15,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { useBackHandler } from "~/hooks/useBackHandler";
 import { useSafeAreaHeight } from "~/hooks/useSafeAreaHeight";
 
 import { OnRTL } from "~/lib/react";
@@ -109,18 +110,15 @@ export function Menu({
   }, [measurePosition, visible]);
 
   //* Back gesture will close the menu.
-  useEffect(() => {
-    if (!dismissHandling || !onDismiss) return;
-    const subscription = BackHandler.addEventListener(
-      "hardwareBackPress",
-      () => {
-        if (!visible) return false;
-        onDismiss();
-        return true;
-      },
-    );
-    return () => subscription.remove();
-  }, [visible, dismissHandling, onDismiss]);
+  useBackHandler(
+    () => {
+      if (!visible) return false;
+      onDismiss?.();
+      return true;
+    },
+    [visible, onDismiss],
+    dismissHandling && Boolean(onDismiss),
+  );
 
   return (
     <>
