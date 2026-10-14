@@ -106,6 +106,7 @@ function LyricsContent({ trackId }: { trackId: string }) {
           keyExtractor={(_, index) => `${index}`}
           renderItem={({ item }) => <Em className="text-xl">{item}</Em>}
           nestedScrollEnabled
+          className="w-full"
           contentContainerStyle={{
             paddingTop: offset + extraTop,
             paddingBottom: offset,
@@ -339,6 +340,7 @@ const MemoLyricList = memo(
         nestedScrollEnabled
         // Suppresses error when `scrollToIndex` fails.
         onScrollToIndexFailed={() => {}}
+        className="w-full"
         contentContainerStyle={{
           paddingTop: offset + extraTop,
           paddingBottom: offset,
