@@ -11,6 +11,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { Tabs } from "~/stores/Preference/actions";
 import type { Tab } from "~/stores/Preference/types";
 
+import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { CheckboxInput } from "~/components/Form/Checkbox";
 import { IconButton } from "~/components/next/base/button-icon";
@@ -31,6 +32,10 @@ export function TabOrderSheet(props: { ref: SheetRef }) {
         data={data}
         keyExtractor={(tabKey) => tabKey}
         estimatedItemSize={62}
+        gestureHitSlop={OnRTL.decide(
+          { width: 64, left: 0 },
+          { width: 64, right: 0 },
+        )}
         renderItem={(args) => <RenderItem {...args} />}
         onDragBegin={() => setDraggable(false)}
         onDragEnd={() => setDraggable(true)}
