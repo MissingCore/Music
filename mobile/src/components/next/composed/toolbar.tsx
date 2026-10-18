@@ -101,7 +101,11 @@ function Actions(props: { children: React.ReactNode }) {
 function FAB(props: Omit<IconButtonProps, "filled" | "size">) {
   return (
     <Portal name="toolbar-FAB" hostName="toolbar-FAB-host">
-      <Animated.View entering={FadeIn} exiting={FadeOut}>
+      <Animated.View
+        entering={FadeIn}
+        exiting={FadeOut}
+        className="rounded-full bg-surfaceContainerLowest"
+      >
         <IconButton {...props} filled size="lg" />
       </Animated.View>
     </Portal>

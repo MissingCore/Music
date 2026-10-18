@@ -18,14 +18,17 @@ import { z } from "zod/mini";
 
 import { useBackHandler } from "~/hooks/useBackHandler";
 
+import { cn } from "~/lib/style";
 import { wait } from "~/utils/promise";
 import { isBoolean, isNumber, isString } from "~/utils/validation";
 import type { IconButtonProps } from "~/components/next/base/button-icon";
 import { IconButton } from "~/components/next/base/button-icon";
 import { Dialog } from "~/components/next/base/dialog";
-import { TText } from "~/components/next/base/typography";
+import { Text, TText } from "~/components/next/base/typography";
 import { ActionButton } from "~/components/next/blocks/button-action";
 import { ConfirmAction } from "~/components/next/composed/confirm-action";
+import type { TranslationKeyOrString } from "~/modules/i18n/core";
+import { useMaybeT } from "~/modules/i18n/core";
 
 type InitialArguments<TSchema extends ZodMiniObject> = {
   schema: TSchema;
@@ -163,6 +166,20 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
       {props.children}
       <UnsavedChangesPrompt />
     </FormStateContext>
+  );
+}
+//#endregion
+
+//#region Form Title
+export function FormTitle(props: {
+  title: TranslationKeyOrString;
+  className?: string;
+}) {
+  const t = useMaybeT();
+  return (
+    <Text accent className={cn("leading-tight", props.className)}>
+      {t(props.title)}
+    </Text>
   );
 }
 //#endregion

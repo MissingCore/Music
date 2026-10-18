@@ -152,7 +152,7 @@ function Form(props: { actionConfig: FormActionConfig<LyricEntry> }) {
   const { canSubmit, isSubmitting, onSubmit } = useFormState();
 
   return (
-    <Card className="size-full max-h-192 max-w-xl gap-6">
+    <Card className="size-full max-h-144 max-w-xl gap-6">
       <TText textKey="feat.lyrics.title" bold size="lg" className="-mb-4" />
       <View className="shrink grow overflow-hidden rounded-lg border border-outline">
         <KeyboardAwareScrollView contentContainerClassName="grow">
