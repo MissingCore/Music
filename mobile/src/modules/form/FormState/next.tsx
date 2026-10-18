@@ -171,6 +171,18 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
 }
 //#endregion
 
+//#region Hook
+/** Wrap this with another hook to type the return data. */
+export function useFormStateContext<TData extends Record<string, any>>() {
+  const context = use(FormStateContext);
+  if (!context)
+    throw new Error(
+      "`useFormStateContext` must be used in a `FormStateProvider`.",
+    );
+  return context as FormState<TData>;
+}
+//#endregion
+
 //#region Form Title
 export function FormTitle(props: {
   title: TranslationKeyOrString;
@@ -199,29 +211,33 @@ export type FormActionConfig<TData extends Record<string, any>> = {
   danger?: boolean;
 };
 
-/** Additional action that can be displayed in the form. */
-export function FormAction(props: FormActionConfig<any>) {
+/** Returns an action that can be displayed in the form or toolbar. */
+export function useFormAction<TData extends Record<string, any>>(
+  args?: FormActionConfig<TData>,
+) {
   const { t } = useTranslation();
   const { setFields, isSubmitting, setIsSubmitting } = useFormStateContext();
 
   const triggerAction = async () => {
     setIsSubmitting(true);
-    await props.action({ setFields });
+    await args?.action({ setFields });
     setIsSubmitting(false);
   };
 
+  if (!args) return null;
+
   const renderedAction = (
     <IconButton
-      {...props.actionConfig}
-      accessibilityLabel={t(props.label)}
+      {...args.actionConfig}
+      accessibilityLabel={t(args.label)}
       onPress={triggerAction}
       disabled={isSubmitting}
     />
   );
 
-  if (!props.danger) return renderedAction;
+  if (!args.danger) return renderedAction;
   return (
-    <ConfirmAction prompt={[t(props.label)]}>{renderedAction}</ConfirmAction>
+    <ConfirmAction prompt={[t(args.label)]}>{renderedAction}</ConfirmAction>
   );
 }
 //#endregion
@@ -245,18 +261,6 @@ export function FormToolbar(props: { children: React.ReactNode }) {
       />
     </Toolbar>
   );
-}
-//#endregion
-
-//#region Hook
-/** Wrap this with another hook to type the return data. */
-export function useFormStateContext<TData extends Record<string, any>>() {
-  const context = use(FormStateContext);
-  if (!context)
-    throw new Error(
-      "`useFormStateContext` must be used in a `FormStateProvider`.",
-    );
-  return context as FormState<TData>;
 }
 //#endregion
 

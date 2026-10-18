@@ -3,20 +3,18 @@
 
 import type { ParseKeys } from "i18next";
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { z } from "zod/mini";
 
 import { cn } from "~/lib/style";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
-import { IconButton } from "~/components/next/base/button-icon";
-import { ConfirmAction } from "~/components/next/composed/confirm-action";
 import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 import type { FormActionConfig } from "~/modules/form/FormState/next";
 import {
   FormStateProvider,
   FormTitle,
   FormToolbar,
+  useFormAction,
   useFormStateContext,
 } from "~/modules/form/FormState/next";
 import {
@@ -68,34 +66,11 @@ export function ModifyThemeBase(props: {
 }
 
 //#region Toolbar
-function ThemeFormToolbar({
-  actionConfig,
-}: {
+function ThemeFormToolbar(props: {
   actionConfig?: FormActionConfig<ThemeEntry>;
 }) {
-  const { t } = useTranslation();
-  const { setFields, isSubmitting, setIsSubmitting } = useFormState();
-  return (
-    <FormToolbar>
-      {actionConfig ? (
-        <ConfirmAction
-          prompt={[t(actionConfig.label)]}
-          skipConfirmation={!actionConfig.danger}
-        >
-          <IconButton
-            {...actionConfig.actionConfig}
-            accessibilityLabel={t(actionConfig.label)}
-            onPress={async () => {
-              setIsSubmitting(true);
-              await actionConfig.action({ setFields });
-              setIsSubmitting(false);
-            }}
-            disabled={isSubmitting}
-          />
-        </ConfirmAction>
-      ) : null}
-    </FormToolbar>
-  );
+  const FormAction = useFormAction(props.actionConfig);
+  return <FormToolbar>{FormAction}</FormToolbar>;
 }
 //#endregion
 

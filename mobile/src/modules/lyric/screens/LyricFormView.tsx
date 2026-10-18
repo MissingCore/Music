@@ -23,8 +23,8 @@ import { Card } from "~/components/next/base/card";
 import { ZSchema } from "~/modules/form/utils";
 import type { FormActionConfig } from "~/modules/form/FormState/next";
 import {
-  FormAction,
   FormStateProvider,
+  useFormAction,
   useFormStateContext,
 } from "~/modules/form/FormState/next";
 import { TextareaImpl } from "~/modules/form/FormState/FormInputNext";
@@ -150,6 +150,7 @@ function Form(props: { actionConfig: FormActionConfig<LyricEntry> }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { canSubmit, isSubmitting, onSubmit } = useFormState();
+  const FormAction = useFormAction(props.actionConfig);
 
   return (
     <Card className="size-full max-h-144 max-w-xl gap-6">
@@ -161,7 +162,7 @@ function Form(props: { actionConfig: FormActionConfig<LyricEntry> }) {
       </View>
 
       <View className="flex-row items-center gap-1.5">
-        <FormAction {...props.actionConfig} />
+        {FormAction}
         <IconButton
           icon={OnRTL.decide("east", "west")}
           accessibilityLabel={t("form.cancel")}

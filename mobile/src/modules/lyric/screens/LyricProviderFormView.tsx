@@ -5,7 +5,6 @@ import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import type { ParseKeys } from "i18next";
 import { useCallback, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { z } from "zod/mini";
 import { useShallow } from "zustand/react/shallow";
@@ -22,14 +21,13 @@ import { cn } from "~/lib/style";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { Em } from "~/components/Typography/StyledText";
 import { Button } from "~/components/next/base/button";
-import { IconButton } from "~/components/next/base/button-icon";
-import { ConfirmAction } from "~/components/next/composed/confirm-action";
 import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 import { ZSchema } from "~/modules/form/utils";
 import {
   FormStateProvider,
   FormTitle,
   FormToolbar,
+  useFormAction,
   useFormStateContext,
 } from "~/modules/form/FormState/next";
 import {
@@ -104,28 +102,21 @@ export default function LyricProviderForm({
 
 //#region Toolbar
 function LyricFormToolbar(props: { onDelete?: VoidFunction }) {
-  const { t } = useTranslation();
-  const { isSubmitting, setIsSubmitting } = useFormState();
-  return (
-    <FormToolbar>
-      {props.onDelete ? (
-        <ConfirmAction prompt={[t("form.delete")]}>
-          <IconButton
-            icon="delete"
-            accessibilityLabel={t("form.delete")}
-            onPress={() => {
-              setIsSubmitting(true);
-              props.onDelete?.();
-              setIsSubmitting(false);
-            }}
-            disabled={isSubmitting}
-            intent="error"
-            _iconColor="error"
-          />
-        </ConfirmAction>
-      ) : null}
-    </FormToolbar>
+  const FormAction = useFormAction(
+    props.onDelete
+      ? {
+          label: "form.delete",
+          action: props.onDelete,
+          actionConfig: {
+            icon: "delete",
+            intent: "error",
+            _iconColor: "error",
+          },
+          danger: true,
+        }
+      : undefined,
   );
+  return <FormToolbar>{FormAction}</FormToolbar>;
 }
 //#endregion
 
