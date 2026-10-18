@@ -218,19 +218,17 @@ export function useFormAction<TData extends Record<string, any>>(
   const { t } = useTranslation();
   const { setFields, isSubmitting, setIsSubmitting } = useFormStateContext();
 
-  const triggerAction = async () => {
-    setIsSubmitting(true);
-    await args?.action({ setFields });
-    setIsSubmitting(false);
-  };
-
   if (!args) return null;
 
   const renderedAction = (
     <IconButton
       {...args.actionConfig}
       accessibilityLabel={t(args.label)}
-      onPress={triggerAction}
+      onPress={async () => {
+        setIsSubmitting(true);
+        await args.action({ setFields });
+        setIsSubmitting(false);
+      }}
       disabled={isSubmitting}
     />
   );
