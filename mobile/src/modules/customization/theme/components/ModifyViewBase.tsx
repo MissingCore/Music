@@ -85,9 +85,9 @@ function ThemeFormToolbar({
           <IconButton
             {...actionConfig.actionConfig}
             accessibilityLabel={t(actionConfig.label)}
-            onPress={() => {
+            onPress={async () => {
               setIsSubmitting(true);
-              actionConfig.action({ setFields });
+              await actionConfig.action({ setFields });
               setIsSubmitting(false);
             }}
             disabled={isSubmitting}
