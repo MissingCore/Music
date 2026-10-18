@@ -43,6 +43,7 @@ export interface SliderOptions {
 interface SliderConfigs {
   /** Pass to the `onLayout` prop on the slider. */
   measureSlider: (e: LayoutChangeEvent) => void;
+  sliderLength: SharedValue<number>;
   /** Distance on slider to move `1`. */
   sliderUnitLength: SharedValue<number>;
 
@@ -148,8 +149,8 @@ export function useSlider({
   //#endregion
 
   return useMemo(
-    () => ({ measureSlider, sliderUnitLength, value, gestures }),
-    [measureSlider, sliderUnitLength, value, gestures],
+    () => ({ measureSlider, sliderLength, sliderUnitLength, value, gestures }),
+    [measureSlider, sliderLength, sliderUnitLength, value, gestures],
   );
 }
 

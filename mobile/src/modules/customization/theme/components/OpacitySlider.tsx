@@ -2,77 +2,86 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { LinearGradient } from "expo-linear-gradient";
-import { useEffect } from "react";
-import { I18nManager, ImageBackground } from "react-native";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-} from "react-native-reanimated";
+import { useCallback } from "react";
+import { Image, View } from "react-native";
+import { GestureDetector } from "react-native-gesture-handler";
+import Animated, { useAnimatedStyle } from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
 
-import { CachedSlider } from "~/components/Form/Slider";
+import { useSlider } from "~/components/next/base/slider-context";
 import type { HexColor } from "../core/constants";
 
 const HANDLE_SIZE = 20;
+const OPACITY_SLIDER_HEIGHT = HANDLE_SIZE + 8;
 
-export function OpacitySlider(props: {
+export function OpacitySlider({
+  color,
+  value,
+  onComplete,
+}: {
   color: HexColor;
   value: string;
   onComplete: (hex: string) => void;
 }) {
-  const alpha = useSharedValue(1);
+  const processOpacityValue = useCallback(
+    (value: number) => onComplete(alphaToHex(value)),
+    [onComplete],
+  );
 
-  useEffect(() => {
-    alpha.set(hexToAlpha(props.value));
-  }, [alpha, props.value]);
+  const {
+    measureSlider,
+    sliderLength,
+    value: alpha,
+    gestures,
+  } = useSlider({
+    initValue: hexToAlpha(value),
+    min: 0,
+    max: 1,
+    step: 0.01,
+    onComplete: (value) => {
+      "worklet";
+      scheduleOnRN(processOpacityValue, value);
+    },
+  });
 
-  const contentWidth = useSharedValue(0);
   const sliderHandleStyle = useAnimatedStyle(() => ({
     height: HANDLE_SIZE,
     width: HANDLE_SIZE,
     transform: [
-      { translateX: alpha.get() * (contentWidth.get() - HANDLE_SIZE) },
+      { translateX: alpha.get() * (sliderLength.get() - HANDLE_SIZE) },
       { translateY: "-50%" },
     ],
   }));
 
   return (
-    <ImageBackground
-      onLayout={(e) => contentWidth.set(e.nativeEvent.layout.width)}
-      source={require("~/resources/images/transparent-texture.png")}
-      imageStyle={{ resizeMode: "repeat" }}
-      className="relative overflow-hidden rounded-full"
-    >
-      <LinearGradient
-        colors={[`${props.color}00`, props.color]}
-        start={[0, 0]}
-        end={[1, 0]}
-        className="insets-0 absolute size-full"
-      />
-      <Animated.View
-        style={sliderHandleStyle}
-        className="absolute top-1/2 rounded-full border-2 border-black ltr:left-0 rtl:right-0"
-      />
-
-      <CachedSlider
-        {...SliderConfig}
-        liveValue={alpha} //? Will override the initial value.
-        onComplete={(alpha) => props.onComplete(alphaToHex(alpha))}
-        inverted={I18nManager.isRTL}
-      />
-    </ImageBackground>
+    <GestureDetector gesture={gestures}>
+      <View
+        collapsable={false}
+        onLayout={measureSlider}
+        style={{ height: OPACITY_SLIDER_HEIGHT }}
+        className="relative overflow-hidden rounded-full"
+      >
+        <Image
+          source={require("~/resources/images/transparent-texture.png")}
+          resizeMode="repeat"
+          className="absolute inset-0 w-full"
+        />
+        <LinearGradient
+          colors={[`${color}00`, color]}
+          start={[0, 0]}
+          end={[1, 0]}
+          className="absolute inset-0 size-full"
+        />
+        <Animated.View
+          style={sliderHandleStyle}
+          className="absolute top-1/2 rounded-full border-2 border-black ltr:left-0 rtl:right-0"
+        />
+      </View>
+    </GestureDetector>
   );
 }
 
 //#region Helpers
-const SliderConfig = {
-  initValue: 1,
-  min: 0,
-  max: 1,
-  step: 0.01,
-  thickness: 28,
-  transparent: true,
-};
-
 /** Returns a value between 0 (0x00) & 1 (0xFF), rounded to 2 decimal places. */
 export function hexToAlpha(hex: string) {
   if (hex.length !== 2) return 1;
