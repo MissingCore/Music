@@ -18,7 +18,7 @@ const textStyle = cva({
   variants: {
     intent: {
       unset: null,
-      em: "text-xs",
+      em: "text-sm",
       //! Using `intent = "muted"` will do nothing and not enable the `muted` variant.
       muted: null,
       primary: "text-onPrimary",

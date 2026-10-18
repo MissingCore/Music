@@ -40,7 +40,11 @@ export default function LyricsSettings() {
       </SettingsList.Group>
 
       <View>
-        <TText textKey="feat.lyrics.extra.providers" bold className="mb-2" />
+        <TText
+          textKey="feat.lyrics.extra.providers"
+          intent="em"
+          className="mb-2"
+        />
         <Hint hint={t("feat.lyrics.extra.providersInstructions.line1")} />
       </View>
       <SettingsList.Group>

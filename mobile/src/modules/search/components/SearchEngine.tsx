@@ -109,8 +109,7 @@ export function SearchEngineList<TScope extends SearchCategories>({
           isString(item) ? (
             <TText
               textKey={`term.${item}`}
-              bold
-              size="sm"
+              intent="em"
               className={cn("mx-0.75 mb-1.5", { "mt-1.5": index > 0 })}
             />
           ) : (
