@@ -15,6 +15,7 @@ import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
 import * as SettingsList from "~/navigation/screens/settings/components/SettingsList";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
+import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { Links } from "~/lib/web-browser";
 import { IconButton } from "~/components/next/base/button-icon";
@@ -58,6 +59,10 @@ export default function LyricsSettings() {
           data={lyricProviders}
           keyExtractor={({ id }) => id}
           estimatedItemSize={56}
+          gestureHitSlop={OnRTL.decide(
+            { width: 64, left: 0 },
+            { width: 64, right: 0 },
+          )}
           renderItem={(args) => <RenderItem {...args} />}
           onReordered={moveLyricProvider}
           ListFooterComponent={
