@@ -25,25 +25,23 @@ export function LabeledSlider({
   formatValue,
   ...props
 }: LabeledSliderProps) {
-  const { measureSlider, sliderUnitLength, value, gestures } = useSlider({
-    inverted: I18nManager.isRTL,
-    ...props,
-  });
+  const labeledSlider = useSlider({ inverted: I18nManager.isRTL, ...props });
 
   const [displayValue, setDisplayValue] = useState("");
   useDerivedValue(() => {
-    scheduleOnRN(setDisplayValue, formatValue(value.get()));
+    scheduleOnRN(setDisplayValue, formatValue(labeledSlider.value.get()));
   });
 
   const animatedStyles = useAnimatedStyle(() => ({
-    width: sliderUnitLength.get() * (value.get() - props.min),
+    width:
+      labeledSlider.unitLength.get() * (labeledSlider.value.get() - props.min),
   }));
 
   return (
-    <GestureDetector gesture={gestures}>
+    <GestureDetector gesture={labeledSlider.gestures}>
       <Animated.View
         collapsable={false}
-        onLayout={measureSlider}
+        onLayout={labeledSlider.measure}
         className="relative h-12 w-full flex-row items-center justify-between gap-16 overflow-hidden rounded-lg border border-outlineVariant bg-surfaceContainerLowest px-2"
       >
         <View className="absolute inset-0 flex-row items-center">
