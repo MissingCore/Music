@@ -27,6 +27,7 @@ import { Dialog } from "~/components/next/base/dialog";
 import { Text, TText } from "~/components/next/base/typography";
 import { ActionButton } from "~/components/next/blocks/button-action";
 import { ConfirmAction } from "~/components/next/composed/confirm-action";
+import { Toolbar } from "~/components/next/composed/toolbar";
 import type { TranslationKeyOrString } from "~/modules/i18n/core";
 import { useMaybeT } from "~/modules/i18n/core";
 
@@ -221,6 +222,28 @@ export function FormAction(props: FormActionConfig<any>) {
   if (!props.danger) return renderedAction;
   return (
     <ConfirmAction prompt={[t(props.label)]}>{renderedAction}</ConfirmAction>
+  );
+}
+//#endregion
+
+//#region Toolbar
+export function FormToolbar(props: { children: React.ReactNode }) {
+  const { t } = useTranslation();
+  const { canSubmit, isSubmitting, onSubmit } = useFormStateContext();
+  return (
+    <Toolbar>
+      <Toolbar.Actions>
+        <Toolbar.Back />
+        {props.children}
+      </Toolbar.Actions>
+      <Toolbar.FAB
+        icon="save"
+        accessibilityLabel={t("form.apply")}
+        onPress={onSubmit}
+        disabled={!canSubmit || isSubmitting}
+        intent="inverse"
+      />
+    </Toolbar>
   );
 }
 //#endregion

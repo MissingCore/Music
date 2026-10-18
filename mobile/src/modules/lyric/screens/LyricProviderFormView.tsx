@@ -24,14 +24,12 @@ import { Em } from "~/components/Typography/StyledText";
 import { Button } from "~/components/next/base/button";
 import { IconButton } from "~/components/next/base/button-icon";
 import { ConfirmAction } from "~/components/next/composed/confirm-action";
-import {
-  Toolbar,
-  ToolbarScreenOffset,
-} from "~/components/next/composed/toolbar";
+import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 import { ZSchema } from "~/modules/form/utils";
 import {
   FormStateProvider,
   FormTitle,
+  FormToolbar,
   useFormStateContext,
 } from "~/modules/form/FormState/next";
 import {
@@ -98,45 +96,35 @@ export default function LyricProviderForm({
       }}
       onSubmit={providerExists ? onUpdate : onCreate}
     >
-      <FormToolbar onDelete={providerExists ? onDelete : undefined} />
+      <LyricFormToolbar onDelete={providerExists ? onDelete : undefined} />
       <Form title={`form.${providerExists ? "edit" : "create"}`} />
     </FormStateProvider>
   );
 }
 
 //#region Toolbar
-function FormToolbar(props: { onDelete?: VoidFunction }) {
+function LyricFormToolbar(props: { onDelete?: VoidFunction }) {
   const { t } = useTranslation();
-  const { canSubmit, isSubmitting, onSubmit, setIsSubmitting } = useFormState();
+  const { isSubmitting, setIsSubmitting } = useFormState();
   return (
-    <Toolbar>
-      <Toolbar.Actions>
-        <Toolbar.Back />
-        {props.onDelete ? (
-          <ConfirmAction prompt={[t("form.delete")]}>
-            <IconButton
-              icon="delete"
-              accessibilityLabel={t("form.delete")}
-              onPress={() => {
-                setIsSubmitting(true);
-                props.onDelete?.();
-                setIsSubmitting(false);
-              }}
-              disabled={isSubmitting}
-              intent="error"
-              _iconColor="error"
-            />
-          </ConfirmAction>
-        ) : null}
-      </Toolbar.Actions>
-      <Toolbar.FAB
-        icon="save"
-        accessibilityLabel={t("form.apply")}
-        onPress={onSubmit}
-        disabled={!canSubmit || isSubmitting}
-        intent="inverse"
-      />
-    </Toolbar>
+    <FormToolbar>
+      {props.onDelete ? (
+        <ConfirmAction prompt={[t("form.delete")]}>
+          <IconButton
+            icon="delete"
+            accessibilityLabel={t("form.delete")}
+            onPress={() => {
+              setIsSubmitting(true);
+              props.onDelete?.();
+              setIsSubmitting(false);
+            }}
+            disabled={isSubmitting}
+            intent="error"
+            _iconColor="error"
+          />
+        </ConfirmAction>
+      ) : null}
+    </FormToolbar>
   );
 }
 //#endregion

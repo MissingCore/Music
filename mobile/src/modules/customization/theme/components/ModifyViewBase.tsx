@@ -11,14 +11,12 @@ import { cn } from "~/lib/style";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { IconButton } from "~/components/next/base/button-icon";
 import { ConfirmAction } from "~/components/next/composed/confirm-action";
-import {
-  Toolbar,
-  ToolbarScreenOffset,
-} from "~/components/next/composed/toolbar";
+import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 import type { FormActionConfig } from "~/modules/form/FormState/next";
 import {
   FormStateProvider,
   FormTitle,
+  FormToolbar,
   useFormStateContext,
 } from "~/modules/form/FormState/next";
 import {
@@ -61,7 +59,7 @@ export function ModifyThemeBase(props: {
       initData={initData}
       onSubmit={props.onSubmit}
     >
-      <FormToolbar actionConfig={props.actionConfig} />
+      <ThemeFormToolbar actionConfig={props.actionConfig} />
       <ThemeForm
         title={`form.${Boolean(props.initialData) ? "edit" : "create"}`}
       />
@@ -70,44 +68,33 @@ export function ModifyThemeBase(props: {
 }
 
 //#region Toolbar
-function FormToolbar({
+function ThemeFormToolbar({
   actionConfig,
 }: {
   actionConfig?: FormActionConfig<ThemeEntry>;
 }) {
   const { t } = useTranslation();
-  const { setFields, canSubmit, isSubmitting, onSubmit, setIsSubmitting } =
-    useFormState();
+  const { setFields, isSubmitting, setIsSubmitting } = useFormState();
   return (
-    <Toolbar>
-      <Toolbar.Actions>
-        <Toolbar.Back />
-        {actionConfig ? (
-          <ConfirmAction
-            prompt={[t(actionConfig.label)]}
-            skipConfirmation={!actionConfig.danger}
-          >
-            <IconButton
-              {...actionConfig.actionConfig}
-              accessibilityLabel={t(actionConfig.label)}
-              onPress={() => {
-                setIsSubmitting(true);
-                actionConfig.action({ setFields });
-                setIsSubmitting(false);
-              }}
-              disabled={isSubmitting}
-            />
-          </ConfirmAction>
-        ) : null}
-      </Toolbar.Actions>
-      <Toolbar.FAB
-        icon="save"
-        accessibilityLabel={t("form.apply")}
-        onPress={onSubmit}
-        disabled={!canSubmit || isSubmitting}
-        intent="inverse"
-      />
-    </Toolbar>
+    <FormToolbar>
+      {actionConfig ? (
+        <ConfirmAction
+          prompt={[t(actionConfig.label)]}
+          skipConfirmation={!actionConfig.danger}
+        >
+          <IconButton
+            {...actionConfig.actionConfig}
+            accessibilityLabel={t(actionConfig.label)}
+            onPress={() => {
+              setIsSubmitting(true);
+              actionConfig.action({ setFields });
+              setIsSubmitting(false);
+            }}
+            disabled={isSubmitting}
+          />
+        </ConfirmAction>
+      ) : null}
+    </FormToolbar>
   );
 }
 //#endregion
