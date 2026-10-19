@@ -33,7 +33,7 @@ import {
   FormTitle,
   FormToolbar,
   useFormAction,
-  useFormStateContext,
+  useFormContext,
 } from "~/modules/form/FormState";
 import { FormInputImpl, InputLabel } from "~/modules/form/FormState/FormInput";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
@@ -110,7 +110,7 @@ function PlaylistForm({ isFavoritesList }: { isFavoritesList?: boolean }) {
     data: { trackIds },
     setFields,
     isSubmitting,
-  } = useFormState();
+  } = useForm();
   const addTracksSheetRef = useSheetRef();
 
   const removeTrack = useCallback(
@@ -172,7 +172,7 @@ function PlaylistForm({ isFavoritesList }: { isFavoritesList?: boolean }) {
 //#region Add Tracks Sheet
 function AddTracksSheet(props: { ref: SheetRef }) {
   const { t } = useTranslation();
-  const { setFields } = useFormState();
+  const { setFields } = useForm();
 
   const searchCallbacks: Pick<SearchCallbacks, "album" | "folder" | "track"> =
     useMemo(
@@ -213,7 +213,7 @@ function AddTracksSheet(props: { ref: SheetRef }) {
 
 //#region Playlist Name Field
 function PlaylistNameField({ isFavoritesList }: { isFavoritesList?: boolean }) {
-  const { passedConstraints } = useFormState();
+  const { passedConstraints } = useForm();
 
   const constraintColor = !passedConstraints ? "onSurfaceVariant" : undefined;
 
@@ -252,7 +252,7 @@ function ListHeaderComponent(props: {
   showSheet: VoidFunction;
 }) {
   const { t } = useTranslation();
-  const { isSubmitting } = useFormState();
+  const { isSubmitting } = useForm();
 
   return (
     <View className="gap-6">
@@ -362,8 +362,8 @@ const PlaylistEntrySchema = z.object({
 
 type PlaylistEntry = z.infer<typeof PlaylistEntrySchema>;
 
-function useFormState() {
-  return useFormStateContext<PlaylistEntry>();
+function useForm() {
+  return useFormContext<PlaylistEntry>();
 }
 //#endregion
 

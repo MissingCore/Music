@@ -62,6 +62,18 @@ type FormState<TData extends Record<string, any>> = {
 
 const FormStateContext = createContext<FormState<any>>(null as never);
 
+//#region Hook
+/** Wrap this with another hook to type the return data. */
+export function useFormContext<TData extends Record<string, any>>() {
+  const context = use(FormStateContext);
+  if (!context)
+    throw new Error(
+      "`useFormStateContext` must be used in a `FormStateProvider`.",
+    );
+  return context as FormState<TData>;
+}
+//#endregion
+
 //#region Provider
 /** Handles data validation, back prevention, and more. */
 export function FormStateProvider<TSchema extends ZodMiniObject>(
@@ -174,22 +186,10 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
 }
 //#endregion
 
-//#region Hook
-/** Wrap this with another hook to type the return data. */
-export function useFormStateContext<TData extends Record<string, any>>() {
-  const context = use(FormStateContext);
-  if (!context)
-    throw new Error(
-      "`useFormStateContext` must be used in a `FormStateProvider`.",
-    );
-  return context as FormState<TData>;
-}
-//#endregion
-
 //#region Form Title
 export function FormTitle() {
   const { t } = useTranslation();
-  const { type } = useFormStateContext();
+  const { type } = useFormContext();
   return (
     <Text accent className="leading-tight">
       {t(`form.${type}`)}
@@ -217,7 +217,7 @@ export function useFormAction<TData extends Record<string, any>>(
   args?: FormActionConfig<TData>,
 ) {
   const { t } = useTranslation();
-  const { setFields, isSubmitting, setIsSubmitting } = useFormStateContext();
+  const { setFields, isSubmitting, setIsSubmitting } = useFormContext();
 
   if (!args) return null;
 
@@ -247,7 +247,7 @@ export function useFormAction<TData extends Record<string, any>>(
 export function FormToolbar(props: { children?: React.ReactNode }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { canSubmit, isSubmitting, onSubmit } = useFormStateContext();
+  const { canSubmit, isSubmitting, onSubmit } = useFormContext();
   return (
     <Toolbar>
       <Toolbar.Actions>
@@ -275,7 +275,7 @@ export function FormToolbar(props: { children?: React.ReactNode }) {
 function UnsavedChangesPrompt() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { hasChanged, isSubmitting } = useFormStateContext();
+  const { hasChanged, isSubmitting } = useFormContext();
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   useBackHandler(() => {

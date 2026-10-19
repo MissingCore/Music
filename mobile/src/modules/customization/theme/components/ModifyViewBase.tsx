@@ -14,7 +14,7 @@ import {
   FormTitle,
   FormToolbar,
   useFormAction,
-  useFormStateContext,
+  useFormContext,
 } from "~/modules/form/FormState";
 import {
   FormInputImpl,
@@ -25,10 +25,6 @@ import { ColorPickerInput } from "./ColorPickerInput";
 import type { ColorRole, HexColor } from "../core/constants";
 import { ColorRoleOptions, Themes } from "../core/constants";
 import { ColorRoleZodMap } from "../core/utils";
-
-function useFormState() {
-  return useFormStateContext<ThemeEntry>();
-}
 
 export function ModifyThemeBase(props: {
   onSubmit: (data: ThemeEntry) => void | Promise<void>;
@@ -77,7 +73,7 @@ const FormInput = FormInputImpl<ThemeEntry>();
 const SwitchInput = SwitchInputImpl<ThemeEntry>();
 
 function ThemeForm() {
-  const { data, setFields, isSubmitting } = useFormState();
+  const { data, setFields, isSubmitting } = useFormContext<ThemeEntry>();
   return (
     <KeyboardAwareScrollView
       contentContainerClassName={cn("gap-6 p-4", ToolbarScreenOffset)}

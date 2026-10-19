@@ -47,7 +47,7 @@ import {
   FormTitle,
   FormToolbar,
   useFormAction,
-  useFormStateContext,
+  useFormContext,
 } from "~/modules/form/FormState";
 import {
   ArrayFormInputImpl,
@@ -162,7 +162,7 @@ const ArrayFormInput = ArrayFormInputImpl<TrackMetadata>();
 
 function MetadataForm() {
   const { t } = useTranslation();
-  const { data, setFields, isSubmitting } = useFormState();
+  const { data, setFields, isSubmitting } = useFormContext<TrackMetadata>();
   const addAlbumSheetRef = useSheetRef();
 
   const onSelectAlbum = useCallback(
@@ -255,10 +255,6 @@ const TrackMetadataSchema = z.object({
 });
 
 type TrackMetadata = z.infer<typeof TrackMetadataSchema>;
-
-function useFormState() {
-  return useFormStateContext<TrackMetadata>();
-}
 //#endregion
 
 //#region Submit Handler

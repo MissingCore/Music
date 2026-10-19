@@ -27,7 +27,7 @@ import {
   FormTitle,
   FormToolbar,
   useFormAction,
-  useFormStateContext,
+  useFormContext,
 } from "~/modules/form/FormState";
 import {
   ArrayFormInputImpl,
@@ -127,7 +127,8 @@ const SwitchInput = SwitchInputImpl<LyricProviderEntry>();
 const Textarea = TextareaImpl<LyricProviderEntry>();
 
 function Form() {
-  const { data, setFields, isSubmitting } = useFormState();
+  const { data, setFields, isSubmitting } =
+    useFormContext<LyricProviderEntry>();
 
   //#region Placeholder Helper
   const [isEndpointInputFocused, setIsEndpointInputFocused] = useState(false);
@@ -193,10 +194,4 @@ const LyricProviderEntrySchema = z.object({
 });
 
 type LyricProviderEntry = z.infer<typeof LyricProviderEntrySchema>;
-//#endregion
-
-//#region Internal
-function useFormState() {
-  return useFormStateContext<LyricProviderEntry>();
-}
 //#endregion

@@ -25,7 +25,7 @@ import type { FormActionConfig } from "~/modules/form/FormState";
 import {
   FormStateProvider,
   useFormAction,
-  useFormStateContext,
+  useFormContext,
 } from "~/modules/form/FormState";
 import { TextareaImpl } from "~/modules/form/FormState/FormInput";
 import { TText } from "~/components/next/base/typography";
@@ -150,7 +150,7 @@ const Textarea = TextareaImpl<LyricEntry>();
 function Form(props: { actionConfig: FormActionConfig<LyricEntry> }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { canSubmit, isSubmitting, onSubmit } = useFormState();
+  const { canSubmit, isSubmitting, onSubmit } = useFormContext<LyricEntry>();
   const FormAction = useFormAction(props.actionConfig);
 
   return (
@@ -194,10 +194,4 @@ const LyricEntrySchema = z.object({
 });
 
 type LyricEntry = z.infer<typeof LyricEntrySchema>;
-//#endregion
-
-//#region Internal
-function useFormState() {
-  return useFormStateContext<LyricEntry>();
-}
 //#endregion

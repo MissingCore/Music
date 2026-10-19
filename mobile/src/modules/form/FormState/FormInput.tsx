@@ -5,7 +5,7 @@ import { View } from "react-native";
 
 import type { TranslationKeyOrString } from "~/modules/i18n/core";
 import { useMaybeT } from "~/modules/i18n/core";
-import { useFormStateContext } from ".";
+import { useFormContext } from ".";
 
 import { cn } from "~/lib/style";
 import type { KeysOfValue } from "~/utils/types";
@@ -45,7 +45,7 @@ export function FormInputImpl<TData extends Record<string, any>>() {
     field: KeysOfValue<TData, string | number | null>;
     numeric?: boolean;
   }) {
-    const { data, setField, isSubmitting } = useFormState<TData>();
+    const { data, setField, isSubmitting } = useFormContext<TData>();
 
     const value = data[props.field];
     const onChange = (text: string) => {
@@ -83,7 +83,7 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
     field: KeysOfValue<TData, string[]>;
   }) {
     const t = useMaybeT();
-    const { data, setField, isSubmitting } = useFormState<TData>();
+    const { data, setField, isSubmitting } = useFormContext<TData>();
 
     const field = props.field;
     const values: string[] = data[field];
@@ -161,7 +161,7 @@ export function TextareaImpl<TData extends Record<string, any>>() {
       "selection" | "onSelectionChange" | "onFocus" | "onBlur" | "className"
     >,
   ) {
-    const { data, setField, isSubmitting } = useFormState<TData>();
+    const { data, setField, isSubmitting } = useFormContext<TData>();
 
     const renderedInput = (
       <TextInput
@@ -207,7 +207,7 @@ export function SwitchInputImpl<TData extends Record<string, any>>() {
     label: TranslationKeyOrString;
     field: KeysOfValue<TData, boolean>;
   }) {
-    const { data, setField, isSubmitting } = useFormState<TData>();
+    const { data, setField, isSubmitting } = useFormContext<TData>();
     return (
       <View className="min-h-8 flex-row items-center justify-between gap-2">
         <Marquee>
@@ -223,11 +223,5 @@ export function SwitchInputImpl<TData extends Record<string, any>>() {
       </View>
     );
   };
-}
-//#endregion
-
-//#region Internal
-function useFormState<TData extends Record<string, any>>() {
-  return useFormStateContext<TData>();
 }
 //#endregion
