@@ -83,7 +83,7 @@ export function ColorPickerInput(props: {
               autoCapitalize="characters"
               autoCorrect={false}
               maxLength={7}
-              className="h-6 min-h-0 w-15 rounded-xs border border-outline p-1 text-xs text-onSurfaceVariant"
+              className="h-6 min-h-0 w-15 rounded-sm border border-outline p-1 text-xs text-onSurfaceVariant"
               style={{ fontFamily: "GeistMono-Regular" }}
             />
           </View>
