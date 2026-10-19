@@ -241,7 +241,7 @@ export function useFormAction<TData extends Record<string, any>>(
 //#endregion
 
 //#region Toolbar
-export function FormToolbar(props: { children: React.ReactNode }) {
+export function FormToolbar(props: { children?: React.ReactNode }) {
   const { t } = useTranslation();
   const { canSubmit, isSubmitting, onSubmit } = useFormStateContext();
   return (
