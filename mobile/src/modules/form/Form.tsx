@@ -68,6 +68,11 @@ type FormState<TData extends Record<string, any>> = {
 
 const FormStateContext = createContext<FormState<any>>(null as never);
 
+const UnsavedChangesContext = createContext<{
+  showConfirmation: boolean;
+  setShowConfirmation: Dispatch<SetStateAction<boolean>>;
+}>(null as never);
+
 //#region Hook
 /** Wrap this with another hook to type the return data. */
 export function useFormContext<TData extends Record<string, any>>() {
@@ -99,6 +104,7 @@ function FormStateProvider<TSchema extends ZodMiniObject>(
 
   const [data, setData] = useState(props.initData);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const setFields: Dispatch<
     | Partial<z.infer<TSchema>>
@@ -182,8 +188,10 @@ function FormStateProvider<TSchema extends ZodMiniObject>(
         setIsSubmitting,
       }}
     >
-      {props.children}
-      <UnsavedChangesPrompt />
+      <UnsavedChangesContext value={{ showConfirmation, setShowConfirmation }}>
+        {props.children}
+        <UnsavedChangesPrompt />
+      </UnsavedChangesContext>
     </FormStateContext>
   );
 }
@@ -268,14 +276,18 @@ export const Form = {
   Toolbar: (props: { children?: React.ReactNode }) => {
     const { t } = useTranslation();
     const navigation = useNavigation();
-    const { canSubmit, isSubmitting, onSubmit } = useFormContext();
+    const { hasChanged, canSubmit, onSubmit, isSubmitting } = useFormContext();
+    const { setShowConfirmation } = use(UnsavedChangesContext);
     return (
       <Toolbar>
         <Toolbar.Actions>
           <IconButton
             icon={OnRTL.decide("east", "west")}
             accessibilityLabel={t("form.back")}
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+              if (hasChanged) return setShowConfirmation(true);
+              navigation.goBack();
+            }}
             disabled={isSubmitting}
           />
           {props.children}
@@ -298,7 +310,7 @@ function UnsavedChangesPrompt() {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { hasChanged, isSubmitting } = useFormContext();
-  const [showConfirmation, setShowConfirmation] = useState(false);
+  const { showConfirmation, setShowConfirmation } = use(UnsavedChangesContext);
 
   useBackHandler(() => {
     if (!hasChanged) return false;
