@@ -27,6 +27,7 @@ import { Dialog } from "~/components/next/base/dialog";
 import { Text, TText } from "~/components/next/base/typography";
 import { ActionButton } from "~/components/next/blocks/button-action";
 import { ConfirmAction } from "~/components/next/composed/confirm-action";
+import { Toolbar } from "~/components/next/composed/toolbar";
 import type { TranslationKeyOrString } from "~/modules/i18n/core";
 import { useMaybeT } from "~/modules/i18n/core";
 
@@ -170,6 +171,18 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
 }
 //#endregion
 
+//#region Hook
+/** Wrap this with another hook to type the return data. */
+export function useFormStateContext<TData extends Record<string, any>>() {
+  const context = use(FormStateContext);
+  if (!context)
+    throw new Error(
+      "`useFormStateContext` must be used in a `FormStateProvider`.",
+    );
+  return context as FormState<TData>;
+}
+//#endregion
+
 //#region Form Title
 export function FormTitle(props: {
   title: TranslationKeyOrString;
@@ -198,42 +211,54 @@ export type FormActionConfig<TData extends Record<string, any>> = {
   danger?: boolean;
 };
 
-/** Additional action that can be displayed in the form. */
-export function FormAction(props: FormActionConfig<any>) {
+/** Returns an action that can be displayed in the form or toolbar. */
+export function useFormAction<TData extends Record<string, any>>(
+  args?: FormActionConfig<TData>,
+) {
   const { t } = useTranslation();
   const { setFields, isSubmitting, setIsSubmitting } = useFormStateContext();
 
-  const triggerAction = async () => {
-    setIsSubmitting(true);
-    await props.action({ setFields });
-    setIsSubmitting(false);
-  };
+  if (!args) return null;
 
   const renderedAction = (
     <IconButton
-      {...props.actionConfig}
-      accessibilityLabel={t(props.label)}
-      onPress={triggerAction}
+      {...args.actionConfig}
+      accessibilityLabel={t(args.label)}
+      onPress={async () => {
+        setIsSubmitting(true);
+        await args.action({ setFields });
+        setIsSubmitting(false);
+      }}
       disabled={isSubmitting}
     />
   );
 
-  if (!props.danger) return renderedAction;
+  if (!args.danger) return renderedAction;
   return (
-    <ConfirmAction prompt={[t(props.label)]}>{renderedAction}</ConfirmAction>
+    <ConfirmAction prompt={[t(args.label)]}>{renderedAction}</ConfirmAction>
   );
 }
 //#endregion
 
-//#region Hook
-/** Wrap this with another hook to type the return data. */
-export function useFormStateContext<TData extends Record<string, any>>() {
-  const context = use(FormStateContext);
-  if (!context)
-    throw new Error(
-      "`useFormStateContext` must be used in a `FormStateProvider`.",
-    );
-  return context as FormState<TData>;
+//#region Toolbar
+export function FormToolbar(props: { children: React.ReactNode }) {
+  const { t } = useTranslation();
+  const { canSubmit, isSubmitting, onSubmit } = useFormStateContext();
+  return (
+    <Toolbar>
+      <Toolbar.Actions>
+        <Toolbar.Back />
+        {props.children}
+      </Toolbar.Actions>
+      <Toolbar.FAB
+        icon="save"
+        accessibilityLabel={t("form.apply")}
+        onPress={onSubmit}
+        disabled={!canSubmit || isSubmitting}
+        intent="inverse"
+      />
+    </Toolbar>
+  );
 }
 //#endregion
 

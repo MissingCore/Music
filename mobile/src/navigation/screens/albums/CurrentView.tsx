@@ -115,8 +115,7 @@ export default function Album({
           renderItem={({ item, index }) =>
             isNumber(item) ? (
               <Text
-                bold
-                size="xs"
+                intent="em"
                 className={cn("mx-0.75 mb-1.5", { "mt-1.5": index > 0 })}
               >
                 {t("term.disc", { count: item })}

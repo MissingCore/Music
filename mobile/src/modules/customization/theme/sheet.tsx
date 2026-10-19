@@ -42,7 +42,7 @@ export function ThemeSheet(props: { ref: SheetRef }) {
       <Sheet.List
         data={themeOptions}
         keyExtractor={(id) => id}
-        extraData={selectedTheme}
+        extraData={[selectedTheme, themeMap]}
         renderItem={({ item: themeId }) => {
           const selected = selectedTheme === themeId;
           const {

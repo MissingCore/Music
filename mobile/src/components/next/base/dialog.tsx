@@ -33,7 +33,7 @@ function Dialog(props: {
 }
 
 //#region Actions
-function Actions(props: { children: React.JSX.Element[] }) {
+function Actions(props: { children: React.JSX.Element | React.JSX.Element[] }) {
   const styledComponents = useMemo(() => {
     const nodes = flattenChildren(props.children) as React.JSX.Element[];
     return nodes.map((node, index) =>

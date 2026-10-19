@@ -15,6 +15,7 @@ import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
 import * as SettingsList from "~/navigation/screens/settings/components/SettingsList";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
+import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { Links } from "~/lib/web-browser";
 import { IconButton } from "~/components/next/base/button-icon";
@@ -40,7 +41,11 @@ export default function LyricsSettings() {
       </SettingsList.Group>
 
       <View>
-        <TText textKey="feat.lyrics.extra.providers" bold className="mb-2" />
+        <TText
+          textKey="feat.lyrics.extra.providers"
+          intent="em"
+          className="mb-2"
+        />
         <Hint hint={t("feat.lyrics.extra.providersInstructions.line1")} />
       </View>
       <SettingsList.Group>
@@ -54,6 +59,10 @@ export default function LyricsSettings() {
           data={lyricProviders}
           keyExtractor={({ id }) => id}
           estimatedItemSize={56}
+          gestureHitSlop={OnRTL.decide(
+            { width: 64, left: 0 },
+            { width: 64, right: 0 },
+          )}
           renderItem={(args) => <RenderItem {...args} />}
           onReordered={moveLyricProvider}
           ListFooterComponent={

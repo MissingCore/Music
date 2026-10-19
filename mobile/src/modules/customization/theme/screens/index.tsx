@@ -4,19 +4,22 @@
 import CreateTheme from "./CreateView";
 import ModifyTheme from "./ModifyView";
 
+import { Toolbar } from "~/components/next/composed/toolbar";
+
 const ThemeScreenGroup = {
+  screenLayout: ({ children }: { children: React.JSX.Element }) => (
+    <>
+      <Toolbar.Default />
+      {children}
+    </>
+  ),
   screenOptions: {
     animation: "fade",
+    headerShown: false,
   },
   screens: {
-    CreateTheme: {
-      screen: CreateTheme,
-      options: { title: "form.create" },
-    },
-    ModifyTheme: {
-      screen: ModifyTheme,
-      options: { title: "form.edit" },
-    },
+    CreateTheme,
+    ModifyTheme,
   },
 } as const;
 

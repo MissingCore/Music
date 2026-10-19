@@ -2,15 +2,16 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
-import { Ripple } from "~/components/Base/Pressable";
-import { ExtendedTButton } from "~/components/Form/Button";
-import { TextInput } from "~/components/Form/Input";
-import { Modal } from "~/components/Modal";
-import { Em, StyledText } from "~/components/Typography/StyledText";
+import { Dialog } from "~/components/next/base/dialog";
+import { TextInput } from "~/components/next/base/input";
+import { Ripple } from "~/components/next/base/ripple";
+import { Text } from "~/components/next/base/typography";
+import { ActionButton } from "~/components/next/blocks/button-action";
 import { ColorPicker } from "./ColorPicker";
 import { OpacitySlider, hexToAlpha } from "./OpacitySlider";
 import type { HexColor } from "../core/constants";
@@ -22,6 +23,7 @@ export function ColorPickerInput(props: {
   onUpdateValue: (color: HexColor) => void;
   disabled?: boolean;
 }) {
+  const { t } = useTranslation();
   const [draftHex, setDraftHex] = useState<string>(props.value.slice(0, 7));
   const [showPicker, setShowPicker] = useState(false);
   const enableOpacitySlider = usePreferenceStore((s) => s.opaqueColors);
@@ -53,7 +55,7 @@ export function ColorPickerInput(props: {
         accessibilityLabel={`Pick ${props.label} color`}
         onPress={() => setShowPicker(true)}
         disabled={props.disabled}
-        className="min-h-14 flex-row gap-0 rounded-sm border border-outline"
+        className="min-h-14 flex-row items-center rounded-lg border border-outline"
       >
         <View
           className="aspect-square h-full"
@@ -61,27 +63,27 @@ export function ColorPickerInput(props: {
           style={{ backgroundColor: `${props.value}` }}
         />
         <View className="shrink grow p-2">
-          <Em>{props.label}</Em>
-          <StyledText className="text-sm text-onSurfaceVariant">
+          <Text intent="em">{props.label}</Text>
+          <Text muted size="sm">
             {currHex}
             {enableOpacitySlider
               ? ` / ${Math.round(hexToAlpha(alphaHex) * 100)}%`
               : null}
-          </StyledText>
+          </Text>
         </View>
       </Ripple>
 
-      <Modal visible={showPicker}>
+      <Dialog visible={showPicker} onClose={() => setShowPicker(false)}>
         <View className="gap-4">
           <View className="flex-row items-center justify-between gap-2">
-            <Em>{props.label}</Em>
+            <Text intent="em">{props.label}</Text>
             <TextInput
               value={draftHex}
               onChangeText={onChange}
               autoCapitalize="characters"
               autoCorrect={false}
               maxLength={7}
-              className="h-6 min-h-0 w-15 rounded-xs border border-outline p-1 text-xs text-onSurfaceVariant"
+              className="h-6 min-h-0 w-15 rounded-sm border border-outline p-1 text-xs text-onSurfaceVariant"
               style={{ fontFamily: "GeistMono-Regular" }}
             />
           </View>
@@ -89,20 +91,20 @@ export function ColorPickerInput(props: {
           <ColorPicker value={currHex} onComplete={onPickerComplete} />
           {enableOpacitySlider ? (
             <OpacitySlider
-              key={currHex} //? Needed as `onComplete` gets cached.
               color={currHex}
               value={alphaHex}
               onComplete={onAlphaChange}
             />
           ) : null}
 
-          <ExtendedTButton
-            textKey="form.close"
-            onPress={() => setShowPicker(false)}
-            className="bg-surfaceContainer"
-          />
+          <Dialog.Actions>
+            <ActionButton
+              label={t("form.close")}
+              onPress={() => setShowPicker(false)}
+            />
+          </Dialog.Actions>
         </View>
-      </Modal>
+      </Dialog>
     </View>
   );
 }

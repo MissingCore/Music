@@ -21,10 +21,16 @@ import { Marquee } from "~/components/next/blocks/marquee";
 export function InputLabel(props: {
   label: TranslationKeyOrString;
   Trailing?: React.ReactNode;
+  className?: string;
 }) {
   const t = useMaybeT();
   return (
-    <View className="mb-1 min-h-8 flex-row items-center justify-between gap-4">
+    <View
+      className={cn(
+        "mb-2 flex-row items-center justify-between gap-4",
+        props.className,
+      )}
+    >
       <Text intent="em">{t(props.label)}</Text>
       {props.Trailing}
     </View>
@@ -205,7 +211,7 @@ export function SwitchInputImpl<TData extends Record<string, any>>() {
     return (
       <View className="min-h-8 flex-row items-center justify-between gap-2">
         <Marquee>
-          <InputLabel label={props.label} />
+          <InputLabel label={props.label} className="mb-0" />
         </Marquee>
         <SwitchInput
           enabled={data[props.field]}

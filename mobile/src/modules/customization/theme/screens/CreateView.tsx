@@ -19,15 +19,24 @@ export default function CreateTheme() {
             const { name, scheme, colors } = await pickTheme();
             await wait(100);
             toast.t("feat.backup.extra.importSuccess");
-            setFields({ name, scheme, ...colors, _importGen: Date.now() });
+            setFields({
+              name,
+              isDark: scheme === "dark",
+              ...colors,
+              _importGen: Date.now(),
+            });
           } catch (err) {
             toast.error((err as Error).message);
           }
         },
+        actionConfig: { icon: "upload", intent: "secondary" },
       }}
-      onSubmit={async ({ _importGen, ...entry }) => {
+      onSubmit={async ({ _importGen, isDark, ...entry }) => {
         try {
-          await saveCustomTheme(entry);
+          await saveCustomTheme({
+            ...entry,
+            scheme: isDark ? "dark" : "light",
+          });
           navigation.goBack();
         } catch {
           toast.tError("err.flow.generic.title");

@@ -1,30 +1,30 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import type { ParseKeys } from "i18next";
 import { useMemo } from "react";
 import { View } from "react-native";
 import { z } from "zod/mini";
 
-import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
-
+import { cn } from "~/lib/style";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
-import { SwitchInput } from "~/components/Form/Switch";
-import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
-import type { FABWorkflowConfig } from "~/modules/form/FormState";
+import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
+import type { FormActionConfig } from "~/modules/form/FormState/next";
 import {
-  FABWorkflow,
   FormStateProvider,
+  FormTitle,
+  FormToolbar,
+  useFormAction,
   useFormStateContext,
-} from "~/modules/form/FormState";
-import { FormInputImpl } from "~/modules/form/FormState/FormInput";
+} from "~/modules/form/FormState/next";
+import {
+  FormInputImpl,
+  SwitchInputImpl,
+} from "~/modules/form/FormState/FormInputNext";
 import { ZSchema } from "~/modules/form/utils";
 import { ColorPickerInput } from "./ColorPickerInput";
 import type { ColorRole, HexColor } from "../core/constants";
-import {
-  ColorRoleOptions,
-  ColorSchemeOptions,
-  Themes,
-} from "../core/constants";
+import { ColorRoleOptions, Themes } from "../core/constants";
 import { ColorRoleZodMap } from "../core/utils";
 
 function useFormState() {
@@ -34,15 +34,13 @@ function useFormState() {
 export function ModifyThemeBase(props: {
   onSubmit: (data: ThemeEntry) => void | Promise<void>;
   initialData?: Partial<ThemeEntry>;
-  actionConfig?: FABWorkflowConfig<ThemeEntry>;
+  actionConfig?: FormActionConfig<ThemeEntry>;
 }) {
-  const { offset, floatingContentProps } = useFloatingContent();
-
   const initData = useMemo(
     () => ({
       _importGen: null,
       name: props.initialData?.name ?? "",
-      scheme: props.initialData?.scheme ?? "light",
+      isDark: props.initialData?.isDark ?? false,
       ...(Object.fromEntries(
         ColorRoleOptions.map((role) => [
           role,
@@ -59,43 +57,36 @@ export function ModifyThemeBase(props: {
       initData={initData}
       onSubmit={props.onSubmit}
     >
-      <ThemeForm bottomOffset={offset} />
-      {props.actionConfig ? (
-        <FABWorkflow
-          {...props.actionConfig}
-          floatingContentProps={floatingContentProps}
-        />
-      ) : null}
+      <ThemeFormToolbar actionConfig={props.actionConfig} />
+      <ThemeForm
+        title={`form.${Boolean(props.initialData) ? "edit" : "create"}`}
+      />
     </FormStateProvider>
   );
 }
 
+//#region Toolbar
+function ThemeFormToolbar(props: {
+  actionConfig?: FormActionConfig<ThemeEntry>;
+}) {
+  const FormAction = useFormAction(props.actionConfig);
+  return <FormToolbar>{FormAction}</FormToolbar>;
+}
+//#endregion
+
 //#region Theme Form
 const FormInput = FormInputImpl<ThemeEntry>();
+const SwitchInput = SwitchInputImpl<ThemeEntry>();
 
-function ThemeForm({ bottomOffset }: { bottomOffset: number }) {
+function ThemeForm({ title }: { title: ParseKeys }) {
   const { data, setFields, isSubmitting } = useFormState();
   return (
     <KeyboardAwareScrollView
-      contentContainerStyle={{ paddingBottom: bottomOffset }}
-      contentContainerClassName="gap-6 p-4"
+      contentContainerClassName={cn("gap-6 p-4", ToolbarScreenOffset)}
     >
+      <FormTitle title={title} />
       <FormInput label="feat.trackMetadata.extra.name" field="name" />
-      <SheetLabelAction
-        labelKey="feat.theme.extra.dark"
-        Trailing={
-          <SwitchInput
-            enabled={data.scheme === "dark"}
-            onPress={() =>
-              setFields((prev) => ({
-                scheme: prev.scheme === "dark" ? "light" : "dark",
-              }))
-            }
-            disabled={isSubmitting}
-          />
-        }
-      />
-
+      <SwitchInput label="feat.theme.extra.dark" field="isDark" />
       <View className="gap-2">
         {ColorRoleOptions.map((role) => (
           <ColorPickerInput
@@ -118,9 +109,9 @@ const ThemeEntrySchema = z.object({
   _importGen: z.nullable(z.number()),
   // Actual form fields:
   name: ZSchema.NonEmptyString,
-  scheme: z.enum(ColorSchemeOptions),
+  isDark: z.boolean(),
   ...ColorRoleZodMap,
 });
 
-export type ThemeEntry = z.infer<typeof ThemeEntrySchema>;
+type ThemeEntry = z.infer<typeof ThemeEntrySchema>;
 //#endregion

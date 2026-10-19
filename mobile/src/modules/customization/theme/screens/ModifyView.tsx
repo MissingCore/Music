@@ -11,7 +11,7 @@ import { PreferenceSetters } from "~/stores/Preference/actions";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
 import { wait } from "~/utils/promise";
-import type { ThemeEntry } from "../components/ModifyViewBase";
+import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 import { ModifyThemeBase } from "../components/ModifyViewBase";
 import {
   deleteCustomTheme,
@@ -31,14 +31,19 @@ export default function ModifyTheme({
   const activeCustomThemeId = usePreferenceStore((s) => s.activeCustomThemeId);
 
   if (isPending || error || !data)
-    return <PagePlaceholder isPending={isPending} />;
+    return (
+      <PagePlaceholder
+        isPending={isPending}
+        wrapperClassName={ToolbarScreenOffset}
+      />
+    );
 
   const isActiveTheme = activeCustomThemeId === themeId;
-  const { id: _, ...initData } = data;
+  const { id: _, scheme, ...initData } = data;
 
   return (
     <ModifyThemeBase
-      initialData={initData as Partial<ThemeEntry>}
+      initialData={{ ...initData, isDark: scheme === "dark" }}
       actionConfig={
         isActiveTheme
           ? undefined
@@ -53,12 +58,20 @@ export default function ModifyTheme({
                   toast.tError("err.flow.generic.title");
                 }
               },
+              actionConfig: {
+                icon: "delete",
+                intent: "error",
+                _iconColor: "error",
+              },
               danger: true,
             }
       }
-      onSubmit={async ({ _importGen, ...entry }) => {
+      onSubmit={async ({ _importGen, isDark, ...entry }) => {
         try {
-          await updateCustomTheme(themeId, entry);
+          await updateCustomTheme(themeId, {
+            ...entry,
+            scheme: isDark ? "dark" : "light",
+          });
           if (isActiveTheme) PreferenceSetters.setTheme(themeId);
           navigation.goBack();
         } catch {

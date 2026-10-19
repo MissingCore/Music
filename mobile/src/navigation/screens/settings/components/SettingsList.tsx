@@ -22,7 +22,7 @@ export function Group(props: { children: React.ReactNode; label?: string }) {
   if (!props.label) return renderedComponent;
   return (
     <View>
-      <Text bold size="sm" className="mb-2">
+      <Text intent="em" className="mb-2">
         {props.label}
       </Text>
       {renderedComponent}

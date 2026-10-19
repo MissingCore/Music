@@ -17,6 +17,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 
+import { useSlider } from "~/components/next/base/slider-context";
 import type { HexColor } from "../core/constants";
 import { normalizeHexColor } from "../core/utils";
 import { hexToHSV, hsvToHex } from "../helpers/colorConverter";
@@ -46,8 +47,6 @@ export function ColorPicker({
   const saturation = useSharedValue(0);
   const brightness = useSharedValue(0);
 
-  const contentWidth = useSharedValue(0);
-
   // Synchronize external color with internal.
   useEffect(() => {
     const normalizedHexColor = normalizeHexColor(value);
@@ -71,11 +70,36 @@ export function ColorPicker({
     );
   }, [hue, saturation, brightness, onComplete]);
 
+  //#region Hue Slider Gestures + Styles
+  const { measureSlider, sliderLength, gestures } = useSlider({
+    initValue: hexToHSV(normalizeHexColor(value) ?? "#000").h,
+    min: 0,
+    max: 360,
+    onChange: (value) => {
+      "worklet";
+      hue.set(clamp(value | 0, 0, 360));
+    },
+    onComplete: (value) => {
+      "worklet";
+      hue.set(clamp(value | 0, 0, 360));
+      scheduleOnRN(emitCurrentColor);
+    },
+  });
+
+  const sliderHandleStyle = useAnimatedStyle(() => ({
+    height: HANDLE_SIZE,
+    width: HANDLE_SIZE,
+    transform: [
+      { translateX: (hue.get() / 360) * (sliderLength.get() - HANDLE_SIZE) },
+      { translateY: "-50%" },
+    ],
+  }));
+  //#endregion
+
   //#region Panel Gestures + Styles
   const panelTapGesture = useTapGesture({
     onDeactivate: ({ x, y }) => {
-      if (contentWidth.get() <= 0) return;
-      saturation.set(clamp(x / contentWidth.get(), 0, 1));
+      saturation.set(clamp(x / sliderLength.get(), 0, 1));
       brightness.set(clamp(1 - y / PANEL_HEIGHT, 0, 1));
 
       scheduleOnRN(emitCurrentColor);
@@ -84,8 +108,7 @@ export function ColorPicker({
 
   const panelPanGesture = usePanGesture({
     onUpdate: ({ x, y }) => {
-      if (contentWidth.get() <= 0) return;
-      saturation.set(clamp(x / contentWidth.get(), 0, 1));
+      saturation.set(clamp(x / sliderLength.get(), 0, 1));
       brightness.set(clamp(1 - y / PANEL_HEIGHT, 0, 1));
     },
     onDeactivate: () => scheduleOnRN(emitCurrentColor),
@@ -102,40 +125,10 @@ export function ColorPicker({
     height: HANDLE_SIZE,
     width: HANDLE_SIZE,
     transform: [
-      { translateX: saturation.get() * (contentWidth.get() - HANDLE_SIZE) },
+      { translateX: saturation.get() * (sliderLength.get() - HANDLE_SIZE) },
       { translateY: (1 - brightness.get()) * (PANEL_HEIGHT - HANDLE_SIZE) },
     ],
     borderColor: brightness.get() > 0.5 ? "#000" : "#FFF",
-  }));
-  //#endregion
-
-  //#region Hue Slider Gestures + Styles
-  const hueTapGesture = useTapGesture({
-    onDeactivate: ({ x }) => {
-      if (contentWidth.get() <= 0) return;
-      hue.set(clamp(((x / contentWidth.get()) * 360) | 0, 0, 360));
-
-      scheduleOnRN(emitCurrentColor);
-    },
-  });
-
-  const huePanGesture = usePanGesture({
-    onUpdate: ({ x }) => {
-      if (contentWidth.get() <= 0) return;
-      hue.set(clamp(((x / contentWidth.get()) * 360) | 0, 0, 360));
-    },
-    onDeactivate: () => scheduleOnRN(emitCurrentColor),
-  });
-
-  const hueGestures = useCompetingGestures(hueTapGesture, huePanGesture);
-
-  const sliderHandleStyle = useAnimatedStyle(() => ({
-    height: HANDLE_SIZE,
-    width: HANDLE_SIZE,
-    transform: [
-      { translateX: (hue.get() / 360) * (contentWidth.get() - HANDLE_SIZE) },
-      { translateY: "-50%" },
-    ],
   }));
   //#endregion
 
@@ -143,9 +136,8 @@ export function ColorPicker({
     <>
       <GestureDetector gesture={panelGestures}>
         <Animated.View
-          onLayout={(e) => contentWidth.set(e.nativeEvent.layout.width)}
           style={panelStyle}
-          className="relative overflow-hidden rounded-md"
+          className="relative overflow-hidden rounded-lg"
         >
           <LinearGradient
             colors={["#FFFFFFFF", "#FFFFFF00"]}
@@ -167,8 +159,9 @@ export function ColorPicker({
         </Animated.View>
       </GestureDetector>
 
-      <GestureDetector gesture={hueGestures}>
+      <GestureDetector gesture={gestures}>
         <View
+          onLayout={measureSlider}
           style={{ height: HUE_SLIDER_HEIGHT }}
           className="relative overflow-hidden rounded-full"
         >

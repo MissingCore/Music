@@ -89,7 +89,7 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
   if (!albums) return null;
   return (
     <View>
-      <TText textKey="term.albums" bold size="xs" />
+      <TText textKey="term.albums" intent="em" />
       <FlatList
         horizontal
         data={albums}
@@ -109,7 +109,7 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
         className="-mx-4"
         contentContainerClassName="gap-1.5 px-4 py-1.5"
       />
-      <TText textKey="term.tracks" bold size="xs" className="mb-1.5" />
+      <TText textKey="term.tracks" intent="em" className="mb-1.5" />
     </View>
   );
 }
