@@ -21,13 +21,13 @@ import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { IconButton } from "~/components/next/base/button-icon";
 import { Card } from "~/components/next/base/card";
 import { ZSchema } from "~/modules/form/utils";
-import type { FormActionConfig } from "~/modules/form/FormState/next";
+import type { FormActionConfig } from "~/modules/form/FormState";
 import {
   FormStateProvider,
   useFormAction,
   useFormStateContext,
-} from "~/modules/form/FormState/next";
-import { TextareaImpl } from "~/modules/form/FormState/FormInputNext";
+} from "~/modules/form/FormState";
+import { TextareaImpl } from "~/modules/form/FormState/FormInput";
 import { TText } from "~/components/next/base/typography";
 
 type Props = StaticScreenProps<{ trackId: string }>;

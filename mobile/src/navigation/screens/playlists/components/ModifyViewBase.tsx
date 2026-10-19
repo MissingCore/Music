@@ -27,18 +27,15 @@ import { TText } from "~/components/next/base/typography";
 import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
 import { ZSchema } from "~/modules/form/utils";
-import type { FormActionConfig } from "~/modules/form/FormState/next";
+import type { FormActionConfig } from "~/modules/form/FormState";
 import {
   FormStateProvider,
   FormTitle,
   FormToolbar,
   useFormAction,
   useFormStateContext,
-} from "~/modules/form/FormState/next";
-import {
-  FormInputImpl,
-  InputLabel,
-} from "~/modules/form/FormState/FormInputNext";
+} from "~/modules/form/FormState";
+import { FormInputImpl, InputLabel } from "~/modules/form/FormState/FormInput";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { useAllMedia } from "~/modules/search/hooks/useSearch";
 import type { SearchCallbacks } from "~/modules/search/types";

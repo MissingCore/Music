@@ -13,22 +13,25 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 import type { ZodMiniObject } from "zod/mini";
 import { z } from "zod/mini";
 
 import { useBackHandler } from "~/hooks/useBackHandler";
 
-import { ScreenOptions } from "~/navigation/components/ScreenOptions";
-import type { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
-
 import { wait } from "~/utils/promise";
 import { isBoolean, isNumber, isString } from "~/utils/validation";
-import { ExtendedTButton } from "~/components/Form/Button";
-import { FilledIconButton } from "~/components/Form/Button/Icon";
-import { ModalTemplate } from "~/components/Modal";
+import type { IconButtonProps } from "~/components/next/base/button-icon";
+import { IconButton } from "~/components/next/base/button-icon";
+import { Dialog } from "~/components/next/base/dialog";
+import { Text, TText } from "~/components/next/base/typography";
+import { ActionButton } from "~/components/next/blocks/button-action";
+import { ConfirmAction } from "~/components/next/composed/confirm-action";
+import { Toolbar } from "~/components/next/composed/toolbar";
+
+type FormType = "create" | "edit";
 
 type InitialArguments<TSchema extends ZodMiniObject> = {
+  type: FormType;
   schema: TSchema;
   initData: z.infer<TSchema>;
   /** Fields omitted during normal validation. Will be checked in `onSubmit`. */
@@ -40,6 +43,7 @@ type InitialArguments<TSchema extends ZodMiniObject> = {
 };
 
 type FormState<TData extends Record<string, any>> = {
+  type: FormType;
   data: TData;
   /** @deprecated For internal use. Use `setFields` instead. */
   setField: Dispatch<SetStateAction<TData>>;
@@ -139,15 +143,18 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
     const parsedData = schemaRef.current.safeParse(data);
     if (!parsedData.data) return;
     setIsSubmitting(true);
-    // Slight buffer before running heavy async task.
-    await wait(1);
-    await onSubmitRef.current(parsedData.data);
+    try {
+      // Slight buffer before running heavy async task.
+      await wait(1);
+      await onSubmitRef.current(parsedData.data);
+    } catch {}
     setIsSubmitting(false);
   }, [canSubmit, data]);
 
   return (
     <FormStateContext
       value={{
+        type: props.type,
         data,
         setField: setData,
         setFields,
@@ -159,64 +166,9 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
         setIsSubmitting,
       }}
     >
-      <TopAppBar />
       {props.children}
       <UnsavedChangesPrompt />
     </FormStateContext>
-  );
-}
-//#endregion
-
-//#region FAB Workflow
-export type FABWorkflowConfig<TData extends Record<string, any>> = {
-  label: ParseKeys;
-  action: (
-    context: Pick<FormState<TData>, "setFields">,
-  ) => void | Promise<void>;
-  /** If the action that will be done is dangerous/destructive. Will require confirmation to fire `action`. */
-  danger?: boolean;
-};
-
-/** Additional action that can be displayed in the form. */
-export function FABWorkflow(
-  props: FABWorkflowConfig<any> &
-    Omit<ReturnType<typeof useFloatingContent>, "offset">,
-) {
-  const [lastChance, setLastChance] = useState(false);
-  const { setFields, isSubmitting, setIsSubmitting } = useFormStateContext();
-
-  const triggerAction = async () => {
-    if (props.danger) setLastChance(false);
-    setIsSubmitting(true);
-    await props.action({ setFields });
-    setIsSubmitting(false);
-  };
-
-  return (
-    <>
-      <View {...props.floatingContentProps}>
-        <ExtendedTButton
-          textKey={props.label}
-          onPress={() => (props.danger ? setLastChance(true) : triggerAction())}
-          disabled={lastChance || isSubmitting}
-          theme={props.danger ? "error" : "secondary"}
-        />
-      </View>
-      {props.danger ? (
-        <ModalTemplate
-          visible={lastChance}
-          titleKey={props.label}
-          topAction={{
-            textKey: "form.confirm",
-            onPress: triggerAction,
-          }}
-          bottomAction={{
-            textKey: "form.cancel",
-            onPress: () => setLastChance(false),
-          }}
-        />
-      ) : null}
-    </>
   );
 }
 //#endregion
@@ -233,27 +185,86 @@ export function useFormStateContext<TData extends Record<string, any>>() {
 }
 //#endregion
 
-//#region Internal
-function TopAppBar() {
+//#region Form Title
+export function FormTitle() {
+  const { t } = useTranslation();
+  const { type } = useFormStateContext();
+  return (
+    <Text accent className="leading-tight">
+      {t(`form.${type}`)}
+    </Text>
+  );
+}
+//#endregion
+
+//#region Form Action
+export type FormActionConfig<TData extends Record<string, any>> = {
+  label: ParseKeys;
+  action: (
+    context: Pick<FormState<TData>, "setFields">,
+  ) => void | Promise<void>;
+  actionConfig: Omit<
+    IconButtonProps,
+    "accessibilityLabel" | "onPress" | "disabled"
+  >;
+  /** If the action that will be done is dangerous/destructive. Will require confirmation to fire `action`. */
+  danger?: boolean;
+};
+
+/** Returns an action that can be displayed in the form or toolbar. */
+export function useFormAction<TData extends Record<string, any>>(
+  args?: FormActionConfig<TData>,
+) {
+  const { t } = useTranslation();
+  const { setFields, isSubmitting, setIsSubmitting } = useFormStateContext();
+
+  if (!args) return null;
+
+  const renderedAction = (
+    <IconButton
+      {...args.actionConfig}
+      accessibilityLabel={t(args.label)}
+      onPress={async () => {
+        setIsSubmitting(true);
+        await args.action({ setFields });
+        setIsSubmitting(false);
+      }}
+      disabled={isSubmitting}
+    />
+  );
+
+  if (!args.danger) return renderedAction;
+  return (
+    <ConfirmAction prompt={[t(args.label)]}>{renderedAction}</ConfirmAction>
+  );
+}
+//#endregion
+
+//#region Toolbar
+export function FormToolbar(props: { children?: React.ReactNode }) {
   const { t } = useTranslation();
   const { canSubmit, isSubmitting, onSubmit } = useFormStateContext();
   return (
-    <ScreenOptions
-      // Hacky solution to disable the back button when submitting.
-      headerLeft={isSubmitting ? () => undefined : undefined}
-      headerRight={() => (
-        <FilledIconButton
-          icon="check"
-          accessibilityLabel={t("form.apply")}
-          onPress={onSubmit}
-          disabled={!canSubmit || isSubmitting}
-        />
-      )}
-    />
+    <Toolbar>
+      <Toolbar.Actions>
+        <Toolbar.Back />
+        {props.children}
+      </Toolbar.Actions>
+      <Toolbar.FAB
+        icon="save"
+        accessibilityLabel={t("form.apply")}
+        onPress={onSubmit}
+        disabled={!canSubmit || isSubmitting}
+        intent="inverse"
+      />
+    </Toolbar>
   );
 }
+//#endregion
 
+//#region Internal
 function UnsavedChangesPrompt() {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const { hasChanged, isSubmitting } = useFormStateContext();
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -265,18 +276,28 @@ function UnsavedChangesPrompt() {
   }, [hasChanged, isSubmitting]);
 
   return (
-    <ModalTemplate
+    <Dialog
       visible={showConfirmation}
-      titleKey="form.unsaved"
-      topAction={{
-        textKey: "form.leave",
-        onPress: () => navigation.goBack(),
-      }}
-      bottomAction={{
-        textKey: "form.stay",
-        onPress: () => setShowConfirmation(false),
-      }}
-    />
+      onClose={() => setShowConfirmation(false)}
+    >
+      <TText textKey="form.unsaved" style={{ fontSize: 18 }} />
+      <Dialog.Actions>
+        <ActionButton
+          label={t("form.leave")}
+          onPress={() => {
+            navigation.goBack();
+            setShowConfirmation(false);
+          }}
+          labelClassName="text-error"
+          className="rounded-lg"
+        />
+        <ActionButton
+          label={t("form.stay")}
+          onPress={() => setShowConfirmation(false)}
+          className="rounded-lg"
+        />
+      </Dialog.Actions>
+    </Dialog>
   );
 }
 //#endregion

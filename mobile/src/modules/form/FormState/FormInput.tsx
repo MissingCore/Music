@@ -10,21 +10,28 @@ import { useFormStateContext } from ".";
 import { cn } from "~/lib/style";
 import type { KeysOfValue } from "~/utils/types";
 import { FlatList } from "~/components/Base/List";
-import { IconButton } from "~/components/Form/Button/Icon";
-import type { InputProps } from "~/components/Form/Input";
-import { TextInput } from "~/components/Form/Input";
-import { RemovableItem } from "~/components/List/RemovableItem";
-import { Em } from "~/components/Typography/StyledText";
+import { IconButton } from "~/components/next/base/button-icon";
+import type { InputProps } from "~/components/next/base/input";
+import { TextInput } from "~/components/next/base/input";
+import { SwitchInput } from "~/components/next/base/switch";
+import { Text } from "~/components/next/base/typography";
+import { Marquee } from "~/components/next/blocks/marquee";
 
 //#region Label
 export function InputLabel(props: {
   label: TranslationKeyOrString;
   Trailing?: React.ReactNode;
+  className?: string;
 }) {
   const t = useMaybeT();
   return (
-    <View className="mb-1 min-h-8 flex-row items-center justify-between gap-4">
-      <Em>{t(props.label)}</Em>
+    <View
+      className={cn(
+        "mb-2 flex-row items-center justify-between gap-4",
+        props.className,
+      )}
+    >
+      <Text intent="em">{t(props.label)}</Text>
       {props.Trailing}
     </View>
   );
@@ -61,7 +68,7 @@ export function FormInputImpl<TData extends Record<string, any>>() {
           editable={!isSubmitting}
           value={value !== null ? String(value) : ""}
           onChangeText={onChange}
-          className="w-full rounded-sm border border-outline p-2"
+          className="w-full rounded-lg border border-outline p-2"
         />
       </View>
     );
@@ -103,18 +110,21 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
           data={values}
           keyExtractor={(_, index) => `${index}`}
           renderItem={({ item: value, index: row }) => (
-            <RemovableItem
-              label={value}
-              onRemove={() =>
-                setField((prev) => ({
-                  ...prev,
-                  [field]: (prev[field] as string[]).filter(
-                    (_, idx) => idx !== row,
-                  ),
-                }))
-              }
-              disableRemove={isSubmitting}
-            >
+            <View className="min-h-12 flex-row items-center gap-1">
+              <IconButton
+                icon="do-not-disturb-on"
+                accessibilityLabel={t("template.entryRemove", { name: value })}
+                onPress={() =>
+                  setField((prev) => ({
+                    ...prev,
+                    [field]: (prev[field] as string[]).filter(
+                      (_, idx) => idx !== row,
+                    ),
+                  }))
+                }
+                disabled={isSubmitting}
+                size="xs"
+              />
               <TextInput
                 editable={!isSubmitting}
                 value={value}
@@ -126,9 +136,9 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
                     ),
                   }))
                 }
-                className="shrink grow rounded-sm border border-outline p-2"
+                className="shrink grow rounded-lg border border-outline p-2"
               />
-            </RemovableItem>
+            </View>
           )}
           scrollEnabled={false}
           contentContainerClassName="gap-2"
@@ -143,39 +153,72 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
 export function TextareaImpl<TData extends Record<string, any>>() {
   return function Textarea(
     props: {
-      label: TranslationKeyOrString;
+      label?: TranslationKeyOrString;
       field: KeysOfValue<TData, string>;
       oneLine?: boolean;
     } & Pick<
       InputProps,
-      "selection" | "onSelectionChange" | "onFocus" | "onBlur"
+      "selection" | "onSelectionChange" | "onFocus" | "onBlur" | "className"
     >,
   ) {
     const { data, setField, isSubmitting } = useFormState<TData>();
+
+    const renderedInput = (
+      <TextInput
+        editable={!isSubmitting}
+        value={data[props.field]}
+        onChangeText={(_text) =>
+          setField((prev) => {
+            let text = _text;
+            if (props.oneLine) text = text.replace(/\r?\n|\r/g, "");
+            return { ...prev, [props.field]: text };
+          })
+        }
+        multiline
+        textAlignVertical="top"
+        //? Don't display an "Enter" key.
+        submitBehavior={props.oneLine ? "blurAndSubmit" : undefined}
+        selection={props.selection}
+        onSelectionChange={props.onSelectionChange}
+        onFocus={props.onFocus}
+        onBlur={props.onBlur}
+        className={cn(
+          "w-full rounded-lg border border-outline p-2",
+          props.oneLine && "py-3",
+          props.className,
+        )}
+      />
+    );
+
+    if (!props.label) return renderedInput;
     return (
-      <View className="flex-1">
+      <View className="shrink grow">
         <InputLabel label={props.label} />
-        <TextInput
-          editable={!isSubmitting}
-          value={data[props.field]}
-          onChangeText={(_text) =>
-            setField((prev) => {
-              let text = _text;
-              if (props.oneLine) text = text.replace(/\r?\n|\r/g, "");
-              return { ...prev, [props.field]: text };
-            })
+        {renderedInput}
+      </View>
+    );
+  };
+}
+//#endregion
+
+//#region Switch Input
+export function SwitchInputImpl<TData extends Record<string, any>>() {
+  return function Textarea(props: {
+    label: TranslationKeyOrString;
+    field: KeysOfValue<TData, boolean>;
+  }) {
+    const { data, setField, isSubmitting } = useFormState<TData>();
+    return (
+      <View className="min-h-8 flex-row items-center justify-between gap-2">
+        <Marquee>
+          <InputLabel label={props.label} className="mb-0" />
+        </Marquee>
+        <SwitchInput
+          enabled={data[props.field]}
+          onPress={() =>
+            setField((prev) => ({ ...prev, [props.field]: !prev[props.field] }))
           }
-          multiline
-          textAlignVertical="top"
-          //? Don't display an "Enter" key.
-          submitBehavior={props.oneLine ? "blurAndSubmit" : undefined}
-          selection={props.selection}
-          onSelectionChange={props.onSelectionChange}
-          onFocus={props.onFocus}
-          onBlur={props.onBlur}
-          className={cn("w-full rounded-sm border border-outline px-2 py-3", {
-            "min-h-64": !props.oneLine,
-          })}
+          disabled={isSubmitting}
         />
       </View>
     );

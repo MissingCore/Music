@@ -33,12 +33,12 @@ import {
   FormStateProvider,
   FormTitle,
   FormToolbar,
-} from "~/modules/form/FormState/next";
+} from "~/modules/form/FormState";
 import {
   ArrayFormInputImpl,
   FormInputImpl,
   SwitchInputImpl,
-} from "~/modules/form/FormState/FormInputNext";
+} from "~/modules/form/FormState/FormInput";
 
 type Props = StaticScreenProps<{ id: string }>;
 

@@ -48,12 +48,12 @@ import {
   FormToolbar,
   useFormAction,
   useFormStateContext,
-} from "~/modules/form/FormState/next";
+} from "~/modules/form/FormState";
 import {
   ArrayFormInputImpl,
   FormInputImpl,
   InputLabel,
-} from "~/modules/form/FormState/FormInputNext";
+} from "~/modules/form/FormState/FormInput";
 
 type Props = StaticScreenProps<{ id: string }>;
 
