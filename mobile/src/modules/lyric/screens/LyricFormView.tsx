@@ -21,9 +21,9 @@ import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { IconButton } from "~/components/next/base/button-icon";
 import { Card } from "~/components/next/base/card";
 import { ZSchema } from "~/modules/form/utils";
-import type { FormActionConfig } from "~/modules/form/FormState";
-import { Form, useFormAction, useFormContext } from "~/modules/form/FormState";
-import { createTypedFormInputs } from "~/modules/form/FormState/FormInput";
+import type { FormActionConfig } from "~/modules/form/Form";
+import { Form, useFormAction, useFormContext } from "~/modules/form/Form";
+import { createTypedFormInputs } from "~/modules/form/FormInput";
 import { TText } from "~/components/next/base/typography";
 
 type Props = StaticScreenProps<{ trackId: string }>;

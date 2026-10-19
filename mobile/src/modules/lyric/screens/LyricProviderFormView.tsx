@@ -19,8 +19,8 @@ import { LyricProviderEndpointPlaceholders } from "../core/constants";
 import { Em } from "~/components/Typography/StyledText";
 import { Button } from "~/components/next/base/button";
 import { ZSchema } from "~/modules/form/utils";
-import { Form, useFormAction, useFormContext } from "~/modules/form/FormState";
-import { createTypedFormInputs } from "~/modules/form/FormState/FormInput";
+import { Form, useFormAction, useFormContext } from "~/modules/form/Form";
+import { createTypedFormInputs } from "~/modules/form/FormInput";
 
 type Props = StaticScreenProps<{ providerId?: string }>;
 

@@ -5,10 +5,10 @@ import { useMemo } from "react";
 import { View } from "react-native";
 import { z } from "zod/mini";
 
-import type { FormActionConfig } from "~/modules/form/FormState";
-import { Form, useFormAction, useFormContext } from "~/modules/form/FormState";
-import { createTypedFormInputs } from "~/modules/form/FormState/FormInput";
 import { ZSchema } from "~/modules/form/utils";
+import type { FormActionConfig } from "~/modules/form/Form";
+import { Form, useFormAction, useFormContext } from "~/modules/form/Form";
+import { createTypedFormInputs } from "~/modules/form/FormInput";
 import { ColorPickerInput } from "./ColorPickerInput";
 import type { ColorRole, HexColor } from "../core/constants";
 import { ColorRoleOptions, Themes } from "../core/constants";

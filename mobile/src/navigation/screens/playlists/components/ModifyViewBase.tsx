@@ -27,12 +27,9 @@ import { TText } from "~/components/next/base/typography";
 import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
 import { ZSchema } from "~/modules/form/utils";
-import type { FormActionConfig } from "~/modules/form/FormState";
-import { Form, useFormAction, useFormContext } from "~/modules/form/FormState";
-import {
-  InputLabel,
-  createTypedFormInputs,
-} from "~/modules/form/FormState/FormInput";
+import type { FormActionConfig } from "~/modules/form/Form";
+import { Form, useFormAction, useFormContext } from "~/modules/form/Form";
+import { InputLabel, createTypedFormInputs } from "~/modules/form/FormInput";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { useAllMedia } from "~/modules/search/hooks/useSearch";
 import type { SearchCallbacks } from "~/modules/search/types";

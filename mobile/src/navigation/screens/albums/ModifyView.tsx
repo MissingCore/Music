@@ -26,8 +26,8 @@ import { clearAllQueries } from "~/lib/react-query";
 import { Divider } from "~/components/next/base/divider";
 import { Hint } from "~/components/next/blocks/hint";
 import { ZSchema } from "~/modules/form/utils";
-import { Form } from "~/modules/form/FormState";
-import { createTypedFormInputs } from "~/modules/form/FormState/FormInput";
+import { Form } from "~/modules/form/Form";
+import { createTypedFormInputs } from "~/modules/form/FormInput";
 
 type Props = StaticScreenProps<{ id: string }>;
 

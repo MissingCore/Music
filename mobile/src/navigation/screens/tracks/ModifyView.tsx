@@ -39,11 +39,8 @@ import { TextInput } from "~/components/next/base/input";
 import { useSheetRef } from "~/components/next/base/sheet";
 import { Hint } from "~/components/next/blocks/hint";
 import { ZSchema } from "~/modules/form/utils";
-import { Form, useFormAction, useFormContext } from "~/modules/form/FormState";
-import {
-  InputLabel,
-  createTypedFormInputs,
-} from "~/modules/form/FormState/FormInput";
+import { Form, useFormAction, useFormContext } from "~/modules/form/Form";
+import { InputLabel, createTypedFormInputs } from "~/modules/form/FormInput";
 
 type Props = StaticScreenProps<{ id: string }>;
 
