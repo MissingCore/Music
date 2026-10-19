@@ -41,7 +41,7 @@ export default function LyricForm({
   const createAction = useMemo<FormActionConfig<LyricEntry>>(
     () => ({
       label: "feat.backup.extra.import",
-      action: async ({ setFields }) => {
+      onPress: async ({ setFields }) => {
         try {
           const lrcFile = await pickFile(["application/lrc", "text/plain"]);
           const lrcText = await lrcFile.text();
@@ -52,12 +52,7 @@ export default function LyricForm({
           toast.error((err as Error).message);
         }
       },
-      actionConfig: {
-        icon: "upload",
-        intent: "secondary",
-        filled: true,
-        wide: true,
-      },
+      config: { icon: "upload", intent: "secondary", filled: true, wide: true },
     }),
     [],
   );
@@ -83,7 +78,7 @@ export default function LyricForm({
   const deleteAction = useMemo<FormActionConfig<LyricEntry>>(
     () => ({
       label: "form.delete",
-      action: async () => {
+      onPress: async () => {
         await wait(1);
         try {
           await deleteLyric(trackId);
@@ -95,12 +90,7 @@ export default function LyricForm({
           toast.tError("err.flow.generic.title");
         }
       },
-      actionConfig: {
-        icon: "delete",
-        intent: "error",
-        filled: true,
-        wide: true,
-      },
+      config: { icon: "delete", intent: "error", filled: true, wide: true },
       requiresConfirmation: true,
     }),
     [navigation, queryClient, trackId],

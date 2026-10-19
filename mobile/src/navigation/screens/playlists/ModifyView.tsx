@@ -69,7 +69,7 @@ export default function ModifyPlaylist({
           ? undefined
           : {
               label: "form.delete",
-              action: async () => {
+              onPress: async () => {
                 await wait(1);
                 try {
                   await deletePlaylist(id);
@@ -84,11 +84,7 @@ export default function ModifyPlaylist({
                   toast.tError("err.flow.generic.title");
                 }
               },
-              actionConfig: {
-                icon: "delete",
-                intent: "error",
-                _iconColor: "error",
-              },
+              config: { icon: "delete", intent: "error", _iconColor: "error" },
               requiresConfirmation: true,
             }
       }

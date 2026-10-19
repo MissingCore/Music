@@ -29,7 +29,7 @@ export default function CreatePlaylist() {
       referenceData={data}
       actionConfig={{
         label: "feat.playlist.extra.m3uImport",
-        action: async ({ setFields }) => {
+        onPress: async ({ setFields }) => {
           try {
             const { name, tracks: playlistTracks } = await readM3UPlaylist();
             await wait(100);
@@ -42,7 +42,7 @@ export default function CreatePlaylist() {
             toast.error((err as Error).message);
           }
         },
-        actionConfig: { icon: "upload", intent: "secondary" },
+        config: { icon: "upload", intent: "secondary" },
       }}
       onSubmit={async ({ name, trackIds }) => {
         try {

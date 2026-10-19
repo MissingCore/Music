@@ -47,13 +47,6 @@ export default function LyricProviderForm({
   //#endregion
 
   //#region Modify Flow
-  const onDelete = useCallback(() => {
-    if (!providerId)
-      throw new Error("Attempting to delete provider that doesn't exist.");
-    deleteLyricProvider(providerId);
-    navigation.goBack();
-  }, [navigation, providerId]);
-
   const onUpdate = useCallback(
     async (entry: LyricProviderEntry) => {
       if (!providerId)
@@ -80,29 +73,29 @@ export default function LyricProviderForm({
       }}
       onSubmit={providerExists ? onUpdate : onCreate}
     >
-      <LyricFormToolbar onDelete={providerExists ? onDelete : undefined} />
+      <LyricFormToolbar providerId={providerId} showAction={providerExists} />
       <FormContents />
     </Form.Provider>
   );
 }
 
 //#region Toolbar
-function LyricFormToolbar(props: { onDelete?: VoidFunction }) {
-  const FormAction = useFormAction(
-    props.onDelete
-      ? {
-          label: "form.delete",
-          action: props.onDelete,
-          actionConfig: {
-            icon: "delete",
-            intent: "error",
-            _iconColor: "error",
-          },
-          requiresConfirmation: true,
-        }
-      : undefined,
+function LyricFormToolbar(props: { providerId?: string; showAction: boolean }) {
+  const navigation = useNavigation();
+  const FormAction = useFormAction({
+    label: "form.delete",
+    onPress: () => {
+      if (!props.providerId)
+        throw new Error("Attempting to delete provider that doesn't exist.");
+      deleteLyricProvider(props.providerId);
+      navigation.goBack();
+    },
+    config: { icon: "delete", intent: "error", _iconColor: "error" },
+    requiresConfirmation: true,
+  });
+  return (
+    <Form.Toolbar>{props.showAction ? FormAction : undefined}</Form.Toolbar>
   );
-  return <Form.Toolbar>{FormAction}</Form.Toolbar>;
 }
 //#endregion
 

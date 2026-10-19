@@ -43,7 +43,7 @@ export default function ModifyTheme({
           ? undefined
           : {
               label: "form.delete",
-              action: async () => {
+              onPress: async () => {
                 await wait(1);
                 try {
                   await deleteCustomTheme(themeId);
@@ -52,11 +52,7 @@ export default function ModifyTheme({
                   toast.tError("err.flow.generic.title");
                 }
               },
-              actionConfig: {
-                icon: "delete",
-                intent: "error",
-                _iconColor: "error",
-              },
+              config: { icon: "delete", intent: "error", _iconColor: "error" },
               requiresConfirmation: true,
             }
       }

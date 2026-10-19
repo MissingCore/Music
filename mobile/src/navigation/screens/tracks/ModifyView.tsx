@@ -110,7 +110,7 @@ function TrackFormToolbar({ uri }: { uri: string }) {
   const delimiters = usePreferenceStore((s) => s.separators);
   const FormAction = useFormAction({
     label: "form.reset",
-    action: async ({ setFields }) => {
+    onPress: async ({ setFields }) => {
       try {
         const trackMetadata = await getMetadata(uri, [
           ...MetadataPresets.standard,
@@ -135,10 +135,9 @@ function TrackFormToolbar({ uri }: { uri: string }) {
         });
       } catch {}
     },
-    actionConfig: { icon: "cached", intent: "error", _iconColor: "error" },
+    config: { icon: "cached", intent: "error", _iconColor: "error" },
     requiresConfirmation: true,
   });
-
   return <Form.Toolbar>{FormAction}</Form.Toolbar>;
 }
 //#endregion

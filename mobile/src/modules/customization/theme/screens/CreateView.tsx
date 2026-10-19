@@ -14,7 +14,7 @@ export default function CreateTheme() {
     <ModifyThemeBase
       actionConfig={{
         label: "feat.backup.extra.import",
-        action: async ({ setFields }) => {
+        onPress: async ({ setFields }) => {
           try {
             const { name, scheme, colors } = await pickTheme();
             await wait(100);
@@ -29,7 +29,7 @@ export default function CreateTheme() {
             toast.error((err as Error).message);
           }
         },
-        actionConfig: { icon: "upload", intent: "secondary" },
+        config: { icon: "upload", intent: "secondary" },
       }}
       onSubmit={async ({ _importGen, isDark, ...entry }) => {
         try {

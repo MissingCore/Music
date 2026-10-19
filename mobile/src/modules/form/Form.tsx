@@ -194,13 +194,10 @@ function FormStateProvider<TSchema extends ZodMiniObject>(
 //#region Form Action
 export type FormActionConfig<TData extends Record<string, any>> = {
   label: ParseKeys;
-  action: (
+  onPress: (
     context: Pick<FormState<TData>, "setFields">,
   ) => void | Promise<void>;
-  actionConfig: Omit<
-    IconButtonProps,
-    "accessibilityLabel" | "onPress" | "disabled"
-  >;
+  config: Omit<IconButtonProps, "accessibilityLabel" | "onPress" | "disabled">;
   /** If the action requires confirmation. */
   requiresConfirmation?: boolean;
 };
@@ -216,12 +213,12 @@ export function useFormAction<TData extends Record<string, any>>(
 
   const renderedAction = (
     <IconButton
-      {...args.actionConfig}
+      {...args.config}
       accessibilityLabel={t(args.label)}
       onPress={async () => {
         setIsSubmitting(true);
         try {
-          await args.action({ setFields });
+          await args.onPress({ setFields });
         } catch {}
         setIsSubmitting(false);
       }}
