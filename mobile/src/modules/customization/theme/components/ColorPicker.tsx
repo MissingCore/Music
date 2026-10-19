@@ -71,7 +71,7 @@ export function ColorPicker({
   }, [hue, saturation, brightness, onComplete]);
 
   //#region Hue Slider Gestures + Styles
-  const { length, ...hueSlider } = useSlider({
+  const { measureSlider, sliderLength, gestures } = useSlider({
     initValue: hexToHSV(normalizeHexColor(value) ?? "#000").h,
     min: 0,
     max: 360,
@@ -90,7 +90,7 @@ export function ColorPicker({
     height: HANDLE_SIZE,
     width: HANDLE_SIZE,
     transform: [
-      { translateX: (hue.get() / 360) * (length.get() - HANDLE_SIZE) },
+      { translateX: (hue.get() / 360) * (sliderLength.get() - HANDLE_SIZE) },
       { translateY: "-50%" },
     ],
   }));
@@ -99,7 +99,7 @@ export function ColorPicker({
   //#region Panel Gestures + Styles
   const panelTapGesture = useTapGesture({
     onDeactivate: ({ x, y }) => {
-      saturation.set(clamp(x / length.get(), 0, 1));
+      saturation.set(clamp(x / sliderLength.get(), 0, 1));
       brightness.set(clamp(1 - y / PANEL_HEIGHT, 0, 1));
 
       scheduleOnRN(emitCurrentColor);
@@ -108,7 +108,7 @@ export function ColorPicker({
 
   const panelPanGesture = usePanGesture({
     onUpdate: ({ x, y }) => {
-      saturation.set(clamp(x / length.get(), 0, 1));
+      saturation.set(clamp(x / sliderLength.get(), 0, 1));
       brightness.set(clamp(1 - y / PANEL_HEIGHT, 0, 1));
     },
     onDeactivate: () => scheduleOnRN(emitCurrentColor),
@@ -125,7 +125,7 @@ export function ColorPicker({
     height: HANDLE_SIZE,
     width: HANDLE_SIZE,
     transform: [
-      { translateX: saturation.get() * (length.get() - HANDLE_SIZE) },
+      { translateX: saturation.get() * (sliderLength.get() - HANDLE_SIZE) },
       { translateY: (1 - brightness.get()) * (PANEL_HEIGHT - HANDLE_SIZE) },
     ],
     borderColor: brightness.get() > 0.5 ? "#000" : "#FFF",
@@ -159,9 +159,9 @@ export function ColorPicker({
         </Animated.View>
       </GestureDetector>
 
-      <GestureDetector gesture={hueSlider.gestures}>
+      <GestureDetector gesture={gestures}>
         <View
-          onLayout={hueSlider.measure}
+          onLayout={measureSlider}
           style={{ height: HUE_SLIDER_HEIGHT }}
           className="relative overflow-hidden rounded-full"
         >

@@ -16,7 +16,7 @@ const OPACITY_SLIDER_HEIGHT = HANDLE_SIZE + 8;
 
 export function OpacitySlider({
   color,
-  value,
+  value: hexColor,
   onComplete,
 }: {
   color: HexColor;
@@ -28,8 +28,8 @@ export function OpacitySlider({
     [onComplete],
   );
 
-  const alphaSlider = useSlider({
-    initValue: hexToAlpha(value),
+  const { measureSlider, sliderLength, value, gestures } = useSlider({
+    initValue: hexToAlpha(hexColor),
     min: 0,
     max: 1,
     step: 0.01,
@@ -44,18 +44,17 @@ export function OpacitySlider({
     width: HANDLE_SIZE,
     transform: [
       {
-        translateX:
-          alphaSlider.value.get() * (alphaSlider.length.get() - HANDLE_SIZE),
+        translateX: value.get() * (sliderLength.get() - HANDLE_SIZE),
       },
       { translateY: "-50%" },
     ],
   }));
 
   return (
-    <GestureDetector gesture={alphaSlider.gestures}>
+    <GestureDetector gesture={gestures}>
       <View
         collapsable={false}
-        onLayout={alphaSlider.measure}
+        onLayout={measureSlider}
         style={{ height: OPACITY_SLIDER_HEIGHT }}
         className="relative overflow-hidden rounded-full"
       >
