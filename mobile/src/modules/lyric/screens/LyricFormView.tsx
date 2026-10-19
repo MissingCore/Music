@@ -132,6 +132,7 @@ export default function LyricForm({
     <View className="flex-1 items-center justify-center bg-black/50 p-4 py-20">
       {!isPending && !isRefetching ? (
         <FormStateProvider
+          type={hasLyrics ? "edit" : "create"}
           schema={LyricEntrySchema}
           initData={{ trackId, lyricText: data?.lyricText ?? "" }}
           onSubmit={hasLyrics ? onUpdate : onCreate}

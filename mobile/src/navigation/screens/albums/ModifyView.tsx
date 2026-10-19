@@ -51,6 +51,7 @@ export default function ModifyAlbum({
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
   return (
     <FormStateProvider
+      type="edit"
       schema={AlbumMetadataSchema}
       initData={{
         albumContext: {
@@ -92,7 +93,7 @@ function MetadataForm() {
     <KeyboardAwareScrollView
       contentContainerClassName={cn("gap-6 p-4", ToolbarScreenOffset)}
     >
-      <FormTitle title="form.edit" />
+      <FormTitle />
       <FormInput label="feat.trackMetadata.extra.name" field="name" />
       <ArrayFormInput label="term.artists" field="artists" />
       <SwitchInput label="isEP" field="isEP" />

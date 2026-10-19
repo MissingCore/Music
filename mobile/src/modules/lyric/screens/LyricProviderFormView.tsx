@@ -3,7 +3,6 @@
 
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import type { ParseKeys } from "i18next";
 import { useCallback, useState } from "react";
 import { View } from "react-native";
 import { z } from "zod/mini";
@@ -84,6 +83,7 @@ export default function LyricProviderForm({
 
   return (
     <FormStateProvider
+      type={providerExists ? "edit" : "create"}
       schema={LyricProviderEntrySchema}
       initData={{
         name: currentProvider?.name ?? "",
@@ -95,7 +95,7 @@ export default function LyricProviderForm({
       onSubmit={providerExists ? onUpdate : onCreate}
     >
       <LyricFormToolbar onDelete={providerExists ? onDelete : undefined} />
-      <Form title={`form.${providerExists ? "edit" : "create"}`} />
+      <Form />
     </FormStateProvider>
   );
 }
@@ -126,7 +126,7 @@ const ArrayFormInput = ArrayFormInputImpl<LyricProviderEntry>();
 const SwitchInput = SwitchInputImpl<LyricProviderEntry>();
 const Textarea = TextareaImpl<LyricProviderEntry>();
 
-function Form({ title }: { title: ParseKeys }) {
+function Form() {
   const { data, setFields, isSubmitting } = useFormState();
 
   //#region Placeholder Helper
@@ -152,7 +152,7 @@ function Form({ title }: { title: ParseKeys }) {
       keyboardShouldPersistTaps={isEndpointInputFocused ? "always" : undefined}
       contentContainerClassName={cn("gap-6 p-4", ToolbarScreenOffset)}
     >
-      <FormTitle title={title} />
+      <FormTitle />
       <FormInput label="feat.trackMetadata.extra.name" field="name" />
       <Textarea
         label="Endpoint"

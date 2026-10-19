@@ -1,7 +1,6 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import type { ParseKeys } from "i18next";
 import { useMemo } from "react";
 import { View } from "react-native";
 import { z } from "zod/mini";
@@ -53,14 +52,13 @@ export function ModifyThemeBase(props: {
 
   return (
     <FormStateProvider
+      type={Boolean(props.initialData) ? "edit" : "create"}
       schema={ThemeEntrySchema}
       initData={initData}
       onSubmit={props.onSubmit}
     >
       <ThemeFormToolbar actionConfig={props.actionConfig} />
-      <ThemeForm
-        title={`form.${Boolean(props.initialData) ? "edit" : "create"}`}
-      />
+      <ThemeForm />
     </FormStateProvider>
   );
 }
@@ -78,13 +76,13 @@ function ThemeFormToolbar(props: {
 const FormInput = FormInputImpl<ThemeEntry>();
 const SwitchInput = SwitchInputImpl<ThemeEntry>();
 
-function ThemeForm({ title }: { title: ParseKeys }) {
+function ThemeForm() {
   const { data, setFields, isSubmitting } = useFormState();
   return (
     <KeyboardAwareScrollView
       contentContainerClassName={cn("gap-6 p-4", ToolbarScreenOffset)}
     >
-      <FormTitle title={title} />
+      <FormTitle />
       <FormInput label="feat.trackMetadata.extra.name" field="name" />
       <SwitchInput label="feat.theme.extra.dark" field="isDark" />
       <View className="gap-2">

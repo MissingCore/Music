@@ -18,7 +18,6 @@ import { z } from "zod/mini";
 
 import { useBackHandler } from "~/hooks/useBackHandler";
 
-import { cn } from "~/lib/style";
 import { wait } from "~/utils/promise";
 import { isBoolean, isNumber, isString } from "~/utils/validation";
 import type { IconButtonProps } from "~/components/next/base/button-icon";
@@ -28,10 +27,11 @@ import { Text, TText } from "~/components/next/base/typography";
 import { ActionButton } from "~/components/next/blocks/button-action";
 import { ConfirmAction } from "~/components/next/composed/confirm-action";
 import { Toolbar } from "~/components/next/composed/toolbar";
-import type { TranslationKeyOrString } from "~/modules/i18n/core";
-import { useMaybeT } from "~/modules/i18n/core";
+
+type FormType = "create" | "edit";
 
 type InitialArguments<TSchema extends ZodMiniObject> = {
+  type: FormType;
   schema: TSchema;
   initData: z.infer<TSchema>;
   /** Fields omitted during normal validation. Will be checked in `onSubmit`. */
@@ -43,6 +43,7 @@ type InitialArguments<TSchema extends ZodMiniObject> = {
 };
 
 type FormState<TData extends Record<string, any>> = {
+  type: FormType;
   data: TData;
   /** @deprecated For internal use. Use `setFields` instead. */
   setField: Dispatch<SetStateAction<TData>>;
@@ -153,6 +154,7 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
   return (
     <FormStateContext
       value={{
+        type: props.type,
         data,
         setField: setData,
         setFields,
@@ -184,14 +186,12 @@ export function useFormStateContext<TData extends Record<string, any>>() {
 //#endregion
 
 //#region Form Title
-export function FormTitle(props: {
-  title: TranslationKeyOrString;
-  className?: string;
-}) {
-  const t = useMaybeT();
+export function FormTitle() {
+  const { t } = useTranslation();
+  const { type } = useFormStateContext();
   return (
-    <Text accent className={cn("leading-tight", props.className)}>
-      {t(props.title)}
+    <Text accent className="leading-tight">
+      {t(`form.${type}`)}
     </Text>
   );
 }

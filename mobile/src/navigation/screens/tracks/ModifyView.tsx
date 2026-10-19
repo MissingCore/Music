@@ -87,6 +87,7 @@ export default function ModifyTrack({
 
   return (
     <FormStateProvider
+      type="edit"
       schema={TrackMetadataSchema}
       initData={{
         id: trackQuery.data.id,
@@ -182,7 +183,7 @@ function MetadataForm() {
       <KeyboardAwareScrollView
         contentContainerClassName={cn("gap-6 p-4", ToolbarScreenOffset)}
       >
-        <FormTitle title="form.edit" />
+        <FormTitle />
         <Hint
           hint={[
             t("feat.trackMetadata.description.line1"),
