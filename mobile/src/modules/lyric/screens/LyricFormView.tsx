@@ -101,7 +101,7 @@ export default function LyricForm({
         filled: true,
         wide: true,
       },
-      danger: true,
+      requiresConfirmation: true,
     }),
     [navigation, queryClient, trackId],
   );

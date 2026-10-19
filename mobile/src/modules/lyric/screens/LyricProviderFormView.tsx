@@ -103,7 +103,7 @@ function LyricFormToolbar(props: { onDelete?: VoidFunction }) {
             intent: "error",
             _iconColor: "error",
           },
-          danger: true,
+          requiresConfirmation: true,
         }
       : undefined,
   );

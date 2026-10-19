@@ -201,8 +201,8 @@ export type FormActionConfig<TData extends Record<string, any>> = {
     IconButtonProps,
     "accessibilityLabel" | "onPress" | "disabled"
   >;
-  /** If the action that will be done is dangerous/destructive. Will require confirmation to fire `action`. */
-  danger?: boolean;
+  /** If the action requires confirmation. */
+  requiresConfirmation?: boolean;
 };
 
 /** Returns an action that can be displayed in the form or toolbar. */
@@ -229,7 +229,7 @@ export function useFormAction<TData extends Record<string, any>>(
     />
   );
 
-  if (!args.danger) return renderedAction;
+  if (!args.requiresConfirmation) return renderedAction;
   return (
     <ConfirmAction prompt={[t(args.label)]}>{renderedAction}</ConfirmAction>
   );

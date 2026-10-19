@@ -89,7 +89,7 @@ export default function ModifyPlaylist({
                 intent: "error",
                 _iconColor: "error",
               },
-              danger: true,
+              requiresConfirmation: true,
             }
       }
       onSubmit={async ({ name: playlistName, trackIds }) => {

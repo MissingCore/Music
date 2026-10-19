@@ -57,7 +57,7 @@ export default function ModifyTheme({
                 intent: "error",
                 _iconColor: "error",
               },
-              danger: true,
+              requiresConfirmation: true,
             }
       }
       onSubmit={async ({ _importGen, isDark, ...entry }) => {

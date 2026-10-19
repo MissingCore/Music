@@ -140,7 +140,7 @@ function TrackFormToolbar({ uri }: { uri: string }) {
       } catch {}
     },
     actionConfig: { icon: "cached", intent: "error", _iconColor: "error" },
-    danger: true,
+    requiresConfirmation: true,
   });
 
   return <Form.Toolbar>{FormAction}</Form.Toolbar>;
