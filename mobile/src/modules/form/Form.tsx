@@ -73,9 +73,7 @@ const FormStateContext = createContext<FormState<any>>(null as never);
 export function useFormContext<TData extends Record<string, any>>() {
   const context = use(FormStateContext);
   if (!context)
-    throw new Error(
-      "`useFormStateContext` must be used in a `FormStateProvider`.",
-    );
+    throw new Error("`useFormContext` must be used in a `Form.Provider`.");
   return context as FormState<TData>;
 }
 //#endregion
