@@ -84,6 +84,11 @@ export default function ModifyPlaylist({
                   toast.tError("err.flow.generic.title");
                 }
               },
+              actionConfig: {
+                icon: "delete",
+                intent: "error",
+                _iconColor: "error",
+              },
               danger: true,
             }
       }

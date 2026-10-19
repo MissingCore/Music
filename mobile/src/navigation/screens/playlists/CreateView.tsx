@@ -42,6 +42,7 @@ export default function CreatePlaylist() {
             toast.error((err as Error).message);
           }
         },
+        actionConfig: { icon: "upload", intent: "secondary" },
       }}
       onSubmit={async ({ name, trackIds }) => {
         try {

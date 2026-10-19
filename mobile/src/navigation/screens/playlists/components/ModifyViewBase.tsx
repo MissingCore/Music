@@ -15,7 +15,6 @@ import { usePlaylistsNames } from "~/data/playlist/queries";
 import { sanitizePlaylistName } from "~/data/playlist/utils";
 import type { CommonTrack } from "~/data/types";
 
-import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { AddMusicSheet } from "../sheets/AddMusicSheet";
 
@@ -25,15 +24,21 @@ import { IconButton } from "~/components/next/base/button-icon";
 import type { SheetRef } from "~/components/next/base/sheet";
 import { useSheetRef } from "~/components/next/base/sheet";
 import { TText } from "~/components/next/base/typography";
+import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
 import { ZSchema } from "~/modules/form/utils";
-import type { FABWorkflowConfig } from "~/modules/form/FormState";
+import type { FormActionConfig } from "~/modules/form/FormState/next";
 import {
-  FABWorkflow,
   FormStateProvider,
+  FormTitle,
+  FormToolbar,
+  useFormAction,
   useFormStateContext,
-} from "~/modules/form/FormState";
-import { FormInputImpl, InputLabel } from "~/modules/form/FormState/FormInput";
+} from "~/modules/form/FormState/next";
+import {
+  FormInputImpl,
+  InputLabel,
+} from "~/modules/form/FormState/FormInputNext";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { useAllMedia } from "~/modules/search/hooks/useSearch";
 import type { SearchCallbacks } from "~/modules/search/types";
@@ -42,10 +47,8 @@ export function ModifyPlaylistBase(props: {
   onSubmit: (data: PlaylistEntry) => void | Promise<void>;
   initialData?: PlaylistEntry;
   referenceData: ReturnType<typeof usePreloadReferenceData>["data"];
-  actionConfig?: FABWorkflowConfig<PlaylistEntry>;
+  actionConfig?: FormActionConfig<PlaylistEntry>;
 }) {
-  const { offset, floatingContentProps } = useFloatingContent();
-
   // Exclude `FavoritesPlaylistKey` as we don't return it when fetching all
   // playlists & don't check it in `sanitizePlaylistName`.
   const usedNames = useMemo(
@@ -63,6 +66,7 @@ export function ModifyPlaylistBase(props: {
   return (
     <CachedTracksContext value={trackMap}>
       <FormStateProvider
+        type={Boolean(props.initialData) ? "edit" : "create"}
         schema={PlaylistEntrySchema}
         initData={{
           name: props.initialData?.name ?? "",
@@ -81,30 +85,30 @@ export function ModifyPlaylistBase(props: {
           return isUnique;
         }}
       >
+        <PlaylistFormToolbar actionConfig={props.actionConfig} />
         <PlaylistForm
-          bottomOffset={offset}
           //? `actionConfig` being undefined implies that this is the Favorites
           //? playlist as we don't want users to delete it.
           isFavoritesList={props.actionConfig === undefined}
         />
-        {props.actionConfig ? (
-          <FABWorkflow
-            {...props.actionConfig}
-            floatingContentProps={floatingContentProps}
-          />
-        ) : null}
       </FormStateProvider>
     </CachedTracksContext>
   );
 }
 
+//#region Toolbar
+function PlaylistFormToolbar(props: {
+  actionConfig?: FormActionConfig<PlaylistEntry>;
+}) {
+  const FormAction = useFormAction(props.actionConfig);
+  return <FormToolbar>{FormAction}</FormToolbar>;
+}
+//#endregion
+
 //#region Playlist Form
 const FormInput = FormInputImpl<PlaylistEntry>();
 
-function PlaylistForm(props: {
-  bottomOffset: number;
-  isFavoritesList?: boolean;
-}) {
+function PlaylistForm({ isFavoritesList }: { isFavoritesList?: boolean }) {
   const {
     data: { trackIds },
     setFields,
@@ -156,14 +160,13 @@ function PlaylistForm(props: {
         extraData={{ isSubmitting }}
         ListHeaderComponent={
           <ListHeaderComponent
-            isFavoritesList={props.isFavoritesList}
+            isFavoritesList={isFavoritesList}
             showSheet={() => addTracksSheetRef.current?.present()}
           />
         }
         ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noTracks" />}
         className="-mb-1.5"
-        contentContainerStyle={{ paddingBottom: props.bottomOffset }}
-        contentContainerClassName="p-4"
+        contentContainerClassName={cn("p-4", ToolbarScreenOffset)}
       />
     </>
   );
@@ -256,6 +259,7 @@ function ListHeaderComponent(props: {
 
   return (
     <View className="gap-6">
+      <FormTitle />
       <PlaylistNameField isFavoritesList={props.isFavoritesList} />
       <InputLabel
         label="term.tracks"

@@ -286,23 +286,12 @@ export const RootStack = createNativeStackNavigator({
       },
     },
     Form: {
+      screenOptions: { headerShown: false },
       screens: {
-        ModifyAlbum: {
-          screen: ModifyAlbum,
-          options: { headerShown: false },
-        },
-        CreatePlaylist: {
-          screen: CreatePlaylist,
-          options: { title: "form.create" },
-        },
-        ModifyPlaylist: {
-          screen: ModifyPlaylist,
-          options: { title: "form.edit" },
-        },
-        ModifyTrack: {
-          screen: ModifyTrack,
-          options: { headerShown: false },
-        },
+        ModifyAlbum,
+        CreatePlaylist,
+        ModifyPlaylist,
+        ModifyTrack,
       },
     },
     Insights: InsightsScreenGroup,
