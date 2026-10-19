@@ -226,7 +226,9 @@ export function useFormAction<TData extends Record<string, any>>(
       accessibilityLabel={t(args.label)}
       onPress={async () => {
         setIsSubmitting(true);
-        await args.action({ setFields });
+        try {
+          await args.action({ setFields });
+        } catch {}
         setIsSubmitting(false);
       }}
       disabled={isSubmitting}
