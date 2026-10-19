@@ -14,12 +14,12 @@ const hintStyle = cva({
   defaultVariants: { outline: true },
 });
 
-export function Hint(props: { hint: string; className?: string }) {
+export function Hint(props: { hint: string | string[]; className?: string }) {
   return (
     <View className={hintStyle({ className: cn(props.className) })}>
       <Icon name="info" size={20} color="onSurfaceVariant" />
       <Text muted className="shrink grow">
-        {props.hint}
+        {Array.isArray(props.hint) ? props.hint.join("\n\n") : props.hint}
       </Text>
     </View>
   );

@@ -301,7 +301,7 @@ export const RootStack = createNativeStackNavigator({
         },
         ModifyTrack: {
           screen: ModifyTrack,
-          options: { title: "form.edit" },
+          options: { headerShown: false },
         },
       },
     },
