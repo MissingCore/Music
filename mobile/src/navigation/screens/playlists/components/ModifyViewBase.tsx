@@ -28,13 +28,7 @@ import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
 import { ZSchema } from "~/modules/form/utils";
 import type { FormActionConfig } from "~/modules/form/FormState";
-import {
-  FormStateProvider,
-  FormTitle,
-  FormToolbar,
-  useFormAction,
-  useFormContext,
-} from "~/modules/form/FormState";
+import { Form, useFormAction, useFormContext } from "~/modules/form/FormState";
 import { FormInputImpl, InputLabel } from "~/modules/form/FormState/FormInput";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { useAllMedia } from "~/modules/search/hooks/useSearch";
@@ -62,7 +56,7 @@ export function ModifyPlaylistBase(props: {
 
   return (
     <CachedTracksContext value={trackMap}>
-      <FormStateProvider
+      <Form.Provider
         type={Boolean(props.initialData) ? "edit" : "create"}
         schema={PlaylistEntrySchema}
         initData={{
@@ -83,12 +77,12 @@ export function ModifyPlaylistBase(props: {
         }}
       >
         <PlaylistFormToolbar actionConfig={props.actionConfig} />
-        <PlaylistForm
+        <FormContents
           //? `actionConfig` being undefined implies that this is the Favorites
           //? playlist as we don't want users to delete it.
           isFavoritesList={props.actionConfig === undefined}
         />
-      </FormStateProvider>
+      </Form.Provider>
     </CachedTracksContext>
   );
 }
@@ -98,14 +92,14 @@ function PlaylistFormToolbar(props: {
   actionConfig?: FormActionConfig<PlaylistEntry>;
 }) {
   const FormAction = useFormAction(props.actionConfig);
-  return <FormToolbar>{FormAction}</FormToolbar>;
+  return <Form.Toolbar>{FormAction}</Form.Toolbar>;
 }
 //#endregion
 
 //#region Playlist Form
 const FormInput = FormInputImpl<PlaylistEntry>();
 
-function PlaylistForm({ isFavoritesList }: { isFavoritesList?: boolean }) {
+function FormContents({ isFavoritesList }: { isFavoritesList?: boolean }) {
   const {
     data: { trackIds },
     setFields,
@@ -256,7 +250,7 @@ function ListHeaderComponent(props: {
 
   return (
     <View className="gap-6">
-      <FormTitle />
+      <Form.Title />
       <PlaylistNameField isFavoritesList={props.isFavoritesList} />
       <InputLabel
         label="term.tracks"

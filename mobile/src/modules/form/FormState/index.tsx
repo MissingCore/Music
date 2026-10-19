@@ -13,21 +13,27 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
+import type { KeyboardAwareScrollViewProps } from "react-native-keyboard-controller";
 import type { ZodMiniObject } from "zod/mini";
 import { z } from "zod/mini";
 
 import { useBackHandler } from "~/hooks/useBackHandler";
 
 import { OnRTL } from "~/lib/react";
+import { cn } from "~/lib/style";
 import { wait } from "~/utils/promise";
 import { isBoolean, isNumber, isString } from "~/utils/validation";
+import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import type { IconButtonProps } from "~/components/next/base/button-icon";
 import { IconButton } from "~/components/next/base/button-icon";
 import { Dialog } from "~/components/next/base/dialog";
 import { Text, TText } from "~/components/next/base/typography";
 import { ActionButton } from "~/components/next/blocks/button-action";
 import { ConfirmAction } from "~/components/next/composed/confirm-action";
-import { Toolbar } from "~/components/next/composed/toolbar";
+import {
+  Toolbar,
+  ToolbarScreenOffset,
+} from "~/components/next/composed/toolbar";
 
 type FormType = "create" | "edit";
 
@@ -75,8 +81,7 @@ export function useFormContext<TData extends Record<string, any>>() {
 //#endregion
 
 //#region Provider
-/** Handles data validation, back prevention, and more. */
-export function FormStateProvider<TSchema extends ZodMiniObject>(
+function FormStateProvider<TSchema extends ZodMiniObject>(
   props: InitialArguments<TSchema> & { children: React.ReactNode },
 ) {
   const initData = useRef(props.initData);
@@ -186,18 +191,6 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
 }
 //#endregion
 
-//#region Form Title
-export function FormTitle() {
-  const { t } = useTranslation();
-  const { type } = useFormContext();
-  return (
-    <Text accent className="leading-tight">
-      {t(`form.${type}`)}
-    </Text>
-  );
-}
-//#endregion
-
 //#region Form Action
 export type FormActionConfig<TData extends Record<string, any>> = {
   label: ParseKeys;
@@ -243,32 +236,66 @@ export function useFormAction<TData extends Record<string, any>>(
 }
 //#endregion
 
-//#region Toolbar
-export function FormToolbar(props: { children?: React.ReactNode }) {
-  const { t } = useTranslation();
-  const navigation = useNavigation();
-  const { canSubmit, isSubmitting, onSubmit } = useFormContext();
-  return (
-    <Toolbar>
-      <Toolbar.Actions>
-        <IconButton
-          icon={OnRTL.decide("east", "west")}
-          accessibilityLabel={t("form.back")}
-          onPress={() => navigation.goBack()}
-          disabled={isSubmitting}
-        />
-        {props.children}
-      </Toolbar.Actions>
-      <Toolbar.FAB
-        icon="save"
-        accessibilityLabel={t("form.apply")}
-        onPress={onSubmit}
-        disabled={!canSubmit || isSubmitting}
-        intent="inverse"
+//#region Exports
+export const Form = {
+  /** Handles data validation, back prevention, and more. */
+  Provider: FormStateProvider,
+  /**
+   * Keyboard-aware layout that lets inputs at the bottom of the screen
+   * be in-view when focused.
+   */
+  Container: ({
+    contentContainerClassName,
+    ...props
+  }: KeyboardAwareScrollViewProps) => {
+    return (
+      <KeyboardAwareScrollView
+        {...props}
+        contentContainerClassName={cn(
+          "gap-6 p-4",
+          ToolbarScreenOffset,
+          contentContainerClassName,
+        )}
       />
-    </Toolbar>
-  );
-}
+    );
+  },
+  /** Pre-defined title component to place in form layout. */
+  Title: () => {
+    const { t } = useTranslation();
+    const { type } = useFormContext();
+    return (
+      <Text accent className="leading-tight">
+        {t(`form.${type}`)}
+      </Text>
+    );
+  },
+  /** Toolbar layout for forms. */
+  Toolbar: (props: { children?: React.ReactNode }) => {
+    const { t } = useTranslation();
+    const navigation = useNavigation();
+    const { canSubmit, isSubmitting, onSubmit } = useFormContext();
+    return (
+      <Toolbar>
+        <Toolbar.Actions>
+          <IconButton
+            icon={OnRTL.decide("east", "west")}
+            accessibilityLabel={t("form.back")}
+            onPress={() => navigation.goBack()}
+            disabled={isSubmitting}
+          />
+          {props.children}
+        </Toolbar.Actions>
+        <Toolbar.FAB
+          icon="save"
+          accessibilityLabel={t("form.apply")}
+          onPress={onSubmit}
+          disabled={!canSubmit || isSubmitting}
+          intent="inverse"
+        />
+      </Toolbar>
+    );
+  },
+};
 //#endregion
 
 //#region Internal

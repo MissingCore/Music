@@ -22,11 +22,7 @@ import { IconButton } from "~/components/next/base/button-icon";
 import { Card } from "~/components/next/base/card";
 import { ZSchema } from "~/modules/form/utils";
 import type { FormActionConfig } from "~/modules/form/FormState";
-import {
-  FormStateProvider,
-  useFormAction,
-  useFormContext,
-} from "~/modules/form/FormState";
+import { Form, useFormAction, useFormContext } from "~/modules/form/FormState";
 import { TextareaImpl } from "~/modules/form/FormState/FormInput";
 import { TText } from "~/components/next/base/typography";
 
@@ -131,23 +127,25 @@ export default function LyricForm({
   return (
     <View className="flex-1 items-center justify-center bg-black/50 p-4 py-20">
       {!isPending && !isRefetching ? (
-        <FormStateProvider
+        <Form.Provider
           type={hasLyrics ? "edit" : "create"}
           schema={LyricEntrySchema}
           initData={{ trackId, lyricText: data?.lyricText ?? "" }}
           onSubmit={hasLyrics ? onUpdate : onCreate}
         >
-          <Form actionConfig={hasLyrics ? deleteAction : createAction} />
-        </FormStateProvider>
+          <FormContents
+            actionConfig={hasLyrics ? deleteAction : createAction}
+          />
+        </Form.Provider>
       ) : null}
     </View>
   );
 }
 
-//#region Lyric Form
+//#region Form Contents
 const Textarea = TextareaImpl<LyricEntry>();
 
-function Form(props: { actionConfig: FormActionConfig<LyricEntry> }) {
+function FormContents(props: { actionConfig: FormActionConfig<LyricEntry> }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { canSubmit, isSubmitting, onSubmit } = useFormContext<LyricEntry>();

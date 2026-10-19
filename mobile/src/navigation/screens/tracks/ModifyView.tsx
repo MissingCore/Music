@@ -33,22 +33,13 @@ import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { AddAlbumSheet } from "./sheets/AddAlbumSheet";
 
 import { clearAllQueries } from "~/lib/react-query";
-import { cn } from "~/lib/style";
 import { splitOn } from "~/utils/string";
-import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { IconButton } from "~/components/next/base/button-icon";
 import { TextInput } from "~/components/next/base/input";
 import { useSheetRef } from "~/components/next/base/sheet";
 import { Hint } from "~/components/next/blocks/hint";
-import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 import { ZSchema } from "~/modules/form/utils";
-import {
-  FormStateProvider,
-  FormTitle,
-  FormToolbar,
-  useFormAction,
-  useFormContext,
-} from "~/modules/form/FormState";
+import { Form, useFormAction, useFormContext } from "~/modules/form/FormState";
 import {
   ArrayFormInputImpl,
   FormInputImpl,
@@ -86,7 +77,7 @@ export default function ModifyTrack({
   }
 
   return (
-    <FormStateProvider
+    <Form.Provider
       type="edit"
       schema={TrackMetadataSchema}
       initData={{
@@ -113,8 +104,8 @@ export default function ModifyTrack({
       }
     >
       <TrackFormToolbar uri={trackQuery.data.uri} />
-      <MetadataForm />
-    </FormStateProvider>
+      <FormContents />
+    </Form.Provider>
   );
 }
 
@@ -152,15 +143,15 @@ function TrackFormToolbar({ uri }: { uri: string }) {
     danger: true,
   });
 
-  return <FormToolbar>{FormAction}</FormToolbar>;
+  return <Form.Toolbar>{FormAction}</Form.Toolbar>;
 }
 //#endregion
 
-//#region Metadata Form
+//#region Form Contents
 const FormInput = FormInputImpl<TrackMetadata>();
 const ArrayFormInput = ArrayFormInputImpl<TrackMetadata>();
 
-function MetadataForm() {
+function FormContents() {
   const { t } = useTranslation();
   const { data, setFields, isSubmitting } = useFormContext<TrackMetadata>();
   const addAlbumSheetRef = useSheetRef();
@@ -180,10 +171,8 @@ function MetadataForm() {
   return (
     <>
       <AddAlbumSheet ref={addAlbumSheetRef} onSelect={onSelectAlbum} />
-      <KeyboardAwareScrollView
-        contentContainerClassName={cn("gap-6 p-4", ToolbarScreenOffset)}
-      >
-        <FormTitle />
+      <Form.Container>
+        <Form.Title />
         <Hint
           hint={[
             t("feat.trackMetadata.description.line1"),
@@ -232,7 +221,7 @@ function MetadataForm() {
         </View>
         <FormInput label="feat.trackMetadata.extra.year" field="year" numeric />
         <ArrayFormInput label="term.genres" field="genres" />
-      </KeyboardAwareScrollView>
+      </Form.Container>
     </>
   );
 }

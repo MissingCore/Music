@@ -16,19 +16,10 @@ import {
 } from "../core/actions";
 import { LyricProviderEndpointPlaceholders } from "../core/constants";
 
-import { cn } from "~/lib/style";
-import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { Em } from "~/components/Typography/StyledText";
 import { Button } from "~/components/next/base/button";
-import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 import { ZSchema } from "~/modules/form/utils";
-import {
-  FormStateProvider,
-  FormTitle,
-  FormToolbar,
-  useFormAction,
-  useFormContext,
-} from "~/modules/form/FormState";
+import { Form, useFormAction, useFormContext } from "~/modules/form/FormState";
 import {
   ArrayFormInputImpl,
   FormInputImpl,
@@ -82,7 +73,7 @@ export default function LyricProviderForm({
   const providerExists = Boolean(currentProvider);
 
   return (
-    <FormStateProvider
+    <Form.Provider
       type={providerExists ? "edit" : "create"}
       schema={LyricProviderEntrySchema}
       initData={{
@@ -95,8 +86,8 @@ export default function LyricProviderForm({
       onSubmit={providerExists ? onUpdate : onCreate}
     >
       <LyricFormToolbar onDelete={providerExists ? onDelete : undefined} />
-      <Form />
-    </FormStateProvider>
+      <FormContents />
+    </Form.Provider>
   );
 }
 
@@ -116,17 +107,17 @@ function LyricFormToolbar(props: { onDelete?: VoidFunction }) {
         }
       : undefined,
   );
-  return <FormToolbar>{FormAction}</FormToolbar>;
+  return <Form.Toolbar>{FormAction}</Form.Toolbar>;
 }
 //#endregion
 
-//#region Lyric Form
+//#region Form Contents
 const FormInput = FormInputImpl<LyricProviderEntry>();
 const ArrayFormInput = ArrayFormInputImpl<LyricProviderEntry>();
 const SwitchInput = SwitchInputImpl<LyricProviderEntry>();
 const Textarea = TextareaImpl<LyricProviderEntry>();
 
-function Form() {
+function FormContents() {
   const { data, setFields, isSubmitting } =
     useFormContext<LyricProviderEntry>();
 
@@ -149,11 +140,10 @@ function Form() {
   //#endregion
 
   return (
-    <KeyboardAwareScrollView
+    <Form.Container
       keyboardShouldPersistTaps={isEndpointInputFocused ? "always" : undefined}
-      contentContainerClassName={cn("gap-6 p-4", ToolbarScreenOffset)}
     >
-      <FormTitle />
+      <Form.Title />
       <FormInput label="feat.trackMetadata.extra.name" field="name" />
       <Textarea
         label="Endpoint"
@@ -179,7 +169,7 @@ function Form() {
       <ArrayFormInput label="Traversed Fields" field="traversedFields" />
       <SwitchInput label="isJSONResponse" field="isJSONResponse" />
       <Textarea label="Headers" field="headers" />
-    </KeyboardAwareScrollView>
+    </Form.Container>
   );
 }
 //#endregion

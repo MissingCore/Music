@@ -5,17 +5,8 @@ import { useMemo } from "react";
 import { View } from "react-native";
 import { z } from "zod/mini";
 
-import { cn } from "~/lib/style";
-import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
-import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 import type { FormActionConfig } from "~/modules/form/FormState";
-import {
-  FormStateProvider,
-  FormTitle,
-  FormToolbar,
-  useFormAction,
-  useFormContext,
-} from "~/modules/form/FormState";
+import { Form, useFormAction, useFormContext } from "~/modules/form/FormState";
 import {
   FormInputImpl,
   SwitchInputImpl,
@@ -47,15 +38,15 @@ export function ModifyThemeBase(props: {
   );
 
   return (
-    <FormStateProvider
+    <Form.Provider
       type={Boolean(props.initialData) ? "edit" : "create"}
       schema={ThemeEntrySchema}
       initData={initData}
       onSubmit={props.onSubmit}
     >
       <ThemeFormToolbar actionConfig={props.actionConfig} />
-      <ThemeForm />
-    </FormStateProvider>
+      <FormContents />
+    </Form.Provider>
   );
 }
 
@@ -64,21 +55,19 @@ function ThemeFormToolbar(props: {
   actionConfig?: FormActionConfig<ThemeEntry>;
 }) {
   const FormAction = useFormAction(props.actionConfig);
-  return <FormToolbar>{FormAction}</FormToolbar>;
+  return <Form.Toolbar>{FormAction}</Form.Toolbar>;
 }
 //#endregion
 
-//#region Theme Form
+//#region Form Contents
 const FormInput = FormInputImpl<ThemeEntry>();
 const SwitchInput = SwitchInputImpl<ThemeEntry>();
 
-function ThemeForm() {
+function FormContents() {
   const { data, setFields, isSubmitting } = useFormContext<ThemeEntry>();
   return (
-    <KeyboardAwareScrollView
-      contentContainerClassName={cn("gap-6 p-4", ToolbarScreenOffset)}
-    >
-      <FormTitle />
+    <Form.Container>
+      <Form.Title />
       <FormInput label="feat.trackMetadata.extra.name" field="name" />
       <SwitchInput label="feat.theme.extra.dark" field="isDark" />
       <View className="gap-2">
@@ -92,7 +81,7 @@ function ThemeForm() {
           />
         ))}
       </View>
-    </KeyboardAwareScrollView>
+    </Form.Container>
   );
 }
 //#endregion

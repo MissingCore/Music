@@ -23,17 +23,10 @@ import { router } from "~/navigation/utils/router";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
 import { clearAllQueries } from "~/lib/react-query";
-import { cn } from "~/lib/style";
-import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { Divider } from "~/components/next/base/divider";
 import { Hint } from "~/components/next/blocks/hint";
-import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 import { ZSchema } from "~/modules/form/utils";
-import {
-  FormStateProvider,
-  FormTitle,
-  FormToolbar,
-} from "~/modules/form/FormState";
+import { Form } from "~/modules/form/FormState";
 import {
   ArrayFormInputImpl,
   FormInputImpl,
@@ -50,7 +43,7 @@ export default function ModifyAlbum({
   const { isPending, data, error } = useAlbum(id);
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
   return (
-    <FormStateProvider
+    <Form.Provider
       type="edit"
       schema={AlbumMetadataSchema}
       initData={{
@@ -76,24 +69,22 @@ export default function ModifyAlbum({
         genres.length === new Set(genres.map((genre) => genre.trim())).size
       }
     >
-      <FormToolbar />
-      <MetadataForm />
-    </FormStateProvider>
+      <Form.Toolbar />
+      <FormContents />
+    </Form.Provider>
   );
 }
 
-//#region Metadata Form
+//#region Form Contents
 const FormInput = FormInputImpl<AlbumMetadata>();
 const ArrayFormInput = ArrayFormInputImpl<AlbumMetadata>();
 const SwitchInput = SwitchInputImpl<AlbumMetadata>();
 
-function MetadataForm() {
+function FormContents() {
   const { t } = useTranslation();
   return (
-    <KeyboardAwareScrollView
-      contentContainerClassName={cn("gap-6 p-4", ToolbarScreenOffset)}
-    >
-      <FormTitle />
+    <Form.Container>
+      <Form.Title />
       <FormInput label="feat.trackMetadata.extra.name" field="name" />
       <ArrayFormInput label="term.artists" field="artists" />
       <SwitchInput label="isEP" field="isEP" />
@@ -101,7 +92,7 @@ function MetadataForm() {
       <Hint hint={t("feat.trackMetadata.extra.overrideFields")} />
       <FormInput label="feat.trackMetadata.extra.year" field="year" numeric />
       <ArrayFormInput label="term.genres" field="genres" />
-    </KeyboardAwareScrollView>
+    </Form.Container>
   );
 }
 //#endregion
