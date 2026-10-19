@@ -7,10 +7,7 @@ import { z } from "zod/mini";
 
 import type { FormActionConfig } from "~/modules/form/FormState";
 import { Form, useFormAction, useFormContext } from "~/modules/form/FormState";
-import {
-  FormInputImpl,
-  SwitchInputImpl,
-} from "~/modules/form/FormState/FormInput";
+import { createTypedFormInputs } from "~/modules/form/FormState/FormInput";
 import { ZSchema } from "~/modules/form/utils";
 import { ColorPickerInput } from "./ColorPickerInput";
 import type { ColorRole, HexColor } from "../core/constants";
@@ -60,16 +57,15 @@ function ThemeFormToolbar(props: {
 //#endregion
 
 //#region Form Contents
-const FormInput = FormInputImpl<ThemeEntry>();
-const SwitchInput = SwitchInputImpl<ThemeEntry>();
+const FormInput = createTypedFormInputs<ThemeEntry>();
 
 function FormContents() {
   const { data, setFields, isSubmitting } = useFormContext<ThemeEntry>();
   return (
     <Form.Container>
       <Form.Title />
-      <FormInput label="feat.trackMetadata.extra.name" field="name" />
-      <SwitchInput label="feat.theme.extra.dark" field="isDark" />
+      <FormInput.Text label="feat.trackMetadata.extra.name" field="name" />
+      <FormInput.Switch label="feat.theme.extra.dark" field="isDark" />
       <View className="gap-2">
         {ColorRoleOptions.map((role) => (
           <ColorPickerInput

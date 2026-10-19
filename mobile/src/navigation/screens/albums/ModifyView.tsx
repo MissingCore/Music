@@ -27,11 +27,7 @@ import { Divider } from "~/components/next/base/divider";
 import { Hint } from "~/components/next/blocks/hint";
 import { ZSchema } from "~/modules/form/utils";
 import { Form } from "~/modules/form/FormState";
-import {
-  ArrayFormInputImpl,
-  FormInputImpl,
-  SwitchInputImpl,
-} from "~/modules/form/FormState/FormInput";
+import { createTypedFormInputs } from "~/modules/form/FormState/FormInput";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -76,22 +72,20 @@ export default function ModifyAlbum({
 }
 
 //#region Form Contents
-const FormInput = FormInputImpl<AlbumMetadata>();
-const ArrayFormInput = ArrayFormInputImpl<AlbumMetadata>();
-const SwitchInput = SwitchInputImpl<AlbumMetadata>();
+const FormInput = createTypedFormInputs<AlbumMetadata>();
 
 function FormContents() {
   const { t } = useTranslation();
   return (
     <Form.Container>
       <Form.Title />
-      <FormInput label="feat.trackMetadata.extra.name" field="name" />
-      <ArrayFormInput label="term.artists" field="artists" />
-      <SwitchInput label="isEP" field="isEP" />
+      <FormInput.Text label="feat.trackMetadata.extra.name" field="name" />
+      <FormInput.Array label="term.artists" field="artists" />
+      <FormInput.Switch label="isEP" field="isEP" />
       <Divider />
       <Hint hint={t("feat.trackMetadata.extra.overrideFields")} />
-      <FormInput label="feat.trackMetadata.extra.year" field="year" numeric />
-      <ArrayFormInput label="term.genres" field="genres" />
+      <FormInput.Numeric label="feat.trackMetadata.extra.year" field="year" />
+      <FormInput.Array label="term.genres" field="genres" />
     </Form.Container>
   );
 }

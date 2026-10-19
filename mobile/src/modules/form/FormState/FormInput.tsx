@@ -38,141 +38,145 @@ export function InputLabel(props: {
 }
 //#endregion
 
-//#region Text/Numeric Input
-export function FormInputImpl<TData extends Record<string, any>>() {
-  return function FormInput(props: {
+export function createTypedFormInputs<TData extends Record<string, any>>() {
+  interface FormInputProps<TResult> {
     label: TranslationKeyOrString;
-    field: KeysOfValue<TData, string | number | null>;
-    numeric?: boolean;
-  }) {
+    //? The `& string` is to strip the `number | symbol` from the type.
+    field: KeysOfValue<TData, TResult> & string;
+  }
+
+  /** Helper to simplify getting the outputs. */
+  function useFormProperties<TResult>(field: string) {
     const { data, setField, isSubmitting } = useFormContext<TData>();
-
-    const value = data[props.field];
-    const onChange = (text: string) => {
-      const realNum = text.trim() === "" ? null : +text;
-      setField((prev) => ({
-        ...prev,
-        [props.field]: props.numeric
-          ? Number.isNaN(realNum)
-            ? prev[props.field] // Use prior value if we get `NaN`.
-            : realNum
-          : text,
-      }));
+    return {
+      value: data[field] as TResult,
+      setField: (cb: (prevValue: TResult) => TResult) =>
+        setField((prev) => ({ ...prev, [field]: cb(prev[field]) })),
+      isSubmitting,
     };
+  }
 
+  const baseInputStyles = "w-full rounded-lg border border-outline p-2";
+
+  //#region Text
+  function TextFormInput({ label, field }: FormInputProps<string>) {
+    const { value, setField, isSubmitting } = useFormProperties<string>(field);
     return (
-      <View className="flex-1">
-        <InputLabel label={props.label} />
+      <View className="shrink grow">
+        <InputLabel label={label} />
         <TextInput
-          inputMode={props.numeric ? "numeric" : undefined}
           editable={!isSubmitting}
-          value={value !== null ? String(value) : ""}
-          onChangeText={onChange}
-          className="w-full rounded-lg border border-outline p-2"
+          value={value}
+          onChangeText={(text) => setField(() => text)}
+          className={baseInputStyles}
         />
       </View>
     );
-  };
-}
-//#endregion
+  }
+  //#endregion
 
-//#region Array Input
-export function ArrayFormInputImpl<TData extends Record<string, any>>() {
-  return function ArrayFormInput(props: {
-    label: TranslationKeyOrString;
-    field: KeysOfValue<TData, string[]>;
-  }) {
-    const t = useMaybeT();
-    const { data, setField, isSubmitting } = useFormContext<TData>();
-
-    const field = props.field;
-    const values: string[] = data[field];
-
+  //#region Numeric
+  function Numeric({ label, field }: FormInputProps<number | null>) {
+    const { value, setField, isSubmitting } = useFormProperties<number | null>(
+      field,
+    );
     return (
-      <View>
+      <View className="shrink grow">
+        <InputLabel label={label} />
+        <TextInput
+          inputMode="numeric"
+          editable={!isSubmitting}
+          value={value !== null ? String(value) : ""}
+          onChangeText={(text) => {
+            const asRealNum = text.trim() === "" ? null : +text;
+            // Use prior value if we get `NaN`.
+            setField((prevValue) =>
+              Number.isNaN(asRealNum) ? prevValue : asRealNum,
+            );
+          }}
+          className={baseInputStyles}
+        />
+      </View>
+    );
+  }
+  //#endregion
+
+  //#region Array
+  function Array({ label, field }: FormInputProps<string[]>) {
+    const t = useMaybeT();
+    const { value, setField, isSubmitting } =
+      useFormProperties<string[]>(field);
+    return (
+      <View className="shrink grow">
         <InputLabel
-          label={props.label}
+          label={label}
           Trailing={
             <IconButton
               icon="add"
-              accessibilityLabel={t("template.entryAdd", {
-                name: t(props.label),
-              })}
-              onPress={() =>
-                setField((prev) => ({ ...prev, [field]: [...prev[field], ""] }))
-              }
+              accessibilityLabel={t("template.entryAdd", { name: t(label) })}
+              onPress={() => setField((prevValue) => [...prevValue, ""])}
               disabled={isSubmitting}
               size="xs"
             />
           }
         />
         <FlatList
-          data={values}
+          data={value}
           keyExtractor={(_, index) => `${index}`}
-          renderItem={({ item: value, index: row }) => (
-            <View className="min-h-12 flex-row items-center gap-1">
+          renderItem={({ item, index: row }) => (
+            <View className="flex-row items-center gap-1">
               <IconButton
                 icon="do-not-disturb-on"
-                accessibilityLabel={t("template.entryRemove", { name: value })}
+                accessibilityLabel={t("template.entryRemove", { name: item })}
                 onPress={() =>
-                  setField((prev) => ({
-                    ...prev,
-                    [field]: (prev[field] as string[]).filter(
-                      (_, idx) => idx !== row,
-                    ),
-                  }))
+                  setField((prevValue) =>
+                    prevValue.filter((_, idx) => idx !== row),
+                  )
                 }
                 disabled={isSubmitting}
                 size="xs"
               />
               <TextInput
                 editable={!isSubmitting}
-                value={value}
+                value={item}
                 onChangeText={(text) =>
-                  setField((prev) => ({
-                    ...prev,
-                    [field]: (prev[field] as string[]).map((val, idx) =>
-                      idx === row ? text : val,
-                    ),
-                  }))
+                  setField((prevVal) =>
+                    prevVal.map((val, idx) => (idx === row ? text : val)),
+                  )
                 }
-                className="shrink grow rounded-lg border border-outline p-2"
+                className={cn(baseInputStyles, "shrink grow")}
               />
             </View>
           )}
           scrollEnabled={false}
-          contentContainerClassName="gap-2"
+          contentContainerClassName="gap-1.5"
         />
       </View>
     );
-  };
-}
-//#endregion
+  }
+  //#endregion
 
-//#region Textarea
-export function TextareaImpl<TData extends Record<string, any>>() {
-  return function Textarea(
+  //#region Text Area
+  function TextArea(
     props: {
+      field: KeysOfValue<TData, string> & string;
       label?: TranslationKeyOrString;
-      field: KeysOfValue<TData, string>;
       oneLine?: boolean;
     } & Pick<
       InputProps,
       "selection" | "onSelectionChange" | "onFocus" | "onBlur" | "className"
     >,
   ) {
-    const { data, setField, isSubmitting } = useFormContext<TData>();
+    const { value, setField, isSubmitting } = useFormProperties<string>(
+      props.field,
+    );
 
     const renderedInput = (
       <TextInput
         editable={!isSubmitting}
-        value={data[props.field]}
-        onChangeText={(_text) =>
-          setField((prev) => {
-            let text = _text;
-            if (props.oneLine) text = text.replace(/\r?\n|\r/g, "");
-            return { ...prev, [props.field]: text };
-          })
+        value={value}
+        onChangeText={(text) =>
+          setField(() => (props.oneLine ? text.replace(/\r?\n|\r/g, "") : text))
         }
         multiline
         textAlignVertical="top"
@@ -182,11 +186,7 @@ export function TextareaImpl<TData extends Record<string, any>>() {
         onSelectionChange={props.onSelectionChange}
         onFocus={props.onFocus}
         onBlur={props.onBlur}
-        className={cn(
-          "w-full rounded-lg border border-outline p-2",
-          props.oneLine && "py-3",
-          props.className,
-        )}
+        className={cn(baseInputStyles, "py-3", props.className)}
       />
     );
 
@@ -197,31 +197,26 @@ export function TextareaImpl<TData extends Record<string, any>>() {
         {renderedInput}
       </View>
     );
-  };
-}
-//#endregion
+  }
+  //#endregion
 
-//#region Switch Input
-export function SwitchInputImpl<TData extends Record<string, any>>() {
-  return function Textarea(props: {
-    label: TranslationKeyOrString;
-    field: KeysOfValue<TData, boolean>;
-  }) {
-    const { data, setField, isSubmitting } = useFormContext<TData>();
+  //#region Switch
+  function Switch({ label, field }: FormInputProps<boolean>) {
+    const { value, setField, isSubmitting } = useFormProperties<boolean>(field);
     return (
       <View className="min-h-8 flex-row items-center justify-between gap-2">
         <Marquee>
-          <InputLabel label={props.label} className="mb-0" />
+          <InputLabel label={label} className="mb-0" />
         </Marquee>
         <SwitchInput
-          enabled={data[props.field]}
-          onPress={() =>
-            setField((prev) => ({ ...prev, [props.field]: !prev[props.field] }))
-          }
+          enabled={value}
+          onPress={() => setField((prevValue) => !prevValue)}
           disabled={isSubmitting}
         />
       </View>
     );
-  };
+  }
+  //#endregion
+
+  return { Text: TextFormInput, Numeric, Array, TextArea, Switch };
 }
-//#endregion

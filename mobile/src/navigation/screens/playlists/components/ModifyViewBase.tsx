@@ -29,7 +29,10 @@ import { ImageListItem } from "~/components/next/composed/image-list-item";
 import { ZSchema } from "~/modules/form/utils";
 import type { FormActionConfig } from "~/modules/form/FormState";
 import { Form, useFormAction, useFormContext } from "~/modules/form/FormState";
-import { FormInputImpl, InputLabel } from "~/modules/form/FormState/FormInput";
+import {
+  InputLabel,
+  createTypedFormInputs,
+} from "~/modules/form/FormState/FormInput";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { useAllMedia } from "~/modules/search/hooks/useSearch";
 import type { SearchCallbacks } from "~/modules/search/types";
@@ -97,7 +100,7 @@ function PlaylistFormToolbar(props: {
 //#endregion
 
 //#region Playlist Form
-const FormInput = FormInputImpl<PlaylistEntry>();
+const FormInput = createTypedFormInputs<PlaylistEntry>();
 
 function FormContents({ isFavoritesList }: { isFavoritesList?: boolean }) {
   const {
@@ -216,12 +219,12 @@ function PlaylistNameField({ isFavoritesList }: { isFavoritesList?: boolean }) {
       {isFavoritesList ? (
         <View>
           <InputLabel label="feat.trackMetadata.extra.name" />
-          <View className="min-h-12 w-full justify-center rounded-sm border border-outline p-2 opacity-25">
+          <View className="min-h-12 w-full justify-center rounded-lg border border-outline p-2 opacity-25">
             <TText textKey="term.favoriteTracks" numberOfLines={1} />
           </View>
         </View>
       ) : (
-        <FormInput label="feat.trackMetadata.extra.name" field="name" />
+        <FormInput.Text label="feat.trackMetadata.extra.name" field="name" />
       )}
       <View className="shrink flex-row items-center gap-0.5">
         <Icon

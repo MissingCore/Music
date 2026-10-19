@@ -23,7 +23,7 @@ import { Card } from "~/components/next/base/card";
 import { ZSchema } from "~/modules/form/utils";
 import type { FormActionConfig } from "~/modules/form/FormState";
 import { Form, useFormAction, useFormContext } from "~/modules/form/FormState";
-import { TextareaImpl } from "~/modules/form/FormState/FormInput";
+import { createTypedFormInputs } from "~/modules/form/FormState/FormInput";
 import { TText } from "~/components/next/base/typography";
 
 type Props = StaticScreenProps<{ trackId: string }>;
@@ -143,7 +143,7 @@ export default function LyricForm({
 }
 
 //#region Form Contents
-const Textarea = TextareaImpl<LyricEntry>();
+const FormInput = createTypedFormInputs<LyricEntry>();
 
 function FormContents(props: { actionConfig: FormActionConfig<LyricEntry> }) {
   const { t } = useTranslation();
@@ -156,7 +156,10 @@ function FormContents(props: { actionConfig: FormActionConfig<LyricEntry> }) {
       <TText textKey="feat.lyrics.title" bold size="lg" className="-mb-4" />
       <View className="shrink grow overflow-hidden rounded-lg border border-outline">
         <KeyboardAwareScrollView contentContainerClassName="grow">
-          <Textarea field="lyricText" className="grow rounded-none border-0" />
+          <FormInput.TextArea
+            field="lyricText"
+            className="grow rounded-none border-0"
+          />
         </KeyboardAwareScrollView>
       </View>
 

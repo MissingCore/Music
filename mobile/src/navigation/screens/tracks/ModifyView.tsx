@@ -41,9 +41,8 @@ import { Hint } from "~/components/next/blocks/hint";
 import { ZSchema } from "~/modules/form/utils";
 import { Form, useFormAction, useFormContext } from "~/modules/form/FormState";
 import {
-  ArrayFormInputImpl,
-  FormInputImpl,
   InputLabel,
+  createTypedFormInputs,
 } from "~/modules/form/FormState/FormInput";
 
 type Props = StaticScreenProps<{ id: string }>;
@@ -148,8 +147,7 @@ function TrackFormToolbar({ uri }: { uri: string }) {
 //#endregion
 
 //#region Form Contents
-const FormInput = FormInputImpl<TrackMetadata>();
-const ArrayFormInput = ArrayFormInputImpl<TrackMetadata>();
+const FormInput = createTypedFormInputs<TrackMetadata>();
 
 function FormContents() {
   const { t } = useTranslation();
@@ -179,8 +177,8 @@ function FormContents() {
             t("feat.trackMetadata.description.line2"),
           ]}
         />
-        <FormInput label="feat.trackMetadata.extra.name" field="name" />
-        <ArrayFormInput label="term.artists" field="artists" />
+        <FormInput.Text label="feat.trackMetadata.extra.name" field="name" />
+        <FormInput.Array label="term.artists" field="artists" />
         <View className="flex-1">
           <InputLabel
             label="term.album"
@@ -203,24 +201,22 @@ function FormContents() {
             className="w-full rounded-sm border border-outline p-2"
           />
         </View>
-        <ArrayFormInput
+        <FormInput.Array
           label="feat.trackMetadata.extra.albumArtists"
           field="albumArtists"
         />
         <View className="flex-row items-end gap-4">
-          <FormInput
+          <FormInput.Numeric
             label="feat.trackMetadata.extra.disc"
             field="disc"
-            numeric
           />
-          <FormInput
+          <FormInput.Numeric
             label="feat.trackMetadata.extra.trackNumber"
             field="track"
-            numeric
           />
         </View>
-        <FormInput label="feat.trackMetadata.extra.year" field="year" numeric />
-        <ArrayFormInput label="term.genres" field="genres" />
+        <FormInput.Numeric label="feat.trackMetadata.extra.year" field="year" />
+        <FormInput.Array label="term.genres" field="genres" />
       </Form.Container>
     </>
   );

@@ -20,12 +20,7 @@ import { Em } from "~/components/Typography/StyledText";
 import { Button } from "~/components/next/base/button";
 import { ZSchema } from "~/modules/form/utils";
 import { Form, useFormAction, useFormContext } from "~/modules/form/FormState";
-import {
-  ArrayFormInputImpl,
-  FormInputImpl,
-  SwitchInputImpl,
-  TextareaImpl,
-} from "~/modules/form/FormState/FormInput";
+import { createTypedFormInputs } from "~/modules/form/FormState/FormInput";
 
 type Props = StaticScreenProps<{ providerId?: string }>;
 
@@ -112,10 +107,7 @@ function LyricFormToolbar(props: { onDelete?: VoidFunction }) {
 //#endregion
 
 //#region Form Contents
-const FormInput = FormInputImpl<LyricProviderEntry>();
-const ArrayFormInput = ArrayFormInputImpl<LyricProviderEntry>();
-const SwitchInput = SwitchInputImpl<LyricProviderEntry>();
-const Textarea = TextareaImpl<LyricProviderEntry>();
+const FormInput = createTypedFormInputs<LyricProviderEntry>();
 
 function FormContents() {
   const { data, setFields, isSubmitting } =
@@ -144,8 +136,8 @@ function FormContents() {
       keyboardShouldPersistTaps={isEndpointInputFocused ? "always" : undefined}
     >
       <Form.Title />
-      <FormInput label="feat.trackMetadata.extra.name" field="name" />
-      <Textarea
+      <FormInput.Text label="feat.trackMetadata.extra.name" field="name" />
+      <FormInput.TextArea
         label="Endpoint"
         field="endpoint"
         oneLine
@@ -166,9 +158,9 @@ function FormContents() {
           </Button>
         ))}
       </View>
-      <ArrayFormInput label="Traversed Fields" field="traversedFields" />
-      <SwitchInput label="isJSONResponse" field="isJSONResponse" />
-      <Textarea label="Headers" field="headers" />
+      <FormInput.Array label="Traversed Fields" field="traversedFields" />
+      <FormInput.Switch label="isJSONResponse" field="isJSONResponse" />
+      <FormInput.TextArea label="Headers" field="headers" />
     </Form.Container>
   );
 }
