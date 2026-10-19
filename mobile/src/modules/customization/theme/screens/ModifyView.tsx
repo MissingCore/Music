@@ -11,7 +11,6 @@ import { PreferenceSetters } from "~/stores/Preference/actions";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
 import { wait } from "~/utils/promise";
-import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 import { ModifyThemeBase } from "../components/ModifyViewBase";
 import {
   deleteCustomTheme,
@@ -31,12 +30,7 @@ export default function ModifyTheme({
   const activeCustomThemeId = usePreferenceStore((s) => s.activeCustomThemeId);
 
   if (isPending || error || !data)
-    return (
-      <PagePlaceholder
-        isPending={isPending}
-        wrapperClassName={ToolbarScreenOffset}
-      />
-    );
+    return <PagePlaceholder isPending={isPending} />;
 
   const isActiveTheme = activeCustomThemeId === themeId;
   const { id: _, scheme, ...initData } = data;

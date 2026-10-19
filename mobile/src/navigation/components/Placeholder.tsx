@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import { View } from "react-native";
 
 import { cn } from "~/lib/style";
-import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import { Text, TText } from "~/components/next/base/typography";
+import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 import { useColor } from "~/modules/customization/theme/hooks";
 
 type ErrorMsgProps = {
@@ -69,12 +70,9 @@ export function ContentPlaceholder(
       {props.isPending ? (
         <Loading />
       ) : props.errMsg ? (
-        <StyledText className="text-center">{props.errMsg}</StyledText>
+        <Text center>{props.errMsg}</Text>
       ) : (
-        <TStyledText
-          textKey={props.errMsgKey ?? "err.msg.noContent"}
-          className="text-center"
-        />
+        <TText textKey={props.errMsgKey ?? "err.msg.noContent"} center />
       )}
     </View>
   );
@@ -86,7 +84,13 @@ export function PagePlaceholder({
   ...props
 }: ErrorMsgProps & { isPending: boolean; wrapperClassName?: string }) {
   return (
-    <View className={cn("w-full flex-1 p-4", wrapperClassName)}>
+    <View
+      className={cn(
+        "w-full flex-1 px-4",
+        ToolbarScreenOffset,
+        wrapperClassName,
+      )}
+    >
       <ContentPlaceholder {...props} />
     </View>
   );

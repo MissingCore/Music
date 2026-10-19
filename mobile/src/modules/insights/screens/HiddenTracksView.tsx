@@ -29,13 +29,7 @@ import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 
 export default function HiddenTracks() {
   const { isPending, data } = useHiddenTracks();
-  if (isPending)
-    return (
-      <PagePlaceholder
-        isPending={isPending}
-        wrapperClassName={ToolbarScreenOffset}
-      />
-    );
+  if (isPending) return <PagePlaceholder isPending={isPending} />;
   return <ScreenContents data={data ?? []} />;
 }
 
