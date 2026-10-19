@@ -18,6 +18,7 @@ import { z } from "zod/mini";
 
 import { useBackHandler } from "~/hooks/useBackHandler";
 
+import { OnRTL } from "~/lib/react";
 import { wait } from "~/utils/promise";
 import { isBoolean, isNumber, isString } from "~/utils/validation";
 import type { IconButtonProps } from "~/components/next/base/button-icon";
@@ -245,11 +246,17 @@ export function useFormAction<TData extends Record<string, any>>(
 //#region Toolbar
 export function FormToolbar(props: { children?: React.ReactNode }) {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const { canSubmit, isSubmitting, onSubmit } = useFormStateContext();
   return (
     <Toolbar>
       <Toolbar.Actions>
-        <Toolbar.Back />
+        <IconButton
+          icon={OnRTL.decide("east", "west")}
+          accessibilityLabel={t("form.back")}
+          onPress={() => navigation.goBack()}
+          disabled={isSubmitting}
+        />
         {props.children}
       </Toolbar.Actions>
       <Toolbar.FAB
