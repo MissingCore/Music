@@ -33,7 +33,7 @@ import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { AddAlbumSheet } from "./sheets/AddAlbumSheet";
 
 import { clearAllQueries } from "~/lib/react-query";
-import { splitOn } from "~/utils/string";
+import { removeFileExtension, splitOn } from "~/utils/string";
 import { IconButton } from "~/components/next/base/button-icon";
 import { TextInput } from "~/components/next/base/input";
 import { useSheetRef } from "~/components/next/base/sheet";
@@ -118,7 +118,9 @@ function TrackFormToolbar({ uri }: { uri: string }) {
           "genre",
         ]);
         setFields({
-          name: trackMetadata.title ?? "",
+          //? Fallback to file name.
+          name:
+            trackMetadata.title ?? removeFileExtension(uri.split("/").at(-1)!),
           artists: trackMetadata.artist
             ? splitOn(trackMetadata.artist, delimiters)
             : [],
