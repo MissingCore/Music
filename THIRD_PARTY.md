@@ -58,5 +58,5 @@
 | react-native-worklets | MIT | https://github.com/software-mansion/react-native-reanimated/tree/main/packages/react-native-worklets |
 | tailwind-merge | MIT | https://github.com/dcastil/tailwind-merge |
 | uniwind | MIT | https://github.com/uni-stack/uniwind |
-| zod | MIT | https://github.com/colinhacks/zod |
+| valibot | MIT | https://github.com/open-circle/valibot |
 | zustand | MIT | https://github.com/pmndrs/zustand |

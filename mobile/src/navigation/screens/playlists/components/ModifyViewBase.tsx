@@ -7,7 +7,7 @@ import { toast } from "@missingcore/ui/toast";
 import { createContext, memo, use, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { z } from "zod/mini";
+import * as v from "valibot";
 
 import { Icon } from "~/resources/icons";
 import { getArtistsString } from "~/data/artist/utils";
@@ -26,7 +26,7 @@ import { useSheetRef } from "~/components/next/base/sheet";
 import { TText } from "~/components/next/base/typography";
 import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
-import { ZSchema } from "~/modules/form/utils";
+import { FormSchema } from "~/modules/form/utils";
 import type { FormActionConfig } from "~/modules/form/Form";
 import { Form, useFormAction, useFormContext } from "~/modules/form/Form";
 import { InputLabel, createTypedFormInputs } from "~/modules/form/FormInput";
@@ -332,29 +332,25 @@ const RenderItem = memo(
 //#endregion
 
 //#region Schema
-const PlaylistNameSchema = z.pipe(
-  ZSchema.NonEmptyString,
-  z.transform((str, ctx) => {
+const PlaylistNameSchema = v.pipe(
+  FormSchema.NonEmptyString,
+  v.check((str) => {
     try {
-      return sanitizePlaylistName(str);
-    } catch (err) {
-      ctx.issues.push({
-        code: "invalid_value",
-        input: str,
-        values: [str],
-        message: (err as Error).message,
-      });
-      return z.NEVER;
+      sanitizePlaylistName(str);
+      return true;
+    } catch {
+      return false;
     }
-  }),
+  }, "Invalid playlist name."),
+  v.transform(sanitizePlaylistName),
 );
 
-const PlaylistEntrySchema = z.object({
+const PlaylistEntrySchema = v.object({
   name: PlaylistNameSchema,
-  trackIds: z.array(ZSchema.NonEmptyString),
+  trackIds: v.array(FormSchema.NonEmptyString),
 });
 
-type PlaylistEntry = z.infer<typeof PlaylistEntrySchema>;
+type PlaylistEntry = v.InferOutput<typeof PlaylistEntrySchema>;
 
 function useForm() {
   return useFormContext<PlaylistEntry>();

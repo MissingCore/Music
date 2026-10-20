@@ -5,7 +5,7 @@ import { toast } from "@missingcore/ui/toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { eq, inArray } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
-import { z } from "zod/mini";
+import * as v from "valibot";
 
 import { db } from "~/db";
 import type { albums } from "~/db/schema";
@@ -25,7 +25,7 @@ import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { clearAllQueries } from "~/lib/react-query";
 import { Divider } from "~/components/next/base/divider";
 import { Hint } from "~/components/next/blocks/hint";
-import { ZSchema } from "~/modules/form/utils";
+import { FormSchema } from "~/modules/form/utils";
 import { Form } from "~/modules/form/Form";
 import { createTypedFormInputs } from "~/modules/form/FormInput";
 
@@ -92,25 +92,25 @@ function FormContents() {
 //#endregion
 
 //#region Schema
-const AlbumMetadataSchema = z.object({
+const AlbumMetadataSchema = v.object({
   // Additional context:
-  albumContext: z.object({
-    id: z.string(),
-    name: z.string(),
-    artistsKey: z.string(),
-    isEP: z.boolean(),
-    trackIds: z.array(ZSchema.NonEmptyString),
+  albumContext: v.object({
+    id: v.string(),
+    name: v.string(),
+    artistsKey: v.string(),
+    isEP: v.boolean(),
+    trackIds: v.array(FormSchema.NonEmptyString),
   }),
   // Actual form fields:
-  name: ZSchema.NonEmptyString,
-  artists: z.array(ZSchema.NonEmptyString).check(z.minLength(1)),
-  isEP: z.boolean(),
+  name: FormSchema.NonEmptyString,
+  artists: v.pipe(v.array(FormSchema.NonEmptyString), v.minLength(1)),
+  isEP: v.boolean(),
   // Fields applied to current tracks:
-  year: ZSchema.NullableRealNumber,
-  genres: z.array(ZSchema.NonEmptyString),
+  year: FormSchema.NullableRealNumber,
+  genres: v.array(FormSchema.NonEmptyString),
 });
 
-type AlbumMetadata = z.infer<typeof AlbumMetadataSchema>;
+type AlbumMetadata = v.InferOutput<typeof AlbumMetadataSchema>;
 //#endregion
 
 //#region Submit Handler

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { eq, inArray, isNotNull, sql } from "drizzle-orm";
-import { z } from "zod/mini";
+import * as v from "valibot";
 
 import { db } from "~/db";
 import type { Album } from "~/db/schema";
@@ -31,53 +31,53 @@ import { structuredTracksView } from "~/data/views";
 import { getSubqueryFields } from "~/lib/drizzle";
 import { pickDirectory } from "~/lib/file-system";
 import { pickKeys } from "~/utils/object";
-import { ZSchema } from "~/modules/form/utils";
+import { FormSchema } from "~/modules/form/utils";
 import { getArtworkHash } from "~/modules/startup/scanning/core/artwork";
 
 //#region Schemas
-const PlaylistNameSchema = z.pipe(
-  z.string(),
-  z.transform(sanitizePlaylistName),
+const PlaylistNameSchema = v.pipe(
+  v.string(),
+  v.transform(sanitizePlaylistName),
 );
 
-const AlbumSchema = z.object({
-  name: ZSchema.NonEmptyString,
+const AlbumSchema = v.object({
+  name: FormSchema.NonEmptyString,
   // We can derive the album artists from this.
-  artistsKey: ZSchema.NonEmptyString,
+  artistsKey: FormSchema.NonEmptyString,
 });
 
-const TrackSchema = z.object({
-  uri: ZSchema.NonEmptyString,
+const TrackSchema = v.object({
+  uri: FormSchema.NonEmptyString,
 });
 
-const TrackMetadataSchema = z.object({
-  ...TrackSchema.shape,
-  editedMetadata: ZSchema.RealNumber,
-  name: ZSchema.NonEmptyString,
-  artists: z.array(ZSchema.NonEmptyString),
-  album: z.nullable(AlbumSchema),
-  disc: ZSchema.NullableRealNumber,
-  track: ZSchema.NullableRealNumber,
-  year: ZSchema.NullableRealNumber,
-  genres: z.array(ZSchema.NonEmptyString),
+const TrackMetadataSchema = v.object({
+  ...TrackSchema.entries,
+  editedMetadata: FormSchema.RealNumber,
+  name: FormSchema.NonEmptyString,
+  artists: v.array(FormSchema.NonEmptyString),
+  album: v.nullable(AlbumSchema),
+  disc: FormSchema.NullableRealNumber,
+  track: FormSchema.NullableRealNumber,
+  year: FormSchema.NullableRealNumber,
+  genres: v.array(FormSchema.NonEmptyString),
 });
 
-const BackupSchema = z.object({
-  version: ZSchema.RealNumber,
-  exportedAt: ZSchema.NonEmptyString,
+const BackupSchema = v.object({
+  version: FormSchema.RealNumber,
+  exportedAt: FormSchema.NonEmptyString,
 
-  backup: z.object({
-    trackMetadata: z.array(TrackMetadataSchema),
+  backup: v.object({
+    trackMetadata: v.array(TrackMetadataSchema),
     // "Favorited Tracks" will be exported as a playlist.
-    playlists: z.array(
-      z.object({
+    playlists: v.array(
+      v.object({
         name: PlaylistNameSchema,
-        tracks: z.array(TrackSchema),
+        tracks: v.array(TrackSchema),
       }),
     ),
-    favorites: z.object({
-      albums: z.array(AlbumSchema),
-      playlists: z.array(PlaylistNameSchema),
+    favorites: v.object({
+      albums: v.array(AlbumSchema),
+      playlists: v.array(PlaylistNameSchema),
     }),
   }),
 });
@@ -162,7 +162,7 @@ export async function exportBackupV2() {
           playlists: favPlaylists.map(({ id }) => id),
         },
       },
-    } satisfies z.infer<typeof BackupSchema>),
+    } satisfies v.InferOutput<typeof BackupSchema>),
   );
 }
 //#endregion
@@ -173,7 +173,7 @@ export async function importBackupV2(jsonContent: Record<string, any>) {
   let _backupContents;
   try {
     // Validate the data structure.
-    _backupContents = BackupSchema.parse(jsonContent);
+    _backupContents = v.parse(BackupSchema, jsonContent);
   } catch {
     throw new Error(i18next.t("err.msg.invalidStructure"));
   }

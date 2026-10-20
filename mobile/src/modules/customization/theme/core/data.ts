@@ -3,7 +3,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { eq } from "drizzle-orm";
-import { z } from "zod/mini";
+import * as v from "valibot";
 
 import { db } from "~/db";
 import { customThemes } from "~/db/schema";
@@ -14,10 +14,10 @@ import { throwIfNoResults } from "~/lib/drizzle";
 import { pickDirectory, pickFile } from "~/lib/file-system";
 import { queryClient } from "~/lib/react-query";
 import { isRecord } from "~/utils/validation";
-import { ZSchema } from "~/modules/form/utils";
+import { FormSchema } from "~/modules/form/utils";
 import type { CustomTheme, ResolvedTheme } from "./constants";
 import { ColorSchemeOptions } from "./constants";
-import { ColorRoleZodMap } from "./utils";
+import { ColorRoleSchemaMap } from "./utils";
 
 const queryKey = ["custom-themes"] as const;
 
@@ -26,10 +26,10 @@ const queryKey = ["custom-themes"] as const;
 type CustomThemeEntry = typeof customThemes.$inferSelect;
 
 //#region Backup
-const ThemeExportSchema = z.object({
-  name: ZSchema.NonEmptyString,
-  scheme: z.enum(ColorSchemeOptions),
-  colors: z.object(ColorRoleZodMap),
+const ThemeExportSchema = v.object({
+  name: FormSchema.NonEmptyString,
+  scheme: v.picklist(ColorSchemeOptions),
+  colors: v.object(ColorRoleSchemaMap),
 });
 
 export async function pickTheme() {
@@ -50,7 +50,7 @@ export async function pickTheme() {
         fileContents.colors.androidNavbar = "#00000000";
     }
 
-    return ThemeExportSchema.parse(fileContents);
+    return v.parse(ThemeExportSchema, fileContents);
   } catch {
     throw new Error(i18next.t("err.msg.invalidStructure"));
   }
