@@ -35,9 +35,9 @@
 | Lucide | ISC AND MIT | https://github.com/lucide-icons/lucide |
 | Material Symbols | Apache-2.0 | https://github.com/google/material-design-icons |
 | NDot日本語 | OFL-1.1 | https://x.com/NdotJP_Font |
-| react | MIT | https://github.com/facebook/react |
+| react | MIT | https://github.com/react/react |
 | react-i18next | MIT | https://github.com/i18next/react-i18next |
-| react-is | MIT | https://github.com/facebook/react |
+| react-is | MIT | https://github.com/react/react |
 | react-keyed-flatten-children | MIT | https://github.com/grrowl/react-keyed-flatten-children |
 | react-native | MIT | https://github.com/react/react-native |
 | react-native-android-widget | MIT | https://github.com/sAleksovski/react-native-android-widget |
