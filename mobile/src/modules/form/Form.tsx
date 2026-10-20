@@ -90,11 +90,8 @@ function FormStateProvider<TSchema extends v.ObjectSchema<any, any>>(
   const schemaRef = useRef(props.schema);
   const partialSchemaRef = useRef(
     props.omittedFields
-      ? v.omit(
-          props.schema,
-          // @ts-expect-error - Created object will omit keys in schema.
-          Object.fromEntries(props.omittedFields.map((key) => [key, true])),
-        )
+      ? // @ts-expect-error - Keys in `omittedFields` are in schema.
+        v.omit(props.schema, props.omittedFields)
       : props.schema,
   );
   const omittedFieldsRef = useRef(props.omittedFields ?? []);
