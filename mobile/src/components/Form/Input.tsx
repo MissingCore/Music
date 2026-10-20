@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useMemo, useRef } from "react";
-import type { TextInputProps } from "react-native";
+import type { TextInputInstance, TextInputProps } from "react-native";
 import { TextInput as RNTextInput } from "react-native";
 import { TextInput as RNGHTextInput } from "react-native-gesture-handler";
 
@@ -14,11 +14,11 @@ import { cn } from "~/lib/style";
 import { getFont } from "~/modules/customization/font/utils";
 
 export function useInputRef() {
-  return useRef<RNTextInput | RNGHTextInput>(null);
+  return useRef<TextInputInstance>(null);
 }
 
 export type InputProps = TextInputProps & {
-  ref?: React.Ref<RNTextInput | RNGHTextInput>;
+  ref?: React.Ref<TextInputInstance>;
   forSheet?: boolean;
 };
 

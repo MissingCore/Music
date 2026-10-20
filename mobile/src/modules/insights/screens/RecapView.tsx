@@ -297,7 +297,7 @@ function TopList(props: {
                     })}
               </Text>
             </Button>
-          ) : null
+          ) : undefined
         }
         scrollEnabled={false}
         contentContainerClassName="gap-0.75"
