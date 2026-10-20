@@ -113,7 +113,10 @@ export async function pickImage() {
  */
 async function saveImage({ hash, uri }: { hash: string; uri: string }) {
   // Apply any manipulations (we did none).
-  const img = await ImageManipulator.manipulate(uri).renderAsync();
+  const img = await ImageManipulator.manipulate(uri, {
+    maxHeight: 2048,
+    maxWidth: 2048,
+  }).renderAsync();
   // Saves image to cache directory.
   const { uri: imgUri } = await img.saveAsync({
     compress: 0.85, // Preserve 85% of original image quality.
