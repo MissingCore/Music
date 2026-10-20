@@ -98,7 +98,7 @@ export default function ModifyPlaylist({
 
         try {
           await updatePlaylist(id, {
-            name: newName, //? Should be sanitized by Zod schema.
+            name: newName, //? Should be sanitized by Valibot schema.
             tracks: tracksUnchanged
               ? undefined
               : trackIds.map((id) => ({ id })),

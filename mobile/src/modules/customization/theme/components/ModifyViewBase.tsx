@@ -3,16 +3,16 @@
 
 import { useMemo } from "react";
 import { View } from "react-native";
-import { z } from "zod/mini";
+import * as v from "valibot";
 
-import { ZSchema } from "~/modules/form/utils";
+import { FormSchema } from "~/modules/form/utils";
 import type { FormActionConfig } from "~/modules/form/Form";
 import { Form, useFormAction, useFormContext } from "~/modules/form/Form";
 import { createTypedFormInputs } from "~/modules/form/FormInput";
 import { ColorPickerInput } from "./ColorPickerInput";
 import type { ColorRole, HexColor } from "../core/constants";
 import { ColorRoleOptions, Themes } from "../core/constants";
-import { ColorRoleZodMap } from "../core/utils";
+import { ColorRoleSchemaMap } from "../core/utils";
 
 export function ModifyThemeBase(props: {
   onSubmit: (data: ThemeEntry) => void | Promise<void>;
@@ -83,14 +83,14 @@ function FormContents() {
 //#endregion
 
 //#region Schema
-const ThemeEntrySchema = z.object({
+const ThemeEntrySchema = v.object({
   // Additional context:
-  _importGen: z.nullable(z.number()),
+  _importGen: v.nullable(v.number()),
   // Actual form fields:
-  name: ZSchema.NonEmptyString,
-  isDark: z.boolean(),
-  ...ColorRoleZodMap,
+  name: FormSchema.NonEmptyString,
+  isDark: v.boolean(),
+  ...ColorRoleSchemaMap,
 });
 
-type ThemeEntry = z.infer<typeof ThemeEntrySchema>;
+type ThemeEntry = v.InferOutput<typeof ThemeEntrySchema>;
 //#endregion

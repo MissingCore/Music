@@ -8,7 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { z } from "zod/mini";
+import * as v from "valibot";
 
 import { queries as q } from "~/data/keyStore";
 import { createLyric, deleteLyric, updateLyric } from "~/data/lyric/api";
@@ -20,7 +20,7 @@ import { wait } from "~/utils/promise";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { IconButton } from "~/components/next/base/button-icon";
 import { Card } from "~/components/next/base/card";
-import { ZSchema } from "~/modules/form/utils";
+import { FormSchema } from "~/modules/form/utils";
 import type { FormActionConfig } from "~/modules/form/Form";
 import { Form, useFormAction, useFormContext } from "~/modules/form/Form";
 import { createTypedFormInputs } from "~/modules/form/FormInput";
@@ -179,10 +179,10 @@ function FormContents(props: { actionConfig: FormActionConfig<LyricEntry> }) {
 //#endregion
 
 //#region Schema
-const LyricEntrySchema = z.object({
-  trackId: ZSchema.NonEmptyString,
-  lyricText: ZSchema.NonEmptyString,
+const LyricEntrySchema = v.object({
+  trackId: FormSchema.NonEmptyString,
+  lyricText: FormSchema.NonEmptyString,
 });
 
-type LyricEntry = z.infer<typeof LyricEntrySchema>;
+type LyricEntry = v.InferOutput<typeof LyricEntrySchema>;
 //#endregion

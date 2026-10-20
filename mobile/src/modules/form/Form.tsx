@@ -14,8 +14,7 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import type { KeyboardAwareScrollViewProps } from "react-native-keyboard-controller";
-import type { ZodMiniObject } from "zod/mini";
-import { z } from "zod/mini";
+import * as v from "valibot";
 
 import { useBackHandler } from "~/hooks/useBackHandler";
 
@@ -37,16 +36,16 @@ import {
 
 type FormType = "create" | "edit";
 
-type InitialArguments<TSchema extends ZodMiniObject> = {
+type InitialArguments<TSchema extends v.ObjectSchema<any, any>> = {
   type: FormType;
   schema: TSchema;
-  initData: z.infer<TSchema>;
+  initData: v.InferOutput<TSchema>;
   /** Fields omitted during normal validation. Will be checked in `onSubmit`. */
-  omittedFields?: Array<keyof z.infer<TSchema>>;
-  onSubmit: (data: z.infer<TSchema>) => void | Promise<void>;
+  omittedFields?: Array<keyof v.InferOutput<TSchema>>;
+  onSubmit: (data: v.InferOutput<TSchema>) => void | Promise<void>;
 
   /** Additional validation to check whether we can submit. */
-  onConstraints?: (data: z.infer<TSchema>) => boolean;
+  onConstraints?: (data: v.InferOutput<TSchema>) => boolean;
 };
 
 type FormState<TData extends Record<string, any>> = {
@@ -84,18 +83,15 @@ export function useFormContext<TData extends Record<string, any>>() {
 //#endregion
 
 //#region Provider
-function FormStateProvider<TSchema extends ZodMiniObject>(
+function FormStateProvider<TSchema extends v.ObjectSchema<any, any>>(
   props: InitialArguments<TSchema> & { children: React.ReactNode },
 ) {
   const initData = useRef(props.initData);
   const schemaRef = useRef(props.schema);
   const partialSchemaRef = useRef(
     props.omittedFields
-      ? z.omit(
-          props.schema,
-          // @ts-expect-error - Created object will omit keys in schema.
-          Object.fromEntries(props.omittedFields.map((key) => [key, true])),
-        )
+      ? // @ts-expect-error - Keys in `omittedFields` are in schema.
+        v.omit(props.schema, props.omittedFields)
       : props.schema,
   );
   const omittedFieldsRef = useRef(props.omittedFields ?? []);
@@ -107,8 +103,8 @@ function FormStateProvider<TSchema extends ZodMiniObject>(
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   const setFields: Dispatch<
-    | Partial<z.infer<TSchema>>
-    | ((prevState: z.infer<TSchema>) => Partial<z.infer<TSchema>>)
+    | Partial<v.InferOutput<TSchema>>
+    | ((prevState: v.InferOutput<TSchema>) => Partial<v.InferOutput<TSchema>>)
   > = useCallback((value) => {
     setData((prevState) => ({
       ...prevState,
@@ -117,7 +113,8 @@ function FormStateProvider<TSchema extends ZodMiniObject>(
   }, []);
 
   const hasChanged = useMemo(() => {
-    const safeData = partialSchemaRef.current.safeParse(data).data;
+    const result = v.safeParse(partialSchemaRef.current, data);
+    const safeData = result.success ? result.output : undefined;
     // Use the sanitized fields as much as possible.
     const refData = { ...data, ...(safeData ?? {}) };
     return Object.entries(refData).some(([field, value]) => {
@@ -156,19 +153,19 @@ function FormStateProvider<TSchema extends ZodMiniObject>(
     return (
       hasChanged &&
       passedConstraints &&
-      partialSchemaRef.current.safeParse(data).success
+      v.safeParse(partialSchemaRef.current, data).success
     );
   }, [data, hasChanged, passedConstraints]);
 
   const onSubmit = useCallback(async () => {
     if (!canSubmit) return;
-    const parsedData = schemaRef.current.safeParse(data);
-    if (!parsedData.data) return;
+    const parsedData = v.safeParse(schemaRef.current, data);
+    if (!parsedData.success) return;
     setIsSubmitting(true);
     try {
       // Slight buffer before running heavy async task.
       await wait(1);
-      await onSubmitRef.current(parsedData.data);
+      await onSubmitRef.current(parsedData.output);
     } catch {}
     setIsSubmitting(false);
   }, [canSubmit, data]);
