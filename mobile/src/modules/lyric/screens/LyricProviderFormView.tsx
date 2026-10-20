@@ -3,7 +3,6 @@
 
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import type { ParseKeys } from "i18next";
 import { useCallback, useState } from "react";
 import { View } from "react-native";
 import { z } from "zod/mini";
@@ -17,25 +16,11 @@ import {
 } from "../core/actions";
 import { LyricProviderEndpointPlaceholders } from "../core/constants";
 
-import { cn } from "~/lib/style";
-import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { Em } from "~/components/Typography/StyledText";
 import { Button } from "~/components/next/base/button";
-import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 import { ZSchema } from "~/modules/form/utils";
-import {
-  FormStateProvider,
-  FormTitle,
-  FormToolbar,
-  useFormAction,
-  useFormStateContext,
-} from "~/modules/form/FormState/next";
-import {
-  ArrayFormInputImpl,
-  FormInputImpl,
-  SwitchInputImpl,
-  TextareaImpl,
-} from "~/modules/form/FormState/FormInputNext";
+import { Form, useFormAction, useFormContext } from "~/modules/form/Form";
+import { createTypedFormInputs } from "~/modules/form/FormInput";
 
 type Props = StaticScreenProps<{ providerId?: string }>;
 
@@ -62,13 +47,6 @@ export default function LyricProviderForm({
   //#endregion
 
   //#region Modify Flow
-  const onDelete = useCallback(() => {
-    if (!providerId)
-      throw new Error("Attempting to delete provider that doesn't exist.");
-    deleteLyricProvider(providerId);
-    navigation.goBack();
-  }, [navigation, providerId]);
-
   const onUpdate = useCallback(
     async (entry: LyricProviderEntry) => {
       if (!providerId)
@@ -83,7 +61,8 @@ export default function LyricProviderForm({
   const providerExists = Boolean(currentProvider);
 
   return (
-    <FormStateProvider
+    <Form.Provider
+      type={providerExists ? "edit" : "create"}
       schema={LyricProviderEntrySchema}
       initData={{
         name: currentProvider?.name ?? "",
@@ -94,40 +73,38 @@ export default function LyricProviderForm({
       }}
       onSubmit={providerExists ? onUpdate : onCreate}
     >
-      <LyricFormToolbar onDelete={providerExists ? onDelete : undefined} />
-      <Form title={`form.${providerExists ? "edit" : "create"}`} />
-    </FormStateProvider>
+      <LyricFormToolbar providerId={providerId} showAction={providerExists} />
+      <FormContents />
+    </Form.Provider>
   );
 }
 
 //#region Toolbar
-function LyricFormToolbar(props: { onDelete?: VoidFunction }) {
-  const FormAction = useFormAction(
-    props.onDelete
-      ? {
-          label: "form.delete",
-          action: props.onDelete,
-          actionConfig: {
-            icon: "delete",
-            intent: "error",
-            _iconColor: "error",
-          },
-          danger: true,
-        }
-      : undefined,
+function LyricFormToolbar(props: { providerId?: string; showAction: boolean }) {
+  const navigation = useNavigation();
+  const FormAction = useFormAction({
+    label: "form.delete",
+    onPress: () => {
+      if (!props.providerId)
+        throw new Error("Attempting to delete provider that doesn't exist.");
+      deleteLyricProvider(props.providerId);
+      navigation.goBack();
+    },
+    config: { icon: "delete", intent: "error", _iconColor: "error" },
+    requiresConfirmation: true,
+  });
+  return (
+    <Form.Toolbar>{props.showAction ? FormAction : undefined}</Form.Toolbar>
   );
-  return <FormToolbar>{FormAction}</FormToolbar>;
 }
 //#endregion
 
-//#region Lyric Form
-const FormInput = FormInputImpl<LyricProviderEntry>();
-const ArrayFormInput = ArrayFormInputImpl<LyricProviderEntry>();
-const SwitchInput = SwitchInputImpl<LyricProviderEntry>();
-const Textarea = TextareaImpl<LyricProviderEntry>();
+//#region Form Contents
+const FormInput = createTypedFormInputs<LyricProviderEntry>();
 
-function Form({ title }: { title: ParseKeys }) {
-  const { data, setFields, isSubmitting } = useFormState();
+function FormContents() {
+  const { data, setFields, isSubmitting } =
+    useFormContext<LyricProviderEntry>();
 
   //#region Placeholder Helper
   const [isEndpointInputFocused, setIsEndpointInputFocused] = useState(false);
@@ -148,13 +125,12 @@ function Form({ title }: { title: ParseKeys }) {
   //#endregion
 
   return (
-    <KeyboardAwareScrollView
+    <Form.Container
       keyboardShouldPersistTaps={isEndpointInputFocused ? "always" : undefined}
-      contentContainerClassName={cn("gap-6 p-4", ToolbarScreenOffset)}
     >
-      <FormTitle title={title} />
-      <FormInput label="feat.trackMetadata.extra.name" field="name" />
-      <Textarea
+      <Form.Title />
+      <FormInput.Text label="feat.trackMetadata.extra.name" field="name" />
+      <FormInput.TextArea
         label="Endpoint"
         field="endpoint"
         oneLine
@@ -175,10 +151,10 @@ function Form({ title }: { title: ParseKeys }) {
           </Button>
         ))}
       </View>
-      <ArrayFormInput label="Traversed Fields" field="traversedFields" />
-      <SwitchInput label="isJSONResponse" field="isJSONResponse" />
-      <Textarea label="Headers" field="headers" />
-    </KeyboardAwareScrollView>
+      <FormInput.Array label="Traversed Fields" field="traversedFields" />
+      <FormInput.Switch label="isJSONResponse" field="isJSONResponse" />
+      <FormInput.TextArea label="Headers" field="headers" />
+    </Form.Container>
   );
 }
 //#endregion
@@ -193,10 +169,4 @@ const LyricProviderEntrySchema = z.object({
 });
 
 type LyricProviderEntry = z.infer<typeof LyricProviderEntrySchema>;
-//#endregion
-
-//#region Internal
-function useFormState() {
-  return useFormStateContext<LyricProviderEntry>();
-}
 //#endregion

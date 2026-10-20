@@ -4,14 +4,13 @@
 import { toast } from "@missingcore/ui/toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { eq, inArray } from "drizzle-orm";
-import { View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { z } from "zod/mini";
 
 import { db } from "~/db";
 import type { albums } from "~/db/schema";
 import { albumsToArtists, tracks, tracksToGenres } from "~/db/schema";
 
-import { Icon } from "~/resources/icons";
 import { updateAlbum, upsertAlbums } from "~/data/album/api";
 import { useAlbum } from "~/data/album/queries";
 import { AlbumArtistsKey } from "~/data/album/utils";
@@ -24,20 +23,11 @@ import { router } from "~/navigation/utils/router";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
 import { clearAllQueries } from "~/lib/react-query";
-import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
-import { Divider } from "~/components/Divider";
-import { SwitchInput } from "~/components/Form/Switch";
-import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
-import { TStyledText } from "~/components/Typography/StyledText";
+import { Divider } from "~/components/next/base/divider";
+import { Hint } from "~/components/next/blocks/hint";
 import { ZSchema } from "~/modules/form/utils";
-import {
-  FormStateProvider,
-  useFormStateContext,
-} from "~/modules/form/FormState";
-import {
-  ArrayFormInputImpl,
-  FormInputImpl,
-} from "~/modules/form/FormState/FormInput";
+import { Form } from "~/modules/form/Form";
+import { createTypedFormInputs } from "~/modules/form/FormInput";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -49,7 +39,8 @@ export default function ModifyAlbum({
   const { isPending, data, error } = useAlbum(id);
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
   return (
-    <FormStateProvider
+    <Form.Provider
+      type="edit"
       schema={AlbumMetadataSchema}
       initData={{
         albumContext: {
@@ -74,43 +65,28 @@ export default function ModifyAlbum({
         genres.length === new Set(genres.map((genre) => genre.trim())).size
       }
     >
-      <MetadataForm />
-    </FormStateProvider>
+      <Form.Toolbar />
+      <FormContents />
+    </Form.Provider>
   );
 }
 
-//#region Metadata Form
-const FormInput = FormInputImpl<AlbumMetadata>();
-const ArrayFormInput = ArrayFormInputImpl<AlbumMetadata>();
+//#region Form Contents
+const FormInput = createTypedFormInputs<AlbumMetadata>();
 
-function MetadataForm() {
-  const { data, setFields, isSubmitting } = useFormState();
+function FormContents() {
+  const { t } = useTranslation();
   return (
-    <KeyboardAwareScrollView contentContainerClassName="bottom-safe-offset-4 gap-4 p-4">
-      <FormInput label="feat.trackMetadata.extra.name" field="name" />
-      <ArrayFormInput label="term.artists" field="artists" />
-      <SheetLabelAction
-        label="isEP"
-        Trailing={
-          <SwitchInput
-            enabled={data.isEP}
-            onPress={() => setFields((prev) => ({ isEP: !prev.isEP }))}
-            disabled={isSubmitting}
-          />
-        }
-      />
+    <Form.Container>
+      <Form.Title />
+      <FormInput.Text label="feat.trackMetadata.extra.name" field="name" />
+      <FormInput.Array label="term.artists" field="artists" />
+      <FormInput.Switch label="isEP" field="isEP" />
       <Divider />
-      <View className="flex-row gap-2 rounded-md bg-surfaceContainerLowest p-4 pl-2">
-        <Icon name="info" size={20} color="onSurfaceVariant" />
-        <TStyledText
-          textKey="feat.trackMetadata.extra.overrideFields"
-          dim
-          className="shrink grow text-sm"
-        />
-      </View>
-      <FormInput label="feat.trackMetadata.extra.year" field="year" numeric />
-      <ArrayFormInput label="term.genres" field="genres" />
-    </KeyboardAwareScrollView>
+      <Hint hint={t("feat.trackMetadata.extra.overrideFields")} />
+      <FormInput.Numeric label="feat.trackMetadata.extra.year" field="year" />
+      <FormInput.Array label="term.genres" field="genres" />
+    </Form.Container>
   );
 }
 //#endregion
@@ -135,10 +111,6 @@ const AlbumMetadataSchema = z.object({
 });
 
 type AlbumMetadata = z.infer<typeof AlbumMetadataSchema>;
-
-function useFormState() {
-  return useFormStateContext<AlbumMetadata>();
-}
 //#endregion
 
 //#region Submit Handler

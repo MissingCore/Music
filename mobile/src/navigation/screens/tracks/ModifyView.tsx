@@ -16,7 +16,6 @@ import { z } from "zod/mini";
 import { db } from "~/db";
 import { tracksToArtists, tracksToGenres } from "~/db/schema";
 
-import { Icon } from "~/resources/icons";
 import { upsertAlbums } from "~/data/album/api";
 import type { AlbumSummary } from "~/data/album/types";
 import { AlbumArtistsKey } from "~/data/album/utils";
@@ -29,29 +28,19 @@ import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { getArtworkHash } from "~/modules/startup/scanning/core/artwork";
 import { AppCleanUp } from "~/modules/startup/scanning/core/cleanup";
 
-import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 import { router } from "~/navigation/utils/router";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { AddAlbumSheet } from "./sheets/AddAlbumSheet";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { splitOn } from "~/utils/string";
-import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
-import { IconButton } from "~/components/Form/Button/Icon";
-import { TextInput } from "~/components/Form/Input";
-import { StyledText } from "~/components/Typography/StyledText";
+import { IconButton } from "~/components/next/base/button-icon";
+import { TextInput } from "~/components/next/base/input";
 import { useSheetRef } from "~/components/next/base/sheet";
+import { Hint } from "~/components/next/blocks/hint";
 import { ZSchema } from "~/modules/form/utils";
-import {
-  FABWorkflow,
-  FormStateProvider,
-  useFormStateContext,
-} from "~/modules/form/FormState";
-import {
-  ArrayFormInputImpl,
-  FormInputImpl,
-  InputLabel,
-} from "~/modules/form/FormState/FormInput";
+import { Form, useFormAction, useFormContext } from "~/modules/form/Form";
+import { InputLabel, createTypedFormInputs } from "~/modules/form/FormInput";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -62,8 +51,6 @@ export default function ModifyTrack({
 }: Props) {
   const trackQuery = useTrack(id);
   const trackGenresQuery = useTrackGenres(id);
-  const delimiters = usePreferenceStore((s) => s.separators);
-  const { offset, floatingContentProps } = useFloatingContent();
 
   if (
     trackQuery.isPending ||
@@ -86,7 +73,8 @@ export default function ModifyTrack({
   }
 
   return (
-    <FormStateProvider
+    <Form.Provider
+      type="edit"
       schema={TrackMetadataSchema}
       initData={{
         id: trackQuery.data.id,
@@ -111,48 +99,55 @@ export default function ModifyTrack({
         genres.length === new Set(genres.map((genre) => genre.trim())).size
       }
     >
-      <MetadataForm bottomOffset={offset} />
-      <FABWorkflow
-        label="form.reset"
-        action={async ({ setFields }) => {
-          try {
-            const trackMetadata = await getMetadata(trackQuery.data.uri, [
-              ...MetadataPresets.standard,
-              "discNumber",
-              "genre",
-            ]);
-            setFields({
-              name: trackMetadata.title ?? "",
-              artists: trackMetadata.artist
-                ? splitOn(trackMetadata.artist, delimiters)
-                : [],
-              album: trackMetadata.albumTitle,
-              albumArtists: trackMetadata.albumArtist
-                ? splitOn(trackMetadata.albumArtist, delimiters)
-                : [],
-              year: trackMetadata.year,
-              disc: trackMetadata.discNumber,
-              track: trackMetadata.trackNumber,
-              genres: trackMetadata.genre
-                ? splitOn(trackMetadata.genre, delimiters)
-                : [],
-            });
-          } catch {}
-        }}
-        danger
-        floatingContentProps={floatingContentProps}
-      />
-    </FormStateProvider>
+      <TrackFormToolbar uri={trackQuery.data.uri} />
+      <FormContents />
+    </Form.Provider>
   );
 }
 
-//#region Metadata Form
-const FormInput = FormInputImpl<TrackMetadata>();
-const ArrayFormInput = ArrayFormInputImpl<TrackMetadata>();
+//#region Toolbar
+function TrackFormToolbar({ uri }: { uri: string }) {
+  const delimiters = usePreferenceStore((s) => s.separators);
+  const FormAction = useFormAction({
+    label: "form.reset",
+    onPress: async ({ setFields }) => {
+      try {
+        const trackMetadata = await getMetadata(uri, [
+          ...MetadataPresets.standard,
+          "discNumber",
+          "genre",
+        ]);
+        setFields({
+          name: trackMetadata.title ?? "",
+          artists: trackMetadata.artist
+            ? splitOn(trackMetadata.artist, delimiters)
+            : [],
+          album: trackMetadata.albumTitle,
+          albumArtists: trackMetadata.albumArtist
+            ? splitOn(trackMetadata.albumArtist, delimiters)
+            : [],
+          year: trackMetadata.year,
+          disc: trackMetadata.discNumber,
+          track: trackMetadata.trackNumber,
+          genres: trackMetadata.genre
+            ? splitOn(trackMetadata.genre, delimiters)
+            : [],
+        });
+      } catch {}
+    },
+    config: { icon: "cached", intent: "error", _iconColor: "error" },
+    requiresConfirmation: true,
+  });
+  return <Form.Toolbar>{FormAction}</Form.Toolbar>;
+}
+//#endregion
 
-function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
+//#region Form Contents
+const FormInput = createTypedFormInputs<TrackMetadata>();
+
+function FormContents() {
   const { t } = useTranslation();
-  const { data, setFields, isSubmitting } = useFormState();
+  const { data, setFields, isSubmitting } = useFormContext<TrackMetadata>();
   const addAlbumSheetRef = useSheetRef();
 
   const onSelectAlbum = useCallback(
@@ -170,21 +165,16 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
   return (
     <>
       <AddAlbumSheet ref={addAlbumSheetRef} onSelect={onSelectAlbum} />
-      <KeyboardAwareScrollView
-        contentContainerStyle={{ paddingBottom: bottomOffset }}
-        contentContainerClassName="gap-4 p-4"
-      >
-        <View className="flex-row gap-2 rounded-md bg-surfaceContainerLowest p-4 pl-2">
-          <Icon name="info" size={20} color="onSurfaceVariant" />
-          <StyledText dim className="shrink grow text-sm">
-            {t("feat.trackMetadata.description.line1")}
-            {"\n\n"}
-            {t("feat.trackMetadata.description.line2")}
-          </StyledText>
-        </View>
-
-        <FormInput label="feat.trackMetadata.extra.name" field="name" />
-        <ArrayFormInput label="term.artists" field="artists" />
+      <Form.Container>
+        <Form.Title />
+        <Hint
+          hint={[
+            t("feat.trackMetadata.description.line1"),
+            t("feat.trackMetadata.description.line2"),
+          ]}
+        />
+        <FormInput.Text label="feat.trackMetadata.extra.name" field="name" />
+        <FormInput.Array label="term.artists" field="artists" />
         <View className="flex-1">
           <InputLabel
             label="term.album"
@@ -207,25 +197,23 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
             className="w-full rounded-sm border border-outline p-2"
           />
         </View>
-        <ArrayFormInput
+        <FormInput.Array
           label="feat.trackMetadata.extra.albumArtists"
           field="albumArtists"
         />
         <View className="flex-row items-end gap-4">
-          <FormInput
+          <FormInput.Numeric
             label="feat.trackMetadata.extra.disc"
             field="disc"
-            numeric
           />
-          <FormInput
+          <FormInput.Numeric
             label="feat.trackMetadata.extra.trackNumber"
             field="track"
-            numeric
           />
         </View>
-        <FormInput label="feat.trackMetadata.extra.year" field="year" numeric />
-        <ArrayFormInput label="term.genres" field="genres" />
-      </KeyboardAwareScrollView>
+        <FormInput.Numeric label="feat.trackMetadata.extra.year" field="year" />
+        <FormInput.Array label="term.genres" field="genres" />
+      </Form.Container>
     </>
   );
 }
@@ -248,10 +236,6 @@ const TrackMetadataSchema = z.object({
 });
 
 type TrackMetadata = z.infer<typeof TrackMetadataSchema>;
-
-function useFormState() {
-  return useFormStateContext<TrackMetadata>();
-}
 //#endregion
 
 //#region Submit Handler

@@ -21,13 +21,9 @@ import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { IconButton } from "~/components/next/base/button-icon";
 import { Card } from "~/components/next/base/card";
 import { ZSchema } from "~/modules/form/utils";
-import type { FormActionConfig } from "~/modules/form/FormState/next";
-import {
-  FormStateProvider,
-  useFormAction,
-  useFormStateContext,
-} from "~/modules/form/FormState/next";
-import { TextareaImpl } from "~/modules/form/FormState/FormInputNext";
+import type { FormActionConfig } from "~/modules/form/Form";
+import { Form, useFormAction, useFormContext } from "~/modules/form/Form";
+import { createTypedFormInputs } from "~/modules/form/FormInput";
 import { TText } from "~/components/next/base/typography";
 
 type Props = StaticScreenProps<{ trackId: string }>;
@@ -45,7 +41,7 @@ export default function LyricForm({
   const createAction = useMemo<FormActionConfig<LyricEntry>>(
     () => ({
       label: "feat.backup.extra.import",
-      action: async ({ setFields }) => {
+      onPress: async ({ setFields }) => {
         try {
           const lrcFile = await pickFile(["application/lrc", "text/plain"]);
           const lrcText = await lrcFile.text();
@@ -56,12 +52,7 @@ export default function LyricForm({
           toast.error((err as Error).message);
         }
       },
-      actionConfig: {
-        icon: "upload",
-        intent: "secondary",
-        filled: true,
-        wide: true,
-      },
+      config: { icon: "upload", intent: "secondary", filled: true, wide: true },
     }),
     [],
   );
@@ -87,7 +78,7 @@ export default function LyricForm({
   const deleteAction = useMemo<FormActionConfig<LyricEntry>>(
     () => ({
       label: "form.delete",
-      action: async () => {
+      onPress: async () => {
         await wait(1);
         try {
           await deleteLyric(trackId);
@@ -99,13 +90,8 @@ export default function LyricForm({
           toast.tError("err.flow.generic.title");
         }
       },
-      actionConfig: {
-        icon: "delete",
-        intent: "error",
-        filled: true,
-        wide: true,
-      },
-      danger: true,
+      config: { icon: "delete", intent: "error", filled: true, wide: true },
+      requiresConfirmation: true,
     }),
     [navigation, queryClient, trackId],
   );
@@ -131,25 +117,28 @@ export default function LyricForm({
   return (
     <View className="flex-1 items-center justify-center bg-black/50 p-4 py-20">
       {!isPending && !isRefetching ? (
-        <FormStateProvider
+        <Form.Provider
+          type={hasLyrics ? "edit" : "create"}
           schema={LyricEntrySchema}
           initData={{ trackId, lyricText: data?.lyricText ?? "" }}
           onSubmit={hasLyrics ? onUpdate : onCreate}
         >
-          <Form actionConfig={hasLyrics ? deleteAction : createAction} />
-        </FormStateProvider>
+          <FormContents
+            actionConfig={hasLyrics ? deleteAction : createAction}
+          />
+        </Form.Provider>
       ) : null}
     </View>
   );
 }
 
-//#region Lyric Form
-const Textarea = TextareaImpl<LyricEntry>();
+//#region Form Contents
+const FormInput = createTypedFormInputs<LyricEntry>();
 
-function Form(props: { actionConfig: FormActionConfig<LyricEntry> }) {
+function FormContents(props: { actionConfig: FormActionConfig<LyricEntry> }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { canSubmit, isSubmitting, onSubmit } = useFormState();
+  const { canSubmit, isSubmitting, onSubmit } = useFormContext<LyricEntry>();
   const FormAction = useFormAction(props.actionConfig);
 
   return (
@@ -157,7 +146,10 @@ function Form(props: { actionConfig: FormActionConfig<LyricEntry> }) {
       <TText textKey="feat.lyrics.title" bold size="lg" className="-mb-4" />
       <View className="shrink grow overflow-hidden rounded-lg border border-outline">
         <KeyboardAwareScrollView contentContainerClassName="grow">
-          <Textarea field="lyricText" className="grow rounded-none border-0" />
+          <FormInput.TextArea
+            field="lyricText"
+            className="grow rounded-none border-0"
+          />
         </KeyboardAwareScrollView>
       </View>
 
@@ -193,10 +185,4 @@ const LyricEntrySchema = z.object({
 });
 
 type LyricEntry = z.infer<typeof LyricEntrySchema>;
-//#endregion
-
-//#region Internal
-function useFormState() {
-  return useFormStateContext<LyricEntry>();
-}
 //#endregion

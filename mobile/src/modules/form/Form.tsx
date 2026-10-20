@@ -13,22 +13,32 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import type { KeyboardAwareScrollViewProps } from "react-native-keyboard-controller";
 import type { ZodMiniObject } from "zod/mini";
 import { z } from "zod/mini";
 
 import { useBackHandler } from "~/hooks/useBackHandler";
 
-import { ScreenOptions } from "~/navigation/components/ScreenOptions";
-import type { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
-
+import { OnRTL } from "~/lib/react";
+import { cn } from "~/lib/style";
 import { wait } from "~/utils/promise";
 import { isBoolean, isNumber, isString } from "~/utils/validation";
-import { ExtendedTButton } from "~/components/Form/Button";
-import { FilledIconButton } from "~/components/Form/Button/Icon";
-import { ModalTemplate } from "~/components/Modal";
+import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
+import type { IconButtonProps } from "~/components/next/base/button-icon";
+import { IconButton } from "~/components/next/base/button-icon";
+import { Dialog } from "~/components/next/base/dialog";
+import { Text, TText } from "~/components/next/base/typography";
+import { ActionButton } from "~/components/next/blocks/button-action";
+import { ConfirmAction } from "~/components/next/composed/confirm-action";
+import {
+  Toolbar,
+  ToolbarScreenOffset,
+} from "~/components/next/composed/toolbar";
+
+type FormType = "create" | "edit";
 
 type InitialArguments<TSchema extends ZodMiniObject> = {
+  type: FormType;
   schema: TSchema;
   initData: z.infer<TSchema>;
   /** Fields omitted during normal validation. Will be checked in `onSubmit`. */
@@ -40,6 +50,7 @@ type InitialArguments<TSchema extends ZodMiniObject> = {
 };
 
 type FormState<TData extends Record<string, any>> = {
+  type: FormType;
   data: TData;
   /** @deprecated For internal use. Use `setFields` instead. */
   setField: Dispatch<SetStateAction<TData>>;
@@ -57,9 +68,23 @@ type FormState<TData extends Record<string, any>> = {
 
 const FormStateContext = createContext<FormState<any>>(null as never);
 
+const UnsavedChangesContext = createContext<{
+  showConfirmation: boolean;
+  setShowConfirmation: Dispatch<SetStateAction<boolean>>;
+}>(null as never);
+
+//#region Hook
+/** Wrap this with another hook to type the return data. */
+export function useFormContext<TData extends Record<string, any>>() {
+  const context = use(FormStateContext);
+  if (!context)
+    throw new Error("`useFormContext` must be used in a `Form.Provider`.");
+  return context as FormState<TData>;
+}
+//#endregion
+
 //#region Provider
-/** Handles data validation, back prevention, and more. */
-export function FormStateProvider<TSchema extends ZodMiniObject>(
+function FormStateProvider<TSchema extends ZodMiniObject>(
   props: InitialArguments<TSchema> & { children: React.ReactNode },
 ) {
   const initData = useRef(props.initData);
@@ -79,6 +104,7 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
 
   const [data, setData] = useState(props.initData);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const setFields: Dispatch<
     | Partial<z.infer<TSchema>>
@@ -139,15 +165,18 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
     const parsedData = schemaRef.current.safeParse(data);
     if (!parsedData.data) return;
     setIsSubmitting(true);
-    // Slight buffer before running heavy async task.
-    await wait(1);
-    await onSubmitRef.current(parsedData.data);
+    try {
+      // Slight buffer before running heavy async task.
+      await wait(1);
+      await onSubmitRef.current(parsedData.data);
+    } catch {}
     setIsSubmitting(false);
   }, [canSubmit, data]);
 
   return (
     <FormStateContext
       value={{
+        type: props.type,
         data,
         setField: setData,
         setFields,
@@ -159,104 +188,129 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
         setIsSubmitting,
       }}
     >
-      <TopAppBar />
-      {props.children}
-      <UnsavedChangesPrompt />
+      <UnsavedChangesContext value={{ showConfirmation, setShowConfirmation }}>
+        {props.children}
+        <UnsavedChangesPrompt />
+      </UnsavedChangesContext>
     </FormStateContext>
   );
 }
 //#endregion
 
-//#region FAB Workflow
-export type FABWorkflowConfig<TData extends Record<string, any>> = {
+//#region Form Action
+export type FormActionConfig<TData extends Record<string, any>> = {
   label: ParseKeys;
-  action: (
+  onPress: (
     context: Pick<FormState<TData>, "setFields">,
   ) => void | Promise<void>;
-  /** If the action that will be done is dangerous/destructive. Will require confirmation to fire `action`. */
-  danger?: boolean;
+  config: Omit<IconButtonProps, "accessibilityLabel" | "onPress" | "disabled">;
+  /** If the action requires confirmation. */
+  requiresConfirmation?: boolean;
 };
 
-/** Additional action that can be displayed in the form. */
-export function FABWorkflow(
-  props: FABWorkflowConfig<any> &
-    Omit<ReturnType<typeof useFloatingContent>, "offset">,
+/** Returns an action that can be displayed in the form or toolbar. */
+export function useFormAction<TData extends Record<string, any>>(
+  args?: FormActionConfig<TData>,
 ) {
-  const [lastChance, setLastChance] = useState(false);
-  const { setFields, isSubmitting, setIsSubmitting } = useFormStateContext();
+  const { t } = useTranslation();
+  const { setFields, isSubmitting, setIsSubmitting } = useFormContext();
 
-  const triggerAction = async () => {
-    if (props.danger) setLastChance(false);
-    setIsSubmitting(true);
-    await props.action({ setFields });
-    setIsSubmitting(false);
-  };
+  if (!args) return null;
 
+  const renderedAction = (
+    <IconButton
+      {...args.config}
+      accessibilityLabel={t(args.label)}
+      onPress={async () => {
+        setIsSubmitting(true);
+        try {
+          await args.onPress({ setFields });
+        } catch {}
+        setIsSubmitting(false);
+      }}
+      disabled={isSubmitting}
+    />
+  );
+
+  if (!args.requiresConfirmation) return renderedAction;
   return (
-    <>
-      <View {...props.floatingContentProps}>
-        <ExtendedTButton
-          textKey={props.label}
-          onPress={() => (props.danger ? setLastChance(true) : triggerAction())}
-          disabled={lastChance || isSubmitting}
-          theme={props.danger ? "error" : "secondary"}
-        />
-      </View>
-      {props.danger ? (
-        <ModalTemplate
-          visible={lastChance}
-          titleKey={props.label}
-          topAction={{
-            textKey: "form.confirm",
-            onPress: triggerAction,
-          }}
-          bottomAction={{
-            textKey: "form.cancel",
-            onPress: () => setLastChance(false),
-          }}
-        />
-      ) : null}
-    </>
+    <ConfirmAction prompt={[t(args.label)]}>{renderedAction}</ConfirmAction>
   );
 }
 //#endregion
 
-//#region Hook
-/** Wrap this with another hook to type the return data. */
-export function useFormStateContext<TData extends Record<string, any>>() {
-  const context = use(FormStateContext);
-  if (!context)
-    throw new Error(
-      "`useFormStateContext` must be used in a `FormStateProvider`.",
+//#region Exports
+export const Form = {
+  /** Handles data validation, back prevention, and more. */
+  Provider: FormStateProvider,
+  /**
+   * Keyboard-aware layout that lets inputs at the bottom of the screen
+   * be in-view when focused.
+   */
+  Container: ({
+    contentContainerClassName,
+    ...props
+  }: KeyboardAwareScrollViewProps) => {
+    return (
+      <KeyboardAwareScrollView
+        {...props}
+        contentContainerClassName={cn(
+          "gap-6 p-4",
+          ToolbarScreenOffset,
+          contentContainerClassName,
+        )}
+      />
     );
-  return context as FormState<TData>;
-}
-//#endregion
-
-//#region Internal
-function TopAppBar() {
-  const { t } = useTranslation();
-  const { canSubmit, isSubmitting, onSubmit } = useFormStateContext();
-  return (
-    <ScreenOptions
-      // Hacky solution to disable the back button when submitting.
-      headerLeft={isSubmitting ? () => undefined : undefined}
-      headerRight={() => (
-        <FilledIconButton
-          icon="check"
+  },
+  /** Pre-defined title component to place in form layout. */
+  Title: () => {
+    const { t } = useTranslation();
+    const { type } = useFormContext();
+    return (
+      <Text accent className="leading-tight">
+        {t(`form.${type}`)}
+      </Text>
+    );
+  },
+  /** Toolbar layout for forms. */
+  Toolbar: (props: { children?: React.ReactNode }) => {
+    const { t } = useTranslation();
+    const navigation = useNavigation();
+    const { hasChanged, canSubmit, onSubmit, isSubmitting } = useFormContext();
+    const { setShowConfirmation } = use(UnsavedChangesContext);
+    return (
+      <Toolbar>
+        <Toolbar.Actions>
+          <IconButton
+            icon={OnRTL.decide("east", "west")}
+            accessibilityLabel={t("form.back")}
+            onPress={() => {
+              if (hasChanged) return setShowConfirmation(true);
+              navigation.goBack();
+            }}
+            disabled={isSubmitting}
+          />
+          {props.children}
+        </Toolbar.Actions>
+        <Toolbar.FAB
+          icon="save"
           accessibilityLabel={t("form.apply")}
           onPress={onSubmit}
           disabled={!canSubmit || isSubmitting}
+          intent="inverse"
         />
-      )}
-    />
-  );
-}
+      </Toolbar>
+    );
+  },
+};
+//#endregion
 
+//#region Internal
 function UnsavedChangesPrompt() {
+  const { t } = useTranslation();
   const navigation = useNavigation();
-  const { hasChanged, isSubmitting } = useFormStateContext();
-  const [showConfirmation, setShowConfirmation] = useState(false);
+  const { hasChanged, isSubmitting } = useFormContext();
+  const { showConfirmation, setShowConfirmation } = use(UnsavedChangesContext);
 
   useBackHandler(() => {
     if (!hasChanged) return false;
@@ -265,18 +319,28 @@ function UnsavedChangesPrompt() {
   }, [hasChanged, isSubmitting]);
 
   return (
-    <ModalTemplate
+    <Dialog
       visible={showConfirmation}
-      titleKey="form.unsaved"
-      topAction={{
-        textKey: "form.leave",
-        onPress: () => navigation.goBack(),
-      }}
-      bottomAction={{
-        textKey: "form.stay",
-        onPress: () => setShowConfirmation(false),
-      }}
-    />
+      onClose={() => setShowConfirmation(false)}
+    >
+      <TText textKey="form.unsaved" style={{ fontSize: 18 }} />
+      <Dialog.Actions>
+        <ActionButton
+          label={t("form.leave")}
+          onPress={() => {
+            navigation.goBack();
+            setShowConfirmation(false);
+          }}
+          labelClassName="text-error"
+          className="rounded-lg"
+        />
+        <ActionButton
+          label={t("form.stay")}
+          onPress={() => setShowConfirmation(false)}
+          className="rounded-lg"
+        />
+      </Dialog.Actions>
+    </Dialog>
   );
 }
 //#endregion
