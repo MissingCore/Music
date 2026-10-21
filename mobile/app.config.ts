@@ -93,10 +93,10 @@ export default (): ExpoConfig => {
       }),
       fontPlugin({
         fonts: [
-          "assets/fonts/Geist-Regular.ttf",
-          "assets/fonts/Geist-Medium.ttf",
-          "assets/fonts/GeistMono-Regular.ttf",
-          "assets/fonts/GeistMono-Medium.ttf",
+          "assets/fonts/Geist-Regular.otf",
+          "assets/fonts/Geist-Medium.otf",
+          "assets/fonts/GeistMono-Regular.otf",
+          "assets/fonts/GeistMono-Medium.otf",
           "assets/fonts/Ndot-77_JP_Extended.ttf",
           "assets/fonts/NType82-Regular.otf",
           "assets/fonts/NType82-Headline.otf",
