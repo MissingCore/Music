@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
-import type { LayoutChangeEvent } from "react-native";
+import type { LayoutChangeEvent, ViewInstance } from "react-native";
 import { View } from "react-native";
 
 import { useLyricStore } from "~/modules/lyric/core/store";
@@ -45,7 +45,7 @@ export function ArtworkSlot(props: {
 function useArtworkSize() {
   const [dimensions, setDimensions] = useState({ height: 0, width: 0 });
   const [size, setSize] = useState(0);
-  const containerRef = useRef<View>(null);
+  const containerRef = useRef<ViewInstance>(null);
 
   /* Calculate the size of the artwork that maximizes the space. */
   useLayoutEffect(() => {

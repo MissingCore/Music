@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useRef } from "react";
-import type { TextInputProps } from "react-native";
+import type { TextInputInstance, TextInputProps } from "react-native";
 import { TextInput as RNTextInput, View } from "react-native";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -14,11 +14,11 @@ import type { SupportedIconName } from "./icon";
 import { Icon } from "./icon";
 
 export function useInputRef() {
-  return useRef<RNTextInput>(null);
+  return useRef<TextInputInstance>(null);
 }
 
 export type InputProps = TextInputProps & {
-  ref?: React.Ref<RNTextInput>;
+  ref?: React.Ref<TextInputInstance>;
 };
 
 //#region Text Input

@@ -121,7 +121,6 @@ function FavoritesPlaylistLink() {
             Array.isArray(data?.artwork) ? data.artwork[0] : data?.artwork,
           )}
           blurRadius={10}
-          // @ts-expect-error - Brightness prop works.
           style={{ filter: [{ brightness: "75%" }] }}
           className="absolute inset-0"
         />

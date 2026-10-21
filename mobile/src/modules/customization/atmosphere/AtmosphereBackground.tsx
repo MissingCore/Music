@@ -45,7 +45,6 @@ export function AtmosphereBackground(props: {
         <Image
           source={imgSrc}
           blurRadius={10}
-          // @ts-expect-error - Brightness prop works.
           style={{
             height: imgSize,
             width: imgSize,

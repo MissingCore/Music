@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
-import type { LayoutChangeEvent, View, ViewStyle } from "react-native";
+import type { LayoutChangeEvent, ViewInstance, ViewStyle } from "react-native";
 import { useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -11,7 +11,7 @@ type UseFloatingContentResult = {
   offset: number;
   /** Props spread on the `View` wrapping the floating content. */
   floatingContentProps: {
-    ref: React.RefObject<View | null>;
+    ref: React.RefObject<ViewInstance | null>;
     onLayout: (e: LayoutChangeEvent) => void;
     style: ViewStyle;
     className: string;
@@ -23,7 +23,7 @@ export function useFloatingContent(): UseFloatingContentResult {
   const { bottom } = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const [offset, setOffset] = useState(16);
-  const ref = useRef<View>(null);
+  const ref = useRef<ViewInstance>(null);
 
   useLayoutEffect(() => {
     ref.current?.measure((_x, _y, _width, height) => {

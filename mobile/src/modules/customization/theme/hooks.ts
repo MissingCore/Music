@@ -15,11 +15,8 @@ import { isHexColor } from "./utils";
 export function useCurrentScheme() {
   const deviceTheme = useColorScheme();
   const savedTheme = usePreferenceStore((s) => s.theme);
-
-  //? Restore the old behavior where we got `null` instead of `unspecified`.
-  const rawTheme = deviceTheme === "unspecified" ? null : deviceTheme;
   //? `savedTheme` essentially will store the current color scheme.
-  return savedTheme === "system" ? (rawTheme ?? "light") : savedTheme;
+  return savedTheme === "system" ? (deviceTheme ?? "light") : savedTheme;
 }
 
 /** Returns if we're using light, dark, or custom theme. */

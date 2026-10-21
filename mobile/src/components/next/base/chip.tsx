@@ -1,7 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import type { VariantProps } from "cva/config";
+import type { VariantProps } from "cva";
 import { View } from "react-native";
 
 import { cva } from "~/lib/style";

@@ -169,7 +169,7 @@ android {
             def enableShrinkResources = findProperty('android.enableShrinkResourcesInReleaseBuilds') ?: 'false'
             shrinkResources enableShrinkResources.toBoolean()
             minifyEnabled enableMinifyInReleaseBuilds
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             def enablePngCrunchInRelease = findProperty('android.enablePngCrunchInReleaseBuilds') ?: 'true'
             crunchPngs enablePngCrunchInRelease.toBoolean()
         }
@@ -183,18 +183,22 @@ android {
     androidResources {
         ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~'
     }
+}
 
-    applicationVariants.all { variant ->
-        variant.outputs.all { output ->
+def abiVersionCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
+
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        variant.outputs.forEach { output ->
             // For each separate APK per architecture, set a unique version code as described here:
             // https://developer.android.com/studio/build/configure-apk-splits.html
-            def versionCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
-            def abi = output.getFilter(com.android.build.OutputFile.ABI)
-            if (abi != null) {  // `abi == null` for universal APKs
-                //! Via our release script, we ensure that we don't increment the
-                //! "ones" place (which would cause a version conflict on future
-                //! versions).
-                output.versionCodeOverride = defaultConfig.versionCode + versionCodes.get(abi)
+            def abi = output.filters.find {
+                it.filterType == com.android.build.api.variant.FilterConfiguration.FilterType.ABI
+            }?.identifier
+            if (abi != null) {  // No ABI filter for universal APKs.
+                // The release script increments version codes by 10, reserving the
+                // ones place for the per-ABI offset.
+                output.versionCode.set(output.versionCode.getOrElse(0) + abiVersionCodes.get(abi))
             }
         }
     }

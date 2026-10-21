@@ -28,6 +28,7 @@ export function TabOrderSheet(props: { ref: SheetRef }) {
   return (
     <Sheet ref={props.ref} draggable={draggable}>
       <DragList
+        // @ts-expect-error - Sheet is compatible.
         CustomList={Sheet.List}
         data={data}
         keyExtractor={(tabKey) => tabKey}
