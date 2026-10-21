@@ -142,8 +142,8 @@ importers:
         specifier: 0.2.0
         version: 0.2.0(patch_hash=cb6604a7852903e36cef6eda789a4886aad57bbedd78f525bb2ba98ee28b97b8)(react-native@0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       react-native-nano-icons:
-        specifier: 0.2.1
-        version: 0.2.1(@expo/config@58.0.6(typescript@6.0.3))(expo@58.0.16)(react-native@0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(typescript@6.0.3)
+        specifier: 1.0.1
+        version: 1.0.1(@expo/config@58.0.6(typescript@6.0.3))(expo@58.0.16)(react-native@0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(typescript@6.0.3)
       react-native-nitro-modules:
         specifier: 0.37.1
         version: 0.37.1(react-native@0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
@@ -2175,9 +2175,6 @@ packages:
 
   '@tybys/wasm-util@0.10.4':
     resolution: {integrity: sha512-W3c4gRigFS0T/Ma4qIYF3GDAc5AQdHb1yL5znJT1Zv1YaD9Kitx656wBjvr19qbiosmZT8lWDM5BEMynUqX65A==}
-
-  '@types/emscripten@1.41.6':
-    resolution: {integrity: sha512-uN+9i8bFT5CUcZfyIEYDrSueACEyKGbUs5kC/72DGlZZoinh84sJfVV0i8UOJD1asdzkvLPBRrKs41kZ8MdEXg==}
 
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
@@ -4724,10 +4721,6 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
-  pyodide@0.29.5:
-    resolution: {integrity: sha512-TkYrUv9m8QmfImADKRmpwZulL48E0uUaBSO+dvRQKyAJc0qh9gu7jn8btyHPh3NZm1r2IH2YrJhIr7Q2B9urAw==}
-    engines: {node: '>=18.0.0'}
-
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
@@ -4845,14 +4838,14 @@ packages:
       react: '*'
       react-native: '*'
 
-  react-native-nano-icons@0.2.1:
-    resolution: {integrity: sha512-aQD7MdOLJzP/dBtuzEZbkdsVWrPec47UTfFc1Y/TveS/dXWhumA0ujlT4shFiY5GcL2s35z7NA8ZbxZWibggQQ==}
+  react-native-nano-icons@1.0.1:
+    resolution: {integrity: sha512-kIqdPtDviuN6++hAyo0Vl34bppmb6EZwgK+rqhpz0eQMWYAeYt120BSTNO43VS+69Vsig2zbC1v3qLMKrpMSSA==}
     hasBin: true
     peerDependencies:
       '@expo/config': '>=9.0.0'
       expo: '*'
       react: '*'
-      react-native: '*'
+      react-native: '>=0.81.0'
     peerDependenciesMeta:
       '@expo/config':
         optional: true
@@ -7594,8 +7587,6 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
-  '@types/emscripten@1.41.6': {}
-
   '@types/estree@1.0.9': {}
 
   '@types/istanbul-lib-coverage@2.0.6': {}
@@ -10266,14 +10257,6 @@ snapshots:
 
   punycode@2.3.1: {}
 
-  pyodide@0.29.5:
-    dependencies:
-      '@types/emscripten': 1.41.6
-      ws: 8.22.0
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-
   queue-microtask@1.2.3: {}
 
   range-parser@1.2.1: {}
@@ -10382,16 +10365,16 @@ snapshots:
       react: 19.3.0
       react-native: 0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0)
 
-  react-native-nano-icons@0.2.1(@expo/config@58.0.6(typescript@6.0.3))(expo@58.0.16)(react-native@0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(typescript@6.0.3):
+  react-native-nano-icons@1.0.1(@expo/config@58.0.6(typescript@6.0.3))(expo@58.0.16)(react-native@0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(typescript@6.0.3):
     dependencies:
       '@expo/config-plugins': 58.0.9(typescript@6.0.3)
       '@xmldom/xmldom': 0.9.12
       chalk: 5.6.2
+      cubic2quad: 1.2.1
       fonteditor-core: 2.6.3
       ora: 9.4.1
       pathkit-wasm: 1.0.0
       plist: 3.1.1
-      pyodide: 0.29.5
       react: 19.3.0
       react-native: 0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0)
       svg2ttf: 6.1.0
@@ -10400,10 +10383,8 @@ snapshots:
       '@expo/config': 58.0.6(typescript@6.0.3)
       expo: 58.0.16(@babel/core@7.29.7)(@expo/dom-webview@58.0.2)(react-native-worklets@0.13.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(react-native@0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0))(react-native@0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(typescript@6.0.3)
     transitivePeerDependencies:
-      - bufferutil
       - supports-color
       - typescript
-      - utf-8-validate
 
   react-native-nitro-modules@0.37.1(react-native@0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0):
     dependencies:
