@@ -38,7 +38,7 @@
     "@tanstack/react-query": "5.104.5",
     "@zoontek/react-native-navigation-bar": "2.0.2",
     "clsx": "2.1.1",
-    "cva": "1.0.0-beta.9",
+    "cva": "1.0.0-beta.12",
     "drizzle-orm": "0.45.4",
     "expo": "58.0.16",
     "expo-drizzle-studio-plugin": "0.2.1",
