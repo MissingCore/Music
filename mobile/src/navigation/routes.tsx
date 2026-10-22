@@ -65,8 +65,6 @@ function RootScreens(_: RootScreensProps) {
   const defaultTabName = usePreferenceStore((s) =>
     capitalize(s.defaultOpenTab),
   );
-  const defaultLibraryTab = usePreferenceStore((s) => s.defaultLibraryTab);
-
   return (
     <MaterialTopTab.Navigator
       initialRouteName={defaultTabName}
@@ -79,7 +77,7 @@ function RootScreens(_: RootScreensProps) {
         name="Library"
         // @ts-expect-error - Typing for screens should be compatible.
         component={Library}
-        initialParams={{ category: defaultLibraryTab, folderPath: undefined }}
+        initialParams={{}}
       />
     </MaterialTopTab.Navigator>
   );
