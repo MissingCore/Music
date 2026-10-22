@@ -78,25 +78,6 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
 
     defaultOpenTab: "home",
     defaultLibraryTab: "track",
-    homeTab: "home",
-    tabsOrder: [
-      "home",
-      "folder",
-      "playlist",
-      "track",
-      "album",
-      "artist",
-      "genre",
-    ],
-    tabsVisibility: {
-      album: true,
-      artist: true,
-      folder: true,
-      genre: true,
-      home: true,
-      playlist: true,
-      track: true,
-    },
 
     minAlbumLength: 1,
 

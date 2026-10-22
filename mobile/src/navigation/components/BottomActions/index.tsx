@@ -7,7 +7,7 @@ import Animated, { LinearTransition } from "react-native-reanimated";
 import { useRenderBottomActions } from "./useBottomActions";
 
 import { MiniPlayer } from "./MiniPlayer";
-import { Navbar, SearchButton, SettingsButton } from "./NavActions";
+import { SearchButton, SettingsButton } from "./NavActions";
 
 //#region Bottom Actions
 /** Actions stickied to the bottom of the screens. */
@@ -39,7 +39,7 @@ function WithNavBar() {
           className="-z-1 w-full flex-row gap-2"
         >
           <SearchButton />
-          <Navbar />
+          <View className="h-14 shrink grow rounded-full bg-surfaceContainerLowest" />
           <SettingsButton />
         </Animated.View>
       ) : null}

@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 export type MigrationOption =
-  | "hide-home-tab"
   | "hidden-tracks"
   | "multi-artist"
   | "favorites"
@@ -30,7 +29,7 @@ export const MigrationHistory: Record<
 > = {
   0: { version: "v2.3.0", changes: [] },
   1: { version: "v2.4.0", changes: [] },
-  2: { version: "v2.6.0", changes: ["hide-home-tab"] },
+  2: { version: "v2.6.0", changes: [] },
   3: {
     version: "v3.0.0-rc.0",
     changes: ["onboarding-flow", "hidden-tracks", "multi-artist", "favorites"],

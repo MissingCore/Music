@@ -8,7 +8,6 @@ import { PreferenceTogglers } from "~/stores/Preference/actions";
 
 import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
 import { ColumnSizeSheet } from "./sheets/ColumnSizeSheet";
-import { TabOrderSheet } from "./sheets/TabOrderSheet";
 import * as SettingsList from "./components/SettingsList";
 
 import { useSheetRef } from "~/components/next/base/sheet";
@@ -38,7 +37,6 @@ export default function AppearanceSettings() {
   const primaryFontSheetRef = useSheetRef();
   const themeSheetRef = useSheetRef();
   const columnSizeSheetRef = useSheetRef();
-  const tabOrderSheetRef = useSheetRef();
 
   return (
     <>
@@ -46,7 +44,6 @@ export default function AppearanceSettings() {
       <PrimaryFontSheet ref={primaryFontSheetRef} />
       <ThemeSheet ref={themeSheetRef} />
       <ColumnSizeSheet ref={columnSizeSheetRef} />
-      <TabOrderSheet ref={tabOrderSheetRef} />
 
       <ScrollLayout title="feat.appearance.title">
         <SettingsList.Group label={t("feat.theme.title")}>
@@ -79,13 +76,6 @@ export default function AppearanceSettings() {
             icon="widget-width"
             label={t("feat.modalViewPreference.extra.columnSize")}
             onPress={() => columnSizeSheetRef.current?.present()}
-          />
-          <SettingsList.Divider />
-          <SettingsList.Item
-            icon="tab-move"
-            label={t("feat.tabsOrder.title")}
-            supporting={t("feat.tabsOrder.brief")}
-            onPress={() => tabOrderSheetRef.current?.present()}
           />
         </SettingsList.Group>
 

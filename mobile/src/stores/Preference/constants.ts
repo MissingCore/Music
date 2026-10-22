@@ -6,7 +6,7 @@ import type {
   CustomTheme,
   DefaultTheme,
 } from "~/modules/customization/theme/core/constants";
-import type { LibraryTab, RootTab, Tab } from "./types";
+import type { LibraryTab, RootTab } from "./types";
 
 //#region Now Playing Design
 export const NowPlayingDesignOptions = [
@@ -61,12 +61,6 @@ export interface PreferenceStore {
   defaultOpenTab: RootTab;
   /** Default screen when viewing "Library" screen. */
   defaultLibraryTab: LibraryTab;
-  /** @deprecated Tab that we open up to on app launch. */
-  homeTab: Tab;
-  /** @deprecated Order of tabs on the Home screen. */
-  tabsOrder: Tab[];
-  /** @deprecated Visibility of the tabs on the Home screen. */
-  tabsVisibility: Record<Tab, boolean>;
 
   /** Minimum number of tracks for album to show in Albums screen. */
   minAlbumLength: number;

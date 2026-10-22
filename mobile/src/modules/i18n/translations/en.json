@@ -173,10 +173,7 @@
     },
     "tabsOrder": {
       "title": "Tab Order",
-      "brief": "Customize the order and visibility of the tabs.",
-      "extra": {
-        "setHomeTab": "Open {{- name}} tab on app launch."
-      }
+      "brief": "Customize the order and visibility of the tabs."
     },
     "minAlbumLength": {
       "title": "Minimum Album Length"
