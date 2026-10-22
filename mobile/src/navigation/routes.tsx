@@ -70,6 +70,7 @@ function RootScreens(_: RootScreensProps) {
   return (
     <MaterialTopTab.Navigator
       initialRouteName={defaultTabName}
+      backBehavior="initialRoute"
       tabBar={noop}
       screenOptions={{ lazy: true }}
     >
