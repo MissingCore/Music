@@ -1,7 +1,6 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import type { StaticScreenProps } from "@react-navigation/native";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { useWindowDimensions } from "react-native";
@@ -41,13 +40,7 @@ import {
 } from "~/components/next/composed/track-item";
 import { Pressable } from "~/components/next/primitive/pressable";
 
-type Props = StaticScreenProps<{ path?: string }>;
-
-export default function Folders({
-  route: {
-    params: { path },
-  },
-}: Props) {
+export default function Folders({ path = "" }) {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const listRef = useAnimatedLegendListRef();

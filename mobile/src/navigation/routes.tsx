@@ -3,38 +3,24 @@
 
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import type {
-  EventArg,
   NavigatorScreenParams,
-  ParamListBase,
   StaticScreenProps,
-  TabNavigationState,
 } from "@react-navigation/native";
-import {
-  createStaticNavigation,
-  useIsFocused,
-  useNavigation,
-} from "@react-navigation/native";
+import { createStaticNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { PortalHost } from "@rn-primitives/portal";
-import { useCallback, useMemo, useRef } from "react";
-
-import { useBackHandler } from "~/hooks/useBackHandler";
 
 import Home from "./screens/HomeView";
+import Library from "./screens/LibraryView";
 import Album from "./screens/albums/CurrentView";
 import ModifyAlbum from "./screens/albums/ModifyView";
-import Albums from "./screens/albums/View";
 import Artist from "./screens/artists/CurrentView";
-import Artists from "./screens/artists/View";
-import Folders from "./screens/folders/View";
 import Genre from "./screens/genres/CurrentView";
-import Genres from "./screens/genres/View";
 import Upcoming from "./screens/now-playing/UpcomingView";
 import NowPlaying from "./screens/now-playing/View";
 import CreatePlaylist from "./screens/playlists/CreateView";
 import Playlist from "./screens/playlists/CurrentView";
 import ModifyPlaylist from "./screens/playlists/ModifyView";
-import Playlists from "./screens/playlists/View";
 import AboutApp from "./screens/settings/AboutView";
 import AppearanceSettings from "./screens/settings/AppearanceSettingsView";
 import AppUpdate from "./screens/settings/AppUpdateView";
@@ -45,7 +31,6 @@ import ScanningSettings from "./screens/settings/ScanningSettingsView";
 import ThirdParty from "./screens/settings/ThirdPartyView";
 import Settings from "./screens/settings/View";
 import ModifyTrack from "./screens/tracks/ModifyView";
-import Tracks from "./screens/tracks/View";
 import { TrackSheet } from "./screens/tracks/sheets/TrackSheet";
 import { ArtistsSheet } from "./sheets/ArtistsSheet";
 import AudioEffectScreenGroup from "~/modules/audio/_screens";
@@ -54,11 +39,10 @@ import InsightsScreenGroup from "~/modules/insights/screens";
 import LyricScreenGroup from "~/modules/lyric/screens";
 import Search from "~/modules/search/screens/View";
 
-import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
-import { useTabsByVisibility } from "~/stores/Preference/hooks";
+import { usePreferenceStore } from "~/stores/Preference/store";
+import type { LibraryTab } from "~/stores/Preference/types";
 
 import { capitalize } from "~/utils/string";
-import type { Tab } from "~/stores/Preference/types";
 import { Toolbar } from "~/components/next/composed/toolbar";
 import { TrackMultiSelectListeners } from "~/modules/media/multiSelect/components/TrackMultiSelectListeners";
 import { BottomActions } from "./components/BottomActions";
@@ -66,158 +50,36 @@ import { DeferredRender } from "./components/DeferredRender";
 import { TopAppBar } from "./components/TopAppBar";
 
 //#region Root Screens
-type TabState = EventArg<
-  "state",
-  any,
-  { state: TabNavigationState<ParamListBase> }
->;
-
 const MaterialTopTab = createMaterialTopTabNavigator();
 
-let canResetHomeScreens = false;
 const noop = () => null;
-
-const RootScreenComponents = {
-  album: Albums,
-  artist: Artists,
-  folder: Folders,
-  genre: Genres,
-  home: Home,
-  playlist: Playlists,
-  track: Tracks,
-} as const;
 
 type RootScreensProps = StaticScreenProps<
   NavigatorScreenParams<{
     Home: undefined;
-    Folders: { path?: string } | undefined;
-    Playlists: undefined;
-    Tracks: undefined;
-    Albums: undefined;
-    Artists: undefined;
-    Genres: undefined;
+    Library: { category: LibraryTab; folderPath?: string } | undefined;
   }>
 >;
 
-type HomeScreenNames = "Home" | `${Capitalize<Exclude<Tab, "home">>}s`;
-
-function getHomeScreenName(tabKey: Tab) {
-  if (tabKey === "home") return "Home";
-  return `${capitalize(tabKey)}s` as const;
-}
-
 function RootScreens(_: RootScreensProps) {
-  const navigation = useNavigation();
-  const isFocused = useIsFocused();
-  const homeTab = usePreferenceStore((s) => s.homeTab);
-  const { displayedTabs, hiddenTabs } = useTabsByVisibility();
-  // Should be fine to store history stack in ref as it doesn't affect rendering.
-  //  - https://react.dev/learn/referencing-values-with-refs#when-to-use-refs
-  const historyStack = useRef<string[]>([]);
-
-  const homeTabName = useMemo(() => {
-    if (!displayedTabs.includes(homeTab)) {
-      // FIXME: Current workaround to `Couldn't find a screen named 'Home'
-      // to use as 'initialRouteName'.` after the `v2.6.0` release.
-      //  - One of the potential causes is the migration failing as some
-      //  users also encountered `Call to function 'NativeDatabase.prepareAsync'
-      //  has been rejected.`.
-      //  - Though there were some users got the screen error but didn't encounter
-      //  the database issue.
-      if (!canResetHomeScreens) {
-        // eslint-disable-next-line react-hooks/globals
-        canResetHomeScreens = true;
-        // Reset home tab preferences if we have a mismatch.
-        preferenceStore.setState({
-          homeTab: "home",
-          tabsOrder: [
-            "home",
-            "folder",
-            "playlist",
-            "track",
-            "album",
-            "artist",
-            "genre",
-          ],
-          tabsVisibility: {
-            album: true,
-            artist: true,
-            folder: true,
-            genre: true,
-            home: true,
-            playlist: true,
-            track: true,
-          },
-        });
-      }
-      if (!displayedTabs[0]) return undefined;
-      return getHomeScreenName(displayedTabs[0]);
-    }
-    return getHomeScreenName(homeTab);
-  }, [displayedTabs, homeTab]);
-
-  /** Manually handle the back gesture since the old strategy no longer works. */
-  useBackHandler(
-    () => {
-      // Remove hidden tabs before handling back gesture.
-      historyStack.current = historyStack.current.filter(
-        (screenName) =>
-          !hiddenTabs.some((t) =>
-            screenName.startsWith(`${getHomeScreenName(t)}-`),
-          ),
-      );
-      if (historyStack.current.length === 1) return false;
-      const prevScreenName = historyStack.current.at(-2)!.split("-")[0]!;
-      navigation.navigate("HomeScreens", {
-        screen: prevScreenName as HomeScreenNames,
-      });
-      return true;
-    },
-    [navigation, hiddenTabs],
-    isFocused,
+  const defaultTabName = usePreferenceStore((s) =>
+    capitalize(s.defaultOpenTab),
   );
-
-  /** Have Tab history operate like Stack history. */
-  const trackHistoryStack = useCallback((e: TabState) => {
-    // Get top of history.
-    const { key: currKey } = e.data.state.history.at(-1)!;
-    if (historyStack.current.length === 0) {
-      // Initiate the current history stack by putting in the "Home" route.
-      historyStack.current.push(currKey);
-    } else {
-      // See if route was seen previously.
-      const atIndex = historyStack.current.findIndex((k) => currKey === k);
-      // Handle if we visited this tab earlier.
-      if (atIndex !== -1) {
-        historyStack.current = historyStack.current.toSpliced(atIndex + 1);
-      } else {
-        historyStack.current.push(currKey);
-      }
-    }
-  }, []);
-
-  const listeners = useMemo(
-    () => ({ state: trackHistoryStack }),
-    [trackHistoryStack],
-  );
+  const defaultLibraryTab = usePreferenceStore((s) => s.defaultLibraryTab);
 
   return (
     <MaterialTopTab.Navigator
-      initialRouteName={homeTabName}
-      backBehavior="none"
+      initialRouteName={defaultTabName}
       tabBar={noop}
-      screenListeners={listeners}
+      screenOptions={{ lazy: true }}
     >
-      {displayedTabs.map((tabKey) => (
-        <MaterialTopTab.Screen
-          key={tabKey}
-          name={getHomeScreenName(tabKey)}
-          // @ts-expect-error - Typing for screens should be compatible.
-          component={RootScreenComponents[tabKey]}
-          initialParams={tabKey === "folder" ? { path: undefined } : {}}
-          options={{ lazy: true }}
-        />
-      ))}
+      <MaterialTopTab.Screen name="Home" component={Home} />
+      <MaterialTopTab.Screen
+        name="Library"
+        // @ts-expect-error - Typing for screens should be compatible.
+        component={Library}
+        initialParams={{ category: defaultLibraryTab, folderPath: undefined }}
+      />
     </MaterialTopTab.Navigator>
   );
 }
