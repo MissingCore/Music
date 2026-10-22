@@ -77,6 +77,8 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     activeCustomTheme: null,
 
     showNavbar: true,
+    defaultOpenTab: "home",
+    defaultLibraryTab: "track",
     homeTab: "home",
     tabsOrder: [
       "home",
