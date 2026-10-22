@@ -78,6 +78,7 @@ export default function Folders({ path = "" }) {
     },
     [dirSegments, setDirSegments],
     isFocused,
+    1, //? To register after the back handler in `LibraryView`.
   );
 
   return (

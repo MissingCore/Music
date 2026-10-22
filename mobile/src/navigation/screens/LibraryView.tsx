@@ -44,11 +44,12 @@ export default function Library({
   //? Have back action pop from the Library "stack".
   useBackHandler(
     () => {
+      if (history.length <= 1) return false;
       setHistory((prev) => prev.slice(0, -1));
       return true;
     },
-    [],
-    isFocused && history.length > 1,
+    [history],
+    isFocused,
   );
 
   const updateHistory = useEffectEvent(() => {
