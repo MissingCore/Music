@@ -31,7 +31,6 @@
     "all": "All",
     "more": "More",
     "home": "Home",
-    "homeScreens": "Home Screens",
     "library": "Library",
     "settings": "Settings",
     "about": "About",
@@ -169,6 +168,13 @@
 
         "atmosphere": "Atmosphere Effect",
         "opaqueColors": "Opaque Colors"
+      }
+    },
+    "homeScreens": {
+      "title": "Home Screens",
+      "extra": {
+        "defaultOpenTab": "Default Open Tab",
+        "defaultLibraryTab": "Default Library Tab"
       }
     },
     "tabsOrder": {
