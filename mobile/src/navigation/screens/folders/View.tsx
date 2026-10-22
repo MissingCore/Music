@@ -63,7 +63,9 @@ export default function Folders({ path = "" }) {
     // Exclude the `/` at the end of the path.
     setDirSegments(addTrailingSlash(path).split("/").slice(0, -1));
     // Clear search params after reading from it.
-    navigation.setParams({ path: undefined });
+    // @ts-expect-error - Temporary error due to this "screen" not being
+    // rendered as a screen. Should be fixed in React Navigation v8.
+    navigation.setParams({ folderPath: undefined });
   }, [navigation, isFocused, path, setDirSegments]);
 
   //? Treat each directory as part of the stack which gets popped when a back gesture is detected.
