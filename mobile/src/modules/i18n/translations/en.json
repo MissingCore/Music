@@ -177,10 +177,6 @@
         "defaultLibraryTab": "Default Library Tab"
       }
     },
-    "tabsOrder": {
-      "title": "Tab Order",
-      "brief": "Customize the order and visibility of the tabs."
-    },
     "minAlbumLength": {
       "title": "Minimum Album Length"
     },
