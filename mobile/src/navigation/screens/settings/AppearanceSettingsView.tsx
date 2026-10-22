@@ -25,7 +25,6 @@ export default function AppearanceSettings() {
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
   const theme = usePreferenceStore((s) => s.theme);
   const activeCustomTheme = usePreferenceStore((s) => s.activeCustomTheme);
-  const showNavbar = usePreferenceStore((s) => s.showNavbar);
   const dragClearPlayback = usePreferenceStore((s) => s.dragClearPlayback);
   const miniplayerGestures = usePreferenceStore((s) => s.miniplayerGestures);
   const nowPlayingArtworkControls = usePreferenceStore(
@@ -87,13 +86,6 @@ export default function AppearanceSettings() {
             label={t("feat.tabsOrder.title")}
             supporting={t("feat.tabsOrder.brief")}
             onPress={() => tabOrderSheetRef.current?.present()}
-          />
-          <SettingsList.Divider />
-          <SettingsList.ToggleItem
-            icon="bottom-navigation"
-            label={t("feat.tabsOrder.extra.showNavbar")}
-            onToggle={PreferenceTogglers.toggleKey("showNavbar")}
-            enabled={showNavbar}
           />
         </SettingsList.Group>
 

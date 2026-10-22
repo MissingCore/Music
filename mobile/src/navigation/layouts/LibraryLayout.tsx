@@ -24,7 +24,6 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scheduleOnUI } from "react-native-worklets";
 
-import { usePreferenceStore } from "~/stores/Preference/store";
 import type { LayoutItem } from "~/stores/ViewPreference/types";
 import {
   useCompactGridLayoutConfig,
@@ -136,9 +135,8 @@ export function Provider({
   );
   //#endregion
 
-  const showNavbar = usePreferenceStore((s) => s.showNavbar);
   const bottomOffset = useBottomActionsOffset({
-    maxRows: showNavbar ? 2 : 1,
+    maxRows: 2,
     rowAlwaysVisible: true,
   });
 

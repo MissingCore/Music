@@ -29,7 +29,6 @@ type ToggleableKey =
   | "reshuffleOnLaunch"
   | "repeatOnSkip"
   | "restoreLastPosition"
-  | "showNavbar"
   | "squareArtwork"
   | "standardVinylSpeed";
 

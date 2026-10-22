@@ -15,7 +15,6 @@ import { ScrollView as GestureScrollView } from "react-native-gesture-handler";
 import { createAnimatedComponent } from "react-native-reanimated";
 
 import { Queue } from "~/stores/Playback/actions";
-import { usePreferenceStore } from "~/stores/Preference/store";
 import { useSessionStore } from "~/stores/Session/store";
 import { viewPreferenceStore } from "~/stores/ViewPreference/store";
 import type { LayoutItem } from "~/stores/ViewPreference/types";
@@ -57,10 +56,9 @@ const trackSource = {
 
 export default function Home() {
   const queryClient = useQueryClient();
-  const showNavbar = usePreferenceStore((s) => s.showNavbar);
   const last7DaysEpoch = useSessionStore((s) => s.lastDaysStartEpoch);
   const bottomOffset = useBottomActionsOffset({
-    maxRows: showNavbar ? 2 : 1,
+    maxRows: 2,
     rowAlwaysVisible: true,
   });
 

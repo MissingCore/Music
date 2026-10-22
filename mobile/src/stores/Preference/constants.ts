@@ -57,8 +57,6 @@ export interface PreferenceStore {
   /** Values of active custom theme. */
   activeCustomTheme: CustomTheme | null;
 
-  /** @deprecated If the navbar will be displayed after clicking the hamburger menu. */
-  showNavbar: boolean;
   /** Default screen shown on app launch. */
   defaultOpenTab: RootTab;
   /** Default screen when viewing "Library" screen. */
