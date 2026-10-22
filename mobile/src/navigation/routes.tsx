@@ -57,7 +57,7 @@ const noop = () => null;
 type RootScreensProps = StaticScreenProps<
   NavigatorScreenParams<{
     Home: undefined;
-    Library: { category: LibraryTab; folderPath?: string } | undefined;
+    Library: { screen: LibraryTab; folderPath?: string };
   }>
 >;
 

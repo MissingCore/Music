@@ -33,7 +33,7 @@ export function getMediaLinkContext({
   else if (type === "folder") {
     return [
       "HomeScreens",
-      { screen: "Library", params: { category: "folder", folderPath: id } },
+      { screen: "Library", params: { screen: "folder", folderPath: id } },
     ] as const;
   } else if (type === "genre") {
     return ["Genre", { id }] as const;
@@ -41,7 +41,7 @@ export function getMediaLinkContext({
     if (id === ReservedPlaylists.tracks) {
       return [
         "HomeScreens",
-        { screen: "Library", params: { category: "track" } },
+        { screen: "Library", params: { screen: "track" } },
       ] as const;
     }
     return ["Playlist", { id }] as const;

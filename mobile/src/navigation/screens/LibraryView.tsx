@@ -18,7 +18,7 @@ import Tracks from "./tracks/View";
 
 type Props = StaticScreenProps<{
   //? Internally, we support `undefined`.
-  category: LibraryTab;
+  screen: LibraryTab;
   folderPath?: string;
 }>;
 
@@ -33,7 +33,7 @@ const RootScreenComponents = {
 
 export default function Library({
   route: {
-    params: { category, folderPath },
+    params: { screen, folderPath },
   },
 }: Props) {
   const navigation = useNavigation();
@@ -52,16 +52,15 @@ export default function Library({
   );
 
   const updateHistory = useEffectEvent(() => {
-    const historyIdx = history.findIndex((tab) => tab === category);
-    if (historyIdx === -1) setHistory((prev) => [...prev, category]);
+    const historyIdx = history.findIndex((tab) => tab === screen);
+    if (historyIdx === -1) setHistory((prev) => [...prev, screen]);
     else setHistory((prev) => prev.slice(0, historyIdx + 1));
-    // @ts-expect-error - Internally, we support `undefined`.
-    navigation.setParams({ category: undefined });
+    navigation.setParams({ screen: undefined });
   });
 
   useEffect(() => {
-    if (category) updateHistory();
-  }, [category]);
+    if (screen) updateHistory();
+  }, [screen]);
 
   const Screen = RootScreenComponents[history.at(-1)!];
   return <Screen path={folderPath} />;
