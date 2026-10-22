@@ -248,7 +248,10 @@ function RecentlyDiscovered() {
       label="feat.recent.extra.recentlyDiscovered"
       onLabelPress={() => {
         updateTrackViewPreference();
-        navigation.navigate("HomeScreens", { screen: "Tracks" });
+        navigation.navigate("HomeScreens", {
+          screen: "Library",
+          params: { category: "track" },
+        });
       }}
       data={data}
       onTrackPlay={async () => {
@@ -320,22 +323,27 @@ function RecentGroup(props: {
 
 //#region Home Links
 const linkMap = [
-  { icon: "album", labelKey: "term.albums", screen: "Albums" },
-  { icon: "artist", labelKey: "term.artists", screen: "Artists" },
-  { icon: "folder", labelKey: "term.folders", screen: "Folders" },
-  { icon: "genres", labelKey: "term.genres", screen: "Genres" },
-  { icon: "list", labelKey: "term.playlists", screen: "Playlists" },
-  { icon: "music-note", labelKey: "term.tracks", screen: "Tracks" },
+  { icon: "album", labelKey: "term.albums", category: "album" },
+  { icon: "artist", labelKey: "term.artists", category: "artist" },
+  { icon: "folder", labelKey: "term.folders", category: "folder" },
+  { icon: "genres", labelKey: "term.genres", category: "genre" },
+  { icon: "list", labelKey: "term.playlists", category: "playlist" },
+  { icon: "music-note", labelKey: "term.tracks", category: "track" },
 ] as const;
 
 function HomeLinks() {
   const navigation = useNavigation();
   return (
     <View className="gap-0.75 px-4">
-      {linkMap.map(({ icon, labelKey, screen }, idx) => (
+      {linkMap.map(({ icon, labelKey, category }, idx) => (
         <Button
           key={labelKey}
-          onPress={() => navigation.navigate("HomeScreens", { screen })}
+          onPress={() =>
+            navigation.navigate("HomeScreens", {
+              screen: "Library",
+              params: { category },
+            })
+          }
           className={cn("rounded-xs p-3", {
             "rounded-t-xl": idx === 0,
             "rounded-b-xl": idx === linkMap.length - 1,
