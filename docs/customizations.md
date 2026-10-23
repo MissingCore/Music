@@ -79,4 +79,4 @@ We support various customizations on the "Now Playing" screen such as:
 We have 2 "default tabs" features:
 
 - `Default Open Tab` with `Home` & `Library` options.
-- `Default Library Tab` with `Albums`, `Artists`, `Folders`, `Genres`, `Playlists,` and `Tracks` as options.
+- `Default Library Tab` with `Albums`, `Artists`, `Folders`, `Genres`, `Playlists`, and `Tracks` as options.
