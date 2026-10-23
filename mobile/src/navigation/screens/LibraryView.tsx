@@ -15,6 +15,7 @@ import Folders from "./folders/View";
 import Genres from "./genres/View";
 import Playlists from "./playlists/View";
 import Tracks from "./tracks/View";
+import { RootToolbar } from "../components/BottomActions/RootToolbar";
 
 type Props = StaticScreenProps<{
   //? Internally, we support `undefined`.
@@ -63,6 +64,12 @@ export default function Library({
     if (screen) updateHistory();
   }, [screen]);
 
-  const Screen = RootScreenComponents[history.at(-1)!];
-  return <Screen path={folderPath} />;
+  const currentTab = history.at(-1)!;
+  const Screen = RootScreenComponents[currentTab];
+  return (
+    <>
+      <RootToolbar libraryTab={currentTab} />
+      <Screen path={folderPath} />
+    </>
+  );
 }

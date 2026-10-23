@@ -22,6 +22,7 @@ import { useGetLayoutConfig } from "~/hooks/useLayoutConfigs";
 
 import { useHasNewUpdate } from "../hooks/useHasNewUpdate";
 import { useBottomActionsOffset } from "../components/BottomActions/useBottomActions";
+import { RootToolbar } from "../components/BottomActions/RootToolbar";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
@@ -75,6 +76,7 @@ export default function Home() {
 
   return (
     <>
+      <RootToolbar />
       <TopAppBar />
       <ScrollView
         contentContainerStyle={{ paddingBottom: bottomOffset }}
