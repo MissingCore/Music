@@ -39,17 +39,14 @@ import {
 /** Container rendering the miniplayer, accounting for the toolbar. */
 export function MiniplayerProvider() {
   const isMiniplayerRendered = useIsMiniplayerVisible();
-  //  Extra `View` is to fix positioning when button navigation is selected.
   return (
-    <View>
-      <Animated.View
-        layout={LinearTransition}
-        pointerEvents="box-none"
-        className="absolute bottom-safe-offset-14 left-0 w-full items-end p-4 pt-0"
-      >
-        {isMiniplayerRendered ? <Miniplayer /> : null}
-      </Animated.View>
-    </View>
+    <Animated.View
+      layout={LinearTransition}
+      pointerEvents="box-none"
+      className="absolute bottom-safe-offset-14 left-0 w-full items-end p-4 pt-0"
+    >
+      {isMiniplayerRendered ? <Miniplayer /> : null}
+    </Animated.View>
   );
 }
 
