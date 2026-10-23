@@ -53,13 +53,10 @@ export function RootToolbar(props: { libraryTab?: LibraryTab }) {
               className="shrink flex-row items-center rounded-full"
             >
               <Icon name="library-music-filled" className="p-2" />
-              <Marquee
-                center
-                wrapperClassName="min-w-14 grow-0"
-                contentContainerClassName="pr-2"
-              >
+              <Marquee center wrapperClassName="min-w-14 grow-0">
                 <TText textKey={`term.${props.libraryTab}s`} size="sm" />
               </Marquee>
+              <Icon name="unfold-more" className="p-2" />
             </Ripple>
           ) : (
             <IconButton
