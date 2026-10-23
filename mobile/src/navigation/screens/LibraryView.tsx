@@ -5,7 +5,7 @@ import type { StaticScreenProps } from "@react-navigation/native";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useEffect, useEffectEvent, useState } from "react";
 
-import { usePreferenceStore } from "~/stores/Preference/store";
+import { preferenceStore } from "~/stores/Preference/store";
 import type { LibraryTab } from "~/stores/Preference/types";
 import { useBackHandler } from "~/hooks/useBackHandler";
 
@@ -39,8 +39,9 @@ export default function Library({
 }: Props) {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-  const defaultLibraryTab = usePreferenceStore((s) => s.defaultLibraryTab);
-  const [history, setHistory] = useState<LibraryTab[]>([defaultLibraryTab]);
+  const [history, setHistory] = useState<LibraryTab[]>(() => [
+    preferenceStore.getState().defaultLibraryTab,
+  ]);
 
   //? Have back action pop from the Library "stack".
   useBackHandler(
