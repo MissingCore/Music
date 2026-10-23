@@ -59,6 +59,8 @@ import { ImageListItem } from "~/components/next/composed/image-list-item";
 
 //#region Provider
 interface LibraryLayoutInput {
+  /** Key used to cache the header height for this use of the layout. */
+  cacheKey: string;
   asGrid: boolean;
   ref?: AnimatedLegendListRef;
 }
@@ -72,6 +74,9 @@ interface LibraryLayoutValue extends LibraryLayoutInput {
 }
 
 const LibraryLayoutContext = createContext<LibraryLayoutValue>(null as never);
+
+//? Cache the header height per `cacheKey` as this generally shouldn't change.
+const cachedHeaderHeight: Record<string, number> = {};
 
 export function Provider({
   children,
@@ -184,16 +189,18 @@ export function Header(props: {
   Subheader?: React.ReactNode;
 }) {
   const { t } = useTranslation();
-  const { headerHeight, setHeaderHeight, headerPosition } =
+  const { cacheKey, headerHeight, setHeaderHeight, headerPosition } =
     use(LibraryLayoutContext);
   const sheetRef = useSheetRef();
   const [containerHeight, setContainerHeight] = useState(0);
+
+  const _headerHeight = headerHeight || cachedHeaderHeight[cacheKey] || 0;
 
   const headerStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: headerPosition.get() }],
     opacity: clamp(
       // Start fade after the header is 10% hidden.
-      (headerHeight * 1.1 + headerPosition.get()) / (headerHeight || 1),
+      (_headerHeight * 1.1 + headerPosition.get()) / (_headerHeight || 1),
       0,
       1,
     ),
@@ -203,12 +210,15 @@ export function Header(props: {
     <>
       <props.OptionsSheet ref={sheetRef} />
       <Animated.View
-        onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}
+        onLayout={(e) => {
+          cachedHeaderHeight[cacheKey] = e.nativeEvent.layout.height;
+          setHeaderHeight(e.nativeEvent.layout.height);
+        }}
         style={headerStyle}
         className="absolute inset-x-0 top-0 z-50"
       >
         <TopDownGradient
-          height={headerHeight}
+          height={_headerHeight}
           startFrom={containerHeight}
           className="absolute top-0 left-0"
         />
@@ -319,7 +329,7 @@ export function MediaList<TData>({
   ListEmptyComponent,
 }: MediaListProps<TData>) {
   const { scrollRef, scrollableHeight, scrollHandlers } = useScrollContext();
-  const { asGrid, headerHeight, resetHeaderPosition, bottomOffset } =
+  const { cacheKey, asGrid, headerHeight, resetHeaderPosition, bottomOffset } =
     use(LibraryLayoutContext);
   const listLayout = useListLayoutConfig();
   const compactGridLayout = useCompactGridLayoutConfig();
@@ -360,7 +370,9 @@ export function MediaList<TData>({
     scheduleOnUI(resetHeaderPosition);
   }
 
-  if (!headerHeight) return ListEmptyComponent;
+  const _headerHeight = headerHeight || cachedHeaderHeight[cacheKey];
+
+  if (!_headerHeight) return ListEmptyComponent;
   return (
     <LegendList
       ref={scrollRef}
@@ -375,7 +387,7 @@ export function MediaList<TData>({
       ListEmptyComponent={ListEmptyComponent}
       className="-mx-0.75 -mb-1.5"
       contentContainerStyle={{
-        paddingTop: headerHeight,
+        paddingTop: _headerHeight,
         paddingBottom: bottomOffset,
       }}
       contentContainerClassName="p-4 pt-0"

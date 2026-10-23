@@ -21,7 +21,7 @@ type ArtistData = ExtractQueryData<typeof useArtists>[number];
 export default function Artists() {
   const asGrid = useViewPreferenceStore((s) => s.artistLayout !== "list");
   return (
-    <LibraryLayout.Provider asGrid={asGrid}>
+    <LibraryLayout.Provider cacheKey="artists" asGrid={asGrid}>
       <LibraryLayout.Header
         titleKey="term.artists"
         OptionsSheet={ArtistsViewOptionsSheet}

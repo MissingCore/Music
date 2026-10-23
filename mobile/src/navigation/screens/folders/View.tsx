@@ -82,7 +82,7 @@ export default function Folders({ path }: { path?: string }) {
   );
 
   return (
-    <LibraryLayout.Provider ref={listRef} asGrid={false}>
+    <LibraryLayout.Provider ref={listRef} cacheKey="folders" asGrid={false}>
       <LibraryLayout.Header
         titleKey="term.folders"
         OptionsSheet={FoldersViewOptionsSheet}

@@ -42,7 +42,7 @@ const trackSource = {
 
 export default function Tracks() {
   return (
-    <LibraryLayout.Provider asGrid={false}>
+    <LibraryLayout.Provider cacheKey="tracks" asGrid={false}>
       <LibraryLayout.Header
         titleKey="term.tracks"
         Actions={<TrackActions />}
