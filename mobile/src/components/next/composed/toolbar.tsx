@@ -6,7 +6,7 @@ import { Portal, PortalHost } from "@rn-primitives/portal";
 import { useCallback, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
-import { View, useWindowDimensions } from "react-native";
+import { View } from "react-native";
 import Animated, {
   FadeIn,
   FadeOut,
@@ -33,16 +33,11 @@ export function useToolbarOffset(extra = 0) {
  * portion of the toolbar.
  */
 function Provider() {
-  const { width } = useWindowDimensions();
-
-  const maxToolbarActionsWidth = width - 32 - 16 - 48;
-
   return (
-    <View className="absolute inset-x-0 bottom-0 flex-row items-center justify-between px-4 pb-safe-offset-4">
+    <View className="absolute inset-x-0 bottom-0 flex-row items-center justify-between gap-2 px-4 pb-safe-offset-4">
       <Animated.View
         layout={LinearTransition}
-        style={{ maxWidth: maxToolbarActionsWidth }}
-        className="my-1 h-10 flex-row items-center overflow-hidden rounded-full bg-surfaceContainerLowest"
+        className="my-1 h-10 shrink flex-row items-center overflow-hidden rounded-full bg-surfaceContainerLowest"
       >
         <PortalHost name="toolbar-actions-host" />
       </Animated.View>
