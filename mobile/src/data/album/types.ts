@@ -14,7 +14,7 @@ export type AlbumSummary = {
   artistsKey: string;
   /** Used for auto-filling album information. */
   maxYear: number | null;
-  /** Used for home screen sorting. */
+  /** Used for library screen sorting. */
   artistName: string;
   artwork: string | null;
   duration: number;
