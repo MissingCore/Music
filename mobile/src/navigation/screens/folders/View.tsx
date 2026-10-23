@@ -40,7 +40,7 @@ import {
 } from "~/components/next/composed/track-item";
 import { Pressable } from "~/components/next/primitive/pressable";
 
-export default function Folders({ path = "" }) {
+export default function Folders({ path }: { path?: string }) {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const listRef = useAnimatedLegendListRef();
