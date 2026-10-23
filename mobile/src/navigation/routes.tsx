@@ -45,7 +45,7 @@ import type { LibraryTab } from "~/stores/Preference/types";
 import { capitalize } from "~/utils/string";
 import { Toolbar } from "~/components/next/composed/toolbar";
 import { TrackMultiSelectListeners } from "~/modules/media/multiSelect/components/TrackMultiSelectListeners";
-import { BottomActions } from "./components/BottomActions";
+import { MiniplayerProvider } from "./components/BottomActions/Miniplayer";
 import { DeferredRender } from "./components/DeferredRender";
 import { TopAppBar } from "./components/TopAppBar";
 
@@ -90,7 +90,7 @@ export const RootStack = createNativeStackNavigator({
   layout: ({ children }) => (
     <>
       {children}
-      <BottomActions />
+      <MiniplayerProvider />
       <TrackSheet />
       <ArtistsSheet />
       <TrackMultiSelectListeners />

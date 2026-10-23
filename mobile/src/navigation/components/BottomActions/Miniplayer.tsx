@@ -23,7 +23,7 @@ import { getArtistsString } from "~/data/artist/utils";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { MiniPlayerOffset } from "./useBottomActions";
+import { MiniplayerOffset, useIsMiniplayerVisible } from "./useBottomActions";
 
 import { Ripple } from "~/components/Base/Pressable";
 import { IconButton } from "~/components/Form/Button/Icon";
@@ -36,11 +36,25 @@ import {
   PreviousButton,
 } from "~/modules/media/components/MediaControls";
 
-/**
- * Displays a player that appears at the bottom of the screen if we have
- * a song loaded.
- */
-export function MiniPlayer() {
+/** Container rendering the miniplayer, accounting for the toolbar. */
+export function MiniplayerProvider() {
+  const isMiniplayerRendered = useIsMiniplayerVisible();
+  //  Extra `View` is to fix positioning when button navigation is selected.
+  return (
+    <View>
+      <Animated.View
+        layout={LinearTransition}
+        pointerEvents="box-none"
+        className="absolute bottom-safe-offset-14 left-0 w-full items-end p-4 pt-0"
+      >
+        {isMiniplayerRendered ? <Miniplayer /> : null}
+      </Animated.View>
+    </View>
+  );
+}
+
+//#region Miniplayer
+function Miniplayer() {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
@@ -78,7 +92,7 @@ export function MiniPlayer() {
   useAnimatedReaction(
     () => panAmount.get(),
     (currVal, prevVal) => {
-      const threshold = insets.bottom + MiniPlayerOffset;
+      const threshold = insets.bottom + MiniplayerOffset;
       if (currVal > threshold && (prevVal === null || prevVal < threshold)) {
         scheduleOnRN(onResetStore);
       }
@@ -160,3 +174,4 @@ function TrackProgress({ duration }: { duration: number }) {
     </View>
   );
 }
+//#endregion
