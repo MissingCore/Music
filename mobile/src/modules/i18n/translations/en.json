@@ -31,7 +31,7 @@
     "all": "All",
     "more": "More",
     "home": "Home",
-    "homeScreens": "Home Screens",
+    "library": "Library",
     "settings": "Settings",
     "about": "About",
     "upcoming": "Upcoming",
@@ -170,12 +170,11 @@
         "opaqueColors": "Opaque Colors"
       }
     },
-    "tabsOrder": {
-      "title": "Tab Order",
-      "brief": "Customize the order and visibility of the tabs.",
+    "homeScreens": {
+      "title": "Home Screens",
       "extra": {
-        "setHomeTab": "Open {{- name}} tab on app launch.",
-        "showNavbar": "Show Navbar"
+        "defaultOpenTab": "Default Open Tab",
+        "defaultLibraryTab": "Default Library Tab"
       }
     },
     "minAlbumLength": {

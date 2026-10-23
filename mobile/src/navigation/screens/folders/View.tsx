@@ -1,7 +1,6 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import type { StaticScreenProps } from "@react-navigation/native";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { useWindowDimensions } from "react-native";
@@ -41,13 +40,7 @@ import {
 } from "~/components/next/composed/track-item";
 import { Pressable } from "~/components/next/primitive/pressable";
 
-type Props = StaticScreenProps<{ path?: string }>;
-
-export default function Folders({
-  route: {
-    params: { path },
-  },
-}: Props) {
+export default function Folders({ path }: { path?: string }) {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const listRef = useAnimatedLegendListRef();
@@ -70,7 +63,9 @@ export default function Folders({
     // Exclude the `/` at the end of the path.
     setDirSegments(addTrailingSlash(path).split("/").slice(0, -1));
     // Clear search params after reading from it.
-    navigation.setParams({ path: undefined });
+    // @ts-expect-error - Temporary error due to this "screen" not being
+    // rendered as a screen. Should be fixed in React Navigation v8.
+    navigation.setParams({ folderPath: undefined });
   }, [navigation, isFocused, path, setDirSegments]);
 
   //? Treat each directory as part of the stack which gets popped when a back gesture is detected.
@@ -83,10 +78,11 @@ export default function Folders({
     },
     [dirSegments, setDirSegments],
     isFocused,
+    1, //? To register after the back handler in `LibraryView`.
   );
 
   return (
-    <LibraryLayout.Provider ref={listRef} asGrid={false}>
+    <LibraryLayout.Provider ref={listRef} cacheKey="folders" asGrid={false}>
       <LibraryLayout.Header
         titleKey="term.folders"
         OptionsSheet={FoldersViewOptionsSheet}

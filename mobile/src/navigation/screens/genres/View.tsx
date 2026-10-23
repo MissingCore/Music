@@ -21,7 +21,7 @@ type GenreData = ExtractQueryData<typeof useGenres>[number];
 export default function Genres() {
   const asGrid = useViewPreferenceStore((s) => s.genreLayout !== "list");
   return (
-    <LibraryLayout.Provider asGrid={asGrid}>
+    <LibraryLayout.Provider cacheKey="genres" asGrid={asGrid}>
       <LibraryLayout.Header
         titleKey="term.genres"
         OptionsSheet={GenresViewOptionsSheet}

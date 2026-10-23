@@ -197,7 +197,7 @@ export function registerEvents() {
         clearAllQueries();
 
         // If the queue is empty as a result of `Queue.removeIds()`, `reset()`
-        // gets called internally, in which, we want to return to the Home screens.
+        // gets called internally, in which, we want to return to the root screens.
         if (playbackStore.getState().queue.length === 0) {
           router.navigate("HomeScreens", undefined, { pop: true });
         }

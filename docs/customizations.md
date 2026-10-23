@@ -74,6 +74,9 @@ We support various customizations on the "Now Playing" screen such as:
 - **Artwork Design:** `Plain`, `Vinyl`, `Vinyl (Legacy)`, `None`
 - **Seekbar Design:** `Normal`, [`Waveform` (Experimental)](./experimental-features.md#waveform-slider)
 
-## Tab Order
+## Default Tabs
 
-You can customize the order of the home screens, hide screens, and specify which screen is displayed when you launch the app via the `Tab Order` feature found in `Settings > Appearance`.
+We have 2 "default tabs" features:
+
+- `Default Open Tab` with `Home` & `Library` options.
+- `Default Library Tab` with `Albums`, `Artists`, `Folders`, `Genres`, `Playlists`, and `Tracks` as options.

@@ -15,7 +15,6 @@ import { ScrollView as GestureScrollView } from "react-native-gesture-handler";
 import { createAnimatedComponent } from "react-native-reanimated";
 
 import { Queue } from "~/stores/Playback/actions";
-import { usePreferenceStore } from "~/stores/Preference/store";
 import { useSessionStore } from "~/stores/Session/store";
 import { viewPreferenceStore } from "~/stores/ViewPreference/store";
 import type { LayoutItem } from "~/stores/ViewPreference/types";
@@ -23,6 +22,7 @@ import { useGetLayoutConfig } from "~/hooks/useLayoutConfigs";
 
 import { useHasNewUpdate } from "../hooks/useHasNewUpdate";
 import { useBottomActionsOffset } from "../components/BottomActions/useBottomActions";
+import { RootToolbar } from "../components/BottomActions/RootToolbar";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
@@ -57,12 +57,8 @@ const trackSource = {
 
 export default function Home() {
   const queryClient = useQueryClient();
-  const showNavbar = usePreferenceStore((s) => s.showNavbar);
   const last7DaysEpoch = useSessionStore((s) => s.lastDaysStartEpoch);
-  const bottomOffset = useBottomActionsOffset({
-    maxRows: showNavbar ? 2 : 1,
-    rowAlwaysVisible: true,
-  });
+  const bottomOffset = useBottomActionsOffset();
 
   useFocusEffect(
     useCallback(() => {
@@ -80,6 +76,7 @@ export default function Home() {
 
   return (
     <>
+      <RootToolbar />
       <TopAppBar />
       <ScrollView
         contentContainerStyle={{ paddingBottom: bottomOffset }}
@@ -248,7 +245,10 @@ function RecentlyDiscovered() {
       label="feat.recent.extra.recentlyDiscovered"
       onLabelPress={() => {
         updateTrackViewPreference();
-        navigation.navigate("HomeScreens", { screen: "Tracks" });
+        navigation.navigate("HomeScreens", {
+          screen: "Library",
+          params: { screen: "track" },
+        });
       }}
       data={data}
       onTrackPlay={async () => {
@@ -320,12 +320,12 @@ function RecentGroup(props: {
 
 //#region Home Links
 const linkMap = [
-  { icon: "album", labelKey: "term.albums", screen: "Albums" },
-  { icon: "artist", labelKey: "term.artists", screen: "Artists" },
-  { icon: "folder", labelKey: "term.folders", screen: "Folders" },
-  { icon: "genres", labelKey: "term.genres", screen: "Genres" },
-  { icon: "list", labelKey: "term.playlists", screen: "Playlists" },
-  { icon: "music-note", labelKey: "term.tracks", screen: "Tracks" },
+  { icon: "album", labelKey: "term.albums", screen: "album" },
+  { icon: "artist", labelKey: "term.artists", screen: "artist" },
+  { icon: "folder", labelKey: "term.folders", screen: "folder" },
+  { icon: "genres", labelKey: "term.genres", screen: "genre" },
+  { icon: "list", labelKey: "term.playlists", screen: "playlist" },
+  { icon: "music-note", labelKey: "term.tracks", screen: "track" },
 ] as const;
 
 function HomeLinks() {
@@ -335,7 +335,12 @@ function HomeLinks() {
       {linkMap.map(({ icon, labelKey, screen }, idx) => (
         <Button
           key={labelKey}
-          onPress={() => navigation.navigate("HomeScreens", { screen })}
+          onPress={() =>
+            navigation.navigate("HomeScreens", {
+              screen: "Library",
+              params: { screen },
+            })
+          }
           className={cn("rounded-xs p-3", {
             "rounded-t-xl": idx === 0,
             "rounded-b-xl": idx === linkMap.length - 1,

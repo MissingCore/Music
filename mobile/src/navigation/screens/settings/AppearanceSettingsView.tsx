@@ -8,7 +8,10 @@ import { PreferenceTogglers } from "~/stores/Preference/actions";
 
 import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
 import { ColumnSizeSheet } from "./sheets/ColumnSizeSheet";
-import { TabOrderSheet } from "./sheets/TabOrderSheet";
+import {
+  DefaultLibraryTabSheet,
+  DefaultOpenTabSheet,
+} from "./sheets/TabSelectionSheets";
 import * as SettingsList from "./components/SettingsList";
 
 import { useSheetRef } from "~/components/next/base/sheet";
@@ -25,7 +28,8 @@ export default function AppearanceSettings() {
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
   const theme = usePreferenceStore((s) => s.theme);
   const activeCustomTheme = usePreferenceStore((s) => s.activeCustomTheme);
-  const showNavbar = usePreferenceStore((s) => s.showNavbar);
+  const defaultOpenTab = usePreferenceStore((s) => s.defaultOpenTab);
+  const defaultLibraryTab = usePreferenceStore((s) => s.defaultLibraryTab);
   const dragClearPlayback = usePreferenceStore((s) => s.dragClearPlayback);
   const miniplayerGestures = usePreferenceStore((s) => s.miniplayerGestures);
   const nowPlayingArtworkControls = usePreferenceStore(
@@ -39,7 +43,8 @@ export default function AppearanceSettings() {
   const primaryFontSheetRef = useSheetRef();
   const themeSheetRef = useSheetRef();
   const columnSizeSheetRef = useSheetRef();
-  const tabOrderSheetRef = useSheetRef();
+  const defaultOpenTabSheetRef = useSheetRef();
+  const defaultLibraryTabSheetRef = useSheetRef();
 
   return (
     <>
@@ -47,7 +52,8 @@ export default function AppearanceSettings() {
       <PrimaryFontSheet ref={primaryFontSheetRef} />
       <ThemeSheet ref={themeSheetRef} />
       <ColumnSizeSheet ref={columnSizeSheetRef} />
-      <TabOrderSheet ref={tabOrderSheetRef} />
+      <DefaultOpenTabSheet ref={defaultOpenTabSheetRef} />
+      <DefaultLibraryTabSheet ref={defaultLibraryTabSheetRef} />
 
       <ScrollLayout title="feat.appearance.title">
         <SettingsList.Group label={t("feat.theme.title")}>
@@ -75,7 +81,7 @@ export default function AppearanceSettings() {
           />
         </SettingsList.Group>
 
-        <SettingsList.Group label={t("term.homeScreens")}>
+        <SettingsList.Group label={t("feat.homeScreens.title")}>
           <SettingsList.Item
             icon="widget-width"
             label={t("feat.modalViewPreference.extra.columnSize")}
@@ -83,17 +89,17 @@ export default function AppearanceSettings() {
           />
           <SettingsList.Divider />
           <SettingsList.Item
-            icon="tab-move"
-            label={t("feat.tabsOrder.title")}
-            supporting={t("feat.tabsOrder.brief")}
-            onPress={() => tabOrderSheetRef.current?.present()}
+            icon="home"
+            label={t("feat.homeScreens.extra.defaultOpenTab")}
+            supporting={t(`term.${defaultOpenTab}`)}
+            onPress={() => defaultOpenTabSheetRef.current?.present()}
           />
           <SettingsList.Divider />
-          <SettingsList.ToggleItem
-            icon="bottom-navigation"
-            label={t("feat.tabsOrder.extra.showNavbar")}
-            onToggle={PreferenceTogglers.toggleKey("showNavbar")}
-            enabled={showNavbar}
+          <SettingsList.Item
+            icon="library-music"
+            label={t("feat.homeScreens.extra.defaultLibraryTab")}
+            supporting={t(`term.${defaultLibraryTab}s`)}
+            onPress={() => defaultLibraryTabSheetRef.current?.present()}
           />
         </SettingsList.Group>
 

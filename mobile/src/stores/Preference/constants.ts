@@ -6,7 +6,7 @@ import type {
   CustomTheme,
   DefaultTheme,
 } from "~/modules/customization/theme/core/constants";
-import type { Tab } from "./types";
+import type { LibraryTab, RootTab } from "./types";
 
 //#region Now Playing Design
 export const NowPlayingDesignOptions = [
@@ -57,14 +57,10 @@ export interface PreferenceStore {
   /** Values of active custom theme. */
   activeCustomTheme: CustomTheme | null;
 
-  /** If the navbar will be displayed after clicking the hamburger menu. */
-  showNavbar: boolean;
-  /** Tab that we open up to on app launch. */
-  homeTab: Tab;
-  /** Order of tabs on the Home screen. */
-  tabsOrder: Tab[];
-  /** Visibility of the tabs on the Home screen. */
-  tabsVisibility: Record<Tab, boolean>;
+  /** Default screen shown on app launch. */
+  defaultOpenTab: RootTab;
+  /** Default screen when viewing "Library" screen. */
+  defaultLibraryTab: LibraryTab;
 
   /** Minimum number of tracks for album to show in Albums screen. */
   minAlbumLength: number;

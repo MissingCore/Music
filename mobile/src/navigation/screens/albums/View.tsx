@@ -26,7 +26,7 @@ function formatData({ id, name, artistName, artwork }: AlbumData) {
 export default function Albums() {
   const asGrid = useViewPreferenceStore((s) => s.albumLayout !== "list");
   return (
-    <LibraryLayout.Provider asGrid={asGrid}>
+    <LibraryLayout.Provider cacheKey="albums" asGrid={asGrid}>
       <LibraryLayout.Header
         titleKey="term.albums"
         OptionsSheet={AlbumsViewOptionsSheet}

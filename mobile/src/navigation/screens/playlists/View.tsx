@@ -22,7 +22,7 @@ type PlaylistData = ExtractQueryData<typeof usePlaylists>[number];
 export default function Playlists() {
   const asGrid = useViewPreferenceStore((s) => s.playlistLayout !== "list");
   return (
-    <LibraryLayout.Provider asGrid={asGrid}>
+    <LibraryLayout.Provider cacheKey="playlists" asGrid={asGrid}>
       <LibraryLayout.Header
         titleKey="term.playlists"
         Actions={<PlaylistActions />}

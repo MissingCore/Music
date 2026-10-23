@@ -23,8 +23,8 @@ export const ToolbarScreenOffset = "py-safe-offset-20" as const;
 
 export function useToolbarOffset(extra = 0) {
   const { bottom } = useSafeAreaInsets();
-  // Android Navbar Height + Toolbar Height + 16px Bottom Offset + 16px Top Offset
-  return bottom + 48 + 16 + 16 + extra;
+  // Android Navbar Height + Toolbar Height + 16px Bottom Offset
+  return bottom + 48 + 16 + extra;
 }
 
 //#region Provider
@@ -34,10 +34,10 @@ export function useToolbarOffset(extra = 0) {
  */
 function Provider() {
   return (
-    <View className="absolute inset-x-0 bottom-0 flex-row items-center justify-between px-4 pb-safe-offset-4">
+    <View className="absolute inset-x-0 bottom-0 flex-row items-center justify-between gap-2 px-4 pb-safe-offset-4">
       <Animated.View
         layout={LinearTransition}
-        className="my-1 h-10 flex-row items-center overflow-hidden rounded-full bg-surfaceContainerLowest"
+        className="my-1 h-10 shrink flex-row items-center overflow-hidden rounded-full bg-surfaceContainerLowest"
       >
         <PortalHost name="toolbar-actions-host" />
       </Animated.View>

@@ -47,8 +47,8 @@ export default function Search() {
       */
       folder: ({ path }) =>
         navigation.popTo("HomeScreens", {
-          screen: "Folders",
-          params: { path },
+          screen: "Library",
+          params: { screen: "folder", folderPath: path },
         }),
     }),
     [navigation],

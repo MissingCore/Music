@@ -20,7 +20,7 @@ export type Track = Prettify<
 >;
 
 export type SortedTrack = CommonTrack & {
-  /** Used for home screen sorting. */
+  /** Used for library screen sorting. */
   artistName: string | null;
   discoverTime: number;
   modificationTime: number;

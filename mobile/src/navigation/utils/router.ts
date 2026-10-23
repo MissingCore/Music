@@ -33,13 +33,16 @@ export function getMediaLinkContext({
   else if (type === "folder") {
     return [
       "HomeScreens",
-      { screen: "Folders", params: { path: id } },
+      { screen: "Library", params: { screen: "folder", folderPath: id } },
     ] as const;
   } else if (type === "genre") {
     return ["Genre", { id }] as const;
   } else if (type === "playlist") {
     if (id === ReservedPlaylists.tracks) {
-      return ["HomeScreens", { screen: "Tracks" }] as const;
+      return [
+        "HomeScreens",
+        { screen: "Library", params: { screen: "track" } },
+      ] as const;
     }
     return ["Playlist", { id }] as const;
   }

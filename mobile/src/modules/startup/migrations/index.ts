@@ -24,7 +24,6 @@ import { preferenceStore } from "~/stores/Preference/store";
 import { viewPreferenceStore } from "~/stores/ViewPreference/store";
 import { LayoutOptions } from "~/stores/ViewPreference/constants";
 
-import type { Tab } from "~/stores/Preference/types";
 import type { MigrationOption } from "./constants";
 import { MigrationHistory } from "./constants";
 
@@ -75,47 +74,15 @@ const MigrationFunctionMap: Record<
   MigrationOption,
   (lastMigrationCode: number) => Promise<void>
 > = {
-  //? v2.6.0
-  "hide-home-tab": async () => {
-    preferenceStore.setState((prev) => {
-      const updatedTabOrder = [...prev.tabsOrder];
-      // Don't add "home" if it's already in there.
-      if (!prev.tabsOrder.includes("home")) updatedTabOrder.unshift("home");
-
-      const updatedTabsVisibility = Object.fromEntries(
-        Object.entries(prev.tabsVisibility).concat([["home", true]]),
-      ) as Record<Tab, boolean>;
-
-      return {
-        tabsOrder: updatedTabOrder,
-        tabsVisibility: updatedTabsVisibility,
-      };
-    });
-  },
-
   //? v3.0.0-rc.0
   "onboarding-flow": async (lastMigrationCode) => {
     //? Ensure we skip the onboarding screen if `lastMigrationCode !== -1`.
     if (lastMigrationCode !== -1) {
-      preferenceStore.setState((prev) => {
-        const updatedTabOrder = [...prev.tabsOrder];
-        // Don't add "genre" if it's already in there.
-        if (!prev.tabsOrder.includes("genre")) updatedTabOrder.push("genre");
-
-        const updatedTabsVisibility = Object.fromEntries(
-          Object.entries(prev.tabsVisibility).concat([["genre", true]]),
-        ) as Record<Tab, boolean>;
-
-        return {
-          completedOnboarding: true,
-          //? Enable `checkForUpdates` for existing users as it's off by default
-          //? for new users due to now having a proper onboarding screen.
-          checkForUpdates: true,
-
-          //? Add "Genre" tab.
-          tabsOrder: updatedTabOrder,
-          tabsVisibility: updatedTabsVisibility,
-        };
+      preferenceStore.setState({
+        completedOnboarding: true,
+        //? Enable `checkForUpdates` for existing users as it's off by default
+        //? for new users due to now having a proper onboarding screen.
+        checkForUpdates: true,
       });
     }
   },
