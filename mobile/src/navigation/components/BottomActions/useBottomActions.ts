@@ -45,25 +45,11 @@ export function useRenderBottomActions() {
   );
 }
 
-const ROW_HEIGHT = 56;
-const ROW_GAP = 8;
-const SPACING = 16;
-
-/** Fixed-size bottom offset applied when bottom actions are rendered. */
-export const BottomActionsOffset = ROW_HEIGHT + SPACING; // Height + Bottom Padding
-
-interface BottomOffsetArgs {
-  /** Number of rows of "floating content" displayed at the bottom of the screen. */
-  maxRows?: 1 | 2;
-  /** If at least 1 row is always visible. */
-  rowAlwaysVisible?: boolean;
-}
+// 16px Vertical Padding + Toolbar Height
+export const MiniPlayerOffset = 32 + 48;
 
 /** Returns the offset to adjust content based on what's on the bottom of the screen. */
-export function useBottomActionsOffset({
-  maxRows = 1,
-  rowAlwaysVisible = false,
-}: BottomOffsetArgs = {}) {
+export function useBottomActionsOffset() {
   const { bottom } = useSafeAreaInsets();
   const activeTrack = usePlaybackStore((s) => s.activeTrack);
 
@@ -75,16 +61,7 @@ export function useBottomActionsOffset({
   const isMiniPlayerRendered = !!activeTrack;
 
   return useMemo(() => {
-    let defaultSpace = rowAlwaysVisible || maxRows === 2 ? ROW_HEIGHT : 0;
-    //? If we can render only a single row and it's always visible, don't add more.
-    if (isMiniPlayerRendered && !(rowAlwaysVisible && maxRows === 1)) {
-      defaultSpace += ROW_HEIGHT;
-      if (maxRows === 2) defaultSpace += ROW_GAP;
-    }
-
-    //? Remove unnecessary space when miniplayer isn't rendered.
-    if (!isMiniPlayerRendered && !rowAlwaysVisible) defaultSpace -= SPACING;
-
-    return defaultSpace + 2 * SPACING + bottom;
-  }, [bottom, maxRows, rowAlwaysVisible, isMiniPlayerRendered]);
+    // Android Navbar Height + "MiniPlayer Offset" + MiniPlayer Space (Height + Gap)
+    return bottom + MiniPlayerOffset + (isMiniPlayerRendered ? 56 + 8 : 0);
+  }, [bottom, isMiniPlayerRendered]);
 }

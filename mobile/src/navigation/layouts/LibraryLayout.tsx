@@ -135,10 +135,7 @@ export function Provider({
   );
   //#endregion
 
-  const bottomOffset = useBottomActionsOffset({
-    maxRows: 2,
-    rowAlwaysVisible: true,
-  });
+  const bottomOffset = useBottomActionsOffset();
 
   const contextValue = useMemo(
     () => ({

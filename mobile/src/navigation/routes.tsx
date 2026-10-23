@@ -46,6 +46,7 @@ import { capitalize } from "~/utils/string";
 import { Toolbar } from "~/components/next/composed/toolbar";
 import { TrackMultiSelectListeners } from "~/modules/media/multiSelect/components/TrackMultiSelectListeners";
 import { BottomActions } from "./components/BottomActions";
+import { RootToolbar } from "./components/BottomActions/RootToolbar";
 import { DeferredRender } from "./components/DeferredRender";
 import { TopAppBar } from "./components/TopAppBar";
 
@@ -106,6 +107,12 @@ export const RootStack = createNativeStackNavigator({
   screens: {
     HomeScreens: {
       screen: RootScreens,
+      layout: ({ children }) => (
+        <>
+          <RootToolbar />
+          {children}
+        </>
+      ),
       options: { headerShown: false },
     },
     NowPlaying: {

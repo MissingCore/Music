@@ -23,8 +23,8 @@ export const ToolbarScreenOffset = "py-safe-offset-20" as const;
 
 export function useToolbarOffset(extra = 0) {
   const { bottom } = useSafeAreaInsets();
-  // Android Navbar Height + Toolbar Height + 16px Bottom Offset + 16px Top Offset
-  return bottom + 48 + 16 + 16 + extra;
+  // Android Navbar Height + Toolbar Height + 16px Bottom Offset
+  return bottom + 48 + 16 + extra;
 }
 
 //#region Provider

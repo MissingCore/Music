@@ -7,42 +7,22 @@ import Animated, { LinearTransition } from "react-native-reanimated";
 import { useRenderBottomActions } from "./useBottomActions";
 
 import { MiniPlayer } from "./MiniPlayer";
-import { SearchButton, SettingsButton } from "./NavActions";
 
 //#region Bottom Actions
 /** Actions stickied to the bottom of the screens. */
 export function BottomActions() {
+  const rendered = useRenderBottomActions();
   //  Extra `View` is to fix positioning when button navigation is selected.
   return (
     <View>
       <Animated.View
         layout={LinearTransition}
         pointerEvents="box-none"
-        className="absolute bottom-safe left-0 w-full items-end gap-2 p-4 pt-0"
+        className="absolute bottom-safe-offset-14 left-0 w-full items-end p-4 pt-0"
       >
-        <WithNavBar />
+        {rendered.miniPlayer ? <MiniPlayer /> : null}
       </Animated.View>
     </View>
   );
 }
 //#endregion
-
-/** Bottom action layout when the user wants to show the navbar. */
-function WithNavBar() {
-  const rendered = useRenderBottomActions();
-  return (
-    <>
-      {rendered.miniPlayer ? <MiniPlayer /> : null}
-      {rendered.navBar ? (
-        <Animated.View
-          layout={LinearTransition}
-          className="-z-1 w-full flex-row gap-2"
-        >
-          <SearchButton />
-          <View className="h-14 shrink grow rounded-full bg-surfaceContainerLowest" />
-          <SettingsButton />
-        </Animated.View>
-      ) : null}
-    </>
-  );
-}

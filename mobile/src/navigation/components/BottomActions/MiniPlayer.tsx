@@ -23,7 +23,7 @@ import { getArtistsString } from "~/data/artist/utils";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { BottomActionsOffset } from "./useBottomActions";
+import { MiniPlayerOffset } from "./useBottomActions";
 
 import { Ripple } from "~/components/Base/Pressable";
 import { IconButton } from "~/components/Form/Button/Icon";
@@ -78,7 +78,7 @@ export function MiniPlayer() {
   useAnimatedReaction(
     () => panAmount.get(),
     (currVal, prevVal) => {
-      const threshold = insets.bottom + BottomActionsOffset;
+      const threshold = insets.bottom + MiniPlayerOffset;
       if (currVal > threshold && (prevVal === null || prevVal < threshold)) {
         scheduleOnRN(onResetStore);
       }

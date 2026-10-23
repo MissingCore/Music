@@ -57,10 +57,7 @@ const trackSource = {
 export default function Home() {
   const queryClient = useQueryClient();
   const last7DaysEpoch = useSessionStore((s) => s.lastDaysStartEpoch);
-  const bottomOffset = useBottomActionsOffset({
-    maxRows: 2,
-    rowAlwaysVisible: true,
-  });
+  const bottomOffset = useBottomActionsOffset();
 
   useFocusEffect(
     useCallback(() => {
