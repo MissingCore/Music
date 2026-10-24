@@ -18,7 +18,7 @@ const miniplayerRoutes = [
 
 /** Determines if the miniplayer is visible on the screen. */
 export function useIsMiniplayerVisible() {
-  const mostRecentRouteKey = useNavigationState((s) => s.routes.at(-1)?.key);
+  const mostRecentRouteKey = useNavigationState((s) => s.routes[s.index]?.key);
   const canRenderMiniplayer = usePlaybackStore((s) => Boolean(s.activeTrack));
 
   const isMiniplayerShown = miniplayerRoutes.some((key) =>

@@ -69,7 +69,7 @@ export function TrackSheet() {
 function TrackIntro({ data }: { data: Track }) {
   const navigation = useNavigation();
   const onNowPlaying = useNavigationState(
-    (s) => s.routes.at(-1)?.name === "NowPlaying",
+    (s) => s.routes[s.index]?.name === "NowPlaying",
   );
 
   return (

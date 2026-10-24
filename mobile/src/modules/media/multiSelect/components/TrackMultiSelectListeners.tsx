@@ -118,7 +118,7 @@ function MultiSelectActions(props: {
   presentAddToPlaylistsSheet: VoidFunction;
 }) {
   const { t } = useTranslation();
-  const mostRecentRoute = useNavigationState((s) => s.routes.at(-1));
+  const mostRecentRoute = useNavigationState((s) => s.routes[s.index]);
   const amountSelected = useTrackMultiSelectStore((s) => s.selected.size);
   const isAllFavorited = useTrackMultiSelectStore((s) => s.isAllFavorited);
 
