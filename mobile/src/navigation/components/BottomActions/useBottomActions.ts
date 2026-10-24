@@ -18,17 +18,15 @@ const miniplayerRoutes = [
 
 /** Determines if the miniplayer is visible on the screen. */
 export function useIsMiniplayerVisible() {
-  // Wanted structure of `availableRoutes` should be:
-  //  - [{ key: "HomeScreens-*"}, { key: miniplayerVisibleRoutes[number] }]
-  const availableRoutes = useNavigationState((s) => s.routes);
+  const mostRecentRouteKey = useNavigationState((s) => s.routes[s.index]?.key);
   const canRenderMiniplayer = usePlaybackStore((s) => Boolean(s.activeTrack));
 
   const isMiniplayerShown = miniplayerRoutes.some((key) =>
-    availableRoutes.at(-1)?.key.startsWith(key),
+    mostRecentRouteKey?.startsWith(key),
   );
   // Show navbar when displaying `HomeScreens` navigator. This is only
   // true when the returned routes only contain this entry.
-  const onHomeScreen = availableRoutes.at(-1)?.key.startsWith("HomeScreens-");
+  const onHomeScreen = Boolean(mostRecentRouteKey?.startsWith("HomeScreens-"));
 
   return useMemo(
     () => canRenderMiniplayer && (onHomeScreen || isMiniplayerShown),

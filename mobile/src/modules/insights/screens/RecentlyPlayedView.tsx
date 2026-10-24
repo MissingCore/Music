@@ -68,7 +68,7 @@ export default function RecentlyPlayed() {
 }
 
 function RecentlyPlayedLists(props: { data?: RecentListCardContent[] }) {
-  const navigation = useNavigation();
+  const navigation = useNavigation("RecentlyPlayed");
   const { width } = useHorizontalListLayoutConfig();
 
   if (props.data?.length === 0) return null;
@@ -84,10 +84,9 @@ function RecentlyPlayedLists(props: { data?: RecentListCardContent[] }) {
           label={item.title}
           supporting={item.description}
           onPress={() => {
-            const linkInfo = getMediaLinkContext(item);
-            // @ts-expect-error - The following is valid.
-            if (linkInfo[0] === "HomeScreens") navigation.popTo(...linkInfo);
-            else navigation.navigate(...linkInfo);
+            const [screen, config] = getMediaLinkContext(item);
+            if (screen === "HomeScreens") navigation.popTo(screen, config);
+            else navigation.navigate(screen, config);
           }}
           spacing="none"
         />

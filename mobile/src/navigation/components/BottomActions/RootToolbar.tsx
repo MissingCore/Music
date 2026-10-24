@@ -86,7 +86,7 @@ function LibraryTabSelectionSheet(props: {
   activeTab: LibraryTab;
 }) {
   const { t } = useTranslation();
-  const navigation = useNavigation();
+  const navigation = useNavigation("Library");
 
   const options = useMemo(
     () => [
@@ -104,7 +104,6 @@ function LibraryTabSelectionSheet(props: {
     <RadioSheet
       ref={props.ref}
       data={options}
-      // @ts-expect-error - Typing for screen params is correct.
       onSelect={({ type }) => navigation.setParams({ screen: type })}
       isSelected={(item) => item.type === props.activeTab}
     />

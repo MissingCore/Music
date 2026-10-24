@@ -37,7 +37,7 @@ export default function Library({
     params: { screen, folderPath },
   },
 }: Props) {
-  const navigation = useNavigation();
+  const navigation = useNavigation("Library");
   const isFocused = useIsFocused();
   const [history, setHistory] = useState<LibraryTab[]>(() => [
     preferenceStore.getState().defaultLibraryTab,

@@ -70,7 +70,7 @@ function RootScreens(_: RootScreensProps) {
       initialRouteName={defaultTabName}
       backBehavior="initialRoute"
       tabBar={noop}
-      screenOptions={{ lazy: true }}
+      screenOptions={{ inactiveBehavior: "none", lazy: true }}
     >
       <MaterialTopTab.Screen name="Home" component={Home} />
       <MaterialTopTab.Screen

@@ -41,7 +41,7 @@ import {
 import { Pressable } from "~/components/next/primitive/pressable";
 
 export default function Folders({ path }: { path?: string }) {
-  const navigation = useNavigation();
+  const navigation = useNavigation("Library");
   const isFocused = useIsFocused();
   const listRef = useAnimatedLegendListRef();
 
@@ -63,8 +63,6 @@ export default function Folders({ path }: { path?: string }) {
     // Exclude the `/` at the end of the path.
     setDirSegments(addTrailingSlash(path).split("/").slice(0, -1));
     // Clear search params after reading from it.
-    // @ts-expect-error - Temporary error due to this "screen" not being
-    // rendered as a screen. Should be fixed in React Navigation v8.
     navigation.setParams({ folderPath: undefined });
   }, [navigation, isFocused, path, setDirSegments]);
 
