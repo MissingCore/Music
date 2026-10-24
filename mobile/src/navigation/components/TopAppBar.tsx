@@ -1,9 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { getHeaderTitle } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
-import type { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -11,23 +9,11 @@ import { View } from "react-native";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { TEm } from "~/components/Typography/StyledText";
 
-export const TOPAPPBAR_HEIGHT = 56;
-
-/** Custom header bar for React Navigation. The "title" will get ellipsized. */
-export function TopAppBar({ options, route }: NativeStackHeaderProps) {
-  const title = getHeaderTitle(options, route.name) as ParseKeys;
-  return (
-    <View className="pt-safe">
-      <TopAppBarTemplate
-        title={title}
-        headerLeftAction={<BackButton disabled={!!options.headerLeft} />}
-        headerRightAction={options.headerRight?.({ canGoBack: true })}
-      />
-    </View>
-  );
-}
-
-/** `<TopAppBar />` component without the safe-area handling. */
+/**
+ * `<TopAppBar />` component without the safe-area handling.
+ *
+ * @description - We want to switch over to our toolbar UI.
+ */
 export function TopAppBarTemplate({
   title,
   headerLeftAction,
@@ -48,6 +34,7 @@ export function TopAppBarTemplate({
   );
 }
 
+/** @deprecated - We want to switch over to our toolbar UI. */
 export function BackButton({ disabled = false }) {
   const { t } = useTranslation();
   const navigation = useNavigation();

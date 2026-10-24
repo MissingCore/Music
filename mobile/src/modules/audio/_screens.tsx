@@ -28,14 +28,9 @@ function AudioEffectsView({
 }
 
 const AudioEffectScreenGroup = {
-  screenOptions: {
-    animation: "fade",
-  },
+  screenOptions: { animation: "fade" },
   screens: {
-    AudioEffects: {
-      screen: AudioEffectsView,
-      options: { title: "feat.audioEffects.title" },
-    },
+    AudioEffects: { screen: AudioEffectsView },
   },
 } as const;
 

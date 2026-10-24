@@ -105,13 +105,19 @@ export const RootStack = createNativeStackNavigator({
   ),
   screenOptions: { headerShown: false },
   screens: {
-    HomeScreens: { screen: RootScreens },
+    HomeScreens: {
+      screen: RootScreens,
+      //? Disable default toolbar on these screens as we manually apply it
+      //? via the components.
+      layout: ({ children }) => children,
+    },
     NowPlaying: {
       screen: NowPlaying,
       linking: {
         path: "now-playing",
       },
       //? Prevents blank screen when opening caused by deferred render.
+      //? Also disables the toolbar UI on this screen.
       layout: ({ children }) => children,
       options: {
         presentation: "formSheet",
