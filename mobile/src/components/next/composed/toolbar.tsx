@@ -35,6 +35,7 @@ export function useToolbarOffset(extra = 0) {
 function Provider() {
   return (
     <View className="absolute inset-x-0 bottom-0 flex-row items-center justify-between gap-2 px-4 pb-safe-offset-4">
+      <Backdrop />
       <Animated.View
         layout={LinearTransition}
         className="my-1 h-10 shrink flex-row items-center overflow-hidden rounded-full bg-surfaceContainerLowest"
@@ -42,6 +43,22 @@ function Provider() {
         <PortalHost name="toolbar-actions-host" />
       </Animated.View>
       <PortalHost name="toolbar-FAB-host" />
+    </View>
+  );
+}
+
+function Backdrop() {
+  const { surface } = useTheme();
+  const { bottom } = useSafeAreaInsets();
+  const height = useToolbarOffset();
+  return (
+    <View className="absolute inset-x-0 bottom-0">
+      <LinearGradient
+        colors={[`${surface}00`, `${surface}FF`]}
+        locations={[0, 1 - bottom / height]}
+        style={{ height }}
+        className="absolute inset-x-0 bottom-0"
+      />
     </View>
   );
 }
@@ -62,28 +79,7 @@ function Toolbar(props: { children: React.JSX.Element | React.JSX.Element[] }) {
 
   // Hide the toolbar on screens that don't support it.
   if (!visible) return null;
-  return (
-    <Portal name="toolbar">
-      <Backdrop />
-      {props.children}
-    </Portal>
-  );
-}
-
-function Backdrop() {
-  const { surface } = useTheme();
-  const { bottom } = useSafeAreaInsets();
-  const height = useToolbarOffset();
-  return (
-    <Animated.View exiting={FadeOut}>
-      <LinearGradient
-        colors={[`${surface}00`, `${surface}FF`]}
-        locations={[0, 1 - bottom / height]}
-        style={{ height }}
-        className="absolute inset-x-0 bottom-0"
-      />
-    </Animated.View>
-  );
+  return props.children;
 }
 //#endregion
 

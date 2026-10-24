@@ -4,19 +4,8 @@
 import CreateTheme from "./CreateView";
 import ModifyTheme from "./ModifyView";
 
-import { Toolbar } from "~/components/next/composed/toolbar";
-
 const ThemeScreenGroup = {
-  screenLayout: ({ children }: { children: React.JSX.Element }) => (
-    <>
-      <Toolbar.Default />
-      {children}
-    </>
-  ),
-  screenOptions: {
-    animation: "fade",
-    headerShown: false,
-  },
+  screenOptions: { animation: "fade" },
   screens: {
     CreateTheme,
     ModifyTheme,
