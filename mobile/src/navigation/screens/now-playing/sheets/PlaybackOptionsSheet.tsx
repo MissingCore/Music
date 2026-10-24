@@ -26,7 +26,7 @@ export function PlaybackOptionsSheet(props: {
   ref: SheetRef;
   trackId: string;
 }) {
-  const navigation = useNavigation();
+  const navigation = useNavigation("NowPlaying");
   const [stopDrag, setStopDrag] = useState(false);
   const playingSource = usePlaybackStore((s) => s.playingFrom);
   const sourceName = usePlaybackStore((s) => s.playingFromName);
@@ -37,7 +37,6 @@ export function PlaybackOptionsSheet(props: {
   const navigateToList = useCallback(async () => {
     if (!playingSource) return;
     await props.ref.current?.dismiss();
-    // @ts-expect-error - `popTo` method works.
     navigation.popTo(...getMediaLinkContext(playingSource));
   }, [navigation, props.ref, playingSource]);
 
