@@ -8,7 +8,8 @@ import { View } from "react-native";
 
 import { PlaybackControls } from "~/stores/Playback/actions";
 
-import { TText } from "~/components/next/base/typography";
+import { ScrollLayoutTitle } from "~/navigation/layouts/ScrollLayout";
+
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { Search as SearchBuilder } from "../components/SearchList";
 import { SearchEngineList } from "../components/SearchEngine";
@@ -54,8 +55,8 @@ export default function Search() {
   );
 
   return (
-    <View className="shrink grow gap-6 px-4 pt-2">
-      <TText textKey="feat.search.title" accent className="leading-tight" />
+    <View className="shrink grow gap-6 px-4 pt-safe-offset-20">
+      <ScrollLayoutTitle title="feat.search.title" />
       <View className="shrink grow">
         <SearchBuilder.Provider>
           <SearchBuilder.Input

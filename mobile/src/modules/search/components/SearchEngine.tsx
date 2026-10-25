@@ -140,9 +140,9 @@ export function SearchEngineList<TScope extends SearchCategories>({
         className={cn("-mx-0.75 -mb-1.5", {
           "-mb-5.5": props.forSheets,
         })}
-        contentContainerClassName={cn("pb-safe-offset-4", {
-          "pb-4": props.forSheets,
-        })}
+        contentContainerClassName={
+          props.forSheets ? "pb-4" : "pb-safe-offset-20"
+        }
         contentContainerStyle={{
           paddingTop: tabsWithData.length > 0 ? filterHeight : 24,
         }}
