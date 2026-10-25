@@ -70,9 +70,13 @@ export function RootToolbar(props: { libraryTab?: LibraryTab }) {
           )}
         </Toolbar.Actions>
         <Toolbar.FAB
-          icon="search"
-          accessibilityLabel={t("feat.search.title")}
-          onPress={() => navigation.navigate("Search")}
+          icon={props.libraryTab ? "search" : "settings"}
+          accessibilityLabel={t(
+            props.libraryTab ? "feat.search.title" : "term.settings",
+          )}
+          onPress={() =>
+            navigation.navigate(props.libraryTab ? "Search" : "Settings")
+          }
           intent="inverse"
         />
       </Toolbar>

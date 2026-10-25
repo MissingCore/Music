@@ -77,7 +77,7 @@ export default function Home() {
   return (
     <>
       <RootToolbar />
-      <TopAppBar />
+      <AppUpdateBanner />
       <ScrollView
         contentContainerStyle={{ paddingBottom: bottomOffset }}
         contentContainerClassName="gap-8"
@@ -93,36 +93,27 @@ export default function Home() {
   );
 }
 
-//#region TopAppBar
-function TopAppBar() {
-  const { t } = useTranslation();
+//#region App Update Banner
+function AppUpdateBanner() {
   const navigation = useNavigation();
   const { hasNewUpdate } = useHasNewUpdate();
+  if (!hasNewUpdate) return null;
   return (
-    <View className="absolute inset-x-0 top-0 z-50 flex-row justify-end gap-4 p-4 pt-safe-offset-8">
-      {hasNewUpdate ? (
-        <Button
-          onPress={() => navigation.navigate("AppUpdate")}
+    <View className="absolute inset-x-0 top-0 z-50 px-4 pt-safe-offset-8">
+      <Button
+        onPress={() => navigation.navigate("AppUpdate")}
+        intent="secondary"
+        className="shrink grow gap-3 rounded-full p-3"
+      >
+        <Icon name="mobile-arrow-down" color="onSecondary" />
+        <TText
+          textKey="feat.appUpdate.brief"
           intent="secondary"
-          className="shrink grow gap-3 rounded-full px-3 py-0"
-        >
-          <Icon name="mobile-arrow-down" color="onSecondary" />
-          <TText
-            textKey="feat.appUpdate.brief"
-            intent="secondary"
-            numberOfLines={2}
-            className="shrink grow text-sm"
-          />
-          <Icon name={OnRTL.decide("west", "east")} color="onSecondary" />
-        </Button>
-      ) : null}
-      <IconButton
-        icon="settings"
-        accessibilityLabel={t("term.settings")}
-        onPress={() => navigation.navigate("Settings")}
-        size="lg"
-        filled
-      />
+          numberOfLines={2}
+          className="shrink grow text-sm"
+        />
+        <Icon name={OnRTL.decide("west", "east")} color="onSecondary" />
+      </Button>
     </View>
   );
 }
