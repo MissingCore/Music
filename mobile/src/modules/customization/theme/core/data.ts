@@ -23,7 +23,7 @@ const queryKey = ["custom-themes"] as const;
 
 //? Raw structure stored in `customThemes` table. Not to be confused with
 //? the `CustomTheme` type which is the consumed structure.
-type CustomThemeEntry = typeof customThemes.$inferSelect;
+type CustomThemeEntry = Omit<typeof customThemes.$inferSelect, "androidNavbar">;
 
 //#region Backup
 const ThemeExportSchema = v.object({

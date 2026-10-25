@@ -12,7 +12,7 @@ import { getCustomTheme } from "./core/data";
 
 //#region Loader
 export function formatCustomTheme(
-  entry: typeof customThemes.$inferSelect,
+  entry: Omit<typeof customThemes.$inferSelect, "androidNavbar">,
 ): CustomTheme {
   const { id, name, scheme, ...colors } = entry;
   return { id, name, scheme, colors } as CustomTheme;
