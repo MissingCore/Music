@@ -72,7 +72,6 @@
       --color-inverseOnSurface: hsl(0 0% 100%);
 
       --color-placeholder: hsl(0 0% 100%);
-      --color-androidNavbar: hsla(0 0% 95% / 0);
     }
 
     @variant dark {
@@ -110,7 +109,6 @@
       --color-inverseOnSurface: hsl(0 0% 0%);
 
       --color-placeholder: hsl(0 0% 100%);
-      --color-androidNavbar: hsla(0 0% 0% / 0);
     }
 
     @variant custom {
@@ -148,7 +146,6 @@
       --color-inverseOnSurface: hsl(46 100% 94%);
 
       --color-placeholder: hsl(0 0% 100%);
-      --color-androidNavbar: hsla(44 67% 88% / 0);
     }
 
     @variant atmosphere {
@@ -196,7 +193,6 @@
       --color-inverseOnSurface: hsl(0 0% 0%);
 
       --color-placeholder: hsl(0 0% 100%);
-      --color-androidNavbar: hsla(0 0% 0% / 0);
     }
   }
 }

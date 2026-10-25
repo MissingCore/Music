@@ -46,8 +46,6 @@ export async function pickTheme() {
     if (isRecord(fileContents) && fileContents.colors) {
       if (!fileContents.colors.placeholder)
         fileContents.colors.placeholder = "#FFFFFF";
-      if (!fileContents.colors.androidNavbar)
-        fileContents.colors.androidNavbar = "#00000000";
     }
 
     return v.parse(ThemeExportSchema, fileContents);

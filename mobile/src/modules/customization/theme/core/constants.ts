@@ -40,7 +40,6 @@ export const ColorRoleOptions = [
   "inverseSurface",
   "inverseOnSurface",
   "placeholder",
-  "androidNavbar",
 ] as const;
 
 export type ColorRole = (typeof ColorRoleOptions)[number];
@@ -108,7 +107,6 @@ export const Themes = {
     inverseOnSurface: Colors.neutral100,
 
     placeholder: Colors.neutral100,
-    androidNavbar: `${Colors.neutral95}00`,
   },
   dark: {
     scheme: "dark",
@@ -136,7 +134,6 @@ export const Themes = {
     inverseOnSurface: Colors.neutral0,
 
     placeholder: Colors.neutral100,
-    androidNavbar: `${Colors.neutral0}00`,
   },
 } as const satisfies Record<ColorScheme, ResolvedTheme>;
 
