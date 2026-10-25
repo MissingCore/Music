@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
@@ -11,18 +10,6 @@ import { cn } from "~/lib/style";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import type { PlayFromSource } from "~/stores/Playback/types";
 import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
-import { RepeatButton, ShuffleButton } from "./MediaControls";
-
-/** Media controls used on media list pages. */
-export function MediaListControls(props: { trackSource: PlayFromSource }) {
-  return (
-    <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
-      <RepeatButton size="sm" />
-      <ShuffleButton size="sm" />
-      <PlayMediaListButton trackSource={props.trackSource} />
-    </View>
-  );
-}
 
 /**
  * A play/pause button that's linked to whether the provided source is

@@ -13,7 +13,6 @@ import { useHorizontalListLayoutConfig } from "~/hooks/useLayoutConfigs";
 import * as MediaListLayout from "~/navigation/layouts/MediaListLayout";
 import { ArtistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { SortOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
-import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 
 import { FlatList } from "~/components/Base/List";
 import { useSheetRef } from "~/components/next/base/sheet";
@@ -47,6 +46,14 @@ export default function Artist({
       <ArtistArtworkSheet ref={artworkSheetRef} id={artistName} />
       <SortOptionsSheet ref={tracksSortOptionsSheetRef} screen="artistTracks" />
 
+      <MediaListLayout.Toolbar
+        name={artistDetailsQuery.data.name}
+        trackIds={artistTracksQuery.data?.map(({ id }) => id) ?? []}
+        presentArtworkSheet={() => artworkSheetRef.current?.present()}
+        presentSortOptionsSheet={() =>
+          tracksSortOptionsSheetRef.current?.present()
+        }
+      />
       <MediaListLayout.Provider
         imageSource={artistDetailsQuery.data.imageSource}
         listSource={trackSource}
@@ -54,16 +61,6 @@ export default function Artist({
         <MediaListLayout.Header
           title={artistDetailsQuery.data.name}
           metadata={artistDetailsQuery.data.metadata}
-          Actions={
-            <CurrentListMenu
-              name={artistDetailsQuery.data.name}
-              trackIds={artistTracksQuery.data?.map(({ id }) => id) ?? []}
-              presentArtworkSheet={() => artworkSheetRef.current?.present()}
-              presentSortOptionsSheet={() =>
-                tracksSortOptionsSheetRef.current?.present()
-              }
-            />
-          }
         />
         <MediaListLayout.List
           data={artistTracksQuery.data}

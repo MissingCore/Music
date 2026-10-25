@@ -94,7 +94,7 @@ function Actions(props: { children: React.ReactNode }) {
 //#endregion
 
 //#region FAB
-function FAB(props: Omit<IconButtonProps, "filled" | "size">) {
+function FABContainer(props: { children: React.ReactNode }) {
   return (
     <Portal name="toolbar-FAB" hostName="toolbar-FAB-host">
       <Animated.View
@@ -102,9 +102,17 @@ function FAB(props: Omit<IconButtonProps, "filled" | "size">) {
         exiting={FadeOut}
         className="rounded-full bg-surfaceContainerLowest"
       >
-        <IconButton {...props} filled size="lg" />
+        {props.children}
       </Animated.View>
     </Portal>
+  );
+}
+
+function FAB(props: Omit<IconButtonProps, "filled" | "size">) {
+  return (
+    <FABContainer>
+      <IconButton {...props} filled size="lg" />
+    </FABContainer>
   );
 }
 //#endregion
@@ -137,6 +145,7 @@ function Back() {
 Toolbar.Provider = Provider;
 
 Toolbar.Actions = Actions;
+Toolbar.FABContainer = FABContainer;
 Toolbar.FAB = FAB;
 
 Toolbar.Default = Default;
