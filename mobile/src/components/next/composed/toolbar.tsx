@@ -15,6 +15,7 @@ import Animated, {
   FadeIn,
   FadeOut,
   LinearTransition,
+  SlideOutDown,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -51,7 +52,10 @@ function Provider() {
   const isHidden = useIsToolbarHidden();
   if (isHidden) return null;
   return (
-    <View className="absolute inset-x-0 bottom-0 flex-row items-center justify-between gap-2 px-4 pb-safe-offset-4">
+    <Animated.View
+      exiting={SlideOutDown}
+      className="absolute inset-x-0 bottom-0 flex-row items-center justify-between gap-2 px-4 pb-safe-offset-4"
+    >
       <Backdrop />
       <Animated.View
         layout={LinearTransition}
@@ -60,7 +64,7 @@ function Provider() {
         <PortalHost name="toolbar-actions-host" />
       </Animated.View>
       <PortalHost name="toolbar-FAB-host" />
-    </View>
+    </Animated.View>
   );
 }
 
