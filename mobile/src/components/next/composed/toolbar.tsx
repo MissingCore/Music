@@ -33,7 +33,7 @@ export function useToolbarOffset(extra = 0) {
 }
 
 //# Configuration
-const hiddenRoutes = ["NowPlaying-", "Upcoming-"] as const;
+const hiddenRoutes = ["LyricForm-", "NowPlaying-", "Upcoming-"] as const;
 
 /** Returns a boolean indicating that the toolbar should be fully hidden. */
 function useIsToolbarHidden() {
