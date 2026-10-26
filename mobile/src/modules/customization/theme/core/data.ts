@@ -91,6 +91,7 @@ export async function updateCustomTheme(
 export async function getCustomTheme(themeId: string) {
   const result = await throwIfNoResults(
     db.query.customThemes.findFirst({
+      columns: { androidNavbar: false },
       where: (fields, { eq }) => eq(fields.id, themeId),
     }),
   );
@@ -99,6 +100,7 @@ export async function getCustomTheme(themeId: string) {
 
 async function getCustomThemes() {
   return db.query.customThemes.findMany({
+    columns: { androidNavbar: false },
     orderBy: (fields, { asc }) => asc(fields.name),
   });
 }
