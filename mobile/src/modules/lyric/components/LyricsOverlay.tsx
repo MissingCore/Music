@@ -13,12 +13,14 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
+import type { ViewStyle } from "react-native";
 import { Text, View } from "react-native";
 import { usePolledProgress } from "react-native-audio-browser";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useTrackLyrics } from "~/data/track/queries";
 import { PlaybackControls } from "~/stores/Playback/actions";
+import { useAlternativeLayout } from "~/hooks/useAlternativeLayout";
 import { useLyricStore } from "../core/store";
 import { toggleLyricStoreKey } from "../core/actions";
 
@@ -40,9 +42,14 @@ import type { SynchronizedLine } from "../helpers/parser/utils";
 const SCROLL_OFFSET = 64;
 const LINE_GAP = 16;
 
-const LyricOffsetContext = createContext({ offset: 0, extraTop: 0 });
+interface LyricStyleContextValue {
+  listStyles: ViewStyle;
+  notFoundStyles: ViewStyle;
+}
 
-export function LyricsOverlay(props: { size: number; trackId: string }) {
+const LyricStyleContext = createContext<LyricStyleContextValue>(null as never);
+
+export function LyricsOverlay(props: { height: number; trackId: string }) {
   const { top } = useSafeAreaInsets();
   const { scheme } = useTheme();
   const hideBackground = useIsAtmosphereActive();
@@ -50,10 +57,16 @@ export function LyricsOverlay(props: { size: number; trackId: string }) {
   // Estimated offset to get overlay to go behind the `TopAppBar`.
   const scrollGradientHeight = top + SCROLL_OFFSET;
 
+  const value = useMemo<LyricStyleContextValue>(
+    () => ({
+      listStyles: { paddingVertical: (props.height + top) / 2, gap: LINE_GAP },
+      notFoundStyles: { paddingTop: top + SCROLL_OFFSET },
+    }),
+    [props.height, top],
+  );
+
   return (
-    <LyricOffsetContext
-      value={{ offset: props.size / 2, extraTop: scrollGradientHeight }}
-    >
+    <LyricStyleContext value={value}>
       <View
         style={{ top: -top, bottom: 0 }}
         className={cn(
@@ -79,13 +92,13 @@ export function LyricsOverlay(props: { size: number; trackId: string }) {
           </>
         ) : null}
       </View>
-    </LyricOffsetContext>
+    </LyricStyleContext>
   );
 }
 
 function LyricsContent({ trackId }: { trackId: string }) {
   const { isPending, data, error } = useTrackLyrics(trackId);
-  const { offset, extraTop } = use(LyricOffsetContext);
+  const { listStyles } = use(LyricStyleContext);
 
   const formattedLyrics = useMemo(() => {
     if (!data?.lyricText) return;
@@ -107,11 +120,7 @@ function LyricsContent({ trackId }: { trackId: string }) {
           renderItem={({ item }) => <Em className="text-xl">{item}</Em>}
           nestedScrollEnabled
           className="w-full"
-          contentContainerStyle={{
-            paddingTop: offset + extraTop,
-            paddingBottom: offset,
-            gap: LINE_GAP,
-          }}
+          contentContainerStyle={listStyles}
           contentContainerClassName="px-4"
         />
       )}
@@ -150,7 +159,8 @@ function LyricsNotFound({ trackId }: { trackId: string }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const [checkingEmbeddedLyrics, setCheckingEmbeddedLyrics] = useState(true);
-  const { extraTop } = use(LyricOffsetContext);
+  const { notFoundStyles } = use(LyricStyleContext);
+  const isLargeScreen = useAlternativeLayout();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -167,7 +177,7 @@ function LyricsNotFound({ trackId }: { trackId: string }) {
   return (
     <>
       <View
-        style={{ paddingTop: extraTop }}
+        style={!isLargeScreen ? notFoundStyles : undefined}
         className="my-auto items-center gap-6 pb-4"
       >
         <TEm textKey="err.msg.noLyrics" className="text-xl" />
@@ -314,7 +324,7 @@ const MemoLyricList = memo(
       ref: FlatListRef<FormattedSynchronizedLine>;
     },
   ) {
-    const { offset, extraTop } = use(LyricOffsetContext);
+    const { listStyles } = use(LyricStyleContext);
     return (
       <FlatList
         {...props}
@@ -341,11 +351,7 @@ const MemoLyricList = memo(
         // Suppresses error when `scrollToIndex` fails.
         onScrollToIndexFailed={() => {}}
         className="w-full"
-        contentContainerStyle={{
-          paddingTop: offset + extraTop,
-          paddingBottom: offset,
-          gap: LINE_GAP,
-        }}
+        contentContainerStyle={listStyles}
         contentContainerClassName="px-4"
       />
     );

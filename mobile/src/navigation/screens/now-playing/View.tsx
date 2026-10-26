@@ -13,7 +13,6 @@ import { toggleLyricStoreKey } from "~/modules/lyric/core/actions";
 import { useAlternativeLayout } from "~/hooks/useAlternativeLayout";
 
 import { Back } from "~/navigation/components/Back";
-import Upcoming from "./UpcomingView";
 import { SeekbarContext } from "./helpers/Seekbar.context";
 import { ArtworkSlot } from "./components/ArtworkSlot";
 import { SeekBar } from "./components/SeekBar";
@@ -21,11 +20,12 @@ import { PlaybackOptionsSheet } from "./sheets/PlaybackOptionsSheet";
 import { SleepTimerSheet } from "./sheets/SleepTimerSheet";
 import { useSleepTimerStore } from "./sheets/SleepTimerSheet/store";
 
+import { cn } from "~/lib/style";
 import { Pressable } from "~/components/Base/Pressable";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
-import { Marquee } from "~/components/Marquee";
-import { StyledText } from "~/components/Typography/StyledText";
 import { useSheetRef } from "~/components/next/base/sheet";
+import { Text } from "~/components/next/base/typography";
+import { Marquee } from "~/components/next/blocks/marquee";
 import { FavoriteButton } from "~/components/next/composed/track-item";
 import { AtmosphereBackground } from "~/modules/customization/atmosphere/AtmosphereBackground";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
@@ -54,36 +54,43 @@ export default function NowPlaying() {
       <PlaybackOptionsSheet ref={playbackOptionsSheetRef} trackId={track.id} />
 
       <AtmosphereBackground source={track.artwork}>
-        <View className="flex-1 flex-row">
-          <View className="flex-1 gap-8 pt-safe">
-            <SeekbarContext>
-              <PlaybackControlGestureWrapper>
-                <ArtworkSlot artwork={track.artwork} trackId={track.id} />
-                <View className="-mt-4 gap-6 px-4 pb-safe-offset-4">
-                  <Metadata track={track} />
-                  <SeekBar
-                    id={track.id}
-                    uri={track.uri}
-                    trackLength={track.duration}
-                  />
-                  {!showFullscreenLyrics && (
-                    <>
-                      <PlaybackControls />
-                      <BottomAppBar
-                        presentSleepTimerSheet={() =>
-                          sleepTimerSheetRef.current?.present()
-                        }
-                        presentPlaybackOptionsSheet={() =>
-                          playbackOptionsSheetRef.current?.present()
-                        }
-                      />
-                    </>
-                  )}
-                </View>
-              </PlaybackControlGestureWrapper>
-            </SeekbarContext>
-          </View>
-          {isLargeScreen ? <Upcoming renderAsScreen={false} /> : null}
+        <View
+          className={cn(
+            "flex-1 py-safe",
+            isLargeScreen ? "flex-row items-center" : "gap-8",
+          )}
+        >
+          <SeekbarContext>
+            <PlaybackControlGestureWrapper>
+              <ArtworkSlot artwork={track.artwork} trackId={track.id} />
+              <View
+                className={cn(
+                  "gap-6 px-4 pb-4",
+                  isLargeScreen ? "max-w-1/2" : "-mt-4",
+                )}
+              >
+                <Metadata track={track} />
+                <SeekBar
+                  id={track.id}
+                  uri={track.uri}
+                  trackLength={track.duration}
+                />
+                {(!showFullscreenLyrics || isLargeScreen) && (
+                  <>
+                    <PlaybackControls />
+                    <BottomAppBar
+                      presentSleepTimerSheet={() =>
+                        sleepTimerSheetRef.current?.present()
+                      }
+                      presentPlaybackOptionsSheet={() =>
+                        playbackOptionsSheetRef.current?.present()
+                      }
+                    />
+                  </>
+                )}
+              </View>
+            </PlaybackControlGestureWrapper>
+          </SeekbarContext>
         </View>
       </AtmosphereBackground>
     </>
@@ -101,7 +108,7 @@ function Metadata({ track }: { track: Track }) {
       {alternativeLayout ? <FavoriteButton id={track.id} size="lg" /> : null}
       <View className="shrink grow gap-1">
         <Marquee center={alternativeLayout}>
-          <StyledText className="text-xl/[1.125]">{track.name}</StyledText>
+          <Text className="text-xl/[1.125]">{track.name}</Text>
         </Marquee>
         <ArtistsLink
           artists={track.artists}
@@ -114,9 +121,9 @@ function Metadata({ track }: { track: Track }) {
             <Pressable
               onPress={() => navigation.popTo("Album", { id: track.albumId! })}
             >
-              <StyledText dim className="text-sm/[1.125]">
+              <Text muted className="text-sm/[1.125]">
                 {track.albumName}
-              </StyledText>
+              </Text>
             </Pressable>
           </Marquee>
         ) : null}
@@ -136,9 +143,9 @@ function Metadata({ track }: { track: Track }) {
         take effect.
       */}
       <View aria-hidden pointerEvents="none" className="-ml-4 w-0 gap-1">
-        <StyledText className="text-xl/[1.125]"> </StyledText>
-        <StyledText className="text-sm/[1.125]"> </StyledText>
-        <StyledText className="text-sm/[1.125]"> </StyledText>
+        <Text className="text-xl/[1.125]"> </Text>
+        <Text className="text-sm/[1.125]"> </Text>
+        <Text className="text-sm/[1.125]"> </Text>
       </View>
     </View>
   );
@@ -166,8 +173,6 @@ function BottomAppBar(props: {
 }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const isLargeScreen = useAlternativeLayout();
-
   return (
     <View className="flex-row items-center justify-between gap-4 pt-4">
       <BackButton />
@@ -180,15 +185,13 @@ function BottomAppBar(props: {
           size="lg"
           _fullRipple
         />
-        {!isLargeScreen ? (
-          <IconButton
-            icon="view-agenda"
-            accessibilityLabel={t("term.upcoming")}
-            onPress={() => navigation.navigate("Upcoming")}
-            size="lg"
-            _fullRipple
-          />
-        ) : null}
+        <IconButton
+          icon="view-agenda"
+          accessibilityLabel={t("term.upcoming")}
+          onPress={() => navigation.navigate("Upcoming")}
+          size="lg"
+          _fullRipple
+        />
         <IconButton
           icon="more-horiz"
           accessibilityLabel={t("feat.playback.extra.options")}
