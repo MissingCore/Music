@@ -8,7 +8,6 @@ import { PlaybackControls, PlaybackSettings } from "~/stores/Playback/actions";
 import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
 import type { PlayFromSource } from "~/stores/Playback/types";
 
-import { cn } from "~/lib/style";
 import type {
   ButtonSize,
   IconButtonProps,
@@ -77,15 +76,11 @@ export function PlayToggleButton({
             : PlaybackControls.playFromList({ source: trackSource })
           : PlaybackControls.playToggle()
       }
-      className={cn(
-        isPlaying ? "bg-surfaceContainerHigh" : "bg-primary",
-        className,
-      )}
+      className={className}
+      intent={isPlaying ? "muted" : "primary"}
       filled
       size={size}
       wide={wide}
-      rippleColor={isPlaying ? "surfaceContainerHighest" : "primaryDim"}
-      _iconColor="onPrimary"
     />
   );
 }
