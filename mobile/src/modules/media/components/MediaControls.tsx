@@ -54,10 +54,11 @@ export function ShuffleButton({ size = "lg" }: { size?: ButtonSize }) {
 export function PlayToggleButton({
   trackSource,
   size = "lg",
-  ...props
+  wide = true,
+  className,
 }: {
   trackSource?: PlayFromSource;
-} & Pick<IconButtonProps, "size" | "className">) {
+} & Pick<IconButtonProps, "size" | "wide" | "className">) {
   const { t } = useTranslation();
   const isPlaying = usePlaybackStore((s) =>
     trackSource
@@ -67,7 +68,6 @@ export function PlayToggleButton({
 
   return (
     <IconButton
-      {...props}
       icon={isPlaying ? "pause-filled" : "play-arrow-filled"}
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
       onPress={() =>
@@ -79,11 +79,11 @@ export function PlayToggleButton({
       }
       className={cn(
         isPlaying ? "bg-surfaceContainerHigh" : "bg-primary",
-        props.className,
+        className,
       )}
       filled
       size={size}
-      wide
+      wide={wide}
       rippleColor={isPlaying ? "surfaceContainerHighest" : "primaryDim"}
       _iconColor="onPrimary"
     />
