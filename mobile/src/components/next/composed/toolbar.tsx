@@ -1,7 +1,11 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import {
+  useFocusEffect,
+  useNavigation,
+  useNavigationState,
+} from "@react-navigation/native";
 import { Portal, PortalHost } from "@rn-primitives/portal";
 import { useCallback, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -11,6 +15,7 @@ import Animated, {
   FadeIn,
   FadeOut,
   LinearTransition,
+  SlideOutDown,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -27,14 +32,31 @@ export function useToolbarOffset(extra = 0) {
   return bottom + 48 + 16 + extra;
 }
 
+//# Configuration
+const hiddenRoutes = ["LyricForm-", "NowPlaying-", "Upcoming-"] as const;
+
+/** Returns a boolean indicating that the toolbar should be fully hidden. */
+function useIsToolbarHidden() {
+  return useNavigationState((s) =>
+    hiddenRoutes.some((key) => s.routes[s.index]?.key?.startsWith(key)),
+  );
+}
+//#endregion
+
 //#region Provider
 /**
  * Render once at the root to provide a smoother animation for the "actions"
  * portion of the toolbar.
  */
 function Provider() {
+  const isHidden = useIsToolbarHidden();
+  if (isHidden) return null;
   return (
-    <View className="absolute inset-x-0 bottom-0 flex-row items-center justify-between gap-2 px-4 pb-safe-offset-4">
+    <Animated.View
+      exiting={SlideOutDown}
+      className="absolute inset-x-0 bottom-0 flex-row items-center justify-between gap-2 px-4 pb-safe-offset-4"
+    >
+      <Backdrop />
       <Animated.View
         layout={LinearTransition}
         className="my-1 h-10 shrink flex-row items-center overflow-hidden rounded-full bg-surfaceContainerLowest"
@@ -42,6 +64,22 @@ function Provider() {
         <PortalHost name="toolbar-actions-host" />
       </Animated.View>
       <PortalHost name="toolbar-FAB-host" />
+    </Animated.View>
+  );
+}
+
+function Backdrop() {
+  const { surface } = useTheme();
+  const { bottom } = useSafeAreaInsets();
+  const height = useToolbarOffset();
+  return (
+    <View className="absolute inset-x-0 bottom-0">
+      <LinearGradient
+        colors={[`${surface}00`, `${surface}FF`]}
+        locations={[0, 1 - bottom / height]}
+        style={{ height }}
+        className="absolute inset-x-0 bottom-0"
+      />
     </View>
   );
 }
@@ -62,28 +100,7 @@ function Toolbar(props: { children: React.JSX.Element | React.JSX.Element[] }) {
 
   // Hide the toolbar on screens that don't support it.
   if (!visible) return null;
-  return (
-    <Portal name="toolbar">
-      <Backdrop />
-      {props.children}
-    </Portal>
-  );
-}
-
-function Backdrop() {
-  const { surface } = useTheme();
-  const { bottom } = useSafeAreaInsets();
-  const height = useToolbarOffset();
-  return (
-    <Animated.View exiting={FadeOut}>
-      <LinearGradient
-        colors={[`${surface}00`, `${surface}FF`]}
-        locations={[0, 1 - bottom / height]}
-        style={{ height }}
-        className="absolute inset-x-0 bottom-0"
-      />
-    </Animated.View>
-  );
+  return props.children;
 }
 //#endregion
 
@@ -98,7 +115,7 @@ function Actions(props: { children: React.ReactNode }) {
 //#endregion
 
 //#region FAB
-function FAB(props: Omit<IconButtonProps, "filled" | "size">) {
+function FABContainer(props: { children: React.ReactNode }) {
   return (
     <Portal name="toolbar-FAB" hostName="toolbar-FAB-host">
       <Animated.View
@@ -106,9 +123,17 @@ function FAB(props: Omit<IconButtonProps, "filled" | "size">) {
         exiting={FadeOut}
         className="rounded-full bg-surfaceContainerLowest"
       >
-        <IconButton {...props} filled size="lg" />
+        {props.children}
       </Animated.View>
     </Portal>
+  );
+}
+
+function FAB(props: Omit<IconButtonProps, "filled" | "size">) {
+  return (
+    <FABContainer>
+      <IconButton {...props} filled size="lg" />
+    </FABContainer>
   );
 }
 //#endregion
@@ -141,6 +166,7 @@ function Back() {
 Toolbar.Provider = Provider;
 
 Toolbar.Actions = Actions;
+Toolbar.FABContainer = FABContainer;
 Toolbar.FAB = FAB;
 
 Toolbar.Default = Default;

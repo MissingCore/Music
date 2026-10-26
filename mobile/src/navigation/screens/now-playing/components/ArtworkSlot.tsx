@@ -35,7 +35,7 @@ export function ArtworkSlot(props: {
         ) : null}
       </View>
       {showLyrics ? (
-        <LyricsOverlay size={size} trackId={props.trackId} />
+        <LyricsOverlay height={dimensions.height} trackId={props.trackId} />
       ) : null}
     </View>
   );

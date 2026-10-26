@@ -9,9 +9,9 @@ import type { SupportedIconName } from "~/resources/icons";
 import { Icon } from "~/resources/icons";
 import { Queue } from "~/stores/Playback/actions";
 
-import { IconButton } from "~/components/Form/Button/Icon";
 import { ListItem } from "~/components/List";
 import { Menu } from "~/components/Menu";
+import { IconButton } from "~/components/next/base/button-icon";
 
 export type MenuAction = {
   icon?: SupportedIconName;
@@ -81,8 +81,12 @@ export function CurrentListMenu(props: {
           icon="more-horiz"
           accessibilityLabel={t("term.more")}
           onPress={() => setVisible((prev) => !prev)}
+          intent="inverse"
+          filled
+          size="lg"
         />
       }
+      anchorPosition="top"
       dismissHandling
       onDismiss={() => setVisible(false)}
       menuClassName="overflow-hidden rounded-md bg-surfaceContainerLowest"

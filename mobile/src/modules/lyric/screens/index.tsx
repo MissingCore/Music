@@ -5,19 +5,8 @@ import LyricForm from "./LyricFormView";
 import LyricProviderForm from "./LyricProviderFormView";
 import LyricsSettings from "./SettingsView";
 
-import { Toolbar } from "~/components/next/composed/toolbar";
-
 const LyricScreenGroup = {
-  screenLayout: ({ children }: { children: React.JSX.Element }) => (
-    <>
-      <Toolbar.Default />
-      {children}
-    </>
-  ),
-  screenOptions: {
-    animation: "fade",
-    headerShown: false,
-  },
+  screenOptions: { animation: "fade" },
   screens: {
     LyricsSettings,
 
@@ -28,7 +17,6 @@ const LyricScreenGroup = {
         presentation: "transparentModal",
       },
     },
-
     LyricProviderForm,
   },
 } as const;

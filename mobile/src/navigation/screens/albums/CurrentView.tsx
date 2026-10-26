@@ -5,19 +5,16 @@ import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 
 import { useAlbumForScreen, useFavoriteAlbum } from "~/data/album/queries";
 
 import * as MediaListLayout from "~/navigation/layouts/MediaListLayout";
 import { AlbumArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import type { MenuAction } from "~/navigation/components/CurrentListMenu";
-import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { isNumber } from "~/utils/validation";
-import { IconButton } from "~/components/next/base/button-icon";
 import { useSheetRef } from "~/components/next/base/sheet";
 import { Text } from "~/components/next/base/typography";
 import { SequenceNumber } from "~/components/next/blocks/sequence-number";
@@ -85,6 +82,12 @@ export default function Album({
     <>
       <AlbumArtworkSheet ref={artworkSheetRef} id={albumId} />
 
+      <MediaListLayout.Toolbar
+        actions={menuActions}
+        name={data.name}
+        trackIds={data.tracks.map(({ id }) => id)}
+        presentArtworkSheet={() => artworkSheetRef.current?.present()}
+      />
       <MediaListLayout.Provider
         imageSource={data.imageSource}
         listSource={trackSource}
@@ -93,21 +96,10 @@ export default function Album({
           title={data.name}
           artists={data.artists}
           metadata={data.metadata}
-          Actions={
-            <View className="flex-row gap-1">
-              <IconButton
-                icon={`favorite${isToggled ? "-filled" : ""}`}
-                accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
-                onPress={() => mutateGuard(favoriteAlbum, !data.isFavorite)}
-              />
-              <CurrentListMenu
-                actions={menuActions}
-                name={data.name}
-                trackIds={data.tracks.map(({ id }) => id)}
-                presentArtworkSheet={() => artworkSheetRef.current?.present()}
-              />
-            </View>
-          }
+          favoriteConfig={{
+            toggled: isToggled,
+            onToggle: () => mutateGuard(favoriteAlbum, !data.isFavorite),
+          }}
         />
         <MediaListLayout.List
           data={formattedData}

@@ -30,7 +30,7 @@ import { ImageListItem } from "~/components/next/composed/image-list-item";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 import { extractTrackId } from "~/stores/Playback/utils";
 
-export default function Upcoming({ renderAsScreen = true }) {
+export default function Upcoming() {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { isPending, error, data } = useQueueTracks();
@@ -98,14 +98,10 @@ export default function Upcoming({ renderAsScreen = true }) {
   const isDataPending = isPending || error || cachedData.length === 0;
 
   return (
-    <View
-      className={cn("flex-1 pt-safe", {
-        "max-w-96 min-w-80 bg-surfaceContainerLow": !renderAsScreen,
-      })}
-    >
+    <View className="flex-1 pt-safe">
       <TopAppBarTemplate
         title="term.upcoming"
-        headerLeftAction={renderAsScreen ? <BackButton /> : undefined}
+        headerLeftAction={<BackButton />}
         headerRightAction={
           <IconButton
             icon="cached"

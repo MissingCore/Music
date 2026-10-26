@@ -5,16 +5,19 @@ import { useTranslation } from "react-i18next";
 
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, PlaybackSettings } from "~/stores/Playback/actions";
+import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
+import type { PlayFromSource } from "~/stores/Playback/types";
 
-import { cn } from "~/lib/style";
-import type { ButtonSize } from "~/components/Form/Button/Icon";
-import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
+import type {
+  ButtonSize,
+  IconButtonProps,
+} from "~/components/next/base/button-icon";
+import { IconButton } from "~/components/next/base/button-icon";
 
 /** Toggles the repeat status. */
 export function RepeatButton({ size = "lg" }: { size?: ButtonSize }) {
   const { t } = useTranslation();
   const repeatMode = usePlaybackStore((s) => s.repeat);
-
   return (
     <IconButton
       icon={repeatMode === "no-repeat" ? "repeat" : repeatMode}
@@ -43,21 +46,41 @@ export function ShuffleButton({ size = "lg" }: { size?: ButtonSize }) {
   );
 }
 
-/** Toggles whether we're playing or not. */
-export function PlayToggleButton() {
+/**
+ * Toggles whether we're playing or not. The displayed state can be linked
+ * to a specific list.
+ */
+export function PlayToggleButton({
+  trackSource,
+  size = "lg",
+  wide = true,
+  className,
+}: {
+  trackSource?: PlayFromSource;
+} & Pick<IconButtonProps, "size" | "wide" | "className">) {
   const { t } = useTranslation();
-  const isPlaying = usePlaybackStore((s) => s.isPlaying);
+  const isPlaying = usePlaybackStore((s) =>
+    trackSource
+      ? arePlaybackSourceEqual(s.playingFrom, trackSource) && s.isPlaying
+      : s.isPlaying,
+  );
+
   return (
-    <FilledIconButton
+    <IconButton
       icon={isPlaying ? "pause-filled" : "play-arrow-filled"}
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
-      onPress={() => PlaybackControls.playToggle()}
-      className={cn("bg-primary px-6 py-2", {
-        "bg-surfaceContainerHigh": isPlaying,
-      })}
-      size="lg"
-      rippleColor={isPlaying ? "surfaceContainerHighest" : "primaryDim"}
-      _iconColor="onPrimary"
+      onPress={() =>
+        trackSource
+          ? isPlaying
+            ? PlaybackControls.pause()
+            : PlaybackControls.playFromList({ source: trackSource })
+          : PlaybackControls.playToggle()
+      }
+      className={className}
+      intent={isPlaying ? "muted" : "primary"}
+      filled
+      size={size}
+      wide={wide}
     />
   );
 }

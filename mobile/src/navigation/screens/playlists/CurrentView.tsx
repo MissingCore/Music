@@ -5,7 +5,6 @@ import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 
 import {
   useFavoritePlaylist,
@@ -15,11 +14,9 @@ import {
 import * as MediaListLayout from "~/navigation/layouts/MediaListLayout";
 import { PlaylistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import type { MenuAction } from "~/navigation/components/CurrentListMenu";
-import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 import { ExportM3USheet } from "./sheets/ExportM3USheet";
 
 import { mutateGuard } from "~/lib/react-query";
-import { IconButton } from "~/components/next/base/button-icon";
 import { useSheetRef } from "~/components/next/base/sheet";
 import { TrackItem } from "~/components/next/composed/track-item";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
@@ -73,6 +70,12 @@ export default function Playlist({
       <PlaylistArtworkSheet ref={artworkSheetRef} id={id} />
       <ExportM3USheet ref={exportSheetRef} id={id} />
 
+      <MediaListLayout.Toolbar
+        actions={menuActions}
+        name={listName}
+        trackIds={data.tracks.map(({ id }) => id)}
+        presentArtworkSheet={() => artworkSheetRef.current?.present()}
+      />
       <MediaListLayout.Provider
         imageSource={data.imageSource}
         listSource={trackSource}
@@ -80,26 +83,14 @@ export default function Playlist({
         <MediaListLayout.Header
           title={listName}
           metadata={data.metadata}
-          Actions={
-            <View className="flex-row gap-1">
-              {id !== FavoritesPlaylistKey ? (
-                <IconButton
-                  icon={`favorite${isToggled ? "-filled" : ""}`}
-                  accessibilityLabel={t(
-                    `term.${isToggled ? "unF" : "f"}avorite`,
-                  )}
-                  onPress={() =>
-                    mutateGuard(favoritePlaylist, !data.isFavorite)
-                  }
-                />
-              ) : null}
-              <CurrentListMenu
-                actions={menuActions}
-                name={listName}
-                trackIds={data.tracks.map(({ id }) => id)}
-                presentArtworkSheet={() => artworkSheetRef.current?.present()}
-              />
-            </View>
+          favoriteConfig={
+            id !== FavoritesPlaylistKey
+              ? {
+                  toggled: isToggled,
+                  onToggle: () =>
+                    mutateGuard(favoritePlaylist, !data.isFavorite),
+                }
+              : undefined
           }
         />
         <MediaListLayout.List

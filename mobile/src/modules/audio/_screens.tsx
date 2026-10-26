@@ -3,7 +3,7 @@
 
 import type { StaticScreenProps } from "@react-navigation/native";
 
-import { ListLayout } from "~/navigation/layouts/ListLayout";
+import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
 
 import { PlaybackParameterSettings } from "./_components/PlaybackParameterSettings";
 import { VolumeSettings } from "./_components/VolumeSettings";
@@ -18,24 +18,19 @@ function AudioEffectsView({
   },
 }: Props) {
   return (
-    <ListLayout>
+    <ScrollLayout title="feat.audioEffects.title">
       <EqualizerSettings />
       {showHidden ? <PlaybackParameterSettings /> : null}
       <ReplayGainSettings />
       <VolumeSettings />
-    </ListLayout>
+    </ScrollLayout>
   );
 }
 
 const AudioEffectScreenGroup = {
-  screenOptions: {
-    animation: "fade",
-  },
+  screenOptions: { animation: "fade" },
   screens: {
-    AudioEffects: {
-      screen: AudioEffectsView,
-      options: { title: "feat.audioEffects.title" },
-    },
+    AudioEffects: { screen: AudioEffectsView },
   },
 } as const;
 

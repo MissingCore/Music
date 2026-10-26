@@ -47,7 +47,6 @@ import { Toolbar } from "~/components/next/composed/toolbar";
 import { TrackMultiSelectListeners } from "~/modules/media/multiSelect/components/TrackMultiSelectListeners";
 import { MiniplayerProvider } from "./components/BottomActions/Miniplayer";
 import { DeferredRender } from "./components/DeferredRender";
-import { TopAppBar } from "./components/TopAppBar";
 
 //#region Root Screens
 const MaterialTopTab = createMaterialTopTabNavigator();
@@ -98,15 +97,19 @@ export const RootStack = createNativeStackNavigator({
       <Toolbar.Provider />
     </>
   ),
-  screenLayout: ({ children }) => <DeferredRender>{children}</DeferredRender>,
-  screenOptions: {
-    header: TopAppBar,
-    title: "",
-  },
+  screenLayout: ({ children }) => (
+    <>
+      <Toolbar.Default />
+      <DeferredRender>{children}</DeferredRender>
+    </>
+  ),
+  screenOptions: { headerShown: false },
   screens: {
     HomeScreens: {
       screen: RootScreens,
-      options: { headerShown: false },
+      //? Disable default toolbar on these screens as we manually apply it
+      //? via the components.
+      layout: ({ children }) => children,
     },
     NowPlaying: {
       screen: NowPlaying,
@@ -114,9 +117,9 @@ export const RootStack = createNativeStackNavigator({
         path: "now-playing",
       },
       //? Prevents blank screen when opening caused by deferred render.
+      //? Also disables the toolbar UI on this screen.
       layout: ({ children }) => children,
       options: {
-        headerShown: false,
         presentation: "formSheet",
         sheetCornerRadius: 24,
         sheetElevation: 0,
@@ -127,7 +130,6 @@ export const RootStack = createNativeStackNavigator({
     Upcoming: {
       screen: Upcoming,
       options: {
-        headerShown: false,
         presentation: "formSheet",
         sheetCornerRadius: 24,
         sheetElevation: 0,
@@ -138,7 +140,6 @@ export const RootStack = createNativeStackNavigator({
   groups: {
     AudioEffect: AudioEffectScreenGroup,
     Current: {
-      screenOptions: { headerShown: false },
       screens: {
         Playlist,
         Album,
@@ -147,7 +148,6 @@ export const RootStack = createNativeStackNavigator({
       },
     },
     Form: {
-      screenOptions: { headerShown: false },
       screens: {
         ModifyAlbum,
         CreatePlaylist,
@@ -158,16 +158,7 @@ export const RootStack = createNativeStackNavigator({
     Insights: InsightsScreenGroup,
     Lyric: LyricScreenGroup,
     Setting: {
-      screenLayout: ({ children }) => (
-        <>
-          <Toolbar.Default />
-          {children}
-        </>
-      ),
-      screenOptions: {
-        animation: "fade",
-        headerShown: false,
-      },
+      screenOptions: { animation: "fade" },
       screens: {
         Settings: {
           screen: Settings,
@@ -178,9 +169,7 @@ export const RootStack = createNativeStackNavigator({
         PlaybackSettings,
         ScanningSettings,
         ExperimentalSettings,
-        About: {
-          screen: AboutApp,
-        },
+        About: { screen: AboutApp },
         ThirdParty,
         PackageLicense,
       },

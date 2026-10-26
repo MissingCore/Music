@@ -30,7 +30,7 @@ export function AtmosphereBackground(props: {
 
   useFocusEffect(
     useCallback(() => {
-      if (!atmosphereEffect) return;
+      if (!atmosphereEffect || !imgSrc) return;
       const controller = new AbortController();
       deriveAndSetAtmosphereColors(imgSrc, controller);
       return () => controller.abort();

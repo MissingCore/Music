@@ -5,13 +5,12 @@ import { Toaster } from "@missingcore/ui/toast";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { NavigationBar } from "@zoontek/react-native-navigation-bar";
 import { useTranslation } from "react-i18next";
-import { StatusBar, View } from "react-native";
+import { StatusBar } from "react-native";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import type { EdgeInsets } from "react-native-safe-area-context";
 import {
   SafeAreaProvider as RawSafeAreaProvider,
   SafeAreaListener,
-  useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import { Uniwind, withUniwind } from "uniwind";
 
@@ -68,19 +67,12 @@ function UniwindListeners(props: { children: React.ReactNode }) {
 }
 
 function SystemBars() {
-  const { bottom } = useSafeAreaInsets();
   const currentTheme = useCurrentScheme();
   const iconColor = currentTheme === "light" ? "dark" : "light";
-
   return (
     <>
       <StatusBar barStyle={`${iconColor}-content`} />
       <NavigationBar barStyle={`${iconColor}-content`} />
-
-      <View
-        style={{ paddingBottom: bottom }}
-        className="absolute inset-x-0 bottom-0 bg-androidNavbar"
-      />
     </>
   );
 }

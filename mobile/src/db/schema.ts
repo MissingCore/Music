@@ -379,7 +379,7 @@ export const customThemes = sqliteTable("custom_themes", {
 
   // Color used by our placeholder image.
   placeholder: text().notNull().default("#FFFFFF"),
-  // Color used to put behind the android navigation bar.
+  /** @deprecated - This is no longer used. */
   androidNavbar: text().notNull().default("#FFFFFF00"),
 });
 //#endregion

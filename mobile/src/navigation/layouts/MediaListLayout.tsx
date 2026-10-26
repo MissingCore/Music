@@ -1,24 +1,16 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import {
-  createContext,
-  use,
-  useCallback,
-  useLayoutEffect,
-  useMemo,
-} from "react";
+import { createContext, use, useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import flattenChildren from "react-keyed-flatten-children";
 import { useWindowDimensions, View } from "react-native";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, {
-  useAnimatedRef,
-  useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useInForeground } from "~/stores/ListenerState";
 import { usePlaybackStore } from "~/stores/Playback/store";
@@ -32,43 +24,36 @@ import { useDelayedReady } from "~/hooks/useDelayedReady";
 import { useListLayoutConfig } from "~/hooks/useLayoutConfigs";
 
 import { useBottomActionsOffset } from "../components/BottomActions/useBottomActions";
+import { CurrentListMenu } from "../components/CurrentListMenu";
 import { ContentPlaceholder, PagePlaceholder } from "../components/Placeholder";
-import { BackButton, TopAppBarTemplate } from "../components/TopAppBar";
 
 import { cn } from "~/lib/style";
 import { clamp } from "~/utils/number";
 import type { LegendListProps } from "~/components/Base/LegendList";
 import { LegendList } from "~/components/Base/LegendList";
 import { ScrollView } from "~/components/Base/ScrollView";
+import { IconButton } from "~/components/next/base/button-icon";
 import { Icon } from "~/components/next/base/icon";
 import { Text } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";
 import type { MediaImageSrc } from "~/components/next/blocks/media-image";
 import { MediaImage } from "~/components/next/blocks/media-image";
+import {
+  Toolbar as NativeToolbar,
+  ToolbarScreenOffset,
+} from "~/components/next/composed/toolbar";
 import { TrackListContext } from "~/components/next/composed/track-item";
 import { AtmosphereBackground } from "~/modules/customization/atmosphere/AtmosphereBackground";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
-import { MediaListControls } from "~/modules/media/components/MediaListControls";
+import {
+  PlayToggleButton,
+  ShuffleButton,
+} from "~/modules/media/components/MediaControls";
 import { Vinyl } from "~/modules/media/components/Vinyl";
-
-//#region Top App Bar
-function TopAppBar() {
-  return (
-    <View pointerEvents="box-none" className="absolute inset-x-0 top-safe z-10">
-      <TopAppBarTemplate headerLeftAction={<BackButton />} />
-    </View>
-  );
-}
-//#endregion
 
 //#region Skeleton
 export function Skeleton({ pending = false }) {
-  return (
-    <View className="flex-1 pt-safe-offset-14">
-      <TopAppBar />
-      <PagePlaceholder isPending={pending} />
-    </View>
-  );
+  return <PagePlaceholder isPending={pending} />;
 }
 //#endregion
 
@@ -86,7 +71,6 @@ export function Provider(props: {
     <TrackListContext value={props.listSource}>
       <ImageSourceContext value={props.imageSource}>
         <AtmosphereBackground source={props.imageSource}>
-          <TopAppBar />
           <UsedLayout>{props.children}</UsedLayout>
         </AtmosphereBackground>
       </ImageSourceContext>
@@ -130,7 +114,7 @@ function useListLayoutProps() {
         overrideItemLayout: overrideItemLayout,
         ListEmptyComponent: <ContentPlaceholder errMsgKey="err.msg.noTracks" />,
         className: "-mx-0.75 -mb-1.5",
-        contentContainerClassName: "px-4 pt-safe-offset-18",
+        contentContainerClassName: cn("px-4", ToolbarScreenOffset),
         contentContainerStyle: { paddingBottom: bottomOffset },
       }) satisfies Partial<LegendListProps>,
     [bottomOffset, count, overrideItemLayout],
@@ -138,62 +122,22 @@ function useListLayoutProps() {
 }
 
 function MobileLayout({ children }: { children: React.ReactNode }) {
-  const { top } = useSafeAreaInsets();
   const { header, list } = useLayoutComponents(children);
   const listLayoutProps = useListLayoutProps();
 
   const { ListHeaderComponent, ...listProps } = list.props as ListProps<any>;
 
-  const controlsRestPosition = useSharedValue(-1);
-  const controlsRef = useAnimatedRef();
-  useLayoutEffect(() => {
-    controlsRef.current?.measure((_x, _y, _width, _height, _pageX, pageY) => {
-      controlsRestPosition?.set(pageY - top - 8);
-    });
-  }, [top, controlsRef, controlsRestPosition]);
-
-  const scrollPosition = useSharedValue(0);
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (e) => {
-      "worklet";
-      scrollPosition.set(e.contentOffset.y);
-    },
-  });
-
-  const stickyStyles = useAnimatedStyle(() => ({
-    opacity: controlsRestPosition.get() === -1 ? 0 : 1,
-    transform: [
-      {
-        translateY: Math.max(
-          0,
-          controlsRestPosition.get() - scrollPosition.get(),
-        ),
-      },
-    ],
-  }));
-
   return (
-    <>
-      <LegendList
-        {...listProps}
-        {...listLayoutProps}
-        onScroll={scrollHandler}
-        ListHeaderComponent={
-          <View className={cn("mx-0.75 gap-6", !ListHeaderComponent && "pb-6")}>
-            {header}
-            <Animated.View ref={controlsRef} className="h-10 w-full" />
-            {ListHeaderComponent}
-          </View>
-        }
-      />
-      <Animated.View
-        pointerEvents="box-none"
-        style={stickyStyles}
-        className="absolute inset-x-0 top-0 items-end px-4 pt-safe-offset-2"
-      >
-        <MediaListControls trackSource={use(TrackListContext)} />
-      </Animated.View>
-    </>
+    <LegendList
+      {...listProps}
+      {...listLayoutProps}
+      ListHeaderComponent={
+        <View className={cn("mx-0.75 gap-6", !ListHeaderComponent && "pb-6")}>
+          {header}
+          {ListHeaderComponent}
+        </View>
+      }
+    />
   );
 }
 
@@ -208,15 +152,9 @@ function TabletLayout({ children }: { children: React.ReactNode }) {
       <ScrollView
         className="relative my-auto w-full max-w-2/5 shrink-0"
         contentContainerStyle={listLayoutProps.contentContainerStyle}
-        contentContainerClassName={cn(
-          "gap-6 p-4",
-          listLayoutProps.contentContainerClassName,
-        )}
+        contentContainerClassName={listLayoutProps.contentContainerClassName}
       >
         {header}
-        <View className="self-end">
-          <MediaListControls trackSource={use(TrackListContext)} />
-        </View>
       </ScrollView>
 
       <LegendList
@@ -233,15 +171,36 @@ function TabletLayout({ children }: { children: React.ReactNode }) {
 }
 //#endregion
 
+//#region Toolbar
+/**
+ * Should be rendered outside of `MediaListLayout.Provider`. Configures the
+ * menu shown on the screen.
+ */
+export function Toolbar(props: React.ComponentProps<typeof CurrentListMenu>) {
+  return (
+    <NativeToolbar>
+      <NativeToolbar.Actions>
+        <NativeToolbar.Back />
+      </NativeToolbar.Actions>
+      <NativeToolbar.FABContainer>
+        <CurrentListMenu {...props} />
+      </NativeToolbar.FABContainer>
+    </NativeToolbar>
+  );
+}
+//#endregion
+
 //#region Header
 interface HeaderProps {
   title: string;
   artists?: string[];
   metadata: string[];
-  Actions: React.ReactNode;
+  favoriteConfig?: { toggled: boolean; onToggle: VoidFunction };
 }
 
 export function Header(props: HeaderProps) {
+  const { t } = useTranslation();
+  const listSource = use(TrackListContext);
   return (
     <View className="gap-6">
       <DeferredArtwork />
@@ -269,7 +228,26 @@ export function Header(props: HeaderProps) {
             </Text>
           </Marquee>
         </View>
-        {props.Actions}
+      </View>
+      <View className="flex-row items-center justify-center gap-4">
+        <ShuffleButton />
+        <PlayToggleButton
+          trackSource={listSource}
+          size="lg"
+          className="max-w-3/10 shrink grow py-4"
+        />
+        {props.favoriteConfig ? (
+          <IconButton
+            icon={`favorite${props.favoriteConfig.toggled ? "-filled" : ""}`}
+            accessibilityLabel={t(
+              `term.${props.favoriteConfig.toggled ? "unF" : "f"}avorite`,
+            )}
+            onPress={props.favoriteConfig.onToggle}
+            size="lg"
+          />
+        ) : (
+          <View className="size-12" />
+        )}
       </View>
     </View>
   );

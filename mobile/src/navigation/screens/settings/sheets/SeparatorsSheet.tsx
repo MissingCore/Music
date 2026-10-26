@@ -43,7 +43,12 @@ export function SeparatorsSheet(props: { ref: SheetRef }) {
       />
       <Sheet.Footer>
         <SeparatorForm />
-        <Hint hint={t("feat.separators.description.line1")} />
+        <Hint
+          hint={[
+            t("feat.separators.description.line1"),
+            t("feat.separators.description.line2"),
+          ]}
+        />
       </Sheet.Footer>
     </Sheet>
   );

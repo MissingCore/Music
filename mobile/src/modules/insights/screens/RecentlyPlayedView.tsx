@@ -10,12 +10,15 @@ import {
 } from "~/hooks/useLayoutConfigs";
 
 import { getMediaLinkContext } from "~/navigation/utils/router";
+import { ScrollLayoutTitle } from "~/navigation/layouts/ScrollLayout";
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
+import { cn } from "~/lib/style";
 import { LegendList } from "~/components/Base/LegendList";
 import { FlatList } from "~/components/Base/List";
 import { ImageCard } from "~/components/next/composed/image-card";
+import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 import {
   TrackItem,
   TrackListContext,
@@ -58,9 +61,14 @@ export default function RecentlyPlayed() {
         data={data?.tracks}
         keyExtractor={({ id }) => id}
         renderItem={({ item }) => <TrackItem {...item} />}
-        ListHeaderComponent={<RecentlyPlayedLists data={data.lists} />}
+        ListHeaderComponent={
+          <>
+            <ScrollLayoutTitle title="feat.recent.extra.recentlyPlayed" />
+            <RecentlyPlayedLists data={data.lists} />
+          </>
+        }
         className="-mx-0.75 -mb-1.5"
-        contentContainerClassName="p-4"
+        contentContainerClassName={cn("p-4", ToolbarScreenOffset)}
         contentContainerStyle={{ paddingBottom: bottomOffset }}
       />
     </TrackListContext>
@@ -92,7 +100,7 @@ function RecentlyPlayedLists(props: { data?: RecentListCardContent[] }) {
         />
       )}
       className="-mx-3.25"
-      contentContainerClassName="gap-1.5 p-4 pt-0"
+      contentContainerClassName="gap-1.5 px-4 py-6"
     />
   );
 }

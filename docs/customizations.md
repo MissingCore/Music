@@ -53,15 +53,14 @@ You can customize the theme the app uses (light/dark/system). As of `v3.1.0`, yo
     "inverseSurface": "#2E1F00",
     "inverseOnSurface": "#FFF8E1",
 
-    "placeholder": "#FFFFFF",
-    "androidNavbar": "#F5EACC00"
+    "placeholder": "#FFFFFF"
   }
 }
 ```
 
 ### [🧪 Experimental] Opaque Colors
 
-We support opaque colors for any color picker input (ie: Custom Themes, Widget Customization) after enabling the `Opaque Colors` experimental setting. **This is required to change the opacity of the `androidNavbar` color role.**
+We support opaque colors for any color picker input (ie: Custom Themes, Widget Customization) after enabling the `Opaque Colors` experimental setting.
 
 > [!IMPORTANT]
 > We do not guarantee that opaque colors will look nice in our app or will be fully supported. For example, gradients and content that overlap may not look (or work) as expected.

@@ -29,10 +29,9 @@ import {
   ReservedPlaylists,
 } from "~/modules/media/constants";
 import {
-  RepeatButton,
+  PlayToggleButton,
   ShuffleButton,
 } from "~/modules/media/components/MediaControls";
-import { PlayMediaListButton } from "~/modules/media/components/MediaListControls";
 
 // Information about this track list.
 const trackSource = {
@@ -56,8 +55,7 @@ export default function Tracks() {
 function TrackActions() {
   return (
     <>
-      <PlayMediaListButton trackSource={trackSource} />
-      <RepeatButton size="sm" />
+      <PlayToggleButton trackSource={trackSource} size="sm" wide={false} />
       <ShuffleButton size="sm" />
     </>
   );

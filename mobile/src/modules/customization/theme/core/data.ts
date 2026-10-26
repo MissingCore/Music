@@ -23,7 +23,7 @@ const queryKey = ["custom-themes"] as const;
 
 //? Raw structure stored in `customThemes` table. Not to be confused with
 //? the `CustomTheme` type which is the consumed structure.
-type CustomThemeEntry = typeof customThemes.$inferSelect;
+type CustomThemeEntry = Omit<typeof customThemes.$inferSelect, "androidNavbar">;
 
 //#region Backup
 const ThemeExportSchema = v.object({
@@ -46,8 +46,6 @@ export async function pickTheme() {
     if (isRecord(fileContents) && fileContents.colors) {
       if (!fileContents.colors.placeholder)
         fileContents.colors.placeholder = "#FFFFFF";
-      if (!fileContents.colors.androidNavbar)
-        fileContents.colors.androidNavbar = "#00000000";
     }
 
     return v.parse(ThemeExportSchema, fileContents);
@@ -93,6 +91,7 @@ export async function updateCustomTheme(
 export async function getCustomTheme(themeId: string) {
   const result = await throwIfNoResults(
     db.query.customThemes.findFirst({
+      columns: { androidNavbar: false },
       where: (fields, { eq }) => eq(fields.id, themeId),
     }),
   );
@@ -101,6 +100,7 @@ export async function getCustomTheme(themeId: string) {
 
 async function getCustomThemes() {
   return db.query.customThemes.findMany({
+    columns: { androidNavbar: false },
     orderBy: (fields, { asc }) => asc(fields.name),
   });
 }
