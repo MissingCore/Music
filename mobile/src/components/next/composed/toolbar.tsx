@@ -1,7 +1,11 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import {
+  useFocusEffect,
+  useNavigation,
+  useNavigationState,
+} from "@react-navigation/native";
 import { Portal, PortalHost } from "@rn-primitives/portal";
 import { useCallback, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -27,12 +31,25 @@ export function useToolbarOffset(extra = 0) {
   return bottom + 48 + 16 + extra;
 }
 
+//# Configuration
+const hiddenRoutes = ["NowPlaying-", "Upcoming-"] as const;
+
+/** Returns a boolean indicating that the toolbar should be fully hidden. */
+function useIsToolbarHidden() {
+  return useNavigationState((s) =>
+    hiddenRoutes.some((key) => s.routes[s.index]?.key?.startsWith(key)),
+  );
+}
+//#endregion
+
 //#region Provider
 /**
  * Render once at the root to provide a smoother animation for the "actions"
  * portion of the toolbar.
  */
 function Provider() {
+  const isHidden = useIsToolbarHidden();
+  if (isHidden) return null;
   return (
     <View className="absolute inset-x-0 bottom-0 flex-row items-center justify-between gap-2 px-4 pb-safe-offset-4">
       <Backdrop />
