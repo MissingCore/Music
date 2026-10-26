@@ -234,7 +234,7 @@ export function Header(props: HeaderProps) {
         <PlayToggleButton
           trackSource={listSource}
           size="lg"
-          className="max-w-3/10 min-w-24 shrink grow py-4"
+          className="max-w-3/10 shrink grow py-4"
         />
         {props.favoriteConfig ? (
           <IconButton

@@ -78,12 +78,12 @@ export function PlayToggleButton({
           : PlaybackControls.playToggle()
       }
       className={cn(
-        "bg-primary px-6 py-2",
-        { "bg-surfaceContainerHigh": isPlaying },
+        isPlaying ? "bg-surfaceContainerHigh" : "bg-primary",
         props.className,
       )}
       filled
       size={size}
+      wide
       rippleColor={isPlaying ? "surfaceContainerHighest" : "primaryDim"}
       _iconColor="onPrimary"
     />
