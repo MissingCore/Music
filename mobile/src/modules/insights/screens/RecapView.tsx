@@ -13,22 +13,31 @@ import { sessionStore, useSessionStore } from "~/stores/Session/store";
 import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
+import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { Epoch, Months, Seconds } from "~/utils/date";
 import { FlatList } from "~/components/Base/List";
 import { Button } from "~/components/next/base/button";
+import { IconButton } from "~/components/next/base/button-icon";
 import { Card } from "~/components/next/base/card";
 import { Divider } from "~/components/next/base/divider";
 import { Icon } from "~/components/next/base/icon";
 import type { SheetRef } from "~/components/next/base/sheet";
-import { useSheetRef } from "~/components/next/base/sheet";
+import { Sheet, useSheetRef } from "~/components/next/base/sheet";
 import { Text, TText } from "~/components/next/base/typography";
+import { ActionButton } from "~/components/next/blocks/button-action";
+import { Hint } from "~/components/next/blocks/hint";
 import type { MediaImageSrc } from "~/components/next/blocks/media-image";
 import { MediaImage } from "~/components/next/blocks/media-image";
 import { SequenceNumber } from "~/components/next/blocks/sequence-number";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
 import { RadioSheet } from "~/components/next/composed/sheet-radio";
+import { Toolbar } from "~/components/next/composed/toolbar";
 import { RECENT_DAY_RANGE } from "../core/constants";
+import {
+  useExportRecapBackup,
+  useImportRecapBackup,
+} from "../helpers/backupRecap";
 import { generateRecapRange } from "../helpers/generateRecapRange";
 import type { RecapResult } from "../helpers/useRecap";
 import { useRecap } from "../helpers/useRecap";
@@ -104,6 +113,7 @@ export default function Recap({
   if (!isReady) return null;
   return (
     <>
+      <RecapToolbar />
       <TimeRangeSheet
         ref={timeRangeSheetRef}
         selectedItem={state.rangeLabel}
@@ -140,6 +150,53 @@ function RecapContent(props: { startEpoch: number; endEpoch?: number }) {
     </>
   );
 }
+
+//#region Toolbar
+function RecapToolbar() {
+  const { t } = useTranslation();
+  const exportBackup = useExportRecapBackup();
+  const importBackup = useImportRecapBackup();
+  const sheetRef = useSheetRef();
+
+  const inProgress = exportBackup.isPending || importBackup.isPending;
+
+  return (
+    <>
+      <Toolbar>
+        <Toolbar.Actions>
+          <Toolbar.Back />
+          <IconButton
+            icon="swap-vert"
+            accessibilityLabel={t("feat.backup.title")}
+            onPress={() => sheetRef.current?.present()}
+          />
+        </Toolbar.Actions>
+      </Toolbar>
+      <Sheet ref={sheetRef}>
+        <Sheet.Actions>
+          <ActionButton
+            label={t("feat.backup.extra.export")}
+            onPress={() => mutateGuard(exportBackup, undefined)}
+            disabled={inProgress}
+            leadingIcon="download"
+            className="rounded-lg"
+          />
+          <ActionButton
+            label={t("feat.backup.extra.import")}
+            onPress={() => mutateGuard(importBackup, undefined)}
+            disabled={inProgress}
+            leadingIcon="upload"
+            className="rounded-lg"
+          />
+        </Sheet.Actions>
+        <Sheet.Footer>
+          <Hint hint={t("feat.recap.extra.backup")} />
+        </Sheet.Footer>
+      </Sheet>
+    </>
+  );
+}
+//#endregion
 
 //#region Time Range Sheet
 function TimeRangeSheet(props: {
