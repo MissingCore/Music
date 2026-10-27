@@ -134,7 +134,6 @@ function FontSheet(props: { ref: SheetRef; type: "Accent" | "Primary" }) {
           filled
           wide
           className="self-center"
-          _iconSize={32}
         />
       </Sheet.Footer>
     </Sheet>

@@ -74,7 +74,6 @@ export default function LyricsSettings() {
               filled
               wide
               className="mt-2 self-center"
-              _iconSize={32}
             />
           }
           ListEmptyComponent={

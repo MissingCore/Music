@@ -109,7 +109,6 @@ export function ThemeSheet(props: { ref: SheetRef }) {
           filled
           wide
           className="self-center"
-          _iconSize={32}
         />
       </Sheet.Footer>
     </Sheet>
