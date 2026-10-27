@@ -6,9 +6,8 @@ import { Fragment, memo, useMemo } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View } from "react-native";
 
-import { Icon } from "~/resources/icons";
-
 import { cn } from "~/lib/style";
+import { Icon } from "~/components/next/base/icon";
 import { Button } from "./Button";
 import { Ripple } from "../Base/Pressable";
 import { TEm, TStyledText } from "../Typography/StyledText";

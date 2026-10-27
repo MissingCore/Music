@@ -11,12 +11,12 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 
-import type { SupportedIconName } from "~/resources/icons";
-import { Icon } from "~/resources/icons";
 import { useScanningProgressStore } from "../scanning/ScanningProgress";
 
 import { CachedSlider } from "~/components/Form/Slider";
 import { Em, TEm } from "~/components/Typography/StyledText";
+import type { SupportedIconName } from "~/components/next/base/icon";
+import { Icon } from "~/components/next/base/icon";
 import { SystemTheme } from "~/modules/customization/theme/core/constants";
 
 export function ScanningProgress() {

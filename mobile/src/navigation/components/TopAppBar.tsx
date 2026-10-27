@@ -6,8 +6,8 @@ import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { TEm } from "~/components/Typography/StyledText";
+import { IconButton } from "~/components/next/base/button-icon";
 
 /**
  * `<TopAppBar />` component without the safe-area handling.
@@ -40,11 +40,12 @@ export function BackButton({ disabled = false }) {
   const navigation = useNavigation();
 
   return (
-    <FilledIconButton
+    <IconButton
       icon="arrow-back"
       accessibilityLabel={t("form.back")}
       onPress={() => navigation.goBack()}
       disabled={disabled}
+      filled
       className="rtl:rotate-180"
     />
   );

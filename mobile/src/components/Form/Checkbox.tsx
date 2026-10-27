@@ -5,9 +5,8 @@ import type { ParseKeys } from "i18next";
 import React, { memo } from "react";
 import { View } from "react-native";
 
-import { Icon } from "~/resources/icons";
-
 import { cn } from "~/lib/style";
+import { Icon } from "~/components/next/base/icon";
 import { Pressable, Ripple } from "../Base/Pressable";
 import { TStyledText } from "../Typography/StyledText";
 

@@ -14,7 +14,7 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import type { ViewStyle } from "react-native";
-import { Text, View } from "react-native";
+import { Text as NativeText, View } from "react-native";
 import { usePolledProgress } from "react-native-audio-browser";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -28,11 +28,11 @@ import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
 import type { FlatListProps, FlatListRef } from "~/components/Base/List";
 import { FlatList, useFlatListRef } from "~/components/Base/List";
-import { Pressable } from "~/components/Base/Pressable";
-import { ExtendedTButton } from "~/components/Form/Button";
-import { IconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
-import { Em, TEm } from "~/components/Typography/StyledText";
+import { IconButton } from "~/components/next/base/button-icon";
+import { Text, TText } from "~/components/next/base/typography";
+import { ActionButton } from "~/components/next/blocks/button-action";
+import { Pressable } from "~/components/next/primitive/pressable";
 import { useIsAtmosphereActive } from "~/modules/customization/atmosphere/store";
 import { useTheme } from "~/modules/customization/theme/hooks";
 import { autoDiscoverLyrics } from "../helpers/autoDiscoverLyrics";
@@ -117,7 +117,11 @@ function LyricsContent({ trackId }: { trackId: string }) {
         <FlatList
           data={formattedLyrics?.split("\n")}
           keyExtractor={(_, index) => `${index}`}
-          renderItem={({ item }) => <Em className="text-xl">{item}</Em>}
+          renderItem={({ item }) => (
+            <Text bold size="xl">
+              {item}
+            </Text>
+          )}
           nestedScrollEnabled
           className="w-full"
           contentContainerStyle={listStyles}
@@ -180,14 +184,13 @@ function LyricsNotFound({ trackId }: { trackId: string }) {
         style={!isLargeScreen ? notFoundStyles : undefined}
         className="my-auto items-center gap-6 pb-4"
       >
-        <TEm textKey="err.msg.noLyrics" className="text-xl" />
-        <ExtendedTButton
-          // @ts-expect-error - Will display text if key doesn't exist.
-          textKey={t("template.entryManage", { name: t("feat.lyrics.title") })}
+        <TText textKey="err.msg.noLyrics" bold size="xl" />
+        <ActionButton
+          label={t("template.entryManage", { name: t("feat.lyrics.title") })}
           onPress={() => navigation.navigate("LyricForm", { trackId })}
           disabled={checkingEmbeddedLyrics}
-          className="min-h-auto w-full max-w-48"
-          textClassName="text-xs"
+          className="w-full max-w-48 rounded-lg"
+          labelClassName="text-xs"
         />
       </View>
       <ExtraActions />
@@ -333,17 +336,21 @@ const MemoLyricList = memo(
           if (typeof line === "string") {
             return (
               <Pressable onPress={() => PlaybackControls.seekTo(timeMS / 1000)}>
-                <Em className="text-xl text-onSurfaceVariant/50">{line}</Em>
+                <Text bold size="xl" className="text-onSurfaceVariant/50">
+                  {line}
+                </Text>
               </Pressable>
             );
           } else {
             return (
-              <Em className="text-xl">
+              <Text bold size="xl">
                 {line[0]}
                 {line[1].length > 0 && (
-                  <Text className="text-onSurfaceVariant/50">{line[1]}</Text>
+                  <NativeText className="text-onSurfaceVariant/50">
+                    {line[1]}
+                  </NativeText>
                 )}
-              </Em>
+              </Text>
             );
           }
         }}

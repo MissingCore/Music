@@ -17,11 +17,11 @@ import {
   removeSelectedFromPlaylist,
 } from "../core/actions";
 
-import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
-import { ConfirmableAction } from "~/components/Modal";
-import { StyledText } from "~/components/Typography/StyledText";
+import { IconButton } from "~/components/next/base/button-icon";
 import { useSheetRef } from "~/components/next/base/sheet";
+import { Text } from "~/components/next/base/typography";
+import { ConfirmAction } from "~/components/next/composed/confirm-action";
 import { AddToCreatedPlaylistSheet } from "./AddToCreatedPlaylistSheet";
 import { AddToPlaylistsSheet } from "./AddToPlaylistsSheet";
 import { FavoritesPlaylistKey } from "../../constants";
@@ -97,16 +97,16 @@ function SelectionCount() {
 
   return (
     <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
-      <FilledIconButton
+      <IconButton
         icon="close"
         accessibilityLabel={t("form.close")}
         onPress={TrackMultiSelect.reset}
         size="xs"
         _iconColor="error"
       />
-      <StyledText className="mr-4 text-xs">
+      <Text size="xs" className="mr-4">
         {t("template.countSelected", { count: amountSelected })}
-      </StyledText>
+      </Text>
     </View>
   );
 }
@@ -134,45 +134,43 @@ function MultiSelectActions(props: {
   return (
     <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
       {!isFavoriteRoute ? (
-        <FilledIconButton
+        <IconButton
           icon={`favorite${isAllFavorited ? "-filled" : ""}`}
           accessibilityLabel={t("term.favorite")}
           onPress={favoriteSelected}
         />
       ) : null}
       {isPlaylistRoute ? (
-        <ConfirmableAction
-          Component={FilledIconButton}
-          componentProps={{
-            icon: "remove",
-            accessibilityLabel: t("template.entryRemove", { name: trackTerm }),
-            onPress: () => removeSelectedFromPlaylist(playlistRouteId),
-          }}
-          modalMessage={[t("template.entryRemove", { name: trackCount })]}
-        />
+        <ConfirmAction
+          prompt={[t("template.entryRemove", { name: trackCount })]}
+        >
+          <IconButton
+            icon="remove"
+            accessibilityLabel={t("template.entryRemove", { name: trackTerm })}
+            onPress={() => removeSelectedFromPlaylist(playlistRouteId)}
+          />
+        </ConfirmAction>
       ) : (
-        <FilledIconButton
+        <IconButton
           icon="playlist-add"
           accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
           onPress={props.presentAddToPlaylistsSheet}
         />
       )}
       {!isPlaylistRoute ? (
-        <FilledIconButton
+        <IconButton
           icon="add"
           accessibilityLabel={t("form.create")}
           onPress={props.presentAddToCreatedPlaylistSheet}
         />
       ) : null}
-      <ConfirmableAction
-        Component={FilledIconButton}
-        componentProps={{
-          icon: "visibility-off-filled",
-          accessibilityLabel: t("template.entryHide", { name: trackTerm }),
-          onPress: hideSelected,
-        }}
-        modalMessage={[t("template.entryHide", { name: trackCount })]}
-      />
+      <ConfirmAction prompt={[t("template.entryHide", { name: trackCount })]}>
+        <IconButton
+          icon="visibility-off-filled"
+          accessibilityLabel={t("template.entryHide", { name: trackTerm })}
+          onPress={hideSelected}
+        />
+      </ConfirmAction>
     </View>
   );
 }

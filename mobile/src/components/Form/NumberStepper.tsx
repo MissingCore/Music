@@ -5,8 +5,8 @@ import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { FilledIconButton } from "./Button/Icon";
 import { Em } from "../Typography/StyledText";
+import { IconButton } from "../next/base/button-icon";
 
 export const NumberStepper = memo(function NumberStepper({
   value,
@@ -32,29 +32,31 @@ export const NumberStepper = memo(function NumberStepper({
 
   return (
     <View className="flex-row items-center gap-2">
-      <FilledIconButton
+      <IconButton
         icon="remove"
         accessibilityLabel={t("template.entryRemove", {
           name: t("plural.second", { count: 1 }),
         })}
         onPress={decrementOnChange}
         disabled={props.min !== undefined ? value <= props.min : undefined}
-        className="rounded-sm"
+        filled
         size="xs"
+        className="rounded-sm"
       />
       <Em className="min-w-8 text-center text-sm">
         {value}
         {props.suffix}
       </Em>
-      <FilledIconButton
+      <IconButton
         icon="add"
         accessibilityLabel={t("template.entryAdd", {
           name: t("plural.second", { count: 1 }),
         })}
         onPress={incrementOnChange}
         disabled={props.max !== undefined ? value >= props.max : undefined}
-        className="rounded-sm"
+        filled
         size="xs"
+        className="rounded-sm"
       />
     </View>
   );

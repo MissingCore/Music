@@ -8,11 +8,10 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import type { SupportedIconName } from "~/resources/icons";
-import { Icon } from "~/resources/icons";
-
 import { OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
+import type { SupportedIconName } from "~/components/next/base/icon";
+import { Icon } from "~/components/next/base/icon";
 import { Pressable } from "../Base/Pressable";
 import { Em } from "../Typography/StyledText";
 

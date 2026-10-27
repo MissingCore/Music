@@ -9,7 +9,6 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import * as v from "valibot";
 
-import { Icon } from "~/resources/icons";
 import { getArtistsString } from "~/data/artist/utils";
 import { usePlaylistsNames } from "~/data/playlist/queries";
 import { sanitizePlaylistName } from "~/data/playlist/utils";
@@ -21,6 +20,7 @@ import { AddMusicSheet } from "../sheets/AddMusicSheet";
 import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
 import { IconButton } from "~/components/next/base/button-icon";
+import { Icon } from "~/components/next/base/icon";
 import type { SheetRef } from "~/components/next/base/sheet";
 import { useSheetRef } from "~/components/next/base/sheet";
 import { TText } from "~/components/next/base/typography";
