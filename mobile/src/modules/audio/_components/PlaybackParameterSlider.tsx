@@ -5,7 +5,6 @@ import { memo, useCallback, useMemo } from "react";
 import { View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 
-import type { SupportedIconName } from "~/resources/icons";
 import { sessionStore, useSessionStore } from "~/stores/Session/store";
 
 import { capitalize } from "~/utils/string";
@@ -13,6 +12,7 @@ import { Button } from "~/components/Form/Button";
 import { LabeledSlider } from "~/components/Form/Slider.variant";
 import { SegmentedList } from "~/components/List/Segmented";
 import { Em, TStyledText } from "~/components/Typography/StyledText";
+import type { SupportedIconName } from "~/components/next/base/icon";
 
 const PRESET_OPTIONS = [1, 1.25, 1.5, 2] as const;
 

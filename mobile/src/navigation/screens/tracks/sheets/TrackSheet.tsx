@@ -6,8 +6,6 @@ import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import type { SupportedIconName } from "~/resources/icons";
-import { Icon } from "~/resources/icons";
 import {
   useHideTrack,
   useToggleTrackInPlaylist,
@@ -27,6 +25,8 @@ import { abbreviateBitRate, abbreviateSize } from "~/utils/number";
 import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
 import { IconButton } from "~/components/next/base/button-icon";
 import { Divider } from "~/components/next/base/divider";
+import type { SupportedIconName } from "~/components/next/base/icon";
+import { Icon } from "~/components/next/base/icon";
 import { Sheet, useSheetRef } from "~/components/next/base/sheet";
 import { Text } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";

@@ -3,11 +3,10 @@
 
 import { memo } from "react";
 
-import type { SupportedIconName } from "~/resources/icons";
-import { Icon } from "~/resources/icons";
-
 import { cn } from "~/lib/style";
 import { capitalize } from "~/utils/string";
+import type { SupportedIconName } from "~/components/next/base/icon";
+import { Icon } from "~/components/next/base/icon";
 import type { AppColor } from "~/modules/customization/theme/core/constants";
 import type { RipplePressProps } from "../../Base/Pressable";
 import { Ripple } from "../../Base/Pressable";

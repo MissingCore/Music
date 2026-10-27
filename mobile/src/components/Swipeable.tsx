@@ -18,9 +18,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 
-import { Icon } from "~/resources/icons";
-
 import { cn } from "~/lib/style";
+import { Icon } from "~/components/next/base/icon";
 
 const DRAG_TOSS = 0.02;
 

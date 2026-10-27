@@ -5,7 +5,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useCallback, useState } from "react";
 import AudioBrowser from "react-native-audio-browser";
 
-import { Icon } from "~/resources/icons";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
@@ -18,6 +17,7 @@ import { NumberStepper } from "~/components/Form/NumberStepper";
 import { NothingSlider } from "~/components/Form/Slider.variant";
 import { SegmentedList } from "~/components/List/Segmented";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
+import { Icon } from "~/components/next/base/icon";
 import type { SheetRef } from "~/components/next/base/sheet";
 import { Sheet, useSheetRef } from "~/components/next/base/sheet";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";

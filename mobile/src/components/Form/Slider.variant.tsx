@@ -9,10 +9,9 @@ import type { SharedValue } from "react-native-reanimated";
 import { useAnimatedReaction, useSharedValue } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 
-import type { SupportedIconName } from "~/resources/icons";
-import { Icon } from "~/resources/icons";
-
 import { cn } from "~/lib/style";
+import type { SupportedIconName } from "~/components/next/base/icon";
+import { Icon } from "~/components/next/base/icon";
 import { CachedSlider } from "./Slider";
 import { Em } from "../Typography/StyledText";
 

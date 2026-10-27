@@ -5,13 +5,13 @@ import type { ParseKeys } from "i18next";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import type { SupportedIconName } from "~/resources/icons";
-import { Icon } from "~/resources/icons";
 import { Queue } from "~/stores/Playback/actions";
 
 import { ListItem } from "~/components/List";
 import { Menu } from "~/components/Menu";
 import { IconButton } from "~/components/next/base/button-icon";
+import type { SupportedIconName } from "~/components/next/base/icon";
+import { Icon } from "~/components/next/base/icon";
 
 export type MenuAction = {
   icon?: SupportedIconName;
