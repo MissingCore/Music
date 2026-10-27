@@ -22,6 +22,13 @@ const UpdatedColorRoles = [
   "secondaryDim",
 ] as const satisfies ColorRole[];
 
+type AtmosphereCSSVariables = `--color-${(typeof UpdatedColorRoles)[number]}`;
+
+const CachedColorMap: Record<
+  string,
+  Record<AtmosphereCSSVariables, HexColor>
+> = {};
+
 const paletteColors = {
   primary: ["muted", "lightMuted", "dominant"],
   secondary: ["lightVibrant", "vibrant", "darkMuted", "dominant"],
@@ -29,31 +36,38 @@ const paletteColors = {
 
 /** Updates "Atmosphere" Uniwind theme based on image color or fallback. */
 export async function deriveAndSetAtmosphereColors(
-  imgSrc: string | null,
+  imgSrc: string,
   /** If we close the screen before deriving the colors, we shouldn't update Uniwind. */
   abortController: AbortController,
 ) {
-  let palette: PaletteResult | undefined;
-  if (imgSrc) {
-    try {
-      const rawPalette = await createPalette({ uri: imgSrc });
-      // Convert the `color` property into a Hex color as `react-native-material-palette`
-      // reformates the value returned by the Palette API as rgb/rgba.
-      palette = Object.fromEntries(
-        Object.entries(rawPalette).map(([key, result]) => [
-          key,
-          result
-            ? `#` +
-              result.color
-                .match(/\d+/g)!
-                .slice(0, 3)
-                .map((x) => parseInt(x).toString(16).padStart(2, "0"))
-                .join("")
-            : undefined,
-        ]),
-      ) as PaletteResult;
-    } catch {}
+  // Use cached results as calling `createPalette()` takes `~0.33s`, with
+  // cached results still taking `~0.24-0.3s`.
+  const cachedResult = CachedColorMap[imgSrc];
+  if (cachedResult) {
+    if (!abortController.signal.aborted)
+      Uniwind.updateCSSVariables("atmosphere", cachedResult);
+    return;
   }
+
+  let palette: PaletteResult | undefined;
+  try {
+    const rawPalette = await createPalette({ uri: imgSrc });
+    // Convert the `color` property into a Hex color as `react-native-material-palette`
+    // reformates the value returned by the Palette API as rgb/rgba.
+    palette = Object.fromEntries(
+      Object.entries(rawPalette).map(([key, result]) => [
+        key,
+        result
+          ? `#` +
+            result.color
+              .match(/\d+/g)!
+              .slice(0, 3)
+              .map((x) => parseInt(x).toString(16).padStart(2, "0"))
+              .join("")
+          : undefined,
+      ]),
+    ) as PaletteResult;
+  } catch {}
 
   if (abortController.signal.aborted) return;
 
@@ -81,6 +95,8 @@ export async function deriveAndSetAtmosphereColors(
       updatedVariables[`--color-${role}`] = imgColor;
       updatedVariables[`--color-${role}Dim`] = dimColor;
     }
+
+    CachedColorMap[imgSrc] = updatedVariables;
   }
 
   Uniwind.updateCSSVariables("atmosphere", updatedVariables);
@@ -101,10 +117,7 @@ function getAtmosphereThemeVariables() {
     : null;
   const currentTheme = customTheme ?? Themes[currentScheme];
 
-  const updatedVariables: Record<string, HexColor> = {};
-  UpdatedColorRoles.forEach((role) => {
-    updatedVariables[`--color-${role}`] = currentTheme[role];
-  });
-
-  return updatedVariables;
+  return Object.fromEntries(
+    UpdatedColorRoles.map((role) => [`--color-${role}`, currentTheme[role]]),
+  ) as Record<AtmosphereCSSVariables, HexColor>;
 }
