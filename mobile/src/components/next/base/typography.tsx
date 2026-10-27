@@ -14,7 +14,7 @@ import { getFont } from "~/modules/customization/font/utils";
 import type { IntentVariant } from "./styles";
 
 const textStyle = cva({
-  base: "text-left text-base text-onSurface",
+  base: "text-left text-onSurface",
   variants: {
     intent: {
       unset: null,
