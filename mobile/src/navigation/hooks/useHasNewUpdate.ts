@@ -9,27 +9,23 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { APP_VERSION } from "~/constants/Config";
 
 type UpdateResult =
-  | { hasNewUpdate: false; release: null; isRC: false }
-  | {
-      hasNewUpdate: true;
-      release: { releaseNotes: string; version: string };
-      isRC: boolean;
-    };
+  | { hasNewUpdate: false; release: null }
+  | { hasNewUpdate: true; release: { releaseNotes: string; version: string } };
 
 /** Determines if we have a new update. */
 export function useHasNewUpdate(): UpdateResult {
   const { isPending, error, data } = useLatestRelease();
   const rcNotification = usePreferenceStore((s) => s.rcNotification);
 
-  let isRC = false;
-  if (isPending || !!error) return { hasNewUpdate: false, release: null, isRC };
+  if (isPending || !!error) return { hasNewUpdate: false, release: null };
 
-  isRC = APP_VERSION.includes("-rc");
   // Release candidates shouldn't have the "Latest Release" tag on GitHub
   // (ie: shouldn't be in `data.latestStable`). We compare against potentially
   // release candidate versions if we're on a release candidate.
   const usedRelease =
-    isRC || rcNotification ? data.latestRelease : data.latestStable;
+    APP_VERSION.includes("-rc") || rcNotification
+      ? data.latestRelease
+      : data.latestStable;
 
   //? Introduced in `v3.6.0`, we may include a flag in the release notes
   //? to hide the release notification for Google Play releases as we wait
@@ -42,16 +38,12 @@ export function useHasNewUpdate(): UpdateResult {
   // to the lastest version before the GitHub release notes are published.
   if (
     hideRelease ||
-    !usedRelease.version ||
+    !usedRelease.releaseNotes ||
     usedRelease.version === APP_VERSION
   ) {
-    return { hasNewUpdate: false, release: null, isRC: false };
+    return { hasNewUpdate: false, release: null };
   } else {
-    return {
-      hasNewUpdate: true,
-      release: usedRelease,
-      isRC: isRC || usedRelease.version.includes("-rc"),
-    };
+    return { hasNewUpdate: true, release: usedRelease };
   }
 }
 
@@ -85,33 +77,37 @@ function useLatestRelease() {
 const RELEASE_NOTES_LINK =
   "https://api.github.com/repos/MissingCore/Music/releases";
 
-type ReleaseNotes =
-  | { releaseNotes: undefined; version: undefined; flags: undefined }
-  | { releaseNotes: string; version: string; flags: string[] };
+type ReleaseNotes = { version: string } & (
+  | { releaseNotes: string; flags: string[] }
+  | { releaseNotes: undefined; flags: undefined }
+);
 
 const CommentBodyRegex = /<!--([\s\S]*?)(?:-->)/g;
 
+type GitHubReleaseSchema = { tag_name: string; body: string | null };
+
 /** Formats the data returned from the GitHub API. */
-function formatGitHubRelease(data: any): ReleaseNotes {
-  let releaseNotes: string | undefined;
-  let flags: string[] | undefined;
-  if (data.body) {
-    releaseNotes = data.body.replace(CommentBodyRegex, "");
-    flags = Array.from(
-      (data.body as string).matchAll(CommentBodyRegex),
-      ([_, commentBody]) => commentBody?.trim(),
+function formatGitHubRelease({
+  tag_name,
+  body,
+}: GitHubReleaseSchema): ReleaseNotes {
+  if (!body)
+    return { version: tag_name, releaseNotes: undefined, flags: undefined };
+
+  return {
+    version: tag_name,
+    releaseNotes: body.replace(CommentBodyRegex, ""),
+    flags: Array.from(body.matchAll(CommentBodyRegex), ([_, commentBody]) =>
+      commentBody?.trim(),
     )
-      .flatMap((commentBody) => {
-        if (commentBody === undefined) return undefined;
-        return commentBody.split(/\r?\n/).map((val) => {
+      .flatMap((commentBody) =>
+        commentBody?.split(/\r?\n/).map((val) => {
           const trimmedVal = val.trim();
           if (!trimmedVal.startsWith("flag:")) return undefined;
           return trimmedVal.replace("flag:", "").trim();
-        });
-      })
-      .filter((val) => val !== undefined);
-  }
-
-  return { version: data.tag_name, releaseNotes, flags } as ReleaseNotes;
+        }),
+      )
+      .filter((val) => val !== undefined),
+  };
 }
 //#endregion
