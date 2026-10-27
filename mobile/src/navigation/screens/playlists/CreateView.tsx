@@ -41,7 +41,11 @@ export default function CreatePlaylist() {
             toast.error((err as Error).message);
           }
         },
-        config: { icon: "upload", intent: "secondary" },
+        config: {
+          icon: "upload",
+          intent: "secondary",
+          _iconColor: "onSurface",
+        },
       }}
       onSubmit={async ({ name, trackIds }) => {
         try {

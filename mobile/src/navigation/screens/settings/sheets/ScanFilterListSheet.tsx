@@ -33,6 +33,9 @@ export function ScanFilterListSheet(props: {
   return (
     <Sheet ref={props.ref}>
       <Sheet.List
+        //! "Hack" to fix issue where list doesn't display content after
+        //! it goes from rendering 0 items to 1.
+        key={String(Boolean(listEntries.length > 0))}
         estimatedItemSize={46} // 40px Height + 6px Margin Bottom
         data={listEntries}
         keyExtractor={(item) => item}

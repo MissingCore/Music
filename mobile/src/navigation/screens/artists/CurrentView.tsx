@@ -67,7 +67,10 @@ export default function Artist({
           keyExtractor={({ id }) => id}
           renderItem={({ item }) => <TrackItem {...item} />}
           ListHeaderComponent={
-            <ArtistAlbums albums={artistDetailsQuery.data.albums} />
+            artistDetailsQuery.data.albums &&
+            artistDetailsQuery.data.albums.length > 0 ? (
+              <ArtistAlbums albums={artistDetailsQuery.data.albums} />
+            ) : undefined
           }
         />
       </MediaListLayout.Provider>
@@ -79,11 +82,9 @@ export default function Artist({
  * Display a list of the artist's albums. Renders a heading for the track
  * list only if the artist has albums.
  */
-function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
+function ArtistAlbums({ albums }: { albums: ArtistAlbum[] }) {
   const navigation = useNavigation();
   const { width } = useHorizontalListLayoutConfig();
-
-  if (!albums) return null;
   return (
     <View>
       <TText textKey="term.albums" intent="em" />
