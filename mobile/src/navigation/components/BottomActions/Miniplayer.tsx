@@ -25,11 +25,11 @@ import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { MiniplayerOffset, useIsMiniplayerVisible } from "./useBottomActions";
 
-import { Ripple } from "~/components/Base/Pressable";
-import { IconButton } from "~/components/Form/Button/Icon";
-import { Marquee } from "~/components/Marquee";
 import { Swipeable } from "~/components/Swipeable";
-import { StyledText } from "~/components/Typography/StyledText";
+import { IconButton } from "~/components/next/base/button-icon";
+import { Ripple } from "~/components/next/base/ripple";
+import { Text } from "~/components/next/base/typography";
+import { Marquee } from "~/components/next/blocks/marquee";
 import { MediaImage } from "~/components/next/blocks/media-image";
 import {
   NextButton,
@@ -113,7 +113,7 @@ function Miniplayer() {
       >
         <Ripple
           onPress={() => navigation.navigate("NowPlaying")}
-          className="relative h-14 flex-row gap-0 px-1"
+          className="relative h-14 flex-row items-center px-1"
         >
           <MediaImage size={48} src={track.artwork} className="rounded-full" />
 
@@ -125,13 +125,13 @@ function Miniplayer() {
             wrapperClassName="shrink grow justify-center overflow-hidden"
             className="w-full shrink bg-surfaceContainerLowest px-1.5"
           >
-            <Marquee color="surfaceContainerLowest">
-              <StyledText className="text-sm">{track.name}</StyledText>
+            <Marquee>
+              <Text size="sm">{track.name}</Text>
             </Marquee>
-            <Marquee color="surfaceContainerLowest">
-              <StyledText dim className="text-xxs">
+            <Marquee>
+              <Text muted size="xxs">
                 {getArtistsString(track.artists)}
-              </StyledText>
+              </Text>
             </Marquee>
           </TextWrapper>
 

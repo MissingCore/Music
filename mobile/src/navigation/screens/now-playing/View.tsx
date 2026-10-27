@@ -9,6 +9,7 @@ import type { Track } from "~/data/track/types";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
+import { useLyricStore } from "~/modules/lyric/core/store";
 import { toggleLyricStoreKey } from "~/modules/lyric/core/actions";
 import { useAlternativeLayout } from "~/hooks/useAlternativeLayout";
 
@@ -21,12 +22,12 @@ import { SleepTimerSheet } from "./sheets/SleepTimerSheet";
 import { useSleepTimerStore } from "./sheets/SleepTimerSheet/store";
 
 import { cn } from "~/lib/style";
-import { Pressable } from "~/components/Base/Pressable";
-import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
+import { IconButton } from "~/components/next/base/button-icon";
 import { useSheetRef } from "~/components/next/base/sheet";
 import { Text } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";
 import { FavoriteButton } from "~/components/next/composed/track-item";
+import { Pressable } from "~/components/next/primitive/pressable";
 import { AtmosphereBackground } from "~/modules/customization/atmosphere/AtmosphereBackground";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
 import {
@@ -37,7 +38,6 @@ import {
   ShuffleButton,
 } from "~/modules/media/components/MediaControls";
 import { PlaybackControlGestureWrapper } from "./components/PlaybackControlGestureWrapper";
-import { useLyricStore } from "~/modules/lyric/core/store";
 
 export default function NowPlaying() {
   const isLargeScreen = useAlternativeLayout();
@@ -183,21 +183,18 @@ function BottomAppBar(props: {
           accessibilityLabel={t("feat.lyrics.title")}
           onPress={toggleLyricStoreKey("visible")}
           size="lg"
-          _fullRipple
         />
         <IconButton
           icon="view-agenda"
           accessibilityLabel={t("term.upcoming")}
           onPress={() => navigation.navigate("Upcoming")}
           size="lg"
-          _fullRipple
         />
         <IconButton
           icon="more-horiz"
           accessibilityLabel={t("feat.playback.extra.options")}
           onPress={props.presentPlaybackOptionsSheet}
           size="lg"
-          _fullRipple
         />
       </View>
     </View>
@@ -212,11 +209,9 @@ function SleepTimerButton(props: { present: VoidFunction }) {
       icon="timer"
       accessibilityLabel={t("feat.sleepTimer.title")}
       onPress={props.present}
+      intent={sleepTimerActive ? "secondary" : undefined}
+      filled={sleepTimerActive}
       size="lg"
-      className={sleepTimerActive ? "bg-secondary" : undefined}
-      rippleColor={sleepTimerActive ? "secondaryDim" : undefined}
-      _iconColor={sleepTimerActive ? "onSecondary" : undefined}
-      _fullRipple
     />
   );
 }
@@ -229,10 +224,11 @@ function BackButton() {
   const { t } = useTranslation();
   const navigation = useNavigation();
   return (
-    <FilledIconButton
+    <IconButton
       icon="keyboard-arrow-down"
       accessibilityLabel={t("form.back")}
       onPress={() => navigation.goBack()}
+      filled
       size="lg"
     />
   );
