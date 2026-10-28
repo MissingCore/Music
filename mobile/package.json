@@ -58,7 +58,7 @@
     "react-is": "19.3.0",
     "react-keyed-flatten-children": "5.1.4",
     "react-native": "0.88.0",
-    "react-native-android-widget": "0.22.1",
+    "react-native-android-widget": "0.25.0",
     "react-native-audio-browser": "github:MissingCore/react-native-audio-browser#05f7af440edc29222d12a0acc58234f5cb51433d",
     "react-native-bootsplash": "7.3.4",
     "react-native-easing-gradient": "1.1.1",

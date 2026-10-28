@@ -5,7 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
-  react-native-android-widget: 700a44715e685edefbbcca4d1c8a1a80c90ea32f567b124241138d01b981b064
   react-native-material-palette: cb6604a7852903e36cef6eda789a4886aad57bbedd78f525bb2ba98ee28b97b8
 
 importers:
@@ -118,8 +117,8 @@ importers:
         specifier: 0.88.0
         version: 0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0)
       react-native-android-widget:
-        specifier: 0.22.1
-        version: 0.22.1(patch_hash=700a44715e685edefbbcca4d1c8a1a80c90ea32f567b124241138d01b981b064)(expo@58.0.16)(react-native@0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+        specifier: 0.25.0
+        version: 0.25.0(expo@58.0.16)(react-native@0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       react-native-audio-browser:
         specifier: github:MissingCore/react-native-audio-browser#05f7af440edc29222d12a0acc58234f5cb51433d
         version: https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/05f7af440edc29222d12a0acc58234f5cb51433d(react-native-nitro-modules@0.37.1(react-native@0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0))(react-native@0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
@@ -4778,8 +4777,8 @@ packages:
       react: '>=18.0.0'
       react-is: '>=18.0.0'
 
-  react-native-android-widget@0.22.1:
-    resolution: {integrity: sha512-BBMuqShRrxV23Z09Rn5zNHJaPegCnH3DhhZQgXbhw2GMh45Gez0RbwKTIWHftuW4nLrqWy6esz8XwecUZLiZKA==}
+  react-native-android-widget@0.25.0:
+    resolution: {integrity: sha512-6tfFTE2qUUdJykGXC61olxHdPqo16opfIwRl+ArteHTP5oxBN7BqrLi2cQgqZ/yXWqCKs2ljfeWyJwrSj/AzGQ==}
     peerDependencies:
       expo: '>=54.0.0'
       react: '*'
@@ -10300,7 +10299,7 @@ snapshots:
       react: 19.3.0
       react-is: 19.3.0
 
-  react-native-android-widget@0.22.1(patch_hash=700a44715e685edefbbcca4d1c8a1a80c90ea32f567b124241138d01b981b064)(expo@58.0.16)(react-native@0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0):
+  react-native-android-widget@0.25.0(expo@58.0.16)(react-native@0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0):
     dependencies:
       react: 19.3.0
       react-native: 0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0)

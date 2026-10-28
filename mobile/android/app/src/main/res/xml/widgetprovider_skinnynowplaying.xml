@@ -9,7 +9,7 @@
 
     android:resizeMode="horizontal"
 
-    android:description="@string/widget_nowplaying_description"
+    android:description="@string/widget_skinnynowplaying_description"
 
     android:initialLayout="@layout/rn_widget"
     android:previewImage="@drawable/skinnynowplaying_preview"

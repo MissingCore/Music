@@ -21,7 +21,6 @@ export async function widgetTaskHandler({
   widgetInfo,
   widgetAction,
   clickAction,
-  clickActionData,
   renderWidget,
 }: WidgetTaskHandlerProps) {
   const Widget = nameToWidget[widgetInfo.widgetName as WidgetName];
@@ -49,12 +48,6 @@ export async function widgetTaskHandler({
       break;
 
     case "WIDGET_CLICK":
-      //! "Hack" to prevent re-firing old widget click events that started
-      //! to get re-sent when we swap over to the New Architecture.
-      if (((clickActionData?.validUntil as number) ?? 0) - Date.now() < 0) {
-        return;
-      }
-
       if (!(await isAudioBrowserSetUp())) return launchAppViaIntent();
 
       if (clickAction === Action.PlayPause) {
