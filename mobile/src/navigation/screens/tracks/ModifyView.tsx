@@ -35,7 +35,7 @@ import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { AddAlbumSheet } from "./sheets/AddAlbumSheet";
 
 import { clearAllQueries } from "~/lib/react-query";
-import { splitOn } from "~/utils/string";
+import { removeFileExtension, splitOn } from "~/utils/string";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
@@ -122,7 +122,10 @@ export default function ModifyTrack({
               "genre",
             ]);
             setFields({
-              name: trackMetadata.title ?? "",
+              //? Fallback to file name.
+              name:
+                trackMetadata.title ??
+                removeFileExtension(trackQuery.data.uri.split("/").at(-1)!),
               artists: trackMetadata.artist
                 ? splitOn(trackMetadata.artist, delimiters)
                 : [],
