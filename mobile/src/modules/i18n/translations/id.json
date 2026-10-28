@@ -34,7 +34,7 @@
     "disc": "Disk {{count}}",
     "eps": "EP",
     "singles": "Single",
-    "share": null,
+    "share": "Bagikan",
     "expand": "Perluas",
     "minimize": "Minimalkan"
   },
@@ -158,7 +158,7 @@
         "vinyl": "Vinyl",
         "vinylOld": "Vinyl (Lama)",
         "none": "Tidak Ada",
-        "immersive": null,
+        "immersive": "Imersif",
         "alternativeInfoLayout": "Tata Letak Info Alternative",
         "standardVinylSpeed": "Kecepatan Vinyl Standar"
       }
@@ -220,7 +220,7 @@
         "top": "Top {{- name}}",
         "timeRange": "Waktu Rentang",
         "allTime": "Sepanjang Waktu",
-        "lastDays": null,
+        "lastDays": "Terakhir dalam {{amount}} Hari",
         "listeningTime": "Waktu Mendengarkan",
         "totalListeningTime": "Total $t(feat.recap.extra.listeningTime)",
         "totalPlays": "Total Diputar",
@@ -314,8 +314,8 @@
       "description": "Memiliki prioritas lebih tinggi terhadap entri dalam daftar perizinan."
     },
     "minTrackDuration": {
-      "title": "Abaikan Audio Pendek",
-      "description": "Durasi audio dalam detik yang tidak ingin kami simpan."
+      "title": "Durasi Trek Minimal",
+      "description": "Durasi minimal dalam detik trek dibutuhkan untuk disimpan."
     },
     "separators": {
       "title": "Pemisah Multi-Value",

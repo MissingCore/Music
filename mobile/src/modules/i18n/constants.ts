@@ -46,7 +46,7 @@ export const LANGUAGES = [
       { display: "Costeer", link: "https://github.com/Costeer" },
       {
         display: "Jakob Staiger",
-        link: "https://crowdin.com/profile/staigerm62",
+        link: "https://crowdin.com/profile/Jakob_Staiger",
       },
     ],
   },
