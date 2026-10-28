@@ -36,3 +36,11 @@ runs:
 
     - name: Setup Gradle action for optimized execution and caching
       uses: gradle/actions/setup-gradle@v5
+
+    - name: Setup CMake
+      uses: jwlawson/actions-setup-cmake@v2
+      with:
+        cmake-version: 3.31.6
+    - name: Validate CMake version
+      run: cmake --version
+      shell: bash
