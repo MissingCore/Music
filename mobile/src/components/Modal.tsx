@@ -13,7 +13,11 @@ import type { RipplePressProps } from "./Base/Pressable";
 import { ExtendedTButton } from "./Form/Button";
 import { TStyledText } from "./Typography/StyledText";
 
-export function Modal(props: { visible: boolean; children: React.ReactNode }) {
+export function Modal(props: {
+  visible: boolean;
+  onClose: VoidFunction;
+  children: React.ReactNode;
+}) {
   return (
     <RNModal
       animationType="fade"
@@ -21,6 +25,7 @@ export function Modal(props: { visible: boolean; children: React.ReactNode }) {
       statusBarTranslucent
       navigationBarTranslucent
       transparent
+      onRequestClose={props.onClose}
     >
       <GestureHandlerRootView className="flex-1 items-center justify-center bg-black/50 px-4">
         <View className="w-full max-w-xl gap-8 rounded-xl bg-surfaceContainerLowest p-4 pt-6">
@@ -32,10 +37,14 @@ export function Modal(props: { visible: boolean; children: React.ReactNode }) {
 }
 
 export function ModalTemplate(
-  props: { visible: boolean; titleKey: ParseKeys } & ModalActionsProp,
+  props: {
+    visible: boolean;
+    onClose: VoidFunction;
+    titleKey: ParseKeys;
+  } & ModalActionsProp,
 ) {
   return (
-    <Modal visible={props.visible}>
+    <Modal visible={props.visible} onClose={props.onClose}>
       <TStyledText textKey={props.titleKey} style={{ fontSize: 18 }} />
       <ModalActions
         topAction={props.topAction}
@@ -94,7 +103,7 @@ export function ConfirmableAction<
           props.disableModal ? props.componentProps.onPress() : setVisible(true)
         }
       />
-      <Modal visible={visible}>
+      <Modal visible={visible} onClose={() => setVisible(false)}>
         {props.modalMessage.map((msg) => (
           // @ts-expect-error - If the key doesn't exist, then the string is outputted.
           <TStyledText key={msg} textKey={msg} style={{ fontSize: 18 }} />

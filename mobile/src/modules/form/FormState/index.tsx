@@ -204,6 +204,7 @@ export function FABWorkflow(
       {props.danger ? (
         <ModalTemplate
           visible={lastChance}
+          onClose={() => setLastChance(false)}
           titleKey={props.label}
           topAction={{
             textKey: "form.confirm",
@@ -272,6 +273,7 @@ function UnsavedChangesPrompt() {
   return (
     <ModalTemplate
       visible={showConfirmation}
+      onClose={() => setShowConfirmation(false)}
       titleKey="form.unsaved"
       topAction={{
         textKey: "form.leave",

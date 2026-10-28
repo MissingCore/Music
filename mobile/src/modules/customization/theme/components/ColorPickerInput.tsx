@@ -71,7 +71,7 @@ export function ColorPickerInput(props: {
         </View>
       </Ripple>
 
-      <Modal visible={showPicker}>
+      <Modal visible={showPicker} onClose={() => setShowPicker(false)}>
         <View className="gap-4">
           <View className="flex-row items-center justify-between gap-2">
             <Em>{props.label}</Em>
