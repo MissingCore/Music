@@ -442,7 +442,7 @@
         "grid": "Raster",
         "compactGrid": "Kompaktes Raster",
         "columnSize": "Spaltengröße",
-        "columnCount": null,
+        "columnCount": "Spaltenanzahl: {{count}}",
         "sort": "Sortierreihenfolge",
         "asc": "Aufsteigende Reihenfolge",
         "discover": "Zuletzt Hinzugefügt",
