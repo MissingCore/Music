@@ -1,7 +1,8 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useNavigation } from "@react-navigation/native";
+import { getFontName } from "@missingcore/native-utils";
+import { toast } from "@missingcore/ui/toast";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -14,6 +15,7 @@ import { PreferenceSetters } from "~/stores/Preference/actions";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
+import { pickFile } from "~/lib/file-system";
 import { cn } from "~/lib/style";
 import { FlatList } from "~/components/Base/List";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
@@ -21,12 +23,13 @@ import { Radio } from "~/components/Form/Radio";
 import { SegmentedList } from "~/components/List/Segmented";
 import type { Font } from "../core/constants";
 import { BundledFontOptions } from "../core/constants";
-import { deleteCustomFont, useCustomFonts } from "../core/data";
+import { deleteCustomFont, saveCustomFont, useCustomFonts } from "../core/data";
 import {
   areFontEqual,
   getFont,
   getFontDisplayName,
   isBundledFont,
+  loadCustomFont,
 } from "../utils";
 
 export function AccentFonts() {
@@ -51,22 +54,39 @@ export function PrimaryFonts() {
   );
 }
 
-function FontsScreenBase(props: {
+function FontsScreenBase({
+  kind,
+  selectedFont,
+  updateFont,
+}: {
   kind: "Accent" | "Primary";
   selectedFont: Font;
   updateFont: (newFont: Font) => void;
 }) {
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const { isPending, data } = useCustomFonts();
   const canDeleteFont = useCanDeleteFont();
+
+  const importFont = useCallback(async () => {
+    try {
+      const { uri } = await pickFile(["font/otf", "font/ttf"]);
+      const name = await getFontName(uri);
+      const result = await saveCustomFont({ name, uri });
+      if (result) {
+        await loadCustomFont(result.uri);
+        updateFont(result);
+      }
+    } catch (err) {
+      toast.error((err as Error).message);
+    }
+  }, [updateFont]);
 
   const fontOptions = useMemo(() => {
     if (!data) return BundledFontOptions;
     return [...BundledFontOptions, ...data];
   }, [data]);
 
-  const headline = props.kind === "Accent";
+  const headline = kind === "Accent";
 
   if (isPending) return <PagePlaceholder isPending={isPending} />;
   return (
@@ -75,8 +95,8 @@ function FontsScreenBase(props: {
         headerRight={() => (
           <FilledIconButton
             icon="add"
-            accessibilityLabel={t("form.create")}
-            onPress={() => navigation.navigate("CreateFont")}
+            accessibilityLabel={t("feat.backup.extra.import")}
+            onPress={importFont}
           />
         )}
       />
@@ -84,11 +104,11 @@ function FontsScreenBase(props: {
         data={fontOptions}
         keyExtractor={(font) => (isBundledFont(font) ? font : font.id)}
         renderItem={({ item: font, index }) => {
-          const selected = areFontEqual(props.selectedFont, font);
+          const selected = areFontEqual(selectedFont, font);
           return (
             <SegmentedList.Item
               labelText={getFontDisplayName(font)}
-              onPress={!selected ? () => props.updateFont(font) : undefined}
+              onPress={!selected ? () => updateFont(font) : undefined}
               Leading={<Radio selected={selected} />}
               Trailing={
                 canDeleteFont(font) ? (

@@ -4,6 +4,7 @@ declare class NativeUtilsModule extends NativeModule {
   isSystemDarkMode: boolean;
   launchAppViaIntent(): void;
   saveBundledAssetToURI(assetName: string, toUri: string): Promise<void>;
+  getFontName(fontUri: string): Promise<string>;
 }
 
 const nativeModule = requireNativeModule<NativeUtilsModule>("NativeUtils");
@@ -21,4 +22,9 @@ export function launchAppViaIntent() {
 export async function saveBundledAssetToURI(assetName: string, toUri: string) {
   if (__DEV__) return;
   return nativeModule.saveBundledAssetToURI(assetName, toUri);
+}
+
+/** Returns "true" name of a font from a font file. */
+export function getFontName(fontUri: string) {
+  return nativeModule.getFontName(fontUri);
 }
