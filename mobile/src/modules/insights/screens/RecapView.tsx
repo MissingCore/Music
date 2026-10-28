@@ -11,22 +11,30 @@ import { Icon } from "~/resources/icons";
 import { sessionStore, useSessionStore } from "~/stores/Session/store";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 
+import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { Epoch, Months, Seconds } from "~/utils/date";
 import { LegendList } from "~/components/Base/LegendList";
 import { FlatList } from "~/components/Base/List";
 import { Ripple } from "~/components/Base/Pressable";
 import { Divider } from "~/components/Divider";
+import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { ListItem } from "~/components/List";
 import { DetachedSheet } from "~/components/Sheet";
+import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { AccentText } from "~/components/Typography/AccentText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import { RECENT_DAY_RANGE } from "../core/constants";
+import {
+  useExportRecapBackup,
+  useImportRecapBackup,
+} from "../helpers/backupRecap";
 import { generateRecapRange } from "../helpers/generateRecapRange";
 import type { RecapResult } from "../helpers/useRecap";
 import { useRecap } from "../helpers/useRecap";
@@ -89,6 +97,7 @@ export default function Recap() {
 
   return (
     <>
+      <TopAppBar />
       <TimeRangeSheet ref={timeRangeSheetRef} dispatch={dispatch} />
       <ListLayout>
         <Ripple
@@ -126,6 +135,50 @@ function RecapContent(props: { startEpoch: number; endEpoch?: number }) {
     </>
   );
 }
+
+//#region Top App Bar
+function TopAppBar() {
+  const { t } = useTranslation();
+  const exportBackup = useExportRecapBackup();
+  const importBackup = useImportRecapBackup();
+  const sheetRef = useSheetRef();
+
+  const inProgress = exportBackup.isPending || importBackup.isPending;
+
+  return (
+    <>
+      <ScreenOptions
+        headerRight={() => (
+          <FilledIconButton
+            icon="swap-vert"
+            accessibilityLabel={t("feat.backup.title")}
+            onPress={() => sheetRef.current?.present()}
+          />
+        )}
+      />
+      <DetachedSheet ref={sheetRef} titleKey="feat.backup.title">
+        <TStyledText
+          textKey="feat.recap.extra.backup"
+          dim
+          className="text-sm"
+        />
+        <SheetButtonGroup
+          leftButton={{
+            textKey: "feat.backup.extra.export",
+            onPress: () => mutateGuard(exportBackup, undefined),
+            disabled: inProgress,
+          }}
+          rightButton={{
+            textKey: "feat.backup.extra.import",
+            onPress: () => mutateGuard(importBackup, undefined),
+            disabled: inProgress,
+          }}
+        />
+      </DetachedSheet>
+    </>
+  );
+}
+//#endregion
 
 //#region Time Range Sheet
 function TimeRangeSheet(props: {

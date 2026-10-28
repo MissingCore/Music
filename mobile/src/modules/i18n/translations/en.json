@@ -241,6 +241,8 @@
       "title": "Recap",
       "brief": "Your top tracks, artists, and playback history.",
       "extra": {
+        "backup": "Transfer recap data from this app instance.",
+
         "recapTemplate": "{{- name}} $t(feat.recap.title)",
         "playCount": "{{count}} plays",
 
