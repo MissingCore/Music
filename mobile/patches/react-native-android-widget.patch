@@ -1,15 +1,14 @@
 diff --git a/android/src/main/java/com/reactnativeandroidwidget/RNWidgetProvider.java b/android/src/main/java/com/reactnativeandroidwidget/RNWidgetProvider.java
-index c138d81671f73cf471d46a506c7a71d81ee457e7..5a32df8711e96690f0c3f3548f486894eab8537b 100644
+index f1e16e7d8cb18435c5b0faabedbcfdd37ca6d8b0..00501d9f8533918653d8df8b99f7565fb5ffa6ed 100644
 --- a/android/src/main/java/com/reactnativeandroidwidget/RNWidgetProvider.java
 +++ b/android/src/main/java/com/reactnativeandroidwidget/RNWidgetProvider.java
-@@ -144,6 +144,10 @@ public class RNWidgetProvider extends AppWidgetProvider {
+@@ -114,6 +114,9 @@ public class RNWidgetProvider extends AppWidgetProvider {
  
          if (incomingIntent.hasExtra("clickAction")) {
              Bundle clickActionData = incomingIntent.getBundleExtra("clickActionData");
 +            // Add a `validUntil` field to prevent triggering actions that get re-sent later
 +            // for no reason (started after switching to the New Architecture).
 +            clickActionData.putLong("validUntil", (long) System.currentTimeMillis() + 5000L);
-+
              additionalData = new Data.Builder()
                  .putString("clickAction", incomingIntent.getStringExtra("clickAction"))
                  .putString("clickActionData", new JSONObject(Arguments.fromBundle(clickActionData).toHashMap()).toString())

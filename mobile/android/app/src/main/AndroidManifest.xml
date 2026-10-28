@@ -74,28 +74,28 @@
         <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
       </intent-filter>
     </activity>
-    <receiver android:name=".widget.ArtworkPlayer" android:exported="false" android:label="@string/widget_artworkplayer_name">
+    <receiver android:name=".widget.ArtworkPlayer" android:exported="false" android:label="🧪 Artwork Player">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
         <action android:name="com.cyanchill.missingcore.music.WIDGET_CLICK"/>
       </intent-filter>
       <meta-data android:name="android.appwidget.provider" android:resource="@xml/widgetprovider_artworkplayer"/>
     </receiver>
-    <receiver android:name=".widget.NowPlaying" android:exported="false" android:label="@string/widget_nowplaying_name">
+    <receiver android:name=".widget.NowPlaying" android:exported="false" android:label="🧪 Now Playing">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
         <action android:name="com.cyanchill.missingcore.music.WIDGET_CLICK"/>
       </intent-filter>
       <meta-data android:name="android.appwidget.provider" android:resource="@xml/widgetprovider_nowplaying"/>
     </receiver>
-    <receiver android:name=".widget.ResizableNowPlaying" android:exported="false" android:label="@string/widget_nowplaying_name">
+    <receiver android:name=".widget.ResizableNowPlaying" android:exported="false" android:label="🧪 Now Playing">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
         <action android:name="com.cyanchill.missingcore.music.WIDGET_CLICK"/>
       </intent-filter>
       <meta-data android:name="android.appwidget.provider" android:resource="@xml/widgetprovider_resizablenowplaying"/>
     </receiver>
-    <receiver android:name=".widget.SkinnyNowPlaying" android:exported="false" android:label="@string/widget_nowplaying_name">
+    <receiver android:name=".widget.SkinnyNowPlaying" android:exported="false" android:label="🧪 Now Playing">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
         <action android:name="com.cyanchill.missingcore.music.WIDGET_CLICK"/>
