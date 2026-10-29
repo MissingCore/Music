@@ -214,6 +214,7 @@
       "title": "Özet",
       "brief": "En çok dinlediğiniz parçalar, sanatçılar ve dinleme geçmişiniz.",
       "extra": {
+        "backup": null,
         "recapTemplate": "{{- name}} $t(feat.recap.title)",
         "playCount": "{{count}} dinleme",
         "mostPlayed": "En Çok Dinlenen {{- name}}",

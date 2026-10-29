@@ -214,6 +214,7 @@
       "title": "Recap",
       "brief": "Riwayat trek, artis dan pemutaran teratasmu.",
       "extra": {
+        "backup": null,
         "recapTemplate": "{{- name}} $t(feat.recap.title)",
         "playCount": "{{count}} pemutaran",
         "mostPlayed": "Sering Diputar {{- name}}",

@@ -214,6 +214,7 @@
       "title": "回顾",
       "brief": "你收听最多的歌曲、艺人以及播放历史。",
       "extra": {
+        "backup": null,
         "recapTemplate": "{{- name}} $t(feat.recap.title)",
         "playCount": "播放 {{count}} 次",
         "mostPlayed": "最常播放的 {{- name}}",
