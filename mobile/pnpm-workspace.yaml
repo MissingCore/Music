@@ -12,7 +12,3 @@ allowBuilds:
 
 patchedDependencies:
   react-native-material-palette: patches/react-native-material-palette.patch
-
-minimumReleaseAgeExclude:
-  - '@missingcore/react-native-metadata-retriever@4.0.0-beta.2'
-  - react-native-android-widget@0.25.0
