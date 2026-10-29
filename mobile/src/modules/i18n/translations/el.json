@@ -214,6 +214,7 @@
       "title": "Ανασκόπηση",
       "brief": "Τα κορυφαία κομμάτια, καλλιτέχνες και ιστορικό αναπαραγωγής σου.",
       "extra": {
+        "backup": null,
         "recapTemplate": "{{- name}} $t(feat.recap.title)",
         "playCount": "{{count}} αναπαραγωγές",
         "mostPlayed": "Πιο Δημοφιλή {{- name}}",
