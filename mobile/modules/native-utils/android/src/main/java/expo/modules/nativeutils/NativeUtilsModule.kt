@@ -72,7 +72,6 @@ class NativeUtilsModule : Module() {
       }
     }
 
-
     AsyncFunction("getAudioAssets") { assetOptions: AssetsOptions ->
       val currentContext = context
       if (currentContext == null) throw Exception("React Context is currently undefined.")

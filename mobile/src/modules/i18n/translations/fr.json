@@ -214,6 +214,7 @@
       "title": "Récapitulatif",
       "brief": "Vos morceaux préférés, vos artistes préférés et votre historique d'écoute.",
       "extra": {
+        "backup": "Transférer les données récapitulatives de cette instance de l'application.",
         "recapTemplate": "{{- name}} $t(feat.recap.title)",
         "playCount": "{{count}} lus",
         "mostPlayed": "Plus Écouté {{- name}}",

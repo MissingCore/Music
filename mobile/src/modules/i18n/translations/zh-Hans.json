@@ -214,6 +214,7 @@
       "title": "回顾",
       "brief": "你收听最多的歌曲、艺人以及播放历史。",
       "extra": {
+        "backup": null,
         "recapTemplate": "{{- name}} $t(feat.recap.title)",
         "playCount": "播放 {{count}} 次",
         "mostPlayed": "最常播放的 {{- name}}",
@@ -478,8 +479,8 @@
     "queue": {
       "extra": {
         "add": "添加到队列",
-        "playNext": "播放下一个",
-        "playLast": "播放上一个",
+        "playNext": "下一个播放",
+        "playLast": "上一个播放",
         "toast": "已将 {{- name}} 添加到队列。",
         "queueAwareNext": "队列感知的播放下一个",
         "queueAwareNextBrief": "尝试将歌曲添加到最后一个“播放下一个”的歌曲之后。"

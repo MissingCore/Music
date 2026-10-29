@@ -214,6 +214,7 @@
       "title": null,
       "brief": null,
       "extra": {
+        "backup": null,
         "recapTemplate": null,
         "playCount": "{{count}} प्ले",
         "mostPlayed": "सबसे ज्यादा चले {{- name}}",

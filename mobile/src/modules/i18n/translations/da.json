@@ -214,6 +214,7 @@
       "title": null,
       "brief": null,
       "extra": {
+        "backup": null,
         "recapTemplate": null,
         "playCount": "Afspillet {{count}} gange",
         "mostPlayed": "Hyppigst afspillede {{- name}}",

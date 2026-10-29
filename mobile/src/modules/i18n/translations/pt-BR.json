@@ -218,6 +218,7 @@
       "title": "Retrospectiva",
       "brief": "Suas principais faixas, artistas e histórico de reprodução.",
       "extra": {
+        "backup": null,
         "recapTemplate": "Retrospectiva de {{- name}}",
         "playCount": "{{count}} reproduções",
         "mostPlayed": "{{- name}} mais reproduzido(a)",
