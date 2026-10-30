@@ -22,7 +22,8 @@ import { SystemTheme } from "~/modules/customization/theme/core/constants";
 export function ScanningProgress() {
   const { container, logo } = BootSplash.useHideAnimation({
     manifest: require("../../../../assets/dark/bootsplash/manifest.json"),
-    logo: require("../../../../assets/dark/bootsplash/logo.png"),
+    logo: require("../../../../assets/light/bootsplash/logo.png"),
+    darkLogo: require("../../../../assets/dark/bootsplash/logo.png"),
 
     animate: () => {},
   });
