@@ -14,4 +14,5 @@ overrides:
   "@expo/image-utils": "^0.12.0"
 
 patchedDependencies:
+  '@howincodes/expo-dynamic-app-icon': patches/@howincodes__expo-dynamic-app-icon.patch
   react-native-material-palette: patches/react-native-material-palette.patch

@@ -1,0 +1,257 @@
+diff --git a/android/src/main/java/expo/modules/dynamicappicon/ExpoDynamicAppIconModule.kt b/android/src/main/java/expo/modules/dynamicappicon/ExpoDynamicAppIconModule.kt
+index 7ec820ca50a4bd642f882803830850de599b441f..654f602dc781a03558a530d5d1f6f72e33eca46a 100644
+--- a/android/src/main/java/expo/modules/dynamicappicon/ExpoDynamicAppIconModule.kt
++++ b/android/src/main/java/expo/modules/dynamicappicon/ExpoDynamicAppIconModule.kt
+@@ -20,6 +20,7 @@ class ExpoDynamicAppIconModule : Module() {
+                 val ctx = context
+                 val pkgName = ctx.packageName
+                 val pkgManager = currentActivity.packageManager
++                val mainActivityName = currentActivity.javaClass.name
+ 
+                 synchronized(IconState) {
+                     IconState.packageName = pkgName
+@@ -28,13 +29,26 @@ class ExpoDynamicAppIconModule : Module() {
+                     IconState.shouldChangeIcon = true
+ 
+                     val targetIcon = if (name == null) {
+-                        "$pkgName.MainActivity"
++                        mainActivityName
+                     } else {
+                         "$pkgName.MainActivity$name"
+                     }
+ 
++                    if (!isActivityForMainActivity(
++                            pkgManager,
++                            pkgName,
++                            targetIcon,
++                            mainActivityName
++                        )
++                    ) {
++                        IconState.shouldChangeIcon = false
++                        Log.e("ExpoDynamicAppIcon", "Component does not target $mainActivityName: $targetIcon")
++                        return@Function false
++                    }
++
+                     // Skip if already set to the same icon
+-                    val currentEnabled = getEnabledLauncherActivity(pkgManager, pkgName)
++                    val currentEnabled =
++                        getEnabledLauncherActivity(pkgManager, pkgName, mainActivityName)
+                     if (currentEnabled == targetIcon) {
+                         IconState.shouldChangeIcon = false
+                         return@Function if (name == null) "DEFAULT" else name
+@@ -53,19 +67,20 @@ class ExpoDynamicAppIconModule : Module() {
+         Function("getAppIcon") {
+             try {
+                 val pkgName = context.packageName
+-                val pm = currentActivity.packageManager
+-                val enabledActivity = getEnabledLauncherActivity(pm, pkgName)
++                val activity = currentActivity
++                val pm = activity.packageManager
++                val mainActivityName = activity.javaClass.name
++                val enabledActivity =
++                    getEnabledLauncherActivity(pm, pkgName, mainActivityName)
+ 
+-                if (enabledActivity.isEmpty() || enabledActivity == "$pkgName.MainActivity") {
++                if (enabledActivity.isEmpty() || enabledActivity == mainActivityName) {
+                     return@Function "DEFAULT"
+                 }
+ 
+-                val parts = enabledActivity.split(".MainActivity")
+-                return@Function if (parts.size > 1 && parts.last().isNotEmpty()) {
+-                    parts.last()
+-                } else {
+-                    "DEFAULT"
+-                }
++                val aliasPrefix = "$pkgName.MainActivity"
++                return@Function enabledActivity
++                    .takeIf { it.startsWith(aliasPrefix) && it.length > aliasPrefix.length }
++                    ?.substring(aliasPrefix.length) ?: "DEFAULT"
+             } catch (e: Exception) {
+                 Log.e("ExpoDynamicAppIcon", "Error in getAppIcon", e)
+                 return@Function "DEFAULT"
+@@ -77,33 +92,51 @@ class ExpoDynamicAppIconModule : Module() {
+      * Query the PackageManager for the currently enabled launcher activity.
+      * This reflects actual system state, not module-internal state.
+      */
+-    private fun getEnabledLauncherActivity(pm: PackageManager, packageName: String): String {
++    private fun getEnabledLauncherActivity(
++        pm: PackageManager,
++        packageName: String,
++        mainActivityName: String
++    ): String {
+         return try {
+             val packageInfo = pm.getPackageInfo(
+                 packageName,
+                 PackageManager.GET_ACTIVITIES or PackageManager.MATCH_DISABLED_COMPONENTS
+             )
+-            // [I3] Prefer explicitly enabled components over default-enabled ones
+-            val mainActivityPrefix = "$packageName.MainActivity"
+-            val explicitlyEnabled = packageInfo.activities?.firstOrNull { activityInfo ->
+-                val componentName = ComponentName(packageName, activityInfo.name)
+-                val state = pm.getComponentEnabledSetting(componentName)
+-                state == PackageManager.COMPONENT_ENABLED_STATE_ENABLED &&
+-                    activityInfo.name.startsWith(mainActivityPrefix)
+-            }
+-            if (explicitlyEnabled != null) {
+-                return explicitlyEnabled.name
+-            }
+-            // Fall back to default-enabled activities
+-            packageInfo.activities?.firstOrNull { activityInfo ->
+-                val componentName = ComponentName(packageName, activityInfo.name)
+-                val state = pm.getComponentEnabledSetting(componentName)
+-                state == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT &&
+-                    activityInfo.enabled &&
+-                    activityInfo.name.startsWith(mainActivityPrefix)
+-            }?.name ?: "$packageName.MainActivity"
++            val components = packageInfo.activities
++                ?.filter { it.name == mainActivityName || it.targetActivity == mainActivityName }
++                .orEmpty()
++
++            components.firstOrNull { activityInfo ->
++                pm.getComponentEnabledSetting(
++                    ComponentName(packageName, activityInfo.name)
++                ) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED
++            }?.name ?: components.firstOrNull { activityInfo ->
++                pm.getComponentEnabledSetting(
++                    ComponentName(packageName, activityInfo.name)
++                ) == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT && activityInfo.enabled
++            }?.name ?: mainActivityName
++        } catch (e: Exception) {
++            mainActivityName
++        }
++    }
++
++    private fun isActivityForMainActivity(
++        pm: PackageManager,
++        packageName: String,
++        componentName: String,
++        mainActivityName: String
++    ): Boolean {
++        return try {
++            val packageInfo = pm.getPackageInfo(
++                packageName,
++                PackageManager.GET_ACTIVITIES or PackageManager.MATCH_DISABLED_COMPONENTS
++            )
++            packageInfo.activities?.any {
++                it.name == componentName &&
++                    (it.name == mainActivityName || it.targetActivity == mainActivityName)
++            } == true
+         } catch (e: Exception) {
+-            "$packageName.MainActivity"
++            false
+         }
+     }
+ 
+diff --git a/android/src/main/java/expo/modules/dynamicappicon/ExpoDynamicAppIconReactActivityLifecycleListener.kt b/android/src/main/java/expo/modules/dynamicappicon/ExpoDynamicAppIconReactActivityLifecycleListener.kt
+index c47bcb2b3efc5636330ed0a433f1dc66626b8a1f..c375159840f9154cfe0b6da070c6e4551e1fa5b0 100644
+--- a/android/src/main/java/expo/modules/dynamicappicon/ExpoDynamicAppIconReactActivityLifecycleListener.kt
++++ b/android/src/main/java/expo/modules/dynamicappicon/ExpoDynamicAppIconReactActivityLifecycleListener.kt
+@@ -101,10 +101,11 @@ class ExpoDynamicAppIconReactActivityLifecycleListener : ReactActivityLifecycleL
+     private fun applyIconChange(activity: Activity, icon: String, pm: PackageManager?, packageName: String) {
+         if (icon.isEmpty()) return
+         val pmNonNull = pm ?: return
++        val mainActivityName = activity.javaClass.name
+ 
+         val newComponent = ComponentName(packageName, icon)
+ 
+-        if (!doesComponentExist(pmNonNull, packageName, newComponent)) {
++        if (!doesComponentExist(pmNonNull, packageName, newComponent, mainActivityName)) {
+             Log.e("IconChange", "Component does not exist: $icon")
+             return
+         }
+@@ -118,16 +119,18 @@ class ExpoDynamicAppIconReactActivityLifecycleListener : ReactActivityLifecycleL
+             )
+             Log.i("IconChange", "Enabled new icon: $icon")
+ 
+-            // Then disable all other launcher activities
++            // Then disable the other launcher components targeting this activity.
+             val packageInfo = pmNonNull.getPackageInfo(
+                 packageName,
+                 PackageManager.GET_ACTIVITIES or PackageManager.MATCH_DISABLED_COMPONENTS
+             )
+ 
+-            // [S5] Use startsWith for precise matching instead of contains
+-            val mainActivityPrefix = "$packageName.MainActivity"
+             packageInfo.activities?.forEach { activityInfo ->
+-                if (activityInfo.name.startsWith(mainActivityPrefix) && activityInfo.name != icon) {
++                if (
++                    (activityInfo.name == mainActivityName ||
++                        activityInfo.targetActivity == mainActivityName) &&
++                    activityInfo.name != icon
++                ) {
+                     try {
+                         pmNonNull.setComponentEnabledSetting(
+                             ComponentName(packageName, activityInfo.name),
+@@ -141,46 +144,62 @@ class ExpoDynamicAppIconReactActivityLifecycleListener : ReactActivityLifecycleL
+             }
+         } catch (e: Exception) {
+             Log.e("IconChange", "Error during icon change", e)
+-            ensureAtLeastOneComponentEnabled(pmNonNull, packageName)
++            ensureAtLeastOneComponentEnabled(pmNonNull, packageName, mainActivityName)
+         }
+     }
+ 
+-    private fun ensureAtLeastOneComponentEnabled(pm: PackageManager, packageName: String) {
++    private fun ensureAtLeastOneComponentEnabled(
++        pm: PackageManager,
++        packageName: String,
++        mainActivityName: String
++    ) {
+         try {
+             val packageInfo = pm.getPackageInfo(
+                 packageName,
+                 PackageManager.GET_ACTIVITIES or PackageManager.MATCH_DISABLED_COMPONENTS
+             )
+ 
+-            val mainActivityPrefix = "$packageName.MainActivity"
+             val hasEnabled = packageInfo.activities?.any { activityInfo ->
+-                activityInfo.name.startsWith(mainActivityPrefix) &&
+-                    pm.getComponentEnabledSetting(
++                (activityInfo.name == mainActivityName ||
++                    activityInfo.targetActivity == mainActivityName) &&
++                    when (pm.getComponentEnabledSetting(
+                         ComponentName(packageName, activityInfo.name)
+-                    ) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED
++                    )) {
++                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED -> true
++                        PackageManager.COMPONENT_ENABLED_STATE_DEFAULT -> activityInfo.enabled
++                        else -> false
++                    }
+             } ?: false
+ 
+             if (!hasEnabled) {
+-                val mainComponent = ComponentName(packageName, "$packageName.MainActivity")
++                val mainComponent = ComponentName(packageName, mainActivityName)
+                 pm.setComponentEnabledSetting(
+                     mainComponent,
+                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                     PackageManager.DONT_KILL_APP
+                 )
+-                Log.i("IconChange", "Fallback: re-enabled $packageName.MainActivity")
++                Log.i("IconChange", "Fallback: re-enabled $mainActivityName")
+             }
+         } catch (e: Exception) {
+             Log.e("IconChange", "Error in ensureAtLeastOneComponentEnabled", e)
+         }
+     }
+ 
+-    private fun doesComponentExist(pm: PackageManager, packageName: String, componentName: ComponentName): Boolean {
++    private fun doesComponentExist(
++        pm: PackageManager,
++        packageName: String,
++        componentName: ComponentName,
++        mainActivityName: String
++    ): Boolean {
+         return try {
+             val packageInfo = pm.getPackageInfo(
+                 packageName,
+                 PackageManager.GET_ACTIVITIES or PackageManager.MATCH_DISABLED_COMPONENTS
+             )
+-            packageInfo.activities?.any { it.name == componentName.className } == true
++            packageInfo.activities?.any {
++                it.name == componentName.className &&
++                    (it.name == mainActivityName || it.targetActivity == mainActivityName)
++            } == true
+         } catch (e: Exception) {
+             false
+         }
