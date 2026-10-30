@@ -27,6 +27,10 @@ const SupportedIcons = {
     label: "Default Light",
     icon: require("../../../../../assets/light/icon.png"),
   },
+  glyphNote: {
+    label: "Glyph Note",
+    icon: require("../../../../../assets/glyph-note-icon.png"),
+  },
 } as const satisfies Record<AppIcon, AppIconConfig>;
 
 const ListOptions = Object.entries(SupportedIcons) as Array<

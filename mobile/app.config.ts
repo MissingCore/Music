@@ -145,6 +145,12 @@ const dynamicAppIconConfig = {
       backgroundColor: "#F2F2F2",
     },
   },
+  glyphNote: {
+    android: {
+      foregroundImage: "./assets/glyph-note-adaptive-icon.png",
+      backgroundColor: "#000",
+    },
+  },
 } as const;
 
 //#region Widget Plugin Configs
