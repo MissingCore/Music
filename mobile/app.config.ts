@@ -9,10 +9,6 @@ import imagePickerPlugin from "expo-image-picker/plugin";
 import type { WithAndroidWidgetsParams } from "react-native-android-widget";
 import bootsplashPlugin from "react-native-bootsplash/expo";
 
-const BUILD_THEME: "light" | "dark" = "light";
-const BACKGROUND_COLOR = BUILD_THEME === "light" ? "#F2F2F2" : "#000000";
-const ICON_BACKGROUND_COLOR = BUILD_THEME === "light" ? "#FFFFFF" : "#000000";
-
 export default (): ExpoConfig => {
   const optionalPlugins: ExpoConfig["plugins"] = [];
 
@@ -31,9 +27,9 @@ export default (): ExpoConfig => {
     githubUrl: "https://github.com/MissingCore/Music",
     orientation: "portrait",
     primaryColor: "#C8102E",
-    icon: `./assets/${BUILD_THEME}/icon.png`,
+    icon: `./assets/dark/icon.png`,
     scheme: ["com.cyanchill.missingcore.music"],
-    backgroundColor: BACKGROUND_COLOR,
+    backgroundColor: "#000000",
     userInterfaceStyle: "automatic",
     assetBundlePatterns: ["**/*"],
     android: {
@@ -41,9 +37,9 @@ export default (): ExpoConfig => {
       versionCode: 2310,
       allowBackup: false,
       adaptiveIcon: {
-        foregroundImage: `./assets/${BUILD_THEME}/adaptive-icon.png`,
-        monochromeImage: `./assets/${BUILD_THEME}/adaptive-icon-monochrome.png`,
-        backgroundColor: ICON_BACKGROUND_COLOR,
+        foregroundImage: `./assets/dark/adaptive-icon.png`,
+        monochromeImage: `./assets/dark/adaptive-icon-monochrome.png`,
+        backgroundColor: "#000000",
       },
       blockedPermissions: [
         // Optional permissions that Expo adds.
@@ -104,9 +100,9 @@ export default (): ExpoConfig => {
       }),
       imagePickerPlugin({ microphonePermission: false }),
       bootsplashPlugin({
-        logo: `./assets/${BUILD_THEME}/splash-icon.png`,
-        background: BACKGROUND_COLOR,
-        assetsOutput: `./assets/${BUILD_THEME}/bootsplash`,
+        logo: `./assets/dark/splash-icon.png`,
+        background: "#000000",
+        assetsOutput: `./assets/dark/bootsplash`,
       }),
       navigationBarPlugin({ android: { enforceNavigationBarContrast: false } }),
       ["@howincodes/expo-dynamic-app-icon", dynamicAppIconConfig],
@@ -143,16 +139,10 @@ const sentryPluginConfig = {
 
 //#region Icon Configs
 const dynamicAppIconConfig = {
-  light: {
+  defaultLight: {
     android: {
       foregroundImage: "./assets/light/adaptive-icon.png",
       backgroundColor: "#F2F2F2",
-    },
-  },
-  dark: {
-    android: {
-      foregroundImage: "./assets/dark/adaptive-icon.png",
-      backgroundColor: "#000000",
     },
   },
 } as const;
