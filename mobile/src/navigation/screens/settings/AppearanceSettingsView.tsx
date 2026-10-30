@@ -7,7 +7,11 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 
 import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
-import { AppIconSheet } from "./sheets/AppIconSheet";
+import {
+  AppIconSheet,
+  getAppIconName,
+  useCurrentAppIcon,
+} from "./sheets/AppIconSheet";
 import { ColumnSizeSheet } from "./sheets/ColumnSizeSheet";
 import {
   DefaultLibraryTabSheet,
@@ -25,6 +29,7 @@ import { getFontDisplayName } from "~/modules/customization/font/utils";
 
 export default function AppearanceSettings() {
   const { t } = useTranslation();
+  const { data: appIcon } = useCurrentAppIcon();
   const accentFont = usePreferenceStore((s) => s.accentFont);
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
   const theme = usePreferenceStore((s) => s.theme);
@@ -40,26 +45,35 @@ export default function AppearanceSettings() {
   const quickAddQueue = usePreferenceStore((s) => s.quickAddQueue);
   const quickFavorite = usePreferenceStore((s) => s.quickFavorite);
   const squareArtwork = usePreferenceStore((s) => s.squareArtwork);
+  const appIconSheetRef = useSheetRef();
   const accentFontSheetRef = useSheetRef();
   const primaryFontSheetRef = useSheetRef();
   const themeSheetRef = useSheetRef();
-  const appIconSheetRef = useSheetRef();
   const columnSizeSheetRef = useSheetRef();
   const defaultOpenTabSheetRef = useSheetRef();
   const defaultLibraryTabSheetRef = useSheetRef();
 
   return (
     <>
+      {appIcon ? (
+        <AppIconSheet ref={appIconSheetRef} initIcon={appIcon} />
+      ) : null}
       <AccentFontSheet ref={accentFontSheetRef} />
       <PrimaryFontSheet ref={primaryFontSheetRef} />
       <ThemeSheet ref={themeSheetRef} />
-      <AppIconSheet ref={appIconSheetRef} />
       <ColumnSizeSheet ref={columnSizeSheetRef} />
       <DefaultOpenTabSheet ref={defaultOpenTabSheetRef} />
       <DefaultLibraryTabSheet ref={defaultLibraryTabSheetRef} />
 
       <ScrollLayout title="feat.appearance.title">
         <SettingsList.Group label={t("feat.theme.title")}>
+          <SettingsList.Item
+            icon="app-icon"
+            label={t("feat.theme.extra.appIcon")}
+            supporting={getAppIconName(appIcon ?? "DEFAULT")}
+            onPress={() => appIconSheetRef.current?.present()}
+          />
+          <SettingsList.Divider />
           <SettingsList.Item
             icon="brand-family"
             label={t("feat.font.extra.accent")}
@@ -81,12 +95,6 @@ export default function AppearanceSettings() {
               activeCustomTheme?.name ?? t(`feat.theme.extra.${theme}`)
             }
             onPress={() => themeSheetRef.current?.present()}
-          />
-          <SettingsList.Divider />
-          <SettingsList.Item
-            icon="image"
-            label={t("feat.theme.extra.appIcon")}
-            onPress={() => appIconSheetRef.current?.present()}
           />
         </SettingsList.Group>
 
