@@ -1,4 +1,7 @@
 {
+  "@howincodes/expo-dynamic-app-icon@3.0.2": {
+    "licenseText": "No license file found, visit source with link above."
+  },
   "@paralleldrive/cuid2@3.3.0": {
     "repository": "https://github.com/paralleldrive/cuid2"
   },

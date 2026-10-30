@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@boterop/react-native-background-timer": "2.6.0",
+    "@howincodes/expo-dynamic-app-icon": "3.0.2",
     "@legendapp/list": "3.7.0",
     "@lodev09/react-native-true-sheet": "4.0.0-beta.25",
     "@missingcore/react-native-actual-path": "0.1.0",

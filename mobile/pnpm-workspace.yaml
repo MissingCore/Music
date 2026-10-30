@@ -10,5 +10,8 @@ allowBuilds:
   react-native-audio-browser@https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/05f7af440edc29222d12a0acc58234f5cb51433d: true
   unrs-resolver: false
 
+overrides:
+  "@expo/image-utils": "^0.12.0"
+
 patchedDependencies:
   react-native-material-palette: patches/react-native-material-palette.patch
