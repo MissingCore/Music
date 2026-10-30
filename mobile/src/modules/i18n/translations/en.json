@@ -167,7 +167,9 @@
         "system": "System",
 
         "atmosphere": "Atmosphere Effect",
-        "opaqueColors": "Opaque Colors"
+        "opaqueColors": "Opaque Colors",
+
+        "appIcon": "App Icon"
       }
     },
     "homeScreens": {

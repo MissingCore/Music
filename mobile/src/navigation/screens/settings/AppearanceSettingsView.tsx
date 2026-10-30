@@ -7,6 +7,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 
 import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
+import { AppIconSheet } from "./sheets/AppIconSheet";
 import { ColumnSizeSheet } from "./sheets/ColumnSizeSheet";
 import {
   DefaultLibraryTabSheet,
@@ -42,6 +43,7 @@ export default function AppearanceSettings() {
   const accentFontSheetRef = useSheetRef();
   const primaryFontSheetRef = useSheetRef();
   const themeSheetRef = useSheetRef();
+  const appIconSheetRef = useSheetRef();
   const columnSizeSheetRef = useSheetRef();
   const defaultOpenTabSheetRef = useSheetRef();
   const defaultLibraryTabSheetRef = useSheetRef();
@@ -51,6 +53,7 @@ export default function AppearanceSettings() {
       <AccentFontSheet ref={accentFontSheetRef} />
       <PrimaryFontSheet ref={primaryFontSheetRef} />
       <ThemeSheet ref={themeSheetRef} />
+      <AppIconSheet ref={appIconSheetRef} />
       <ColumnSizeSheet ref={columnSizeSheetRef} />
       <DefaultOpenTabSheet ref={defaultOpenTabSheetRef} />
       <DefaultLibraryTabSheet ref={defaultLibraryTabSheetRef} />
@@ -78,6 +81,12 @@ export default function AppearanceSettings() {
               activeCustomTheme?.name ?? t(`feat.theme.extra.${theme}`)
             }
             onPress={() => themeSheetRef.current?.present()}
+          />
+          <SettingsList.Divider />
+          <SettingsList.Item
+            icon="image"
+            label={t("feat.theme.extra.appIcon")}
+            onPress={() => appIconSheetRef.current?.present()}
           />
         </SettingsList.Group>
 
