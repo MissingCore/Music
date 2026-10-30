@@ -103,7 +103,7 @@
       <meta-data android:name="android.appwidget.provider" android:resource="@xml/widgetprovider_skinnynowplaying"/>
     </receiver>
 
-    <activity-alias android:name="${applicationId}.MainActivitydefaultLight" android:enabled="false" android:exported="true" android:icon="@mipmap/ic_launcher_adaptive_defaultlight" android:label="@string/app_name" android:targetActivity=".MainActivity" android:roundIcon="@mipmap/ic_launcher_adaptive_defaultlight">
+    <activity-alias android:name="${applicationId}.MainActivitydefaultLight" android:enabled="false" android:exported="true" android:icon="@mipmap/defaultlight" android:targetActivity=".MainActivity" android:roundIcon="@mipmap/defaultlight_round">
       <intent-filter>
         <!-- Expose that we're a music player. -->
         <action android:name="android.intent.action.MAIN"/>

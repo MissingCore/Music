@@ -1,7 +1,7 @@
 | Name | License | Source |
 | ---- | ------- | ------ |
 | @boterop/react-native-background-timer | MIT | https://github.com/boterop/react-native-background-timer |
-| @howincodes/expo-dynamic-app-icon | MIT | https://github.com/howincodes/expo-dynamic-app-icon |
+| @bsky.app/expo-dynamic-app-icon | MIT | https://github.com/bluesky-social/expo-dynamic-app-icon |
 | @legendapp/list | MIT | https://github.com/LegendApp/legend-list |
 | @lodev09/react-native-true-sheet | MIT | https://github.com/lodev09/react-native-true-sheet |
 | @missingcore/react-native-actual-path | MIT | https://github.com/MissingCore/react-native-actual-path |
