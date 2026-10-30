@@ -103,6 +103,59 @@
       <meta-data android:name="android.appwidget.provider" android:resource="@xml/widgetprovider_skinnynowplaying"/>
     </receiver>
 
+    <activity-alias android:name="com.cyanchill.missingcore.music.MainActivitylight" android:enabled="false" android:exported="true" android:icon="@mipmap/ic_launcher_adaptive_light" android:label="@string/app_name" android:targetActivity=".MainActivity" android:roundIcon="@mipmap/ic_launcher_adaptive_light">
+      <intent-filter>
+        <!-- Expose that we're a music player. -->
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+        <category android:name="android.intent.category.APP_MUSIC"/>
+      </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:scheme="com.cyanchill.missingcore.music"/>
+      </intent-filter>
+      <intent-filter data-generated="true">
+        <action android:name="android.intent.action.VIEW"/>
+        <data android:scheme="content"/>
+        <data android:scheme="file"/>
+        <data android:mimeType="audio/*"/>
+        <data android:mimeType="application/ogg"/>
+        <data android:mimeType="application/x-ogg"/>
+        <data android:mimeType="application/itunes"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+      </intent-filter>
+    </activity-alias>
+    <activity-alias android:name="com.cyanchill.missingcore.music.MainActivitydark" android:enabled="false" android:exported="true" android:icon="@mipmap/ic_launcher_adaptive_dark" android:label="@string/app_name" android:targetActivity=".MainActivity" android:roundIcon="@mipmap/ic_launcher_adaptive_dark">
+      <intent-filter>
+        <!-- Expose that we're a music player. -->
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+        <category android:name="android.intent.category.APP_MUSIC"/>
+      </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:scheme="com.cyanchill.missingcore.music"/>
+      </intent-filter>
+      <intent-filter data-generated="true">
+        <action android:name="android.intent.action.VIEW"/>
+        <data android:scheme="content"/>
+        <data android:scheme="file"/>
+        <data android:mimeType="audio/*"/>
+        <data android:mimeType="application/ogg"/>
+        <data android:mimeType="application/x-ogg"/>
+        <data android:mimeType="application/itunes"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+      </intent-filter>
+    </activity-alias>
+
     <!-- Disable Sentry's ANR feature. -->
     <meta-data android:name="io.sentry.anr.enable" android:value="false" />
 

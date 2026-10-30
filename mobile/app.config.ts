@@ -109,6 +109,7 @@ export default (): ExpoConfig => {
         assetsOutput: `./assets/${BUILD_THEME}/bootsplash`,
       }),
       navigationBarPlugin({ android: { enforceNavigationBarContrast: false } }),
+      ["@howincodes/expo-dynamic-app-icon", dynamicAppIconConfig],
       ["react-native-android-widget", widgetPluginConfig],
       [
         "react-native-nano-icons",
@@ -139,6 +140,22 @@ const sentryPluginConfig = {
   },
 };
 //#endregion
+
+//#region Icon Configs
+const dynamicAppIconConfig = {
+  light: {
+    android: {
+      foregroundImage: "./assets/light/adaptive-icon.png",
+      backgroundColor: "#F2F2F2",
+    },
+  },
+  dark: {
+    android: {
+      foregroundImage: "./assets/dark/adaptive-icon.png",
+      backgroundColor: "#000000",
+    },
+  },
+} as const;
 
 //#region Widget Plugin Configs
 const widgetPluginConfig: WithAndroidWidgetsParams = {
