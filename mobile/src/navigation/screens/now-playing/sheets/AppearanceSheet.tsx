@@ -14,8 +14,8 @@ import {
 import { RadioChipField } from "~/components/Form/Radio";
 import { SwitchInput } from "~/components/Form/Switch";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
-import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import type { SheetRef } from "~/components/next/base/sheet2";
+import { Sheet, SheetScrollView } from "~/components/next/base/sheet2";
 
 export function AppearanceSheet(props: { ref: SheetRef }) {
   const nowPlayingDesign = usePreferenceStore((s) => s.nowPlayingDesign);
@@ -27,46 +27,48 @@ export function AppearanceSheet(props: { ref: SheetRef }) {
 
   return (
     <Sheet ref={props.ref}>
-      <SheetLabelAction
-        labelKey="feat.nowPlayingDesign.extra.alternativeInfoLayout"
-        Trailing={
-          <SwitchInput
-            enabled={alternativeInfoLayout}
-            onPress={PreferenceTogglers.toggleKey("alternativeInfoLayout")}
-          />
-        }
-      />
-      <SheetLabelAction
-        labelKey="feat.nowPlayingDesign.extra.standardVinylSpeed"
-        Trailing={
-          <SwitchInput
-            enabled={standardVinylSpeed}
-            onPress={PreferenceTogglers.toggleKey("standardVinylSpeed")}
-          />
-        }
-      />
+      <SheetScrollView>
+        <SheetLabelAction
+          labelKey="feat.nowPlayingDesign.extra.alternativeInfoLayout"
+          Trailing={
+            <SwitchInput
+              enabled={alternativeInfoLayout}
+              onPress={PreferenceTogglers.toggleKey("alternativeInfoLayout")}
+            />
+          }
+        />
+        <SheetLabelAction
+          labelKey="feat.nowPlayingDesign.extra.standardVinylSpeed"
+          Trailing={
+            <SwitchInput
+              enabled={standardVinylSpeed}
+              onPress={PreferenceTogglers.toggleKey("standardVinylSpeed")}
+            />
+          }
+        />
 
-      <RadioChipField labelKey="feat.artwork.title">
-        {NowPlayingDesignOptions.map((design) => (
-          <RadioChipField.Item
-            key={design}
-            labelKey={`feat.nowPlayingDesign.extra.${design}`}
-            selected={nowPlayingDesign === design}
-            onSelect={() => PreferenceSetters.setNowPlayingDesign(design)}
-          />
-        ))}
-      </RadioChipField>
+        <RadioChipField labelKey="feat.artwork.title">
+          {NowPlayingDesignOptions.map((design) => (
+            <RadioChipField.Item
+              key={design}
+              labelKey={`feat.nowPlayingDesign.extra.${design}`}
+              selected={nowPlayingDesign === design}
+              onSelect={() => PreferenceSetters.setNowPlayingDesign(design)}
+            />
+          ))}
+        </RadioChipField>
 
-      <RadioChipField labelKey="feat.seekbar.title">
-        {SeekbarDesignOptions.map((design) => (
-          <RadioChipField.Item
-            key={design}
-            labelKey={`feat.seekbar.extra.${design}`}
-            selected={seekbarDesign === design}
-            onSelect={() => PreferenceSetters.setSeekbarDesign(design)}
-          />
-        ))}
-      </RadioChipField>
+        <RadioChipField labelKey="feat.seekbar.title">
+          {SeekbarDesignOptions.map((design) => (
+            <RadioChipField.Item
+              key={design}
+              labelKey={`feat.seekbar.extra.${design}`}
+              selected={seekbarDesign === design}
+              onSelect={() => PreferenceSetters.setSeekbarDesign(design)}
+            />
+          ))}
+        </RadioChipField>
+      </SheetScrollView>
     </Sheet>
   );
 }

@@ -3,7 +3,6 @@
 
 import { toast } from "@missingcore/ui/toast";
 import { useCallback, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 
 import { usePlaylistsNames } from "~/data/playlist/queries";
 import { TrackMultiSelect, useTrackMultiSelectStore } from "../core/store";
@@ -14,13 +13,12 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
 import { CheckboxField } from "~/components/Form/Checkbox";
-import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import type { SheetRef } from "~/components/next/base/sheet2";
+import { Sheet, SheetLegendList } from "~/components/next/base/sheet2";
 import { Text } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";
 
 export function AddToPlaylistsSheet(props: { ref: SheetRef }) {
-  const { t } = useTranslation();
   const { data: playlistsNames } = usePlaylistsNames();
   const amountSelected = useTrackMultiSelectStore((s) => s.selected.size);
   const [inLists, setInLists] = useState(new Set<string>());
@@ -48,8 +46,7 @@ export function AddToPlaylistsSheet(props: { ref: SheetRef }) {
 
   return (
     <Sheet ref={props.ref} onCleanup={resolveAddAction} snapTop>
-      <Sheet.Header label={t("feat.modalTrack.extra.addToPlaylist")} />
-      <Sheet.List
+      <SheetLegendList
         estimatedItemSize={52} // 48px Height + 6px Gap
         data={playlistsNames}
         keyExtractor={(name) => name}

@@ -23,8 +23,8 @@ import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
 import { isRecord } from "~/utils/validation";
 import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
-import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import type { SheetRef } from "~/components/next/base/sheet2";
+import { Sheet, SheetScrollView } from "~/components/next/base/sheet2";
 import type { MediaImageSrc } from "~/components/next/blocks/media-image";
 import { MediaImage } from "~/components/next/blocks/media-image";
 
@@ -141,26 +141,28 @@ function BaseArtworkSheet(props: {
 
   return (
     <Sheet ref={props.ref}>
-      <View className="mx-auto px-4">
-        <MediaImage src={props.imageSource} size={imageSize} />
-      </View>
-      <SheetButtonGroup
-        leftButton={{
-          textKey: "feat.artwork.extra.remove",
-          onPress: () => onSubmit(null),
-          disabled:
-            props.disabled ||
-            disabled ||
-            !props.imageSource ||
-            Array.isArray(props.imageSource) ||
-            isRecord(props.imageSource),
-        }}
-        rightButton={{
-          textKey: "feat.artwork.extra.change",
-          onPress: () => onSubmit(pickImage()),
-          disabled,
-        }}
-      />
+      <SheetScrollView>
+        <View className="mx-auto px-4">
+          <MediaImage src={props.imageSource} size={imageSize} />
+        </View>
+        <SheetButtonGroup
+          leftButton={{
+            textKey: "feat.artwork.extra.remove",
+            onPress: () => onSubmit(null),
+            disabled:
+              props.disabled ||
+              disabled ||
+              !props.imageSource ||
+              Array.isArray(props.imageSource) ||
+              isRecord(props.imageSource),
+          }}
+          rightButton={{
+            textKey: "feat.artwork.extra.change",
+            onPress: () => onSubmit(pickImage()),
+            disabled,
+          }}
+        />
+      </SheetScrollView>
     </Sheet>
   );
 }

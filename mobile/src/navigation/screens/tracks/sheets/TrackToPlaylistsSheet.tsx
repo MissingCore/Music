@@ -3,7 +3,6 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 
 import { queries as q } from "~/data/keyStore";
 import { usePlaylistsNames } from "~/data/playlist/queries";
@@ -13,14 +12,13 @@ import { useTrackPlaylists } from "~/data/track/queries";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { CheckboxField } from "~/components/Form/Checkbox";
-import { Sheet } from "~/components/next/base/sheet";
+import { Sheet, SheetLegendList } from "~/components/next/base/sheet2";
 import { Text } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";
 
 const GLOBAL_SHEET_KEY = "TrackToPlaylistsSheet";
 
 export function TrackToPlaylistsSheet({ id }: { id: string }) {
-  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { data: playlistsNames } = usePlaylistsNames();
   const { data: inList } = useTrackPlaylists(id);
@@ -50,8 +48,7 @@ export function TrackToPlaylistsSheet({ id }: { id: string }) {
 
   return (
     <Sheet name={GLOBAL_SHEET_KEY} onCleanup={handleSheetClose} snapTop>
-      <Sheet.Header label={t("feat.modalTrack.extra.addToPlaylist")} />
-      <Sheet.List
+      <SheetLegendList
         estimatedItemSize={52} // 48px Height + 6px Gap
         data={playlistsNames}
         keyExtractor={(name) => name}

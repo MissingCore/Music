@@ -11,8 +11,8 @@ import { useSleepTimerStore } from "./store";
 import { wait } from "~/utils/promise";
 import { ClickwrapCheckbox } from "~/components/Form/Checkbox";
 import { NumericInput } from "~/components/Form/Input";
-import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import type { SheetRef } from "~/components/next/base/sheet2";
+import { Sheet, SheetScrollView } from "~/components/next/base/sheet2";
 import { Text, TText } from "~/components/next/base/typography";
 import { ActionButton } from "~/components/next/blocks/button-action";
 
@@ -54,34 +54,34 @@ export function SleepTimerSheet(props: { ref: SheetRef }) {
 
   return (
     <Sheet ref={props.ref}>
-      <Sheet.Header label={t("feat.sleepTimer.title")} />
-
-      <TText textKey="feat.sleepTimer.description" muted size="sm" />
-      {hasTimer ? (
-        <CountdownTimer endAt={endAt} />
-      ) : (
-        <NumericInput
-          defaultValue={`${sleepTimerLength}`}
-          onChangeText={(text) => setMinutes(text)}
-          maxLength={3} // Max out at 999 minutes (~16.5 hours).
-          className="mx-auto w-full max-w-1/2 border-b border-outline text-center"
-          forSheet
+      <SheetScrollView>
+        <TText textKey="feat.sleepTimer.description" muted size="sm" />
+        {hasTimer ? (
+          <CountdownTimer endAt={endAt} />
+        ) : (
+          <NumericInput
+            defaultValue={`${sleepTimerLength}`}
+            onChangeText={(text) => setMinutes(text)}
+            maxLength={3} // Max out at 999 minutes (~16.5 hours).
+            className="mx-auto w-full max-w-1/2 border-b border-outline text-center"
+            forSheet
+          />
+        )}
+        <Text muted>
+          {t("feat.sleepTimer.extra.stopTime", { time: endString })}
+        </Text>
+        <ClickwrapCheckbox
+          textKey="feat.sleepTimer.extra.extend"
+          checked={extendTimer}
+          onCheck={toggleExtension}
+          disabled={hasTimer}
         />
-      )}
-      <Text muted>
-        {t("feat.sleepTimer.extra.stopTime", { time: endString })}
-      </Text>
-      <ClickwrapCheckbox
-        textKey="feat.sleepTimer.extra.extend"
-        checked={extendTimer}
-        onCheck={toggleExtension}
-        disabled={hasTimer}
-      />
-      <ActionButton
-        label={t(hasTimer ? "form.clear" : "feat.sleepTimer.extra.start")}
-        onPress={hasTimer ? clearTimer : onSubmit}
-        className="rounded-full"
-      />
+        <ActionButton
+          label={t(hasTimer ? "form.clear" : "feat.sleepTimer.extra.start")}
+          onPress={hasTimer ? clearTimer : onSubmit}
+          className="rounded-full"
+        />
+      </SheetScrollView>
     </Sheet>
   );
 }

@@ -27,7 +27,11 @@ import { IconButton } from "~/components/next/base/button-icon";
 import { Divider } from "~/components/next/base/divider";
 import type { SupportedIconName } from "~/components/next/base/icon";
 import { Icon } from "~/components/next/base/icon";
-import { Sheet, useSheetRef } from "~/components/next/base/sheet";
+import {
+  Sheet,
+  SheetScrollView,
+  useSheetRef,
+} from "~/components/next/base/sheet2";
 import { Text } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";
 import { MediaImage } from "~/components/next/blocks/media-image";
@@ -45,17 +49,19 @@ export function TrackSheet() {
   return (
     <>
       <Sheet name={GLOBAL_SHEET_KEY}>
-        {data !== null ? (
-          <>
-            <TrackIntro data={data} />
-            <TrackMetadata data={data} />
-            <IconActions
-              data={data}
-              editArtwork={() => trackArtworkSheetRef.current?.present()}
-            />
-            <QueueActions id={data.id} name={data.name} />
-          </>
-        ) : null}
+        <SheetScrollView>
+          {data !== null ? (
+            <>
+              <TrackIntro data={data} />
+              <TrackMetadata data={data} />
+              <IconActions
+                data={data}
+                editArtwork={() => trackArtworkSheetRef.current?.present()}
+              />
+              <QueueActions id={data.id} name={data.name} />
+            </>
+          ) : null}
+        </SheetScrollView>
       </Sheet>
       <TrackToPlaylistsSheet key={data?.id} id={data?.id ?? ""} />
       {data !== null ? (

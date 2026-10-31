@@ -1,7 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useImperativeHandle, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -39,7 +39,6 @@ type SearchEngineListProps<TScope extends SearchCategories> = {
   /** If we should render the track actions via the results. */
   withTrackActions?: boolean;
 
-  ref?: React.RefObject<any>;
   CustomList?: typeof LegendList;
 };
 
@@ -55,7 +54,6 @@ export function SearchEngineList<TScope extends SearchCategories>({
   const [selectedTab, setSelectedTab] = useState<TScope[number] | "all">("all");
   const [filterHeight, setFilterHeight] = useState(52); // Height will be ~52px
   const listRef = useLegendListRef();
-  useImperativeHandle(props.ref, () => listRef.current);
 
   const overrideItemLayout = useMemo(
     () => overrideItemLayoutFactory(listLayout.count),

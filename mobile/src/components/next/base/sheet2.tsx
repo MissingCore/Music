@@ -2,7 +2,13 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
-import { createContext, use, useMemo, useRef } from "react";
+import {
+  createContext,
+  use,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+} from "react";
 import type { ViewProps } from "react-native";
 import { useWindowDimensions, View } from "react-native";
 import type { AnimatedRef, SharedValue } from "react-native-reanimated";
@@ -72,15 +78,16 @@ export function Sheet(props: SheetProps) {
     [scrollableRef, headerHeight, footerHeight, hasFooter],
   );
 
-  const contentStyle = useAnimatedStyle(() => ({
-    maxHeight:
+  const contentStyle = useAnimatedStyle(() => {
+    const maxHeight =
       Math.min(height, MAX_SHEET_HEIGHT) -
       top -
       bottom -
       headerHeight.get() -
       footerHeight.get() -
-      32,
-  }));
+      32;
+    return { height: props.snapTop ? maxHeight : undefined, maxHeight };
+  });
 
   return (
     <SheetContext value={contextValue}>
@@ -146,12 +153,14 @@ export function SheetFooter({ onLayout, className, ...props }: ViewProps) {
 //#endregion
 
 //#region Scrollables
-export function SheetLegendList({
+export function SheetLegendList<TData>({
+  ref,
   className,
   contentContainerClassName,
   ...props
-}: Omit<LegendListProps, "ref">) {
+}: LegendListProps<TData>) {
   const { scrollableRef, hasFooter } = use(SheetContext);
+  useImperativeHandle(ref, () => scrollableRef.current);
   return (
     <LegendList
       ref={scrollableRef}

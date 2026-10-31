@@ -11,8 +11,8 @@ import { addSelectedToCreatedPlaylist } from "../core/actions";
 
 import { TextInput } from "~/components/Form/Input";
 import { Icon } from "~/components/next/base/icon";
-import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import type { SheetRef } from "~/components/next/base/sheet2";
+import { Sheet, SheetScrollView } from "~/components/next/base/sheet2";
 import { TText } from "~/components/next/base/typography";
 import { ActionButton } from "~/components/next/blocks/button-action";
 import { useInputForm } from "~/modules/form/useInputForm";
@@ -46,35 +46,35 @@ export function AddToCreatedPlaylistSheet(props: { ref: SheetRef }) {
 
   return (
     <Sheet ref={props.ref}>
-      <Sheet.Header label={t("feat.modalTrack.extra.addToPlaylist")} />
-
-      <TextInput
-        editable={!inputForm.isSubmitting}
-        value={inputForm.value}
-        onChangeText={inputForm.onChange}
-        placeholder={t("feat.trackMetadata.extra.name")}
-        className="shrink grow rounded-sm border border-outline p-2"
-        forSheet
-      />
-      <View className="-mt-2 shrink flex-row items-center gap-0.5">
-        <Icon
-          name={inputForm.canSubmit ? "check-circle" : "cancel"}
-          size={16}
-          color={constraintColor}
+      <SheetScrollView>
+        <TextInput
+          editable={!inputForm.isSubmitting}
+          value={inputForm.value}
+          onChangeText={inputForm.onChange}
+          placeholder={t("feat.trackMetadata.extra.name")}
+          className="shrink grow rounded-sm border border-outline p-2"
+          forSheet
         />
-        <TText
-          textKey="form.validation.unique"
-          size="xs"
-          className={constraintColor}
+        <View className="-mt-2 shrink flex-row items-center gap-0.5">
+          <Icon
+            name={inputForm.canSubmit ? "check-circle" : "cancel"}
+            size={16}
+            color={constraintColor}
+          />
+          <TText
+            textKey="form.validation.unique"
+            size="xs"
+            className={constraintColor}
+          />
+        </View>
+        <ActionButton
+          label={t("form.create")}
+          onPress={inputForm.onSubmit}
+          disabled={!inputForm.canSubmit || inputForm.isSubmitting}
+          intent="secondary"
+          className="rounded-full"
         />
-      </View>
-      <ActionButton
-        label={t("form.create")}
-        onPress={inputForm.onSubmit}
-        disabled={!inputForm.canSubmit || inputForm.isSubmitting}
-        intent="secondary"
-        className="rounded-full"
-      />
+      </SheetScrollView>
     </Sheet>
   );
 }

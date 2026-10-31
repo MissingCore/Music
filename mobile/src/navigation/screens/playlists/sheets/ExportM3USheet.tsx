@@ -5,8 +5,8 @@ import { toast } from "@missingcore/ui/toast";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import type { SheetRef } from "~/components/next/base/sheet2";
+import { Sheet } from "~/components/next/base/sheet2";
 import { ActionButton } from "~/components/next/blocks/button-action";
 import { SegmentedPicker } from "~/components/next/blocks/segmented-picker";
 import { exportPlaylistAsM3U } from "~/modules/backup/M3U";
@@ -40,8 +40,6 @@ export function ExportM3USheet(props: { ref: SheetRef; id: string }) {
 
   return (
     <Sheet ref={props.ref} onCleanup={() => setExportOption("absolute")}>
-      <Sheet.Header label={t("feat.playlist.extra.m3uExport")} />
-
       <SegmentedPicker
         type="radio"
         options={pickerOptions}

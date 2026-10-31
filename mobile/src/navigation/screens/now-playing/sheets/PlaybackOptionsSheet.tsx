@@ -18,8 +18,12 @@ import { NothingSlider } from "~/components/Form/Slider.variant";
 import { SegmentedList } from "~/components/List/Segmented";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import { Icon } from "~/components/next/base/icon";
-import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet, useSheetRef } from "~/components/next/base/sheet";
+import type { SheetRef } from "~/components/next/base/sheet2";
+import {
+  Sheet,
+  SheetScrollView,
+  useSheetRef,
+} from "~/components/next/base/sheet2";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 
 export function PlaybackOptionsSheet(props: {
@@ -57,45 +61,47 @@ export function PlaybackOptionsSheet(props: {
       <AppearanceSheet ref={appearanceSheetRef} />
 
       <Sheet ref={props.ref} draggable={!stopDrag}>
-        <SegmentedList.Item
-          labelText="term.playingFrom"
-          supportingText={sourceName || "—"}
-          onPress={navigateToList}
-          disabled={!sourceName}
-          Leading={<PlayingIndicator />}
-          className="py-2 pl-2"
-          _overflow={false}
-        />
-        <NothingSlider
-          initValue={volume}
-          getInteractionStatus={setStopDrag}
-          {...VolumeSliderOptions}
-        />
+        <SheetScrollView>
+          <SegmentedList.Item
+            labelText="term.playingFrom"
+            supportingText={sourceName || "—"}
+            onPress={navigateToList}
+            disabled={!sourceName}
+            Leading={<PlayingIndicator />}
+            className="py-2 pl-2"
+            _overflow={false}
+          />
+          <NothingSlider
+            initValue={volume}
+            getInteractionStatus={setStopDrag}
+            {...VolumeSliderOptions}
+          />
 
-        <SheetLabelAction
-          labelKey="feat.playback.extra.delay"
-          Trailing={
-            <NumberStepper
-              value={playbackDelay}
-              onChange={PreferenceSetters.updatePlaybackDelayByDelta}
-              {...PlaybackDelayConfig.bound}
-              suffix="s"
+          <SheetLabelAction
+            labelKey="feat.playback.extra.delay"
+            Trailing={
+              <NumberStepper
+                value={playbackDelay}
+                onChange={PreferenceSetters.updatePlaybackDelayByDelta}
+                {...PlaybackDelayConfig.bound}
+                suffix="s"
+              />
+            }
+          />
+
+          <SegmentedList>
+            <SegmentedList.Item
+              labelText="feat.appearance.title"
+              onPress={presentAppearanceSheet}
+              Leading={<Icon name="format-paint" />}
             />
-          }
-        />
-
-        <SegmentedList>
-          <SegmentedList.Item
-            labelText="feat.appearance.title"
-            onPress={presentAppearanceSheet}
-            Leading={<Icon name="format-paint" />}
-          />
-          <SegmentedList.Item
-            labelText="feat.audioEffects.title"
-            onPress={navigateToAudioEffectsScreen}
-            Leading={<Icon name="graphic-eq" />}
-          />
-        </SegmentedList>
+            <SegmentedList.Item
+              labelText="feat.audioEffects.title"
+              onPress={navigateToAudioEffectsScreen}
+              Leading={<Icon name="graphic-eq" />}
+            />
+          </SegmentedList>
+        </SheetScrollView>
       </Sheet>
     </>
   );

@@ -4,8 +4,12 @@
 import { useAlbums } from "~/data/album/queries";
 import type { AlbumSummary } from "~/data/album/types";
 
-import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import type { SheetRef } from "~/components/next/base/sheet2";
+import {
+  Sheet,
+  SheetHeader,
+  SheetLegendList,
+} from "~/components/next/base/sheet2";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
 import { Search } from "~/modules/search/components/SearchList";
 import { containSorter } from "~/modules/search/utils";
@@ -17,12 +21,17 @@ export function AddAlbumSheet(props: {
   const { data } = useAlbums();
   return (
     <Search.Provider shadowColor="surfaceBright">
-      <Sheet ref={props.ref} snapTop>
-        <Sheet.Header>
-          <Search.Input />
-        </Sheet.Header>
+      <Sheet
+        ref={props.ref}
+        snapTop
+        header={
+          <SheetHeader>
+            <Search.Input />
+          </SheetHeader>
+        }
+      >
         <Search.List
-          CustomList={Sheet.List}
+          CustomList={SheetLegendList}
           estimatedItemSize={62} // 56px Height + 6px Margin Bottom
           data={data}
           keyExtractor={({ id }) => id}
