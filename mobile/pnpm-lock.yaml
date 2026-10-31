@@ -18,8 +18,8 @@ importers:
         specifier: 3.7.0
         version: 3.7.0(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@lodev09/react-native-true-sheet':
-        specifier: 4.0.0-beta.25
-        version: 4.0.0-beta.25(61bda1a75ea501803a948faf9219f379)
+        specifier: 4.0.1
+        version: 4.0.1(61bda1a75ea501803a948faf9219f379)
       '@missingcore/react-native-actual-path':
         specifier: 0.1.0
         version: 0.1.0(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
@@ -434,6 +434,12 @@ packages:
 
   '@babel/plugin-transform-block-scoping@7.29.11':
     resolution: {integrity: sha512-iARF4jjHSM0v8DImCACPXrwEltBP3DgqDpXTvjAMBAVpyEY0LiGss78wvI+KtmW+IJNEvZ5sOhPDCsOsXsIybA==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+
+  '@babel/plugin-transform-block-scoping@7.29.12':
+    resolution: {integrity: sha512-nEreZBofjfd6FG621xe9Rk3+tMGBXf1nAuFrR6NUGF67fkQbSQf3NrbRuhgWRn+zb0qcy9XVok1GVFI/t9wWVQ==}
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
@@ -1570,8 +1576,8 @@ packages:
       react-native:
         optional: true
 
-  '@lodev09/react-native-true-sheet@4.0.0-beta.25':
-    resolution: {integrity: sha512-oF4zp61fzhxNb0mD+tOk4OfpbVXzKrCD5IFH33vGYKtrQa8PUkzsIA/6rioPqc/u7KtJNrqJf4yG5kryf41Dtg==}
+  '@lodev09/react-native-true-sheet@4.0.1':
+    resolution: {integrity: sha512-7FebcsouW7VGUB6F/Ah2gCAvhP0geZbSVbxfMG72zOjzpEbPzl5pwxHj8nQQ/0q8KnkQoKWiF4tuHhDqLGyVnw==}
     peerDependencies:
       '@radix-ui/react-dialog': '>=1'
       '@radix-ui/react-presence': '>=1'
@@ -1580,8 +1586,8 @@ packages:
       react: '*'
       react-dom: '*'
       react-native: '>=0.82.0'
-      react-native-reanimated: '>=4'
-      react-native-worklets: '*'
+      react-native-reanimated: '>=4.1.0'
+      react-native-worklets: '>=0.5.0'
       standard-navigation: '>=0.0.9'
     peerDependenciesMeta:
       '@radix-ui/react-dialog':
@@ -5999,6 +6005,11 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/helper-plugin-utils': 7.29.7
 
+  '@babel/plugin-transform-block-scoping@7.29.12(@babel/core@7.29.7)':
+    dependencies:
+      '@babel/core': 7.29.7
+      '@babel/helper-plugin-utils': 7.29.7
+
   '@babel/plugin-transform-class-properties@7.29.7(@babel/core@7.29.7)':
     dependencies:
       '@babel/core': 7.29.7
@@ -7107,7 +7118,7 @@ snapshots:
     optionalDependencies:
       react-native: 0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0)
 
-  '@lodev09/react-native-true-sheet@4.0.0-beta.25(61bda1a75ea501803a948faf9219f379)':
+  '@lodev09/react-native-true-sheet@4.0.1(61bda1a75ea501803a948faf9219f379)':
     dependencies:
       react: 19.3.0
       react-native: 0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0)
@@ -7215,7 +7226,7 @@ snapshots:
       '@babel/plugin-syntax-optional-chaining': 7.8.3(@babel/core@7.29.7)
       '@babel/plugin-transform-async-generator-functions': 7.29.7(@babel/core@7.29.7)
       '@babel/plugin-transform-async-to-generator': 7.29.7(@babel/core@7.29.7)
-      '@babel/plugin-transform-block-scoping': 7.29.11(@babel/core@7.29.7)
+      '@babel/plugin-transform-block-scoping': 7.29.12(@babel/core@7.29.7)
       '@babel/plugin-transform-class-properties': 7.29.7(@babel/core@7.29.7)
       '@babel/plugin-transform-classes': 7.29.11(@babel/core@7.29.7)
       '@babel/plugin-transform-destructuring': 7.29.7(@babel/core@7.29.7)
