@@ -64,7 +64,7 @@ interface SheetProps {
 const MAX_SHEET_HEIGHT = 640;
 
 /** Child nodes will automatically be wrapped with a `ScrollView`. */
-export function Sheet(props: SheetProps) {
+export function Sheet({ snapTop, ...props }: SheetProps) {
   const { height } = useWindowDimensions();
   const { top, bottom } = useSafeAreaInsets();
   const scrollableRef = useAnimatedRef();
@@ -86,7 +86,7 @@ export function Sheet(props: SheetProps) {
       headerHeight.get() -
       footerHeight.get() -
       32;
-    return { height: props.snapTop ? maxHeight : undefined, maxHeight };
+    return { height: snapTop ? maxHeight : undefined, maxHeight };
   });
 
   return (
@@ -97,7 +97,7 @@ export function Sheet(props: SheetProps) {
         detents={["auto"]}
         scrollableRef={scrollableRef}
         scrollableOptions={{ contentInsetAdjustment: "never" }}
-        dismissThreshold={props.snapTop ? "short" : undefined}
+        dismissThreshold={snapTop ? "short" : undefined}
         draggable={props.draggable}
         onDidDismiss={() => props.onCleanup?.()}
         grabber={false}
