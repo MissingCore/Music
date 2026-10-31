@@ -44,7 +44,6 @@ export function ThemeSheet(props: { ref: SheetRef }) {
   return (
     <Sheet
       ref={props.ref}
-      lazy={false}
       footer={
         <SheetFooter className="pt-4">
           <IconButton
