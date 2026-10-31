@@ -5,8 +5,8 @@ import { toast } from "@missingcore/ui/toast";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import type { SheetRef } from "~/components/next/base/sheet2";
-import { Sheet } from "~/components/next/base/sheet2";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet } from "~/components/next/base/sheet";
 import { ActionButton } from "~/components/next/blocks/button-action";
 import { SegmentedPicker } from "~/components/next/blocks/segmented-picker";
 import { exportPlaylistAsM3U } from "~/modules/backup/M3U";

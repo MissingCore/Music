@@ -11,8 +11,8 @@ import { addSelectedToCreatedPlaylist } from "../core/actions";
 
 import { TextInput } from "~/components/Form/Input";
 import { Icon } from "~/components/next/base/icon";
-import type { SheetRef } from "~/components/next/base/sheet2";
-import { Sheet, SheetScrollView } from "~/components/next/base/sheet2";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet, SheetScrollView } from "~/components/next/base/sheet";
 import { TText } from "~/components/next/base/typography";
 import { ActionButton } from "~/components/next/blocks/button-action";
 import { useInputForm } from "~/modules/form/useInputForm";

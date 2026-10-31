@@ -14,12 +14,12 @@ import { pickDirectory } from "~/lib/file-system";
 import { addTrailingSlash, getSafeUri } from "~/utils/string";
 import { IconButton } from "~/components/next/base/button-icon";
 import { TextInput } from "~/components/next/base/input";
-import type { SheetRef } from "~/components/next/base/sheet2";
+import type { SheetRef } from "~/components/next/base/sheet";
 import {
   Sheet,
   SheetFooter,
   SheetLegendList,
-} from "~/components/next/base/sheet2";
+} from "~/components/next/base/sheet";
 import { Text } from "~/components/next/base/typography";
 import { Hint } from "~/components/next/blocks/hint";
 import { Marquee } from "~/components/next/blocks/marquee";

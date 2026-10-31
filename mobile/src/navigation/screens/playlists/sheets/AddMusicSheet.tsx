@@ -6,7 +6,7 @@ import {
   Sheet,
   SheetHeader,
   SheetLegendList,
-} from "~/components/next/base/sheet2";
+} from "~/components/next/base/sheet";
 import { SearchEngineList } from "~/modules/search/components/SearchEngine";
 import { Search } from "~/modules/search/components/SearchList";
 import type { SearchCallbacks } from "~/modules/search/types";

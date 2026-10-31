@@ -23,8 +23,8 @@ import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
 import { isRecord } from "~/utils/validation";
 import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
-import type { SheetRef } from "~/components/next/base/sheet2";
-import { Sheet, SheetScrollView } from "~/components/next/base/sheet2";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet, SheetScrollView } from "~/components/next/base/sheet";
 import type { MediaImageSrc } from "~/components/next/blocks/media-image";
 import { MediaImage } from "~/components/next/blocks/media-image";
 

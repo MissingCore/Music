@@ -13,8 +13,8 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
 import { CheckboxField } from "~/components/Form/Checkbox";
-import type { SheetRef } from "~/components/next/base/sheet2";
-import { Sheet, SheetLegendList } from "~/components/next/base/sheet2";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet, SheetLegendList } from "~/components/next/base/sheet";
 import { Text } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";
 

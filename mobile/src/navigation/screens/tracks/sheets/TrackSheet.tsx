@@ -31,7 +31,7 @@ import {
   Sheet,
   SheetScrollView,
   useSheetRef,
-} from "~/components/next/base/sheet2";
+} from "~/components/next/base/sheet";
 import { Text } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";
 import { MediaImage } from "~/components/next/blocks/media-image";

@@ -15,12 +15,12 @@ import { Links, openLink } from "~/lib/web-browser";
 import { ClickwrapCheckbox } from "~/components/Form/Checkbox";
 import { Button } from "~/components/next/base/button";
 import { Divider } from "~/components/next/base/divider";
-import type { SheetRef } from "~/components/next/base/sheet2";
+import type { SheetRef } from "~/components/next/base/sheet";
 import {
   Sheet,
   SheetFooter,
   SheetLegendList,
-} from "~/components/next/base/sheet2";
+} from "~/components/next/base/sheet";
 import { Text, TText } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";
 import { LANGUAGES } from "~/modules/i18n/constants";

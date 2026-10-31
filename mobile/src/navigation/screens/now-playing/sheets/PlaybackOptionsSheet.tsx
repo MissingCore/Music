@@ -18,12 +18,12 @@ import { NothingSlider } from "~/components/Form/Slider.variant";
 import { SegmentedList } from "~/components/List/Segmented";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import { Icon } from "~/components/next/base/icon";
-import type { SheetRef } from "~/components/next/base/sheet2";
+import type { SheetRef } from "~/components/next/base/sheet";
 import {
   Sheet,
   SheetScrollView,
   useSheetRef,
-} from "~/components/next/base/sheet2";
+} from "~/components/next/base/sheet";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 
 export function PlaybackOptionsSheet(props: {

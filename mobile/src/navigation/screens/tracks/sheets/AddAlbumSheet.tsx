@@ -4,12 +4,12 @@
 import { useAlbums } from "~/data/album/queries";
 import type { AlbumSummary } from "~/data/album/types";
 
-import type { SheetRef } from "~/components/next/base/sheet2";
+import type { SheetRef } from "~/components/next/base/sheet";
 import {
   Sheet,
   SheetHeader,
   SheetLegendList,
-} from "~/components/next/base/sheet2";
+} from "~/components/next/base/sheet";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
 import { Search } from "~/modules/search/components/SearchList";
 import { containSorter } from "~/modules/search/utils";

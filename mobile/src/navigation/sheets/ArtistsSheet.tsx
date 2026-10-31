@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useSessionStore } from "~/stores/Session/store";
 import { navigateToArtist } from "~/stores/Session/actions";
 
-import { Sheet, SheetLegendList } from "~/components/next/base/sheet2";
+import { Sheet, SheetLegendList } from "~/components/next/base/sheet";
 import { createTextPlaceholder } from "~/components/next/blocks/media-image";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
 

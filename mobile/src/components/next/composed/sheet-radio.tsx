@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { Button } from "../base/button";
-import type { SheetRef } from "../base/sheet2";
-import { Sheet, SheetLegendList } from "../base/sheet2";
+import type { SheetRef } from "../base/sheet";
+import { Sheet, SheetLegendList } from "../base/sheet";
 import { Text } from "../base/typography";
 
 interface RadioSheetProps<TData extends { label: string }> {

@@ -14,8 +14,8 @@ import {
 import { RadioChipField } from "~/components/Form/Radio";
 import { SwitchInput } from "~/components/Form/Switch";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
-import type { SheetRef } from "~/components/next/base/sheet2";
-import { Sheet, SheetScrollView } from "~/components/next/base/sheet2";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet, SheetScrollView } from "~/components/next/base/sheet";
 
 export function AppearanceSheet(props: { ref: SheetRef }) {
   const nowPlayingDesign = usePreferenceStore((s) => s.nowPlayingDesign);

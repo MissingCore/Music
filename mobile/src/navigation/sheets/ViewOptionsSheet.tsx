@@ -25,8 +25,8 @@ import type {
   MutableViewOrder,
 } from "~/stores/ViewPreference/types";
 
-import type { SheetRef } from "~/components/next/base/sheet2";
-import { Sheet, SheetScrollView } from "~/components/next/base/sheet2";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet, SheetScrollView } from "~/components/next/base/sheet";
 import { TText } from "~/components/next/base/typography";
 import { SegmentedPicker } from "~/components/next/blocks/segmented-picker";
 import type { LabeledSliderProps } from "~/components/next/blocks/slider-labeled";

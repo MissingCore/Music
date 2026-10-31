@@ -7,8 +7,8 @@ import { View } from "react-native";
 import { useExportBackup, useImportBackup } from "~/modules/backup/JSON";
 
 import { mutateGuard } from "~/lib/react-query";
-import type { SheetRef } from "~/components/next/base/sheet2";
-import { Sheet } from "~/components/next/base/sheet2";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet } from "~/components/next/base/sheet";
 import { ActionButton } from "~/components/next/blocks/button-action";
 import { Hint } from "~/components/next/blocks/hint";
 

@@ -16,12 +16,12 @@ import { pickFile } from "~/lib/file-system";
 import { cn } from "~/lib/style";
 import { Button } from "~/components/next/base/button";
 import { IconButton } from "~/components/next/base/button-icon";
-import type { SheetRef } from "~/components/next/base/sheet2";
+import type { SheetRef } from "~/components/next/base/sheet";
 import {
   Sheet,
   SheetFooter,
   SheetLegendList,
-} from "~/components/next/base/sheet2";
+} from "~/components/next/base/sheet";
 import { Text } from "~/components/next/base/typography";
 import type { Font } from "./core/constants";
 import { BundledFontOptions } from "./core/constants";

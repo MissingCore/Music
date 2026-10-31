@@ -11,8 +11,8 @@ import { useSleepTimerStore } from "./store";
 import { wait } from "~/utils/promise";
 import { ClickwrapCheckbox } from "~/components/Form/Checkbox";
 import { NumericInput } from "~/components/Form/Input";
-import type { SheetRef } from "~/components/next/base/sheet2";
-import { Sheet, SheetScrollView } from "~/components/next/base/sheet2";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { Sheet, SheetScrollView } from "~/components/next/base/sheet";
 import { Text, TText } from "~/components/next/base/typography";
 import { ActionButton } from "~/components/next/blocks/button-action";
 
