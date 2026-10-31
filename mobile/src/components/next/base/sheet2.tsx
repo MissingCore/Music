@@ -4,13 +4,14 @@
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { createContext, use, useMemo, useRef } from "react";
 import type { ViewProps } from "react-native";
-import { View } from "react-native";
+import { useWindowDimensions, View } from "react-native";
 import type { AnimatedRef, SharedValue } from "react-native-reanimated";
 import Animated, {
   useAnimatedRef,
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { withUniwind } from "uniwind";
 
 import { cn } from "~/lib/style";
@@ -32,6 +33,8 @@ export function useSheetRef() {
 interface SheetContextValue {
   scrollableRef: AnimatedRef<any>;
   headerHeight: SharedValue<number>;
+  footerHeight: SharedValue<number>;
+  hasFooter: boolean;
 }
 
 const SheetContext = createContext<SheetContextValue>(null as never);
@@ -56,16 +59,27 @@ const MAX_SHEET_HEIGHT = 640;
 
 /** Child nodes will automatically be wrapped with a `ScrollView`. */
 export function Sheet(props: SheetProps) {
+  const { height } = useWindowDimensions();
+  const { top, bottom } = useSafeAreaInsets();
   const scrollableRef = useAnimatedRef();
   const headerHeight = useSharedValue(16);
+  const footerHeight = useSharedValue(0);
+
+  const hasFooter = !!props.footer;
 
   const contextValue = useMemo<SheetContextValue>(
-    () => ({ scrollableRef, headerHeight }),
-    [scrollableRef, headerHeight],
+    () => ({ scrollableRef, headerHeight, footerHeight, hasFooter }),
+    [scrollableRef, headerHeight, footerHeight, hasFooter],
   );
 
-  const containerStyle = useAnimatedStyle(() => ({
-    paddingTop: headerHeight.get(),
+  const contentStyle = useAnimatedStyle(() => ({
+    maxHeight:
+      Math.min(height, MAX_SHEET_HEIGHT) -
+      top -
+      bottom -
+      headerHeight.get() -
+      footerHeight.get() -
+      32,
   }));
 
   return (
@@ -75,31 +89,24 @@ export function Sheet(props: SheetProps) {
         name={props.name}
         detents={["auto"]}
         scrollableRef={scrollableRef}
-        scrollableOptions={{ contentInsetAdjustment: "footer" }}
+        scrollableOptions={{ contentInsetAdjustment: "never" }}
         dismissThreshold={props.snapTop ? "short" : undefined}
         draggable={props.draggable}
         onDidDismiss={() => props.onCleanup?.()}
         grabber={false}
-        header={props.header ?? <SheetHeader />}
-        headerClassName="px-4"
-        headerOptions={{ position: "absolute" }}
-        footer={props.footer}
-        footerClassName="p-4 pt-0"
-        footerOptions={{ position: "absolute" }}
         maxContentHeight={MAX_SHEET_HEIGHT}
         backgroundColor="transparent"
         cornerRadius={0}
         elevation={0}
-        className="px-4 pb-safe-offset-4"
+        className="p-4 pt-0"
       >
-        <Animated.View
-          style={containerStyle}
-          className="overflow-hidden rounded-xl bg-surfaceBright p-4"
-        >
+        <View className="overflow-hidden rounded-xl bg-surfaceBright p-4 pt-0">
           <GestureHandlerRootView className="grow">
-            {props.children}
+            {props.header ?? <SheetHeader />}
+            <Animated.View style={contentStyle}>{props.children}</Animated.View>
+            {props.footer}
           </GestureHandlerRootView>
-        </Animated.View>
+        </View>
       </WrappedSheet>
     </SheetContext>
   );
@@ -107,12 +114,7 @@ export function Sheet(props: SheetProps) {
 //#endregion
 
 //#region Decoration
-export function SheetHeader({
-  className,
-  children,
-  onLayout,
-  ...props
-}: ViewProps) {
+export function SheetHeader({ children, onLayout, ...props }: ViewProps) {
   const { headerHeight } = use(SheetContext);
   return (
     <View
@@ -121,7 +123,6 @@ export function SheetHeader({
         onLayout?.(e);
       }}
       {...props}
-      className={cn("rounded-t-xl bg-surfaceBright px-4", className)}
     >
       <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-surfaceContainerHigh" />
       {children}
@@ -129,11 +130,16 @@ export function SheetHeader({
   );
 }
 
-export function SheetFooter({ className, ...props }: ViewProps) {
+export function SheetFooter({ onLayout, className, ...props }: ViewProps) {
+  const { footerHeight } = use(SheetContext);
   return (
     <View
+      onLayout={(e) => {
+        footerHeight.set(e.nativeEvent.layout.height);
+        onLayout?.(e);
+      }}
       {...props}
-      className={cn("gap-4 rounded-b-xl bg-surfaceBright p-4", className)}
+      className={cn("gap-4", className)}
     />
   );
 }
@@ -145,12 +151,12 @@ export function SheetLegendList({
   contentContainerClassName,
   ...props
 }: Omit<LegendListProps, "ref">) {
-  const { scrollableRef } = use(SheetContext);
+  const { scrollableRef, hasFooter } = use(SheetContext);
   return (
     <LegendList
       ref={scrollableRef}
       {...props}
-      className={cn("-mb-4", className)}
+      className={cn(!hasFooter && "-mb-4", className)}
       contentContainerClassName={cn("pb-4", contentContainerClassName)}
     />
   );
@@ -161,12 +167,12 @@ export function SheetScrollView({
   contentContainerClassName,
   ...props
 }: Omit<ScrollViewProps, "ref">) {
-  const { scrollableRef } = use(SheetContext);
+  const { scrollableRef, hasFooter } = use(SheetContext);
   return (
     <ScrollView
       ref={scrollableRef}
       {...props}
-      className={cn("-mb-4", className)}
+      className={cn(!hasFooter && "-mb-4", className)}
       contentContainerClassName={cn("gap-4 pb-4", contentContainerClassName)}
     />
   );
