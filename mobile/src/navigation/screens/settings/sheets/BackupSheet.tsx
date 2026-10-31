@@ -8,7 +8,7 @@ import { useExportBackup, useImportBackup } from "~/modules/backup/JSON";
 
 import { mutateGuard } from "~/lib/react-query";
 import type { SheetRef } from "~/components/next/base/sheet2";
-import { Sheet, SheetFooter } from "~/components/next/base/sheet2";
+import { Sheet } from "~/components/next/base/sheet2";
 import { ActionButton } from "~/components/next/blocks/button-action";
 import { Hint } from "~/components/next/blocks/hint";
 
@@ -20,14 +20,7 @@ export function BackupSheet(props: { ref: SheetRef }) {
   const inProgress = exportBackup.isPending || importBackup.isPending;
 
   return (
-    <Sheet
-      ref={props.ref}
-      footer={
-        <SheetFooter>
-          <Hint hint={t("feat.backup.description")} />
-        </SheetFooter>
-      }
-    >
+    <Sheet ref={props.ref}>
       <View className="flex-row items-center gap-0.75 pb-4">
         <ActionButton
           label={t("feat.backup.extra.export")}
@@ -44,6 +37,7 @@ export function BackupSheet(props: { ref: SheetRef }) {
           className="flex-1 rounded-lg rounded-l-xs"
         />
       </View>
+      <Hint hint={t("feat.backup.description")} />
     </Sheet>
   );
 }

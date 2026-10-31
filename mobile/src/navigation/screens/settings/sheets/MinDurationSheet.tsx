@@ -8,8 +8,8 @@ import { scheduleOnRN } from "react-native-worklets";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
 
-import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import type { SheetRef } from "~/components/next/base/sheet2";
+import { Sheet } from "~/components/next/base/sheet2";
 import { Hint } from "~/components/next/blocks/hint";
 import type { LabeledSliderProps } from "~/components/next/blocks/slider-labeled";
 import { LabeledSlider } from "~/components/next/blocks/slider-labeled";
@@ -45,9 +45,7 @@ export function MinDurationSheet(props: { ref: SheetRef }) {
   return (
     <Sheet ref={props.ref} draggable={!stopDrag}>
       <LabeledSlider initValue={minSeconds} {...columnSizeSliderOptions} />
-      <Sheet.Footer>
-        <Hint hint={t("feat.minTrackDuration.description")} />
-      </Sheet.Footer>
+      <Hint hint={t("feat.minTrackDuration.description")} className="mt-4" />
     </Sheet>
   );
 }

@@ -14,8 +14,12 @@ import { pickDirectory } from "~/lib/file-system";
 import { addTrailingSlash, getSafeUri } from "~/utils/string";
 import { IconButton } from "~/components/next/base/button-icon";
 import { TextInput } from "~/components/next/base/input";
-import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import type { SheetRef } from "~/components/next/base/sheet2";
+import {
+  Sheet,
+  SheetFooter,
+  SheetLegendList,
+} from "~/components/next/base/sheet2";
 import { Text } from "~/components/next/base/typography";
 import { Hint } from "~/components/next/blocks/hint";
 import { Marquee } from "~/components/next/blocks/marquee";
@@ -31,8 +35,16 @@ export function ScanFilterListSheet(props: {
   const { t } = useTranslation();
   const listEntries = usePreferenceStore((s) => s[props.listType]);
   return (
-    <Sheet ref={props.ref}>
-      <Sheet.List
+    <Sheet
+      ref={props.ref}
+      footer={
+        <SheetFooter className={listEntries.length > 0 ? "pt-4" : undefined}>
+          <FilterForm listType={props.listType} listEntries={listEntries} />
+          <Hint hint={t(`feat.${props.listType}.description`)} />
+        </SheetFooter>
+      }
+    >
+      <SheetLegendList
         //! "Hack" to fix issue where list doesn't display content after
         //! it goes from rendering 0 items to 1.
         key={String(Boolean(listEntries.length > 0))}
@@ -51,13 +63,8 @@ export function ScanFilterListSheet(props: {
             />
           </View>
         )}
-        className="mb-0"
         contentContainerClassName="gap-1.5 pb-0"
       />
-      <Sheet.Footer>
-        <FilterForm listType={props.listType} listEntries={listEntries} />
-        <Hint hint={t(`feat.${props.listType}.description`)} />
-      </Sheet.Footer>
     </Sheet>
   );
 }

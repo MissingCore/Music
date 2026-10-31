@@ -12,8 +12,12 @@ import { PreferenceSetters } from "~/stores/Preference/actions";
 
 import { Button } from "~/components/next/base/button";
 import { IconButton } from "~/components/next/base/button-icon";
-import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import type { SheetRef } from "~/components/next/base/sheet2";
+import {
+  Sheet,
+  SheetFooter,
+  SheetLegendList,
+} from "~/components/next/base/sheet2";
 import { Text } from "~/components/next/base/typography";
 import { SegmentedPicker } from "~/components/next/blocks/segmented-picker";
 import type { CustomTheme, ResolvedTheme } from "./core/constants";
@@ -38,8 +42,24 @@ export function ThemeSheet(props: { ref: SheetRef }) {
   }, [data]);
 
   return (
-    <Sheet ref={props.ref}>
-      <Sheet.List
+    <Sheet
+      ref={props.ref}
+      lazy={false}
+      footer={
+        <SheetFooter className="pt-4">
+          <IconButton
+            icon="add"
+            accessibilityLabel={t("form.create")}
+            onPress={() => navigation.navigate("CreateTheme")}
+            intent="inverse"
+            filled
+            wide
+            className="self-center"
+          />
+        </SheetFooter>
+      }
+    >
+      <SheetLegendList
         data={themeOptions}
         keyExtractor={(id) => id}
         extraData={[selectedTheme, themeMap]}
@@ -97,20 +117,8 @@ export function ThemeSheet(props: { ref: SheetRef }) {
           );
         }}
         ListHeaderComponent={<BundledThemePicker />}
-        className="mb-0"
         contentContainerClassName="pb-0"
       />
-      <Sheet.Footer>
-        <IconButton
-          icon="add"
-          accessibilityLabel={t("form.create")}
-          onPress={() => navigation.navigate("CreateTheme")}
-          intent="inverse"
-          filled
-          wide
-          className="self-center"
-        />
-      </Sheet.Footer>
     </Sheet>
   );
 }

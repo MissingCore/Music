@@ -16,8 +16,12 @@ import { pickFile } from "~/lib/file-system";
 import { cn } from "~/lib/style";
 import { Button } from "~/components/next/base/button";
 import { IconButton } from "~/components/next/base/button-icon";
-import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import type { SheetRef } from "~/components/next/base/sheet2";
+import {
+  Sheet,
+  SheetFooter,
+  SheetLegendList,
+} from "~/components/next/base/sheet2";
 import { Text } from "~/components/next/base/typography";
 import type { Font } from "./core/constants";
 import { BundledFontOptions } from "./core/constants";
@@ -77,8 +81,23 @@ function FontSheet(props: { ref: SheetRef; type: "Accent" | "Primary" }) {
   //#endregion
 
   return (
-    <Sheet ref={props.ref}>
-      <Sheet.List
+    <Sheet
+      ref={props.ref}
+      footer={
+        <SheetFooter className="pt-4">
+          <IconButton
+            icon="upload"
+            accessibilityLabel={t("feat.backup.extra.import")}
+            onPress={() => importFont(setFont)}
+            intent="inverse"
+            filled
+            wide
+            className="self-center"
+          />
+        </SheetFooter>
+      }
+    >
+      <SheetLegendList
         numColumns={2}
         data={fontOptions}
         keyExtractor={(font) => (isBundledFont(font) ? font : font.id)}
@@ -122,20 +141,8 @@ function FontSheet(props: { ref: SheetRef; type: "Accent" | "Primary" }) {
             </View>
           );
         }}
-        className="mb-0"
         contentContainerClassName="pb-0"
       />
-      <Sheet.Footer>
-        <IconButton
-          icon="upload"
-          accessibilityLabel={t("feat.backup.extra.import")}
-          onPress={() => importFont(setFont)}
-          intent="inverse"
-          filled
-          wide
-          className="self-center"
-        />
-      </Sheet.Footer>
     </Sheet>
   );
 }

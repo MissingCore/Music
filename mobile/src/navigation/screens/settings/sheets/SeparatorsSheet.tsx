@@ -10,8 +10,12 @@ import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 
 import { IconButton } from "~/components/next/base/button-icon";
 import { TextInput } from "~/components/next/base/input";
-import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import type { SheetRef } from "~/components/next/base/sheet2";
+import {
+  Sheet,
+  SheetFooter,
+  SheetLegendList,
+} from "~/components/next/base/sheet2";
 import { Text } from "~/components/next/base/typography";
 import { Hint } from "~/components/next/blocks/hint";
 import { Marquee } from "~/components/next/blocks/marquee";
@@ -21,8 +25,21 @@ export function SeparatorsSheet(props: { ref: SheetRef }) {
   const { t } = useTranslation();
   const delimiters = usePreferenceStore((s) => s.separators);
   return (
-    <Sheet ref={props.ref}>
-      <Sheet.List
+    <Sheet
+      ref={props.ref}
+      footer={
+        <SheetFooter className={delimiters.length > 0 ? "pt-4" : undefined}>
+          <SeparatorForm />
+          <Hint
+            hint={[
+              t("feat.separators.description.line1"),
+              t("feat.separators.description.line2"),
+            ]}
+          />
+        </SheetFooter>
+      }
+    >
+      <SheetLegendList
         //! "Hack" to fix issue where list doesn't display content after
         //! it goes from rendering 0 items to 1.
         key={String(Boolean(delimiters.length > 0))}
@@ -41,18 +58,8 @@ export function SeparatorsSheet(props: { ref: SheetRef }) {
             />
           </View>
         )}
-        className="mb-0"
         contentContainerClassName="gap-1.5 pb-0"
       />
-      <Sheet.Footer>
-        <SeparatorForm />
-        <Hint
-          hint={[
-            t("feat.separators.description.line1"),
-            t("feat.separators.description.line2"),
-          ]}
-        />
-      </Sheet.Footer>
     </Sheet>
   );
 }

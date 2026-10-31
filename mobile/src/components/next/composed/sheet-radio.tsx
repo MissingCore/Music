@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { Button } from "../base/button";
-import type { SheetRef } from "../base/sheet";
-import { Sheet } from "../base/sheet";
+import type { SheetRef } from "../base/sheet2";
+import { Sheet, SheetLegendList } from "../base/sheet2";
 import { Text } from "../base/typography";
 
 interface RadioSheetProps<TData extends { label: string }> {
@@ -20,7 +20,7 @@ export function RadioSheet<TData extends { label: string }>(
     //? ~11 items will have the sheet at its current max height, meaning
     //? it should be safe to enable the short dismiss threshold.
     <Sheet ref={props.ref} snapTop={props.data.length > 10}>
-      <Sheet.List
+      <SheetLegendList
         estimatedItemSize={54} // 48px Height + 6px Margin Bottom
         data={props.data}
         keyExtractor={(item) => item.label}
@@ -34,13 +34,13 @@ export function RadioSheet<TData extends { label: string }>(
               }}
               filled={isSelected}
               disabled={isSelected}
-              className="mb-1.5 rounded-md py-2 disabled:opacity-100"
+              className="rounded-md py-2 disabled:opacity-100"
             >
               <Text size="lg">{item.label}</Text>
             </Button>
           );
         }}
-        className="-mb-5.5"
+        contentContainerClassName="gap-1.5"
       />
     </Sheet>
   );

@@ -18,8 +18,8 @@ import {
   useListLayoutConfig,
 } from "~/hooks/useLayoutConfigs";
 
-import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import type { SheetRef } from "~/components/next/base/sheet2";
+import { Sheet } from "~/components/next/base/sheet2";
 import { Text } from "~/components/next/base/typography";
 import type { LabeledSliderProps } from "~/components/next/blocks/slider-labeled";
 import { LabeledSlider } from "~/components/next/blocks/slider-labeled";
