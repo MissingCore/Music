@@ -5,6 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
+  '@lodev09/react-native-true-sheet': 49cede3f8d42b2389b0a64ddf4dcf9767b23e5f805a7903dcc4c6e9c7c5bf95d
   react-native-material-palette: cb6604a7852903e36cef6eda789a4886aad57bbedd78f525bb2ba98ee28b97b8
 
 importers:
@@ -18,8 +19,8 @@ importers:
         specifier: 3.7.0
         version: 3.7.0(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@lodev09/react-native-true-sheet':
-        specifier: 4.0.0-beta.29
-        version: 4.0.0-beta.29(61bda1a75ea501803a948faf9219f379)
+        specifier: 4.0.0-beta.30
+        version: 4.0.0-beta.30(patch_hash=49cede3f8d42b2389b0a64ddf4dcf9767b23e5f805a7903dcc4c6e9c7c5bf95d)(61bda1a75ea501803a948faf9219f379)
       '@missingcore/react-native-actual-path':
         specifier: 0.1.0
         version: 0.1.0(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
@@ -1576,8 +1577,8 @@ packages:
       react-native:
         optional: true
 
-  '@lodev09/react-native-true-sheet@4.0.0-beta.29':
-    resolution: {integrity: sha512-DvKmhFUtPiCXmjYKRIONszDu7GCjiNNXhb0YsflQZeB/lXGaGra9RRZ1trPJdGRey2KBd3v4WZ5Jl8ICIygtRg==}
+  '@lodev09/react-native-true-sheet@4.0.0-beta.30':
+    resolution: {integrity: sha512-265TaqkBhPOul8NEmYymKaKzDbDytZFszDnXTf9ygTlfyrpTzhs42Dq1bxbJhw2jPoeETLbJ7jDppvgpYkzq0w==}
     peerDependencies:
       '@radix-ui/react-dialog': '>=1'
       '@radix-ui/react-presence': '>=1'
@@ -7118,7 +7119,7 @@ snapshots:
     optionalDependencies:
       react-native: 0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0)
 
-  '@lodev09/react-native-true-sheet@4.0.0-beta.29(61bda1a75ea501803a948faf9219f379)':
+  '@lodev09/react-native-true-sheet@4.0.0-beta.30(patch_hash=49cede3f8d42b2389b0a64ddf4dcf9767b23e5f805a7903dcc4c6e9c7c5bf95d)(61bda1a75ea501803a948faf9219f379)':
     dependencies:
       react: 19.3.0
       react-native: 0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0)

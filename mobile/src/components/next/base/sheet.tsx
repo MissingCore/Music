@@ -33,7 +33,7 @@ const ScrollableRefContext = createContext<AnimatedRef<any>>(null as never);
 //#region Sheet
 interface SheetProps extends Pick<
   TrueSheetProps,
-  "name" | "lazy" | "draggable" | "children" | "header" | "footer"
+  "name" | "draggable" | "children" | "header" | "footer"
 > {
   ref?: SheetRef;
   /** Render sheet at its max height. */
@@ -54,7 +54,6 @@ export function Sheet(props: SheetProps) {
         ref={props.ref}
         name={props.name}
         detents={[props.snapTop ? 1 : "auto"]}
-        lazy={props.lazy}
         scrollableRef={scrollableRef}
         dismissThreshold={props.snapTop ? "short" : undefined}
         draggable={props.draggable}

@@ -37,8 +37,6 @@ export function ScanFilterListSheet(props: {
   return (
     <Sheet
       ref={props.ref}
-      //? For some reason, this sheet's height isn't always correct on mount.
-      lazy={false}
       footer={
         <SheetFooter className={listEntries.length === 0 ? "pt-0" : undefined}>
           <FilterForm listType={props.listType} listEntries={listEntries} />

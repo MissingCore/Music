@@ -1,0 +1,17 @@
+diff --git a/android/src/main/java/com/lodev09/truesheet/TrueSheetView.kt b/android/src/main/java/com/lodev09/truesheet/TrueSheetView.kt
+index 4852ff16c3f706fd2da5f29aa0059b83e9250350..dd741b3460ab1bdf4762067431f5c27a39d8ab7c 100644
+--- a/android/src/main/java/com/lodev09/truesheet/TrueSheetView.kt
++++ b/android/src/main/java/com/lodev09/truesheet/TrueSheetView.kt
+@@ -454,8 +454,10 @@ class TrueSheetView(private val reactContext: ThemedReactContext) :
+       viewController.coordinatorLayout?.let {
+         it.blocksTouches = true
+         container.addView(it)
+-        // Touches skip a view without a frame — don't wait for the next layout pass
+-        it.layout(0, 0, container.width, container.height)
++        //! The following code (added in `v4.0.0-beta.30`) caused an issue where the sheet's initial
++        //! height can be incorrect.
++        // // Touches skip a view without a frame — don't wait for the next layout pass
++        // it.layout(0, 0, container.width, container.height)
+       }
+     }
+ 
