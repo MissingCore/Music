@@ -15,3 +15,35 @@ index 4852ff16c3f706fd2da5f29aa0059b83e9250350..dd741b3460ab1bdf4762067431f5c27a
        }
      }
  
+diff --git a/lib/module/TrueSheet.js b/lib/module/TrueSheet.js
+index 4012f3a0d30000baa2b36c561c68ac8d02dec6f3..0d7b13fe4c18e737a12132a6105591ebbfcd81d6 100644
+--- a/lib/module/TrueSheet.js
++++ b/lib/module/TrueSheet.js
+@@ -135,7 +135,7 @@ export class TrueSheet extends PureComponent {
+         // it on unmount) or a handle with no usable scroll accessor. Treat it as
+         // no scrollable instead of crashing.
+         if (__DEV__) {
+-          console.warn('TrueSheet: scrollableRef could not be resolved to a native view. It may be stale or expose no scroll node.', error);
++          // console.warn('TrueSheet: scrollableRef could not be resolved to a native view. It may be stale or expose no scroll node.', error);
+         }
+       }
+     }
+diff --git a/src/TrueSheet.tsx b/src/TrueSheet.tsx
+index 734e7d3119c821842445415dc772f45ca9380771..8dafb41f174cce9bb47c63af72bbba6d598f4ef1 100644
+--- a/src/TrueSheet.tsx
++++ b/src/TrueSheet.tsx
+@@ -216,10 +216,10 @@ export class TrueSheet
+         // it on unmount) or a handle with no usable scroll accessor. Treat it as
+         // no scrollable instead of crashing.
+         if (__DEV__) {
+-          console.warn(
+-            'TrueSheet: scrollableRef could not be resolved to a native view. It may be stale or expose no scroll node.',
+-            error
+-          );
++          // console.warn(
++          //   'TrueSheet: scrollableRef could not be resolved to a native view. It may be stale or expose no scroll node.',
++          //   error
++          // );
+         }
+       }
+     }
