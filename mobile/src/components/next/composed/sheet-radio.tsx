@@ -6,42 +6,63 @@ import type { SheetRef } from "../base/sheet";
 import { Sheet, SheetLegendList } from "../base/sheet";
 import { Text } from "../base/typography";
 
-interface RadioSheetProps<TData extends { label: string }> {
-  ref: SheetRef;
+interface SheetRadioListProps<TData extends { label: string }> {
   data: TData[];
   onSelect: (item: TData) => void;
   isSelected: (item: TData) => boolean;
 }
 
-export function RadioSheet<TData extends { label: string }>(
-  props: RadioSheetProps<TData>,
+/** Radio list built for sheets. */
+export function SheetRadioList<TData extends { label: string }>(
+  props: SheetRadioListProps<TData>,
 ) {
+  return (
+    <SheetLegendList
+      estimatedItemSize={54} // 48px Height + 6px Margin Bottom
+      data={props.data}
+      keyExtractor={(item) => item.label}
+      extraData={props.isSelected}
+      renderItem={({ item }) => {
+        const isSelected = props.isSelected(item);
+        return (
+          <Button
+            accessibilityRole="radio"
+            accessibilityState={{ selected: isSelected }}
+            onPress={() => props.onSelect(item)}
+            disabled={isSelected}
+            filled={isSelected}
+            className="rounded-lg py-2 disabled:opacity-100"
+          >
+            <Text size="lg">{item.label}</Text>
+          </Button>
+        );
+      }}
+      contentContainerClassName="gap-1.5"
+    />
+  );
+}
+
+interface RadioSheetProps<
+  TData extends { label: string },
+> extends SheetRadioListProps<TData> {
+  ref: SheetRef;
+}
+
+export function RadioSheet<TData extends { label: string }>({
+  ref,
+  onSelect,
+  ...props
+}: RadioSheetProps<TData>) {
   return (
     //? ~11 items will have the sheet at its current max height, meaning
     //? it should be safe to enable the short dismiss threshold.
-    <Sheet ref={props.ref} snapTop={props.data.length > 10}>
-      <SheetLegendList
-        estimatedItemSize={54} // 48px Height + 6px Margin Bottom
-        data={props.data}
-        keyExtractor={(item) => item.label}
-        extraData={props.isSelected}
-        renderItem={({ item }) => {
-          const isSelected = props.isSelected(item);
-          return (
-            <Button
-              onPress={() => {
-                props.onSelect(item);
-                props.ref.current?.dismiss();
-              }}
-              filled={isSelected}
-              disabled={isSelected}
-              className="rounded-md py-2 disabled:opacity-100"
-            >
-              <Text size="lg">{item.label}</Text>
-            </Button>
-          );
+    <Sheet ref={ref} snapTop={props.data.length > 10}>
+      <SheetRadioList
+        {...props}
+        onSelect={(item) => {
+          onSelect(item);
+          ref.current?.dismiss();
         }}
-        contentContainerClassName="gap-1.5"
       />
     </Sheet>
   );

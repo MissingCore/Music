@@ -75,14 +75,14 @@ export function ThemeSheet(props: { ref: SheetRef }) {
           return (
             <View
               style={selected && { borderColor: onSurfaceVariant }}
-              className="flex-1 rounded-[27] border border-transparent p-0.5"
+              className="flex-1 rounded-[29] border-2 border-transparent p-0.75"
             >
               <Button
                 onPress={() => PreferenceSetters.setTheme(themeId)}
                 disabled={selected}
                 style={{ backgroundColor: surfaceContainerLowest }}
                 rippleColor={surfaceContainerHigh}
-                className="flex-row items-center disabled:opacity-100"
+                className="flex-row items-center py-2 disabled:opacity-100"
               >
                 <Text
                   numberOfLines={1}
@@ -91,7 +91,7 @@ export function ThemeSheet(props: { ref: SheetRef }) {
                 >
                   {name}
                 </Text>
-                <View className="-my-4 -mr-2 flex-row">
+                <View className="-mr-2 flex-row">
                   <IconButton
                     icon="edit"
                     accessibilityLabel={t("form.edit")}

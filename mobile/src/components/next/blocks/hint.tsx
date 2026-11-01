@@ -5,8 +5,8 @@ import { View } from "react-native";
 
 import { cn, cva } from "~/lib/style";
 import { Icon } from "../base/icon";
-import { Text } from "../base/typography";
 import { baseContainerStyle } from "../base/styles";
+import { Text } from "../base/typography";
 
 const hintStyle = cva({
   composes: [baseContainerStyle],

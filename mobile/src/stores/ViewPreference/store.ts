@@ -16,7 +16,7 @@ export const viewPreferenceStore = createPersistedStore<ViewPreferenceStore>(
 
     listSize: 272,
     gridSize: 144,
-    compactGridSize: 72,
+    compactGridSize: 96,
 
     albumLayout: "grid",
     albumIsAsc: true,

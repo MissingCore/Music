@@ -11,6 +11,7 @@ import type { CustomFont } from "~/db/schema";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
+import { useGetLayoutConfig } from "~/hooks/useLayoutConfigs";
 
 import { pickFile } from "~/lib/file-system";
 import { cn } from "~/lib/style";
@@ -53,8 +54,11 @@ const FontConfig = {
   },
 } as const;
 
+const sheetColumnConfig = { minCols: 2, minWidth: 128, gap: 0 };
+
 function FontSheet(props: { ref: SheetRef; type: "Accent" | "Primary" }) {
   const { t } = useTranslation();
+  const { count: columnCount } = useGetLayoutConfig(sheetColumnConfig);
 
   const { data } = useCustomFonts();
   const fontOptions = useMemo(() => {
@@ -84,7 +88,7 @@ function FontSheet(props: { ref: SheetRef; type: "Accent" | "Primary" }) {
     <Sheet
       ref={props.ref}
       footer={
-        <SheetFooter>
+        <SheetFooter className="items-center">
           <IconButton
             icon="upload"
             accessibilityLabel={t("feat.backup.extra.import")}
@@ -92,13 +96,12 @@ function FontSheet(props: { ref: SheetRef; type: "Accent" | "Primary" }) {
             intent="inverse"
             filled
             wide
-            className="self-center"
           />
         </SheetFooter>
       }
     >
       <SheetLegendList
-        numColumns={2}
+        numColumns={Math.min(columnCount, 4)}
         data={fontOptions}
         keyExtractor={(font) => (isBundledFont(font) ? font : font.id)}
         extraData={selectedFont}
@@ -107,7 +110,7 @@ function FontSheet(props: { ref: SheetRef; type: "Accent" | "Primary" }) {
           return (
             <View
               className={cn(
-                "relative flex-1 rounded-[27] border border-transparent p-0.5",
+                "relative flex-1 rounded-[29] border-2 border-transparent p-0.75",
                 { "border-onSurfaceVariant": selected },
               )}
             >

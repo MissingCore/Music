@@ -55,7 +55,7 @@ export function Sheet(props: SheetProps) {
         name={props.name}
         detents={[props.snapTop ? 1 : "auto"]}
         scrollableRef={scrollableRef}
-        dismissThreshold={props.snapTop ? "short" : undefined}
+        dismissThreshold="short"
         draggable={props.draggable}
         onDidDismiss={() => props.onCleanup?.()}
         grabber={false}
