@@ -62,13 +62,17 @@ export function Sheet(props: SheetProps) {
         grabber={false}
         maxContentHeight={MAX_SHEET_HEIGHT}
         header={props.header ?? <SheetHeader />}
+        headerClassName="bg-surfaceBright"
         //? We get incorrect automatic insets for `SheetLegendList` if we
         //? don't provide a footer.
         footer={props.footer ?? <View />}
         footerOptions={{ position: "absolute" }}
         footerClassName="bg-surfaceBright"
+        //? We don't use `transparent` as sometimes, you can see the seam
+        //? between the header, content, and footer.
         backgroundColor={surfaceBright}
         cornerRadius={24}
+        className="bg-surfaceBright"
       >
         <GestureHandlerRootView className="grow px-4">
           {props.children}
