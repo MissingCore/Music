@@ -11,6 +11,7 @@ interface RadioSheetProps<TData extends { label: string }> {
   data: TData[];
   onSelect: (item: TData) => void;
   isSelected: (item: TData) => boolean;
+  lazy?: boolean;
 }
 
 export function RadioSheet<TData extends { label: string }>(
@@ -19,11 +20,12 @@ export function RadioSheet<TData extends { label: string }>(
   return (
     //? ~11 items will have the sheet at its current max height, meaning
     //? it should be safe to enable the short dismiss threshold.
-    <Sheet ref={props.ref} snapTop={props.data.length > 10}>
+    <Sheet ref={props.ref} lazy={props.lazy} snapTop={props.data.length > 10}>
       <SheetLegendList
         estimatedItemSize={54} // 48px Height + 6px Margin Bottom
         data={props.data}
         keyExtractor={(item) => item.label}
+        extraData={props.isSelected}
         renderItem={({ item }) => {
           const isSelected = props.isSelected(item);
           return (

@@ -27,8 +27,10 @@ export function SeparatorsSheet(props: { ref: SheetRef }) {
   return (
     <Sheet
       ref={props.ref}
+      //? For some reason, this sheet's height isn't always correct on mount.
+      lazy={false}
       footer={
-        <SheetFooter className={delimiters.length > 0 ? "pt-4" : undefined}>
+        <SheetFooter className={delimiters.length === 0 ? "pt-0" : undefined}>
           <SeparatorForm />
           <Hint
             hint={[

@@ -40,7 +40,7 @@ export function LanguageSheet(props: { ref: SheetRef }) {
     <Sheet
       ref={props.ref}
       footer={
-        <SheetFooter>
+        <SheetFooter className="pt-0">
           <Divider />
           <View className="flex-row items-center gap-4">
             <View className="shrink grow gap-1">

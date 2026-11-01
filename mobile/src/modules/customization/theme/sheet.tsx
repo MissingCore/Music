@@ -44,8 +44,10 @@ export function ThemeSheet(props: { ref: SheetRef }) {
   return (
     <Sheet
       ref={props.ref}
+      //? For some reason, this sheet's height isn't always correct on mount.
+      lazy={false}
       footer={
-        <SheetFooter className="pt-4">
+        <SheetFooter>
           <IconButton
             icon="add"
             accessibilityLabel={t("form.create")}
@@ -132,7 +134,7 @@ function BundledThemePicker() {
   }));
 
   return (
-    <View className="mb-6">
+    <View className="mb-4">
       <SegmentedPicker
         type="radio"
         options={pickerOptions}

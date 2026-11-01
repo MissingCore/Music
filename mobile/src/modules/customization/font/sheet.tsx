@@ -84,7 +84,7 @@ function FontSheet(props: { ref: SheetRef; type: "Accent" | "Primary" }) {
     <Sheet
       ref={props.ref}
       footer={
-        <SheetFooter className="pt-4">
+        <SheetFooter>
           <IconButton
             icon="upload"
             accessibilityLabel={t("feat.backup.extra.import")}

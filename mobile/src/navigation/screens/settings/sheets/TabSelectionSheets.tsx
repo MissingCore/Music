@@ -29,6 +29,8 @@ export function DefaultOpenTabSheet(props: { ref: SheetRef }) {
         preferenceStore.setState({ defaultOpenTab: type })
       }
       isSelected={(item) => item.type === defaultOpenTab}
+      //? For some reason, this sheet's height isn't always correct on mount.
+      lazy={false}
     />
   );
 }
