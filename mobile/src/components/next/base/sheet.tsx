@@ -63,8 +63,9 @@ export function Sheet(props: SheetProps) {
         header={props.header ?? <SheetHeader />}
         headerClassName="bg-surfaceBright"
         //? We get incorrect automatic insets for `SheetLegendList` if we
-        //? don't provide a footer.
-        footer={props.footer ?? <View />}
+        //? don't provide a footer. A non-zero height must be specified to
+        //? work in some situations (ie: `AddMusicSheet`).
+        footer={props.footer ?? <View className="h-px" />}
         footerOptions={{ position: "absolute" }}
         footerClassName="bg-surfaceBright"
         //? We don't use `transparent` as sometimes, you can see the seam
