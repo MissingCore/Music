@@ -54,6 +54,22 @@ function CheckboxFieldBase(
 }
 //#endregion
 
+//#region Field
+export function CheckboxField(
+  props: CheckboxFieldBaseProps & { children: React.ReactNode },
+) {
+  return (
+    <CheckboxFieldBase
+      {...props}
+      className={cn("min-h-12 justify-between rounded-lg", props.className)}
+    >
+      <Checkbox checked={props.checked} />
+      {props.children}
+    </CheckboxFieldBase>
+  );
+}
+//#endregion
+
 //#region Clickwrap
 const clickwrapCheckboxStyle = cva({
   composes: [baseContainerStyle],

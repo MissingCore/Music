@@ -18,6 +18,7 @@ export function SheetRadioList<TData extends { label: string }>(
 ) {
   return (
     <SheetLegendList
+      role="radiogroup"
       estimatedItemSize={54} // 48px Height + 6px Margin Bottom
       data={props.data}
       keyExtractor={(item) => item.label}
@@ -26,8 +27,8 @@ export function SheetRadioList<TData extends { label: string }>(
         const isSelected = props.isSelected(item);
         return (
           <Button
-            accessibilityRole="radio"
-            accessibilityState={{ selected: isSelected }}
+            role="radio"
+            aria-checked={isSelected}
             onPress={() => props.onSelect(item)}
             disabled={isSelected}
             filled={isSelected}
