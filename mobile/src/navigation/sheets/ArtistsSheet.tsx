@@ -32,10 +32,10 @@ export function ArtistsSheet() {
               TrueSheet.dismiss(GLOBAL_SHEET_KEY);
               navigateToArtist(navigation, name, artistsInfo.popStrategy);
             }}
-            spacing="row"
+            spacing="none"
           />
         )}
-        className="-mb-5.5"
+        contentContainerClassName="gap-1.5"
       />
     </Sheet>
   );

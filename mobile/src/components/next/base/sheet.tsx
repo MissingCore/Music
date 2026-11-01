@@ -56,14 +56,15 @@ export function Sheet(props: SheetProps) {
         detents={[props.snapTop ? 1 : "auto"]}
         lazy={props.lazy}
         scrollableRef={scrollableRef}
-        scrollableOptions={{ contentInsetAdjustment: "footer" }}
         dismissThreshold={props.snapTop ? "short" : undefined}
         draggable={props.draggable}
         onDidDismiss={() => props.onCleanup?.()}
         grabber={false}
         maxContentHeight={MAX_SHEET_HEIGHT}
         header={props.header ?? <SheetHeader />}
-        footer={props.footer}
+        //? We get incorrect automatic insets for `SheetLegendList` if we
+        //? don't provide a footer.
+        footer={props.footer ?? <View />}
         footerOptions={{ position: "absolute" }}
         footerClassName="bg-surfaceBright"
         backgroundColor={surfaceBright}
@@ -139,7 +140,7 @@ export function ScrollableSheet({
   );
 }
 
-export function SheetScrollView({
+function SheetScrollView({
   contentContainerClassName,
   ...props
 }: Omit<ScrollViewProps, "ref">) {

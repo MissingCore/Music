@@ -6,7 +6,7 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import { ScrollableSheet } from "~/components/next/base/sheet";
 import { ActionButton } from "~/components/next/blocks/button-action";
 import { SegmentedPicker } from "~/components/next/blocks/segmented-picker";
 import { exportPlaylistAsM3U } from "~/modules/backup/M3U";
@@ -39,7 +39,10 @@ export function ExportM3USheet(props: { ref: SheetRef; id: string }) {
   };
 
   return (
-    <Sheet ref={props.ref} onCleanup={() => setExportOption("absolute")}>
+    <ScrollableSheet
+      ref={props.ref}
+      onCleanup={() => setExportOption("absolute")}
+    >
       <SegmentedPicker
         type="radio"
         options={pickerOptions}
@@ -50,8 +53,8 @@ export function ExportM3USheet(props: { ref: SheetRef; id: string }) {
         label={t("feat.backup.extra.export")}
         onPress={onExport}
         disabled={isExporting}
-        className="mt-4 rounded-full"
+        className="rounded-full"
       />
-    </Sheet>
+    </ScrollableSheet>
   );
 }

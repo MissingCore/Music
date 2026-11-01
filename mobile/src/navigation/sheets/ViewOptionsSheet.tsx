@@ -26,7 +26,7 @@ import type {
 } from "~/stores/ViewPreference/types";
 
 import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet, SheetScrollView } from "~/components/next/base/sheet";
+import { ScrollableSheet } from "~/components/next/base/sheet";
 import { TText } from "~/components/next/base/typography";
 import { SegmentedPicker } from "~/components/next/blocks/segmented-picker";
 import type { LabeledSliderProps } from "~/components/next/blocks/slider-labeled";
@@ -83,22 +83,20 @@ export function AlbumsViewOptionsSheet(props: { ref: SheetRef }) {
   );
 
   return (
-    <Sheet ref={props.ref} draggable={!stopDrag}>
-      <SheetScrollView>
-        <ScreenLayoutSetting screen="album" />
-        <SegmentedPicker
-          type="checkbox"
-          options={pickerOptions}
-          selected={selectedOptions}
-          onSelect={(value) => {
-            const key = AlbumClassificationMap[value];
-            sessionStore.setState((prev) => ({ [key]: !prev[key] }));
-          }}
-        />
-        <LabeledSlider initValue={minAlbumLength} {...minAlbumSliderOptions} />
-        <SortOptionSetting screen="album" />
-      </SheetScrollView>
-    </Sheet>
+    <ScrollableSheet ref={props.ref} draggable={!stopDrag}>
+      <ScreenLayoutSetting screen="album" />
+      <SegmentedPicker
+        type="checkbox"
+        options={pickerOptions}
+        selected={selectedOptions}
+        onSelect={(value) => {
+          const key = AlbumClassificationMap[value];
+          sessionStore.setState((prev) => ({ [key]: !prev[key] }));
+        }}
+      />
+      <LabeledSlider initValue={minAlbumLength} {...minAlbumSliderOptions} />
+      <SortOptionSetting screen="album" />
+    </ScrollableSheet>
   );
 }
 //#endregion
@@ -139,12 +137,10 @@ function ViewOptionsSheetTemplate(props: {
   screen: MutableViewLayout;
 }) {
   return (
-    <Sheet ref={props.ref}>
-      <SheetScrollView>
-        <ScreenLayoutSetting screen={props.screen} />
-        <SortOptionSetting screen={props.screen} />
-      </SheetScrollView>
-    </Sheet>
+    <ScrollableSheet ref={props.ref}>
+      <ScreenLayoutSetting screen={props.screen} />
+      <SortOptionSetting screen={props.screen} />
+    </ScrollableSheet>
   );
 }
 //#endregion
@@ -177,11 +173,9 @@ export function SortOptionsSheet(props: {
   screen: MutableViewOrder;
 }) {
   return (
-    <Sheet ref={props.ref}>
-      <SheetScrollView>
-        <SortOptionSetting screen={props.screen} />
-      </SheetScrollView>
-    </Sheet>
+    <ScrollableSheet ref={props.ref}>
+      <SortOptionSetting screen={props.screen} />
+    </ScrollableSheet>
   );
 }
 

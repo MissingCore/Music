@@ -42,11 +42,11 @@ export function AddAlbumSheet(props: {
               label={item.name}
               supporting={item.artistName}
               onPress={() => props.onSelect(item)}
-              spacing="row"
+              spacing="none"
             />
           )}
           renderOnQuery
-          className="-mb-5.5"
+          contentContainerClassName="gap-1.5"
         />
       </Sheet>
     </Search.Provider>
