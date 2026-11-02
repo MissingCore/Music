@@ -104,7 +104,6 @@ export function SleepTimerSheet(props: { ref: SheetRef }) {
         label={t(hasTimer ? "form.clear" : "feat.sleepTimer.extra.start")}
         onPress={hasTimer ? clearTimer : onSubmit}
         intent="inverse"
-        className="rounded-full"
       />
     </ScrollableSheet>
   );
