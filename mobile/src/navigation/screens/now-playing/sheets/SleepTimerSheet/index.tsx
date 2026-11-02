@@ -59,10 +59,10 @@ export function SleepTimerSheet(props: { ref: SheetRef }) {
 
   const sleepTimerDurationSlider = useMemo<LabeledSliderProps>(
     () => ({
-      min: 0,
+      min: 1,
       max: 60,
-      initValue: Number(minutes) || 0,
-      label: t("feat.playback.extra.delay"),
+      initValue: Number(minutes) || 5,
+      label: t("feat.modalViewPreference.extra.duration"),
       formatValue: (value) => {
         "worklet";
         return `${value}min`;

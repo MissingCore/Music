@@ -50,7 +50,7 @@ export function AppearanceSheet(props: { ref: SheetRef }) {
         <List.ToggleItem
           label={t("feat.nowPlayingDesign.extra.standardVinylSpeed")}
           enabled={standardVinylSpeed}
-          onToggle={PreferenceTogglers.toggleKey("alternativeInfoLayout")}
+          onToggle={PreferenceTogglers.toggleKey("standardVinylSpeed")}
         />
       </List.Group>
 

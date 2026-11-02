@@ -41,6 +41,7 @@ export function ExternalLinkItem({
   return (
     <ItemBase
       {...props}
+      role="link"
       onPress={() => openLink(href)}
       Trailing={<Icon name={`north-${OnRTL.decide("west", "east")}`} />}
     />
