@@ -65,7 +65,7 @@ export function ExportM3USheet(props: { ref: SheetRef; id: string }) {
           );
         }}
         scrollEnabled={false}
-        className="mt-2 rounded-xl bg-surfaceContainerLowest"
+        className="rounded-xl bg-surfaceContainerLowest"
       />
       <ActionButton
         label={t("feat.backup.extra.export")}

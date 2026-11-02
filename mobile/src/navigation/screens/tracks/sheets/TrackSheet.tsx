@@ -24,13 +24,13 @@ import { shareFile } from "~/lib/file-system";
 import { mutateGuard } from "~/lib/react-query";
 import { Epoch, Seconds } from "~/utils/date";
 import { abbreviateBitRate, abbreviateSize } from "~/utils/number";
-import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
 import { IconButton } from "~/components/next/base/button-icon";
 import { Divider } from "~/components/next/base/divider";
 import type { SupportedIconName } from "~/components/next/base/icon";
 import { Icon } from "~/components/next/base/icon";
 import { ScrollableSheet, useSheetRef } from "~/components/next/base/sheet";
 import { Text } from "~/components/next/base/typography";
+import { ActionButton } from "~/components/next/blocks/button-action";
 import { Marquee } from "~/components/next/blocks/marquee";
 import { MediaImage } from "~/components/next/blocks/media-image";
 import { Pressable } from "~/components/next/primitive/pressable";
@@ -132,7 +132,7 @@ function TrackIntro({ data }: { data: Track }) {
 //#region Metadata
 function TrackMetadata({ data }: { data: Track }) {
   return (
-    <View className="gap-4 rounded-md bg-surfaceContainerLowest p-4">
+    <View className="gap-4 rounded-lg bg-surfaceContainerLowest p-4">
       <Marquee contentContainerClassName="grow flex-row justify-between gap-4">
         <Text className="text-xxs/tight">
           {data.bitrate !== null ? abbreviateBitRate(data.bitrate) : "—"}
@@ -176,7 +176,7 @@ function IconActions(props: { data: Track; editArtwork: VoidFunction }) {
   const isFav = toggleInPlaylist.isPending ? !favStatus : favStatus;
 
   return (
-    <View className="flex-row justify-between gap-1 rounded-md bg-surfaceContainerLowest px-1">
+    <View className="flex-row justify-between gap-1 rounded-lg bg-surfaceContainerLowest p-1">
       <IconButton
         icon={`favorite${isFav ? "-filled" : ""}`}
         accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
@@ -223,19 +223,22 @@ function IconActions(props: { data: Track; editArtwork: VoidFunction }) {
 
 /** Buttons to add the track to the queue. */
 function QueueActions({ id, name }: Record<"id" | "name", string>) {
+  const { t } = useTranslation();
   return (
-    <SheetButtonGroup
-      leftButton={{
-        textKey: "feat.queue.extra.playNext",
-        onPress: sheetAction(() => Queue.add({ id, name })),
-        Leading: <Icon name="queue-music" />,
-      }}
-      rightButton={{
-        textKey: "feat.queue.extra.playLast",
-        onPress: sheetAction(() => Queue.addToEnd({ id, name })),
-        Leading: <Icon name="low-priority" />,
-      }}
-    />
+    <View className="flex-row items-center gap-0.75">
+      <ActionButton
+        label={t("feat.queue.extra.playNext")}
+        onPress={sheetAction(() => Queue.add({ id, name }))}
+        leadingIcon="queue-music"
+        className="flex-1 rounded-lg rounded-r-xs"
+      />
+      <ActionButton
+        label={t("feat.queue.extra.playLast")}
+        onPress={sheetAction(() => Queue.addToEnd({ id, name }))}
+        leadingIcon="low-priority"
+        className="flex-1 rounded-lg rounded-l-xs"
+      />
+    </View>
   );
 }
 //#endregion

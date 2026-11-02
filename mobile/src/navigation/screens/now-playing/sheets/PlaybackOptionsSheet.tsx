@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useNavigation } from "@react-navigation/native";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import AudioBrowser from "react-native-audio-browser";
+import { scheduleOnRN } from "react-native-worklets";
 
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -11,21 +13,23 @@ import { PreferenceSetters } from "~/stores/Preference/actions";
 import { PlaybackDelayConfig } from "~/stores/Preference/utils";
 
 import { getMediaLinkContext } from "~/navigation/utils/router";
+import * as SettingsList from "~/navigation/screens/settings/components/SettingsList";
 import { AppearanceSheet } from "./AppearanceSheet";
 
-import { NumberStepper } from "~/components/Form/NumberStepper";
 import { NothingSlider } from "~/components/Form/Slider.variant";
-import { SegmentedList } from "~/components/List/Segmented";
-import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
-import { Icon } from "~/components/next/base/icon";
+import { Button } from "~/components/next/base/button";
 import type { SheetRef } from "~/components/next/base/sheet";
 import { ScrollableSheet, useSheetRef } from "~/components/next/base/sheet";
+import type { LabeledSliderProps } from "~/components/next/blocks/slider-labeled";
+import { LabeledSlider } from "~/components/next/blocks/slider-labeled";
+import { TextStack } from "~/components/next/blocks/text-stack";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 
 export function PlaybackOptionsSheet(props: {
   ref: SheetRef;
   trackId: string;
 }) {
+  const { t } = useTranslation();
   const navigation = useNavigation("NowPlaying");
   const [stopDrag, setStopDrag] = useState(false);
   const playingSource = usePlaybackStore((s) => s.playingFrom);
@@ -52,50 +56,70 @@ export function PlaybackOptionsSheet(props: {
   }, [appearanceSheetRef, props.ref]);
   //#endregion
 
+  const playbackDelaySliderOptions = useMemo<
+    Omit<LabeledSliderProps, "initValue">
+  >(
+    () => ({
+      ...PlaybackDelayConfig.bound,
+      label: t("feat.playback.extra.delay"),
+      formatValue: (value) => {
+        "worklet";
+        return `${value}s`;
+      },
+      onChange: (value) => {
+        "worklet";
+        console.log(value);
+        scheduleOnRN(PreferenceSetters.setPlaybackDelay, value);
+      },
+      onStatusChange: (status) => {
+        "worklet";
+        scheduleOnRN(setStopDrag, status !== "idle");
+      },
+    }),
+    [t, setStopDrag],
+  );
+
   return (
     <>
       <AppearanceSheet ref={appearanceSheetRef} />
 
       <ScrollableSheet ref={props.ref} draggable={!stopDrag}>
-        <SegmentedList.Item
-          labelText="term.playingFrom"
-          supportingText={sourceName || "—"}
+        <Button
           onPress={navigateToList}
           disabled={!sourceName}
-          Leading={<PlayingIndicator />}
-          className="py-2 pl-2"
-          _overflow={false}
-        />
+          className="rounded-lg py-2 pl-2"
+        >
+          <PlayingIndicator />
+          <TextStack
+            label={t("term.playingFrom")}
+            supporting={sourceName || "—"}
+            clamp
+          />
+        </Button>
+
         <NothingSlider
           initValue={volume}
           getInteractionStatus={setStopDrag}
           {...VolumeSliderOptions}
         />
-
-        <SheetLabelAction
-          labelKey="feat.playback.extra.delay"
-          Trailing={
-            <NumberStepper
-              value={playbackDelay}
-              onChange={PreferenceSetters.updatePlaybackDelayByDelta}
-              {...PlaybackDelayConfig.bound}
-              suffix="s"
-            />
-          }
+        <LabeledSlider
+          initValue={playbackDelay}
+          {...playbackDelaySliderOptions}
         />
 
-        <SegmentedList>
-          <SegmentedList.Item
-            labelText="feat.appearance.title"
+        <SettingsList.Group>
+          <SettingsList.Item
+            icon="format-paint"
+            label={t("feat.appearance.title")}
             onPress={presentAppearanceSheet}
-            Leading={<Icon name="format-paint" />}
           />
-          <SegmentedList.Item
-            labelText="feat.audioEffects.title"
+          <SettingsList.Divider />
+          <SettingsList.Item
+            icon="graphic-eq"
+            label={t("feat.audioEffects.title")}
             onPress={navigateToAudioEffectsScreen}
-            Leading={<Icon name="graphic-eq" />}
           />
-        </SegmentedList>
+        </SettingsList.Group>
       </ScrollableSheet>
     </>
   );
