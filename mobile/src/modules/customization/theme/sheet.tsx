@@ -45,7 +45,7 @@ export function ThemeSheet(props: { ref: SheetRef }) {
     <Sheet
       ref={props.ref}
       footer={
-        <SheetFooter>
+        <SheetFooter className="items-center">
           <IconButton
             icon="add"
             accessibilityLabel={t("form.create")}
@@ -53,7 +53,6 @@ export function ThemeSheet(props: { ref: SheetRef }) {
             intent="inverse"
             filled
             wide
-            className="self-center"
           />
         </SheetFooter>
       }
