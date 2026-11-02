@@ -11,13 +11,18 @@ import type { CustomFont } from "~/db/schema";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
+import { useGetLayoutConfig } from "~/hooks/useLayoutConfigs";
 
 import { pickFile } from "~/lib/file-system";
 import { cn } from "~/lib/style";
 import { Button } from "~/components/next/base/button";
 import { IconButton } from "~/components/next/base/button-icon";
 import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import {
+  Sheet,
+  SheetFooter,
+  SheetLegendList,
+} from "~/components/next/base/sheet";
 import { Text } from "~/components/next/base/typography";
 import type { Font } from "./core/constants";
 import { BundledFontOptions } from "./core/constants";
@@ -49,8 +54,11 @@ const FontConfig = {
   },
 } as const;
 
+const sheetColumnConfig = { minCols: 2, minWidth: 128, gap: 0 };
+
 function FontSheet(props: { ref: SheetRef; type: "Accent" | "Primary" }) {
   const { t } = useTranslation();
+  const { count: columnCount } = useGetLayoutConfig(sheetColumnConfig);
 
   const { data } = useCustomFonts();
   const fontOptions = useMemo(() => {
@@ -77,9 +85,23 @@ function FontSheet(props: { ref: SheetRef; type: "Accent" | "Primary" }) {
   //#endregion
 
   return (
-    <Sheet ref={props.ref}>
-      <Sheet.List
-        numColumns={2}
+    <Sheet
+      ref={props.ref}
+      footer={
+        <SheetFooter className="items-center">
+          <IconButton
+            icon="upload"
+            accessibilityLabel={t("feat.backup.extra.import")}
+            onPress={() => importFont(setFont)}
+            intent="inverse"
+            filled
+            wide
+          />
+        </SheetFooter>
+      }
+    >
+      <SheetLegendList
+        numColumns={Math.min(columnCount, 4)}
         data={fontOptions}
         keyExtractor={(font) => (isBundledFont(font) ? font : font.id)}
         extraData={selectedFont}
@@ -88,7 +110,7 @@ function FontSheet(props: { ref: SheetRef; type: "Accent" | "Primary" }) {
           return (
             <View
               className={cn(
-                "relative flex-1 rounded-[27] border border-transparent p-0.5",
+                "relative flex-1 rounded-[29] border-2 border-transparent p-0.75",
                 { "border-onSurfaceVariant": selected },
               )}
             >
@@ -122,20 +144,8 @@ function FontSheet(props: { ref: SheetRef; type: "Accent" | "Primary" }) {
             </View>
           );
         }}
-        className="mb-0"
         contentContainerClassName="pb-0"
       />
-      <Sheet.Footer>
-        <IconButton
-          icon="upload"
-          accessibilityLabel={t("feat.backup.extra.import")}
-          onPress={() => importFont(setFont)}
-          intent="inverse"
-          filled
-          wide
-          className="self-center"
-        />
-      </Sheet.Footer>
     </Sheet>
   );
 }

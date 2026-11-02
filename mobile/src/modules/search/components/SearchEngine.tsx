@@ -1,7 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useImperativeHandle, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -39,7 +39,6 @@ type SearchEngineListProps<TScope extends SearchCategories> = {
   /** If we should render the track actions via the results. */
   withTrackActions?: boolean;
 
-  ref?: React.RefObject<any>;
   CustomList?: typeof LegendList;
 };
 
@@ -55,7 +54,6 @@ export function SearchEngineList<TScope extends SearchCategories>({
   const [selectedTab, setSelectedTab] = useState<TScope[number] | "all">("all");
   const [filterHeight, setFilterHeight] = useState(52); // Height will be ~52px
   const listRef = useLegendListRef();
-  useImperativeHandle(props.ref, () => listRef.current);
 
   const overrideItemLayout = useMemo(
     () => overrideItemLayoutFactory(listLayout.count),
@@ -110,7 +108,7 @@ export function SearchEngineList<TScope extends SearchCategories>({
             <TText
               textKey={`term.${item}`}
               intent="em"
-              className={cn("mx-0.75 mb-1.5", { "mt-1.5": index > 0 })}
+              className={cn("mx-0.75", { "pt-1.5": index > 0 })}
             />
           ) : (
             <ImageListItem
@@ -127,6 +125,7 @@ export function SearchEngineList<TScope extends SearchCategories>({
                   />
                 ) : undefined
               }
+              spacing="column"
             />
           )
         }
@@ -137,12 +136,11 @@ export function SearchEngineList<TScope extends SearchCategories>({
             <ContentPlaceholder errMsgKey="err.msg.noResults" />
           ) : undefined
         }
-        className={cn("-mx-0.75 -mb-1.5", {
-          "-mb-5.5": props.forSheets,
-        })}
-        contentContainerClassName={
-          props.forSheets ? "pb-4" : "pb-safe-offset-20"
-        }
+        className="-mx-0.75"
+        contentContainerClassName={cn(
+          "gap-y-1.5",
+          !props.forSheets ? "pb-safe-offset-20" : undefined,
+        )}
         contentContainerStyle={{
           paddingTop: tabsWithData.length > 0 ? filterHeight : 24,
         }}

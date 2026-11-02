@@ -7,7 +7,8 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 
 import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
-import * as SettingsList from "./components/SettingsList";
+
+import * as List from "~/components/next/composed/list";
 
 export default function PlaybackSettings() {
   const { t } = useTranslation();
@@ -20,40 +21,40 @@ export default function PlaybackSettings() {
 
   return (
     <ScrollLayout title="feat.playback.title">
-      <SettingsList.Group>
-        <SettingsList.ToggleItem
+      <List.Group>
+        <List.ToggleItem
           icon="autoplay"
           label={t("feat.continuePlaybackOnDismiss.title")}
           supporting={t("feat.continuePlaybackOnDismiss.description")}
           onToggle={PreferenceTogglers.toggleContinuePlaybackOnDismiss}
           enabled={continuePlaybackOnDismiss}
         />
-        <SettingsList.Divider />
-        <SettingsList.ToggleItem
+        <List.Divider />
+        <List.ToggleItem
           icon="history"
           label={t("feat.restoreLastPosition.title")}
           onToggle={PreferenceTogglers.toggleKey("restoreLastPosition")}
           enabled={restoreLastPosition}
         />
-      </SettingsList.Group>
+      </List.Group>
 
-      <SettingsList.Group>
-        <SettingsList.ToggleItem
+      <List.Group>
+        <List.ToggleItem
           icon="repeat-one"
           label={t("feat.repeatOnSkip.title")}
           supporting={t("feat.repeatOnSkip.brief")}
           onToggle={PreferenceTogglers.toggleKey("repeatOnSkip")}
           enabled={repeatOnSkip}
         />
-        <SettingsList.Divider />
-        <SettingsList.ToggleItem
+        <List.Divider />
+        <List.ToggleItem
           icon="shuffle"
           label={t("feat.reshuffleOnLaunch.title")}
           supporting={t("feat.reshuffleOnLaunch.brief")}
           onToggle={PreferenceTogglers.toggleKey("reshuffleOnLaunch")}
           enabled={reshuffleOnLaunch}
         />
-      </SettingsList.Group>
+      </List.Group>
     </ScrollLayout>
   );
 }

@@ -9,12 +9,12 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 
 import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
-import * as SettingsList from "./components/SettingsList";
 
 import { APP_VERSION } from "~/constants/Config";
 import { Links } from "~/lib/web-browser";
 import { Card } from "~/components/next/base/card";
 import { createTextStack } from "~/components/next/blocks/text-stack";
+import * as List from "~/components/next/composed/list";
 import { Image } from "~/components/next/primitive/image";
 
 const CTATextStack = createTextStack({
@@ -39,66 +39,66 @@ export default function AboutApp() {
         <CTATextStack label="MissingCore Music" supporting={bundleId} />
       </Card>
 
-      <SettingsList.Group>
-        <SettingsList.ExternalLinkItem
+      <List.Group>
+        <List.ExternalLinkItem
           icon="update"
           label={t("feat.appUpdate.extra.viewChangelog")}
           supporting={APP_VERSION}
           href={Links.CurrentRelease}
         />
-        <SettingsList.Divider />
-        <SettingsList.ToggleItem
+        <List.Divider />
+        <List.ToggleItem
           icon="release-alert"
           label={t("feat.appUpdate.extra.checkUpdates")}
           onToggle={PreferenceTogglers.toggleKey("checkForUpdates")}
           enabled={checkForUpdates}
         />
-        <SettingsList.Divider />
-        <SettingsList.ToggleItem
+        <List.Divider />
+        <List.ToggleItem
           icon="flask-filled"
           label={t("feat.appUpdate.extra.rcNotification")}
           onToggle={PreferenceTogglers.toggleKey("rcNotification")}
           enabled={showRCNotification}
           disabled={!checkForUpdates}
         />
-      </SettingsList.Group>
+      </List.Group>
 
-      <SettingsList.Group>
-        <SettingsList.ExternalLinkItem
+      <List.Group>
+        <List.ExternalLinkItem
           icon="translate"
           label={t("feat.language.extra.contribute")}
           href={Links.Translations}
         />
-        <SettingsList.Divider />
-        <SettingsList.ExternalLinkItem
+        <List.Divider />
+        <List.ExternalLinkItem
           icon="logo-github"
           label={t("feat.code.title")}
           supporting={t("feat.code.brief")}
           href={Links.GitHub}
         />
-      </SettingsList.Group>
+      </List.Group>
 
-      <SettingsList.Group>
-        <SettingsList.ExternalLinkItem
+      <List.Group>
+        <List.ExternalLinkItem
           icon="lock"
           label={t("feat.privacy.title")}
           href={Links.PrivacyPolicy}
         />
-        <SettingsList.Divider />
-        <SettingsList.ExternalLinkItem
+        <List.Divider />
+        <List.ExternalLinkItem
           icon="license"
           label={t("feat.license.title")}
           supporting="AGPL-3.0"
           href={Links.License}
         />
-        <SettingsList.Divider />
-        <SettingsList.Item
+        <List.Divider />
+        <List.Item
           icon="license"
           label={t("feat.thirdParty.title")}
           supporting={t("feat.thirdParty.brief")}
           onPress={() => navigation.navigate("ThirdParty")}
         />
-      </SettingsList.Group>
+      </List.Group>
     </ScrollLayout>
   );
 }

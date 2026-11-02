@@ -13,7 +13,11 @@ import { PreferenceSetters } from "~/stores/Preference/actions";
 import { Button } from "~/components/next/base/button";
 import { IconButton } from "~/components/next/base/button-icon";
 import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import {
+  Sheet,
+  SheetFooter,
+  SheetLegendList,
+} from "~/components/next/base/sheet";
 import { Text } from "~/components/next/base/typography";
 import { SegmentedPicker } from "~/components/next/blocks/segmented-picker";
 import type { CustomTheme, ResolvedTheme } from "./core/constants";
@@ -38,8 +42,22 @@ export function ThemeSheet(props: { ref: SheetRef }) {
   }, [data]);
 
   return (
-    <Sheet ref={props.ref}>
-      <Sheet.List
+    <Sheet
+      ref={props.ref}
+      footer={
+        <SheetFooter className="items-center">
+          <IconButton
+            icon="add"
+            accessibilityLabel={t("form.create")}
+            onPress={() => navigation.navigate("CreateTheme")}
+            intent="inverse"
+            filled
+            wide
+          />
+        </SheetFooter>
+      }
+    >
+      <SheetLegendList
         data={themeOptions}
         keyExtractor={(id) => id}
         extraData={[selectedTheme, themeMap]}
@@ -56,14 +74,14 @@ export function ThemeSheet(props: { ref: SheetRef }) {
           return (
             <View
               style={selected && { borderColor: onSurfaceVariant }}
-              className="flex-1 rounded-[27] border border-transparent p-0.5"
+              className="flex-1 rounded-[29] border-2 border-transparent p-0.75"
             >
               <Button
                 onPress={() => PreferenceSetters.setTheme(themeId)}
                 disabled={selected}
                 style={{ backgroundColor: surfaceContainerLowest }}
                 rippleColor={surfaceContainerHigh}
-                className="flex-row items-center disabled:opacity-100"
+                className="flex-row items-center py-2 disabled:opacity-100"
               >
                 <Text
                   numberOfLines={1}
@@ -72,7 +90,7 @@ export function ThemeSheet(props: { ref: SheetRef }) {
                 >
                   {name}
                 </Text>
-                <View className="-my-4 -mr-2 flex-row">
+                <View className="-mr-2 flex-row">
                   <IconButton
                     icon="edit"
                     accessibilityLabel={t("form.edit")}
@@ -97,20 +115,8 @@ export function ThemeSheet(props: { ref: SheetRef }) {
           );
         }}
         ListHeaderComponent={<BundledThemePicker />}
-        className="mb-0"
         contentContainerClassName="pb-0"
       />
-      <Sheet.Footer>
-        <IconButton
-          icon="add"
-          accessibilityLabel={t("form.create")}
-          onPress={() => navigation.navigate("CreateTheme")}
-          intent="inverse"
-          filled
-          wide
-          className="self-center"
-        />
-      </Sheet.Footer>
     </Sheet>
   );
 }
@@ -125,7 +131,7 @@ function BundledThemePicker() {
   }));
 
   return (
-    <View className="mb-6">
+    <View className="mb-4">
       <SegmentedPicker
         type="radio"
         options={pickerOptions}

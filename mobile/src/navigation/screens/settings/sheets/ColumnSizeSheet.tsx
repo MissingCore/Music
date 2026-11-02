@@ -19,7 +19,7 @@ import {
 } from "~/hooks/useLayoutConfigs";
 
 import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import { ScrollableSheet } from "~/components/next/base/sheet";
 import { Text } from "~/components/next/base/typography";
 import type { LabeledSliderProps } from "~/components/next/blocks/slider-labeled";
 import { LabeledSlider } from "~/components/next/blocks/slider-labeled";
@@ -27,11 +27,11 @@ import { LabeledSlider } from "~/components/next/blocks/slider-labeled";
 export function ColumnSizeSheet(props: { ref: SheetRef }) {
   const [stopDrag, setStopDrag] = useState(false);
   return (
-    <Sheet ref={props.ref} draggable={!stopDrag}>
+    <ScrollableSheet ref={props.ref} draggable={!stopDrag}>
       <ColumnSizeSlider field="list" setStopDrag={setStopDrag} />
       <ColumnSizeSlider field="grid" setStopDrag={setStopDrag} />
       <ColumnSizeSlider field="compactGrid" setStopDrag={setStopDrag} />
-    </Sheet>
+    </ScrollableSheet>
   );
 }
 

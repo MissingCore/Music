@@ -44,7 +44,7 @@ import type { LibraryTab } from "~/stores/Preference/types";
 
 import { capitalize } from "~/utils/string";
 import { Toolbar } from "~/components/next/composed/toolbar";
-import { TrackMultiSelectListeners } from "~/modules/media/multiSelect/components/TrackMultiSelectListeners";
+import { TrackMultiSelectListeners } from "~/modules/media/multiSelect/TrackMultiSelectListeners";
 import { MiniplayerProvider } from "./components/BottomActions/Miniplayer";
 import { DeferredRender } from "./components/DeferredRender";
 

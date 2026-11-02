@@ -61,6 +61,12 @@ export function setNowPlayingDesign(nowPlayingDesign: NowPlayingDesign) {
   preferenceStore.setState({ nowPlayingDesign });
 }
 
+export function setPlaybackDelay(playbackDelay: number) {
+  preferenceStore.setState({
+    playbackDelay: PlaybackDelayConfig.clamp(playbackDelay),
+  });
+}
+
 export function setPrimaryFont(primaryFont: Font) {
   preferenceStore.setState({ primaryFont });
 }
@@ -97,10 +103,4 @@ export async function setTheme(theme: DefaultTheme | (string & {})) {
       activeCustomTheme: customTheme,
     });
   }
-}
-
-export function updatePlaybackDelayByDelta(delta: number) {
-  preferenceStore.setState((prev) => ({
-    playbackDelay: PlaybackDelayConfig.clamp(prev.playbackDelay + delta),
-  }));
 }

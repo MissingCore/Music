@@ -22,12 +22,12 @@ import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { sessionStore } from "~/stores/Session/store";
 
 import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
-import * as SettingsList from "./components/SettingsList";
 
 import { ImageDirectory } from "~/lib/file-system";
 import { queryClient } from "~/lib/react-query";
 import { Links } from "~/lib/web-browser";
 import { ConfirmAction } from "~/components/next/composed/confirm-action";
+import * as List from "~/components/next/composed/list";
 
 export default function ExperimentalSettings() {
   const { t } = useTranslation();
@@ -38,43 +38,43 @@ export default function ExperimentalSettings() {
 
   return (
     <ScrollLayout title="feat.experimental.title">
-      <SettingsList.Group>
-        <SettingsList.ToggleItem
+      <List.Group>
+        <List.ToggleItem
           icon="mist"
           label={t("feat.theme.extra.atmosphere")}
           onToggle={PreferenceTogglers.toggleKey("atmosphereEffect")}
           enabled={atmosphereEffect}
         />
-        <SettingsList.Divider />
-        <SettingsList.ToggleItem
+        <List.Divider />
+        <List.ToggleItem
           icon="opacity"
           label={t("feat.theme.extra.opaqueColors")}
           onToggle={PreferenceTogglers.toggleKey("opaqueColors")}
           enabled={opaqueColors}
         />
-      </SettingsList.Group>
+      </List.Group>
 
-      <SettingsList.Group>
-        <SettingsList.ToggleItem
+      <List.Group>
+        <List.ToggleItem
           icon="queue-music"
           label={t("feat.queue.extra.queueAwareNext")}
           supporting={t("feat.queue.extra.queueAwareNextBrief")}
           onToggle={PreferenceTogglers.toggleQueueAwareNext}
           enabled={queueAwareNext}
         />
-      </SettingsList.Group>
+      </List.Group>
 
-      <SettingsList.Group>
-        <SettingsList.ExternalLinkItem
+      <List.Group>
+        <List.ExternalLinkItem
           icon="directions-car"
           label="Android Auto"
           href={Links.AndroidAuto}
         />
-      </SettingsList.Group>
+      </List.Group>
 
-      <SettingsList.Group>
+      <List.Group>
         <ConfirmAction prompt={[t("feat.seekbar.extra.waveformPurgeCache")]}>
-          <SettingsList.Item
+          <List.Item
             icon="delete"
             label={t("feat.seekbar.extra.waveformPurgeCache")}
             supporting={t("feat.seekbar.extra.waveformPurgeCacheBrief")}
@@ -83,14 +83,14 @@ export default function ExperimentalSettings() {
         </ConfirmAction>
         {unhashedImagesCount !== undefined && unhashedImagesCount !== 0 ? (
           <>
-            <SettingsList.Divider />
+            <List.Divider />
             <ConfirmAction
               prompt={[
                 "Re-launching the app is necessary after confirming this action.",
                 "You will need to re-add any images you manually assigned to albums/artists/genres/playlists/tracks.",
               ]}
             >
-              <SettingsList.Item
+              <List.Item
                 icon="delete"
                 label={`Delete ${unhashedImagesCount} Unhashed Images`}
                 supporting={`Delete ${unhashedImagesCount} unhashed images to switch to the new hashed artwork strategy, which should make disabling the \`Optimized Image Saving\` feature less impactful (ie: using more storage from saving the same artwork over and over again).`}
@@ -99,7 +99,7 @@ export default function ExperimentalSettings() {
             </ConfirmAction>
           </>
         ) : null}
-      </SettingsList.Group>
+      </List.Group>
     </ScrollLayout>
   );
 }

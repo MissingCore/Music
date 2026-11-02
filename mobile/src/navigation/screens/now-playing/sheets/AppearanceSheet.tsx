@@ -1,6 +1,8 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { useTranslation } from "react-i18next";
+
 import { usePreferenceStore } from "~/stores/Preference/store";
 import {
   PreferenceSetters,
@@ -11,13 +13,14 @@ import {
   SeekbarDesignOptions,
 } from "~/stores/Preference/constants";
 
-import { RadioChipField } from "~/components/Form/Radio";
-import { SwitchInput } from "~/components/Form/Switch";
-import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import { ScrollableSheet } from "~/components/next/base/sheet";
+import { SegmentedPicker } from "~/components/next/blocks/segmented-picker";
+import { TText } from "~/components/next/base/typography";
+import * as List from "~/components/next/composed/list";
 
 export function AppearanceSheet(props: { ref: SheetRef }) {
+  const { t } = useTranslation();
   const nowPlayingDesign = usePreferenceStore((s) => s.nowPlayingDesign);
   const alternativeInfoLayout = usePreferenceStore(
     (s) => s.alternativeInfoLayout,
@@ -25,48 +28,61 @@ export function AppearanceSheet(props: { ref: SheetRef }) {
   const standardVinylSpeed = usePreferenceStore((s) => s.standardVinylSpeed);
   const seekbarDesign = usePreferenceStore((s) => s.seekbarDesign);
 
+  const artworkPickerOptions = NowPlayingDesignOptions.map((option) => ({
+    label: t(`feat.nowPlayingDesign.extra.${option}`),
+    value: option,
+  }));
+
+  const seekbarPickerOptions = SeekbarDesignOptions.map((option) => ({
+    label: t(`feat.seekbar.extra.${option}`),
+    value: option,
+  }));
+
   return (
-    <Sheet ref={props.ref}>
-      <SheetLabelAction
-        labelKey="feat.nowPlayingDesign.extra.alternativeInfoLayout"
-        Trailing={
-          <SwitchInput
-            enabled={alternativeInfoLayout}
-            onPress={PreferenceTogglers.toggleKey("alternativeInfoLayout")}
-          />
-        }
+    <ScrollableSheet ref={props.ref}>
+      <List.Group>
+        <List.ToggleItem
+          label={t("feat.nowPlayingDesign.extra.alternativeInfoLayout")}
+          enabled={alternativeInfoLayout}
+          onToggle={PreferenceTogglers.toggleKey("alternativeInfoLayout")}
+        />
+        <List.Divider adjustForIcon={false} />
+        <List.ToggleItem
+          label={t("feat.nowPlayingDesign.extra.standardVinylSpeed")}
+          enabled={standardVinylSpeed}
+          onToggle={PreferenceTogglers.toggleKey("standardVinylSpeed")}
+        />
+      </List.Group>
+
+      <TText
+        textKey="feat.artwork.title"
+        intent="em"
+        size="sm"
+        className="-mb-2"
       />
-      <SheetLabelAction
-        labelKey="feat.nowPlayingDesign.extra.standardVinylSpeed"
-        Trailing={
-          <SwitchInput
-            enabled={standardVinylSpeed}
-            onPress={PreferenceTogglers.toggleKey("standardVinylSpeed")}
-          />
-        }
+      <SegmentedPicker
+        type="radio"
+        numColumns={2}
+        accessibilityLabel={t("feat.artwork.title")}
+        options={artworkPickerOptions}
+        selected={nowPlayingDesign}
+        onSelect={PreferenceSetters.setNowPlayingDesign}
       />
 
-      <RadioChipField labelKey="feat.artwork.title">
-        {NowPlayingDesignOptions.map((design) => (
-          <RadioChipField.Item
-            key={design}
-            labelKey={`feat.nowPlayingDesign.extra.${design}`}
-            selected={nowPlayingDesign === design}
-            onSelect={() => PreferenceSetters.setNowPlayingDesign(design)}
-          />
-        ))}
-      </RadioChipField>
-
-      <RadioChipField labelKey="feat.seekbar.title">
-        {SeekbarDesignOptions.map((design) => (
-          <RadioChipField.Item
-            key={design}
-            labelKey={`feat.seekbar.extra.${design}`}
-            selected={seekbarDesign === design}
-            onSelect={() => PreferenceSetters.setSeekbarDesign(design)}
-          />
-        ))}
-      </RadioChipField>
-    </Sheet>
+      <TText
+        textKey="feat.seekbar.title"
+        intent="em"
+        size="sm"
+        className="-mb-2"
+      />
+      <SegmentedPicker
+        type="radio"
+        numColumns={2}
+        accessibilityLabel={t("feat.seekbar.title")}
+        options={seekbarPickerOptions}
+        selected={seekbarDesign}
+        onSelect={PreferenceSetters.setSeekbarDesign}
+      />
+    </ScrollableSheet>
   );
 }

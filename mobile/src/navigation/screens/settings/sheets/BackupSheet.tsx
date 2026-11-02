@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 
 import { useExportBackup, useImportBackup } from "~/modules/backup/JSON";
 
 import { mutateGuard } from "~/lib/react-query";
 import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import { ScrollableSheet } from "~/components/next/base/sheet";
 import { ActionButton } from "~/components/next/blocks/button-action";
 import { Hint } from "~/components/next/blocks/hint";
 
@@ -19,26 +20,24 @@ export function BackupSheet(props: { ref: SheetRef }) {
   const inProgress = exportBackup.isPending || importBackup.isPending;
 
   return (
-    <Sheet ref={props.ref}>
-      <Sheet.Actions>
+    <ScrollableSheet ref={props.ref}>
+      <View className="flex-row items-center gap-0.75">
         <ActionButton
           label={t("feat.backup.extra.export")}
           onPress={() => mutateGuard(exportBackup, undefined)}
           disabled={inProgress}
           leadingIcon="download"
-          className="rounded-lg"
+          className="flex-1 rounded-lg rounded-r-xs"
         />
         <ActionButton
           label={t("feat.backup.extra.import")}
           onPress={() => mutateGuard(importBackup, undefined)}
           disabled={inProgress}
           leadingIcon="upload"
-          className="rounded-lg"
+          className="flex-1 rounded-lg rounded-l-xs"
         />
-      </Sheet.Actions>
-      <Sheet.Footer>
-        <Hint hint={t("feat.backup.description")} />
-      </Sheet.Footer>
-    </Sheet>
+      </View>
+      <Hint hint={t("feat.backup.description")} />
+    </ScrollableSheet>
   );
 }

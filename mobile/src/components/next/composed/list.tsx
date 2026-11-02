@@ -6,15 +6,15 @@ import { View } from "react-native";
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { openLink } from "~/lib/web-browser";
-import { Card } from "~/components/next/base/card";
-import { Divider as DividerBase } from "~/components/next/base/divider";
-import type { SupportedIconName } from "~/components/next/base/icon";
-import { Icon } from "~/components/next/base/icon";
-import { Ripple } from "~/components/next/base/ripple";
-import { Switch } from "~/components/next/base/switch";
-import { Text } from "~/components/next/base/typography";
-import { TextStack } from "~/components/next/blocks/text-stack";
-import type { PressableProps } from "~/components/next/primitive/pressable";
+import { Card } from "../base/card";
+import { Divider as DividerBase } from "../base/divider";
+import type { SupportedIconName } from "../base/icon";
+import { Icon } from "../base/icon";
+import { Ripple } from "../base/ripple";
+import { Switch } from "../base/switch";
+import { Text } from "../base/typography";
+import { TextStack } from "../blocks/text-stack";
+import type { PressableProps } from "../primitive/pressable";
 
 export function Group(props: { children: React.ReactNode; label?: string }) {
   const renderedComponent = <Card className="p-0">{props.children}</Card>;
@@ -41,6 +41,7 @@ export function ExternalLinkItem({
   return (
     <ItemBase
       {...props}
+      role="link"
       onPress={() => openLink(href)}
       Trailing={<Icon name={`north-${OnRTL.decide("west", "east")}`} />}
     />
@@ -64,8 +65,9 @@ export function ToggleItem({
   return (
     <ItemBase
       {...props}
-      accessibilityRole="switch"
-      accessibilityState={{ checked: enabled, disabled: props.disabled }}
+      role="switch"
+      aria-checked={enabled}
+      aria-disabled={props.disabled}
       onPress={onToggle}
       Trailing={<Switch enabled={enabled} />}
     />
@@ -74,7 +76,8 @@ export function ToggleItem({
 
 //#region Internal Helpers
 interface ItemBaseProps {
-  icon: SupportedIconName;
+  /** The design is icon-first (ie: we assume an icon is provided). */
+  icon?: SupportedIconName;
   label: string;
   supporting?: string;
   disabled?: boolean;
@@ -92,7 +95,7 @@ function ItemBase({
       {...props}
       className="flex-row items-center gap-4 p-4 disabled:opacity-25"
     >
-      <Icon name={icon} />
+      {icon ? <Icon name={icon} /> : null}
       <TextStack label={label} supporting={supporting} />
       {Trailing}
     </Ripple>

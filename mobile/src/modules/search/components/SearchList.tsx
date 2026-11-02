@@ -149,7 +149,7 @@ function List<TData>({
       ListEmptyComponent={
         !stopRender ? <ContentPlaceholder errMsgKey={emptyMsgKey} /> : null
       }
-      contentContainerClassName={cn("pt-6", contentContainerClassName)}
+      contentContainerClassName={cn("pt-4", contentContainerClassName)}
       {...props}
     />
   );

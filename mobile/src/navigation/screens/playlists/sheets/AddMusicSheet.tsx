@@ -2,7 +2,11 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import {
+  Sheet,
+  SheetHeader,
+  SheetLegendList,
+} from "~/components/next/base/sheet";
 import { SearchEngineList } from "~/modules/search/components/SearchEngine";
 import { Search } from "~/modules/search/components/SearchList";
 import type { SearchCallbacks } from "~/modules/search/types";
@@ -17,12 +21,17 @@ export function AddMusicSheet(props: {
 }) {
   return (
     <Search.Provider shadowColor="surfaceBright">
-      <Sheet ref={props.ref} snapTop>
-        <Sheet.Header>
-          <Search.Input />
-        </Sheet.Header>
+      <Sheet
+        ref={props.ref}
+        snapTop
+        header={
+          <SheetHeader>
+            <Search.Input />
+          </SheetHeader>
+        }
+      >
         <SearchEngineList
-          CustomList={Sheet.List}
+          CustomList={SheetLegendList}
           searchScope={searchScope}
           callbacks={props.callbacks}
           forSheets

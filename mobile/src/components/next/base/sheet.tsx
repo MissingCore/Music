@@ -1,22 +1,22 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
-import { cloneElement, useMemo, useRef, useState } from "react";
-import flattenChildren from "react-keyed-flatten-children";
+import { createContext, use, useImperativeHandle, useRef } from "react";
 import type { ViewProps } from "react-native";
-import { View, useWindowDimensions } from "react-native";
+import { View } from "react-native";
+import type { AnimatedRef } from "react-native-reanimated";
 import { useAnimatedRef } from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { withUniwind } from "uniwind";
 
 import { cn } from "~/lib/style";
 import { GestureHandlerRootView } from "~/components/Base/GestureHandlerRootView";
 import type { LegendListProps } from "~/components/Base/LegendList";
 import { LegendList } from "~/components/Base/LegendList";
+import type { ScrollViewProps } from "~/components/Base/ScrollView";
 import { ScrollView } from "~/components/Base/ScrollView";
-import { Text } from "./typography";
-import { Marquee } from "../blocks/marquee";
+import { useTheme } from "~/modules/customization/theme/hooks";
 
 const WrappedSheet = withUniwind(TrueSheet);
 
@@ -26,225 +26,135 @@ export function useSheetRef() {
   return useRef<TrueSheet>(null);
 }
 
+//#region Scroll Context
+const ScrollableRefContext = createContext<AnimatedRef<any>>(null as never);
+//#endregion
+
 //#region Sheet
-interface SheetProps {
+interface SheetProps extends Pick<
+  TrueSheetProps,
+  "name" | "draggable" | "children" | "header" | "footer"
+> {
   ref?: SheetRef;
-  /** Makes sheet accessible globally using this key. */
-  name?: string;
-  draggable?: boolean;
   /** Render sheet at its max height. */
   snapTop?: boolean;
   /** Fires when the sheet is dismissed. */
   onCleanup?: VoidFunction;
-  children: React.ReactNode;
 }
 
 const MAX_SHEET_HEIGHT = 640;
 
 /** Child nodes will automatically be wrapped with a `ScrollView`. */
-function Sheet(props: SheetProps) {
-  const { header, footer, scrollableRef, children } = useSheetComponents(
-    props.children,
-  );
-  const { maxHeight, setHeaderHeight, setFooterHeight } =
-    useScrollableMaxHeight();
-
+export function Sheet(props: SheetProps) {
+  const { surfaceBright } = useTheme();
+  const scrollableRef = useAnimatedRef();
   return (
-    <WrappedSheet
-      ref={props.ref}
-      name={props.name}
-      detents={["auto"]}
-      scrollableRef={scrollableRef}
-      scrollableOptions={{ contentInsetAdjustment: "never" }}
-      dismissThreshold={props.snapTop ? "short" : undefined}
-      draggable={props.draggable}
-      maxContentHeight={MAX_SHEET_HEIGHT}
-      backgroundColor="transparent"
-      grabber={false}
-      cornerRadius={0}
-      elevation={0}
-      onDidDismiss={() => props.onCleanup?.()}
-      className="p-4 pt-0"
-    >
-      <View className="overflow-hidden rounded-xl bg-surfaceBright p-4 pt-0">
-        <GestureHandlerRootView className="grow">
-          <View onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}>
-            <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-surfaceContainerHigh" />
-            {header}
-          </View>
-          <View
-            style={{ maxHeight, height: props.snapTop ? maxHeight : undefined }}
-          >
-            {children}
-          </View>
-          <View onLayout={(e) => setFooterHeight(e.nativeEvent.layout.height)}>
-            {footer}
-          </View>
+    <ScrollableRefContext value={scrollableRef}>
+      <WrappedSheet
+        ref={props.ref}
+        name={props.name}
+        detents={[props.snapTop ? 1 : "auto"]}
+        scrollableRef={scrollableRef}
+        dismissThreshold="short"
+        draggable={props.draggable}
+        onDidDismiss={() => props.onCleanup?.()}
+        grabber={false}
+        maxContentHeight={MAX_SHEET_HEIGHT}
+        header={props.header ?? <SheetHeader />}
+        headerClassName="bg-surfaceBright"
+        //? We get incorrect automatic insets for `SheetLegendList` if we
+        //? don't provide a footer. A non-zero height must be specified to
+        //? work in some situations (ie: `AddMusicSheet`).
+        footer={props.footer ?? <View className="h-px" />}
+        footerOptions={{ position: "absolute" }}
+        footerClassName="bg-surfaceBright"
+        //? We don't use `transparent` as sometimes, you can see the seam
+        //? between the header, content, and footer.
+        backgroundColor={surfaceBright}
+        cornerRadius={24}
+        className="bg-surfaceBright"
+      >
+        <GestureHandlerRootView className="grow px-4">
+          {props.children}
         </GestureHandlerRootView>
-      </View>
-    </WrappedSheet>
-  );
-}
-
-function useSheetComponents(children: React.ReactNode) {
-  const listRef = useAnimatedRef();
-  return useMemo(() => {
-    const nodes = flattenChildren(children) as React.JSX.Element[];
-
-    const header = nodes.find((n) => n?.type === Header);
-    const footer = nodes.find((n) => n?.type === Footer);
-    const contentNodes = nodes.filter(
-      (n) => n?.type !== Header && n?.type !== Footer,
-    );
-
-    //? We assume that if `Sheet.List` is rendered, then no other content is rendered.
-    const list = contentNodes.find(
-      (n) => n?.type === List || n?.props?.CustomList === List,
-    );
-    if (list) {
-      const scrollableRef = list.props.ref ?? listRef;
-      const children =
-        list.props.ref == null ? cloneElement(list, { ref: listRef }) : list;
-      return { header, footer, scrollableRef, children };
-    } else {
-      return {
-        header,
-        footer,
-        scrollableRef: listRef,
-        children: (
-          <ScrollView
-            // @ts-expect-error - Ref should still work.
-            ref={listRef}
-            className="-mb-4"
-            contentContainerClassName="gap-4 pb-4"
-          >
-            {contentNodes}
-          </ScrollView>
-        ),
-      };
-    }
-  }, [children, listRef]);
-}
-
-/**
- * Identifoes the max height of the inner scrollable since it's auto-height
- * gets really funky when we render other components adjacent to it.
- */
-function useScrollableMaxHeight() {
-  const { height } = useWindowDimensions();
-  const { top, bottom } = useSafeAreaInsets();
-  const [headerHeight, setHeaderHeight] = useState(0);
-  const [footerHeight, setFooterHeight] = useState(0);
-  return useMemo(
-    () => ({
-      maxHeight:
-        Math.min(height, MAX_SHEET_HEIGHT) -
-        top -
-        bottom -
-        headerHeight -
-        footerHeight -
-        32,
-      setHeaderHeight,
-      setFooterHeight,
-    }),
-    [height, top, bottom, headerHeight, footerHeight],
+      </WrappedSheet>
+    </ScrollableRefContext>
   );
 }
 //#endregion
 
-//#region Header
-/**
- * Non-scrolling content we want appearing at the top of the sheet.
- *
- * Should be rendered as a direct child of `Sheet`.
- */
-function Header(props: {
-  label?: string;
-  children?: React.ReactNode;
-  Leading?: React.ReactNode;
-  Trailing?: React.ReactNode;
-}) {
+//#region Decoration
+export function SheetHeader({ children, className, ...props }: ViewProps) {
   return (
-    <View>
-      {props.label || props.Leading || props.Trailing ? (
-        <View className="mb-6 flex-row items-center gap-3">
-          {props.Leading}
-          <Marquee
-            wrapperClassName={cn(
-              Boolean(props.Leading && props.Trailing) && "items-center",
-            )}
-          >
-            <Text bold size="lg">
-              {props.label}
-            </Text>
-          </Marquee>
-          {props.Trailing}
-        </View>
-      ) : null}
-      {props.children}
+    <View {...props} className={cn("px-4", className)}>
+      <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-surfaceContainerHigh" />
+      {children}
     </View>
   );
 }
-//#endregion
 
-//#region Footer
-/**
- * Non-scrolling content we want appearing at the bottom of the sheet.
- *
- * Should be rendered as a direct child of `Sheet`.
- */
-function Footer({ className, ...props }: Omit<ViewProps, "onLayout">) {
-  return <View {...props} className={cn("gap-4 pt-4", className)} />;
-}
-//#endregion
-
-//#region List
-/**
- * Displays a list of items in the sheet. If rendered, will be the only
- * child rendered by the sheet.
- *
- * Should be rendered as a direct child of `Sheet`.
- */
-function List<TData>(props: LegendListProps<TData>) {
+export function SheetFooter({ className, ...props }: ViewProps) {
   return (
-    <LegendList
+    <View
+      //! Needs to be specified as otherwise, we can press any buttons behind
+      //! the absolute-positioned footer.
+      collapsable={false}
       {...props}
-      className={cn("-mb-4", props.className)}
-      contentContainerClassName={cn("pb-4", props.contentContainerClassName)}
+      className={cn("gap-4 p-4", className)}
     />
   );
 }
 //#endregion
 
-//#region Actions
-/** A list of buttons in a row. */
-function Actions(props: { children: React.JSX.Element[] }) {
-  const styledComponents = useMemo(() => {
-    const nodes = flattenChildren(props.children) as React.JSX.Element[];
-    return nodes.map((node, index) =>
-      cloneElement(node, {
-        className: cn(
-          "flex-1 bg-surfaceContainerLowest",
-          node.props.className,
-          {
-            "rounded-l-xs": index > 0,
-            "rounded-r-xs": index < nodes.length - 1,
-          },
-        ),
-      }),
-    );
-  }, [props.children]);
+//#region Scrollables
+export function SheetLegendList<TData>({
+  ref,
+  contentContainerClassName,
+  ...props
+}: LegendListProps<TData>) {
+  const scrollableRef = use(ScrollableRefContext);
+  useImperativeHandle(ref, () => scrollableRef.current);
   return (
-    <View className="flex-row items-center gap-0.75">{styledComponents}</View>
+    <LegendList
+      ref={scrollableRef}
+      {...props}
+      contentContainerClassName={cn("pb-4", contentContainerClassName)}
+    />
   );
 }
 //#endregion
 
-//#region Exports
-Sheet.Header = Header;
-Sheet.List = List;
-Sheet.Footer = Footer;
-Sheet.Actions = Actions;
+//#region Scrollable Sheet
+/** Sheet with contents wrapped in `ScrollView`. */
+export function ScrollableSheet({
+  children,
+  className,
+  contentContainerClassName,
+  ...props
+}: SheetProps & { className?: string; contentContainerClassName?: string }) {
+  return (
+    <Sheet {...props}>
+      <SheetScrollView
+        className={className}
+        contentContainerClassName={contentContainerClassName}
+      >
+        {children}
+      </SheetScrollView>
+    </Sheet>
+  );
+}
 
-export { Sheet };
+function SheetScrollView({
+  contentContainerClassName,
+  ...props
+}: Omit<ScrollViewProps, "ref">) {
+  const scrollableRef = use(ScrollableRefContext);
+  return (
+    <ScrollView
+      ref={scrollableRef}
+      {...props}
+      contentContainerClassName={cn("gap-4 pb-4", contentContainerClassName)}
+    />
+  );
+}
 //#endregion

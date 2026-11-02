@@ -11,12 +11,12 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { useHasNewUpdate } from "~/navigation/hooks/useHasNewUpdate";
 import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
-import * as SettingsList from "~/navigation/screens/settings/components/SettingsList";
 
 import { FontSize } from "~/constants/Styles";
 import { Links, openLink } from "~/lib/web-browser";
 import { Card } from "~/components/next/base/card";
 import { Icon } from "~/components/next/base/icon";
+import * as List from "~/components/next/composed/list";
 import { getFont } from "~/modules/customization/font/utils";
 import { useTheme } from "~/modules/customization/theme/hooks";
 
@@ -117,22 +117,22 @@ export default function AppUpdate() {
         </Markdown>
       </Card>
 
-      <SettingsList.Group>
+      <List.Group>
         {DISTRIBUTION === "google-play" ? (
-          <SettingsList.ExternalLinkItem
+          <List.ExternalLinkItem
             icon="logo-google-playstore"
             label={t("feat.appUpdate.extra.updateGoogle")}
             href={Links.PlayStore}
           />
         ) : (
-          <SettingsList.ExternalLinkItem
+          <List.ExternalLinkItem
             icon="logo-github"
             label={t("feat.appUpdate.extra.downloadAPK")}
             supporting={Links.SpecificRelease(release.version)}
             href={Links.SpecificRelease(release.version)}
           />
         )}
-      </SettingsList.Group>
+      </List.Group>
     </ScrollLayout>
   );
 }

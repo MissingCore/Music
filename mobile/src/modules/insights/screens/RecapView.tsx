@@ -23,7 +23,7 @@ import { Card } from "~/components/next/base/card";
 import { Divider } from "~/components/next/base/divider";
 import { Icon } from "~/components/next/base/icon";
 import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet, useSheetRef } from "~/components/next/base/sheet";
+import { ScrollableSheet, useSheetRef } from "~/components/next/base/sheet";
 import { Text, TText } from "~/components/next/base/typography";
 import { ActionButton } from "~/components/next/blocks/button-action";
 import { Hint } from "~/components/next/blocks/hint";
@@ -172,27 +172,25 @@ function RecapToolbar() {
           />
         </Toolbar.Actions>
       </Toolbar>
-      <Sheet ref={sheetRef}>
-        <Sheet.Actions>
+      <ScrollableSheet ref={sheetRef}>
+        <View className="flex-row items-center gap-0.75">
           <ActionButton
             label={t("feat.backup.extra.export")}
             onPress={() => mutateGuard(exportBackup, undefined)}
             disabled={inProgress}
             leadingIcon="download"
-            className="rounded-lg"
+            className="flex-1 rounded-lg rounded-r-xs"
           />
           <ActionButton
             label={t("feat.backup.extra.import")}
             onPress={() => mutateGuard(importBackup, undefined)}
             disabled={inProgress}
             leadingIcon="upload"
-            className="rounded-lg"
+            className="flex-1 rounded-lg rounded-l-xs"
           />
-        </Sheet.Actions>
-        <Sheet.Footer>
-          <Hint hint={t("feat.recap.extra.backup")} />
-        </Sheet.Footer>
-      </Sheet>
+        </View>
+        <Hint hint={t("feat.recap.extra.backup")} />
+      </ScrollableSheet>
     </>
   );
 }

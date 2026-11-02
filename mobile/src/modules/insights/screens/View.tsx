@@ -20,7 +20,6 @@ import {
 } from "~/db/schema";
 
 import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
-import * as SettingsList from "~/navigation/screens/settings/components/SettingsList";
 
 import { Colors } from "~/constants/Styles";
 import { ImageDirectory } from "~/lib/file-system";
@@ -28,6 +27,7 @@ import type { ExtractQueryData } from "~/lib/react-query";
 import { mutateGuard } from "~/lib/react-query";
 import { Seconds } from "~/utils/date";
 import { abbreviateSize } from "~/utils/number";
+import * as List from "~/components/next/composed/list";
 import {
   LegendItem,
   ProgressBar,
@@ -45,38 +45,38 @@ export default function Insights() {
 
   return (
     <ScrollLayout title="feat.insights.title">
-      <SettingsList.Group>
+      <List.Group>
         <StorageWidget />
-        <SettingsList.Divider adjustForIcon={false} />
+        <List.Divider adjustForIcon={false} />
         <DBSummaryWidget />
-        <SettingsList.Divider adjustForIcon={false} />
+        <List.Divider adjustForIcon={false} />
         <DatabaseOptimizationWidget />
-      </SettingsList.Group>
+      </List.Group>
 
-      <SettingsList.Group>
-        <SettingsList.Item
+      <List.Group>
+        <List.Item
           icon="bar-chart-4-bars"
           label={t("feat.recap.title")}
           supporting={t("feat.recap.brief")}
           onPress={() => navigation.navigate("Recap", {})}
         />
-      </SettingsList.Group>
+      </List.Group>
 
-      <SettingsList.Group>
-        <SettingsList.Item
+      <List.Group>
+        <List.Item
           icon="visibility-off-filled"
           label={t("feat.hiddenTracks.title")}
           supporting={t("feat.hiddenTracks.brief")}
           onPress={() => navigation.navigate("HiddenTracks")}
         />
-        <SettingsList.Divider />
-        <SettingsList.Item
+        <List.Divider />
+        <List.Item
           icon="error"
           label={t("feat.saveErrors.title")}
           supporting={t("feat.saveErrors.brief")}
           onPress={() => navigation.navigate("SaveErrors")}
         />
-      </SettingsList.Group>
+      </List.Group>
     </ScrollLayout>
   );
 }
@@ -251,7 +251,7 @@ function DatabaseOptimizationWidget() {
   const count = data ?? 0;
 
   return (
-    <SettingsList.Item
+    <List.Item
       icon="delete"
       label={t("feat.dbOptimization.title")}
       supporting={t("feat.dbOptimization.brief", { count })}

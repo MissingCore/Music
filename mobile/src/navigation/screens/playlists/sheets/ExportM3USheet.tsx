@@ -5,10 +5,13 @@ import { toast } from "@missingcore/ui/toast";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { FlatList } from "~/components/Base/List";
 import type { SheetRef } from "~/components/next/base/sheet";
-import { Sheet } from "~/components/next/base/sheet";
+import { ScrollableSheet } from "~/components/next/base/sheet";
+import { Text } from "~/components/next/base/typography";
 import { ActionButton } from "~/components/next/blocks/button-action";
-import { SegmentedPicker } from "~/components/next/blocks/segmented-picker";
+import { Marquee } from "~/components/next/blocks/marquee";
+import { RadioField } from "~/components/next/blocks/radio";
 import { exportPlaylistAsM3U } from "~/modules/backup/M3U";
 
 type ExportOption = "absolute" | "relative";
@@ -39,21 +42,38 @@ export function ExportM3USheet(props: { ref: SheetRef; id: string }) {
   };
 
   return (
-    <Sheet ref={props.ref} onCleanup={() => setExportOption("absolute")}>
-      <Sheet.Header label={t("feat.playlist.extra.m3uExport")} />
-
-      <SegmentedPicker
-        type="radio"
-        options={pickerOptions}
-        selected={exportOption}
-        onSelect={setExportOption}
+    <ScrollableSheet
+      ref={props.ref}
+      onCleanup={() => setExportOption("absolute")}
+    >
+      <FlatList
+        role="radiogroup"
+        data={pickerOptions}
+        keyExtractor={({ value }) => value}
+        renderItem={({ item: { value, label } }) => {
+          const selected = value === exportOption;
+          return (
+            <RadioField
+              selected={selected}
+              onSelect={() => setExportOption(value)}
+              className="rounded-none p-4"
+            >
+              <Marquee>
+                <Text>{label}</Text>
+              </Marquee>
+            </RadioField>
+          );
+        }}
+        scrollEnabled={false}
+        className="rounded-xl bg-surfaceContainerLowest"
       />
       <ActionButton
         label={t("feat.backup.extra.export")}
+        leadingIcon="download"
         onPress={onExport}
         disabled={isExporting}
-        className="mt-4 rounded-full"
+        intent="inverse"
       />
-    </Sheet>
+    </ScrollableSheet>
   );
 }

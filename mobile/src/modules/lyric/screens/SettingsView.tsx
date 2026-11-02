@@ -12,7 +12,6 @@ import { moveLyricProvider, toggleLyricStoreKey } from "../core/actions";
 import type { LyricProvider } from "../core/constants";
 
 import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
-import * as SettingsList from "~/navigation/screens/settings/components/SettingsList";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { OnRTL } from "~/lib/react";
@@ -22,6 +21,7 @@ import { IconButton } from "~/components/next/base/button-icon";
 import { TText } from "~/components/next/base/typography";
 import { Hint } from "~/components/next/blocks/hint";
 import { TextStack } from "~/components/next/blocks/text-stack";
+import * as List from "~/components/next/composed/list";
 
 export default function LyricsSettings() {
   const { t } = useTranslation();
@@ -31,14 +31,14 @@ export default function LyricsSettings() {
 
   return (
     <ScrollLayout title="feat.lyrics.title">
-      <SettingsList.Group>
-        <SettingsList.ToggleItem
+      <List.Group>
+        <List.ToggleItem
           icon="draft"
           label={t("feat.lyrics.extra.useEmbedded")}
           onToggle={toggleLyricStoreKey("checkEmbedded")}
           enabled={checkEmbeddedLyrics}
         />
-      </SettingsList.Group>
+      </List.Group>
 
       <View>
         <TText
@@ -48,13 +48,13 @@ export default function LyricsSettings() {
         />
         <Hint hint={t("feat.lyrics.extra.providersInstructions.line1")} />
       </View>
-      <SettingsList.Group>
-        <SettingsList.ExternalLinkItem
+      <List.Group>
+        <List.ExternalLinkItem
           icon="help"
           label={t("feat.lyrics.extra.providersInstructions.line2")}
           href={Links.LyricsProviders}
         />
-        <SettingsList.Divider adjustForIcon={false} />
+        <List.Divider adjustForIcon={false} />
         <DragList
           data={lyricProviders}
           keyExtractor={({ id }) => id}
@@ -87,7 +87,7 @@ export default function LyricsSettings() {
           contentContainerClassName="p-4"
           alwaysKeyRenderedItems
         />
-      </SettingsList.Group>
+      </List.Group>
     </ScrollLayout>
   );
 }

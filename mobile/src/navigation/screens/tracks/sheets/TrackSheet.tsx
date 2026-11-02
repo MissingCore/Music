@@ -3,39 +3,43 @@
 
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
+import { toggleTrackInPlaylist } from "~/data/track/api";
 import {
   useHideTrack,
   useToggleTrackInPlaylist,
   useTrackFavoriteStatus,
+  useTrackPlaylists,
 } from "~/data/track/queries";
 import type { Track } from "~/data/track/types";
 import { Queue } from "~/stores/Playback/actions";
 import { useSessionStore } from "~/stores/Session/store";
 
 import { TrackArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
-import { TrackToPlaylistsSheet } from "./TrackToPlaylistsSheet";
 
 import { shareFile } from "~/lib/file-system";
 import { mutateGuard } from "~/lib/react-query";
 import { Epoch, Seconds } from "~/utils/date";
 import { abbreviateBitRate, abbreviateSize } from "~/utils/number";
-import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
 import { IconButton } from "~/components/next/base/button-icon";
 import { Divider } from "~/components/next/base/divider";
 import type { SupportedIconName } from "~/components/next/base/icon";
 import { Icon } from "~/components/next/base/icon";
-import { Sheet, useSheetRef } from "~/components/next/base/sheet";
+import { ScrollableSheet, useSheetRef } from "~/components/next/base/sheet";
 import { Text } from "~/components/next/base/typography";
+import { ActionButton } from "~/components/next/blocks/button-action";
 import { Marquee } from "~/components/next/blocks/marquee";
 import { MediaImage } from "~/components/next/blocks/media-image";
 import { Pressable } from "~/components/next/primitive/pressable";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
+import { AddToPlaylistsSheetBase } from "~/modules/media/components/AddToPlaylistsSheetBase";
 
-const GLOBAL_SHEET_KEY = "TrackSheet";
+const TRACK_GLOBAL_SHEET_KEY = "TrackSheet";
+const TRACK_PLAYLIST_GLOBAL_SHEET_KEY = "TrackToPlaylistsSheet";
 
 /** Displays information about a track and enables adding it to playlists. */
 export function TrackSheet() {
@@ -44,7 +48,7 @@ export function TrackSheet() {
 
   return (
     <>
-      <Sheet name={GLOBAL_SHEET_KEY}>
+      <ScrollableSheet name={TRACK_GLOBAL_SHEET_KEY}>
         {data !== null ? (
           <>
             <TrackIntro data={data} />
@@ -56,7 +60,7 @@ export function TrackSheet() {
             <QueueActions id={data.id} name={data.name} />
           </>
         ) : null}
-      </Sheet>
+      </ScrollableSheet>
       <TrackToPlaylistsSheet key={data?.id} id={data?.id ?? ""} />
       {data !== null ? (
         <TrackArtworkSheet ref={trackArtworkSheetRef} id={data.id} />
@@ -64,6 +68,27 @@ export function TrackSheet() {
     </>
   );
 }
+
+//#region AddToPlaylist Sheet
+function TrackToPlaylistsSheet({ id }: { id: string }) {
+  const { data: inList } = useTrackPlaylists(id);
+
+  const onToggleInPlaylist = useCallback(
+    async (playlistName: string) => {
+      await toggleTrackInPlaylist({ trackId: id, playlistName });
+    },
+    [id],
+  );
+
+  return (
+    <AddToPlaylistsSheetBase
+      name={TRACK_PLAYLIST_GLOBAL_SHEET_KEY}
+      initiallyInLists={inList}
+      onToggleInPlaylist={onToggleInPlaylist}
+    />
+  );
+}
+//#endregion
 
 //#region Introduction
 function TrackIntro({ data }: { data: Track }) {
@@ -83,7 +108,7 @@ function TrackIntro({ data }: { data: Track }) {
         </Marquee>
         <ArtistsLink
           artists={data.artists}
-          beforeNavigation={() => TrueSheet.dismiss(GLOBAL_SHEET_KEY)}
+          beforeNavigation={() => TrueSheet.dismiss(TRACK_GLOBAL_SHEET_KEY)}
           popStrategy={onNowPlaying ? "popScreen" : undefined}
         />
         {data.albumName ? (
@@ -107,7 +132,7 @@ function TrackIntro({ data }: { data: Track }) {
 //#region Metadata
 function TrackMetadata({ data }: { data: Track }) {
   return (
-    <View className="gap-4 rounded-md bg-surfaceContainerLowest p-4">
+    <View className="gap-4 rounded-lg bg-surfaceContainerLowest p-4">
       <Marquee contentContainerClassName="grow flex-row justify-between gap-4">
         <Text className="text-xxs/tight">
           {data.bitrate !== null ? abbreviateBitRate(data.bitrate) : "—"}
@@ -151,7 +176,7 @@ function IconActions(props: { data: Track; editArtwork: VoidFunction }) {
   const isFav = toggleInPlaylist.isPending ? !favStatus : favStatus;
 
   return (
-    <View className="flex-row justify-between gap-1 rounded-md bg-surfaceContainerLowest px-1">
+    <View className="flex-row justify-between gap-1 rounded-lg bg-surfaceContainerLowest p-1">
       <IconButton
         icon={`favorite${isFav ? "-filled" : ""}`}
         accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
@@ -198,19 +223,22 @@ function IconActions(props: { data: Track; editArtwork: VoidFunction }) {
 
 /** Buttons to add the track to the queue. */
 function QueueActions({ id, name }: Record<"id" | "name", string>) {
+  const { t } = useTranslation();
   return (
-    <SheetButtonGroup
-      leftButton={{
-        textKey: "feat.queue.extra.playNext",
-        onPress: sheetAction(() => Queue.add({ id, name })),
-        Leading: <Icon name="queue-music" />,
-      }}
-      rightButton={{
-        textKey: "feat.queue.extra.playLast",
-        onPress: sheetAction(() => Queue.addToEnd({ id, name })),
-        Leading: <Icon name="low-priority" />,
-      }}
-    />
+    <View className="flex-row items-center gap-0.75">
+      <ActionButton
+        label={t("feat.queue.extra.playNext")}
+        onPress={sheetAction(() => Queue.add({ id, name }))}
+        leadingIcon="queue-music"
+        className="flex-1 rounded-lg rounded-r-xs"
+      />
+      <ActionButton
+        label={t("feat.queue.extra.playLast")}
+        onPress={sheetAction(() => Queue.addToEnd({ id, name }))}
+        leadingIcon="low-priority"
+        className="flex-1 rounded-lg rounded-l-xs"
+      />
+    </View>
   );
 }
 //#endregion
@@ -228,7 +256,7 @@ function Badge(props: { icon?: SupportedIconName; children: string }) {
 /** Calls action after dismissing sheet. */
 function sheetAction(onPress: VoidFunction) {
   return () => {
-    TrueSheet.dismiss(GLOBAL_SHEET_KEY);
+    TrueSheet.dismiss(TRACK_GLOBAL_SHEET_KEY);
     onPress();
   };
 }
