@@ -17,7 +17,7 @@ function Checkbox({ checked, size = 20 }: { checked: boolean; size?: number }) {
       style={{ height: size, width: size }}
       className={cn(
         "items-center justify-center rounded-sm border border-onSurface",
-        { "bg-onSurface": checked },
+        { "border-0 bg-onSurface": checked },
       )}
     >
       {checked ? <Icon name="check" size={size} color="surface" /> : null}

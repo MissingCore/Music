@@ -68,7 +68,6 @@ export function PlaybackOptionsSheet(props: {
       },
       onChange: (value) => {
         "worklet";
-        console.log(value);
         scheduleOnRN(PreferenceSetters.setPlaybackDelay, value);
       },
       onStatusChange: (status) => {
