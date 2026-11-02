@@ -71,14 +71,9 @@ export function AddToPlaylistsSheetBase({
 
   const handleCreatedPlaylist = useCallback(
     async (playlistName: string) => {
-      try {
-        await createPlaylist({ name: playlistName });
-        await handleToggleInPlaylist(playlistName, false);
-        clearAllQueries();
-      } catch (err) {
-        console.log(err);
-        toast.tError("err.flow.generic.title");
-      }
+      await createPlaylist({ name: playlistName });
+      await handleToggleInPlaylist(playlistName, false);
+      clearAllQueries();
     },
     [handleToggleInPlaylist],
   );
