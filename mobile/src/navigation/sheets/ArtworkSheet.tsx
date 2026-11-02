@@ -3,6 +3,7 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { View, useWindowDimensions } from "react-native";
 
 import { queries as q } from "~/data/keyStore";
@@ -22,9 +23,9 @@ import { pickImage } from "~/lib/file-system";
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
 import { isRecord } from "~/utils/validation";
-import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
 import type { SheetRef } from "~/components/next/base/sheet";
 import { ScrollableSheet } from "~/components/next/base/sheet";
+import { ActionButton } from "~/components/next/blocks/button-action";
 import type { MediaImageSrc } from "~/components/next/blocks/media-image";
 import { MediaImage } from "~/components/next/blocks/media-image";
 
@@ -118,6 +119,7 @@ function BaseArtworkSheet(props: {
   onSuccess: () => Promise<void> | void;
   disabled?: boolean;
 }) {
+  const { t } = useTranslation();
   const { height, width } = useWindowDimensions();
   const [disabled, setDisabled] = useState(false);
 
@@ -144,23 +146,26 @@ function BaseArtworkSheet(props: {
       <View className="mx-auto px-4">
         <MediaImage src={props.imageSource} size={imageSize} />
       </View>
-      <SheetButtonGroup
-        leftButton={{
-          textKey: "feat.artwork.extra.remove",
-          onPress: () => onSubmit(null),
-          disabled:
+      <View className="flex-row items-center gap-0.75">
+        <ActionButton
+          label={t("feat.artwork.extra.remove")}
+          onPress={() => onSubmit(null)}
+          disabled={
             props.disabled ||
             disabled ||
             !props.imageSource ||
             Array.isArray(props.imageSource) ||
-            isRecord(props.imageSource),
-        }}
-        rightButton={{
-          textKey: "feat.artwork.extra.change",
-          onPress: () => onSubmit(pickImage()),
-          disabled,
-        }}
-      />
+            isRecord(props.imageSource)
+          }
+          className="flex-1 rounded-lg rounded-r-xs"
+        />
+        <ActionButton
+          label={t("feat.artwork.extra.change")}
+          onPress={() => onSubmit(pickImage())}
+          disabled={disabled}
+          className="flex-1 rounded-lg rounded-l-xs"
+        />
+      </View>
     </ScrollableSheet>
   );
 }
