@@ -64,8 +64,9 @@ export function ToggleItem({
   return (
     <ItemBase
       {...props}
-      accessibilityRole="switch"
-      accessibilityState={{ checked: enabled, disabled: props.disabled }}
+      role="switch"
+      aria-checked={enabled}
+      aria-disabled={props.disabled}
       onPress={onToggle}
       Trailing={<Switch enabled={enabled} />}
     />
