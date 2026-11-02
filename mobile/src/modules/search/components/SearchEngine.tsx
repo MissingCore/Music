@@ -108,7 +108,7 @@ export function SearchEngineList<TScope extends SearchCategories>({
             <TText
               textKey={`term.${item}`}
               intent="em"
-              className={cn("mx-0.75 mb-1.5", { "mt-1.5": index > 0 })}
+              className={cn("mx-0.75", { "pt-1.5": index > 0 })}
             />
           ) : (
             <ImageListItem
@@ -125,6 +125,7 @@ export function SearchEngineList<TScope extends SearchCategories>({
                   />
                 ) : undefined
               }
+              spacing="column"
             />
           )
         }
@@ -135,12 +136,11 @@ export function SearchEngineList<TScope extends SearchCategories>({
             <ContentPlaceholder errMsgKey="err.msg.noResults" />
           ) : undefined
         }
-        className={cn("-mx-0.75 -mb-1.5", {
-          "-mb-5.5": props.forSheets,
-        })}
-        contentContainerClassName={
-          props.forSheets ? "pb-4" : "pb-safe-offset-20"
-        }
+        className="-mx-0.75"
+        contentContainerClassName={cn(
+          "gap-y-1.5",
+          !props.forSheets ? "pb-safe-offset-20" : undefined,
+        )}
         contentContainerStyle={{
           paddingTop: tabsWithData.length > 0 ? filterHeight : 24,
         }}
