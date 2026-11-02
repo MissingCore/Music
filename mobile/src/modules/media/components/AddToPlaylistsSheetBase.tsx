@@ -55,7 +55,7 @@ export function AddToPlaylistsSheetBase({
   }, [initiallyInLists]);
 
   const handleToggleInPlaylist = useCallback(
-    async (playlistName: string, remove: boolean) => {
+    async (playlistName: string, remove: boolean, propagteError = false) => {
       try {
         await onToggleInPlaylist(playlistName, remove);
         setInLists((prev) => {
@@ -64,7 +64,9 @@ export function AddToPlaylistsSheetBase({
           updatedList[remove ? "delete" : "add"](playlistName);
           return updatedList;
         });
-      } catch {}
+      } catch (err) {
+        if (propagteError) throw err;
+      }
     },
     [onToggleInPlaylist],
   );
@@ -72,7 +74,7 @@ export function AddToPlaylistsSheetBase({
   const handleCreatedPlaylist = useCallback(
     async (playlistName: string) => {
       await createPlaylist({ name: playlistName });
-      await handleToggleInPlaylist(playlistName, false);
+      await handleToggleInPlaylist(playlistName, false, true);
       clearAllQueries();
     },
     [handleToggleInPlaylist],
