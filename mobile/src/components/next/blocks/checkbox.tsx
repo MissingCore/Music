@@ -26,7 +26,6 @@ function Checkbox({ checked, size = 20 }: { checked: boolean; size?: number }) {
 }
 
 type CheckboxFieldBaseProps = {
-  accessibilityLabel?: string;
   checked: boolean;
   onCheck: VoidFunction;
   disabled?: boolean;
@@ -38,9 +37,9 @@ function CheckboxFieldBase(
 ) {
   return (
     <Ripple
-      accessibilityLabel={props.accessibilityLabel}
-      accessibilityRole="checkbox"
-      accessibilityState={{ checked: props.checked, disabled: props.disabled }}
+      role="checkbox"
+      aria-checked={props.checked}
+      aria-disabled={props.disabled}
       onPress={props.onCheck}
       disabled={props.disabled}
       className={cn(
