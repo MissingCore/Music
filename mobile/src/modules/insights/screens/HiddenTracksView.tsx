@@ -12,7 +12,6 @@ import type { HiddenTrack } from "~/db/schema";
 import { hiddenTracks } from "~/db/schema";
 
 import { ScrollLayoutTitle } from "~/navigation/layouts/ScrollLayout";
-import * as SettingsList from "~/navigation/screens/settings/components/SettingsList";
 import {
   ContentPlaceholder,
   PagePlaceholder,
@@ -25,6 +24,7 @@ import { IconButton } from "~/components/next/base/button-icon";
 import { Divider } from "~/components/next/base/divider";
 import { TextStack } from "~/components/next/blocks/text-stack";
 import { SequenceNumber } from "~/components/next/blocks/sequence-number";
+import * as List from "~/components/next/composed/list";
 import { ToolbarScreenOffset } from "~/components/next/composed/toolbar";
 
 export default function HiddenTracks() {
@@ -101,7 +101,7 @@ function ScreenContents(props: { data: HiddenTrack[] }) {
       data={groupedHiddenTracks}
       keyExtractor={({ monthYearStr }) => monthYearStr}
       renderItem={({ item }) => (
-        <SettingsList.Group label={item.monthYearStr}>
+        <List.Group label={item.monthYearStr}>
           <FlatList
             data={item.dayEntries}
             keyExtractor={({ day }) => `${item.monthYearStr}_${day}`}
@@ -113,7 +113,7 @@ function ScreenContents(props: { data: HiddenTrack[] }) {
             )}
             scrollEnabled={false}
           />
-        </SettingsList.Group>
+        </List.Group>
       )}
       ListHeaderComponent={
         <ScrollLayoutTitle title="feat.hiddenTracks.title" />

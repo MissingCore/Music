@@ -12,13 +12,13 @@ import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
 import { MinDurationSheet } from "./sheets/MinDurationSheet";
 import { ScanFilterListSheet } from "./sheets/ScanFilterListSheet";
 import { SeparatorsSheet } from "./sheets/SeparatorsSheet";
-import * as SettingsList from "./components/SettingsList";
 
 import { getAPIVersionCode } from "~/lib/device";
 import { mutateGuard } from "~/lib/react-query";
 import type { SheetRef } from "~/components/next/base/sheet";
 import { useSheetRef } from "~/components/next/base/sheet";
 import { ConfirmAction } from "~/components/next/composed/confirm-action";
+import * as List from "~/components/next/composed/list";
 
 export default function ScanningSettings() {
   const { t } = useTranslation();
@@ -30,17 +30,17 @@ export default function ScanningSettings() {
     <>
       <ScanningConfigurations.Sheets {...sheetRefs} />
       <ScrollLayout title="feat.scanning.title">
-        <SettingsList.Group>
-          <SettingsList.Item
+        <List.Group>
+          <List.Item
             icon="search"
             label={t("feat.rescan.title")}
             supporting={t("feat.rescan.brief")}
             onPress={() => mutateGuard(rescan, undefined)}
             disabled={rescan.isPending}
           />
-          <SettingsList.Divider />
+          <List.Divider />
           <ConfirmAction prompt={[t("feat.deepRescan.title")]}>
-            <SettingsList.Item
+            <List.Item
               icon="find-replace"
               label={t("feat.deepRescan.title")}
               supporting={t("feat.deepRescan.brief")}
@@ -48,21 +48,21 @@ export default function ScanningSettings() {
               disabled={rescan.isPending}
             />
           </ConfirmAction>
-        </SettingsList.Group>
+        </List.Group>
 
-        <SettingsList.Group>
-          <SettingsList.ToggleItem
+        <List.Group>
+          <List.ToggleItem
             icon="search-off"
             label={t("feat.rescanOnLaunch.title")}
             supporting={t("feat.rescanOnLaunch.brief")}
             onToggle={PreferenceTogglers.toggleKey("rescanOnLaunch")}
             enabled={rescanOnLaunch}
           />
-          <SettingsList.Divider />
+          <List.Divider />
           <OptimizedImageSavingSetting />
-          <SettingsList.Divider />
+          <List.Divider />
           <MediaStoreScannerSetting />
-        </SettingsList.Group>
+        </List.Group>
 
         <ScanningConfigurations.Settings {...sheetRefs} />
       </ScrollLayout>
@@ -82,7 +82,7 @@ export function OptimizedImageSavingSetting() {
       ]}
       skipConfirmation={!optimizedImageSave}
     >
-      <SettingsList.ToggleItem
+      <List.ToggleItem
         icon="image"
         label={t("feat.optimizedImageSave.title")}
         supporting={t("feat.optimizedImageSave.brief")}
@@ -99,7 +99,7 @@ export function MediaStoreScannerSetting() {
   const { t } = useTranslation();
   const mediaStoreScanner = usePreferenceStore((s) => s.mediaStoreScanner);
   return getAPIVersionCode() >= 30 ? (
-    <SettingsList.ToggleItem
+    <List.ToggleItem
       icon="database-search"
       label={t("feat.scanning.extra.useMediaStore")}
       supporting={t("feat.scanning.extra.useMediaStoreBrief")}
@@ -129,37 +129,37 @@ export const ScanningConfigurations = {
 
     return (
       <>
-        <SettingsList.Group>
-          <SettingsList.Item
+        <List.Group>
+          <List.Item
             icon="playlist-add-check"
             label={t("feat.listAllow.title")}
             supporting={t("plural.entry", { count: allowList.length })}
             onPress={() => props.allowListSheetRef.current?.present()}
           />
-          <SettingsList.Divider />
-          <SettingsList.Item
+          <List.Divider />
+          <List.Item
             icon="playlist-remove"
             label={t("feat.listBlock.title")}
             supporting={t("plural.entry", { count: blockList.length })}
             onPress={() => props.blockListSheetRef.current?.present()}
           />
-          <SettingsList.Divider />
-          <SettingsList.Item
+          <List.Divider />
+          <List.Item
             icon="timer"
             label={t("feat.minTrackDuration.title")}
             supporting={t("plural.second", { count: ignoreDuration })}
             onPress={() => props.minDurationSheetRef.current?.present()}
           />
-        </SettingsList.Group>
+        </List.Group>
 
-        <SettingsList.Group>
-          <SettingsList.Item
+        <List.Group>
+          <List.Item
             icon="glyphs"
             label={t("feat.separators.title")}
             supporting={t("plural.entry", { count: delimiters.length })}
             onPress={() => props.separatorsSheetRef.current?.present()}
           />
-        </SettingsList.Group>
+        </List.Group>
       </>
     );
   }),

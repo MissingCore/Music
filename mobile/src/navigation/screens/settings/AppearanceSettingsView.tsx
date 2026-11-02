@@ -12,9 +12,9 @@ import {
   DefaultLibraryTabSheet,
   DefaultOpenTabSheet,
 } from "./sheets/TabSelectionSheets";
-import * as SettingsList from "./components/SettingsList";
 
 import { useSheetRef } from "~/components/next/base/sheet";
+import * as List from "~/components/next/composed/list";
 import {
   AccentFontSheet,
   PrimaryFontSheet,
@@ -56,22 +56,22 @@ export default function AppearanceSettings() {
       <DefaultLibraryTabSheet ref={defaultLibraryTabSheetRef} />
 
       <ScrollLayout title="feat.appearance.title">
-        <SettingsList.Group label={t("feat.theme.title")}>
-          <SettingsList.Item
+        <List.Group label={t("feat.theme.title")}>
+          <List.Item
             icon="brand-family"
             label={t("feat.font.extra.accent")}
             supporting={getFontDisplayName(accentFont)}
             onPress={() => accentFontSheetRef.current?.present()}
           />
-          <SettingsList.Divider />
-          <SettingsList.Item
+          <List.Divider />
+          <List.Item
             icon="match-case"
             label={t("feat.font.extra.primary")}
             supporting={getFontDisplayName(primaryFont)}
             onPress={() => primaryFontSheetRef.current?.present()}
           />
-          <SettingsList.Divider />
-          <SettingsList.Item
+          <List.Divider />
+          <List.Item
             icon="routine"
             label={t("feat.theme.title")}
             supporting={
@@ -79,88 +79,86 @@ export default function AppearanceSettings() {
             }
             onPress={() => themeSheetRef.current?.present()}
           />
-        </SettingsList.Group>
+        </List.Group>
 
-        <SettingsList.Group label={t("feat.homeScreens.title")}>
-          <SettingsList.Item
+        <List.Group label={t("feat.homeScreens.title")}>
+          <List.Item
             icon="widget-width"
             label={t("feat.modalViewPreference.extra.columnSize")}
             onPress={() => columnSizeSheetRef.current?.present()}
           />
-          <SettingsList.Divider />
-          <SettingsList.Item
+          <List.Divider />
+          <List.Item
             icon="home"
             label={t("feat.homeScreens.extra.defaultOpenTab")}
             supporting={t(`term.${defaultOpenTab}`)}
             onPress={() => defaultOpenTabSheetRef.current?.present()}
           />
-          <SettingsList.Divider />
-          <SettingsList.Item
+          <List.Divider />
+          <List.Item
             icon="library-music"
             label={t("feat.homeScreens.extra.defaultLibraryTab")}
             supporting={t(`term.${defaultLibraryTab}s`)}
             onPress={() => defaultLibraryTabSheetRef.current?.present()}
           />
-        </SettingsList.Group>
+        </List.Group>
 
-        <SettingsList.Group label={t("feat.miniplayer.title")}>
-          <SettingsList.ToggleItem
+        <List.Group label={t("feat.miniplayer.title")}>
+          <List.ToggleItem
             icon="swipe-down"
             label={t("feat.miniplayer.extra.dragToDismiss")}
             onToggle={PreferenceTogglers.toggleKey("dragClearPlayback")}
             enabled={dragClearPlayback}
           />
-          <SettingsList.Divider />
-          <SettingsList.ToggleItem
+          <List.Divider />
+          <List.ToggleItem
             icon="swipe"
             label={t("feat.miniplayer.extra.swipeControls")}
             onToggle={PreferenceTogglers.toggleKey("miniplayerGestures")}
             enabled={miniplayerGestures}
           />
-        </SettingsList.Group>
+        </List.Group>
 
-        <SettingsList.Group label={t("feat.nowPlaying.title")}>
-          <SettingsList.ToggleItem
+        <List.Group label={t("feat.nowPlaying.title")}>
+          <List.ToggleItem
             icon="image"
             label={t("feat.nowPlaying.extra.artworkPlaybackToggle")}
             onToggle={PreferenceTogglers.toggleKey("nowPlayingArtworkControls")}
             enabled={nowPlayingArtworkControls}
           />
-          <SettingsList.Divider />
-          <SettingsList.ToggleItem
+          <List.Divider />
+          <List.ToggleItem
             icon="swipe"
             label={t("feat.miniplayer.extra.swipeControls")}
             onToggle={PreferenceTogglers.toggleKey("nowPlayingGestures")}
             enabled={nowPlayingGestures}
           />
-        </SettingsList.Group>
+        </List.Group>
 
-        <SettingsList.Group
-          label={t("feat.modalTrack.extra.trackQuickActions")}
-        >
-          <SettingsList.ToggleItem
+        <List.Group label={t("feat.modalTrack.extra.trackQuickActions")}>
+          <List.ToggleItem
             icon="queue-music"
             label={t("feat.queue.extra.add")}
             onToggle={PreferenceTogglers.toggleKey("quickAddQueue")}
             enabled={quickAddQueue}
           />
-          <SettingsList.Divider />
-          <SettingsList.ToggleItem
+          <List.Divider />
+          <List.ToggleItem
             icon="favorite"
             label={t("term.favorite")}
             onToggle={PreferenceTogglers.toggleKey("quickFavorite")}
             enabled={quickFavorite}
           />
-        </SettingsList.Group>
+        </List.Group>
 
-        <SettingsList.Group label={t("term.misc")}>
-          <SettingsList.ToggleItem
+        <List.Group label={t("term.misc")}>
+          <List.ToggleItem
             icon="image"
             label={t("feat.artwork.extra.square")}
             onToggle={PreferenceTogglers.toggleKey("squareArtwork")}
             enabled={squareArtwork}
           />
-        </SettingsList.Group>
+        </List.Group>
       </ScrollLayout>
     </>
   );

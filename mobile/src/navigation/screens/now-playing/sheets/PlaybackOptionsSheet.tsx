@@ -13,7 +13,6 @@ import { PreferenceSetters } from "~/stores/Preference/actions";
 import { PlaybackDelayConfig } from "~/stores/Preference/utils";
 
 import { getMediaLinkContext } from "~/navigation/utils/router";
-import * as SettingsList from "~/navigation/screens/settings/components/SettingsList";
 import { AppearanceSheet } from "./AppearanceSheet";
 
 import { NothingSlider } from "~/components/Form/Slider.variant";
@@ -23,6 +22,7 @@ import { ScrollableSheet, useSheetRef } from "~/components/next/base/sheet";
 import type { LabeledSliderProps } from "~/components/next/blocks/slider-labeled";
 import { LabeledSlider } from "~/components/next/blocks/slider-labeled";
 import { TextStack } from "~/components/next/blocks/text-stack";
+import * as List from "~/components/next/composed/list";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 
 export function PlaybackOptionsSheet(props: {
@@ -106,19 +106,19 @@ export function PlaybackOptionsSheet(props: {
           {...playbackDelaySliderOptions}
         />
 
-        <SettingsList.Group>
-          <SettingsList.Item
+        <List.Group>
+          <List.Item
             icon="format-paint"
             label={t("feat.appearance.title")}
             onPress={presentAppearanceSheet}
           />
-          <SettingsList.Divider />
-          <SettingsList.Item
+          <List.Divider />
+          <List.Item
             icon="graphic-eq"
             label={t("feat.audioEffects.title")}
             onPress={navigateToAudioEffectsScreen}
           />
-        </SettingsList.Group>
+        </List.Group>
       </ScrollableSheet>
     </>
   );

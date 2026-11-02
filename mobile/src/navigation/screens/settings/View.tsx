@@ -9,9 +9,9 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
 import { BackupSheet } from "./sheets/BackupSheet";
 import { LanguageSheet } from "./sheets/LanguageSheet";
-import * as SettingsList from "./components/SettingsList";
 
 import { useSheetRef } from "~/components/next/base/sheet";
+import * as List from "~/components/next/composed/list";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
 export default function Settings() {
@@ -29,74 +29,74 @@ export default function Settings() {
       <BackupSheet ref={backupSheetRef} />
 
       <ScrollLayout title="term.settings">
-        <SettingsList.Group>
-          <SettingsList.Item
+        <List.Group>
+          <List.Item
             icon="format-paint"
             label={t("feat.appearance.title")}
             onPress={() => navigation.navigate("AppearanceSettings")}
           />
-          <SettingsList.Divider />
-          <SettingsList.Item
+          <List.Divider />
+          <List.Item
             icon="translate"
             label={t("feat.language.title")}
             supporting={selectedLanguage?.label}
             onPress={() => languageSheetRef.current?.present()}
           />
-        </SettingsList.Group>
+        </List.Group>
 
-        <SettingsList.Group>
-          <SettingsList.Item
+        <List.Group>
+          <List.Item
             icon="archive"
             label={t("feat.backup.title")}
             onPress={() => backupSheetRef.current?.present()}
           />
-          <SettingsList.Divider />
-          <SettingsList.Item
+          <List.Divider />
+          <List.Item
             icon="bar-chart-4-bars"
             label={t("feat.insights.title")}
             onPress={() => navigation.navigate("Insights")}
           />
-          <SettingsList.Divider />
-          <SettingsList.Item
+          <List.Divider />
+          <List.Item
             icon="document-search"
             label={t("feat.scanning.title")}
             onPress={() => navigation.navigate("ScanningSettings")}
           />
-        </SettingsList.Group>
+        </List.Group>
 
-        <SettingsList.Group>
-          <SettingsList.Item
+        <List.Group>
+          <List.Item
             icon="graphic-eq"
             label={t("feat.audioEffects.title")}
             onPress={() => navigation.navigate("AudioEffects", {})}
           />
-          <SettingsList.Divider />
-          <SettingsList.Item
+          <List.Divider />
+          <List.Item
             icon="lyrics"
             label={t("feat.lyrics.title")}
             onPress={() => navigation.navigate("LyricsSettings")}
           />
-          <SettingsList.Divider />
-          <SettingsList.Item
+          <List.Divider />
+          <List.Item
             icon="autoplay"
             label={t("feat.playback.title")}
             onPress={() => navigation.navigate("PlaybackSettings")}
           />
-        </SettingsList.Group>
+        </List.Group>
 
-        <SettingsList.Group>
-          <SettingsList.Item
+        <List.Group>
+          <List.Item
             icon="flask-filled"
             label={t("feat.experimental.title")}
             onPress={() => navigation.navigate("ExperimentalSettings")}
           />
-          <SettingsList.Divider />
-          <SettingsList.Item
+          <List.Divider />
+          <List.Item
             icon="info"
             label={t("term.about")}
             onPress={() => navigation.navigate("About")}
           />
-        </SettingsList.Group>
+        </List.Group>
       </ScrollLayout>
     </>
   );

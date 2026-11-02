@@ -6,15 +6,15 @@ import { View } from "react-native";
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { openLink } from "~/lib/web-browser";
-import { Card } from "~/components/next/base/card";
-import { Divider as DividerBase } from "~/components/next/base/divider";
-import type { SupportedIconName } from "~/components/next/base/icon";
-import { Icon } from "~/components/next/base/icon";
-import { Ripple } from "~/components/next/base/ripple";
-import { Switch } from "~/components/next/base/switch";
-import { Text } from "~/components/next/base/typography";
-import { TextStack } from "~/components/next/blocks/text-stack";
-import type { PressableProps } from "~/components/next/primitive/pressable";
+import { Card } from "../base/card";
+import { Divider as DividerBase } from "../base/divider";
+import type { SupportedIconName } from "../base/icon";
+import { Icon } from "../base/icon";
+import { Ripple } from "../base/ripple";
+import { Switch } from "../base/switch";
+import { Text } from "../base/typography";
+import { TextStack } from "../blocks/text-stack";
+import type { PressableProps } from "../primitive/pressable";
 
 export function Group(props: { children: React.ReactNode; label?: string }) {
   const renderedComponent = <Card className="p-0">{props.children}</Card>;
@@ -75,6 +75,7 @@ export function ToggleItem({
 
 //#region Internal Helpers
 interface ItemBaseProps {
+  /** The design is icon-first (ie: we assume an icon is provided). */
   icon?: SupportedIconName;
   label: string;
   supporting?: string;

@@ -13,12 +13,11 @@ import {
   SeekbarDesignOptions,
 } from "~/stores/Preference/constants";
 
-import * as SettingsList from "~/navigation/screens/settings/components/SettingsList";
-
 import type { SheetRef } from "~/components/next/base/sheet";
 import { ScrollableSheet } from "~/components/next/base/sheet";
 import { SegmentedPicker } from "~/components/next/blocks/segmented-picker";
 import { TText } from "~/components/next/base/typography";
+import * as List from "~/components/next/composed/list";
 
 export function AppearanceSheet(props: { ref: SheetRef }) {
   const { t } = useTranslation();
@@ -41,19 +40,19 @@ export function AppearanceSheet(props: { ref: SheetRef }) {
 
   return (
     <ScrollableSheet ref={props.ref}>
-      <SettingsList.Group>
-        <SettingsList.ToggleItem
+      <List.Group>
+        <List.ToggleItem
           label={t("feat.nowPlayingDesign.extra.alternativeInfoLayout")}
           enabled={alternativeInfoLayout}
           onToggle={PreferenceTogglers.toggleKey("alternativeInfoLayout")}
         />
-        <SettingsList.Divider adjustForIcon={false} />
-        <SettingsList.ToggleItem
+        <List.Divider adjustForIcon={false} />
+        <List.ToggleItem
           label={t("feat.nowPlayingDesign.extra.standardVinylSpeed")}
           enabled={standardVinylSpeed}
           onToggle={PreferenceTogglers.toggleKey("alternativeInfoLayout")}
         />
-      </SettingsList.Group>
+      </List.Group>
 
       <TText
         textKey="feat.artwork.title"
