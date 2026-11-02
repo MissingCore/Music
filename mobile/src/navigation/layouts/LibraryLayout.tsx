@@ -241,7 +241,6 @@ export function Header(props: {
                 icon="more-horiz"
                 accessibilityLabel={t("feat.modalViewPreference.title")}
                 onPress={() => sheetRef.current?.present()}
-                filled
               />
             </View>
           </View>

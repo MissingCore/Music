@@ -69,3 +69,7 @@ export function IconButton({
     </Button>
   );
 }
+
+export function FilledIconButton(props: Omit<IconButtonProps, "filled">) {
+  return <IconButton {...props} filled />;
+}

@@ -12,7 +12,7 @@ import { sanitizePlaylistName } from "~/data/playlist/utils";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
-import { IconButton } from "~/components/next/base/button-icon";
+import { FilledIconButton } from "~/components/next/base/button-icon";
 import { TextInput } from "~/components/next/base/input";
 import type { SheetRef } from "~/components/next/base/sheet";
 import {
@@ -155,7 +155,7 @@ function PlaylistForm(props: {
       value={inputForm.value}
       onChangeText={inputForm.onChange}
       TrailingActions={
-        <IconButton
+        <FilledIconButton
           icon="add"
           accessibilityLabel={t("form.create")}
           onPress={async () => {
@@ -164,7 +164,6 @@ function PlaylistForm(props: {
           }}
           disabled={!inputForm.canSubmit || inputForm.isSubmitting}
           intent="primary"
-          filled
           size="md"
         />
       }

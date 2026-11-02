@@ -16,7 +16,7 @@ import { useGetLayoutConfig } from "~/hooks/useLayoutConfigs";
 import { pickFile } from "~/lib/file-system";
 import { cn } from "~/lib/style";
 import { Button } from "~/components/next/base/button";
-import { IconButton } from "~/components/next/base/button-icon";
+import { FilledIconButton } from "~/components/next/base/button-icon";
 import type { SheetRef } from "~/components/next/base/sheet";
 import {
   Sheet,
@@ -89,12 +89,11 @@ function FontSheet(props: { ref: SheetRef; type: "Accent" | "Primary" }) {
       ref={props.ref}
       footer={
         <SheetFooter className="items-center">
-          <IconButton
+          <FilledIconButton
             icon="upload"
             accessibilityLabel={t("feat.backup.extra.import")}
             onPress={() => importFont(setFont)}
             intent="inverse"
-            filled
             wide
           />
         </SheetFooter>
@@ -130,12 +129,11 @@ function FontSheet(props: { ref: SheetRef; type: "Accent" | "Primary" }) {
                 </Text>
               </Button>
               {canDeleteFont(font) ? (
-                <IconButton
+                <FilledIconButton
                   icon="delete"
                   accessibilityLabel={t("form.delete")}
                   onPress={() => deleteCustomFont(font.id)}
                   intent="error"
-                  filled
                   size="xs"
                   hitSlop={4}
                   className="absolute top-2 right-2"

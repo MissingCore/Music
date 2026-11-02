@@ -12,7 +12,7 @@ import {
 
 import { OnRTL } from "~/lib/react";
 import { Links, openLink } from "~/lib/web-browser";
-import { IconButton } from "~/components/next/base/button-icon";
+import { FilledIconButton } from "~/components/next/base/button-icon";
 import { Divider } from "~/components/next/base/divider";
 import type { SheetRef } from "~/components/next/base/sheet";
 import { Sheet, SheetFooter } from "~/components/next/base/sheet";
@@ -45,12 +45,11 @@ export function LanguageSheet(props: { ref: SheetRef }) {
                 <Text size="xs">{translatorsString}</Text>
               </Marquee>
             </View>
-            <IconButton
+            <FilledIconButton
               icon={`north-${OnRTL.decide("west", "east")}`}
               accessibilityLabel={t("feat.language.extra.contribute")}
               onPress={() => openLink(Links.Translations)}
               intent="inverse"
-              filled
             />
           </View>
           {selectedLanguage?.rtl ? (

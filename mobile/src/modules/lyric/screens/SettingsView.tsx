@@ -17,7 +17,10 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { Links } from "~/lib/web-browser";
-import { IconButton } from "~/components/next/base/button-icon";
+import {
+  FilledIconButton,
+  IconButton,
+} from "~/components/next/base/button-icon";
 import { TText } from "~/components/next/base/typography";
 import { Hint } from "~/components/next/blocks/hint";
 import { TextStack } from "~/components/next/blocks/text-stack";
@@ -66,12 +69,11 @@ export default function LyricsSettings() {
           renderItem={(args) => <RenderItem {...args} />}
           onReordered={moveLyricProvider}
           ListFooterComponent={
-            <IconButton
+            <FilledIconButton
               icon="add"
               accessibilityLabel={t("form.create")}
               onPress={() => navigation.navigate("LyricProviderForm", {})}
               intent="inverse"
-              filled
               wide
               className="mt-2 self-center"
             />

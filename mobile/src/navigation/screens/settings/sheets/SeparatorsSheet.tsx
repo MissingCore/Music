@@ -8,7 +8,10 @@ import { Keyboard, View } from "react-native";
 import i18next from "~/modules/i18n";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 
-import { IconButton } from "~/components/next/base/button-icon";
+import {
+  FilledIconButton,
+  IconButton,
+} from "~/components/next/base/button-icon";
 import { TextInput } from "~/components/next/base/input";
 import type { SheetRef } from "~/components/next/base/sheet";
 import {
@@ -83,7 +86,7 @@ function SeparatorForm() {
       value={inputForm.value}
       onChangeText={inputForm.onChange}
       TrailingActions={
-        <IconButton
+        <FilledIconButton
           icon="add"
           accessibilityLabel={t("template.entryAdd", {
             name: inputForm.value,
@@ -94,7 +97,6 @@ function SeparatorForm() {
           }}
           disabled={!inputForm.canSubmit || inputForm.isSubmitting}
           intent="primary"
-          filled
           size="md"
         />
       }

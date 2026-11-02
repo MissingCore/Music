@@ -12,7 +12,10 @@ import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 
 import { pickDirectory } from "~/lib/file-system";
 import { addTrailingSlash, getSafeUri } from "~/utils/string";
-import { IconButton } from "~/components/next/base/button-icon";
+import {
+  FilledIconButton,
+  IconButton,
+} from "~/components/next/base/button-icon";
 import { TextInput } from "~/components/next/base/input";
 import type { SheetRef } from "~/components/next/base/sheet";
 import {
@@ -118,7 +121,7 @@ function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
             disabled={inputForm.isSubmitting}
             size="md"
           />
-          <IconButton
+          <FilledIconButton
             icon="add"
             accessibilityLabel={t("feat.directory.extra.add")}
             onPress={async () => {
@@ -127,7 +130,6 @@ function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
             }}
             disabled={!inputForm.canSubmit || inputForm.isSubmitting}
             intent="primary"
-            filled
             size="md"
           />
         </View>

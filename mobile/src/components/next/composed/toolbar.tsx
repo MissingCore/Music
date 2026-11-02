@@ -22,7 +22,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { OnRTL } from "~/lib/react";
 import { useTheme } from "~/modules/customization/theme/hooks";
 import type { IconButtonProps } from "../base/button-icon";
-import { IconButton } from "../base/button-icon";
+import { FilledIconButton, IconButton } from "../base/button-icon";
 
 export const ToolbarScreenOffset = "py-safe-offset-20" as const;
 
@@ -132,7 +132,7 @@ function FABContainer(props: { children: React.ReactNode }) {
 function FAB(props: Omit<IconButtonProps, "filled" | "size">) {
   return (
     <FABContainer>
-      <IconButton {...props} filled size="lg" />
+      <FilledIconButton {...props} size="lg" />
     </FABContainer>
   );
 }

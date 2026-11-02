@@ -24,7 +24,10 @@ import {
 import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
 import { wait } from "~/utils/promise";
-import { IconButton } from "~/components/next/base/button-icon";
+import {
+  FilledIconButton,
+  IconButton,
+} from "~/components/next/base/button-icon";
 import { Ripple } from "~/components/next/base/ripple";
 import { ImageListItem } from "~/components/next/composed/image-list-item";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
@@ -103,12 +106,11 @@ export default function Upcoming() {
         title="term.upcoming"
         headerLeftAction={<BackButton />}
         headerRightAction={
-          <IconButton
+          <FilledIconButton
             icon="cached"
             accessibilityLabel={t("form.reset")}
             onPress={onSynchronizeQueue}
             disabled={isSynchronizing}
-            filled
           />
         }
       />

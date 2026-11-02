@@ -22,7 +22,10 @@ import { SleepTimerSheet } from "./sheets/SleepTimerSheet";
 import { useSleepTimerStore } from "./sheets/SleepTimerSheet/store";
 
 import { cn } from "~/lib/style";
-import { IconButton } from "~/components/next/base/button-icon";
+import {
+  FilledIconButton,
+  IconButton,
+} from "~/components/next/base/button-icon";
 import { useSheetRef } from "~/components/next/base/sheet";
 import { Text } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";
@@ -224,11 +227,10 @@ function BackButton() {
   const { t } = useTranslation();
   const navigation = useNavigation();
   return (
-    <IconButton
+    <FilledIconButton
       icon="keyboard-arrow-down"
       accessibilityLabel={t("form.back")}
       onPress={() => navigation.goBack()}
-      filled
       size="lg"
     />
   );

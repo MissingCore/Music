@@ -12,7 +12,10 @@ import type {
   ButtonSize,
   IconButtonProps,
 } from "~/components/next/base/button-icon";
-import { IconButton } from "~/components/next/base/button-icon";
+import {
+  FilledIconButton,
+  IconButton,
+} from "~/components/next/base/button-icon";
 
 /** Toggles the repeat status. */
 export function RepeatButton({ size = "lg" }: { size?: ButtonSize }) {
@@ -66,7 +69,7 @@ export function PlayToggleButton({
   );
 
   return (
-    <IconButton
+    <FilledIconButton
       icon={isPlaying ? "pause-filled" : "play-arrow-filled"}
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
       onPress={() =>
@@ -78,7 +81,6 @@ export function PlayToggleButton({
       }
       className={className}
       intent={isPlaying ? "muted" : "primary"}
-      filled
       size={size}
       wide={wide}
     />

@@ -18,7 +18,10 @@ import { pickFile } from "~/lib/file-system";
 import { OnRTL } from "~/lib/react";
 import { wait } from "~/utils/promise";
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
-import { IconButton } from "~/components/next/base/button-icon";
+import {
+  FilledIconButton,
+  IconButton,
+} from "~/components/next/base/button-icon";
 import { Card } from "~/components/next/base/card";
 import { FormSchema } from "~/modules/form/utils";
 import type { FormActionConfig } from "~/modules/form/Form";
@@ -163,13 +166,12 @@ function FormContents(props: { actionConfig: FormActionConfig<LyricEntry> }) {
           wide
           className="ml-auto"
         />
-        <IconButton
+        <FilledIconButton
           icon="save"
           accessibilityLabel={t("form.apply")}
           onPress={onSubmit}
           disabled={!canSubmit || isSubmitting}
           intent="inverse"
-          filled
           wide
         />
       </View>

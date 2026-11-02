@@ -11,7 +11,10 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
 
 import { Button } from "~/components/next/base/button";
-import { IconButton } from "~/components/next/base/button-icon";
+import {
+  FilledIconButton,
+  IconButton,
+} from "~/components/next/base/button-icon";
 import type { SheetRef } from "~/components/next/base/sheet";
 import {
   Sheet,
@@ -46,12 +49,11 @@ export function ThemeSheet(props: { ref: SheetRef }) {
       ref={props.ref}
       footer={
         <SheetFooter className="items-center">
-          <IconButton
+          <FilledIconButton
             icon="add"
             accessibilityLabel={t("form.create")}
             onPress={() => navigation.navigate("CreateTheme")}
             intent="inverse"
-            filled
             wide
           />
         </SheetFooter>

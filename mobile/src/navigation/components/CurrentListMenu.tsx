@@ -9,7 +9,7 @@ import { Queue } from "~/stores/Playback/actions";
 
 import { ListItem } from "~/components/List";
 import { Menu } from "~/components/Menu";
-import { IconButton } from "~/components/next/base/button-icon";
+import { FilledIconButton } from "~/components/next/base/button-icon";
 import type { SupportedIconName } from "~/components/next/base/icon";
 import { Icon } from "~/components/next/base/icon";
 
@@ -77,12 +77,11 @@ export function CurrentListMenu(props: {
     <Menu
       visible={visible}
       anchor={
-        <IconButton
+        <FilledIconButton
           icon="more-horiz"
           accessibilityLabel={t("term.more")}
           onPress={() => setVisible((prev) => !prev)}
           intent="inverse"
-          filled
           size="lg"
         />
       }

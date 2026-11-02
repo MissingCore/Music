@@ -31,7 +31,7 @@ import { chunkArray } from "~/utils/object";
 import { LegendList } from "~/components/Base/LegendList";
 import { ScrollView } from "~/components/Base/ScrollView";
 import { Button } from "~/components/next/base/button";
-import { IconButton } from "~/components/next/base/button-icon";
+import { FilledIconButton } from "~/components/next/base/button-icon";
 import { Icon } from "~/components/next/base/icon";
 import { Text, TText } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";
@@ -166,13 +166,12 @@ function WeeklyRecap() {
           components={{ b: <RecapStat /> }}
           className="max-w-md text-onPrimaryVariant"
         />
-        <IconButton
+        <FilledIconButton
           icon={OnRTL.decide("west", "east")}
           accessibilityLabel={t("template.entrySeeMore", {
             name: t("feat.recap.title"),
           })}
           onPress={() => navigation.navigate("Recap", { last7Days: true })}
-          filled
           wide
           className="self-start"
         />
