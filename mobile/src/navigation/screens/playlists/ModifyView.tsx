@@ -77,8 +77,7 @@ export default function ModifyPlaylist({
                   queryClient.invalidateQueries({ queryKey: q.tracks._def });
                   queryClient.invalidateQueries({ queryKey: ["search"] });
 
-                  navigation.goBack();
-                  navigation.goBack();
+                  navigation.pop(2);
                 } catch {
                   toast.tError("err.flow.generic.title");
                 }
@@ -114,11 +113,9 @@ export default function ModifyPlaylist({
           queryClient.invalidateQueries({ queryKey: q.tracks._def });
           queryClient.invalidateQueries({ queryKey: ["search"] });
 
-          navigation.goBack();
           // If playlist name changed, see the new playlist page.
-          if (newName !== undefined) {
-            navigation.replace("Playlist", { id: newName });
-          }
+          if (newName === undefined) navigation.goBack();
+          else navigation.popTo("Playlist", { id: newName });
         } catch {
           toast.tError("err.flow.generic.title");
         }

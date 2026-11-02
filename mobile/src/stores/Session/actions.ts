@@ -7,6 +7,7 @@ import type {
   GenericNavigation,
   RootParamList,
 } from "@react-navigation/native";
+import { CommonActions } from "@react-navigation/native";
 
 import { db } from "~/db";
 
@@ -76,7 +77,20 @@ export function navigateToArtist(
   if (popStrategy === "popScreen") navigation.goBack();
   // `pop` option is useful in the following navigation scenario:
   // "Artist" -> "Album" -> "Artist".
-  navigation.navigate("Artist", { id }, { pop: popStrategy === "popTo" });
+  navigation.dispatch({
+    //! We need to do `navigation.dispatch()` instead of the regular
+    //! `navigation.navigate()` due to changes in v8, where navigation
+    //! actions are based off the screen that dispatches them. This pattern
+    //! therefore doesn't work on the "Now Playing" screen.
+    //!
+    //! Ref: https://reactnavigation.org/docs/8.x/upgrading-from-7.x#navigation-actions-now-work-from-the-screen-that-dispatches-them
+    ...CommonActions.navigate(
+      "Artist",
+      { id },
+      { pop: popStrategy === "popTo" },
+    ),
+    source: undefined,
+  });
 }
 //#endregion
 
