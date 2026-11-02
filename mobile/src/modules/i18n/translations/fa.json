@@ -34,9 +34,9 @@
     "disc": "دیسک {{count}}",
     "eps": "مینی‌آلبوم‌ها",
     "singles": "تک‌آهنگ‌ها",
-    "share": null,
-    "expand": null,
-    "minimize": null
+    "share": "اشتراک‌گذاری",
+    "expand": "گسترش",
+    "minimize": "کوچک‌کردن"
   },
   "template": {
     "entryAdd": "اضافه کردن {{- name}}",
@@ -158,7 +158,7 @@
         "vinyl": "گرامافون",
         "vinylOld": "گرامافون (قدیمی)",
         "none": "هیچ کدام",
-        "immersive": null,
+        "immersive": "فراگیر",
         "alternativeInfoLayout": "چیدمان جایگزین اطلاعات",
         "standardVinylSpeed": "سرعت استاندارد گرامافون"
       }
@@ -214,14 +214,14 @@
       "title": "مرور عملکرد",
       "brief": "برترین آهنگ‌ها، خوانندگان و سابقهٔ پخش شما.",
       "extra": {
-        "backup": null,
+        "backup": "داده‌های مرور عملکرد را از این نسخهٔ برنامه منتقل کنید.",
         "recapTemplate": "$t(feat.recap.title) {{- name}}",
         "playCount": "{{count}} پخش",
         "mostPlayed": "بیشترین پخش شده {{- name}}",
         "top": "برترین {{- name}}",
         "timeRange": "بازهٔ زمانی",
         "allTime": "از ابتدا تاکنون",
-        "lastDays": null,
+        "lastDays": "{{amount}} روز گذشته",
         "listeningTime": "زمان گوش‌دادن",
         "totalListeningTime": "مجموع $t(feat.recap.extra.listeningTime)",
         "totalPlays": "مجموع پخش‌ها",
@@ -391,7 +391,7 @@
       "extra": {
         "recentlyPlayed": "اخیراً پخش شده",
         "recentlyPlayedNone": "هیچ چیز در {{amount}} روز گذشته پخش نشده.",
-        "recentlyDiscovered": null
+        "recentlyDiscovered": "اخیراً پیدا شده"
       }
     },
     "search": {
