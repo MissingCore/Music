@@ -289,7 +289,7 @@ function RecentGroup(props: {
         keyExtractor={(_, idx) => String(idx)}
         renderItem={({ item }) => (
           <LegendList
-            estimatedItemSize={62} // 56px Height + 6px Margin Bottom
+            estimatedItemSize={62} // 56px Height + 6px Vertical Gap
             data={item}
             keyExtractor={({ id }) => id}
             renderItem={({ item }) => (
@@ -297,11 +297,15 @@ function RecentGroup(props: {
             )}
             scrollEnabled={false}
             style={{ width }}
+            contentContainerClassName="gap-y-1.5"
           />
         )}
         // @ts-expect-error - This is compatible.
         renderScrollComponent={AnimatedGestureScrollView}
-        className="-mx-0.75 -mb-1.5"
+        //? Note: This horizontal LegendList seems to take more height than
+        //? necessary (+6px), resulting in extra space underneath the rendered
+        //? contents.
+        className="-mx-0.75"
         contentContainerClassName="px-4"
       />
     </>

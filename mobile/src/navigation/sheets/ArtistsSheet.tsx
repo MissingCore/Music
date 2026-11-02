@@ -21,7 +21,7 @@ export function ArtistsSheet() {
   return (
     <Sheet name={GLOBAL_SHEET_KEY}>
       <SheetLegendList
-        estimatedItemSize={62} // 56px Height + 6px Margin Bottom
+        estimatedItemSize={62} // 56px Height + 6px Vertical Gap
         data={artistsInfo.artists}
         keyExtractor={({ name }) => name}
         renderItem={({ item: { name, artwork } }) => (
@@ -32,7 +32,7 @@ export function ArtistsSheet() {
               TrueSheet.dismiss(GLOBAL_SHEET_KEY);
               navigateToArtist(navigation, name, artistsInfo.popStrategy);
             }}
-            spacing="none"
+            columnSpacing={false}
           />
         )}
         contentContainerClassName="gap-1.5"

@@ -156,8 +156,7 @@ function FormContents({ isFavoritesList }: { isFavoritesList?: boolean }) {
           />
         }
         ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noTracks" />}
-        className="-mb-1.5"
-        contentContainerClassName={cn("p-4", ToolbarScreenOffset)}
+        contentContainerClassName={cn("gap-y-1.5 p-4", ToolbarScreenOffset)}
       />
     </>
   );
@@ -311,7 +310,7 @@ const RenderItem = memo(
             size="xs"
           />
         }
-        spacing="row"
+        columnSpacing={false}
         //! `bg-surface` is there to prevent collapsing this View.
         className={cn("bg-surface pr-0", {
           "bg-surfaceContainerLowest": isActive,

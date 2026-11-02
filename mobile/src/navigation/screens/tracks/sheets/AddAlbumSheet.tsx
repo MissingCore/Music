@@ -32,7 +32,7 @@ export function AddAlbumSheet(props: {
       >
         <Search.List
           CustomList={SheetLegendList}
-          estimatedItemSize={62} // 56px Height + 6px Margin Bottom
+          estimatedItemSize={62} // 56px Height + 6px Vertical Gap
           data={data}
           keyExtractor={({ id }) => id}
           onFilterData={(query, data) => containSorter(data, query, "name")}
@@ -42,7 +42,7 @@ export function AddAlbumSheet(props: {
               label={item.name}
               supporting={item.artistName}
               onPress={() => props.onSelect(item)}
-              spacing="none"
+              columnSpacing={false}
             />
           )}
           renderOnQuery

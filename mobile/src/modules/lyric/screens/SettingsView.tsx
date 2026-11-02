@@ -84,7 +84,7 @@ export default function LyricsSettings() {
               })}
             />
           }
-          contentContainerClassName="p-4"
+          contentContainerClassName="gap-y-2 p-4"
           alwaysKeyRenderedItems
         />
       </List.Group>
@@ -99,7 +99,7 @@ function RenderItem({ item, index }: DragListRenderItemInfo<LyricProvider>) {
 
   return (
     <View
-      className={cn("mb-2 flex-row gap-2 overflow-hidden rounded-lg p-2 pr-0", {
+      className={cn("flex-row gap-2 overflow-hidden rounded-lg p-2 pr-0", {
         "bg-surfaceContainer": isActive,
       })}
     >

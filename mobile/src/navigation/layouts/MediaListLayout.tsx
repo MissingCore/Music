@@ -109,12 +109,12 @@ function useListLayoutProps() {
     () =>
       ({
         numColumns: count,
-        estimatedItemSize: 62, // 56px Height + 6px Margin Bottom
+        estimatedItemSize: 62, // 56px Height + 6px Vertical Gap
         getItemType: getItemType,
         overrideItemLayout: overrideItemLayout,
         ListEmptyComponent: <ContentPlaceholder errMsgKey="err.msg.noTracks" />,
-        className: "-mx-0.75 -mb-1.5",
-        contentContainerClassName: cn("px-4", ToolbarScreenOffset),
+        className: "-mx-0.75",
+        contentContainerClassName: cn("gap-y-1.5 px-4", ToolbarScreenOffset),
         contentContainerStyle: { paddingBottom: bottomOffset },
       }) satisfies Partial<LegendListProps>,
     [bottomOffset, count, overrideItemLayout],

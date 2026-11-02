@@ -288,9 +288,8 @@ export function FavoriteMedia(props: {
         />
       )}
       scrollEnabled={false}
-      className="-mb-1.5"
       contentContainerStyle={{ minHeight: estimatedHeight }}
-      contentContainerClassName="pb-4"
+      contentContainerClassName="gap-y-1.5 pb-4"
     />
   );
 }
@@ -385,12 +384,12 @@ export function MediaList<TData>({
       onScroll={scrollListeners}
       ListHeaderComponent={ListHeaderComponent}
       ListEmptyComponent={ListEmptyComponent}
-      className="-mx-0.75 -mb-1.5"
+      className="-mx-0.75"
       contentContainerStyle={{
         paddingTop: _headerHeight,
         paddingBottom: bottomOffset,
       }}
-      contentContainerClassName="p-4 pt-0"
+      contentContainerClassName="gap-y-1.5 p-4 pt-0"
     />
   );
 }

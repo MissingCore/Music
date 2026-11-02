@@ -122,8 +122,7 @@ export default function Upcoming() {
           keyExtractor={keyExtractor}
           renderItem={renderItem}
           onReordered={onMove}
-          className="-mb-1.5"
-          contentContainerClassName="p-4 pb-safe-offset-4"
+          contentContainerClassName="gap-y-1.5 p-4 pb-safe-offset-4"
         />
       )}
     </View>
@@ -153,7 +152,7 @@ const RenderItem = memo(
             : PlaybackControls.playAtIndex(index)
         }
         disabled={isDragging}
-        className={cn("mb-1.5 flex-row items-center gap-2 rounded-lg", {
+        className={cn("flex-row items-center gap-2 rounded-lg", {
           "bg-surfaceContainerLowest": isActive,
           "opacity-25 active:opacity-100": index < disableAfter && !isActive,
         })}
@@ -179,7 +178,7 @@ const RenderItem = memo(
               size="xs"
             />
           }
-          spacing="none"
+          columnSpacing={false}
           leadingOverridesSrc
           className="shrink grow pr-0"
         />

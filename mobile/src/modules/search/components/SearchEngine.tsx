@@ -97,7 +97,7 @@ export function SearchEngineList<TScope extends SearchCategories>({
       <CustomList
         ref={listRef}
         numColumns={props.forSheets ? undefined : listLayout.count}
-        estimatedItemSize={62} // 56px Height + 6px Margin Bottom
+        estimatedItemSize={62} // 56px Height + 6px Vertical Gap
         data={data}
         // Note: We use `index` instead of the `id` or `name` field on the
         // `entry` due to there being potentially shared values (ie: between
@@ -125,7 +125,6 @@ export function SearchEngineList<TScope extends SearchCategories>({
                   />
                 ) : undefined
               }
-              spacing="column"
             />
           )
         }

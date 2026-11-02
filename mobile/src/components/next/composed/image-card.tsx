@@ -5,8 +5,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import { View } from "react-native";
 
 import { cn } from "~/lib/style";
-import type { Spacing } from "./utils";
-import { getSpacingClasses } from "./utils";
 import { Ripple } from "../base/ripple";
 import { baseContainerStyle } from "../base/styles";
 import { Text } from "../base/typography";
@@ -22,12 +20,12 @@ interface ImageCardProps {
   onPress: VoidFunction;
   className?: string;
   /**
-   * Applies spacing styles when used in a list. Defaults to `all`.
+   * If we apply our fake gaps for columns (`mx-0.75`). Defaults `true`.
    *
-   * **Make sure to apply `-mx-0.75` and/or `-mb-1.5` to the `className` of
-   * the scroll container this is in.**
+   * **Make sure to apply `-mx-0.75` to the `className` of the scroll
+   * container this is in.**
    */
-  spacing?: Spacing;
+  columnSpacing?: boolean;
 }
 
 //#region Image Card
@@ -44,7 +42,7 @@ export function ImageCard(props: ImageCardProps) {
       onPress={props.onPress}
       className={cn(
         "relative rounded-lg",
-        getSpacingClasses(props.spacing),
+        props.columnSpacing !== false && "mx-0.75",
         props.className,
       )}
     >
@@ -91,7 +89,7 @@ export function LargeImageCard(
         filled: true,
         className: cn(
           "rounded-lg p-1",
-          getSpacingClasses(props.spacing),
+          props.columnSpacing !== false && "mx-0.75",
           props.className,
         ),
       })}

@@ -101,7 +101,7 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] }) {
             onPress={() =>
               navigation.navigate("Album", { id: item.id }, { pop: true })
             }
-            spacing="none"
+            columnSpacing={false}
           />
         )}
         className="-mx-4"

@@ -108,7 +108,7 @@ export default function Album({
             isNumber(item) ? (
               <Text
                 intent="em"
-                className={cn("mx-0.75 mb-1.5", { "mt-1.5": index > 0 })}
+                className={cn("mx-0.75", { "pt-1.5": index > 0 })}
               >
                 {t("term.disc", { count: item })}
               </Text>

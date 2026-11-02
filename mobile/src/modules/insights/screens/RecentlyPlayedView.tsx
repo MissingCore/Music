@@ -57,7 +57,7 @@ export default function RecentlyPlayed() {
     <TrackListContext value={trackSource}>
       <LegendList
         numColumns={listLayout.count}
-        estimatedItemSize={62} // 56px Height + 6px Margin Bottom
+        estimatedItemSize={62} // 56px Height + 6px Vertical Gap
         data={data?.tracks}
         keyExtractor={({ id }) => id}
         renderItem={({ item }) => <TrackItem {...item} />}
@@ -67,8 +67,8 @@ export default function RecentlyPlayed() {
             <RecentlyPlayedLists data={data.lists} />
           </>
         }
-        className="-mx-0.75 -mb-1.5"
-        contentContainerClassName={cn("p-4", ToolbarScreenOffset)}
+        className="-mx-0.75"
+        contentContainerClassName={cn("gap-y-1.5 p-4", ToolbarScreenOffset)}
         contentContainerStyle={{ paddingBottom: bottomOffset }}
       />
     </TrackListContext>
@@ -96,11 +96,10 @@ function RecentlyPlayedLists(props: { data?: RecentListCardContent[] }) {
             if (screen === "HomeScreens") navigation.popTo(screen, config);
             else navigation.navigate(screen, config);
           }}
-          spacing="none"
         />
       )}
-      className="-mx-3.25"
-      contentContainerClassName="gap-1.5 px-4 py-6"
+      className="-mx-4"
+      contentContainerClassName="px-4 py-6"
     />
   );
 }
