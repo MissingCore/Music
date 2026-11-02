@@ -43,17 +43,11 @@ export function SheetRadioList<TData extends { label: string }>(
   );
 }
 
-interface RadioSheetProps<
-  TData extends { label: string },
-> extends SheetRadioListProps<TData> {
-  ref: SheetRef;
-}
-
 export function RadioSheet<TData extends { label: string }>({
   ref,
   onSelect,
   ...props
-}: RadioSheetProps<TData>) {
+}: SheetRadioListProps<TData> & { ref: SheetRef }) {
   return (
     <Sheet ref={ref}>
       <SheetRadioList
