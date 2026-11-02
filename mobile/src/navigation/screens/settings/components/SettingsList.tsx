@@ -75,7 +75,7 @@ export function ToggleItem({
 
 //#region Internal Helpers
 interface ItemBaseProps {
-  icon: SupportedIconName;
+  icon?: SupportedIconName;
   label: string;
   supporting?: string;
   disabled?: boolean;
@@ -93,7 +93,7 @@ function ItemBase({
       {...props}
       className="flex-row items-center gap-4 p-4 disabled:opacity-25"
     >
-      <Icon name={icon} />
+      {icon ? <Icon name={icon} /> : null}
       <TextStack label={label} supporting={supporting} />
       {Trailing}
     </Ripple>
