@@ -12,7 +12,3 @@
 -keep class com.facebook.react.turbomodule.** { *; }
 
 # Add any project specific keep options here:
-
-# WorkManager and Room instantiate these classes reflectively during startup.
--keep class * extends androidx.room.RoomDatabase { <init>(); }
--keep class * extends androidx.work.InputMerger { <init>(); }
