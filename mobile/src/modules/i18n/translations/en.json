@@ -1,6 +1,5 @@
 {
   "language": "English",
-
   "term": {
     "album": "Album",
     "albums": "Albums",
@@ -14,7 +13,6 @@
     "playlists": "Playlists",
     "track": "Track",
     "tracks": "Tracks",
-
     "play": "Play",
     "pause": "Pause",
     "prev": "Previous",
@@ -22,12 +20,10 @@
     "shuffle": "Shuffle",
     "repeat": "Repeat",
     "repeatOne": "Repeat One",
-
     "favorite": "Favorite",
     "favorites": "Favorites",
     "unFavorite": "Unfavorite",
     "favoriteTracks": "Favorite Tracks",
-
     "all": "All",
     "more": "More",
     "home": "Home",
@@ -36,41 +32,32 @@
     "about": "About",
     "upcoming": "Upcoming",
     "playingFrom": "Playing From",
-
     "instructions": "Instructions",
-
     "disc": "Disc {{count}}",
     "eps": "EPs",
     "singles": "Singles",
-
     "share": "Share",
     "expand": "Expand",
     "minimize": "Minimize",
     "misc": "Misc."
   },
-
   "template": {
     "entryAdd": "Add {{- name}}",
     "entryAdded": "{{- name}} added",
     "entryRemove": "Remove {{- name}}",
     "entryRemoved": "Removed {{- name}}",
-
     "entryManage": "Manage {{- name}}",
     "entrySeeMore": "See more about {{- name}}",
     "notFound": "{{- name}} doesn't exist",
-
     "entryMove": "Move {{- name}}",
     "entryShow": "Show {{- name}}",
     "entryShowAll": "Show all {{- name}}",
     "entryHide": "Hide {{- name}}",
     "entryEnable": "Enable {{- name}}",
     "entryDisable": "Disable {{- name}}",
-
     "countSelected": "{{count}} Selected",
-
     "noContentFound": "No {{- name}} found"
   },
-
   "plural": {
     "entry_one": "{{count}} entry",
     "entry_other": "{{count}} entries",
@@ -79,29 +66,24 @@
     "track_one": "{{count}} $t(term.track)",
     "track_other": "{{count}} $t(term.tracks)"
   },
-
   "form": {
     "apply": "Apply Changes",
     "back": "Back",
     "cancel": "Cancel",
     "confirm": "Confirm",
-
     "unsaved": "You may have unsaved changes.",
     "stay": "Stay",
     "leave": "Leave",
     "close": "Close",
-
     "create": "Create",
     "delete": "Delete",
     "edit": "Edit",
     "clear": "Clear",
     "reset": "Reset",
-
     "validation": {
       "unique": "Unique"
     }
   },
-
   "err": {
     "flow": {
       "generic": {
@@ -113,28 +95,23 @@
         "brief": "Include a screenshot of this screen."
       }
     },
-
     "msg": {
       "actionCancel": "Canceled action.",
       "invalidStructure": "Invalid structure.",
       "noSelect": "Nothing selected.",
       "usedName": "That name can't be used.",
-
       "noContent": "No content found.",
       "noErrors": "No errors found.",
       "noResults": "No results found.",
-
       "noAlbums": "No albums found.",
       "noArtists": "No artists found.",
       "noGenres": "No genres found.",
       "noPlaylists": "No playlists found.",
       "noTracks": "No tracks found.",
-
       "noHiddenTracks": "No hidden tracks found.",
       "noLyrics": "No lyrics found."
     }
   },
-
   "feat": {
     "appUpdate": {
       "title": "App Update",
@@ -142,7 +119,6 @@
       "extra": {
         "downloadAPK": "Download the latest APK",
         "updateGoogle": "Update via Play Store",
-
         "viewChangelog": "View Changelog",
         "version": "Version",
         "checkUpdates": "Check for Updates",
@@ -165,7 +141,6 @@
         "light": "Light",
         "dark": "Dark",
         "system": "System",
-
         "atmosphere": "Atmosphere Effect",
         "opaqueColors": "Opaque Colors"
       }
@@ -187,7 +162,6 @@
         "vinylOld": "Vinyl (Legacy)",
         "none": "None",
         "immersive": "Immersive",
-
         "alternativeInfoLayout": "Alternative Info Layout",
         "standardVinylSpeed": "Standard Vinyl Speed"
       }
@@ -197,7 +171,6 @@
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
         "waveform": "Waveform",
-
         "waveformPurgeCache": "Purge Cached Waveforms",
         "waveformPurgeCacheBrief": "Frees up storage to recalculate the waveforms of played tracks.",
         "waveformPurgeCacheToast": "Waveform cache cleared."
@@ -245,17 +218,13 @@
       "brief": "Your top tracks, artists, and playback history.",
       "extra": {
         "backup": "Transfer recap data from this app instance.",
-
         "recapTemplate": "{{- name}} $t(feat.recap.title)",
         "playCount": "{{count}} plays",
-
         "mostPlayed": "Most Played {{- name}}",
         "top": "Top {{- name}}",
-
         "timeRange": "Time Range",
         "allTime": "All-Time",
         "lastDays": "Last {{amount}} Days",
-
         "listeningTime": "Listening Time",
         "totalListeningTime": "Total $t(feat.recap.extra.listeningTime)",
         "totalPlays": "Total Plays",
@@ -305,7 +274,8 @@
         "providersInstructions": {
           "line1": "For legal reasons, we do not automatically provide online sources for displaying lyrics as we do not have a license for doing so. Instead we support providers, which you can use to specify where we can pull lyrics from.",
           "line2": "Learn how to create a lyric provider."
-        }
+        },
+        "providersBackup": "Transfer lyric providers data from this app instance."
       }
     },
     "scanning": {
@@ -413,7 +383,6 @@
       "title": "Third-Party Software",
       "brief": "What makes this app possible."
     },
-
     "onboarding": {
       "extra": {
         "configureSettings": "Configure Settings",
@@ -422,7 +391,6 @@
         "saveImages": "Saving Images"
       }
     },
-
     "greeting": {
       "title": "Welcome Back",
       "extra": {
@@ -433,18 +401,15 @@
       "extra": {
         "recentlyPlayed": "Recently Played",
         "recentlyPlayedNone": "Nothing was played in the last {{amount}} days.",
-
         "recentlyDiscovered": "Recently Discovered"
       }
     },
-
     "search": {
       "title": "Search",
       "extra": {
         "searchMedia": "Search Media"
       }
     },
-
     "artwork": {
       "title": "Artwork",
       "extra": {
@@ -478,11 +443,9 @@
         "name": "Name",
         "trackNumber": "Track Number",
         "year": "Year",
-
         "overrideFields": "Providing a value to the following fields will override the assigned values on all tracks in the album."
       }
     },
-
     "modalViewPreference": {
       "title": "Screen Options",
       "extra": {
@@ -490,10 +453,8 @@
         "list": "List",
         "grid": "Grid",
         "compactGrid": "Compact Grid",
-
         "columnSize": "Column Size",
         "columnCount": "Column Count: {{count}}",
-
         "sort": "Sort Order",
         "asc": "Ascending Order",
         "discover": "Discover Time",
@@ -508,9 +469,7 @@
         "filePath": "File Path",
         "sampleRate": "Sample Rate",
         "size": "Size",
-
         "trackQuickActions": "Track Quick Actions",
-
         "addToPlaylist": "Add to Playlist"
       }
     },
@@ -532,9 +491,7 @@
         "add": "Add to Queue",
         "playNext": "Play Next",
         "playLast": "Play Last",
-
         "toast": "{{- name}} added to queue.",
-
         "queueAwareNext": "Queue-Aware Play Next",
         "queueAwareNextBrief": "Attempts to add track after the last \"Play Next\" track."
       }
