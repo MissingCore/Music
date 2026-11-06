@@ -49,7 +49,7 @@
 | react-native-markdown-renderer | MIT | https://github.com/mientjan/react-native-markdown-renderer |
 | react-native-material-palette | MIT | https://github.com/callstack/react-native-material-palette |
 | react-native-nano-icons | MIT | https://github.com/software-mansion-labs/react-native-nano-icons |
-| react-native-nitro-modules | MIT | https://github.com/mrousavy/nitro |
+| react-native-nitro-modules | MIT | https://github.com/margelo/nitro |
 | react-native-pager-view | MIT | https://github.com/callstack/react-native-pager-view |
 | react-native-reanimated | MIT | https://github.com/software-mansion/react-native-reanimated |
 | react-native-safe-area-context | MIT | https://github.com/appandflow/react-native-safe-area-context |
