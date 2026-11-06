@@ -54,9 +54,8 @@ function WidgetConfigurationScreenPropsImpl({
         );
       } catch (err) {
         console.log(err);
-      } finally {
-        setResult("ok");
       }
+      setResult("ok");
     },
     [widgetInfo, setResult, renderWidget, widgetKey],
   );

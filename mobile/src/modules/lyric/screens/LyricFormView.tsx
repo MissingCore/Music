@@ -64,7 +64,11 @@ export default function LyricForm({
     async (entry: LyricEntry) => {
       try {
         const newLyric = await createLyric(entry);
-        if (!newLyric) throw new Error("Lyric not returned after insertion.");
+        if (!newLyric) {
+          //? Lyric not returned after insertion.
+          toast.tError("err.flow.generic.title");
+          return;
+        }
         queryClient.invalidateQueries({
           queryKey: q.tracks.detail(trackId)._ctx.lyrics.queryKey,
         });

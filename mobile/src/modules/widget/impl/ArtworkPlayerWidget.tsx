@@ -1,6 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+"use no memo";
 import { FlexWidget, OverlapWidget } from "react-native-android-widget";
 
 import { Colors } from "~/constants/Styles";

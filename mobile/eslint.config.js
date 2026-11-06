@@ -66,6 +66,9 @@ module.exports = defineConfig([
       "react-hooks/preserve-manual-memoization": "off",
       "react-hooks/refs": "off",
       "react-hooks/set-state-in-effect": "off",
+
+      //? Throws an error if component can't be optimized by React Compiler.
+      "react-hooks/todo": "error",
     },
   },
   /* Ignored directories & files */
