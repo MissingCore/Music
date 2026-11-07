@@ -81,8 +81,12 @@ export async function pickImage() {
   const cachedImg = new File(result.assets[0].uri);
 
   //! We require a MD5 hash.
-  const pickedImgHash = cachedImg.md5;
-  if (!pickedImgHash) return undefined;
+  let pickedImgHash: string;
+  try {
+    pickedImgHash = await cachedImg.digest("MD5");
+  } catch {
+    return undefined;
+  }
 
   //? Check to see if we've previously saved this image.
   const storedHashedImg = await db.query.hashedImages.findFirst({
@@ -109,7 +113,10 @@ export async function pickImage() {
  */
 async function saveImage({ hash, uri }: { hash: string; uri: string }) {
   // Apply any manipulations (we did none).
-  const img = await ImageManipulator.manipulate(uri).renderAsync();
+  const img = await ImageManipulator.manipulate(uri, {
+    maxHeight: 2048,
+    maxWidth: 2048,
+  }).renderAsync();
   // Saves image to cache directory.
   const { uri: imgUri } = await img.saveAsync({
     compress: 0.85, // Preserve 85% of original image quality.

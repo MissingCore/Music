@@ -7,11 +7,12 @@ buildscript {
   }
   dependencies {
     if (findProperty('music.WITH_SENTRY')?.toBoolean()) {
-      classpath("io.sentry:sentry-android-gradle-plugin:6.24.0")
+      classpath("io.sentry:sentry-android-gradle-plugin:6.25.0")
     }
     classpath('com.android.tools.build:gradle')
     classpath('com.facebook.react:react-native-gradle-plugin')
-    classpath('org.jetbrains.kotlin:kotlin-gradle-plugin')
+    def kotlinVersion = findProperty('android.kotlinVersion')
+    classpath(kotlinVersion ? "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion" : 'org.jetbrains.kotlin:kotlin-gradle-plugin')
   }
 }
 

@@ -33,7 +33,7 @@
 | jotai | MIT | https://github.com/pmndrs/jotai |
 | Material Symbols | Apache-2.0 | https://github.com/google/material-design-icons |
 | NDot日本語 | OFL-1.1 | https://x.com/NdotJP_Font |
-| react | MIT | https://github.com/facebook/react |
+| react | MIT | https://github.com/react/react |
 | react-i18next | MIT | https://github.com/i18next/react-i18next |
 | react-native | MIT | https://github.com/react/react-native |
 | react-native-android-widget | MIT | https://github.com/sAleksovski/react-native-android-widget |
@@ -44,7 +44,7 @@
 | react-native-markdown-renderer | MIT | https://github.com/mientjan/react-native-markdown-renderer |
 | react-native-material-palette | MIT | https://github.com/callstack/react-native-material-palette |
 | react-native-nano-icons | MIT | https://github.com/software-mansion-labs/react-native-nano-icons |
-| react-native-nitro-modules | MIT | https://github.com/mrousavy/nitro |
+| react-native-nitro-modules | MIT | https://github.com/margelo/nitro |
 | react-native-pager-view | MIT | https://github.com/callstack/react-native-pager-view |
 | react-native-reanimated | MIT | https://github.com/software-mansion/react-native-reanimated |
 | react-native-safe-area-context | MIT | https://github.com/appandflow/react-native-safe-area-context |
