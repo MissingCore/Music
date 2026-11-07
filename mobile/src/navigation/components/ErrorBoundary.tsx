@@ -1,22 +1,23 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import Bootsplash from "react-native-bootsplash";
 
 import { CAN_SENTRY_REPORT } from "~/env";
 import { playbackStore } from "~/stores/Playback/store";
-import { useFloatingContent } from "../hooks/useFloatingContent";
-import { ListLayout } from "../layouts/ListLayout";
+
+import { ScrollLayout } from "../layouts/ScrollLayout";
 import { AppProvider } from "../providers/AppProvider";
 
 import { Sentry } from "~/lib/sentry";
 import { Links, openLink } from "~/lib/web-browser";
-import { Button } from "~/components/Form/Button";
-import { AccentText } from "~/components/Typography/AccentText";
-import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import { Button } from "~/components/next/base/button";
+import { Card } from "~/components/next/base/card";
+import { Text, TText } from "~/components/next/base/typography";
+import { createTextStack } from "~/components/next/blocks/text-stack";
 
 type State = { error: Error | null };
 
@@ -48,10 +49,15 @@ export class ErrorBoundary extends React.Component<
   }
 }
 
+const ErrorTextStack = createTextStack({
+  labelConfig: { intent: "error", size: "sm", center: true },
+  supportingConfig: { intent: "error", muted: true, center: true },
+});
+
 /** Screen displayed when an error is thrown in a component. */
 function ErrorLayout({ error }: { error: Error }) {
   const { t } = useTranslation();
-  const { offset, floatingContentProps } = useFloatingContent();
+  const [offset, setOffset] = useState(0);
 
   const onError = useCallback(() => {
     // Display error message to user if encountered.
@@ -68,44 +74,39 @@ function ErrorLayout({ error }: { error: Error }) {
     <>
       <View ref={onError} />
       <View className="relative flex-1">
-        <ListLayout contentContainerStyle={{ paddingBottom: offset }}>
-          <AccentText className="pt-safe-offset-4">
-            {t("err.flow.generic.title")}
-          </AccentText>
-          <TStyledText
-            dim
-            textKey="err.flow.generic.brief"
-            className="text-base"
-          />
-          <View className="rounded-md bg-surfaceContainerLowest p-4">
-            <StyledText>{error.message}</StyledText>
-          </View>
+        <ScrollLayout
+          title="err.flow.generic.title"
+          contentContainerStyle={{ paddingBottom: offset + 16 }}
+        >
+          <TText textKey="err.flow.generic.brief" muted size="base" />
+          <Card>
+            <Text>{error.message}</Text>
+          </Card>
           {hasMissingMigrations(error.message) ? (
-            <View className="rounded-md bg-secondary p-4">
-              <StyledText bold className="text-onSecondary">
+            <Card intent="secondary">
+              <Text intent="secondary" bold>
                 {
                   "❗Detected error caused by migrations never applied from versions between then and now, which have since been removed.❗\n\nThis error can only be resolved by clearing this app's storage, which results in data loss, requiring you to re-create your playlists & favorites."
                 }
-              </StyledText>
-            </View>
+              </Text>
+            </Card>
           ) : null}
-          <StyledText dim className="text-sm">
+          <Text muted size="sm">
             {error.stack}
-          </StyledText>
-        </ListLayout>
-        <View {...floatingContentProps}>
+          </Text>
+        </ScrollLayout>
+        <View
+          onLayout={(e) => setOffset(e.nativeEvent.layout.height)}
+          className="absolute inset-x-4 bottom-0 pb-safe-offset-4"
+        >
           <Button
             onPress={() => openLink(Links.Issues)}
-            className="w-full bg-error"
-            rippleColor="errorDim"
+            intent="error"
+            className="py-4"
           >
-            <TStyledText
-              textKey="err.flow.report.title"
-              className="text-center text-onError"
-            />
-            <TStyledText
-              textKey="err.flow.report.brief"
-              className="text-center text-xs text-onErrorVariant"
+            <ErrorTextStack
+              label={t("err.flow.report.title")}
+              supporting={t("err.flow.report.brief")}
             />
           </Button>
         </View>

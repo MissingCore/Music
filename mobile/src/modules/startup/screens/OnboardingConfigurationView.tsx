@@ -4,21 +4,19 @@
 import { useTranslation } from "react-i18next";
 import Animated, { FadeIn } from "react-native-reanimated";
 
-import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
-import { PreferenceTogglers } from "~/stores/Preference/actions";
+import { preferenceStore } from "~/stores/Preference/store";
 
-import { ListLayout } from "~/navigation/layouts/ListLayout";
+import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
+import { AppUpdateSettings } from "~/navigation/screens/settings/AboutView";
 import {
   MediaStoreScannerSetting,
   OptimizedImageSavingSetting,
   ScanningConfigurations,
 } from "~/navigation/screens/settings/ScanningSettingsView";
 
-import { ExtendedTButton } from "~/components/Form/Button";
-import { Switch } from "~/components/Form/Switch";
-import { SegmentedList } from "~/components/List/Segmented";
-import { AccentText } from "~/components/Typography/AccentText";
-import { TEm } from "~/components/Typography/StyledText";
+import { TText } from "~/components/next/base/typography";
+import { ActionButton } from "~/components/next/blocks/button-action";
+import * as List from "~/components/next/composed/list";
 
 /** Have the user configure settings before initiating the first-time scan. */
 export function OnboardingConfiguration() {
@@ -29,46 +27,32 @@ export function OnboardingConfiguration() {
     <Animated.View entering={FadeIn} className="flex-1">
       <ScanningConfigurations.Sheets {...sheetRefs} />
 
-      <ListLayout contentContainerClassName="pt-safe-offset-16 pb-safe-offset-4">
-        <AccentText>{t("feat.onboarding.extra.configureSettings")}</AccentText>
-
-        <TEm textKey="feat.scanning.title" className="-mb-4" />
+      <ScrollLayout
+        title="feat.onboarding.extra.configureSettings"
+        contentContainerClassName="pb-safe-offset-4"
+      >
+        <TText textKey="feat.scanning.title" intent="em" className="-mb-4" />
         <ScanningConfigurations.Settings {...sheetRefs} />
-        <OptimizedImageSavingSetting />
-        <MediaStoreScannerSetting />
-        <TEm textKey="feat.appUpdate.title" className="-mb-4" />
-        <AppUpdateConfigurations />
 
-        <ExtendedTButton
-          textKey="feat.onboarding.extra.startScan"
+        <List.Group>
+          <OptimizedImageSavingSetting />
+          <List.Divider />
+          <MediaStoreScannerSetting />
+        </List.Group>
+
+        <List.Group label={t("feat.appUpdate.title")}>
+          <AppUpdateSettings />
+        </List.Group>
+
+        <ActionButton
+          label={t("feat.onboarding.extra.startScan")}
           onPress={() =>
             preferenceStore.setState({ completedOnboarding: true })
           }
-          className="mt-auto rounded-full"
-          theme="secondary"
+          intent="secondary"
+          className="mt-auto"
         />
-      </ListLayout>
+      </ScrollLayout>
     </Animated.View>
-  );
-}
-
-function AppUpdateConfigurations() {
-  const checkForUpdates = usePreferenceStore((s) => s.checkForUpdates);
-  const showRCNotification = usePreferenceStore((s) => s.rcNotification);
-
-  return (
-    <SegmentedList>
-      <SegmentedList.Item
-        labelText="feat.appUpdate.extra.checkUpdates"
-        onPress={PreferenceTogglers.toggleKey("checkForUpdates")}
-        Trailing={<Switch enabled={checkForUpdates} />}
-      />
-      <SegmentedList.Item
-        labelText="feat.appUpdate.extra.rcNotification"
-        onPress={PreferenceTogglers.toggleKey("rcNotification")}
-        disabled={!checkForUpdates}
-        Trailing={<Switch enabled={showRCNotification} />}
-      />
-    </SegmentedList>
   );
 }

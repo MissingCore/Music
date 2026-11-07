@@ -2,22 +2,23 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import type { WidgetConfigurationScreenProps } from "react-native-android-widget";
+import * as v from "valibot";
 
-import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { MinimumAppProvider } from "~/navigation/providers/AppProvider";
 
 import { isAudioBrowserSetUp } from "~/lib/react-native-audio-browser";
-import { SwitchInput } from "~/components/Form/Switch";
-import { ModalActions } from "~/components/Modal";
-import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
-import { AccentText } from "~/components/Typography/AccentText";
+import { Text } from "~/components/next/base/typography";
+import { ActionButton } from "~/components/next/blocks/button-action";
+import { HexColorSchema } from "~/modules/customization/theme/core/utils";
 import { ColorPickerInput } from "~/modules/customization/theme/components/ColorPickerInput";
+import { Form, useFormContext } from "~/modules/form/Form";
+import { createTypedFormInputs } from "~/modules/form/FormInput";
 import { DEFAULT_WIDGET_CONFIG } from "./constants/Config";
 import type { WidgetName } from "./impl";
 import { nameToWidget } from "./impl";
-import type { WidgetConfig } from "./types";
 import { getWidgetData } from "./utils";
 import { getWidgetConfigKey } from "./utils/customize";
 import { getWidgetConfig, updateWidgetConfig } from "./utils/customize.core";
@@ -37,10 +38,17 @@ function WidgetConfigurationScreenPropsImpl({
   setResult,
   renderWidget,
 }: WidgetConfigurationScreenProps) {
+  const [widgetData, setWidgetData] = useState<WidgetConfigEntry>();
   const widgetKey = getWidgetConfigKey(widgetInfo);
 
+  useEffect(() => {
+    getWidgetConfig(widgetKey)
+      .then(setWidgetData)
+      .catch(() => setWidgetData({ ...DEFAULT_WIDGET_CONFIG }));
+  }, [widgetKey]);
+
   const onSubmit = useCallback(
-    async (config: WidgetConfig) => {
+    async (config: WidgetConfigEntry) => {
       try {
         await updateWidgetConfig(widgetKey, config);
 
@@ -64,19 +72,68 @@ function WidgetConfigurationScreenPropsImpl({
     setResult("cancel");
   }, [setResult]);
 
+  if (widgetData === undefined) return null;
   return (
-    <ListLayout contentContainerClassName="pt-safe-offset-16 pb-safe-offset-4">
-      <AccentText>Customize Widget</AccentText>
-
-      <WidgetConfigForm
-        widgetKey={widgetKey}
-        onSubmit={onSubmit}
-        onCancel={onCancel}
-      />
-    </ListLayout>
+    <Form.Provider
+      //? This property is irrelevant for this form.
+      type="edit"
+      schema={WidgetConfigEntrySchema}
+      initData={widgetData}
+      onSubmit={onSubmit}
+      promptUnsavedChanges={false}
+    >
+      <FormContents onCancel={onCancel} />
+    </Form.Provider>
   );
 }
 
+//#region Form Contents
+const FormInput = createTypedFormInputs<WidgetConfigEntry>();
+
+function FormContents(props: { onCancel: VoidFunction }) {
+  const { t } = useTranslation();
+  const { data, setFields, isSubmitting, onSubmit } =
+    useFormContext<WidgetConfigEntry>();
+  return (
+    <Form.Container contentContainerClassName="pb-safe-offset-4">
+      <Text accent className="leading-tight">
+        Customize Widget
+      </Text>
+      <FormInput.Switch label="Transparent" field="transparent" />
+      <View className="gap-2">
+        {SUPPORTED_COLORS.map((role) => (
+          <ColorPickerInput
+            key={role}
+            label={role}
+            value={data[role]}
+            onUpdateValue={(color) => setFields({ [role]: color })}
+            disabled={isSubmitting}
+          />
+        ))}
+      </View>
+
+      <View className="flex-row gap-2">
+        <ActionButton
+          label={t("form.cancel")}
+          onPress={props.onCancel}
+          disabled={isSubmitting}
+          filled={false}
+          className="flex-1"
+        />
+        <ActionButton
+          label={t("form.confirm")}
+          onPress={onSubmit}
+          disabled={isSubmitting}
+          intent="inverse"
+          className="flex-1"
+        />
+      </View>
+    </Form.Container>
+  );
+}
+//#endregion
+
+//#region Schema
 const SUPPORTED_COLORS = [
   "bgColor",
   "textColor",
@@ -87,66 +144,12 @@ const SUPPORTED_COLORS = [
   "onInactiveColor",
 ] as const;
 
-function WidgetConfigForm(props: {
-  widgetKey: string;
-  onSubmit: (config: WidgetConfig) => void;
-  onCancel: () => void;
-}) {
-  const [data, setData] = useState<WidgetConfig>();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+const WidgetConfigEntrySchema = v.object({
+  transparent: v.boolean(),
+  ...(Object.fromEntries(
+    SUPPORTED_COLORS.map((role) => [role, HexColorSchema]),
+  ) as Record<(typeof SUPPORTED_COLORS)[number], typeof HexColorSchema>),
+});
 
-  useEffect(() => {
-    getWidgetConfig(props.widgetKey)
-      .then(setData)
-      .catch(() => setData({ ...DEFAULT_WIDGET_CONFIG }));
-  }, [props.widgetKey]);
-
-  if (data === undefined) return null;
-  return (
-    <>
-      <SheetLabelAction
-        label="Transparent"
-        Trailing={
-          <SwitchInput
-            enabled={data.transparent}
-            onPress={() =>
-              setData((_prev) => {
-                const prev = _prev as WidgetConfig;
-                return { ...prev, transparent: !prev.transparent };
-              })
-            }
-            disabled={isSubmitting}
-          />
-        }
-      />
-
-      <View className="gap-2">
-        {SUPPORTED_COLORS.map((role) => (
-          <ColorPickerInput
-            key={role}
-            label={role}
-            value={data[role]}
-            onUpdateValue={(color) =>
-              setData((_prev) => {
-                const prev = _prev as WidgetConfig;
-                return { ...prev, [role]: color };
-              })
-            }
-            disabled={isSubmitting}
-          />
-        ))}
-      </View>
-
-      <ModalActions
-        topAction={{
-          textKey: "form.confirm",
-          onPress: () => {
-            setIsSubmitting(true);
-            props.onSubmit(data);
-          },
-        }}
-        bottomAction={{ textKey: "form.cancel", onPress: props.onCancel }}
-      />
-    </>
-  );
-}
+type WidgetConfigEntry = v.InferOutput<typeof WidgetConfigEntrySchema>;
+//#endregion

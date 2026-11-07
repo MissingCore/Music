@@ -12,6 +12,7 @@ import type { PressableProps } from "../primitive/pressable";
 interface ActionButtonProps extends Omit<PressableProps, "android_ripple"> {
   label: string;
   intent?: Intent;
+  filled?: boolean;
   leadingIcon?: SupportedIconName;
   trailingIcon?: SupportedIconName;
   className?: string;

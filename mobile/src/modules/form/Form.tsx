@@ -46,6 +46,9 @@ type InitialArguments<TSchema extends v.ObjectSchema<any, any>> = {
 
   /** Additional validation to check whether we can submit. */
   onConstraints?: (data: v.InferOutput<TSchema>) => boolean;
+
+  /** Determine if the "Unsaved Changes" prompt can be disabled. Defaults `true`. */
+  promptUnsavedChanges?: boolean;
 };
 
 type FormState<TData extends Record<string, any>> = {
@@ -187,7 +190,7 @@ function FormStateProvider<TSchema extends v.ObjectSchema<any, any>>(
     >
       <UnsavedChangesContext value={{ showConfirmation, setShowConfirmation }}>
         {props.children}
-        <UnsavedChangesPrompt />
+        {(props.promptUnsavedChanges ?? true) ? <UnsavedChangesPrompt /> : null}
       </UnsavedChangesContext>
     </FormStateContext>
   );

@@ -26,9 +26,6 @@ const CTATextStack = createTextStack({
 export default function AboutApp() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const checkForUpdates = usePreferenceStore((s) => s.checkForUpdates);
-  const showRCNotification = usePreferenceStore((s) => s.rcNotification);
-
   return (
     <ScrollLayout title="term.about">
       <Card className="items-center gap-4 p-6">
@@ -47,20 +44,7 @@ export default function AboutApp() {
           href={Links.CurrentRelease}
         />
         <List.Divider />
-        <List.ToggleItem
-          icon="release-alert"
-          label={t("feat.appUpdate.extra.checkUpdates")}
-          onToggle={PreferenceTogglers.toggleKey("checkForUpdates")}
-          enabled={checkForUpdates}
-        />
-        <List.Divider />
-        <List.ToggleItem
-          icon="flask-filled"
-          label={t("feat.appUpdate.extra.rcNotification")}
-          onToggle={PreferenceTogglers.toggleKey("rcNotification")}
-          enabled={showRCNotification}
-          disabled={!checkForUpdates}
-        />
+        <AppUpdateSettings />
       </List.Group>
 
       <List.Group>
@@ -100,5 +84,29 @@ export default function AboutApp() {
         />
       </List.Group>
     </ScrollLayout>
+  );
+}
+
+export function AppUpdateSettings() {
+  const { t } = useTranslation();
+  const checkForUpdates = usePreferenceStore((s) => s.checkForUpdates);
+  const showRCNotification = usePreferenceStore((s) => s.rcNotification);
+  return (
+    <>
+      <List.ToggleItem
+        icon="release-alert"
+        label={t("feat.appUpdate.extra.checkUpdates")}
+        onToggle={PreferenceTogglers.toggleKey("checkForUpdates")}
+        enabled={checkForUpdates}
+      />
+      <List.Divider />
+      <List.ToggleItem
+        icon="flask-filled"
+        label={t("feat.appUpdate.extra.rcNotification")}
+        onToggle={PreferenceTogglers.toggleKey("rcNotification")}
+        enabled={showRCNotification}
+        disabled={!checkForUpdates}
+      />
+    </>
   );
 }

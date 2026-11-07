@@ -7,16 +7,16 @@ import { Dimensions, View } from "react-native";
 import BootSplash from "react-native-bootsplash";
 import Animated, {
   LinearTransition,
+  useAnimatedStyle,
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
 
 import { useScanningProgressStore } from "../scanning/ScanningProgress";
 
-import { CachedSlider } from "~/components/Form/Slider";
-import { Em, TEm } from "~/components/Typography/StyledText";
 import type { SupportedIconName } from "~/components/next/base/icon";
 import { Icon } from "~/components/next/base/icon";
+import { Text, TText } from "~/components/next/base/typography";
 import { SystemTheme } from "~/modules/customization/theme/core/constants";
 
 export function ScanningProgress() {
@@ -43,23 +43,15 @@ export function ScanningProgress() {
 }
 
 function TracksSavingProgress() {
-  const currProgress = useSharedValue(0);
   const scannedTracks = useScanningProgressStore((s) => s.scannedTracks);
   const modifiedTracks = useScanningProgressStore((s) => s.modifiedTracks);
   const failedTrackScans = useScanningProgressStore((s) => s.failedTrackScans);
 
-  useEffect(() => {
-    currProgress.set(
-      withSpring(scannedTracks + failedTrackScans, SpringConfig),
-    );
-  }, [currProgress, scannedTracks, failedTrackScans]);
-
   if (modifiedTracks === 0) return null;
   return (
     <View className="gap-2">
-      <CachedSlider
-        {...SliderConfig}
-        liveValue={currProgress}
+      <ProgressBar
+        currVal={scannedTracks + failedTrackScans}
         max={modifiedTracks}
       />
       <View className="flex-row items-center justify-between">
@@ -81,22 +73,13 @@ function TracksSavingProgress() {
 }
 
 function ArtworkSavingProgress() {
-  const currProgress = useSharedValue(0);
   const checkedArtwork = useScanningProgressStore((s) => s.checkedArtwork);
   const uncheckedArtwork = useScanningProgressStore((s) => s.uncheckedArtwork);
-
-  useEffect(() => {
-    currProgress.set(withSpring(checkedArtwork, SpringConfig));
-  }, [currProgress, checkedArtwork]);
 
   if (uncheckedArtwork === 0) return null;
   return (
     <View className="gap-2">
-      <CachedSlider
-        {...SliderConfig}
-        liveValue={currProgress}
-        max={uncheckedArtwork}
-      />
+      <ProgressBar currVal={checkedArtwork} max={uncheckedArtwork} />
       <View className="grow flex-row items-center justify-between">
         <ProgressLabel textKey="feat.onboarding.extra.saveImages" />
         <IconStatus
@@ -109,20 +92,41 @@ function ArtworkSavingProgress() {
 }
 
 //#region Helpers
-const SpringConfig = { mass: 2, stiffness: 50, damping: 20 };
-const SliderConfig = {
-  initValue: 0,
-  min: 0,
-  disabled: true,
-  trackColor: SystemTheme.surfaceContainerLowest,
-  roundedEndStop: true,
-};
+function ProgressBar({ currVal, max }: { currVal: number; max: number }) {
+  const progress = useSharedValue(0);
+
+  useEffect(() => {
+    progress.set(withSpring(currVal, { mass: 2, stiffness: 50, damping: 20 }));
+  }, [progress, currVal]);
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    //? This method is required as `withSpring` doesn't work with decimals.
+    width: `${(progress.get() / max) * 100}%`,
+    backgroundColor: SystemTheme.primary,
+  }));
+
+  return (
+    <Animated.View
+      collapsable={false}
+      style={{ backgroundColor: SystemTheme.surfaceContainerLowest }}
+      className="h-3 w-full items-start overflow-hidden rounded-full"
+    >
+      <Animated.View
+        collapsable={false}
+        style={animatedStyles}
+        className="h-full rounded-r-full"
+      />
+    </Animated.View>
+  );
+}
 
 function ProgressLabel({ textKey }: { textKey: ParseKeys }) {
   return (
-    <TEm
+    <TText
       textKey={textKey}
       numberOfLines={1}
+      intent="em"
+      size="xs"
       style={{ color: SystemTheme.onSurface }}
     />
   );
@@ -135,9 +139,9 @@ function IconStatus(props: {
   return (
     <View className="flex-row items-center gap-1">
       <Icon name={props.icon} size={14} color={SystemTheme.onSurface} />
-      <Em style={{ color: SystemTheme.onSurface }} className="text-xxs">
+      <Text bold size="xxs" style={{ color: SystemTheme.onSurface }}>
         {props.value}
-      </Em>
+      </Text>
     </View>
   );
 }
