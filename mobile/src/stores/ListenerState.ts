@@ -14,7 +14,8 @@ export function ListenerStateStoreProvider() {
   const setKeyboardVisibility = useSetAtom(keyboardVisibilityAtom);
 
   useEffect(() => {
-    setAppState(AppState.currentState);
+    const currAppState = AppState.currentState;
+    if (currAppState) setAppState(currAppState as AppStateStatus);
     setKeyboardVisibility(Keyboard.isVisible());
 
     const appStateChangeSubscription = AppState.addEventListener(

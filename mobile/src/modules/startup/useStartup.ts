@@ -105,11 +105,11 @@ async function startupFlow() {
   //* - Ref: https://github.com/expo/expo/issues/41996#issuecomment-3724350425
   try {
     if (!new File(PlaceholderImageFile).exists) {
-      await saveBundledAssetToURI(
-        Image.resolveAssetSource(require("~/resources/images/music-glyph.png"))
-          .uri,
-        PlaceholderImageFile,
+      const assetSource = Image.resolveAssetSource(
+        require("~/resources/images/music-glyph.png"),
       );
+      if (assetSource)
+        await saveBundledAssetToURI(assetSource.uri, PlaceholderImageFile);
     }
   } catch (err) {
     console.log(err);

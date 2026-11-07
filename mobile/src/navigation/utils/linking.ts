@@ -11,6 +11,7 @@ import { db } from "~/db";
 import { PlaybackControls } from "~/stores/Playback/actions";
 
 import { addTrailingSlash } from "~/utils/string";
+import type { Maybe } from "~/utils/types";
 
 let handledInitialURL = false;
 
@@ -55,7 +56,7 @@ export const linking: LinkingOptions<ParamListBase> = {
 
 //#region Utils
 /** See if the deep link is a `content://` URL and handle it accordingly. */
-async function handleContentURL(url: string | null) {
+async function handleContentURL(url: Maybe<string>) {
   if (!url || !url.startsWith("content://")) return false;
   try {
     const track = await getTrackFromContentPath(url);

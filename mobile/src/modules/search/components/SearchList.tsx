@@ -85,7 +85,9 @@ export function SearchList<TData>({
           keyExtractor={keyExtractor}
           renderItem={renderItem}
           ListEmptyComponent={
-            !stopRender ? <ContentPlaceholder errMsgKey={emptyMsgKey} /> : null
+            !stopRender ? (
+              <ContentPlaceholder errMsgKey={emptyMsgKey} />
+            ) : undefined
           }
           {...props}
           contentContainerStyle={[

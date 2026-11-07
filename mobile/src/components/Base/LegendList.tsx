@@ -17,7 +17,6 @@ type LegendListSignature = <T>(props: LegendListProps<T>) => React.JSX.Element;
 type JoinedLegendListRef = LegendListRef | AnimatedLegendListRef;
 
 export type LegendListRef = React.RefObject<RawLegendListRef | null>;
-// @ts-expect-error - Argument should be compatible.
 export type AnimatedLegendListRef = AnimatedRef<RawLegendListRef>;
 
 export type LegendListProps<T = any> = Omit<

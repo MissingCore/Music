@@ -380,7 +380,7 @@ function TopList(props: {
                     })}
               </StyledText>
             </Ripple>
-          ) : null
+          ) : undefined
         }
         scrollEnabled={false}
         contentContainerClassName="gap-0.75"
