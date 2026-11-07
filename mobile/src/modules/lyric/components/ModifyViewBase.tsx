@@ -1,12 +1,12 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { z } from "zod/mini";
+import * as v from "valibot";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
-import { ZSchema } from "~/modules/form/utils";
+import { FormSchema } from "~/modules/form/utils";
 import type { FABWorkflowConfig } from "~/modules/form/FormState";
 import { FABWorkflow, FormStateProvider } from "~/modules/form/FormState";
 import {
@@ -57,10 +57,10 @@ function LyricForm({ bottomOffset }: { bottomOffset: number }) {
 //#endregion
 
 //#region Schema
-const LyricEntrySchema = z.object({
-  name: ZSchema.NonEmptyString,
-  lyrics: ZSchema.NonEmptyString,
+const LyricEntrySchema = v.object({
+  name: FormSchema.NonEmptyString,
+  lyrics: FormSchema.NonEmptyString,
 });
 
-type LyricEntry = z.infer<typeof LyricEntrySchema>;
+type LyricEntry = v.InferOutput<typeof LyricEntrySchema>;
 //#endregion

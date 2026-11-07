@@ -3,7 +3,7 @@
 
 import { useMemo } from "react";
 import { View } from "react-native";
-import { z } from "zod/mini";
+import * as v from "valibot";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 
@@ -17,7 +17,7 @@ import {
   useFormStateContext,
 } from "~/modules/form/FormState";
 import { FormInputImpl } from "~/modules/form/FormState/FormInput";
-import { ZSchema } from "~/modules/form/utils";
+import { FormSchema } from "~/modules/form/utils";
 import { ColorPickerInput } from "./ColorPickerInput";
 import type { ColorRole, HexColor } from "../core/constants";
 import {
@@ -25,7 +25,7 @@ import {
   ColorSchemeOptions,
   Themes,
 } from "../core/constants";
-import { ColorRoleZodMap } from "../core/utils";
+import { ColorRoleSchemaMap } from "../core/utils";
 
 function useFormState() {
   return useFormStateContext<ThemeEntry>();
@@ -113,14 +113,14 @@ function ThemeForm({ bottomOffset }: { bottomOffset: number }) {
 //#endregion
 
 //#region Schema
-const ThemeEntrySchema = z.object({
+const ThemeEntrySchema = v.object({
   // Additional context:
-  _importGen: z.nullable(z.number()),
+  _importGen: v.nullable(v.number()),
   // Actual form fields:
-  name: ZSchema.NonEmptyString,
-  scheme: z.enum(ColorSchemeOptions),
-  ...ColorRoleZodMap,
+  name: FormSchema.NonEmptyString,
+  scheme: v.picklist(ColorSchemeOptions),
+  ...ColorRoleSchemaMap,
 });
 
-export type ThemeEntry = z.infer<typeof ThemeEntrySchema>;
+export type ThemeEntry = v.InferOutput<typeof ThemeEntrySchema>;
 //#endregion

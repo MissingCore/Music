@@ -11,7 +11,7 @@ import { eq } from "drizzle-orm";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { z } from "zod/mini";
+import * as v from "valibot";
 
 import { db } from "~/db";
 import { tracksToArtists, tracksToGenres } from "~/db/schema";
@@ -41,7 +41,7 @@ import { IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
-import { ZSchema } from "~/modules/form/utils";
+import { FormSchema } from "~/modules/form/utils";
 import {
   FABWorkflow,
   FormStateProvider,
@@ -235,22 +235,22 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
 //#endregion
 
 //#region Schema
-const TrackMetadataSchema = z.object({
+const TrackMetadataSchema = v.object({
   // Additional context:
-  id: z.string(),
-  uri: z.string(),
+  id: v.string(),
+  uri: v.string(),
   // Actual form fields:
-  name: ZSchema.NonEmptyString,
-  artists: z.array(ZSchema.NonEmptyString),
-  album: ZSchema.NullableString,
-  albumArtists: z.array(ZSchema.NonEmptyString),
-  year: ZSchema.NullableRealNumber,
-  disc: ZSchema.NullableRealNumber,
-  track: ZSchema.NullableRealNumber,
-  genres: z.array(ZSchema.NonEmptyString),
+  name: FormSchema.NonEmptyString,
+  artists: v.array(FormSchema.NonEmptyString),
+  album: FormSchema.NullableString,
+  albumArtists: v.array(FormSchema.NonEmptyString),
+  year: FormSchema.NullableRealNumber,
+  disc: FormSchema.NullableRealNumber,
+  track: FormSchema.NullableRealNumber,
+  genres: v.array(FormSchema.NonEmptyString),
 });
 
-type TrackMetadata = z.infer<typeof TrackMetadataSchema>;
+type TrackMetadata = v.InferOutput<typeof TrackMetadataSchema>;
 
 function useFormState() {
   return useFormStateContext<TrackMetadata>();

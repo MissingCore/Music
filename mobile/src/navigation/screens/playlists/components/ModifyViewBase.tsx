@@ -7,7 +7,7 @@ import { toast } from "@missingcore/ui/toast";
 import { createContext, memo, use, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { z } from "zod/mini";
+import * as v from "valibot";
 
 import { Icon } from "~/resources/icons";
 import { getArtistsString } from "~/data/artist/utils";
@@ -26,7 +26,7 @@ import { RemovableItem } from "~/components/List/RemovableItem";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";
-import { ZSchema } from "~/modules/form/utils";
+import { FormSchema } from "~/modules/form/utils";
 import type { FABWorkflowConfig } from "~/modules/form/FormState";
 import {
   FABWorkflow,
@@ -335,29 +335,25 @@ const RenderItem = memo(
 //#endregion
 
 //#region Schema
-const PlaylistNameSchema = z.pipe(
-  ZSchema.NonEmptyString,
-  z.transform((str, ctx) => {
+const PlaylistNameSchema = v.pipe(
+  FormSchema.NonEmptyString,
+  v.check((str) => {
     try {
-      return sanitizePlaylistName(str);
-    } catch (err) {
-      ctx.issues.push({
-        code: "invalid_value",
-        input: str,
-        values: [str],
-        message: (err as Error).message,
-      });
-      return z.NEVER;
+      sanitizePlaylistName(str);
+      return true;
+    } catch {
+      return false;
     }
-  }),
+  }, "Invalid playlist name."),
+  v.transform(sanitizePlaylistName),
 );
 
-const PlaylistEntrySchema = z.object({
+const PlaylistEntrySchema = v.object({
   name: PlaylistNameSchema,
-  trackIds: z.array(ZSchema.NonEmptyString),
+  trackIds: v.array(FormSchema.NonEmptyString),
 });
 
-type PlaylistEntry = z.infer<typeof PlaylistEntrySchema>;
+type PlaylistEntry = v.InferOutput<typeof PlaylistEntrySchema>;
 
 function useFormState() {
   return useFormStateContext<PlaylistEntry>();

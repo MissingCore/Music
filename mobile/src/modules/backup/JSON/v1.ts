@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { inArray } from "drizzle-orm";
-import { z } from "zod/mini";
+import * as v from "valibot";
 
 import { db } from "~/db";
 import { albums, playlists } from "~/db/schema";
@@ -18,38 +18,38 @@ import { sanitizePlaylistName } from "~/data/playlist/utils";
 import { getTracks } from "~/data/track/api";
 import { mergeTracks } from "~/data/track/utils";
 
-import { ZSchema } from "~/modules/form/utils";
+import { FormSchema } from "~/modules/form/utils";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 //#region Schemas
-const NullableNonEmptyStringSchema = z.nullish(ZSchema.NonEmptyString);
-const PlaylistNameSchema = z.pipe(
-  z.string(),
-  z.transform(sanitizePlaylistName),
+const NullableNonEmptyStringSchema = v.nullish(FormSchema.NonEmptyString);
+const PlaylistNameSchema = v.pipe(
+  v.string(),
+  v.transform(sanitizePlaylistName),
 );
 
-const RawAlbum = z.object({
-  name: ZSchema.NonEmptyString,
-  artistName: ZSchema.NonEmptyString,
+const RawAlbum = v.object({
+  name: FormSchema.NonEmptyString,
+  artistName: FormSchema.NonEmptyString,
 });
 
-const RawTrack = z.object({
-  name: ZSchema.NonEmptyString,
+const RawTrack = v.object({
+  name: FormSchema.NonEmptyString,
   artistName: NullableNonEmptyStringSchema,
   albumName: NullableNonEmptyStringSchema,
 });
 
-const MusicBackup = z.object({
-  favorites: z.object({
-    albums: z.array(RawAlbum),
-    playlists: z.array(PlaylistNameSchema),
+const MusicBackup = v.object({
+  favorites: v.object({
+    albums: v.array(RawAlbum),
+    playlists: v.array(PlaylistNameSchema),
     /** @deprecated For backwards compatibility. */
-    tracks: z.array(RawTrack),
+    tracks: v.array(RawTrack),
   }),
-  playlists: z.array(
-    z.object({
+  playlists: v.array(
+    v.object({
       name: PlaylistNameSchema,
-      tracks: z.array(RawTrack),
+      tracks: v.array(RawTrack),
     }),
   ),
 });
@@ -59,7 +59,7 @@ const MusicBackup = z.object({
 /** Creates a factory function that finds albums associated to `RawAlbum`. */
 async function findExistingAlbumsFactory() {
   const allAlbums = await getAlbumsSummary();
-  return (entries: Array<z.infer<typeof RawAlbum>>) => {
+  return (entries: Array<v.InferOutput<typeof RawAlbum>>) => {
     return entries
       .map((entry) =>
         allAlbums.find(
@@ -75,7 +75,7 @@ async function findExistingAlbumsFactory() {
 /** Creates a factory function that finds tracks associated to `RawTrack`. */
 async function findExistingTracksFactory() {
   const allTracks = await getTracks();
-  return (entries: Array<z.infer<typeof RawTrack>>) => {
+  return (entries: Array<v.InferOutput<typeof RawTrack>>) => {
     return entries
       .map((entry) =>
         allTracks.find(
@@ -96,7 +96,7 @@ export async function importBackup(jsonContent: Record<string, any>) {
   let backupContents;
   try {
     // Validate the data structure.
-    backupContents = MusicBackup.parse(jsonContent);
+    backupContents = v.parse(MusicBackup, jsonContent);
   } catch {
     throw new Error(i18next.t("err.msg.invalidStructure"));
   }

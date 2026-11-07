@@ -1,9 +1,9 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { z } from "zod/mini";
+import * as v from "valibot";
 
-import { ZSchema } from "~/modules/form/utils";
+import { FormSchema } from "~/modules/form/utils";
 import type { ColorRole, HexColor } from "./constants";
 import { ColorRoleOptions } from "./constants";
 
@@ -40,23 +40,16 @@ export function normalizeHexColor(value: string) {
   return `#${raw.toUpperCase()}${alphaHex}` as HexColor;
 }
 
-export const HexColorSchema = z.pipe(
-  ZSchema.NonEmptyString,
-  z.transform((str, ctx) => {
-    const normalized = normalizeHexColor(str);
-    if (normalized) return normalized;
-
-    ctx.issues.push({
-      code: "invalid_value",
-      input: str,
-      values: [str],
-      message: "Expected a valid hex color.",
-    });
-    return z.NEVER;
-  }),
+export const HexColorSchema = v.pipe(
+  FormSchema.NonEmptyString,
+  v.check(
+    (str) => normalizeHexColor(str) !== null,
+    "Expected a valid hex color.",
+  ),
+  v.transform((str) => normalizeHexColor(str) as HexColor),
 );
 
-export const ColorRoleZodMap = Object.fromEntries(
+export const ColorRoleSchemaMap = Object.fromEntries(
   ColorRoleOptions.map((role) => [role, HexColorSchema]),
 ) as Record<ColorRole, typeof HexColorSchema>;
 //#endregion

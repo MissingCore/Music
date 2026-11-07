@@ -4,7 +4,7 @@
 import { toast } from "@missingcore/ui/toast";
 import { useMutation } from "@tanstack/react-query";
 import { eq } from "drizzle-orm";
-import { z } from "zod/mini";
+import * as v from "valibot";
 
 import { db } from "~/db";
 import { tracks, tracksPlayEvents } from "~/db/schema";
@@ -17,20 +17,20 @@ import { pickDirectory, pickFile } from "~/lib/file-system";
 import { clearAllQueries } from "~/lib/react-query";
 import { Epoch, Months } from "~/utils/date";
 import { chunkArray } from "~/utils/object";
-import { ZSchema } from "~/modules/form/utils";
+import { FormSchema } from "~/modules/form/utils";
 import { RECENT_RANGE_MS } from "../core/constants";
 
-const BackupSchema = z.object({
-  version: ZSchema.RealNumber,
-  exportedAt: ZSchema.NonEmptyString,
+const BackupSchema = v.object({
+  version: FormSchema.RealNumber,
+  exportedAt: FormSchema.NonEmptyString,
 
-  backup: z.array(
-    z.object({
+  backup: v.array(
+    v.object({
       //? Used to prevent potential inflation from the merging.
-      id: ZSchema.NonEmptyString,
-      trackUri: ZSchema.NonEmptyString,
-      playedAt: ZSchema.RealNumber,
-      playTime: ZSchema.RealNumber,
+      id: FormSchema.NonEmptyString,
+      trackUri: FormSchema.NonEmptyString,
+      playedAt: FormSchema.RealNumber,
+      playTime: FormSchema.RealNumber,
     }),
   ),
 });
@@ -58,7 +58,7 @@ async function exportRecapBackup() {
       exportedAt: new Date().toString(),
 
       backup: recapEntries,
-    } satisfies z.infer<typeof BackupSchema>),
+    } satisfies v.InferOutput<typeof BackupSchema>),
   );
 }
 //#endregion
@@ -74,7 +74,7 @@ async function importRecapBackup() {
   let _backupContents;
   try {
     // Validate the data structure.
-    _backupContents = BackupSchema.parse(await backupFile.json());
+    _backupContents = v.parse(BackupSchema, await backupFile.json());
   } catch {
     throw new Error(i18next.t("err.msg.invalidStructure"));
   }

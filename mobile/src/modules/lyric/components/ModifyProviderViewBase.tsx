@@ -1,9 +1,9 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { z } from "zod/mini";
 import { useState } from "react";
 import { View } from "react-native";
+import * as v from "valibot";
 
 import { LyricProviderEndpointPlaceholders } from "../core/constants";
 
@@ -14,7 +14,7 @@ import { Button } from "~/components/Form/Button";
 import { SwitchInput } from "~/components/Form/Switch";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import { Em } from "~/components/Typography/StyledText";
-import { ZSchema } from "~/modules/form/utils";
+import { FormSchema } from "~/modules/form/utils";
 import type { FABWorkflowConfig } from "~/modules/form/FormState";
 import {
   FABWorkflow,
@@ -137,13 +137,21 @@ function LyricProviderForm({ bottomOffset }: { bottomOffset: number }) {
 //#endregion
 
 //#region Schema
-const LyricProviderEntrySchema = z.object({
-  name: ZSchema.NonEmptyString,
-  endpoint: z.httpUrl().check(z.trim()),
-  isJSONResponse: z.boolean(),
-  headers: z.string(),
-  traversedFields: z.array(ZSchema.NonEmptyString),
+const LyricProviderEntrySchema = v.object({
+  name: FormSchema.NonEmptyString,
+  endpoint: v.pipe(
+    v.string(),
+    v.trim(),
+    v.url(),
+    v.check(
+      (endpoint) => /^https?:\/\//i.test(endpoint),
+      "Expected an HTTP or HTTPS URL.",
+    ),
+  ),
+  isJSONResponse: v.boolean(),
+  headers: v.string(),
+  traversedFields: v.array(FormSchema.NonEmptyString),
 });
 
-type LyricProviderEntry = z.infer<typeof LyricProviderEntrySchema>;
+type LyricProviderEntry = v.InferOutput<typeof LyricProviderEntrySchema>;
 //#endregion
