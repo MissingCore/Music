@@ -19,6 +19,7 @@ import { createTypedFormInputs } from "~/modules/form/FormInput";
 import { DEFAULT_WIDGET_CONFIG } from "./constants/Config";
 import type { WidgetName } from "./impl";
 import { nameToWidget } from "./impl";
+import type { WidgetConfig } from "./types";
 import { getWidgetData } from "./utils";
 import { getWidgetConfigKey } from "./utils/customize";
 import { getWidgetConfig, updateWidgetConfig } from "./utils/customize.core";
@@ -38,7 +39,7 @@ function WidgetConfigurationScreenPropsImpl({
   setResult,
   renderWidget,
 }: WidgetConfigurationScreenProps) {
-  const [widgetData, setWidgetData] = useState<WidgetConfigEntry>();
+  const [widgetData, setWidgetData] = useState<WidgetConfig>();
   const widgetKey = getWidgetConfigKey(widgetInfo);
 
   useEffect(() => {
@@ -48,7 +49,7 @@ function WidgetConfigurationScreenPropsImpl({
   }, [widgetKey]);
 
   const onSubmit = useCallback(
-    async (config: WidgetConfigEntry) => {
+    async ({ _canSubmitInitialData, ...config }: WidgetConfigEntry) => {
       try {
         await updateWidgetConfig(widgetKey, config);
 
@@ -72,13 +73,13 @@ function WidgetConfigurationScreenPropsImpl({
     setResult("cancel");
   }, [setResult]);
 
-  if (widgetData === undefined) return null;
+  if (!widgetData) return null;
   return (
     <Form.Provider
       //? This property is irrelevant for this form.
       type="edit"
       schema={WidgetConfigEntrySchema}
-      initData={widgetData}
+      initData={{ _canSubmitInitialData: false, ...widgetData }}
       onSubmit={onSubmit}
       promptUnsavedChanges={false}
     >
@@ -94,6 +95,12 @@ function FormContents(props: { onCancel: VoidFunction }) {
   const { t } = useTranslation();
   const { data, setFields, isSubmitting, onSubmit } =
     useFormContext<WidgetConfigEntry>();
+
+  useEffect(() => {
+    setFields({ _canSubmitInitialData: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Form.Container contentContainerClassName="pb-safe-offset-4">
       <Text accent className="leading-tight">
@@ -145,6 +152,9 @@ const SUPPORTED_COLORS = [
 ] as const;
 
 const WidgetConfigEntrySchema = v.object({
+  //? Hack to allow creating a widget with default settings.
+  _canSubmitInitialData: v.boolean(),
+  // Actual form fields:
   transparent: v.boolean(),
   ...(Object.fromEntries(
     SUPPORTED_COLORS.map((role) => [role, HexColorSchema]),
