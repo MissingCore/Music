@@ -14,6 +14,15 @@ i18next.use(initReactI18next).init({
     default: ["en"],
   }),
   resources,
+
+  //? Disable namespaces as we store all translations in a single file.
+  //? By default, in `namespace:translation.key`, `t()` will look for
+  //? `translation.key` in a `namespace.json` file.
+  //?
+  //? This in turns breaks the `TranslationKeyOrString` type if the string
+  //? has a colon in it.
+  //?   - https://github.com/MissingCore/Music/issues/648
+  nsSeparator: false,
 });
 
 export default i18next;
