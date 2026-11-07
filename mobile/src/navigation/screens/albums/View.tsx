@@ -26,9 +26,9 @@ export default function Albums() {
     () =>
       data?.filter(({ isEP, trackCount }) => {
         let condition = trackCount >= minAlbumLength;
-        if (!showSingles) condition &&= trackCount > 1;
-        if (!showEPs) condition &&= !isEP;
-        if (!showAlbums) condition &&= trackCount === 1 || isEP;
+        if (!showSingles) condition = condition && trackCount > 1;
+        if (!showEPs) condition = condition && !isEP;
+        if (!showAlbums) condition = condition && (trackCount === 1 || isEP);
         return condition;
       }),
     [data, minAlbumLength, showSingles, showEPs, showAlbums],

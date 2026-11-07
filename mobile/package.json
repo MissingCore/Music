@@ -80,6 +80,7 @@
     "@tanstack/eslint-plugin-query": "5.106.1",
     "@types/react": "19.3.0",
     "babel-plugin-inline-import": "3.0.0",
+    "babel-plugin-react-compiler": "1.0.0",
     "babel-plugin-transform-remove-console": "6.9.4",
     "drizzle-kit": "0.31.11",
     "eslint": "9.39.4",

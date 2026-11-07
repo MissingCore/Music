@@ -123,6 +123,9 @@ export default (): ExpoConfig => {
       ],
       ...optionalPlugins,
     ],
+    experiments: {
+      reactCompiler: true,
+    },
   };
 };
 

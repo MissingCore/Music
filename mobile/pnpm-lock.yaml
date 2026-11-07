@@ -179,6 +179,9 @@ importers:
       babel-plugin-inline-import:
         specifier: 3.0.0
         version: 3.0.0
+      babel-plugin-react-compiler:
+        specifier: 1.0.0
+        version: 1.0.0
       babel-plugin-transform-remove-console:
         specifier: 6.9.4
         version: 6.9.4

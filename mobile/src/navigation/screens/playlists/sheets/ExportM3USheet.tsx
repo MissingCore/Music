@@ -32,9 +32,8 @@ export function ExportM3USheet(props: { ref: TrueSheetRef; id: string }) {
       toast.t("feat.backup.extra.exportSuccess");
     } catch (err) {
       toast.error((err as Error).message);
-    } finally {
-      setIsExporting(false);
     }
+    setIsExporting(false);
   };
 
   return (

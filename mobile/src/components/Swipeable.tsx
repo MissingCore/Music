@@ -42,14 +42,14 @@ interface SwipeableProps {
   /** Callback when we swipe to the left. */
   onSwipeLeft?: VoidFunction;
   /** Icon displayed on the right when swiping left. */
-  RightIcon?: React.ReactNode;
+  RightIcon?: React.JSX.Element;
   /** Style the container containing `RightIcon` (ie: background color, border radius). */
   rightIconContainerClassName?: string;
 
   /** Callback when we swipe to the right. */
   onSwipeRight?: VoidFunction;
   /** Icon displayed on the left when swiping right. */
-  LeftIcon?: React.ReactNode;
+  LeftIcon?: React.JSX.Element;
   /** Style the container containing `LeftIcon` (ie: background color, border radius). */
   leftIconContainerClassName?: string;
 
@@ -63,8 +63,8 @@ export function Swipeable({
   activationThreshold = 175,
   activationThresholdRatio = 0.5,
   overshootSwipe = true,
-  RightIcon = <SwipeIcon />,
-  LeftIcon = <SwipeIcon rotate />,
+  RightIcon,
+  LeftIcon,
   //! Since Reanimated 4.5, calling `props.*` inside of a worklet function will throw
   //! the following in dev mode: `[Worklets] Cannot copy value of type 'FiberNode'.`
   //!   - https://github.com/software-mansion/react-native-reanimated/pull/9532
@@ -162,7 +162,7 @@ export function Swipeable({
       <SwipeIconWrapper
         direction="left"
         maxWidth={rowWidth}
-        Icon={LeftIcon}
+        Icon={LeftIcon ?? <SwipeIcon rotate />}
         dragAmount={dragX}
         className={props.leftIconContainerClassName}
       />
@@ -182,7 +182,7 @@ export function Swipeable({
       <SwipeIconWrapper
         direction="right"
         maxWidth={rowWidth}
-        Icon={RightIcon}
+        Icon={RightIcon ?? <SwipeIcon />}
         dragAmount={dragX}
         className={props.rightIconContainerClassName}
       />

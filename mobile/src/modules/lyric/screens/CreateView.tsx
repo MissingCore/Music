@@ -47,7 +47,11 @@ export default function CreateLyric({
       onSubmit={async (entry) => {
         try {
           const newLyric = await createLyric(entry);
-          if (!newLyric) throw new Error("Lyric not returned after insertion.");
+          if (!newLyric) {
+            //? Lyric not returned after insertion.
+            toast.tError("err.flow.generic.title");
+            return;
+          }
           if (linkTo) {
             linkTrackToLyric(
               { name: "", trackId: linkTo, lyricId: newLyric.id },
