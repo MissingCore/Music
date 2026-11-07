@@ -14,6 +14,7 @@ import type { LyricProvider } from "../core/constants";
 import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
+import { mutateGuard } from "~/lib/react-query";
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { Links } from "~/lib/web-browser";
@@ -22,17 +23,28 @@ import {
   IconButton,
 } from "~/components/next/base/button-icon";
 import { TText } from "~/components/next/base/typography";
+import { ScrollableSheet, useSheetRef } from "~/components/next/base/sheet";
 import { Hint } from "~/components/next/blocks/hint";
 import { TextStack } from "~/components/next/blocks/text-stack";
+import { ActionButton } from "~/components/next/blocks/button-action";
 import * as List from "~/components/next/composed/list";
+
+import { useExportLyricsProviderBackup,useImportLyricsProviderBackup } from "../helpers/backupLyricProvider";
 
 export default function LyricsSettings() {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const checkEmbeddedLyrics = useLyricStore((s) => s.checkEmbedded);
   const lyricProviders = useLyricStore((s) => s.providers);
+  const sheetRef = useSheetRef();
+
+  const exportBackup = useExportLyricsProviderBackup();
+  const importBackup = useImportLyricsProviderBackup();
+
+  const inProgress = exportBackup.isPending || importBackup.isPending;
 
   return (
+    <>
     <ScrollLayout title="feat.lyrics.title">
       <List.Group>
         <List.ToggleItem
@@ -69,14 +81,25 @@ export default function LyricsSettings() {
           renderItem={(args) => <RenderItem {...args} />}
           onReordered={moveLyricProvider}
           ListFooterComponent={
-            <FilledIconButton
-              icon="add"
-              accessibilityLabel={t("form.create")}
-              onPress={() => navigation.navigate("LyricProviderForm", {})}
-              intent="inverse"
-              wide
-              className="mt-2 self-center"
-            />
+            <View className="mt-2 w-full flex-row items-center justify-between">
+              <FilledIconButton
+                icon="swap-vert"
+                accessibilityLabel={t("feat.backup.title")}
+                onPress={() => sheetRef.current?.present()}
+                intent="inverse"
+                wide
+              />
+
+              <FilledIconButton
+                icon="add"
+                accessibilityLabel={t("form.create")}
+                onPress={() => navigation.navigate("LyricProviderForm", {})}
+                intent="inverse"
+                wide
+              />
+              {/* Empty placeholder to balance the space so the second button stays centered */}
+              <View className="w-15" />
+            </View>
           }
           ListEmptyComponent={
             <ContentPlaceholder
@@ -91,6 +114,26 @@ export default function LyricsSettings() {
         />
       </List.Group>
     </ScrollLayout>
+    <ScrollableSheet ref={sheetRef}>
+            <View className="flex-row items-center gap-0.75">
+              <ActionButton
+                label={t("feat.backup.extra.export")}
+                onPress={() => mutateGuard(exportBackup, undefined)}
+                disabled={inProgress}
+                leadingIcon="download"
+                className="flex-1 rounded-lg rounded-r-xs"
+              />
+              <ActionButton
+                label={t("feat.backup.extra.import")}
+                onPress={() => mutateGuard(importBackup, undefined)}
+                disabled={inProgress}
+                leadingIcon="upload"
+                className="flex-1 rounded-lg rounded-l-xs"
+              />
+            </View>
+            <Hint hint={t("feat.lyrics.extra.providersBackup")} />
+          </ScrollableSheet>
+    </>
   );
 }
 
