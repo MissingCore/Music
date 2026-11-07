@@ -33,7 +33,7 @@
 | jotai | MIT | https://github.com/pmndrs/jotai |
 | Material Symbols | Apache-2.0 | https://github.com/google/material-design-icons |
 | NDot日本語 | OFL-1.1 | https://x.com/NdotJP_Font |
-| react | MIT | https://github.com/facebook/react |
+| react | MIT | https://github.com/react/react |
 | react-i18next | MIT | https://github.com/i18next/react-i18next |
 | react-native | MIT | https://github.com/react/react-native |
 | react-native-android-widget | MIT | https://github.com/sAleksovski/react-native-android-widget |
