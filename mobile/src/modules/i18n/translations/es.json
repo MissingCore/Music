@@ -214,7 +214,7 @@
       "title": "Recap",
       "brief": "Tus canciones y artistas más escuchados e historial de reproducción.",
       "extra": {
-        "backup": null,
+        "backup": "Transferir datos de recap de esta instancia de la aplicación.",
         "recapTemplate": "{{- name}} $t(feat.recap.title)",
         "playCount": "{{count}} reproducciones",
         "mostPlayed": "Más reproducidas {{- name}}",

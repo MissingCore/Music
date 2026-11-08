@@ -2,7 +2,7 @@
   "name": "music",
   "private": true,
   "main": "index.ts",
-  "version": "3.8.0",
+  "version": "3.9.0-rc.1",
   "description": "A Nothing inspired music player.",
   "license": "AGPL-3.0-only",
   "repository": {
@@ -77,7 +77,7 @@
     "tailwind-merge": "3.7.0",
     "uniwind": "1.13.2",
     "valibot": "1.5.0",
-    "zustand": "5.0.16"
+    "zustand": "5.1.0"
   },
   "devDependencies": {
     "@babel/core": "7.29.7",
@@ -98,7 +98,7 @@
     "neatjson": "0.10.6",
     "prettier": "3.9.10",
     "prettier-plugin-tailwindcss": "0.8.1",
-    "tailwindcss": "4.3.4",
+    "tailwindcss": "4.3.5",
     "typescript": "6.0.3",
     "typescript-eslint": "8.72.1"
   },
