@@ -55,7 +55,7 @@ const LocalMediaArtistConnector = {
         album: albums.name,
         artwork: sql<
           string | null
-        >`coalesce(${tracks.artwork}, ${albums.artwork})`.as("derived_artwork"),
+        >`coalesce(${tracks.artwork}, ${albums.artwork})`,
       })
       .from(tracksToArtists)
       .where(eq(tracksToArtists.artistName, id))
@@ -64,7 +64,8 @@ const LocalMediaArtistConnector = {
       .leftJoin(tracksPlayEvents, eq(tracks.id, tracksPlayEvents.trackId))
       .groupBy(tracksToArtists.trackId)
       .orderBy(
-        sql`ceil(sum(${tracksPlayEvents.playTime}) / ${tracks.duration}) DESC`,
+        sql`coalesce(ceil(sum(${tracksPlayEvents.playTime}) / ${tracks.duration}), 0) DESC`,
+        asc(tracks.name),
       );
 
     //? 4. Get albums, EPs, and albums containing singles.
@@ -74,9 +75,9 @@ const LocalMediaArtistConnector = {
         name: albums.name,
         artwork: albums.artwork,
         isEP: albums.isEP,
-        minYear: sql<number>`coalesce(min(${tracks.year}), -1)`.as("min_year"),
-        maxYear: sql<number>`coalesce(max(${tracks.year}), -1)`.as("max_year"),
-        numTracks: sql<number>`coalesce(count(${tracks}), 0)`.as("num_tracks"),
+        minYear: sql<number>`coalesce(min(${tracks.year}), -1)`,
+        maxYear: sql<number>`coalesce(max(${tracks.year}), -1)`,
+        numTracks: sql<number>`coalesce(count(${tracks.id}), 0)`,
       })
       .from(albumsToArtists)
       .where(eq(albumsToArtists.artistName, id))
@@ -86,6 +87,9 @@ const LocalMediaArtistConnector = {
       .orderBy(
         desc(sql<number>`coalesce(max(${tracks.year}), -1)`),
         desc(sql<number>`coalesce(min(${tracks.year}), -1)`),
+        //? It's not that common for an artist to release multiple albums in the same
+        //? year. If they do, we assume they're variants and thus similarily named.
+        desc(albums.name),
       );
 
     const { singleAlbums, ...categorizedAlbums } = artistAlbums.reduce<{
@@ -118,7 +122,7 @@ const LocalMediaArtistConnector = {
         album: albums.name,
         artwork: sql<
           string | null
-        >`coalesce(${tracks.artwork}, ${albums.artwork})`.as("derived_artwork"),
+        >`coalesce(${tracks.artwork}, ${albums.artwork})`,
       })
       .from(tracksToArtists)
       .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id))
