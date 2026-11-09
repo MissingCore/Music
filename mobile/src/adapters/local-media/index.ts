@@ -1,7 +1,17 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { and, count, eq, gt, notExists, sql } from "drizzle-orm";
+import {
+  and,
+  asc,
+  count,
+  desc,
+  eq,
+  inArray,
+  notExists,
+  or,
+  sql,
+} from "drizzle-orm";
 
 import { db } from "~/db";
 import {
@@ -14,15 +24,18 @@ import {
 } from "~/db/schema";
 
 import { throwIfNoResults } from "~/lib/drizzle";
-import { albumsView } from "./views";
-import type { Adapter, Connector } from "../types";
+import type { Adapter, Connector, MediaDetails } from "../types";
 
 const LocalMediaArtistConnector = {
   async get(id) {
+    //? 1. Get basic stored artist details. Throws an error if the artist doesn't exist.
     const artist = await throwIfNoResults(
       db.query.artists.findFirst({ where: eq(artists.name, id) }),
       "err.msg.noArtists",
     );
+
+    //? 2. Get aggregated data related to its tracks. It's faster to do this rather than
+    //? deriving `totalDuration` from reducing `artistTopTracks`.
     const [agg] = await db
       .select({
         numTracks: count(tracks.id),
@@ -34,135 +47,8 @@ const LocalMediaArtistConnector = {
       .where(eq(tracksToArtists.artistName, id))
       .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id));
 
-    const topTracks = await this.getTopTracks(id);
-    const artistAlbums = await this.getAlbums(id);
-    const artistEPs = await this.getEPs(id);
-    const artistSingles = await this.getSingles(id);
-
-    return {
-      name: artist.name,
-      artwork: artist.artwork,
-      ...agg!,
-      topTracks,
-      albums: artistAlbums,
-      eps: artistEPs,
-      singles: artistSingles,
-    };
-  },
-
-  async getAlbums(id: string) {
-    const results = await db
-      .select({
-        id: albumsView.id,
-        name: albumsView.name,
-        artwork: albumsView.artwork,
-        minYear: albumsView.minYear,
-        maxYear: albumsView.maxYear,
-      })
-      .from(albumsToArtists)
-      .innerJoin(albumsView, eq(albumsToArtists.albumId, albumsView.id))
-      .where(
-        and(
-          eq(albumsToArtists.artistName, id),
-          eq(albumsView.isEP, false),
-          gt(albumsView.numTracks, 1),
-        ),
-      );
-
-    return results.map(({ minYear, maxYear, ...album }) => {
-      let yearStr = `${minYear} - ${maxYear}`;
-      if (minYear === -1) yearStr = "————";
-      else if (minYear === maxYear) yearStr = `${maxYear}`;
-
-      return { ...album, year: yearStr };
-    });
-  },
-
-  async getEPs(id: string) {
-    const results = await db
-      .select({
-        id: albumsView.id,
-        name: albumsView.name,
-        artwork: albumsView.artwork,
-        minYear: albumsView.minYear,
-        maxYear: albumsView.maxYear,
-      })
-      .from(albumsToArtists)
-      .innerJoin(albumsView, eq(albumsToArtists.albumId, albumsView.id))
-      .where(
-        and(eq(albumsToArtists.artistName, id), eq(albumsView.isEP, true)),
-      );
-
-    return results.map(({ minYear, maxYear, ...album }) => {
-      let yearStr = `${minYear} - ${maxYear}`;
-      if (minYear === -1) yearStr = "————";
-      else if (minYear === maxYear) yearStr = `${maxYear}`;
-
-      return { ...album, year: yearStr };
-    });
-  },
-
-  async getSingles(id: string) {
-    const singleTrackAlbums = await db
-      .select({
-        id: tracks.id,
-        name: tracks.name,
-        album: albumsView.name,
-        artwork: sql<
-          string | null
-        >`coalesce(${tracks.artwork}, ${albumsView.artwork})`.as(
-          "derived_artwork",
-        ),
-      })
-      .from(albumsToArtists)
-      .innerJoin(albumsView, eq(albumsToArtists.albumId, albumsView.id))
-      .where(
-        and(
-          eq(albumsToArtists.artistName, id),
-          eq(albumsView.isEP, false),
-          eq(albumsView.numTracks, 1),
-        ),
-      )
-      .innerJoin(tracks, eq(albumsView.id, tracks.albumId));
-
-    //? Handles both cases as if there can be no album entry for the track
-    //? if it has no albums or it belongs in a different album.
-    const tracksInOtherAlbumsAndWithoutAlbums = await db
-      .select({
-        id: tracks.id,
-        name: tracks.name,
-        album: albums.name,
-        artwork: sql<
-          string | null
-        >`coalesce(${tracks.artwork}, ${albums.artwork})`.as("derived_artwork"),
-      })
-      .from(tracksToArtists)
-      .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id))
-      .leftJoin(albums, eq(tracks.albumId, albums.id))
-      .where(
-        and(
-          eq(tracksToArtists.artistName, id),
-          notExists(
-            db
-              .select()
-              .from(albumsToArtists)
-              .where(
-                and(
-                  eq(tracks.albumId, albumsToArtists.albumId),
-                  eq(albumsToArtists.artistName, id),
-                ),
-              ),
-          ),
-        ),
-      );
-
-    return [...singleTrackAlbums, ...tracksInOtherAlbumsAndWithoutAlbums].sort(
-      (a, b) => a.name.localeCompare(b.name),
-    );
-  },
-
-  async getTopTracks(id) {
-    return db
+    //? 3. Get tracks, sorted by how many times we played them.
+    const artistTopTracks = await db
       .select({
         id: tracks.id,
         name: tracks.name,
@@ -180,6 +66,95 @@ const LocalMediaArtistConnector = {
       .orderBy(
         sql`ceil(sum(${tracksPlayEvents.playTime}) / ${tracks.duration}) DESC`,
       );
+
+    //? 4. Get albums, EPs, and albums containing singles.
+    const artistAlbums = await db
+      .select({
+        id: albums.id,
+        name: albums.name,
+        artwork: albums.artwork,
+        isEP: albums.isEP,
+        minYear: sql<number>`coalesce(min(${tracks.year}), -1)`.as("min_year"),
+        maxYear: sql<number>`coalesce(max(${tracks.year}), -1)`.as("max_year"),
+        numTracks: sql<number>`coalesce(count(${tracks}), 0)`.as("num_tracks"),
+      })
+      .from(albumsToArtists)
+      .where(eq(albumsToArtists.artistName, id))
+      .innerJoin(albums, eq(albumsToArtists.albumId, albums.id))
+      .innerJoin(tracks, eq(albums.id, tracks.albumId))
+      .groupBy(albums.id)
+      .orderBy(
+        desc(sql<number>`coalesce(max(${tracks.year}), -1)`),
+        desc(sql<number>`coalesce(min(${tracks.year}), -1)`),
+      );
+
+    const { singleAlbums, ...categorizedAlbums } = artistAlbums.reduce<{
+      albums: MediaDetails.DisplayAlbum[];
+      eps: MediaDetails.DisplayAlbum[];
+      singleAlbums: MediaDetails.DisplayAlbum[];
+    }>(
+      (prev, { isEP, minYear, maxYear, numTracks, ...album }) => {
+        let yearStr = `${minYear} - ${maxYear}`;
+        if (minYear === -1) yearStr = "————";
+        else if (minYear === maxYear) yearStr = `${maxYear}`;
+        const formattedEntry = { ...album, year: yearStr };
+
+        if (isEP) prev.eps.push(formattedEntry);
+        else if (numTracks > 1) prev.albums.push(formattedEntry);
+        else prev.singleAlbums.push(formattedEntry);
+
+        return prev;
+      },
+      { albums: [], eps: [], singleAlbums: [] },
+    );
+
+    const singleAlbumIds = singleAlbums.map(({ id }) => id);
+
+    //? 5. Get tracks with no albums, tracks in albums with a single track, and tracks in albums not by this artist.
+    const artistSingles = await db
+      .select({
+        id: tracks.id,
+        name: tracks.name,
+        album: albums.name,
+        artwork: sql<
+          string | null
+        >`coalesce(${tracks.artwork}, ${albums.artwork})`.as("derived_artwork"),
+      })
+      .from(tracksToArtists)
+      .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id))
+      .leftJoin(albums, eq(tracks.albumId, albums.id))
+      .orderBy(desc(tracks.year), asc(tracks.name))
+      .where(
+        and(
+          eq(tracksToArtists.artistName, id),
+          or(
+            singleAlbumIds.length > 0
+              ? inArray(tracks.albumId, singleAlbumIds)
+              : undefined,
+            //* Handles tracks with no albums & tracks in albums not by this artist.
+            notExists(
+              db
+                .select()
+                .from(albumsToArtists)
+                .where(
+                  and(
+                    eq(albumsToArtists.albumId, tracks.albumId),
+                    eq(albumsToArtists.artistName, id),
+                  ),
+                ),
+            ),
+          ),
+        ),
+      );
+
+    return {
+      name: artist.name,
+      artwork: artist.artwork,
+      ...agg!,
+      topTracks: artistTopTracks,
+      ...categorizedAlbums,
+      singles: artistSingles,
+    };
   },
 } as const satisfies Connector.Artist & Record<PropertyKey, unknown>;
 

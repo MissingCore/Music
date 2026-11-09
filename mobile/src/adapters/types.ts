@@ -8,37 +8,29 @@ export namespace MediaDetails {
     artwork: string | null;
   }
 
-  export interface MinAlbum extends MinItem {
+  export interface DisplayAlbum extends MinItem {
     year: string;
   }
 
-  export interface MinTrack extends MinItem {
+  export interface DisplayTrack extends MinItem {
     album: string | null;
   }
 }
 
 export namespace Connector {
   export interface Artist {
-    /** Get information about this artist. */
+    /** Get information about this artist (including discography). */
     get(id: string): Promise<{
       name: string;
       artwork: string | null;
       numTracks: number;
       totalDuration: number;
 
-      topTracks: MediaDetails.MinTrack[];
-      albums: MediaDetails.MinAlbum[];
-      eps: MediaDetails.MinAlbum[];
-      singles: MediaDetails.MinTrack[];
+      topTracks: MediaDetails.DisplayTrack[];
+      albums: MediaDetails.DisplayAlbum[];
+      eps: MediaDetails.DisplayAlbum[];
+      singles: MediaDetails.DisplayTrack[];
     }>;
-    /** Get top tracks for this artist. */
-    getTopTracks(id: string): Promise<MediaDetails.MinTrack[]>;
-    /** Get albums sorted by release year. */
-    getAlbums(id: string): Promise<MediaDetails.MinAlbum[]>;
-    /** Get EPs sorted by release year. */
-    getEPs(id: string): Promise<MediaDetails.MinAlbum[]>;
-    /** Get tracks with no albums, tracks in albums with a single track, and tracks in albums not by this artist. */
-    getSingles(id: string): Promise<MediaDetails.MinTrack[]>;
   }
 }
 
