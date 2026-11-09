@@ -6,9 +6,11 @@ import { File } from "expo-file-system";
 
 import { queries as q } from "~/data/keyStore";
 import { getArtistsString } from "~/data/artist/utils";
-import { createLyric } from "~/data/lyric/api";
+import { createLyric, updateLyric } from "~/data/lyric/api";
+import { getTrackLyrics } from "~/data/track/api";
 import { playbackStore } from "~/stores/Playback/store";
 import { lyricStore } from "../core/store";
+import type { LyricProvider } from "../core/constants";
 import { fetchLyricFromProvider } from "../core/data";
 
 import { queryClient } from "~/lib/react-query";
@@ -74,5 +76,47 @@ export async function autoDiscoverLyrics(abortController: AbortController) {
     });
   } catch (err) {
     console.log(err);
+  }
+}
+
+/**
+ * Search for lyrics from a specific provider for the currently active track.
+ * If lyrics are found, they're saved to the database for that track and the
+ * lyric query is invalidated so any mounted views update immediately.
+ * Returns `true` when lyrics were found and saved, `false` otherwise.
+ */
+export async function searchLyricsWithProvider(provider: LyricProvider) {
+  const { activeTrack } = playbackStore.getState();
+  if (!activeTrack) return false;
+
+  const abortController = new AbortController();
+  try {
+    const lyricText = await fetchLyricFromProvider(
+      activeTrack,
+      provider,
+      abortController,
+    );
+    if (!lyricText?.trim()) return false;
+
+    const trimmedLyric = lyricText.trim();
+    // When the user is trying to search for a lyrics on a track for which
+    // there are no existing lyrics present.
+    const existingLyric = await getTrackLyrics(activeTrack.id);
+    if (existingLyric) {
+      await updateLyric(activeTrack.id, { lyricText: trimmedLyric });
+    } else {
+      await createLyric({
+        trackId: activeTrack.id,
+        lyricText: trimmedLyric,
+      });
+    }
+    queryClient.invalidateQueries({
+      queryKey: q.tracks.detail(activeTrack.id)._ctx.lyrics.queryKey,
+    });
+
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
   }
 }

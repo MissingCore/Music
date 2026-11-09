@@ -11,6 +11,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/stores/Session/actions";
 import { useLyricStore } from "~/modules/lyric/core/store";
 import { toggleLyricStoreKey } from "~/modules/lyric/core/actions";
+import { LyricProvidersSheet } from "~/modules/lyric/components/LyricProvidersSheet";
 import { useAlternativeLayout } from "~/hooks/useAlternativeLayout";
 
 import { Back } from "~/navigation/components/Back";
@@ -49,12 +50,14 @@ export default function NowPlaying() {
   const showFullscreenLyrics = useLyricStore((s) => s.fullscreen);
   const sleepTimerSheetRef = useSheetRef();
   const playbackOptionsSheetRef = useSheetRef();
+  const lyricProvidersSheetRef = useSheetRef();
 
   if (!track) return <Back />;
   return (
     <>
       <SleepTimerSheet ref={sleepTimerSheetRef} />
       <PlaybackOptionsSheet ref={playbackOptionsSheetRef} trackId={track.id} />
+      <LyricProvidersSheet ref={lyricProvidersSheetRef} />
 
       <AtmosphereBackground source={track.artwork}>
         <View
@@ -87,6 +90,9 @@ export default function NowPlaying() {
                       }
                       presentPlaybackOptionsSheet={() =>
                         playbackOptionsSheetRef.current?.present()
+                      }
+                      presentLyricProvidersSheet={() =>
+                        lyricProvidersSheetRef.current?.present()
                       }
                     />
                   </>
@@ -173,6 +179,7 @@ function PlaybackControls() {
 function BottomAppBar(props: {
   presentSleepTimerSheet: VoidFunction;
   presentPlaybackOptionsSheet: VoidFunction;
+  presentLyricProvidersSheet: VoidFunction;
 }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -185,6 +192,7 @@ function BottomAppBar(props: {
           icon="lyrics"
           accessibilityLabel={t("feat.lyrics.title")}
           onPress={toggleLyricStoreKey("visible")}
+          onLongPress={props.presentLyricProvidersSheet}
           size="lg"
         />
         <IconButton
