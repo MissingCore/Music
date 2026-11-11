@@ -26,6 +26,7 @@ import {
 import { throwIfNoResults } from "~/lib/drizzle";
 import type { Adapter, Connector, MediaDetails } from "../types";
 
+//#region Artist
 const LocalMediaArtistConnector = {
   async get(id) {
     //? 1. Get basic stored artist details. Throws an error if the artist doesn't exist.
@@ -161,6 +162,7 @@ const LocalMediaArtistConnector = {
     };
   },
 } as const satisfies Connector.Artist & Record<PropertyKey, unknown>;
+//#endregion
 
 export const LocalMediaAdapter = {
   artist: LocalMediaArtistConnector,

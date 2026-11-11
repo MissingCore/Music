@@ -6,8 +6,9 @@ import { ne } from "drizzle-orm";
 
 import { playlists } from "~/db/schema";
 
+import { LocalMediaAdapter } from "~/adapters/local-media";
 import { getAlbum, getAlbumsSummary } from "./album/api";
-import { getArtist, getArtistsSummary, getArtistTracks } from "./artist/api";
+import { getArtistsSummary } from "./artist/api";
 import { getGenre, getGenresSummary, getSortedGenreTracks } from "./genre/api";
 import { getPlaylist, getPlaylistsSummary } from "./playlist/api";
 import {
@@ -51,21 +52,10 @@ export const queries = {
       });
     },
     detail(artistName: string) {
-      const detail = queryOptions({
+      return queryOptions({
         queryKey: [...this._def, "detail", artistName],
-        queryFn: () => getArtist(artistName, true),
+        queryFn: () => LocalMediaAdapter.artist.get(artistName),
       });
-      return {
-        ...detail,
-        _ctx: {
-          tracks: () =>
-            // eslint-disable-next-line @tanstack/query/exhaustive-deps
-            queryOptions({
-              queryKey: [...detail.queryKey, "tracks"],
-              queryFn: () => getArtistTracks(artistName, false),
-            }),
-        },
-      };
     },
   },
 

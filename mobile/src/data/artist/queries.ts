@@ -2,40 +2,21 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useQuery } from "@tanstack/react-query";
-import { useTranslation } from "react-i18next";
 
 import { queries as q } from "../keyStore";
 
-import { createTextPlaceholder } from "~/components/next/blocks/media-image";
-
 //#region Queries
 export function useArtistDetails(artistName: string) {
-  const { t } = useTranslation();
   return useQuery({
     ...q.artists.detail(artistName),
-    select: ({ name, artwork, albums, tracks, duration }) => ({
-      name,
-      imageSource: artwork ?? createTextPlaceholder(name),
-      metadata: [
-        t("term.artist"),
-        t("plural.track", { count: tracks.length }),
-        duration,
-      ],
+    select: ({ topTracks, albums, eps, singles, artwork, ...rest }) => ({
+      ...rest,
+      imageSource: artwork,
+      topTracks: topTracks.length > 0 ? topTracks : null,
       albums: albums.length > 0 ? albums : null,
+      eps: eps.length > 0 ? eps : null,
+      singles: singles.length > 0 ? singles : null,
     }),
-  });
-}
-
-export function useArtistTracks(artistName: string) {
-  return useQuery({
-    ...q.artists.detail(artistName)._ctx.tracks(),
-    select: (tracks) =>
-      tracks.map((track) => ({
-        id: track.id,
-        title: track.name,
-        description: track.albumName ?? "—",
-        imageSource: track.artwork,
-      })),
   });
 }
 
