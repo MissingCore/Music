@@ -5,25 +5,42 @@ import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import type { LinearGradientProps } from "expo-linear-gradient";
 import { LinearGradient } from "expo-linear-gradient";
-import { useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useWindowDimensions, View } from "react-native";
+import {
+  CollapsibleTabView,
+  createTabList,
+} from "react-native-collapsible-tabs-native";
 import { easeGradient } from "react-native-easing-gradient";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import type { MediaDetails } from "~/adapters/types";
 import { useArtistDetails } from "~/data/artist/queries";
+import {
+  useCompactGridLayoutConfig,
+  useListLayoutConfig,
+} from "~/hooks/useLayoutConfigs";
 
+import { getImageUri } from "~/lib/file-system";
 import { OnRTL } from "~/lib/react";
 import type { ExtractQueryData } from "~/lib/react-query";
 import { Seconds } from "~/utils/date";
 import { isString } from "~/utils/validation";
+import type { LegendListSignature } from "~/components/Base/LegendList";
+import { LegendList } from "~/components/Base/LegendList";
 import { BlurIconButton } from "~/components/next/base/blur-button-icon";
 import { Icon } from "~/components/next/base/icon";
 import { Ripple } from "~/components/next/base/ripple";
 import { Text, TText } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";
+import { ImageCard } from "~/components/next/composed/image-card";
+import { TrackItem } from "~/components/next/composed/track-item";
 import { Image } from "~/components/next/primitive/image";
 import type { HexColor } from "~/modules/customization/theme/core/constants";
 import { useTintedDominantColor } from "~/modules/customization/theme/hooks";
+
+const TabLegendList = createTabList(LegendList) as LegendListSignature;
 
 type ArtistDetail = ExtractQueryData<typeof useArtistDetails>;
 
@@ -41,11 +58,12 @@ export default function Artist({
   return (
     <View style={{ backgroundColor: mainColor }} className="grow">
       <TopAppBar />
-      <ScreenHeader {...data} mainColor={mainColor} />
+      <ScreenContents data={data} mainColor={mainColor} />
     </View>
   );
 }
 
+//#region Top App Bar
 function TopAppBar() {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -62,7 +80,56 @@ function TopAppBar() {
     </View>
   );
 }
+//#endregion
 
+//#region Screen Contents
+type AvailableRoutes = "topTracks" | "albums" | "eps" | "singles";
+
+function ScreenContents({
+  data,
+  mainColor,
+}: {
+  data: ArtistDetail;
+  mainColor: HexColor;
+}) {
+  const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
+  const [tabIndex, setTabIndex] = useState(0);
+
+  const routes = useMemo(() => {
+    const routes: Array<{ key: AvailableRoutes; title: string }> = [];
+    if (!data) return routes;
+    if (data.topTracks)
+      routes.push({
+        key: "topTracks",
+        title: t("feat.recap.extra.top", { name: t("term.tracks") }),
+      });
+    if (data.albums) routes.push({ key: "albums", title: t("term.albums") });
+    if (data.eps) routes.push({ key: "eps", title: t("term.eps") });
+    if (data.singles) routes.push({ key: "singles", title: t("term.singles") });
+
+    return routes;
+  }, [t, data]);
+
+  return (
+    <CollapsibleTabView
+      headerMinHeight={56 + insets.top}
+      navigationState={{ index: tabIndex, routes }}
+      onIndexChange={setTabIndex}
+      renderHeader={() => <ScreenHeader {...data} mainColor={mainColor} />}
+      renderScene={({ route }) => (
+        // @ts-expect-error - `asGrid` is `true | false`.
+        <RenderedList
+          asGrid={route.key === "albums" || route.key === "eps"}
+          data={data[route.key]!}
+        />
+      )}
+    />
+  );
+}
+//#endregion
+
+//#region Header
 function ScreenHeader(
   props: Pick<
     ArtistDetail,
@@ -141,3 +208,56 @@ function ScreenHeader(
     </View>
   );
 }
+//#endregion
+
+//#region Rendered Lists
+type RenderedListProps =
+  | { asGrid: true; data: MediaDetails.DisplayAlbum[] }
+  | { asGrid?: false; data: MediaDetails.DisplayTrack[] };
+
+function RenderedList(props: RenderedListProps) {
+  const navigation = useNavigation();
+  const layout = (
+    props.asGrid ? useCompactGridLayoutConfig : useListLayoutConfig
+  )();
+
+  const renderAlbum = useCallback(
+    ({ item }: { item: MediaDetails.DisplayAlbum }) => (
+      <ImageCard
+        src={item.artwork}
+        size={layout.width}
+        label={item.name}
+        supporting={item.year}
+        onPress={() =>
+          navigation.navigate("Album", { id: item.id }, { pop: true })
+        }
+      />
+    ),
+    [navigation, layout.width],
+  );
+  const renderTrack = useCallback(
+    ({ item }: { item: MediaDetails.DisplayTrack }) => (
+      <TrackItem
+        id={item.id}
+        title={item.name}
+        description={item.album ?? "—"}
+        imageSource={getImageUri(item.artwork)}
+      />
+    ),
+    [],
+  );
+
+  return (
+    <TabLegendList
+      numColumns={layout.count}
+      estimatedItemSize={layout.width + 6}
+      data={props.data}
+      keyExtractor={({ id }: { id: string }) => id}
+      // @ts-expect-error - Data will render the item correctly.
+      renderItem={props.asGrid ? renderAlbum : renderTrack}
+      className="-mx-0.75"
+      contentContainerClassName="gap-y-1.5 p-4"
+    />
+  );
+}
+//#endregion
