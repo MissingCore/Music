@@ -12,16 +12,18 @@ import { easeGradient } from "react-native-easing-gradient";
 
 import { useArtistDetails } from "~/data/artist/queries";
 
-import { getImageUri } from "~/lib/file-system";
 import { OnRTL } from "~/lib/react";
 import type { ExtractQueryData } from "~/lib/react-query";
 import { Seconds } from "~/utils/date";
+import { isString } from "~/utils/validation";
 import { BlurIconButton } from "~/components/next/base/blur-button-icon";
 import { Icon } from "~/components/next/base/icon";
 import { Ripple } from "~/components/next/base/ripple";
 import { Text, TText } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";
 import { Image } from "~/components/next/primitive/image";
+import type { HexColor } from "~/modules/customization/theme/core/constants";
+import { useTintedDominantColor } from "~/modules/customization/theme/hooks";
 
 type ArtistDetail = ExtractQueryData<typeof useArtistDetails>;
 
@@ -33,13 +35,14 @@ export default function Artist({
   },
 }: Props) {
   const { isPending, error, data } = useArtistDetails(artistName);
+  const mainColor = useTintedDominantColor(data?.imageSource);
 
   if (isPending || error) return null;
   return (
-    <>
+    <View style={{ backgroundColor: mainColor }} className="grow">
       <TopAppBar />
-      <ScreenHeader {...data} />
-    </>
+      <ScreenHeader {...data} mainColor={mainColor} />
+    </View>
   );
 }
 
@@ -64,23 +67,21 @@ function ScreenHeader(
   props: Pick<
     ArtistDetail,
     "name" | "imageSource" | "numTracks" | "totalDuration"
-  >,
+  > & { mainColor: HexColor },
 ) {
   const { t } = useTranslation();
   const { width, height } = useWindowDimensions();
   const headerHeight = Math.min(400, width, height);
 
-  const transitionColor = "#000000";
-
   const { colors, locations } = useMemo(
     () =>
       easeGradient({
         colorStops: {
-          0: { color: "transparent" },
-          1: { color: transitionColor },
+          0: { color: `${props.mainColor}00` },
+          1: { color: props.mainColor },
         },
       }) as unknown as Pick<LinearGradientProps, "colors" | "locations">,
-    [transitionColor],
+    [props.mainColor],
   );
 
   return (
@@ -89,7 +90,7 @@ function ScreenHeader(
       className="relative w-full items-center justify-end"
     >
       <Image
-        source={getImageUri(props.imageSource)}
+        source={isString(props.imageSource) ? props.imageSource : null}
         contentFit="cover"
         contentPosition="top"
         className="absolute inset-0 size-full"
@@ -128,12 +129,12 @@ function ScreenHeader(
           rippleColor="#C8C8C8"
           className="min-h-12 min-w-32 flex-row items-center justify-center gap-1 self-center rounded-full bg-white p-2"
         >
-          <Icon name="play-arrow-filled" size={32} color={transitionColor} />
+          <Icon name="play-arrow-filled" size={32} color={props.mainColor} />
           <TText
             textKey="term.play"
             bold
             size="lg"
-            style={{ color: transitionColor }}
+            style={{ color: props.mainColor }}
           />
         </Ripple>
       </View>

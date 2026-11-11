@@ -5,13 +5,16 @@ import { useQuery } from "@tanstack/react-query";
 
 import { queries as q } from "../keyStore";
 
+import { getImageUri } from "~/lib/file-system";
+import { createTextPlaceholder } from "~/components/next/blocks/media-image";
+
 //#region Queries
 export function useArtistDetails(artistName: string) {
   return useQuery({
     ...q.artists.detail(artistName),
     select: ({ topTracks, albums, eps, singles, artwork, ...rest }) => ({
       ...rest,
-      imageSource: artwork,
+      imageSource: getImageUri(artwork) ?? createTextPlaceholder(rest.name),
       topTracks: topTracks.length > 0 ? topTracks : null,
       albums: albums.length > 0 ? albums : null,
       eps: eps.length > 0 ? eps : null,

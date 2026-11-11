@@ -1,8 +1,10 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useMemo } from "react";
+import { colord } from "colord";
+import { useEffect, useMemo, useState } from "react";
 import { useColorScheme } from "react-native";
+import { createPalette } from "react-native-material-palette";
 import { useCSSVariable } from "uniwind";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -51,3 +53,31 @@ export function useColor(
   ) as HexColor;
   return isHexColor(wantedColor) ? wantedColor : themeColor;
 }
+
+//#region useDominantColor
+const DominantColorCache: Record<string, HexColor> = {};
+
+/** Returns the dominant color of an image after being tinted darker. */
+export function useTintedDominantColor(imgSrc: unknown) {
+  const [color, setColor] = useState<HexColor>("#000000");
+
+  useEffect(() => {
+    if (typeof imgSrc !== "string" || DominantColorCache[imgSrc]) return;
+    createPalette({ uri: imgSrc })
+      .then(({ dominant }) => {
+        const colorObj = colord(dominant?.color ?? "#000000");
+        const tintedColor = (
+          colorObj.isLight() ? colorObj.darken(0.25).toHex() : colorObj.toHex()
+        ) as HexColor;
+
+        setColor(tintedColor);
+        DominantColorCache[imgSrc] = tintedColor;
+      })
+      .catch(() => setColor("#000000"));
+  }, [imgSrc]);
+
+  return typeof imgSrc !== "string"
+    ? "#000000"
+    : (DominantColorCache[imgSrc] ?? color);
+}
+//#endregion
