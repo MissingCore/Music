@@ -8,6 +8,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useWindowDimensions, View } from "react-native";
+import type { TabBarProps } from "react-native-collapsible-tabs-native";
 import {
   CollapsibleTabView,
   createTabList,
@@ -22,21 +23,29 @@ import {
   useListLayoutConfig,
 } from "~/hooks/useLayoutConfigs";
 
+import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
+
 import { getImageUri } from "~/lib/file-system";
 import { OnRTL } from "~/lib/react";
 import type { ExtractQueryData } from "~/lib/react-query";
+import { cn } from "~/lib/style";
 import { Seconds } from "~/utils/date";
 import { isString } from "~/utils/validation";
 import type { LegendListSignature } from "~/components/Base/LegendList";
 import { LegendList } from "~/components/Base/LegendList";
+import { ScrollView } from "~/components/Base/ScrollView";
 import { BlurIconButton } from "~/components/next/base/blur-button-icon";
 import { Icon } from "~/components/next/base/icon";
 import { Ripple } from "~/components/next/base/ripple";
 import { Text, TText } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";
 import { ImageCard } from "~/components/next/composed/image-card";
-import { TrackItem } from "~/components/next/composed/track-item";
+import {
+  TrackItem,
+  TrackListContext,
+} from "~/components/next/composed/track-item";
 import { Image } from "~/components/next/primitive/image";
+import { Pressable } from "~/components/Base/Pressable";
 import type { HexColor } from "~/modules/customization/theme/core/constants";
 import { useTintedDominantColor } from "~/modules/customization/theme/hooks";
 
@@ -54,11 +63,18 @@ export default function Artist({
   const { isPending, error, data } = useArtistDetails(artistName);
   const mainColor = useTintedDominantColor(data?.imageSource);
 
+  const trackSource = useMemo(
+    () => ({ type: "artist", id: artistName }) as const,
+    [artistName],
+  );
+
   if (isPending || error) return null;
   return (
     <View style={{ backgroundColor: mainColor }} className="grow">
       <TopAppBar />
-      <ScreenContents data={data} mainColor={mainColor} />
+      <TrackListContext value={trackSource}>
+        <ScreenContents data={data} mainColor={mainColor} />
+      </TrackListContext>
     </View>
   );
 }
@@ -117,6 +133,9 @@ function ScreenContents({
       navigationState={{ index: tabIndex, routes }}
       onIndexChange={setTabIndex}
       renderHeader={() => <ScreenHeader {...data} mainColor={mainColor} />}
+      renderTabBar={(args) => (
+        <RenderedTabBar {...args} mainColor={mainColor} />
+      )}
       renderScene={({ route }) => (
         // @ts-expect-error - `asGrid` is `true | false`.
         <RenderedList
@@ -210,6 +229,40 @@ function ScreenHeader(
 }
 //#endregion
 
+//#region Rendered Tab Bar
+function RenderedTabBar(props: TabBarProps & { mainColor: HexColor }) {
+  return (
+    <ScrollView
+      horizontal
+      style={{ backgroundColor: props.mainColor }}
+      contentContainerClassName="gap-6 p-4"
+    >
+      {props.routes.map(({ key, title }, index) => (
+        <Pressable
+          key={key}
+          onPress={() => props.onIndexChange(index)}
+          className={cn(
+            "min-w-12",
+            props.index === index && "border-b-2 border-white",
+          )}
+        >
+          <Text
+            bold
+            center
+            size="lg"
+            className={cn(
+              props.index === index ? "text-white" : "text-white/80",
+            )}
+          >
+            {title}
+          </Text>
+        </Pressable>
+      ))}
+    </ScrollView>
+  );
+}
+//#endregion
+
 //#region Rendered Lists
 type RenderedListProps =
   | { asGrid: true; data: MediaDetails.DisplayAlbum[] }
@@ -220,6 +273,7 @@ function RenderedList(props: RenderedListProps) {
   const layout = (
     props.asGrid ? useCompactGridLayoutConfig : useListLayoutConfig
   )();
+  const bottomOffset = useBottomActionsOffset();
 
   const renderAlbum = useCallback(
     ({ item }: { item: MediaDetails.DisplayAlbum }) => (
@@ -256,6 +310,7 @@ function RenderedList(props: RenderedListProps) {
       // @ts-expect-error - Data will render the item correctly.
       renderItem={props.asGrid ? renderAlbum : renderTrack}
       className="-mx-0.75"
+      contentContainerStyle={{ paddingBottom: bottomOffset }}
       contentContainerClassName="gap-y-1.5 p-4"
     />
   );
