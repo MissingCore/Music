@@ -3,7 +3,7 @@
 
 import i18next from "~/modules/i18n";
 import { getAlbumDetails, getAlbumTracks } from "~/data/album/api";
-import { getSortedArtistTracks } from "~/data/artist/api";
+import { getArtistTracks } from "~/data/artist/api";
 import { getSortedFolderTracks } from "~/data/folder/api";
 import { getSortedGenreTracks } from "~/data/genre/api";
 import { getPlaylistTracks } from "~/data/playlist/api";
@@ -60,8 +60,7 @@ export async function getTrackIdsList({ type, id }: PlayFromSource) {
 
   try {
     if (type === "album") trackIds = await getAlbumTracks(id, true);
-    else if (type === "artist")
-      trackIds = await getSortedArtistTracks(id, true);
+    else if (type === "artist") trackIds = await getArtistTracks(id, true);
     else if (type === "folder")
       trackIds = await getSortedFolderTracks(id, true);
     else if (type === "genre") trackIds = await getSortedGenreTracks(id, true);

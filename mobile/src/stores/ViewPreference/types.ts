@@ -15,8 +15,7 @@ export type LayoutItem = {
 };
 
 /** Options where the sort order will be applied to the tracks. */
-export type MutableTrackOrder =
-  "artistTracks" | "folder" | "genreTracks" | "track";
+export type MutableTrackOrder = "folder" | "genreTracks" | "track";
 
 /** Screens where the order of the content can be change. */
 export type MutableViewOrder =

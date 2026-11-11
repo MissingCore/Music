@@ -12,7 +12,6 @@ import { useHorizontalListLayoutConfig } from "~/hooks/useLayoutConfigs";
 
 import * as MediaListLayout from "~/navigation/layouts/MediaListLayout";
 import { ArtistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
-import { SortOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
 
 import { FlatList } from "~/components/Base/List";
 import { useSheetRef } from "~/components/next/base/sheet";
@@ -30,7 +29,6 @@ export default function Artist({
   const artistDetailsQuery = useArtistDetails(artistName);
   const artistTracksQuery = useArtistTracks(artistName);
   const artworkSheetRef = useSheetRef();
-  const tracksSortOptionsSheetRef = useSheetRef();
 
   const trackSource = useMemo(
     () => ({ type: "artist", id: artistName }) as const,
@@ -44,15 +42,11 @@ export default function Artist({
   return (
     <>
       <ArtistArtworkSheet ref={artworkSheetRef} id={artistName} />
-      <SortOptionsSheet ref={tracksSortOptionsSheetRef} screen="artistTracks" />
 
       <MediaListLayout.Toolbar
         name={artistDetailsQuery.data.name}
         trackIds={artistTracksQuery.data?.map(({ id }) => id) ?? []}
         presentArtworkSheet={() => artworkSheetRef.current?.present()}
-        presentSortOptionsSheet={() =>
-          tracksSortOptionsSheetRef.current?.present()
-        }
       />
       <MediaListLayout.Provider
         imageSource={artistDetailsQuery.data.imageSource}
