@@ -35,3 +35,8 @@ export function alphaToHex(alpha: number) {
   if (alpha < 0 || alpha >= 1) return "FF";
   return colord("#000000").alpha(alpha).toHex().slice(-2).toUpperCase();
 }
+
+/** Darkens color if it's "light" and brightens color if it's "dark". */
+export function adjustTone(color: ReturnType<typeof colord>, amount = 0.1) {
+  return color.isLight() ? color.darken(amount) : color.lighten(amount);
+}

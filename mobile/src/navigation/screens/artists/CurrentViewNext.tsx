@@ -43,8 +43,6 @@ import { LegendList } from "~/components/Base/LegendList";
 import { ScrollView } from "~/components/Base/ScrollView";
 import { BlurIconButton } from "~/components/next/base/blur-button-icon";
 import { Icon } from "~/components/next/base/icon";
-import { Ripple } from "~/components/next/base/ripple";
-import { Text } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";
 import { ImageCard } from "~/components/next/composed/image-card";
 import {
@@ -52,12 +50,14 @@ import {
   TrackListContext,
 } from "~/components/next/composed/track-item";
 import { Image } from "~/components/next/primitive/image";
-import { Pressable } from "~/components/Base/Pressable";
+import { Pressable } from "~/components/next/primitive/pressable";
+import { Ripple } from "~/components/next/themed/ripple";
+import { Text } from "~/components/next/themed/typography";
 import {
   ThemeProvider,
   useTheme,
+  useTintedDominantColor,
 } from "~/modules/customization/theme/core/context";
-import { useTintedDominantColor } from "~/modules/customization/theme/hooks";
 
 const HeaderProgressContext = createContext<SharedValue<number>>(null as never);
 
@@ -182,8 +182,7 @@ function ScreenHeader(
 ) {
   const { t } = useTranslation();
   const { width, height } = useWindowDimensions();
-  const { surface, surfaceContainerHigh, onSurface, onSurfaceVariant } =
-    useTheme();
+  const { surface, onSurface } = useTheme();
   const headerProgress = use(HeaderProgressContext);
   const headerHeight = Math.min(400, width, height);
 
@@ -222,7 +221,7 @@ function ScreenHeader(
 
       <Animated.View style={animatedStyles} className="w-full p-4">
         <Marquee center>
-          <Text bold size="4xl" style={{ color: onSurface }}>
+          <Text bold size="4xl">
             {props.name}
           </Text>
         </Marquee>
@@ -230,25 +229,25 @@ function ScreenHeader(
           center
           contentContainerClassName="mt-2 mb-4 flex-row items-center"
         >
-          <Text size="sm" style={{ color: onSurfaceVariant }}>
+          <Text size="sm" color="onSurfaceVariant">
             {t("plural.track", { count: props.numTracks })}
           </Text>
           {/* Work around for RTL languages. */}
-          <Text size="sm" style={{ color: onSurfaceVariant }}>
+          <Text size="sm" color="onSurfaceVariant">
             {" • "}
           </Text>
-          <Icon name="schedule" size={16} color={onSurfaceVariant} />
-          <Text size="sm" style={{ color: onSurfaceVariant }}>
+          <Icon name="schedule" size={16} color="onSurfaceVariant" />
+          <Text size="sm" color="onSurfaceVariant">
             {` ${Seconds.toReadableTime(props.totalDuration, true)}`}
           </Text>
         </Marquee>
         <Ripple
           onPress={() => console.log("Playing from artist list...")}
-          rippleColor={surfaceContainerHigh}
+          surfaceColor="onSurface"
           style={{ backgroundColor: onSurface }}
           className="min-h-12 min-w-32 flex-row items-center justify-center gap-1 self-center rounded-full p-2"
         >
-          <Icon name="play-arrow-filled" size={32} color={surface} />
+          <Icon name="play-arrow-filled" size={32} color="surface" />
         </Ripple>
       </Animated.View>
     </View>
@@ -258,7 +257,7 @@ function ScreenHeader(
 
 //#region Rendered Tab Bar
 function RenderedTabBar(props: TabBarProps) {
-  const { surface, onSurface, onSurfaceVariant } = useTheme();
+  const { surface, onSurface } = useTheme();
   return (
     <ScrollView
       horizontal
@@ -274,11 +273,9 @@ function RenderedTabBar(props: TabBarProps) {
         >
           <Text
             bold
-            center
             size="lg"
-            style={{
-              color: props.index === index ? onSurface : onSurfaceVariant,
-            }}
+            color={props.index === index ? "onSurface" : "onSurfaceVariant"}
+            className="text-center"
           >
             {title}
           </Text>
