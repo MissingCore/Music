@@ -46,10 +46,10 @@ export function ColorPicker({
   const hue = useSharedValue(0);
   const saturation = useSharedValue(0);
   const brightness = useSharedValue(0);
+  const normalizedHexColor = normalizeHexColor(value);
 
   // Synchronize external color with internal.
   useEffect(() => {
-    const normalizedHexColor = normalizeHexColor(value);
     if (
       !normalizedHexColor ||
       //? Prevent "jumping" due to Hex to HSV conversion potentially not resulting in the same value.
@@ -62,7 +62,7 @@ export function ColorPicker({
     hue.set(asHSV.h);
     saturation.set(asHSV.s);
     brightness.set(asHSV.v);
-  }, [hue, saturation, brightness, value]);
+  }, [hue, saturation, brightness, normalizedHexColor]);
 
   const emitCurrentColor = useCallback(() => {
     onComplete(
@@ -72,7 +72,7 @@ export function ColorPicker({
 
   //#region Hue Slider Gestures + Styles
   const { measureSlider, sliderLength, gestures } = useSlider({
-    initValue: hexToHSV(normalizeHexColor(value) ?? "#000").h,
+    initValue: hexToHSV(normalizedHexColor ?? "#000").h,
     min: 0,
     max: 360,
     onChange: (value) => {
