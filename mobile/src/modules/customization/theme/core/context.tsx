@@ -78,8 +78,8 @@ export function useTintedDominantColor(imgSrc: unknown) {
         const colorObj = colord(dominant?.color ?? "#000");
         const tintedColor = (
           colorObj.isLight()
-            ? //? Set max color brightness to 85%.
-              colorObj.darken(Math.max(0, colorObj.brightness() - 0.85)).toHex()
+            ? //? Set max color brightness to 75%.
+              colorObj.darken(Math.max(0, colorObj.brightness() - 0.75)).toHex()
             : colorObj.toHex()
         ) as HexColor;
 

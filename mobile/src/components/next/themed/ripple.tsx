@@ -10,8 +10,8 @@ import { useColor } from "~/modules/customization/theme/core/context";
 import type { PressableProps } from "../primitive/pressable";
 import { Pressable } from "../primitive/pressable";
 
-type RippleConfig = {
-  /** The color of the surface the ripple will be on. Defaults to `surfaceContainerLowest`. */
+export type RippleConfig = {
+  /** The color of the surface the ripple will be on. Defaults to `surface`. */
   surfaceColor?: AppColor;
   /** How opaque we want the ripple to be. Defaults to `0.5`. */
   alpha?: number;
@@ -27,15 +27,13 @@ export function Ripple({
   className,
   ...props
 }: RippleProps) {
-  const derivedSurfaceColor = useColor(
-    surfaceColor ?? "surfaceContainerLowest",
-  );
+  const derivedSurfaceColor = useColor(surfaceColor ?? "surface");
   return (
     <Pressable
       {...props}
       android_ripple={{
         color: adjustTone(colord(derivedSurfaceColor), 0.15)
-          .alpha(alpha ?? 0.5)
+          .alpha(alpha ?? 0.3)
           .toHex(),
         foreground: true,
       }}

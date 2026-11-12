@@ -25,9 +25,10 @@ const TextSizes = {
   "4xl": "text-4xl",
 } as const;
 
-interface TextProps extends RNTextProps {
+export interface TextProps extends RNTextProps {
   accent?: boolean;
   bold?: boolean;
+  center?: boolean;
   color?: AppColor;
   size?: keyof typeof TextSizes;
 }
@@ -35,6 +36,7 @@ interface TextProps extends RNTextProps {
 export function Text({
   accent,
   bold,
+  center,
   color,
   size,
   className,
@@ -49,7 +51,12 @@ export function Text({
   return (
     <RNText
       {...props}
-      className={cn("text-left text-base", size && TextSizes[size], className)}
+      className={cn(
+        "text-left text-base",
+        size && TextSizes[size],
+        center && "text-center",
+        className,
+      )}
       style={[
         {
           color: textColor,

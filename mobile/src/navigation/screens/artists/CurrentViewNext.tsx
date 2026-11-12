@@ -84,6 +84,7 @@ export default function Artist({
   const AtmosphereTheme = useMemo(
     () =>
       ({
+        primary: "#FFFFFF",
         ...(mainColor ? { surface: mainColor } : {}),
         surfaceContainerHigh: "#C8C8C8",
         onSurface: "#FFFFFF",
@@ -273,9 +274,9 @@ function RenderedTabBar(props: TabBarProps) {
         >
           <Text
             bold
+            center
             size="lg"
             color={props.index === index ? "onSurface" : "onSurfaceVariant"}
-            className="text-center"
           >
             {title}
           </Text>
