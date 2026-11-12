@@ -2,13 +2,20 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { colord } from "colord";
-import { createContext, use, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  use,
+  useEffect,
+  useEffectEvent,
+  useMemo,
+  useState,
+} from "react";
 import { useColorScheme } from "react-native";
 import { createPalette } from "react-native-material-palette";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
-import { isHexColor } from "~/utils/color";
+import { clampBrightness, isHexColor } from "~/utils/color";
 import type { AppColor, HexColor, ResolvedTheme } from "./constants";
 import { SystemTheme, Themes } from "./constants";
 
@@ -69,28 +76,31 @@ const DominantColorCache: Record<string, HexColor> = {};
 
 /** Returns the dominant color of an image after being tinted darker. */
 export function useTintedDominantColor(imgSrc: unknown) {
-  const [color, setColor] = useState<HexColor>("#000000");
+  const { surface } = useTheme();
+  const [color, setColor] = useState<HexColor>(
+    () => clampBrightness(colord(surface)).toHex() as HexColor,
+  );
+
+  const resetColor = useEffectEvent(() =>
+    setColor(clampBrightness(colord(surface)).toHex() as HexColor),
+  );
 
   useEffect(() => {
     if (typeof imgSrc !== "string" || DominantColorCache[imgSrc]) return;
     createPalette({ uri: imgSrc })
       .then(({ dominant }) => {
-        const colorObj = colord(dominant?.color ?? "#000");
-        const tintedColor = (
-          colorObj.isLight()
-            ? //? Set max color brightness to 75%.
-              colorObj.darken(Math.max(0, colorObj.brightness() - 0.75)).toHex()
-            : colorObj.toHex()
-        ) as HexColor;
-
+        if (!dominant?.color) throw new Error("No dominant color found.");
+        const tintedColor = clampBrightness(
+          colord(dominant.color),
+        ).toHex() as HexColor;
         setColor(tintedColor);
         DominantColorCache[imgSrc] = tintedColor;
       })
-      .catch(() => setColor("#000000"));
+      .catch(resetColor);
   }, [imgSrc]);
 
   return typeof imgSrc !== "string"
-    ? "#000000"
+    ? color
     : (DominantColorCache[imgSrc] ?? color);
 }
 //#endregion

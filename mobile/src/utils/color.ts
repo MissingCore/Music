@@ -1,6 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import type { Colord } from "colord";
 import { colord } from "colord";
 
 type HexColor = `#${string}`;
@@ -37,6 +38,13 @@ export function alphaToHex(alpha: number) {
 }
 
 /** Darkens color if it's "light" and brightens color if it's "dark". */
-export function adjustTone(color: ReturnType<typeof colord>, amount = 0.1) {
+export function adjustTone(color: Colord, amount = 0.1) {
   return color.isLight() ? color.darken(amount) : color.lighten(amount);
+}
+
+/** Sets the max brigness of a color to a specific percentage. Defaults to `75%`. */
+export function clampBrightness(color: Colord, to = 0.75) {
+  return color.isLight()
+    ? color.darken(Math.max(0, color.brightness() - to))
+    : color;
 }
