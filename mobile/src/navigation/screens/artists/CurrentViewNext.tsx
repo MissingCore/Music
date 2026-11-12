@@ -5,7 +5,7 @@ import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import type { LinearGradientProps } from "expo-linear-gradient";
 import { LinearGradient } from "expo-linear-gradient";
-import { useCallback, useMemo, useState } from "react";
+import { createContext, use, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useWindowDimensions, View } from "react-native";
 import type { TabBarProps } from "react-native-collapsible-tabs-native";
@@ -14,6 +14,12 @@ import {
   createTabList,
 } from "react-native-collapsible-tabs-native";
 import { easeGradient } from "react-native-easing-gradient";
+import type { SharedValue } from "react-native-reanimated";
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+} from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import type { MediaDetails } from "~/adapters/types";
@@ -49,6 +55,8 @@ import { Pressable } from "~/components/Base/Pressable";
 import type { HexColor } from "~/modules/customization/theme/core/constants";
 import { useTintedDominantColor } from "~/modules/customization/theme/hooks";
 
+const HeaderProgressContext = createContext<SharedValue<number>>(null as never);
+
 const TabLegendList = createTabList(LegendList) as LegendListSignature;
 
 type ArtistDetail = ExtractQueryData<typeof useArtistDetails>;
@@ -62,6 +70,7 @@ export default function Artist({
 }: Props) {
   const { isPending, error, data } = useArtistDetails(artistName);
   const mainColor = useTintedDominantColor(data?.imageSource);
+  const headerProgress = useSharedValue(0);
 
   const trackSource = useMemo(
     () => ({ type: "artist", id: artistName }) as const,
@@ -70,12 +79,14 @@ export default function Artist({
 
   if (isPending || error) return null;
   return (
-    <View style={{ backgroundColor: mainColor }} className="grow">
-      <TopAppBar />
-      <TrackListContext value={trackSource}>
-        <ScreenContents data={data} mainColor={mainColor} />
-      </TrackListContext>
-    </View>
+    <HeaderProgressContext value={headerProgress}>
+      <View style={{ backgroundColor: mainColor }} className="grow">
+        <TopAppBar />
+        <TrackListContext value={trackSource}>
+          <ScreenContents data={data} mainColor={mainColor} />
+        </TrackListContext>
+      </View>
+    </HeaderProgressContext>
   );
 }
 
@@ -84,10 +95,7 @@ function TopAppBar() {
   const { t } = useTranslation();
   const navigation = useNavigation();
   return (
-    <View
-      pointerEvents="box-none"
-      className="absolute inset-x-0 top-0 z-50 flex-row items-center justify-between p-2 pt-safe-offset-2"
-    >
+    <View className="absolute inset-x-0 top-0 z-50 flex-row items-center justify-between p-2 pt-safe-offset-2">
       <BlurIconButton
         icon={OnRTL.decide("east", "west")}
         accessibilityLabel={t("form.back")}
@@ -111,6 +119,7 @@ function ScreenContents({
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const [tabIndex, setTabIndex] = useState(0);
+  const headerProgress = use(HeaderProgressContext);
 
   const routes = useMemo(() => {
     const routes: Array<{ key: AvailableRoutes; title: string }> = [];
@@ -143,6 +152,13 @@ function ScreenContents({
           data={data[route.key]!}
         />
       )}
+      onHeaderOffsetChange={(e) => {
+        "worklet";
+        if (e.nativeEvent.collapsibleHeight === 0) return;
+        headerProgress.set(
+          e.nativeEvent.offset / e.nativeEvent.collapsibleHeight,
+        );
+      }}
     />
   );
 }
@@ -157,7 +173,12 @@ function ScreenHeader(
 ) {
   const { t } = useTranslation();
   const { width, height } = useWindowDimensions();
+  const headerProgress = use(HeaderProgressContext);
   const headerHeight = Math.min(400, width, height);
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    opacity: interpolate(headerProgress.get(), [0.5, 1], [1, 0]),
+  }));
 
   const { colors, locations } = useMemo(
     () =>
@@ -188,7 +209,7 @@ function ScreenHeader(
         className="absolute inset-x-0 bottom-0 w-full"
       />
 
-      <View className="w-full p-4">
+      <Animated.View style={animatedStyles} className="w-full p-4">
         <Marquee center>
           <Text bold size="4xl" className="text-white">
             {props.name}
@@ -223,7 +244,7 @@ function ScreenHeader(
             style={{ color: props.mainColor }}
           />
         </Ripple>
-      </View>
+      </Animated.View>
     </View>
   );
 }
