@@ -32,6 +32,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import type { MediaDetails } from "~/adapters/types";
 import { useArtistDetails } from "~/data/artist/queries";
+import { PlaybackControls } from "~/stores/Playback/actions";
 import {
   useCompactGridLayoutConfig,
   useListLayoutConfig,
@@ -211,6 +212,7 @@ function ScreenHeader(
   >,
 ) {
   const { t } = useTranslation();
+  const trackSource = use(TrackListContext);
   const { width, height } = useWindowDimensions();
   const { surface, onSurface } = useTheme();
   const headerProgress = use(HeaderProgressContext);
@@ -272,7 +274,7 @@ function ScreenHeader(
           </Text>
         </Marquee>
         <Ripple
-          onPress={() => console.log("Playing from artist list...")}
+          onPress={() => PlaybackControls.playFromList({ source: trackSource })}
           surfaceColor="onSurface"
           style={{ backgroundColor: onSurface }}
           className="min-h-12 min-w-32 flex-row items-center justify-center gap-1 self-center rounded-full p-2"
