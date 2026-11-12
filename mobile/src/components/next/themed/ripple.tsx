@@ -32,8 +32,8 @@ export function Ripple({
     <Pressable
       {...props}
       android_ripple={{
-        color: adjustTone(colord(derivedSurfaceColor), 0.15)
-          .alpha(alpha ?? 0.3)
+        color: adjustTone(colord(derivedSurfaceColor), 0.25)
+          .alpha(alpha ?? 0.4)
           .toHex(),
         foreground: true,
       }}
