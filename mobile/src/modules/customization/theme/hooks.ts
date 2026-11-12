@@ -65,9 +65,12 @@ export function useTintedDominantColor(imgSrc: unknown) {
     if (typeof imgSrc !== "string" || DominantColorCache[imgSrc]) return;
     createPalette({ uri: imgSrc })
       .then(({ dominant }) => {
-        const colorObj = colord(dominant?.color ?? "#000000");
+        const colorObj = colord(dominant?.color ?? "#000");
         const tintedColor = (
-          colorObj.isLight() ? colorObj.darken(0.25).toHex() : colorObj.toHex()
+          colorObj.isLight()
+            ? //? Set max color brightness to 85%.
+              colorObj.darken(Math.max(0, colorObj.brightness() - 0.85)).toHex()
+            : colorObj.toHex()
         ) as HexColor;
 
         setColor(tintedColor);
