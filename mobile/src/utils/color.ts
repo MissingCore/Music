@@ -22,8 +22,8 @@ export function hsvToHex(hsv: { h: number; s: number; v: number }): HexColor {
     .toUpperCase() as HexColor;
 }
 
-export function withAlpha(color: string, alpha: number) {
-  return colord(color).alpha(alpha).toHex().toUpperCase();
+export function withAlpha(color: string, alpha: number): HexColor {
+  return colord(color).alpha(alpha).toHex().toUpperCase() as HexColor;
 }
 
 export function hexToAlpha(hex: string) {

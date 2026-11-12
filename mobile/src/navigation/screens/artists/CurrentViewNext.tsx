@@ -35,6 +35,7 @@ import { getImageUri } from "~/lib/file-system";
 import { OnRTL } from "~/lib/react";
 import type { ExtractQueryData } from "~/lib/react-query";
 import { cn } from "~/lib/style";
+import { withAlpha } from "~/utils/color";
 import { Seconds } from "~/utils/date";
 import { isString } from "~/utils/validation";
 import type { LegendListSignature } from "~/components/Base/LegendList";
@@ -43,7 +44,7 @@ import { ScrollView } from "~/components/Base/ScrollView";
 import { BlurIconButton } from "~/components/next/base/blur-button-icon";
 import { Icon } from "~/components/next/base/icon";
 import { Ripple } from "~/components/next/base/ripple";
-import { Text, TText } from "~/components/next/base/typography";
+import { Text } from "~/components/next/base/typography";
 import { Marquee } from "~/components/next/blocks/marquee";
 import { ImageCard } from "~/components/next/composed/image-card";
 import {
@@ -52,7 +53,10 @@ import {
 } from "~/components/next/composed/track-item";
 import { Image } from "~/components/next/primitive/image";
 import { Pressable } from "~/components/Base/Pressable";
-import type { HexColor } from "~/modules/customization/theme/core/constants";
+import {
+  ThemeProvider,
+  useTheme,
+} from "~/modules/customization/theme/core/context";
 import { useTintedDominantColor } from "~/modules/customization/theme/hooks";
 
 const HeaderProgressContext = createContext<SharedValue<number>>(null as never);
@@ -77,15 +81,28 @@ export default function Artist({
     [artistName],
   );
 
+  const AtmosphereTheme = useMemo(
+    () =>
+      ({
+        ...(mainColor ? { surface: mainColor } : {}),
+        surfaceContainerHigh: "#C8C8C8",
+        onSurface: "#FFFFFF",
+        onSurfaceVariant: withAlpha("#FFF", 0.8),
+      }) as const,
+    [mainColor],
+  );
+
   if (isPending || error) return null;
   return (
     <HeaderProgressContext value={headerProgress}>
-      <View style={{ backgroundColor: mainColor }} className="grow">
-        <TopAppBar />
-        <TrackListContext value={trackSource}>
-          <ScreenContents data={data} mainColor={mainColor} />
-        </TrackListContext>
-      </View>
+      <ThemeProvider theme={AtmosphereTheme}>
+        <View style={{ backgroundColor: mainColor }} className="grow">
+          <TopAppBar />
+          <TrackListContext value={trackSource}>
+            <ScreenContents data={data} />
+          </TrackListContext>
+        </View>
+      </ThemeProvider>
     </HeaderProgressContext>
   );
 }
@@ -109,13 +126,7 @@ function TopAppBar() {
 //#region Screen Contents
 type AvailableRoutes = "topTracks" | "albums" | "eps" | "singles";
 
-function ScreenContents({
-  data,
-  mainColor,
-}: {
-  data: ArtistDetail;
-  mainColor: HexColor;
-}) {
+function ScreenContents({ data }: { data: ArtistDetail }) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const [tabIndex, setTabIndex] = useState(0);
@@ -141,10 +152,8 @@ function ScreenContents({
       headerMinHeight={56 + insets.top}
       navigationState={{ index: tabIndex, routes }}
       onIndexChange={setTabIndex}
-      renderHeader={() => <ScreenHeader {...data} mainColor={mainColor} />}
-      renderTabBar={(args) => (
-        <RenderedTabBar {...args} mainColor={mainColor} />
-      )}
+      renderHeader={() => <ScreenHeader {...data} />}
+      renderTabBar={(args) => <RenderedTabBar {...args} />}
       renderScene={({ route }) => (
         // @ts-expect-error - `asGrid` is `true | false`.
         <RenderedList
@@ -169,10 +178,12 @@ function ScreenHeader(
   props: Pick<
     ArtistDetail,
     "name" | "imageSource" | "numTracks" | "totalDuration"
-  > & { mainColor: HexColor },
+  >,
 ) {
   const { t } = useTranslation();
   const { width, height } = useWindowDimensions();
+  const { surface, surfaceContainerHigh, onSurface, onSurfaceVariant } =
+    useTheme();
   const headerProgress = use(HeaderProgressContext);
   const headerHeight = Math.min(400, width, height);
 
@@ -184,11 +195,11 @@ function ScreenHeader(
     () =>
       easeGradient({
         colorStops: {
-          0: { color: `${props.mainColor}00` },
-          1: { color: props.mainColor },
+          0: { color: withAlpha(surface, 0) },
+          1: { color: surface },
         },
       }) as unknown as Pick<LinearGradientProps, "colors" | "locations">,
-    [props.mainColor],
+    [surface],
   );
 
   return (
@@ -211,7 +222,7 @@ function ScreenHeader(
 
       <Animated.View style={animatedStyles} className="w-full p-4">
         <Marquee center>
-          <Text bold size="4xl" className="text-white">
+          <Text bold size="4xl" style={{ color: onSurface }}>
             {props.name}
           </Text>
         </Marquee>
@@ -219,30 +230,25 @@ function ScreenHeader(
           center
           contentContainerClassName="mt-2 mb-4 flex-row items-center"
         >
-          <Text size="sm" className="text-white/80">
+          <Text size="sm" style={{ color: onSurfaceVariant }}>
             {t("plural.track", { count: props.numTracks })}
           </Text>
           {/* Work around for RTL languages. */}
-          <Text size="sm" className="text-white/80">
+          <Text size="sm" style={{ color: onSurfaceVariant }}>
             {" • "}
           </Text>
-          <Icon name="schedule" size={16} color="#FFFFFFCC" />
-          <Text size="sm" className="text-white/80">
+          <Icon name="schedule" size={16} color={onSurfaceVariant} />
+          <Text size="sm" style={{ color: onSurfaceVariant }}>
             {` ${Seconds.toReadableTime(props.totalDuration, true)}`}
           </Text>
         </Marquee>
         <Ripple
           onPress={() => console.log("Playing from artist list...")}
-          rippleColor="#C8C8C8"
-          className="min-h-12 min-w-32 flex-row items-center justify-center gap-1 self-center rounded-full bg-white p-2"
+          rippleColor={surfaceContainerHigh}
+          style={{ backgroundColor: onSurface }}
+          className="min-h-12 min-w-32 flex-row items-center justify-center gap-1 self-center rounded-full p-2"
         >
-          <Icon name="play-arrow-filled" size={32} color={props.mainColor} />
-          <TText
-            textKey="term.play"
-            bold
-            size="lg"
-            style={{ color: props.mainColor }}
-          />
+          <Icon name="play-arrow-filled" size={32} color={surface} />
         </Ripple>
       </Animated.View>
     </View>
@@ -251,29 +257,28 @@ function ScreenHeader(
 //#endregion
 
 //#region Rendered Tab Bar
-function RenderedTabBar(props: TabBarProps & { mainColor: HexColor }) {
+function RenderedTabBar(props: TabBarProps) {
+  const { surface, onSurface, onSurfaceVariant } = useTheme();
   return (
     <ScrollView
       horizontal
-      style={{ backgroundColor: props.mainColor }}
+      style={{ backgroundColor: surface }}
       contentContainerClassName="gap-6 p-4"
     >
       {props.routes.map(({ key, title }, index) => (
         <Pressable
           key={key}
           onPress={() => props.onIndexChange(index)}
-          className={cn(
-            "min-w-12",
-            props.index === index && "border-b-2 border-white",
-          )}
+          style={{ borderColor: onSurface }}
+          className={cn("min-w-12", props.index === index && "border-b-2")}
         >
           <Text
             bold
             center
             size="lg"
-            className={cn(
-              props.index === index ? "text-white" : "text-white/80",
-            )}
+            style={{
+              color: props.index === index ? onSurface : onSurfaceVariant,
+            }}
           >
             {title}
           </Text>

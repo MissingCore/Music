@@ -45,6 +45,6 @@ export function RootThemeProvider(props: { children: React.ReactNode }) {
   return <ThemeProvider theme={theme}>{props.children}</ThemeProvider>;
 }
 
-export function useThemeContext() {
+export function useTheme() {
   return use(ThemeContext);
 }
