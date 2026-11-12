@@ -161,6 +161,13 @@ const LocalMediaArtistConnector = {
       singles: artistSingles,
     };
   },
+
+  async getTrackIds(id) {
+    return db
+      .select({ id: tracksToArtists.trackId })
+      .from(tracksToArtists)
+      .where(eq(tracksToArtists.artistName, id));
+  },
 } as const satisfies Connector.Artist & Record<PropertyKey, unknown>;
 //#endregion
 

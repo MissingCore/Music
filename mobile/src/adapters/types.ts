@@ -31,6 +31,9 @@ export namespace Connector {
       eps: MediaDetails.DisplayAlbum[];
       singles: MediaDetails.DisplayTrack[];
     }>;
+
+    /** Return a list of track ids (with no sort preference). */
+    getTrackIds(id: string): Promise<Array<{ id: string }>>;
   }
 }
 
