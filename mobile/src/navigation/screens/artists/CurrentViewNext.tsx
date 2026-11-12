@@ -29,7 +29,9 @@ import {
   useListLayoutConfig,
 } from "~/hooks/useLayoutConfigs";
 
+import { ArtistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
+import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 
 import { getImageUri } from "~/lib/file-system";
 import { OnRTL } from "~/lib/react";
@@ -43,6 +45,7 @@ import { LegendList } from "~/components/Base/LegendList";
 import { ScrollView } from "~/components/Base/ScrollView";
 import { BlurIconButton } from "~/components/next/base/blur-button-icon";
 import { Icon } from "~/components/next/base/icon";
+import { useSheetRef } from "~/components/next/base/sheet";
 import { Marquee } from "~/components/next/blocks/marquee";
 import { ImageCard } from "~/components/next/composed/image-card";
 import {
@@ -98,7 +101,11 @@ export default function Artist({
     <HeaderProgressContext value={headerProgress}>
       <ThemeProvider theme={AtmosphereTheme}>
         <View style={{ backgroundColor: mainColor }} className="grow">
-          <TopAppBar />
+          <TopAppBar
+            id={artistName}
+            name={data.name}
+            trackIds={(data.topTracks ?? []).map(({ id }) => id)}
+          />
           <TrackListContext value={trackSource}>
             <ScreenContents data={data} />
           </TrackListContext>
@@ -109,17 +116,26 @@ export default function Artist({
 }
 
 //#region Top App Bar
-function TopAppBar() {
+function TopAppBar(props: { id: string; name: string; trackIds: string[] }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const sheetRef = useSheetRef();
   return (
-    <View className="absolute inset-x-0 top-0 z-50 flex-row items-center justify-between p-2 pt-safe-offset-2">
-      <BlurIconButton
-        icon={OnRTL.decide("east", "west")}
-        accessibilityLabel={t("form.back")}
-        onPress={() => navigation.goBack()}
-      />
-    </View>
+    <>
+      <ArtistArtworkSheet ref={sheetRef} id={props.id} />
+      <View className="absolute inset-x-0 top-0 z-50 flex-row items-center justify-between p-2 pt-safe-offset-2">
+        <BlurIconButton
+          icon={OnRTL.decide("east", "west")}
+          accessibilityLabel={t("form.back")}
+          onPress={() => navigation.goBack()}
+        />
+        <CurrentListMenu
+          name={props.name}
+          trackIds={props.trackIds}
+          presentArtworkSheet={() => sheetRef.current?.present()}
+        />
+      </View>
+    </>
   );
 }
 //#endregion
