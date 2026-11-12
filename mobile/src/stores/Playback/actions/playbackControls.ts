@@ -239,7 +239,6 @@ export async function playFromList({
   // 5. Update the persistent storage.
   playbackStore.setState({
     isPlaying: true,
-    shuffle: shouldShuffle,
     ...(isDiffTrack ? { lastPosition: 0 } : {}),
     ...newListInfo,
     playingFrom: source,
