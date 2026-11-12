@@ -14,6 +14,7 @@ import { ScrollLayout } from "~/navigation/layouts/ScrollLayout";
 
 import { FontSize } from "~/constants/Styles";
 import { Links, openLink } from "~/lib/web-browser";
+import { withAlpha } from "~/utils/color";
 import { Card } from "~/components/next/base/card";
 import { Icon } from "~/components/next/base/icon";
 import * as List from "~/components/next/composed/list";
@@ -38,8 +39,7 @@ export default function AppUpdate() {
 
   if (!release) return null;
 
-  // Light: 5% Opacity; Dark: 15% Opacity
-  const codeBg = `${onSurface}${scheme === "dark" ? "26" : "0D"}`;
+  const codeBg = withAlpha(onSurface, scheme === "dark" ? 0.15 : 0.05);
 
   return (
     <ScrollLayout title={release.version}>
@@ -63,7 +63,7 @@ export default function AppUpdate() {
             heading2Container: { paddingBottom: 0, borderBottomWidth: 0 },
             link: { color: onSurfaceVariant, textDecorationLine: "underline" },
             codeBlock: {
-              backgroundColor: `${onSurface}0D`, // 5% Opacity
+              backgroundColor: withAlpha(onSurface, 0.05),
               borderRadius: 12,
             },
             hr: { backgroundColor: outlineVariant },
