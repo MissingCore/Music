@@ -5,8 +5,10 @@ import { colord } from "colord";
 
 type HexColor = `#${string}`;
 
-export function isValidHexColor(value: string) {
-  return value.startsWith("#") && colord(value).isValid();
+export function isHexColor(value?: string): value is HexColor {
+  return (
+    value !== undefined && value.startsWith("#") && colord(value).isValid()
+  );
 }
 
 export function hexToHSV(hex: string) {

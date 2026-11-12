@@ -6,8 +6,7 @@ import { Appearance } from "react-native";
 
 import type { customThemes } from "~/db/schema";
 
-import { isValidHexColor } from "~/utils/color";
-import type { CustomTheme, DefaultTheme, HexColor } from "./core/constants";
+import type { CustomTheme, DefaultTheme } from "./core/constants";
 import { DefaultThemeOptions } from "./core/constants";
 import { getCustomTheme } from "./core/data";
 
@@ -49,9 +48,5 @@ export function isDefaultTheme(
   theme: DefaultTheme | (string & {}),
 ): theme is DefaultTheme {
   return DefaultThemeOptions.includes(theme as DefaultTheme);
-}
-
-export function isHexColor(color?: string): color is HexColor {
-  return color !== undefined && isValidHexColor(color);
 }
 //#endregion

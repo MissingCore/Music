@@ -4,13 +4,12 @@
 import { use } from "react";
 
 import { cn } from "~/lib/style";
-import { withAlpha } from "~/utils/color";
+import { isHexColor, withAlpha } from "~/utils/color";
 import { AtmosphereSubtreeContext } from "~/modules/customization/atmosphere/store";
 import type { AppColor } from "~/modules/customization/theme/core/constants";
 import { useTheme } from "~/modules/customization/theme/hooks";
 import type { PressableProps } from "../primitive/pressable";
 import { Pressable } from "../primitive/pressable";
-import { isHexColor } from "~/modules/customization/theme/utils";
 
 type RippleConfig = { rippleColor?: AppColor };
 
