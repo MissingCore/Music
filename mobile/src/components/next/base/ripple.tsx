@@ -4,6 +4,7 @@
 import { use } from "react";
 
 import { cn } from "~/lib/style";
+import { withAlpha } from "~/utils/color";
 import { AtmosphereSubtreeContext } from "~/modules/customization/atmosphere/store";
 import type { AppColor } from "~/modules/customization/theme/core/constants";
 import { useTheme } from "~/modules/customization/theme/hooks";
@@ -32,8 +33,8 @@ export function Ripple({ rippleColor, className, ...props }: RippleProps) {
         //? Otherwise, we use 50% opacity of a valid color.
         color:
           color.length > 7 || use(AtmosphereSubtreeContext)
-            ? `#FFFFFF40`
-            : `${color}80`,
+            ? withAlpha("#FFF", 0.25)
+            : withAlpha(color, 0.5),
         foreground: true,
       }}
       className={cn("overflow-hidden", className)}

@@ -1,6 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { colord } from "colord";
 import { Appearance } from "react-native";
 import type { PaletteResult as RawPaletteResult } from "react-native-material-palette";
 import { createPalette } from "react-native-material-palette";
@@ -58,12 +59,7 @@ export async function deriveAndSetAtmosphereColors(
       Object.entries(rawPalette).map(([key, result]) => [
         key,
         result
-          ? `#` +
-            result.color
-              .match(/\d+/g)!
-              .slice(0, 3)
-              .map((x) => parseInt(x).toString(16).padStart(2, "0"))
-              .join("")
+          ? colord(result.color).alpha(1).toHex().toUpperCase()
           : undefined,
       ]),
     ) as PaletteResult;

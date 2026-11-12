@@ -8,6 +8,7 @@ import type { AnimatedProps } from "react-native-reanimated";
 import Animated from "react-native-reanimated";
 
 import { cn } from "~/lib/style";
+import { withAlpha } from "~/utils/color";
 import { useIsAtmosphereActive } from "~/modules/customization/atmosphere/store";
 import type { ColorRole } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
@@ -30,7 +31,7 @@ export function TopDownGradient(props: {
 
   return (
     <LinearGradient
-      colors={[`${color}FF`, `${color}00`]}
+      colors={[color, withAlpha(color, 0)]}
       locations={locations}
       pointerEvents="none"
       style={{ height: props.height }}
@@ -69,14 +70,20 @@ export function HorizontalScrollGradient({
         <>
           <LinearGradient
             pointerEvents="none"
-            colors={[`${gradientColor}E6`, `${gradientColor}00`]}
+            colors={[
+              withAlpha(gradientColor, 0.9),
+              withAlpha(gradientColor, 0),
+            ]}
             {...ShadowProps}
             style={{ width: size }}
             className="absolute h-full ltr:left-0 rtl:right-0"
           />
           <LinearGradient
             pointerEvents="none"
-            colors={[`${gradientColor}00`, `${gradientColor}E6`]}
+            colors={[
+              withAlpha(gradientColor, 0),
+              withAlpha(gradientColor, 0.9),
+            ]}
             {...ShadowProps}
             style={{ width: size }}
             className="absolute h-full ltr:right-0 rtl:left-0"

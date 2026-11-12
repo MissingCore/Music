@@ -7,13 +7,14 @@ import { View } from "react-native";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
+import { hexToAlpha } from "~/utils/color";
 import { Dialog } from "~/components/next/base/dialog";
 import { TextInput } from "~/components/next/base/input";
 import { Ripple } from "~/components/next/base/ripple";
 import { Text } from "~/components/next/base/typography";
 import { ActionButton } from "~/components/next/blocks/button-action";
 import { ColorPicker } from "./ColorPicker";
-import { OpacitySlider, hexToAlpha } from "./OpacitySlider";
+import { OpacitySlider } from "./OpacitySlider";
 import type { HexColor } from "../core/constants";
 import { normalizeHexColor } from "../core/utils";
 

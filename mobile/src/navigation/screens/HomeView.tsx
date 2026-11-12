@@ -26,6 +26,7 @@ import { RootToolbar } from "../components/BottomActions/RootToolbar";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
+import { withAlpha } from "~/utils/color";
 import { Seconds } from "~/utils/date";
 import { chunkArray } from "~/utils/object";
 import { LegendList } from "~/components/Base/LegendList";
@@ -132,7 +133,7 @@ function WeeklyRecap() {
       easeGradient({
         colorStops: {
           0: { color: primary },
-          1: { color: `${primary}00` },
+          1: { color: withAlpha(primary, 0) },
         },
       }) as unknown as Pick<LinearGradientProps, "colors" | "locations">,
     [primary],
