@@ -3,8 +3,21 @@
 
 import { colord } from "colord";
 
+type HexColor = `#${string}`;
+
 export function isValidHexColor(value: string) {
   return value.startsWith("#") && colord(value).isValid();
+}
+
+export function hexToHSV(hex: string) {
+  const { h, s, v } = colord(hex).toHsv();
+  return { h, s: s / 100, v: v / 100 };
+}
+
+export function hsvToHex(hsv: { h: number; s: number; v: number }): HexColor {
+  return colord({ h: hsv.h, s: hsv.s * 100, v: hsv.v * 100 })
+    .toHex()
+    .toUpperCase() as HexColor;
 }
 
 export function withAlpha(color: string, alpha: number) {

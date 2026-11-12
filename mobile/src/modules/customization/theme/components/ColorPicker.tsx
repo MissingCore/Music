@@ -17,10 +17,10 @@ import Animated, {
 } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 
+import { hexToHSV, hsvToHex } from "~/utils/color";
 import { useSlider } from "~/components/next/base/slider-context";
 import type { HexColor } from "../core/constants";
 import { normalizeHexColor } from "../core/utils";
-import { hexToHSV, hsvToHex } from "../helpers/colorConverter";
 
 const PANEL_HEIGHT = 200;
 const HANDLE_SIZE = 20;

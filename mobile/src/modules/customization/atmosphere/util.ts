@@ -9,9 +9,9 @@ import { Uniwind } from "uniwind";
 
 import { preferenceStore } from "~/stores/Preference/store";
 
+import { hexToHSV, hsvToHex } from "~/utils/color";
 import type { ColorRole, HexColor } from "../theme/core/constants";
 import { Themes } from "../theme/core/constants";
-import { hexToHSV, hsvToHex } from "../theme/helpers/colorConverter";
 
 type PaletteKeys = keyof RawPaletteResult;
 type PaletteResult = Record<PaletteKeys, HexColor | undefined>;
