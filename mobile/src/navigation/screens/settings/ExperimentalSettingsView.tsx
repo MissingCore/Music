@@ -36,6 +36,7 @@ export default function ExperimentalSettings() {
   const queueAwareNext = usePreferenceStore((s) => s.queueAwareNext);
   const atmosphereEffect = usePreferenceStore((s) => s.atmosphereEffect);
   const opaqueColors = usePreferenceStore((s) => s.opaqueColors);
+  const disableAndroidAuto = usePreferenceStore((s) => s.disableAndroidAuto);
   const { data: unhashedImagesCount } = useUnhashedImagesCount();
 
   return (
@@ -70,11 +71,19 @@ export default function ExperimentalSettings() {
         modalMessage={["feat.seekbar.extra.waveformPurgeCache"]}
       />
 
-      <SegmentedList.Item
-        labelText="Android Auto"
-        onPress={() => openLink(Links.AndroidAuto)}
-        Trailing={<Icon name="open-in-new" />}
-      />
+      <SegmentedList>
+        <SegmentedList.Item
+          labelText="Android Auto"
+          onPress={() => openLink(Links.AndroidAuto)}
+          Trailing={<Icon name="open-in-new" />}
+        />
+        <SegmentedList.Item
+          labelText="Disable Android Auto"
+          supportingText="Using the app with Android Auto may potentially cause issues."
+          onPress={PreferenceTogglers.toggleAndroidAuto}
+          Trailing={<Switch enabled={disableAndroidAuto} />}
+        />
+      </SegmentedList>
 
       {unhashedImagesCount !== undefined && unhashedImagesCount !== 0 ? (
         <ConfirmableAction

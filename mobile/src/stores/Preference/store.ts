@@ -132,6 +132,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     rcNotification: false,
 
     //! Experimental Features
+    disableAndroidAuto: true,
     atmosphereEffect: false,
     opaqueColors: false,
     mediaStoreScanner: false,

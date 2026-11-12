@@ -1,6 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import AsyncStorage from "expo-sqlite/kv-store";
 import { I18nManager } from "react-native";
 import AudioBrowser from "react-native-audio-browser";
 
@@ -37,6 +38,14 @@ export function toggleKey(key: ToggleableKey) {
   return () => {
     preferenceStore.setState((prev) => ({ [key]: !prev[key] }));
   };
+}
+
+export async function toggleAndroidAuto() {
+  const prevState = preferenceStore.getState().disableAndroidAuto;
+  preferenceStore.setState({ disableAndroidAuto: !prevState });
+  // Update a dedicated value in `AsyncStorage` as the value stored in
+  // `preferenceStore` may not be hydrated in time by the time we use it.
+  await AsyncStorage.setItem("disableAndroidAuto", `${!prevState}`);
 }
 
 export async function toggleContinuePlaybackOnDismiss() {

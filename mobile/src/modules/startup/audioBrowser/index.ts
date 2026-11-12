@@ -1,6 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import AsyncStorage from "expo-sqlite/kv-store";
 import AudioBrowser from "react-native-audio-browser";
 
 import { ImageDirectory, PlaceholderDirectory } from "~/lib/file-system";
@@ -25,7 +26,15 @@ async function setupAudioBrowser() {
   AudioBrowser.updateOptions(getAudioBrowserOptions());
 
   registerEvents();
-  AudioBrowser.configureBrowser(browserConfiguration);
+
+  //* Android Auto may potentially freeze the app. We add an option to "disable"
+  //* it if the user encounters an issue.
+  //*   - https://github.com/MissingCore/Music/discussions/639
+  const disableAndroidAuto =
+    (await AsyncStorage.getItem("disableAndroidAuto")) ?? "true";
+  if (disableAndroidAuto !== "true") {
+    AudioBrowser.configureBrowser(browserConfiguration);
+  }
 }
 
 /** Promise to setup AudioBrowser. */
