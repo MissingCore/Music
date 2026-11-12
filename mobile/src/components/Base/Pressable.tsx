@@ -6,6 +6,7 @@ import type { PressableProps as RNPressableProps } from "react-native";
 import { Pressable as RNPressable } from "react-native";
 
 import { cn } from "~/lib/style";
+import { withAlpha } from "~/utils/color";
 import type { AppColor } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
 
@@ -43,7 +44,8 @@ export const Ripple = memo(function Ripple({
         //? based on the set theme. Since this will mostly happen on the
         //? "Atmosphere Effect" screens, use a 25% opacity white color.
         //? Otherwise, we use 50% opacity of a valid color.
-        color: color.length > 7 ? `#FFFFFF40` : `${color}80`,
+        color:
+          color.length > 7 ? withAlpha("#FFF", 0.25) : withAlpha(color, 0.5),
         foreground: true,
         radius: rippleRadius,
       }}

@@ -34,6 +34,7 @@ export default function ExperimentalSettings() {
   const queueAwareNext = usePreferenceStore((s) => s.queueAwareNext);
   const atmosphereEffect = usePreferenceStore((s) => s.atmosphereEffect);
   const opaqueColors = usePreferenceStore((s) => s.opaqueColors);
+  const disableAndroidAuto = usePreferenceStore((s) => s.disableAndroidAuto);
   const { data: unhashedImagesCount } = useUnhashedImagesCount();
 
   return (
@@ -69,6 +70,14 @@ export default function ExperimentalSettings() {
           icon="directions-car"
           label="Android Auto"
           href={Links.AndroidAuto}
+        />
+        <List.Divider />
+        <List.ToggleItem
+          icon="directions-car"
+          label="Disable Android Auto"
+          supporting="Prevents displaying routes in the Android Auto interface."
+          onToggle={PreferenceTogglers.toggleDisableAndroidAuto}
+          enabled={disableAndroidAuto}
         />
       </List.Group>
 

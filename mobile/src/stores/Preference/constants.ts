@@ -121,6 +121,8 @@ export interface PreferenceStore {
   rcNotification: boolean;
 
   //! Experimental Features
+  /** Prevent calling `AudioBrowser.configureBrowser` on startup. */
+  disableAndroidAuto: boolean;
   /** Replaces the background with a blurred image. */
   atmosphereEffect: boolean;
   /** Adds an opacity slider in our color picker input. */

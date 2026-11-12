@@ -20,6 +20,7 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { OnRTL } from "~/lib/react";
+import { withAlpha } from "~/utils/color";
 import { useTheme } from "~/modules/customization/theme/hooks";
 import type { IconButtonProps } from "../base/button-icon";
 import { FilledIconButton, IconButton } from "../base/button-icon";
@@ -75,7 +76,7 @@ function Backdrop() {
   return (
     <View className="absolute inset-x-0 bottom-0">
       <LinearGradient
-        colors={[`${surface}00`, `${surface}FF`]}
+        colors={[withAlpha(surface, 0), surface]}
         locations={[0, 1 - bottom / height]}
         style={{ height }}
         className="absolute inset-x-0 bottom-0"
