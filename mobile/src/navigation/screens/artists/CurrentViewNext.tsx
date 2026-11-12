@@ -17,6 +17,7 @@ import { easeGradient } from "react-native-easing-gradient";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, {
   interpolate,
+  LinearTransition,
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
@@ -36,15 +37,16 @@ import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 import { getImageUri } from "~/lib/file-system";
 import { OnRTL } from "~/lib/react";
 import type { ExtractQueryData } from "~/lib/react-query";
-import { cn } from "~/lib/style";
 import { withAlpha } from "~/utils/color";
 import { Seconds } from "~/utils/date";
 import { isString } from "~/utils/validation";
 import type { LegendListSignature } from "~/components/Base/LegendList";
 import { LegendList } from "~/components/Base/LegendList";
 import { ScrollView } from "~/components/Base/ScrollView";
+import { IconButton } from "~/components/next/base/button-icon";
 import { BlurIconButton } from "~/components/next/base/blur-button-icon";
 import { Icon } from "~/components/next/base/icon";
+import { TextInput } from "~/components/next/base/input";
 import { useSheetRef } from "~/components/next/base/sheet";
 import { Marquee } from "~/components/next/blocks/marquee";
 import { ImageCard } from "~/components/next/composed/image-card";
@@ -61,6 +63,8 @@ import {
   useTheme,
   useTintedDominantColor,
 } from "~/modules/customization/theme/core/context";
+import { Search, useSearchStore } from "~/modules/search/components/SearchList";
+import { containSorter } from "~/modules/search/utils";
 
 const HeaderProgressContext = createContext<SharedValue<number>>(null as never);
 
@@ -98,20 +102,22 @@ export default function Artist({
 
   if (isPending || error) return null;
   return (
-    <HeaderProgressContext value={headerProgress}>
-      <ThemeProvider theme={AtmosphereTheme}>
-        <View style={{ backgroundColor: mainColor }} className="grow">
-          <TopAppBar
-            id={artistName}
-            name={data.name}
-            trackIds={(data.topTracks ?? []).map(({ id }) => id)}
-          />
-          <TrackListContext value={trackSource}>
-            <ScreenContents data={data} />
-          </TrackListContext>
-        </View>
-      </ThemeProvider>
-    </HeaderProgressContext>
+    <Search.Provider>
+      <HeaderProgressContext value={headerProgress}>
+        <ThemeProvider theme={AtmosphereTheme}>
+          <View style={{ backgroundColor: mainColor }} className="grow">
+            <TopAppBar
+              id={artistName}
+              name={data.name}
+              trackIds={(data.topTracks ?? []).map(({ id }) => id)}
+            />
+            <TrackListContext value={trackSource}>
+              <ScreenContents data={data} />
+            </TrackListContext>
+          </View>
+        </ThemeProvider>
+      </HeaderProgressContext>
+    </Search.Provider>
   );
 }
 
@@ -274,31 +280,62 @@ function ScreenHeader(
 
 //#region Rendered Tab Bar
 function RenderedTabBar(props: TabBarProps) {
+  const { t } = useTranslation();
   const { surface, onSurface } = useTheme();
+  const [searchEnabled, setSearchEnabled] = useState(false);
+  const query = useSearchStore((s) => s.query);
+  const setQuery = useSearchStore((s) => s.setQuery);
+
   return (
-    <ScrollView
-      horizontal
+    <Animated.View
       style={{ backgroundColor: surface }}
-      contentContainerClassName="gap-6 p-4"
+      className="flex-row items-center gap-4 pl-2"
     >
-      {props.routes.map(({ key, title }, index) => (
-        <Pressable
-          key={key}
-          onPress={() => props.onIndexChange(index)}
-          style={{ borderColor: onSurface }}
-          className={cn("min-w-12", props.index === index && "border-b-2")}
-        >
-          <Text
-            bold
-            center
-            size="lg"
-            color={props.index === index ? "onSurface" : "onSurfaceVariant"}
-          >
-            {title}
-          </Text>
-        </Pressable>
-      ))}
-    </ScrollView>
+      <Animated.View
+        layout={LinearTransition}
+        className="flex-row items-center overflow-hidden"
+      >
+        <IconButton
+          icon={searchEnabled ? "close" : "search"}
+          accessibilityLabel={t(
+            searchEnabled ? "form.close" : "feat.search.title",
+          )}
+          onPress={() => {
+            setSearchEnabled((prev) => !prev);
+            if (searchEnabled) setQuery("");
+          }}
+        />
+        {searchEnabled ? (
+          <TextInput
+            value={query}
+            onChangeText={setQuery}
+            style={{ borderColor: onSurface, color: onSurface }}
+            className="h-10 min-h-0 w-full max-w-48 border-b-2"
+          />
+        ) : null}
+      </Animated.View>
+
+      <Animated.View layout={LinearTransition} className="shrink grow">
+        <ScrollView horizontal contentContainerClassName="gap-6 p-4 pl-0">
+          {props.routes.map(({ key, title }, index) => (
+            <Pressable
+              key={key}
+              onPress={() => props.onIndexChange(index)}
+              className="min-w-12"
+            >
+              <Text
+                bold
+                center
+                size="lg"
+                color={props.index === index ? "onSurface" : "onSurfaceVariant"}
+              >
+                {title}
+              </Text>
+            </Pressable>
+          ))}
+        </ScrollView>
+      </Animated.View>
+    </Animated.View>
   );
 }
 //#endregion
@@ -314,6 +351,13 @@ function RenderedList(props: RenderedListProps) {
     props.asGrid ? useCompactGridLayoutConfig : useListLayoutConfig
   )();
   const bottomOffset = useBottomActionsOffset();
+  const query = useSearchStore((s) => s.query);
+
+  const filteredData = useMemo(
+    // @ts-expect-error - Data can be filtered.
+    () => containSorter(props.data, query, "name"),
+    [props.data, query],
+  );
 
   const renderAlbum = useCallback(
     ({ item }: { item: MediaDetails.DisplayAlbum }) => (
@@ -345,7 +389,7 @@ function RenderedList(props: RenderedListProps) {
     <TabLegendList
       numColumns={layout.count}
       estimatedItemSize={layout.width + 6}
-      data={props.data}
+      data={filteredData}
       keyExtractor={({ id }: { id: string }) => id}
       // @ts-expect-error - Data will render the item correctly.
       renderItem={props.asGrid ? renderAlbum : renderTrack}
