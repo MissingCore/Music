@@ -5,7 +5,14 @@ import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import type { LinearGradientProps } from "expo-linear-gradient";
 import { LinearGradient } from "expo-linear-gradient";
-import { createContext, use, useCallback, useMemo, useState } from "react";
+import {
+  createContext,
+  use,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useWindowDimensions, View } from "react-native";
 import type { TabBarProps } from "react-native-collapsible-tabs-native";
@@ -40,9 +47,9 @@ import type { ExtractQueryData } from "~/lib/react-query";
 import { withAlpha } from "~/utils/color";
 import { Seconds } from "~/utils/date";
 import { isString } from "~/utils/validation";
+import { FlatList, useFlatListRef } from "~/components/Base/List";
 import type { LegendListSignature } from "~/components/Base/LegendList";
 import { LegendList } from "~/components/Base/LegendList";
-import { ScrollView } from "~/components/Base/ScrollView";
 import { IconButton } from "~/components/next/base/button-icon";
 import { BlurIconButton } from "~/components/next/base/blur-button-icon";
 import { Icon } from "~/components/next/base/icon";
@@ -285,6 +292,16 @@ function RenderedTabBar(props: TabBarProps) {
   const [searchEnabled, setSearchEnabled] = useState(false);
   const query = useSearchStore((s) => s.query);
   const setQuery = useSearchStore((s) => s.setQuery);
+  const prevTabIndex = useRef(0);
+  const tabListRef = useFlatListRef();
+
+  if (props.index !== prevTabIndex.current) {
+    prevTabIndex.current = props.index;
+    tabListRef.current?.scrollToIndex({
+      index: props.index,
+      viewPosition: 0.5,
+    });
+  }
 
   return (
     <Animated.View
@@ -316,10 +333,13 @@ function RenderedTabBar(props: TabBarProps) {
       </Animated.View>
 
       <Animated.View layout={LinearTransition} className="shrink grow">
-        <ScrollView horizontal contentContainerClassName="gap-6 p-4 pl-0">
-          {props.routes.map(({ key, title }, index) => (
+        <FlatList
+          ref={tabListRef}
+          horizontal
+          data={props.routes}
+          keyExtractor={({ key }) => key}
+          renderItem={({ item: { title }, index }) => (
             <Pressable
-              key={key}
               onPress={() => props.onIndexChange(index)}
               className="min-w-12"
             >
@@ -332,8 +352,9 @@ function RenderedTabBar(props: TabBarProps) {
                 {title}
               </Text>
             </Pressable>
-          ))}
-        </ScrollView>
+          )}
+          contentContainerClassName="gap-6 p-4 pl-0"
+        />
       </Animated.View>
     </Animated.View>
   );
