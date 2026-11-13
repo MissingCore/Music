@@ -11,9 +11,7 @@ import { db } from "~/db";
 
 import i18next from "~/modules/i18n";
 import { getAlbum, getAlbumsSummary } from "~/data/album/api";
-import { getArtist, getArtistsSummary } from "~/data/artist/api";
 import { getArtistsString } from "~/data/artist/utils";
-import { getGenre, getGenresSummary } from "~/data/genre/api";
 import { getPlaylist, getPlaylistsSummary } from "~/data/playlist/api";
 import { getSortedTracks } from "~/data/track/api";
 import type { CommonTrack } from "~/data/types";
@@ -33,22 +31,16 @@ export const browserConfiguration: BrowserConfiguration = {
     "/library": {
       url: "/library",
       title: "Your Library",
-      children: ["Album", "Artist", "Genre", "Playlist", "Track"].map(
-        (category) => ({
-          url: `/${category.toLowerCase()}`,
-          title: `${category}s`,
-          groupTitle: "🧪 This is an Experimental Feature. 🧪",
-        }),
-      ),
+      children: ["Album", "Playlist", "Track"].map((category) => ({
+        url: `/${category.toLowerCase()}`,
+        title: `${category}s`,
+        groupTitle: "🧪 This is an Experimental Feature. 🧪",
+      })),
     },
 
     //? Content Routes
     "/album": () => getMediaCategoryRoute("album", getAlbumsSummary),
     "/album/{id}": getMediaCategoryEntryRoute("album", getAlbum),
-    "/artist": () => getMediaCategoryRoute("artist", getArtistsSummary),
-    "/artist/{id}": getMediaCategoryEntryRoute("artist", getArtist),
-    "/genre": () => getMediaCategoryRoute("genre", getGenresSummary),
-    "/genre/{id}": getMediaCategoryEntryRoute("genre", getGenre),
     "/playlist": () => getMediaCategoryRoute("playlist", getPlaylistsSummary),
     "/playlist/{id}": getMediaCategoryEntryRoute("playlist", getPlaylist),
     "/track": getMediaCategoryEntryRoute("track", async () => {
