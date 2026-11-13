@@ -11,7 +11,6 @@ import {
   usePanGesture,
   useSimultaneousGestures,
 } from "react-native-gesture-handler";
-
 import type { HitSlop } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlerCommon";
 import {
   clamp,
