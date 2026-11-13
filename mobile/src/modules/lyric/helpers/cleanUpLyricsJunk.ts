@@ -18,12 +18,12 @@ const LRC_LINE_SYNC_TAG = /^\[.+:.+?\]/;
  *
  * @deprecated Remove in `v4.0.0`.
  */
-export async function removeSynchronizedLyricsJunk(lyricId: string) {
+export async function removeSynchronizedLyricsJunk(trackId: string) {
   const prevValue = await db.query.lyrics.findFirst({
-    where: (fields, { eq }) => eq(fields.id, lyricId),
+    where: (fields, { eq }) => eq(fields.trackId, trackId),
   });
   if (!prevValue) return;
-  const lyricLines = prevValue.lyrics.split("\n").map((line) => line.trim());
+  const lyricLines = prevValue.lyricText.split("\n").map((line) => line.trim());
   const erroredLines = lyricLines.filter((line) =>
     !line ? false : !LRC_LINE_SYNC_TAG.test(line),
   );
@@ -39,8 +39,10 @@ export async function removeSynchronizedLyricsJunk(lyricId: string) {
   if (!updatedLine || updatedLine === erroredLine) return;
   await db
     .update(lyrics)
-    .set({ lyrics: prevValue.lyrics.replace(erroredLine, updatedLine) })
-    .where(eq(lyrics.id, lyricId));
+    .set({ lyricText: prevValue.lyricText.replace(erroredLine, updatedLine) })
+    .where(eq(lyrics.trackId, trackId));
 
-  queryClient.invalidateQueries({ queryKey: q.lyrics._def });
+  queryClient.invalidateQueries({
+    queryKey: q.tracks.detail(trackId)._ctx.lyrics.queryKey,
+  });
 }

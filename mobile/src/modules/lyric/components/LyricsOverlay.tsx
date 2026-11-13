@@ -17,7 +17,7 @@ import { Text, View } from "react-native";
 import { usePolledProgress } from "react-native-audio-browser";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { useLyricForTrack } from "~/data/lyric/queries";
+import { useTrackLyrics } from "~/data/track/queries";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { useLyricStore } from "../core/store";
 import { toggleLyricStoreKey } from "../core/actions";
@@ -86,26 +86,26 @@ export function LyricsOverlay(props: { size: number; trackId: string }) {
 }
 
 function LyricsContent({ trackId }: { trackId: string }) {
-  const { isPending, data, error } = useLyricForTrack(trackId);
+  const { isPending, data, error } = useTrackLyrics(trackId);
   const cleanupInProgress = useRef<Set<string>>(new Set());
   const { offset, extraTop } = use(LyricOffsetContext);
 
   const formattedLyrics = useMemo(() => {
-    if (!data?.lyrics) return;
-    return parseLyrics(data.lyrics);
-  }, [data?.lyrics]);
+    if (!data?.lyricText) return;
+    return parseLyrics(data.lyricText);
+  }, [data?.lyricText]);
 
   //! TODO: Remove in `v4.0.0`.
   //! Temporary "hack" to clean up cached lyrics with "junk" in front, which
   //! was fixed in `v3.3.0`.
   useEffect(() => {
-    if (!isString(formattedLyrics) || !data?.id) return;
-    if (cleanupInProgress.current.has(data.id)) return;
-    cleanupInProgress.current.add(data.id);
-    removeSynchronizedLyricsJunk(data.id)
+    if (!isString(formattedLyrics) || !data?.trackId) return;
+    if (cleanupInProgress.current.has(data.trackId)) return;
+    cleanupInProgress.current.add(data.trackId);
+    removeSynchronizedLyricsJunk(data.trackId)
       .catch((err) => console.log(`[LRC_CLEANUP_ERR]`, err))
-      .finally(() => cleanupInProgress.current.delete(data.id));
-  }, [trackId, data?.id, formattedLyrics]);
+      .finally(() => cleanupInProgress.current.delete(data.trackId));
+  }, [trackId, data?.trackId, formattedLyrics]);
 
   if (isPending) return null;
   else if (error || !data) {
@@ -121,6 +121,7 @@ function LyricsContent({ trackId }: { trackId: string }) {
           keyExtractor={(_, index) => `${index}`}
           renderItem={({ item }) => <Em className="text-xl">{item}</Em>}
           nestedScrollEnabled
+          className="w-full"
           contentContainerStyle={{
             paddingTop: offset + extraTop,
             paddingBottom: offset,
@@ -129,12 +130,12 @@ function LyricsContent({ trackId }: { trackId: string }) {
           contentContainerClassName="px-4"
         />
       )}
-      <ExtraActions lyricsId={data.id} />
+      <ExtraActions trackId={data.trackId} />
     </>
   );
 }
 
-function ExtraActions({ lyricsId }: { lyricsId?: string }) {
+function ExtraActions({ trackId }: { trackId?: string }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const expandLyrics = useLyricStore((s) => s.fullscreen);
@@ -147,11 +148,11 @@ function ExtraActions({ lyricsId }: { lyricsId?: string }) {
         onPress={toggleLyricStoreKey("fullscreen")}
         size="xs"
       />
-      {lyricsId ? (
+      {trackId ? (
         <IconButton
           icon="edit"
           accessibilityLabel={t("form.edit")}
-          onPress={() => navigation.navigate("ModifyLyric", { id: lyricsId })}
+          onPress={() => navigation.navigate("LyricForm", { trackId })}
           size="xs"
         />
       ) : null}
@@ -188,7 +189,7 @@ function LyricsNotFound({ trackId }: { trackId: string }) {
         <ExtendedTButton
           // @ts-expect-error - Will display text if key doesn't exist.
           textKey={t("template.entryManage", { name: t("feat.lyrics.title") })}
-          onPress={() => navigation.navigate("Lyrics", { linkTo: trackId })}
+          onPress={() => navigation.navigate("LyricForm", { trackId })}
           disabled={checkingEmbeddedLyrics}
           className="min-h-auto w-full max-w-48"
           textClassName="text-xs"
@@ -354,6 +355,7 @@ const MemoLyricList = memo(
         nestedScrollEnabled
         // Suppresses error when `scrollToIndex` fails.
         onScrollToIndexFailed={() => {}}
+        className="w-full"
         contentContainerStyle={{
           paddingTop: offset + extraTop,
           paddingBottom: offset,

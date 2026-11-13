@@ -2,9 +2,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import CreateLyricProvider from "./CreateProviderView";
-import CreateLyric from "./CreateView";
+import LyricForm from "./LyricFormView";
 import ModifyLyricProvider from "./ModifyProviderView";
-import ModifyLyric from "./ModifyView";
 import LyricsSettings from "./SettingsView";
 
 const LyricScreenGroup = {
@@ -17,12 +16,8 @@ const LyricScreenGroup = {
       options: { title: "feat.lyrics.title" },
     },
 
-    CreateLyric: {
-      screen: CreateLyric,
-      options: { title: "form.create" },
-    },
-    ModifyLyric: {
-      screen: ModifyLyric,
+    LyricForm: {
+      screen: LyricForm,
       options: { title: "form.edit" },
     },
 
