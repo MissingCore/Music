@@ -8,7 +8,6 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { CollapsibleTabView } from "react-native-collapsible-tabs-native";
 import type { SharedValue } from "react-native-reanimated";
-import { useSharedValue } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import type { MediaDetails } from "~/adapters/types";
@@ -21,19 +20,10 @@ import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 import { getImageUri } from "~/lib/file-system";
 import { OnRTL } from "~/lib/react";
 import type { ExtractQueryData } from "~/lib/react-query";
-import { withAlpha } from "~/utils/color";
 import { BlurIconButton } from "~/components/next/base/blur-button-icon";
 import { useSheetRef } from "~/components/next/base/sheet";
 import { ImageCard } from "~/components/next/composed/image-card";
-import {
-  TrackItem,
-  TrackListContext,
-} from "~/components/next/composed/track-item";
-import {
-  ThemeProvider,
-  useTintedDominantColor,
-} from "~/modules/customization/theme/core/context";
-import { Search } from "~/modules/search/components/SearchList";
+import { TrackItem } from "~/components/next/composed/track-item";
 
 const HeaderProgressContext = createContext<SharedValue<number>>(null as never);
 
@@ -47,44 +37,20 @@ export default function Artist({
   },
 }: Props) {
   const { isPending, error, data } = useArtistDetails(artistName);
-  const mainColor = useTintedDominantColor(data?.imageSource);
-  const headerProgress = useSharedValue(0);
-
-  const trackSource = useMemo(
-    () => ({ type: "artist", id: artistName }) as const,
-    [artistName],
-  );
-
-  const AtmosphereTheme = useMemo(
-    () =>
-      ({
-        primary: "#FFFFFF",
-        ...(mainColor ? { surface: mainColor } : {}),
-        surfaceContainerHigh: "#C8C8C8",
-        onSurface: "#FFFFFF",
-        onSurfaceVariant: withAlpha("#FFF", 0.8),
-      }) as const,
-    [mainColor],
-  );
 
   if (isPending || error) return null;
   return (
-    <Search.Provider>
-      <HeaderProgressContext value={headerProgress}>
-        <ThemeProvider theme={AtmosphereTheme}>
-          <View style={{ backgroundColor: mainColor }} className="grow">
-            <TopAppBar
-              id={artistName}
-              name={data.name}
-              trackIds={(data.topTracks ?? []).map(({ id }) => id)}
-            />
-            <TrackListContext value={trackSource}>
-              <ScreenContents data={data} />
-            </TrackListContext>
-          </View>
-        </ThemeProvider>
-      </HeaderProgressContext>
-    </Search.Provider>
+    <MediaListLayout.Provider
+      identity={{ type: "artist", id: artistName }}
+      imageSource={data.imageSource}
+    >
+      <TopAppBar
+        id={artistName}
+        name={data.name}
+        trackIds={(data.topTracks ?? []).map(({ id }) => id)}
+      />
+      <ScreenContents data={data} />
+    </MediaListLayout.Provider>
   );
 }
 

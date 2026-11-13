@@ -21,10 +21,12 @@ import Animated, {
   interpolate,
   LinearTransition,
   useAnimatedStyle,
+  useSharedValue,
 } from "react-native-reanimated";
 import { useShallow } from "zustand/react/shallow";
 
 import { PlaybackControls } from "~/stores/Playback/actions";
+import type { PlayFromSource } from "~/stores/Playback/types";
 import {
   useGridLayoutConfig,
   useListLayoutConfig,
@@ -53,13 +55,54 @@ import { Image } from "~/components/next/primitive/image";
 import { Pressable } from "~/components/next/primitive/pressable";
 import { Ripple } from "~/components/next/themed/ripple";
 import { Text, TText } from "~/components/next/themed/typography";
-import { useTheme } from "~/modules/customization/theme/core/context";
-import { useSearchStore } from "~/modules/search/components/SearchList";
+import {
+  ThemeProvider,
+  useTheme,
+  useTintedDominantColor,
+} from "~/modules/customization/theme/core/context";
+import { Search, useSearchStore } from "~/modules/search/components/SearchList";
 import { containSorter } from "~/modules/search/utils";
 
 const HeaderProgressContext = createContext<SharedValue<number>>(null as never);
 
 const TabLegendList = createTabList(LegendList) as LegendListSignature;
+
+//#region Provider
+export function Provider(props: {
+  identity: PlayFromSource;
+  imageSource: MediaImageSrc;
+  children: React.ReactNode;
+}) {
+  const headerProgress = useSharedValue(0);
+  const surfaceColor = useTintedDominantColor(props.imageSource);
+
+  const SubtreeTheme = useMemo(
+    () =>
+      ({
+        primary: "#FFFFFF", //? Used for active track indicator.
+        ...(surfaceColor ? { surface: surfaceColor } : {}),
+        surfaceContainerHigh: "#C8C8C8", //? Used for `MediaImage` background color.
+        onSurface: "#FFFFFF",
+        onSurfaceVariant: withAlpha("#FFF", 0.8),
+      }) as const,
+    [surfaceColor],
+  );
+
+  return (
+    <TrackListContext value={props.identity}>
+      <Search.Provider>
+        <HeaderProgressContext value={headerProgress}>
+          <ThemeProvider theme={SubtreeTheme}>
+            <View style={{ backgroundColor: surfaceColor }} className="grow">
+              {props.children}
+            </View>
+          </ThemeProvider>
+        </HeaderProgressContext>
+      </Search.Provider>
+    </TrackListContext>
+  );
+}
+//#endregion
 
 //#region Header
 export function Header(props: {
