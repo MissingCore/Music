@@ -62,6 +62,7 @@
     "react-native-android-widget": "0.26.0",
     "react-native-audio-browser": "github:MissingCore/react-native-audio-browser#05f7af440edc29222d12a0acc58234f5cb51433d",
     "react-native-bootsplash": "7.3.5",
+    "react-native-collapsible-tabs-native": "0.9.1",
     "react-native-easing-gradient": "1.1.1",
     "react-native-gesture-handler": "3.5.0",
     "react-native-keyboard-controller": "1.23.0",

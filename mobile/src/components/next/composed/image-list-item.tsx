@@ -1,15 +1,17 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import type { ViewStyle } from "react-native";
 import { View } from "react-native";
 
 import { cn } from "~/lib/style";
-import { Ripple } from "../base/ripple";
 import type { MediaImageSrc } from "../blocks/media-image";
 import { MediaImage } from "../blocks/media-image";
-import { TextStack } from "../blocks/text-stack";
+import type { RippleConfig } from "../themed/ripple";
+import { Ripple } from "../themed/ripple";
+import { TextStack } from "../themed/text-stack";
 
-export type ImageListItemProps = {
+export type ImageListItemProps = Pick<RippleConfig, "surfaceColor"> & {
   src: MediaImageSrc;
   label: string;
   supporting?: string;
@@ -18,6 +20,7 @@ export type ImageListItemProps = {
   /** If provided, will change the wrapper to `Ripple` from `View`. */
   onLongPress?: VoidFunction;
   className?: string;
+  style?: ViewStyle;
   Leading?: React.ReactNode;
   Trailing?: React.ReactNode;
   /**
@@ -37,6 +40,8 @@ export function ImageListItem(props: ImageListItemProps) {
     <Wrapper
       onPress={props.onPress}
       onLongPress={props.onLongPress}
+      surfaceColor={props.surfaceColor}
+      style={props.style}
       className={cn(
         "flex-row items-center gap-2 rounded-lg pr-2",
         props.columnSpacing !== false && "mx-0.75",

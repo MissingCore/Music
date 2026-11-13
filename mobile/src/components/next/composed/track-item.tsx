@@ -1,6 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { colord } from "colord";
 import { createContext, use, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -20,7 +21,8 @@ import {
 } from "~/modules/media/multiSelect/core/store";
 
 import { mutateGuard } from "~/lib/react-query";
-import { cn } from "~/lib/style";
+import { adjustTone, withAlpha } from "~/utils/color";
+import { useTheme } from "~/modules/customization/theme/core/context";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import type { ImageListItemProps } from "./image-list-item";
@@ -54,6 +56,7 @@ export function TrackItem({
   _onAfterPlayPress,
   ...props
 }: TrackItemProps) {
+  const { primary, surface } = useTheme();
   const trackSource = use(TrackListContext);
   const isActiveTrack = usePlaybackStore(
     (s) =>
@@ -99,10 +102,17 @@ export function TrackItem({
       {...(isMultiSelectEnabled ? multiSelectActions : normalActions)}
       Leading={overriddenLeadingElement}
       leadingOverridesSrc
-      className={cn(className, {
-        "bg-primary/25": isActiveTrack && !isMultiSelectEnabled,
-        "bg-surfaceContainerLowest": isSelected,
-      })}
+      surfaceColor={
+        isActiveTrack && !isMultiSelectEnabled ? "primary" : undefined
+      }
+      style={{
+        backgroundColor: isSelected
+          ? adjustTone(colord(surface), 0.25).alpha(0.3).toHex()
+          : isActiveTrack && !isMultiSelectEnabled
+            ? withAlpha(primary, 0.2)
+            : undefined,
+      }}
+      className={className}
     />
   );
 }

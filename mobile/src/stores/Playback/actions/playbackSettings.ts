@@ -22,7 +22,8 @@ export async function cycleRepeat() {
 
 /** Update the `shuffle` field along with `currentList` & `listIdx`. */
 export async function toggleShuffle(overrideNewShuffleStatus?: boolean) {
-  const { shuffle, orderSnapshot, queue, activeKey } = playbackStore.getState();
+  const { shuffle, orderSnapshot, queue, activeKey, playingFrom } =
+    playbackStore.getState();
   const newShuffleStatus = overrideNewShuffleStatus ?? !shuffle;
 
   // Exit early if we don't have a list loaded.
@@ -33,8 +34,9 @@ export async function toggleShuffle(overrideNewShuffleStatus?: boolean) {
 
   let updatedQueue: string[] = queue;
   let isOrderSnapshot = false;
-  if (newShuffleStatus) updatedQueue = shuffleArray(queue);
-  else if (orderSnapshot.length === queue.length) {
+  if (newShuffleStatus || playingFrom?.type === "artist") {
+    updatedQueue = shuffleArray(queue);
+  } else if (orderSnapshot.length === queue.length) {
     // Revert to `orderSnapshot` only if the queue copy has the same contents.
     const referenceSet = orderSnapshot.reduce(
       (map, tId) => {

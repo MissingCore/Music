@@ -12,7 +12,9 @@ import type { AnimatedRef } from "react-native-reanimated";
 import { useAnimatedRef } from "react-native-reanimated";
 import { withUniwind } from "uniwind";
 
-type LegendListSignature = <T>(props: LegendListProps<T>) => React.JSX.Element;
+export type LegendListSignature = <T>(
+  props: LegendListProps<T>,
+) => React.JSX.Element;
 
 type JoinedLegendListRef = LegendListRef | AnimatedLegendListRef;
 

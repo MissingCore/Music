@@ -9,16 +9,16 @@ import type { PlayedMediaList } from "~/db/schema";
 import { playedMediaLists, tracks, tracksPlayEvents } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import type { MediaType, PlayFromSource } from "~/stores/Playback/types";
+import { LocalMediaAdapter } from "~/adapters/local-media";
 import { getAlbumDetails } from "~/data/album/api";
 import { AlbumArtistsKey } from "~/data/album/utils";
-import { getArtist } from "~/data/artist/api";
 import { getArtistsString } from "~/data/artist/utils";
 import { getSortedFolderTracks } from "~/data/folder/api";
 import { getGenre } from "~/data/genre/api";
 import { getPlaylist } from "~/data/playlist/api";
 import { fromJSONArrayString } from "~/data/utils";
 import { commonTrackColumns, structuredTracksView } from "~/data/views";
+import type { MediaType, PlayFromSource } from "~/stores/Playback/types";
 
 import type { MediaImageSrc } from "~/components/next/blocks/media-image";
 import { createTextPlaceholder } from "~/components/next/blocks/media-image";
@@ -138,12 +138,10 @@ async function getRecentListEntry(source: PlayFromSource) {
       entry.title = data.name;
       entry.description = AlbumArtistsKey.toString(data.artistsKey);
     } else if (source.type === "artist") {
-      const data = await getArtist(source.id, true);
+      const data = await LocalMediaAdapter.artist.get(source.id);
       entry.src = data.artwork ?? createTextPlaceholder(data.name);
       entry.title = data.name;
-      entry.description = i18next.t("plural.track", {
-        count: data.tracks.length,
-      });
+      entry.description = i18next.t("plural.track", { count: data.numTracks });
     } else if (source.type === "folder") {
       const numTracks = (await getSortedFolderTracks(source.id, true)).length;
       if (numTracks === 0) throw new Error("Folder is empty.");

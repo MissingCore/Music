@@ -8,7 +8,7 @@ import { createNanoIconSet } from "react-native-nano-icons";
 import glyphMap from "~/resources/icons/app-icons.glyphmap.json";
 
 import type { AppColor } from "~/modules/customization/theme/core/constants";
-import { useColor } from "~/modules/customization/theme/hooks";
+import { useColor } from "~/modules/customization/theme/core/context";
 
 const AppIcons = createNanoIconSet(glyphMap);
 
@@ -25,7 +25,7 @@ interface IconProps {
 }
 
 export function Icon({ name, size = 24, color, className, style }: IconProps) {
-  const usedColor = useColor(color, "onSurface");
+  const usedColor = useColor(color);
 
   const renderedComponent = (
     <AppIcons

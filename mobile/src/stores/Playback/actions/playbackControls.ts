@@ -223,9 +223,10 @@ export async function playFromList({
   // 3. Handle case when the media list is new.
   const newPlayingList = await getTrackIdsList(source);
   if (newPlayingList.length === 0) return; // Don't do anything if list is empty.
+  const shouldShuffle = shuffle || source.type === "artist";
   const newListInfo = getUpdatedLists(
     newPlayingList,
-    shuffle,
+    shouldShuffle,
     trackId ?? activeTrack?.id,
   );
 

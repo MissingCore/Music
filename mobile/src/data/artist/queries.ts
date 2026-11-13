@@ -4,9 +4,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { queries as q } from "../keyStore";
 
+import { getImageUri } from "~/lib/file-system";
 import { createTextPlaceholder } from "~/components/next/blocks/media-image";
 
 //#region Queries
@@ -14,31 +14,11 @@ export function useArtistDetails(artistName: string) {
   const { t } = useTranslation();
   return useQuery({
     ...q.artists.detail(artistName),
-    select: ({ name, artwork, albums, tracks, duration }) => ({
-      name,
-      imageSource: artwork ?? createTextPlaceholder(name),
-      metadata: [
-        t("term.artist"),
-        t("plural.track", { count: tracks.length }),
-        duration,
-      ],
-      albums: albums.length > 0 ? albums : null,
+    select: ({ numTracks, artwork, ...rest }) => ({
+      ...rest,
+      imageSource: getImageUri(artwork) ?? createTextPlaceholder(rest.name),
+      metadata: [t("plural.track", { count: numTracks })],
     }),
-  });
-}
-
-export function useArtistTracks(artistName: string) {
-  const isAsc = useViewPreferenceStore((s) => s.artistTracksIsAsc);
-  const order = useViewPreferenceStore((s) => s.artistTracksOrder);
-  return useQuery({
-    ...q.artists.detail(artistName)._ctx.tracks({ isAsc, order }),
-    select: (tracks) =>
-      tracks.map((track) => ({
-        id: track.id,
-        title: track.name,
-        description: track.albumName ?? "—",
-        imageSource: track.artwork,
-      })),
   });
 }
 

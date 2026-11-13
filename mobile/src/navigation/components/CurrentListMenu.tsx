@@ -9,9 +9,9 @@ import { Queue } from "~/stores/Playback/actions";
 
 import { ListItem } from "~/components/List";
 import { Menu } from "~/components/Menu";
-import { FilledIconButton } from "~/components/next/base/button-icon";
 import type { SupportedIconName } from "~/components/next/base/icon";
 import { Icon } from "~/components/next/base/icon";
+import { BlurIconButton } from "~/components/next/base/blur-button-icon";
 
 export type MenuAction = {
   icon?: SupportedIconName;
@@ -77,15 +77,13 @@ export function CurrentListMenu(props: {
     <Menu
       visible={visible}
       anchor={
-        <FilledIconButton
+        <BlurIconButton
           icon="more-horiz"
           accessibilityLabel={t("term.more")}
           onPress={() => setVisible((prev) => !prev)}
-          intent="inverse"
-          size="lg"
         />
       }
-      anchorPosition="top"
+      anchorPosition="bottom"
       dismissHandling
       onDismiss={() => setVisible(false)}
       menuClassName="overflow-hidden rounded-md bg-surfaceContainerLowest"

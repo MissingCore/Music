@@ -21,6 +21,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { queryClient } from "~/lib/react-query";
 import { GestureHandlerRootView } from "~/components/Base/GestureHandlerRootView";
 import { getFont } from "~/modules/customization/font/utils";
+import { RootThemeProvider } from "~/modules/customization/theme/core/context";
 import {
   useCurrentScheme,
   useTheme,
@@ -44,13 +45,15 @@ export function AppProvider(props: { children: React.ReactNode }) {
 
 export function MinimumAppProvider(props: { children: React.ReactNode }) {
   return (
-    <SafeAreaProvider className="bg-surface">
-      <UniwindListeners>
-        <KeyboardProvider>
-          <GestureHandlerRootView>{props.children}</GestureHandlerRootView>
-        </KeyboardProvider>
-      </UniwindListeners>
-    </SafeAreaProvider>
+    <RootThemeProvider>
+      <SafeAreaProvider className="bg-surface">
+        <UniwindListeners>
+          <KeyboardProvider>
+            <GestureHandlerRootView>{props.children}</GestureHandlerRootView>
+          </KeyboardProvider>
+        </UniwindListeners>
+      </SafeAreaProvider>
+    </RootThemeProvider>
   );
 }
 

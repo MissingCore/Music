@@ -8,7 +8,7 @@ import type { KeysOfValue } from "~/utils/types";
  * the values that starts with the query (both with case-insensitivity).
  */
 export function containSorter<TData extends Record<string, any>>(
-  sortedList: TData[],
+  sortedList: readonly TData[],
   query: string,
   key: KeysOfValue<TData, string>,
 ) {
@@ -21,7 +21,7 @@ export function containSorter<TData extends Record<string, any>>(
 
 /** Further sort a sorted list based on an additional constraint. */
 export function matchSort<TData extends Record<string, any>>(
-  sortedList: TData[],
+  sortedList: readonly TData[],
   matcher: (item: TData) => boolean,
 ) {
   const goodMatch: TData[] = [];

@@ -46,7 +46,7 @@ export function Vinyl(props: {
       <MediaImage
         src={src}
         size={props.size / 2}
-        className="absolute rounded-full bg-primary"
+        className="absolute rounded-full"
         noPlaceholder
       />
       <Svg width={props.size} height={props.size} viewBox="0 0 768 768">

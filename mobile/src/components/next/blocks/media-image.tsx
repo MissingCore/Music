@@ -1,16 +1,18 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import type { ImageStyle } from "react-native";
 import { View } from "react-native";
 
 import { getImageUri } from "~/lib/file-system";
 import { cn } from "~/lib/style";
 import type { Maybe } from "~/utils/types";
 import { isRecord } from "~/utils/validation";
+import { useColor } from "~/modules/customization/theme/core/context";
 import type { SupportedIconName } from "../base/icon";
 import { Icon } from "../base/icon";
-import { Text } from "../base/typography";
 import { Image } from "../primitive/image";
+import { Text } from "../themed/typography";
 
 export type MediaImageSrc =
   | Maybe<string>
@@ -31,10 +33,13 @@ export function MediaImage({
   className,
   noPlaceholder,
 }: MediaImageProps) {
+  const backgroundColor = useColor(
+    noPlaceholder ? "primary" : "surfaceContainerHigh",
+  );
   const shared = {
     size: size,
-    style: { width: size, height: size },
-    className: cn("rounded-xl bg-surfaceContainerHigh", className),
+    style: { width: size, height: size, backgroundColor },
+    className: cn("rounded-xl", className),
   };
 
   if (Array.isArray(src)) {
@@ -58,11 +63,15 @@ function Collage({
   size,
   src,
   className,
+  style,
   noPlaceholder,
-}: Omit<MediaImageProps, "src"> & { src: Array<string | null> }) {
+}: Omit<MediaImageProps, "src"> & {
+  src: Array<string | null>;
+  style: ImageStyle;
+}) {
   return (
     <View
-      style={{ width: size, height: size }}
+      style={style}
       className={cn("flex-row flex-wrap overflow-hidden", className)}
     >
       {src
@@ -92,13 +101,14 @@ function PlaceholderIcon(props: {
   fullSize?: boolean;
   className?: string;
 }) {
+  const backgroundColor = useColor("surfaceContainerHigh");
   const { icon, size, fullSize = true, className } = props;
   return (
     <Icon
       name={icon}
       size={size / (fullSize ? 1 : 2)}
       color="placeholder"
-      style={fullSize ? undefined : { padding: size / 4 }}
+      style={{ backgroundColor, ...(fullSize ? {} : { padding: size / 4 }) }}
       className={className}
     />
   );
@@ -114,15 +124,16 @@ export function createTextPlaceholder(str: string | undefined, long = false) {
 function PlaceholderText(props: {
   str: string;
   size: number;
-  className?: string;
+  className: string;
+  style: ImageStyle;
 }) {
-  const { str, size, className } = props;
+  const { str, size, className, style } = props;
 
   const textSize = size / (str.length > 2 ? 4 : 2);
 
   return (
     <View
-      style={{ width: size, height: size }}
+      style={style}
       className={cn("items-center justify-center", className)}
     >
       <Text
@@ -130,8 +141,9 @@ function PlaceholderText(props: {
         center
         numberOfLines={1}
         ellipsizeMode="clip"
+        color="placeholder"
         style={{ fontSize: textSize, lineHeight: textSize }}
-        className="mt-1.5 text-placeholder"
+        className="mt-1.5"
       >
         {str}
       </Text>
