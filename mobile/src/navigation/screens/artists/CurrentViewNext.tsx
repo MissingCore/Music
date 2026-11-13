@@ -3,11 +3,8 @@
 
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import { createContext, use, useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { CollapsibleTabView } from "react-native-collapsible-tabs-native";
-import type { SharedValue } from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import type { MediaDetails } from "~/adapters/types";
 import { useArtistDetails } from "~/data/artist/queries";
@@ -20,8 +17,6 @@ import { getImageUri } from "~/lib/file-system";
 import type { ExtractQueryData } from "~/lib/react-query";
 import { ImageCard } from "~/components/next/composed/image-card";
 import { TrackItem } from "~/components/next/composed/track-item";
-
-const HeaderProgressContext = createContext<SharedValue<number>>(null as never);
 
 type ArtistDetail = ExtractQueryData<typeof useArtistDetails>;
 
@@ -55,9 +50,6 @@ type AvailableRoutes = "topTracks" | "albums" | "eps" | "singles";
 
 function ScreenContents({ data }: { data: ArtistDetail }) {
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
-  const [tabIndex, setTabIndex] = useState(0);
-  const headerProgress = use(HeaderProgressContext);
 
   const routes = useMemo(() => {
     const routes: Array<{ key: AvailableRoutes; title: string }> = [];
@@ -75,10 +67,8 @@ function ScreenContents({ data }: { data: ArtistDetail }) {
   }, [t, data]);
 
   return (
-    <CollapsibleTabView
-      headerMinHeight={56 + insets.top}
-      navigationState={{ index: tabIndex, routes }}
-      onIndexChange={setTabIndex}
+    <MediaListLayout.CollapsibleTabView
+      routes={routes}
       renderHeader={() => <MediaListLayout.Header {...data} />}
       renderTabBar={MediaListLayout.TabBar}
       renderScene={({ route }) => (
@@ -88,13 +78,6 @@ function ScreenContents({ data }: { data: ArtistDetail }) {
           data={data[route.key]!}
         />
       )}
-      onHeaderOffsetChange={(e) => {
-        "worklet";
-        if (e.nativeEvent.collapsibleHeight === 0) return;
-        headerProgress.set(
-          e.nativeEvent.offset / e.nativeEvent.collapsibleHeight,
-        );
-      }}
     />
   );
 }

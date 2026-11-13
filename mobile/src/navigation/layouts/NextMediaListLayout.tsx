@@ -14,8 +14,14 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { View, useWindowDimensions } from "react-native";
-import type { TabBarProps } from "react-native-collapsible-tabs-native";
-import { createTabList } from "react-native-collapsible-tabs-native";
+import type {
+  CollapsibleTabViewProps,
+  TabBarProps,
+} from "react-native-collapsible-tabs-native";
+import {
+  CollapsibleTabView as RawCollapsibleTabView,
+  createTabList,
+} from "react-native-collapsible-tabs-native";
 import { easeGradient } from "react-native-easing-gradient";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, {
@@ -24,6 +30,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useShallow } from "zustand/react/shallow";
 
 import { PlaybackControls } from "~/stores/Playback/actions";
@@ -136,6 +143,39 @@ export function TopAppBar(props: {
         />
       </View>
     </>
+  );
+}
+//#endregion
+
+//#region TabView
+/** `CollapsibleTabView` which has the necessary logic pre-applied. */
+export function CollapsibleTabView<TData extends string>(
+  props: Omit<
+    CollapsibleTabViewProps<{ key: TData; title: string }>,
+    | "headerMinHeight"
+    | "navigationState"
+    | "onIndexChange"
+    | "onHeaderOffsetChange"
+  > & { routes: Array<{ key: TData; title: string }> },
+) {
+  const insets = useSafeAreaInsets();
+  const [tabIndex, setTabIndex] = useState(0);
+  const headerProgress = use(HeaderProgressContext);
+
+  return (
+    <RawCollapsibleTabView
+      {...props}
+      headerMinHeight={56 + insets.top}
+      navigationState={{ index: tabIndex, routes: props.routes }}
+      onIndexChange={setTabIndex}
+      onHeaderOffsetChange={(e) => {
+        "worklet";
+        if (e.nativeEvent.collapsibleHeight === 0) return;
+        headerProgress.set(
+          e.nativeEvent.offset / e.nativeEvent.collapsibleHeight,
+        );
+      }}
+    />
   );
 }
 //#endregion
@@ -332,7 +372,7 @@ export function DataList<TData extends RequiredDataFields>({
   ...props
 }: Omit<
   LegendListProps<TData>,
-  "renderItem" | "ListHeaderComponent" | "ListEmptyComponent"
+  "keyExtractor" | "renderItem" | "ListHeaderComponent" | "ListEmptyComponent"
 > & {
   CustomLegendList?: LegendListSignature;
   /** If this is used as a "tab" instead of a regular list. */
@@ -379,9 +419,15 @@ export function DataList<TData extends RequiredDataFields>({
           <TText textKey="err.msg.noResults" center />
         </View>
       }
-      className="-mx-0.75"
-      contentContainerStyle={{ paddingBottom: bottomOffset, paddingTop: 16 }}
-      contentContainerClassName="gap-y-1.5 p-4"
+      className={cn("-mx-0.75", props.className)}
+      contentContainerStyle={[
+        { paddingBottom: bottomOffset, paddingTop: 16 },
+        props.contentContainerStyle,
+      ]}
+      contentContainerClassName={cn(
+        "gap-y-1.5 p-4",
+        props.contentContainerClassName,
+      )}
     />
   );
 }
