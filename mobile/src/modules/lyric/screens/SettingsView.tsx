@@ -69,7 +69,7 @@ export default function LyricsSettings() {
               <IconButton
                 icon="add"
                 accessibilityLabel={t("form.create")}
-                onPress={() => navigation.navigate("CreateLyricProvider")}
+                onPress={() => navigation.navigate("LyricProviderForm", {})}
                 className="mt-2 self-center bg-onSurface px-6"
                 _fullRipple
                 _iconColor="surface"
@@ -109,7 +109,7 @@ function RenderItem({ item, index }: DragListRenderItemInfo<LyricProvider>) {
             icon="edit"
             accessibilityLabel={t("form.edit")}
             onPress={() =>
-              navigation.navigate("ModifyLyricProvider", { id: item.id })
+              navigation.navigate("LyricProviderForm", { providerId: item.id })
             }
             disabled={isDragging}
           />

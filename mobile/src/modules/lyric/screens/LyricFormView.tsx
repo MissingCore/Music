@@ -13,6 +13,7 @@ import { createLyric, deleteLyric, updateLyric } from "~/data/lyric/api";
 import { useTrackLyrics } from "~/data/track/queries";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
+import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
 import { pickFile } from "~/lib/file-system";
 import { wait } from "~/utils/promise";
@@ -120,6 +121,7 @@ export default function LyricForm({
       initData={{ trackId, lyricText: data?.lyricText ?? "" }}
       onSubmit={hasLyrics ? onUpdate : onCreate}
     >
+      <ScreenOptions title={hasLyrics ? "form.edit" : "form.create"} />
       <FormContents bottomOffset={offset} />
       <FABWorkflow
         {...(hasLyrics ? deleteAction : createAction)}
