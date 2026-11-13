@@ -1,9 +1,12 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useCallback } from "react";
-import { View } from "react-native";
+import { useCallback, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { View, useWindowDimensions } from "react-native";
+import type { TabBarProps } from "react-native-collapsible-tabs-native";
 import { createTabList } from "react-native-collapsible-tabs-native";
+import Animated, { LinearTransition } from "react-native-reanimated";
 import { useShallow } from "zustand/react/shallow";
 
 import {
@@ -13,17 +16,116 @@ import {
 
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 
+import { cn } from "~/lib/style";
+import { FlatList, useFlatListRef } from "~/components/Base/List";
 import type {
   LegendListProps,
   LegendListSignature,
   ListRenderItemInfo,
 } from "~/components/Base/LegendList";
 import { LegendList } from "~/components/Base/LegendList";
+import { IconButton } from "~/components/next/base/button-icon";
+import { TextInput } from "~/components/next/base/input";
+import { Pressable } from "~/components/next/primitive/pressable";
 import { Text, TText } from "~/components/next/themed/typography";
+import { useTheme } from "~/modules/customization/theme/core/context";
 import { useSearchStore } from "~/modules/search/components/SearchList";
 import { containSorter } from "~/modules/search/utils";
 
 const TabLegendList = createTabList(LegendList) as LegendListSignature;
+
+//#region Tab Bar
+/** Tab bar rendered by `CollapsibleTabView`. */
+export function TabBar(props: TabBarProps) {
+  const { surface } = useTheme();
+  const prevTabIndex = useRef(0);
+  const tabListRef = useFlatListRef();
+
+  //? Scrolls to active tab when changed.
+  if (props.index !== prevTabIndex.current) {
+    prevTabIndex.current = props.index;
+    tabListRef.current?.scrollToIndex({
+      index: props.index,
+      viewPosition: 0.5,
+    });
+  }
+
+  return (
+    <View
+      style={{ backgroundColor: surface }}
+      className="flex-row items-center"
+    >
+      <SearchBar />
+      <Animated.View layout={LinearTransition} className="shrink grow">
+        <FlatList
+          ref={tabListRef}
+          horizontal
+          data={props.routes}
+          keyExtractor={({ key }) => key}
+          renderItem={({ item: { title }, index }) => (
+            <Pressable
+              onPress={() => props.onIndexChange(index)}
+              className={cn(
+                "min-w-12",
+                index === props.routes.length - 1 && "pr-24",
+              )}
+            >
+              <Text
+                bold
+                center
+                size="lg"
+                color={props.index === index ? "onSurface" : "onSurfaceVariant"}
+              >
+                {title}
+              </Text>
+            </Pressable>
+          )}
+          contentContainerClassName="items-center gap-6 pr-4"
+        />
+      </Animated.View>
+    </View>
+  );
+}
+//#endregion
+
+//#region Search Bar
+/** Allows filtering the data rendered by `DataList`. */
+export function SearchBar() {
+  const { t } = useTranslation();
+  const { width } = useWindowDimensions();
+  const { onSurface } = useTheme();
+  const [searchEnabled, setSearchEnabled] = useState(false);
+  const query = useSearchStore((s) => s.query);
+  const setQuery = useSearchStore((s) => s.setQuery);
+
+  return (
+    <Animated.View
+      layout={LinearTransition}
+      style={{ maxWidth: Math.min(512, width) }}
+      className="mx-0.75 max-w-[min(512px,100%)] flex-row items-center gap-2 overflow-hidden pr-4 pl-1"
+    >
+      <IconButton
+        icon={searchEnabled ? "close" : "search"}
+        accessibilityLabel={t(
+          searchEnabled ? "form.close" : "feat.search.title",
+        )}
+        onPress={() => {
+          setSearchEnabled((prev) => !prev);
+          if (searchEnabled) setQuery("");
+        }}
+      />
+      {searchEnabled ? (
+        <TextInput
+          value={query}
+          onChangeText={setQuery}
+          style={{ borderColor: onSurface, color: onSurface }}
+          className="h-10 min-h-0 shrink grow border-b-2"
+        />
+      ) : null}
+    </Animated.View>
+  );
+}
+//#endregion
 
 //#region Data List
 type RequiredDataFields = { id: string; name: string };

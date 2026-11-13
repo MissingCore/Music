@@ -5,23 +5,14 @@ import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import type { LinearGradientProps } from "expo-linear-gradient";
 import { LinearGradient } from "expo-linear-gradient";
-import {
-  createContext,
-  use,
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { createContext, use, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useWindowDimensions, View } from "react-native";
-import type { TabBarProps } from "react-native-collapsible-tabs-native";
 import { CollapsibleTabView } from "react-native-collapsible-tabs-native";
 import { easeGradient } from "react-native-easing-gradient";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, {
   interpolate,
-  LinearTransition,
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
@@ -41,11 +32,8 @@ import type { ExtractQueryData } from "~/lib/react-query";
 import { withAlpha } from "~/utils/color";
 import { Seconds } from "~/utils/date";
 import { isString } from "~/utils/validation";
-import { FlatList, useFlatListRef } from "~/components/Base/List";
-import { IconButton } from "~/components/next/base/button-icon";
 import { BlurIconButton } from "~/components/next/base/blur-button-icon";
 import { Icon } from "~/components/next/base/icon";
-import { TextInput } from "~/components/next/base/input";
 import { useSheetRef } from "~/components/next/base/sheet";
 import { Marquee } from "~/components/next/blocks/marquee";
 import { ImageCard } from "~/components/next/composed/image-card";
@@ -54,7 +42,6 @@ import {
   TrackListContext,
 } from "~/components/next/composed/track-item";
 import { Image } from "~/components/next/primitive/image";
-import { Pressable } from "~/components/next/primitive/pressable";
 import { Ripple } from "~/components/next/themed/ripple";
 import { Text } from "~/components/next/themed/typography";
 import {
@@ -62,7 +49,7 @@ import {
   useTheme,
   useTintedDominantColor,
 } from "~/modules/customization/theme/core/context";
-import { Search, useSearchStore } from "~/modules/search/components/SearchList";
+import { Search } from "~/modules/search/components/SearchList";
 
 const HeaderProgressContext = createContext<SharedValue<number>>(null as never);
 
@@ -172,7 +159,7 @@ function ScreenContents({ data }: { data: ArtistDetail }) {
       navigationState={{ index: tabIndex, routes }}
       onIndexChange={setTabIndex}
       renderHeader={() => <ScreenHeader {...data} />}
-      renderTabBar={(args) => <RenderedTabBar {...args} />}
+      renderTabBar={MediaListLayout.TabBar}
       renderScene={({ route }) => (
         // @ts-expect-error - `asGrid` is `true | false`.
         <RenderedList
@@ -271,82 +258,6 @@ function ScreenHeader(
         </Ripple>
       </Animated.View>
     </View>
-  );
-}
-//#endregion
-
-//#region Rendered Tab Bar
-function RenderedTabBar(props: TabBarProps) {
-  const { t } = useTranslation();
-  const { surface, onSurface } = useTheme();
-  const [searchEnabled, setSearchEnabled] = useState(false);
-  const query = useSearchStore((s) => s.query);
-  const setQuery = useSearchStore((s) => s.setQuery);
-  const prevTabIndex = useRef(0);
-  const tabListRef = useFlatListRef();
-
-  if (props.index !== prevTabIndex.current) {
-    prevTabIndex.current = props.index;
-    tabListRef.current?.scrollToIndex({
-      index: props.index,
-      viewPosition: 0.5,
-    });
-  }
-
-  return (
-    <Animated.View
-      style={{ backgroundColor: surface }}
-      className="flex-row items-center gap-4 pl-2"
-    >
-      <Animated.View
-        layout={LinearTransition}
-        className="flex-row items-center overflow-hidden"
-      >
-        <IconButton
-          icon={searchEnabled ? "close" : "search"}
-          accessibilityLabel={t(
-            searchEnabled ? "form.close" : "feat.search.title",
-          )}
-          onPress={() => {
-            setSearchEnabled((prev) => !prev);
-            if (searchEnabled) setQuery("");
-          }}
-        />
-        {searchEnabled ? (
-          <TextInput
-            value={query}
-            onChangeText={setQuery}
-            style={{ borderColor: onSurface, color: onSurface }}
-            className="h-10 min-h-0 w-full max-w-48 border-b-2"
-          />
-        ) : null}
-      </Animated.View>
-
-      <Animated.View layout={LinearTransition} className="shrink grow">
-        <FlatList
-          ref={tabListRef}
-          horizontal
-          data={props.routes}
-          keyExtractor={({ key }) => key}
-          renderItem={({ item: { title }, index }) => (
-            <Pressable
-              onPress={() => props.onIndexChange(index)}
-              className="min-w-12"
-            >
-              <Text
-                bold
-                center
-                size="lg"
-                color={props.index === index ? "onSurface" : "onSurfaceVariant"}
-              >
-                {title}
-              </Text>
-            </Pressable>
-          )}
-          contentContainerClassName="items-center gap-6 pr-4"
-        />
-      </Animated.View>
-    </Animated.View>
   );
 }
 //#endregion
