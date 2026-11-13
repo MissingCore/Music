@@ -16,10 +16,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useWindowDimensions, View } from "react-native";
 import type { TabBarProps } from "react-native-collapsible-tabs-native";
-import {
-  CollapsibleTabView,
-  createTabList,
-} from "react-native-collapsible-tabs-native";
+import { CollapsibleTabView } from "react-native-collapsible-tabs-native";
 import { easeGradient } from "react-native-easing-gradient";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, {
@@ -33,13 +30,9 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { MediaDetails } from "~/adapters/types";
 import { useArtistDetails } from "~/data/artist/queries";
 import { PlaybackControls } from "~/stores/Playback/actions";
-import {
-  useGridLayoutConfig,
-  useListLayoutConfig,
-} from "~/hooks/useLayoutConfigs";
 
+import * as MediaListLayout from "~/navigation/layouts/NextMediaListLayout";
 import { ArtistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
-import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 
 import { getImageUri } from "~/lib/file-system";
@@ -49,8 +42,6 @@ import { withAlpha } from "~/utils/color";
 import { Seconds } from "~/utils/date";
 import { isString } from "~/utils/validation";
 import { FlatList, useFlatListRef } from "~/components/Base/List";
-import type { LegendListSignature } from "~/components/Base/LegendList";
-import { LegendList } from "~/components/Base/LegendList";
 import { IconButton } from "~/components/next/base/button-icon";
 import { BlurIconButton } from "~/components/next/base/blur-button-icon";
 import { Icon } from "~/components/next/base/icon";
@@ -72,11 +63,8 @@ import {
   useTintedDominantColor,
 } from "~/modules/customization/theme/core/context";
 import { Search, useSearchStore } from "~/modules/search/components/SearchList";
-import { containSorter } from "~/modules/search/utils";
 
 const HeaderProgressContext = createContext<SharedValue<number>>(null as never);
-
-const TabLegendList = createTabList(LegendList) as LegendListSignature;
 
 type ArtistDetail = ExtractQueryData<typeof useArtistDetails>;
 
@@ -355,7 +343,7 @@ function RenderedTabBar(props: TabBarProps) {
               </Text>
             </Pressable>
           )}
-          contentContainerClassName="gap-6 p-4 pl-0"
+          contentContainerClassName="items-center gap-6 pr-4"
         />
       </Animated.View>
     </Animated.View>
@@ -370,21 +358,14 @@ type RenderedListProps =
 
 function RenderedList(props: RenderedListProps) {
   const navigation = useNavigation();
-  const layout = (props.asGrid ? useGridLayoutConfig : useListLayoutConfig)();
-  const bottomOffset = useBottomActionsOffset();
-  const query = useSearchStore((s) => s.query);
 
-  const filteredData = useMemo(
-    // @ts-expect-error - Data can be filtered.
-    () => containSorter(props.data, query, "name"),
-    [props.data, query],
-  );
-
-  const renderAlbum = useCallback(
-    ({ item }: { item: MediaDetails.DisplayAlbum }) => (
+  const renderAlbum = useCallback<
+    MediaListLayout.RenderDataListItem<MediaDetails.DisplayAlbum>
+  >(
+    ({ item, itemWidth }) => (
       <ImageCard
         src={item.artwork}
-        size={layout.width}
+        size={itemWidth}
         label={item.name}
         supporting={item.year}
         onPress={() =>
@@ -392,7 +373,7 @@ function RenderedList(props: RenderedListProps) {
         }
       />
     ),
-    [navigation, layout.width],
+    [navigation],
   );
   const renderTrack = useCallback(
     ({ item }: { item: MediaDetails.DisplayTrack }) => (
@@ -407,16 +388,12 @@ function RenderedList(props: RenderedListProps) {
   );
 
   return (
-    <TabLegendList
-      numColumns={layout.count}
-      estimatedItemSize={layout.width + 6}
-      data={filteredData}
-      keyExtractor={({ id }: { id: string }) => id}
+    <MediaListLayout.DataList
+      asGrid={props.asGrid}
+      // @ts-expect-error - Data is compatible.
+      data={props.data}
       // @ts-expect-error - Data will render the item correctly.
       renderItem={props.asGrid ? renderAlbum : renderTrack}
-      className="-mx-0.75"
-      contentContainerStyle={{ paddingBottom: bottomOffset }}
-      contentContainerClassName="gap-y-1.5 p-4"
     />
   );
 }
