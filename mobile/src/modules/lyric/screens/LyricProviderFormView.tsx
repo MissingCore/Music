@@ -1,20 +1,29 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useState } from "react";
+import type { StaticScreenProps } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import { useCallback, useMemo, useState } from "react";
 import { View } from "react-native";
 import * as v from "valibot";
+import { useShallow } from "zustand/react/shallow";
 
+import { useLyricStore } from "../core/store";
+import {
+  createLyricProvider,
+  deleteLyricProvider,
+  updateLyricProvider,
+} from "../core/actions";
 import { LyricProviderEndpointPlaceholders } from "../core/constants";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
+import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
 import { KeyboardAwareScrollView } from "~/components/Base/ScrollView";
 import { Button } from "~/components/Form/Button";
 import { SwitchInput } from "~/components/Form/Switch";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import { Em } from "~/components/Typography/StyledText";
-import { FormSchema } from "~/modules/form/utils";
 import type { FABWorkflowConfig } from "~/modules/form/FormState";
 import {
   FABWorkflow,
@@ -26,34 +35,78 @@ import {
   FormInputImpl,
   TextareaImpl,
 } from "~/modules/form/FormState/FormInput";
+import { FormSchema } from "~/modules/form/utils";
 
-function useFormState() {
-  return useFormStateContext<LyricProviderEntry>();
-}
+type Props = StaticScreenProps<{ providerId?: string }>;
 
-export function ModifyLyricProvierBase(props: {
-  onSubmit: (data: LyricProviderEntry) => void | Promise<void>;
-  initialData?: LyricProviderEntry;
-  actionConfig?: FABWorkflowConfig<LyricProviderEntry>;
-}) {
+export default function LyricProviderForm({
+  route: {
+    params: { providerId },
+  },
+}: Props) {
+  const navigation = useNavigation();
+  const currentProvider = useLyricStore(
+    useShallow((s) =>
+      s.providers.find((provider) => provider.id === providerId),
+    ),
+  );
   const { offset, floatingContentProps } = useFloatingContent();
+
+  //#region Create Flow
+  const onCreate = useCallback(
+    (entry: LyricProviderEntry) => {
+      createLyricProvider(entry);
+      navigation.goBack();
+    },
+    [navigation],
+  );
+  //#endregion
+
+  //#region Modify Flow
+  const deleteAction = useMemo<FABWorkflowConfig<LyricProviderEntry>>(
+    () => ({
+      label: "form.delete",
+      action: async () => {
+        if (!providerId)
+          throw new Error("Attempting to delete provider that doesn't exist.");
+        deleteLyricProvider(providerId);
+        navigation.goBack();
+      },
+      danger: true,
+    }),
+    [navigation, providerId],
+  );
+
+  const onUpdate = useCallback(
+    async (entry: LyricProviderEntry) => {
+      if (!providerId)
+        throw new Error("Attempting to update provider that doesn't exist.");
+      updateLyricProvider(providerId, entry);
+      navigation.goBack();
+    },
+    [navigation, providerId],
+  );
+  //#endregion
+
+  const providerExists = Boolean(currentProvider);
 
   return (
     <FormStateProvider
       schema={LyricProviderEntrySchema}
       initData={{
-        name: props.initialData?.name ?? "",
-        endpoint: props.initialData?.endpoint ?? "",
-        isJSONResponse: props.initialData?.isJSONResponse ?? true,
-        headers: props.initialData?.headers ?? "",
-        traversedFields: props.initialData?.traversedFields ?? [],
+        name: currentProvider?.name ?? "",
+        endpoint: currentProvider?.endpoint ?? "",
+        isJSONResponse: currentProvider?.isJSONResponse ?? true,
+        headers: currentProvider?.headers ?? "",
+        traversedFields: currentProvider?.traversedFields ?? [],
       }}
-      onSubmit={props.onSubmit}
+      onSubmit={providerExists ? onUpdate : onCreate}
     >
-      <LyricProviderForm bottomOffset={offset} />
-      {props.actionConfig ? (
+      <ScreenOptions title={providerExists ? "form.edit" : "form.create"} />
+      <FormContents bottomOffset={offset} />
+      {providerExists ? (
         <FABWorkflow
-          {...props.actionConfig}
+          {...deleteAction}
           floatingContentProps={floatingContentProps}
         />
       ) : null}
@@ -61,12 +114,12 @@ export function ModifyLyricProvierBase(props: {
   );
 }
 
-//#region Lyric Provider Form
+//#region Form Contents
 const FormInput = FormInputImpl<LyricProviderEntry>();
 const ArrayFormInput = ArrayFormInputImpl<LyricProviderEntry>();
 const Textarea = TextareaImpl<LyricProviderEntry>();
 
-function LyricProviderForm({ bottomOffset }: { bottomOffset: number }) {
+function FormContents({ bottomOffset }: { bottomOffset: number }) {
   const { data, setFields, isSubmitting } = useFormState();
 
   //#region Placeholder Helper
@@ -94,7 +147,6 @@ function LyricProviderForm({ bottomOffset }: { bottomOffset: number }) {
       contentContainerClassName="gap-6 p-4"
     >
       <FormInput label="feat.trackMetadata.extra.name" field="name" />
-
       <Textarea
         label="Endpoint"
         field="endpoint"
@@ -116,7 +168,6 @@ function LyricProviderForm({ bottomOffset }: { bottomOffset: number }) {
           </Button>
         ))}
       </View>
-
       <ArrayFormInput label="Traversed Fields" field="traversedFields" />
       <SheetLabelAction
         label="isJSONResponse"
@@ -155,3 +206,7 @@ const LyricProviderEntrySchema = v.object({
 
 type LyricProviderEntry = v.InferOutput<typeof LyricProviderEntrySchema>;
 //#endregion
+
+function useFormState() {
+  return useFormStateContext<LyricProviderEntry>();
+}

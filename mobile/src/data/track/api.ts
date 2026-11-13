@@ -68,11 +68,10 @@ export async function getTrackGenres(id: string) {
 }
 
 export async function getTrackLyrics(id: string) {
-  const result = await db.query.tracksToLyrics.findFirst({
+  const result = await db.query.lyrics.findFirst({
     where: (fields, { eq }) => eq(fields.trackId, id),
-    with: { lyric: true },
   });
-  return result?.lyric ?? null;
+  return result ?? null;
 }
 
 export async function getTrackPlaylists(id: string) {

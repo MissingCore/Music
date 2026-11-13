@@ -134,6 +134,13 @@
       "when": 1788383938940,
       "tag": "0018_young_dexter_bennett",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "6",
+      "when": 1791847353014,
+      "tag": "0019_unique_rocket_racer",
+      "breakpoints": true
     }
   ]
 }

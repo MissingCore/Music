@@ -3,18 +3,10 @@
 
 import { toast } from "@missingcore/ui/toast";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import {
-  and,
-  countDistinct,
-  getTableColumns,
-  gte,
-  inArray,
-  lt,
-  sql,
-} from "drizzle-orm";
+import { and, countDistinct, getTableColumns, gte, lt, sql } from "drizzle-orm";
 
 import { db } from "~/db";
-import { lyrics, tracksPlayEvents } from "~/db/schema";
+import { tracksPlayEvents } from "~/db/schema";
 
 import { preferenceStore } from "~/stores/Preference/store";
 
@@ -26,16 +18,7 @@ import { RECENT_RANGE_MS } from "../core/constants";
 
 /** Return the number of entries that can be optimized. */
 async function countOptimizationTargets() {
-  //? 1. Count the number of lyrics that are not linked to any tracks.
-  const allLyrics = await db.query.lyrics.findMany({
-    columns: { id: true },
-    with: { tracksToLyrics: { columns: { lyricId: true }, limit: 1 } },
-  });
-  const unusedLyricsCount = allLyrics.filter(
-    ({ tracksToLyrics }) => tracksToLyrics.length === 0,
-  ).length;
-
-  //? 2. Count the number of `trackPlayEvents` that can be collapsed.
+  //? 1. Count the number of `trackPlayEvents` that can be collapsed.
   const { optimizeInsightsFrom } = preferenceStore.getState();
   const recentRangeStart = Date.now() - RECENT_RANGE_MS;
   let unneededTracksPlayEvents = await db.$count(
@@ -73,16 +56,15 @@ async function countOptimizationTargets() {
   }
 
   console.log(
-    `Found ${unusedLyricsCount} unused lyrics & ${unneededTracksPlayEvents} collapsable tracksPlayEvents.`,
+    `Found ${unneededTracksPlayEvents} collapsable tracksPlayEvents.`,
   );
 
-  return unusedLyricsCount + unneededTracksPlayEvents;
+  return unneededTracksPlayEvents;
 }
 
 /*
   Optimizes our database by:
-    1. Deleting unlinked lyrics.
-    2. Collapsing `tracksPlayEvents` into a single entry for duplicate tracks per-month.
+    1. Collapsing `tracksPlayEvents` into a single entry for duplicate tracks per-month.
 */
 async function optimizeDB() {
   toast.t("feat.dbOptimization.extra.start", { autoDismiss: false });
@@ -93,17 +75,7 @@ async function optimizeDB() {
     // the user to spam the button to rescan the library.
     await wait(1);
 
-    //? 1. Identify and delete any lyrics that are not linked to any tracks.
-    const allLyrics = await db.query.lyrics.findMany({
-      columns: { id: true },
-      with: { tracksToLyrics: { columns: { lyricId: true }, limit: 1 } },
-    });
-    const unusedLyricIds = allLyrics
-      .filter(({ tracksToLyrics }) => tracksToLyrics.length === 0)
-      .map(({ id }) => id);
-    await db.delete(lyrics).where(inArray(lyrics.id, unusedLyricIds));
-
-    //? 2. Collapse `trackPlayEvents` of each track in each month into a single entry.
+    //? 1. Collapse `trackPlayEvents` of each track in each month into a single entry.
     const recentRangeStart = Date.now() - RECENT_RANGE_MS;
     const monthEpoches = generateRecapRange(
       preferenceStore.getState().optimizeInsightsFrom,
