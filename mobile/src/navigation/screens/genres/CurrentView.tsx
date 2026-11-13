@@ -10,7 +10,6 @@ import {
   CurrentListSkeleton,
 } from "~/navigation/layouts/CurrentListLayout";
 import { GenreArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
-import { SortSheet } from "~/navigation/sheets/SortSheet";
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 
@@ -28,7 +27,6 @@ export default function Genre({
   const genreDetailsQuery = useGenreDetails(id);
   const genreTracksQuery = useGenreTracks(id);
   const artworkSheetRef = useSheetRef();
-  const tracksSortOptionsSheetRef = useSheetRef();
 
   const trackSource = { type: "genre", id } as const;
   const presets = useTrackListPreset({
@@ -43,8 +41,6 @@ export default function Genre({
   return (
     <>
       <GenreArtworkSheet ref={artworkSheetRef} id={id} />
-      <SortSheet ref={tracksSortOptionsSheetRef} screen="genreTracks" />
-
       <CurrentListLayout
         // List Header Props
         listInfo={{
@@ -55,9 +51,6 @@ export default function Genre({
               name={genreDetailsQuery.data.name}
               trackIds={genreTracksQuery.data?.map(({ id }) => id) ?? []}
               presentArtworkSheet={() => artworkSheetRef.current?.present()}
-              presentSortOptionsSheet={() =>
-                tracksSortOptionsSheetRef.current?.present()
-              }
             />
           ),
         }}

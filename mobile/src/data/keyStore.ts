@@ -7,13 +7,9 @@ import { ne } from "drizzle-orm";
 import { playlists } from "~/db/schema";
 
 import { getAlbum, getAlbumsSummary } from "./album/api";
-import {
-  getArtist,
-  getArtistsSummary,
-  getSortedArtistTracks,
-} from "./artist/api";
+import { getArtist, getArtistsSummary, getArtistTracks } from "./artist/api";
 import { getFavoriteLists } from "./favorite/api";
-import { getGenre, getGenresSummary, getSortedGenreTracks } from "./genre/api";
+import { getGenre, getGenresSummary, getGenreTracks } from "./genre/api";
 import { getLyric, getLyricsSummary } from "./lyric/api";
 import { getPlaylist, getPlaylistsSummary } from "./playlist/api";
 import {
@@ -64,12 +60,11 @@ export const queries = {
       return {
         ...detail,
         _ctx: {
-          tracks: (sortOptions?: TracksSortOptions<"artistTracks">) =>
+          tracks: () =>
             // eslint-disable-next-line @tanstack/query/exhaustive-deps
             queryOptions({
-              queryKey: [...detail.queryKey, "tracks", sortOptions],
-              queryFn: () =>
-                getSortedArtistTracks(artistName, false, sortOptions),
+              queryKey: [...detail.queryKey, "tracks"],
+              queryFn: () => getArtistTracks(artistName, false),
             }),
         },
       };
@@ -104,12 +99,11 @@ export const queries = {
       return {
         ...detail,
         _ctx: {
-          tracks: (sortOptions?: TracksSortOptions<"genreTracks">) =>
+          tracks: () =>
             // eslint-disable-next-line @tanstack/query/exhaustive-deps
             queryOptions({
-              queryKey: [...detail.queryKey, "tracks", sortOptions],
-              queryFn: () =>
-                getSortedGenreTracks(genreName, false, sortOptions),
+              queryKey: [...detail.queryKey, "tracks"],
+              queryFn: () => getGenreTracks(genreName, false),
             }),
         },
       };

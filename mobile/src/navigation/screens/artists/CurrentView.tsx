@@ -13,7 +13,6 @@ import {
   CurrentListSkeleton,
 } from "~/navigation/layouts/CurrentListLayout";
 import { ArtistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
-import { SortSheet } from "~/navigation/sheets/SortSheet";
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 
@@ -35,7 +34,6 @@ export default function Artist({
   const artistDetailsQuery = useArtistDetails(artistName);
   const artistTracksQuery = useArtistTracks(artistName);
   const artworkSheetRef = useSheetRef();
-  const tracksSortOptionsSheetRef = useSheetRef();
 
   const trackSource = { type: "artist", id: artistName } as const;
   const presets = useTrackListPreset({
@@ -50,8 +48,6 @@ export default function Artist({
   return (
     <>
       <ArtistArtworkSheet ref={artworkSheetRef} id={artistName} />
-      <SortSheet ref={tracksSortOptionsSheetRef} screen="artistTracks" />
-
       <CurrentListLayout
         // List Header Props
         listInfo={{
@@ -62,9 +58,6 @@ export default function Artist({
               name={artistDetailsQuery.data.name}
               trackIds={artistTracksQuery.data?.map(({ id }) => id) ?? []}
               presentArtworkSheet={() => artworkSheetRef.current?.present()}
-              presentSortOptionsSheet={() =>
-                tracksSortOptionsSheetRef.current?.present()
-              }
             />
           ),
         }}

@@ -15,8 +15,8 @@ import {
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { Seconds } from "~/utils/date";
 import type { ArtistAlbum } from "./types";
-import type { CommonTrack, TracksSortOptions } from "../types";
-import { commonTracksOrIds, getTracksOrderedBy } from "../utils";
+import type { CommonTrack } from "../types";
+import { commonTracksOrIds } from "../utils";
 import { commonTrackColumns, structuredTracksView } from "../views";
 
 type InsertedArtist = typeof artists.$inferInsert;
@@ -26,12 +26,11 @@ type InsertedArtist = typeof artists.$inferInsert;
 export async function getArtist<TOnlyIds extends boolean | undefined = false>(
   id: string,
   onlyIds?: TOnlyIds,
-  sortOptions?: TracksSortOptions<"artistTracks">,
 ) {
   const [artistDetails, artistAlbums, artistTracks] = await Promise.all([
     getArtistDetails(id),
     getArtistAlbums(id),
-    getSortedArtistTracks(id, onlyIds, sortOptions),
+    getArtistTracks(id, onlyIds),
   ]);
 
   return { ...artistDetails, albums: artistAlbums, tracks: artistTracks };
@@ -87,16 +86,12 @@ export async function getArtistAlbums(id: string): Promise<ArtistAlbum[]> {
 }
 
 /**
- * Return the tracks associated with an artist in the specified sort order.
- * It's not guaranteed that the artist exists.
+ * Return the tracks associated with an artist. It's not guaranteed that
+ * the artist exists.
  */
-export async function getSortedArtistTracks<
+export async function getArtistTracks<
   TOnlyIds extends boolean | undefined = false,
->(
-  id: string,
-  onlyIds?: TOnlyIds,
-  sortOptions?: TracksSortOptions<"artistTracks">,
-) {
+>(id: string, onlyIds?: TOnlyIds) {
   const results = await db
     .select(onlyIds ? { id: structuredTracksView.id } : commonTrackColumns)
     .from(tracksToArtists)
@@ -105,7 +100,7 @@ export async function getSortedArtistTracks<
       structuredTracksView,
       eq(tracksToArtists.trackId, structuredTracksView.id),
     )
-    .orderBy(getTracksOrderedBy("artistTracks", sortOptions));
+    .orderBy(iAsc(structuredTracksView.name));
 
   return commonTracksOrIds<CommonTrack, TOnlyIds>(results, onlyIds);
 }

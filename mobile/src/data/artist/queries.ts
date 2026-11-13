@@ -4,7 +4,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { queries as q } from "../keyStore";
 
 //#region Queries
@@ -26,10 +25,8 @@ export function useArtistDetails(artistName: string) {
 }
 
 export function useArtistTracks(artistName: string) {
-  const isAsc = useViewPreferenceStore((s) => s.artistTracksIsAsc);
-  const order = useViewPreferenceStore((s) => s.artistTracksOrder);
   return useQuery({
-    ...q.artists.detail(artistName)._ctx.tracks({ isAsc, order }),
+    ...q.artists.detail(artistName)._ctx.tracks(),
     select: (tracks) =>
       tracks.map((track) => ({
         id: track.id,
