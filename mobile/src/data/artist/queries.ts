@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 import { queries as q } from "../keyStore";
 
@@ -10,15 +11,13 @@ import { createTextPlaceholder } from "~/components/next/blocks/media-image";
 
 //#region Queries
 export function useArtistDetails(artistName: string) {
+  const { t } = useTranslation();
   return useQuery({
     ...q.artists.detail(artistName),
-    select: ({ topTracks, albums, eps, singles, artwork, ...rest }) => ({
+    select: ({ numTracks, artwork, ...rest }) => ({
       ...rest,
       imageSource: getImageUri(artwork) ?? createTextPlaceholder(rest.name),
-      topTracks: topTracks.length > 0 ? topTracks : null,
-      albums: albums.length > 0 ? albums : null,
-      eps: eps.length > 0 ? eps : null,
-      singles: singles.length > 0 ? singles : null,
+      metadata: [t("plural.track", { count: numTracks })],
     }),
   });
 }

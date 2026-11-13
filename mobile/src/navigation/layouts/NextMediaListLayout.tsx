@@ -1,14 +1,30 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useCallback, useRef, useState } from "react";
+import type { LinearGradientProps } from "expo-linear-gradient";
+import { LinearGradient } from "expo-linear-gradient";
+import {
+  createContext,
+  use,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { View, useWindowDimensions } from "react-native";
 import type { TabBarProps } from "react-native-collapsible-tabs-native";
 import { createTabList } from "react-native-collapsible-tabs-native";
-import Animated, { LinearTransition } from "react-native-reanimated";
+import { easeGradient } from "react-native-easing-gradient";
+import type { SharedValue } from "react-native-reanimated";
+import Animated, {
+  interpolate,
+  LinearTransition,
+  useAnimatedStyle,
+} from "react-native-reanimated";
 import { useShallow } from "zustand/react/shallow";
 
+import { PlaybackControls } from "~/stores/Playback/actions";
 import {
   useGridLayoutConfig,
   useListLayoutConfig,
@@ -17,6 +33,9 @@ import {
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 
 import { cn } from "~/lib/style";
+import { withAlpha } from "~/utils/color";
+import { Seconds } from "~/utils/date";
+import { isString } from "~/utils/validation";
 import { FlatList, useFlatListRef } from "~/components/Base/List";
 import type {
   LegendListProps,
@@ -25,14 +44,104 @@ import type {
 } from "~/components/Base/LegendList";
 import { LegendList } from "~/components/Base/LegendList";
 import { IconButton } from "~/components/next/base/button-icon";
+import { Icon } from "~/components/next/base/icon";
 import { TextInput } from "~/components/next/base/input";
+import { Marquee } from "~/components/next/blocks/marquee";
+import type { MediaImageSrc } from "~/components/next/blocks/media-image";
+import { TrackListContext } from "~/components/next/composed/track-item";
+import { Image } from "~/components/next/primitive/image";
 import { Pressable } from "~/components/next/primitive/pressable";
+import { Ripple } from "~/components/next/themed/ripple";
 import { Text, TText } from "~/components/next/themed/typography";
 import { useTheme } from "~/modules/customization/theme/core/context";
 import { useSearchStore } from "~/modules/search/components/SearchList";
 import { containSorter } from "~/modules/search/utils";
 
+const HeaderProgressContext = createContext<SharedValue<number>>(null as never);
+
 const TabLegendList = createTabList(LegendList) as LegendListSignature;
+
+//#region Header
+export function Header(props: {
+  name: string;
+  imageSource: MediaImageSrc;
+  metadata: string[];
+  totalDuration: number;
+}) {
+  const { width, height } = useWindowDimensions();
+  const { surface, onSurface } = useTheme();
+  const trackSource = use(TrackListContext);
+  const headerProgress = use(HeaderProgressContext);
+  const headerHeight = Math.min(400, width, height);
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    opacity: interpolate(headerProgress.get(), [0.5, 1], [1, 0]),
+  }));
+
+  const { colors, locations } = useMemo(
+    () =>
+      easeGradient({
+        colorStops: {
+          0: { color: withAlpha(surface, 0) },
+          1: { color: surface },
+        },
+      }) as unknown as Pick<LinearGradientProps, "colors" | "locations">,
+    [surface],
+  );
+
+  return (
+    <View
+      style={{ height: headerHeight, backgroundColor: surface }}
+      className="relative w-full items-center justify-end"
+    >
+      <Image
+        source={isString(props.imageSource) ? props.imageSource : null}
+        contentFit="cover"
+        contentPosition="top"
+        className="absolute inset-0 size-full"
+      />
+      <LinearGradient
+        colors={colors}
+        locations={locations}
+        style={{ height: headerHeight * 0.6 }}
+        className="absolute inset-x-0 bottom-0 w-full"
+      />
+
+      <Animated.View style={animatedStyles} className="w-full p-4">
+        <Marquee center>
+          <Text bold size="4xl">
+            {props.name}
+          </Text>
+        </Marquee>
+        <Marquee
+          center
+          contentContainerClassName="mt-2 mb-4 flex-row items-center"
+        >
+          <Text size="sm" color="onSurfaceVariant">
+            {props.metadata.join(" • ")}
+          </Text>
+          {/* Work around for RTL languages. */}
+          <Text size="sm" color="onSurfaceVariant">
+            {" • "}
+          </Text>
+          <Icon name="schedule" size={16} color="onSurfaceVariant" />
+          <Text size="sm" color="onSurfaceVariant">
+            {` ${Seconds.toReadableTime(props.totalDuration, true)}`}
+          </Text>
+        </Marquee>
+        <Ripple
+          onPress={() => PlaybackControls.playFromList({ source: trackSource })}
+          surfaceColor="onSurface"
+          style={{ backgroundColor: onSurface }}
+          className="min-h-12 min-w-32 flex-row items-center justify-center gap-1 self-center rounded-full p-2"
+        >
+          <Icon name="play-arrow-filled" size={32} color="surface" />
+        </Ripple>
+      </Animated.View>
+    </View>
+  );
+}
+//#endregion
 
 //#region Tab Bar
 /** Tab bar rendered by `CollapsibleTabView`. */

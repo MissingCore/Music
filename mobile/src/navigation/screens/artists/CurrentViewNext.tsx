@@ -3,24 +3,16 @@
 
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import type { LinearGradientProps } from "expo-linear-gradient";
-import { LinearGradient } from "expo-linear-gradient";
 import { createContext, use, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useWindowDimensions, View } from "react-native";
+import { View } from "react-native";
 import { CollapsibleTabView } from "react-native-collapsible-tabs-native";
-import { easeGradient } from "react-native-easing-gradient";
 import type { SharedValue } from "react-native-reanimated";
-import Animated, {
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-} from "react-native-reanimated";
+import { useSharedValue } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import type { MediaDetails } from "~/adapters/types";
 import { useArtistDetails } from "~/data/artist/queries";
-import { PlaybackControls } from "~/stores/Playback/actions";
 
 import * as MediaListLayout from "~/navigation/layouts/NextMediaListLayout";
 import { ArtistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
@@ -30,23 +22,15 @@ import { getImageUri } from "~/lib/file-system";
 import { OnRTL } from "~/lib/react";
 import type { ExtractQueryData } from "~/lib/react-query";
 import { withAlpha } from "~/utils/color";
-import { Seconds } from "~/utils/date";
-import { isString } from "~/utils/validation";
 import { BlurIconButton } from "~/components/next/base/blur-button-icon";
-import { Icon } from "~/components/next/base/icon";
 import { useSheetRef } from "~/components/next/base/sheet";
-import { Marquee } from "~/components/next/blocks/marquee";
 import { ImageCard } from "~/components/next/composed/image-card";
 import {
   TrackItem,
   TrackListContext,
 } from "~/components/next/composed/track-item";
-import { Image } from "~/components/next/primitive/image";
-import { Ripple } from "~/components/next/themed/ripple";
-import { Text } from "~/components/next/themed/typography";
 import {
   ThemeProvider,
-  useTheme,
   useTintedDominantColor,
 } from "~/modules/customization/theme/core/context";
 import { Search } from "~/modules/search/components/SearchList";
@@ -158,7 +142,7 @@ function ScreenContents({ data }: { data: ArtistDetail }) {
       headerMinHeight={56 + insets.top}
       navigationState={{ index: tabIndex, routes }}
       onIndexChange={setTabIndex}
-      renderHeader={() => <ScreenHeader {...data} />}
+      renderHeader={() => <MediaListLayout.Header {...data} />}
       renderTabBar={MediaListLayout.TabBar}
       renderScene={({ route }) => (
         // @ts-expect-error - `asGrid` is `true | false`.
@@ -175,89 +159,6 @@ function ScreenContents({ data }: { data: ArtistDetail }) {
         );
       }}
     />
-  );
-}
-//#endregion
-
-//#region Header
-function ScreenHeader(
-  props: Pick<
-    ArtistDetail,
-    "name" | "imageSource" | "numTracks" | "totalDuration"
-  >,
-) {
-  const { t } = useTranslation();
-  const trackSource = use(TrackListContext);
-  const { width, height } = useWindowDimensions();
-  const { surface, onSurface } = useTheme();
-  const headerProgress = use(HeaderProgressContext);
-  const headerHeight = Math.min(400, width, height);
-
-  const animatedStyles = useAnimatedStyle(() => ({
-    opacity: interpolate(headerProgress.get(), [0.5, 1], [1, 0]),
-  }));
-
-  const { colors, locations } = useMemo(
-    () =>
-      easeGradient({
-        colorStops: {
-          0: { color: withAlpha(surface, 0) },
-          1: { color: surface },
-        },
-      }) as unknown as Pick<LinearGradientProps, "colors" | "locations">,
-    [surface],
-  );
-
-  return (
-    <View
-      style={{ height: headerHeight, backgroundColor: surface }}
-      className="relative w-full items-center justify-end"
-    >
-      <Image
-        source={isString(props.imageSource) ? props.imageSource : null}
-        contentFit="cover"
-        contentPosition="top"
-        className="absolute inset-0 size-full"
-      />
-      <LinearGradient
-        colors={colors}
-        locations={locations}
-        style={{ height: headerHeight * 0.6 }}
-        className="absolute inset-x-0 bottom-0 w-full"
-      />
-
-      <Animated.View style={animatedStyles} className="w-full p-4">
-        <Marquee center>
-          <Text bold size="4xl">
-            {props.name}
-          </Text>
-        </Marquee>
-        <Marquee
-          center
-          contentContainerClassName="mt-2 mb-4 flex-row items-center"
-        >
-          <Text size="sm" color="onSurfaceVariant">
-            {t("plural.track", { count: props.numTracks })}
-          </Text>
-          {/* Work around for RTL languages. */}
-          <Text size="sm" color="onSurfaceVariant">
-            {" • "}
-          </Text>
-          <Icon name="schedule" size={16} color="onSurfaceVariant" />
-          <Text size="sm" color="onSurfaceVariant">
-            {` ${Seconds.toReadableTime(props.totalDuration, true)}`}
-          </Text>
-        </Marquee>
-        <Ripple
-          onPress={() => PlaybackControls.playFromList({ source: trackSource })}
-          surfaceColor="onSurface"
-          style={{ backgroundColor: onSurface }}
-          className="min-h-12 min-w-32 flex-row items-center justify-center gap-1 self-center rounded-full p-2"
-        >
-          <Icon name="play-arrow-filled" size={32} color="surface" />
-        </Ripple>
-      </Animated.View>
-    </View>
   );
 }
 //#endregion
