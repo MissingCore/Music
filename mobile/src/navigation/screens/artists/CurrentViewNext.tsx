@@ -5,7 +5,6 @@ import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { createContext, use, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 import { CollapsibleTabView } from "react-native-collapsible-tabs-native";
 import type { SharedValue } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -15,13 +14,10 @@ import { useArtistDetails } from "~/data/artist/queries";
 
 import * as MediaListLayout from "~/navigation/layouts/NextMediaListLayout";
 import { ArtistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
-import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
+import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
 import { getImageUri } from "~/lib/file-system";
-import { OnRTL } from "~/lib/react";
 import type { ExtractQueryData } from "~/lib/react-query";
-import { BlurIconButton } from "~/components/next/base/blur-button-icon";
-import { useSheetRef } from "~/components/next/base/sheet";
 import { ImageCard } from "~/components/next/composed/image-card";
 import { TrackItem } from "~/components/next/composed/track-item";
 
@@ -38,14 +34,14 @@ export default function Artist({
 }: Props) {
   const { isPending, error, data } = useArtistDetails(artistName);
 
-  if (isPending || error) return null;
+  if (isPending || error) return <PagePlaceholder isPending={isPending} />;
   return (
     <MediaListLayout.Provider
       identity={{ type: "artist", id: artistName }}
       imageSource={data.imageSource}
     >
-      <TopAppBar
-        id={artistName}
+      <MediaListLayout.TopAppBar
+        ArtworkSheet={ArtistArtworkSheet}
         name={data.name}
         trackIds={(data.topTracks ?? []).map(({ id }) => id)}
       />
@@ -53,31 +49,6 @@ export default function Artist({
     </MediaListLayout.Provider>
   );
 }
-
-//#region Top App Bar
-function TopAppBar(props: { id: string; name: string; trackIds: string[] }) {
-  const { t } = useTranslation();
-  const navigation = useNavigation();
-  const sheetRef = useSheetRef();
-  return (
-    <>
-      <ArtistArtworkSheet ref={sheetRef} id={props.id} />
-      <View className="absolute inset-x-0 top-0 z-50 flex-row items-center justify-between p-2 pt-safe-offset-2">
-        <BlurIconButton
-          icon={OnRTL.decide("east", "west")}
-          accessibilityLabel={t("form.back")}
-          onPress={() => navigation.goBack()}
-        />
-        <CurrentListMenu
-          name={props.name}
-          trackIds={props.trackIds}
-          presentArtworkSheet={() => sheetRef.current?.present()}
-        />
-      </View>
-    </>
-  );
-}
-//#endregion
 
 //#region Screen Contents
 type AvailableRoutes = "topTracks" | "albums" | "eps" | "singles";

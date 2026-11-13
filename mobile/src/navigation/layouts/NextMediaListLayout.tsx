@@ -1,6 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { useNavigation } from "@react-navigation/native";
 import type { LinearGradientProps } from "expo-linear-gradient";
 import { LinearGradient } from "expo-linear-gradient";
 import {
@@ -33,7 +34,9 @@ import {
 } from "~/hooks/useLayoutConfigs";
 
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
+import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
 
+import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { withAlpha } from "~/utils/color";
 import { Seconds } from "~/utils/date";
@@ -46,8 +49,11 @@ import type {
 } from "~/components/Base/LegendList";
 import { LegendList } from "~/components/Base/LegendList";
 import { IconButton } from "~/components/next/base/button-icon";
+import { BlurIconButton } from "~/components/next/base/blur-button-icon";
 import { Icon } from "~/components/next/base/icon";
 import { TextInput } from "~/components/next/base/input";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { useSheetRef } from "~/components/next/base/sheet";
 import { Marquee } from "~/components/next/blocks/marquee";
 import type { MediaImageSrc } from "~/components/next/blocks/media-image";
 import { TrackListContext } from "~/components/next/composed/track-item";
@@ -100,6 +106,36 @@ export function Provider(props: {
         </HeaderProgressContext>
       </Search.Provider>
     </TrackListContext>
+  );
+}
+//#endregion
+
+//#region Top App Bar
+export function TopAppBar(props: {
+  ArtworkSheet: (props: { id: string; ref: SheetRef }) => React.JSX.Element;
+  name: string;
+  trackIds: string[];
+}) {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+  const sheetRef = useSheetRef();
+
+  return (
+    <>
+      <props.ArtworkSheet ref={sheetRef} id={use(TrackListContext).id} />
+      <View className="absolute inset-x-0 top-0 z-50 flex-row items-center justify-between p-2 pt-safe-offset-2">
+        <BlurIconButton
+          icon={OnRTL.decide("east", "west")}
+          accessibilityLabel={t("form.back")}
+          onPress={() => navigation.goBack()}
+        />
+        <CurrentListMenu
+          name={props.name}
+          trackIds={props.trackIds}
+          presentArtworkSheet={() => sheetRef.current?.present()}
+        />
+      </View>
+    </>
   );
 }
 //#endregion
