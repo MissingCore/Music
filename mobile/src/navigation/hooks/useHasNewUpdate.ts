@@ -19,11 +19,17 @@ export function useHasNewUpdate(): UpdateResult {
 
   if (isPending || !!error) return { hasNewUpdate: false, release: null };
 
-  // Release candidates shouldn't have the "Latest Release" tag on GitHub
-  // (ie: shouldn't be in `data.latestStable`). We compare against potentially
-  // release candidate versions if we're on a release candidate.
+  //? Determine if we should display the latest release.
+  const prefersLatestRelease = APP_VERSION.includes("-rc") || rcNotification;
+  //? Additional edge-case for Google Play users if the latest release isn't
+  //? available on the "Open Testing" channel. In that case, we should display
+  //? the latest stable release.
+  const latestReleaseIsHidden =
+    DISTRIBUTION === "google-play" &&
+    data.latestRelease.flags?.includes("hide-google-play");
+
   const usedRelease =
-    APP_VERSION.includes("-rc") || rcNotification
+    prefersLatestRelease && !latestReleaseIsHidden
       ? data.latestRelease
       : data.latestStable;
 
