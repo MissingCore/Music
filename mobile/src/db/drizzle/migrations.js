@@ -20,6 +20,7 @@ import m0015 from "./0015_melted_maddog.sql";
 import m0016 from "./0016_friendly_tenebrous.sql";
 import m0017 from "./0017_noisy_loners.sql";
 import m0018 from "./0018_young_dexter_bennett.sql";
+import m0019 from "./0019_unique_rocket_racer.sql";
 
 export default {
   journal,
@@ -43,5 +44,6 @@ export default {
     m0016,
     m0017,
     m0018,
+    m0019,
   },
 };
