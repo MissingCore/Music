@@ -41,6 +41,7 @@ interface DragListProps<TData> extends Pick<
   | "initialScrollIndex"
   | "pointerEvents"
   | "ListHeaderComponent"
+  | "ListFooterComponent"
   | "ListEmptyComponent"
   | "className"
   | "contentContainerClassName"
