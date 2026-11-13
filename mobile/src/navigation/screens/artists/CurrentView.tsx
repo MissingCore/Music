@@ -3,21 +3,22 @@
 
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import { useMemo } from "react";
-import { View } from "react-native";
+import { useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
-import { useArtistDetails, useArtistTracks } from "~/data/artist/queries";
-import type { ArtistAlbum } from "~/data/artist/types";
-import { useHorizontalListLayoutConfig } from "~/hooks/useLayoutConfigs";
+import type { MediaDetails } from "~/adapters/types";
+import { useArtistDetails } from "~/data/artist/queries";
 
-import * as MediaListLayout from "~/navigation/layouts/MediaListLayout";
+import * as MediaListLayout from "~/navigation/layouts/NextMediaListLayout";
 import { ArtistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
+import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
-import { FlatList } from "~/components/Base/List";
-import { useSheetRef } from "~/components/next/base/sheet";
-import { TText } from "~/components/next/base/typography";
+import { getImageUri } from "~/lib/file-system";
+import type { ExtractQueryData } from "~/lib/react-query";
 import { ImageCard } from "~/components/next/composed/image-card";
 import { TrackItem } from "~/components/next/composed/track-item";
+
+type ArtistDetail = ExtractQueryData<typeof useArtistDetails>;
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -26,82 +27,108 @@ export default function Artist({
     params: { id: artistName },
   },
 }: Props) {
-  const artistDetailsQuery = useArtistDetails(artistName);
-  const artistTracksQuery = useArtistTracks(artistName);
-  const artworkSheetRef = useSheetRef();
+  const { isPending, error, data } = useArtistDetails(artistName);
 
-  const trackSource = useMemo(
-    () => ({ type: "artist", id: artistName }) as const,
-    [artistName],
-  );
-
-  if (artistDetailsQuery.isPending || artistDetailsQuery.error) {
-    return <MediaListLayout.Skeleton pending={artistDetailsQuery.isPending} />;
-  }
-
+  if (isPending || error) return <PagePlaceholder isPending={isPending} />;
   return (
-    <>
-      <ArtistArtworkSheet ref={artworkSheetRef} id={artistName} />
-
-      <MediaListLayout.Toolbar
-        name={artistDetailsQuery.data.name}
-        trackIds={artistTracksQuery.data?.map(({ id }) => id) ?? []}
-        presentArtworkSheet={() => artworkSheetRef.current?.present()}
+    <MediaListLayout.Provider
+      identity={{ type: "artist", id: artistName }}
+      imageSource={data.imageSource}
+    >
+      <MediaListLayout.TopAppBar
+        ArtworkSheet={ArtistArtworkSheet}
+        name={data.name}
+        trackIds={(data.topTracks ?? []).map(({ id }) => id)}
       />
-      <MediaListLayout.Provider
-        imageSource={artistDetailsQuery.data.imageSource}
-        listSource={trackSource}
-      >
-        <MediaListLayout.Header
-          title={artistDetailsQuery.data.name}
-          metadata={artistDetailsQuery.data.metadata}
-        />
-        <MediaListLayout.List
-          data={artistTracksQuery.data}
-          keyExtractor={({ id }) => id}
-          renderItem={({ item }) => <TrackItem {...item} />}
-          ListHeaderComponent={
-            artistDetailsQuery.data.albums &&
-            artistDetailsQuery.data.albums.length > 0 ? (
-              <ArtistAlbums albums={artistDetailsQuery.data.albums} />
-            ) : undefined
-          }
-        />
-      </MediaListLayout.Provider>
-    </>
+      <ScreenContents data={data} />
+    </MediaListLayout.Provider>
   );
 }
 
-/**
- * Display a list of the artist's albums. Renders a heading for the track
- * list only if the artist has albums.
- */
-function ArtistAlbums({ albums }: { albums: ArtistAlbum[] }) {
+//#region Screen Contents
+type AvailableRoutes = "topTracks" | "albums" | "eps" | "singles";
+
+function ScreenContents({ data }: { data: ArtistDetail }) {
+  const { t } = useTranslation();
+
+  const routes = useMemo(() => {
+    const routes: Array<{ key: AvailableRoutes; title: string }> = [];
+    if (!data) return routes;
+    if (data.topTracks.length > 0)
+      routes.push({
+        key: "topTracks",
+        title: t("feat.recap.extra.top", { name: t("term.tracks") }),
+      });
+    if (data.albums.length > 0)
+      routes.push({ key: "albums", title: t("term.albums") });
+    if (data.eps.length > 0) routes.push({ key: "eps", title: t("term.eps") });
+    if (data.singles.length > 0)
+      routes.push({ key: "singles", title: t("term.singles") });
+
+    return routes;
+  }, [t, data]);
+
+  return (
+    <MediaListLayout.CollapsibleTabView
+      routes={routes}
+      renderHeader={() => <MediaListLayout.Header {...data} />}
+      renderTabBar={MediaListLayout.TabBar}
+      renderScene={({ route }) => (
+        // @ts-expect-error - `asGrid` is `true | false`.
+        <RenderedList
+          asGrid={route.key === "albums" || route.key === "eps"}
+          data={data[route.key]!}
+        />
+      )}
+    />
+  );
+}
+//#endregion
+
+//#region Rendered Lists
+type RenderedListProps =
+  | { asGrid: true; data: MediaDetails.DisplayAlbum[] }
+  | { asGrid?: false; data: MediaDetails.DisplayTrack[] };
+
+function RenderedList(props: RenderedListProps) {
   const navigation = useNavigation();
-  const { width } = useHorizontalListLayoutConfig();
-  return (
-    <View>
-      <TText textKey="term.albums" intent="em" />
-      <FlatList
-        horizontal
-        data={albums}
-        keyExtractor={({ id }) => id}
-        renderItem={({ item }) => (
-          <ImageCard
-            src={item.artwork}
-            size={width}
-            label={item.name}
-            supporting={item.year}
-            onPress={() =>
-              navigation.navigate("Album", { id: item.id }, { pop: true })
-            }
-            columnSpacing={false}
-          />
-        )}
-        className="-mx-4"
-        contentContainerClassName="gap-1.5 px-4 py-1.5"
+
+  const renderAlbum = useCallback<
+    MediaListLayout.RenderDataListItem<MediaDetails.DisplayAlbum>
+  >(
+    ({ item, itemWidth }) => (
+      <ImageCard
+        src={item.artwork}
+        size={itemWidth}
+        label={item.name}
+        supporting={item.year}
+        onPress={() =>
+          navigation.navigate("Album", { id: item.id }, { pop: true })
+        }
       />
-      <TText textKey="term.tracks" intent="em" className="mb-1.5" />
-    </View>
+    ),
+    [navigation],
+  );
+  const renderTrack = useCallback(
+    ({ item }: { item: MediaDetails.DisplayTrack }) => (
+      <TrackItem
+        id={item.id}
+        title={item.name}
+        description={item.album ?? "—"}
+        imageSource={getImageUri(item.artwork)}
+      />
+    ),
+    [],
+  );
+
+  return (
+    <MediaListLayout.DataList
+      asGrid={props.asGrid}
+      // @ts-expect-error - Data is compatible.
+      data={props.data}
+      // @ts-expect-error - Data will render the item correctly.
+      renderItem={props.asGrid ? renderAlbum : renderTrack}
+    />
   );
 }
+//#endregion
