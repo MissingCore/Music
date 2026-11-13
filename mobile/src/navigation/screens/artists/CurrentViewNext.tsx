@@ -34,7 +34,7 @@ import type { MediaDetails } from "~/adapters/types";
 import { useArtistDetails } from "~/data/artist/queries";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import {
-  useCompactGridLayoutConfig,
+  useGridLayoutConfig,
   useListLayoutConfig,
 } from "~/hooks/useLayoutConfigs";
 
@@ -370,9 +370,7 @@ type RenderedListProps =
 
 function RenderedList(props: RenderedListProps) {
   const navigation = useNavigation();
-  const layout = (
-    props.asGrid ? useCompactGridLayoutConfig : useListLayoutConfig
-  )();
+  const layout = (props.asGrid ? useGridLayoutConfig : useListLayoutConfig)();
   const bottomOffset = useBottomActionsOffset();
   const query = useSearchStore((s) => s.query);
 
