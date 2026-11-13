@@ -54,14 +54,16 @@ function ScreenContents({ data }: { data: ArtistDetail }) {
   const routes = useMemo(() => {
     const routes: Array<{ key: AvailableRoutes; title: string }> = [];
     if (!data) return routes;
-    if (data.topTracks)
+    if (data.topTracks.length > 0)
       routes.push({
         key: "topTracks",
         title: t("feat.recap.extra.top", { name: t("term.tracks") }),
       });
-    if (data.albums) routes.push({ key: "albums", title: t("term.albums") });
-    if (data.eps) routes.push({ key: "eps", title: t("term.eps") });
-    if (data.singles) routes.push({ key: "singles", title: t("term.singles") });
+    if (data.albums.length > 0)
+      routes.push({ key: "albums", title: t("term.albums") });
+    if (data.eps.length > 0) routes.push({ key: "eps", title: t("term.eps") });
+    if (data.singles.length > 0)
+      routes.push({ key: "singles", title: t("term.singles") });
 
     return routes;
   }, [t, data]);
