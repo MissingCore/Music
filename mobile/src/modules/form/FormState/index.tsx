@@ -8,14 +8,15 @@ import {
   createContext,
   use,
   useCallback,
-  useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { BackHandler, View } from "react-native";
+import { View } from "react-native";
 import * as v from "valibot";
+
+import { useBackHandler } from "~/hooks/useBackHandler";
 
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import type { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
@@ -255,16 +256,10 @@ function UnsavedChangesPrompt() {
   const { hasChanged, isSubmitting } = useFormStateContext();
   const [showConfirmation, setShowConfirmation] = useState(false);
 
-  useEffect(() => {
-    const subscription = BackHandler.addEventListener(
-      "hardwareBackPress",
-      () => {
-        if (!hasChanged) return false;
-        if (!isSubmitting) setShowConfirmation(true);
-        return true;
-      },
-    );
-    return () => subscription.remove();
+  useBackHandler(() => {
+    if (!hasChanged) return false;
+    if (!isSubmitting) setShowConfirmation(true);
+    return true;
   }, [hasChanged, isSubmitting]);
 
   return (
