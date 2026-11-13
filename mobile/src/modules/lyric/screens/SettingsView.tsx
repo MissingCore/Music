@@ -58,7 +58,7 @@ export default function LyricsSettings() {
           <DragList
             data={lyricProviders}
             keyExtractor={({ id }) => id}
-            estimatedItemSize={56}
+            estimatedItemSize={64}
             gestureHitSlop={OnRTL.decide(
               { width: 64, left: 0 },
               { width: 64, right: 0 },
