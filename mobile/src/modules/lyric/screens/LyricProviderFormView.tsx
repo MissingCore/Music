@@ -14,11 +14,13 @@ import {
   deleteLyricProvider,
   updateLyricProvider,
 } from "../core/actions";
-import { LyricProviderEndpointPlaceholders } from "../core/constants";
+import {
+  LyricProviderEndpointPlaceholders,
+  LyricProviderEntrySchema,
+} from "../core/constants";
 
 import { Em } from "~/components/Typography/StyledText";
 import { Button } from "~/components/next/base/button";
-import { FormSchema } from "~/modules/form/utils";
 import { Form, useFormAction, useFormContext } from "~/modules/form/Form";
 import { createTypedFormInputs } from "~/modules/form/FormInput";
 
@@ -160,21 +162,5 @@ function FormContents() {
 //#endregion
 
 //#region Schema
-const LyricProviderEntrySchema = v.object({
-  name: FormSchema.NonEmptyString,
-  endpoint: v.pipe(
-    v.string(),
-    v.trim(),
-    v.url(),
-    v.check(
-      (endpoint) => /^https?:\/\//i.test(endpoint),
-      "Expected an HTTP or HTTPS URL.",
-    ),
-  ),
-  isJSONResponse: v.boolean(),
-  headers: v.string(),
-  traversedFields: v.array(FormSchema.NonEmptyString),
-});
-
 type LyricProviderEntry = v.InferOutput<typeof LyricProviderEntrySchema>;
 //#endregion

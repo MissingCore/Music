@@ -1,6 +1,9 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { FormSchema } from "~/modules/form/utils";
+import * as v from "valibot";
+
 //#region Lyric Provider Form
 export const LyricProviderEndpointPlaceholders = [
   "%name%",
@@ -48,4 +51,21 @@ export const PersistedFields: string[] = [
   "checkEmbedded",
   "providers",
 ] satisfies Array<keyof LyricStore>;
+
+export const LyricProviderEntrySchema = v.object({
+  name: FormSchema.NonEmptyString,
+  endpoint: v.pipe(
+    v.string(),
+    v.trim(),
+    v.url(),
+    v.check(
+      (endpoint) => /^https?:\/\//i.test(endpoint),
+      "Expected an HTTP or HTTPS URL.",
+    ),
+  ),
+  isJSONResponse: v.boolean(),
+  headers: v.string(),
+  traversedFields: v.array(FormSchema.NonEmptyString),
+});
+
 //#endregion
