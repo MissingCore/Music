@@ -11,6 +11,8 @@ import {
   usePanGesture,
   useSimultaneousGestures,
 } from "react-native-gesture-handler";
+
+import type { HitSlop } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlerCommon";
 import {
   clamp,
   scrollTo,
@@ -56,6 +58,9 @@ interface DragListProps<TData> extends Pick<
   /** Guaranteed fix to lingering outdated styles at the cost of poor scroll performance. */
   alwaysKeyRenderedItems?: boolean;
 
+  /** Area we want pan gesture to activate/limit to. */
+  gestureHitSlop?: HitSlop;
+
   /** Called when item captured drag gesture. */
   onDragBegin?: VoidFunction;
   /** Called after the dragged item is dropped. */
@@ -84,6 +89,7 @@ function DragListImpl<TData>({
   renderItem,
   estimatedItemSize,
   alwaysKeyRenderedItems = false,
+  gestureHitSlop,
   onDragBegin: _,
   onDragEnd,
   onReordered,
@@ -173,6 +179,7 @@ function DragListImpl<TData>({
 
   const panListenerGesture = usePanGesture({
     enabled,
+    hitSlop: gestureHitSlop,
     onActivate: () => {
       // Bail out of gesture early.
       if (activeIndex.get() === INACTIVE) enabled.set(false);

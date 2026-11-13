@@ -15,6 +15,7 @@ import type { LyricProvider } from "../core/constants";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
+import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { Links, openLink } from "~/lib/web-browser";
 import { IconButton } from "~/components/Form/Button/Icon";
@@ -58,6 +59,10 @@ export default function LyricsSettings() {
             data={lyricProviders}
             keyExtractor={({ id }) => id}
             estimatedItemSize={56}
+            gestureHitSlop={OnRTL.decide(
+              { width: 64, left: 0 },
+              { width: 64, right: 0 },
+            )}
             renderItem={(args) => <RenderItem {...args} />}
             onReordered={moveLyricProvider}
             ListFooterComponent={
