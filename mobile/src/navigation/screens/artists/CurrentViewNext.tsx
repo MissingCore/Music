@@ -235,7 +235,7 @@ function ScreenHeader(
 
   return (
     <View
-      style={{ height: headerHeight }}
+      style={{ height: headerHeight, backgroundColor: surface }}
       className="relative w-full items-center justify-end"
     >
       <Image
