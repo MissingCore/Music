@@ -10,7 +10,6 @@ import { getAlbum, getAlbumsSummary } from "./album/api";
 import { getArtist, getArtistsSummary, getArtistTracks } from "./artist/api";
 import { getFavoriteLists } from "./favorite/api";
 import { getGenre, getGenresSummary, getGenreTracks } from "./genre/api";
-import { getLyric, getLyricsSummary } from "./lyric/api";
 import { getPlaylist, getPlaylistsSummary } from "./playlist/api";
 import {
   getSortedTracks,
@@ -110,29 +109,6 @@ export const queries = {
     },
   },
 
-  /** Query keys used in `useQuery` for lyrics. */
-  lyrics: {
-    _def: ["lyrics"] as const,
-    get all() {
-      return queryOptions({
-        queryKey: [...this._def, "all"],
-        queryFn: getLyricsSummary,
-      });
-    },
-    detail(lyricId: string) {
-      return queryOptions({
-        queryKey: [...this._def, "detail", lyricId],
-        queryFn: () => getLyric(lyricId),
-      });
-    },
-    forTrack(trackId: string) {
-      return queryOptions({
-        queryKey: [...this._def, "forTrack", trackId],
-        queryFn: () => getTrackLyrics(trackId),
-      });
-    },
-  },
-
   /** Query keys used in `useQuery` for playlists. */
   playlists: {
     _def: ["playlists"] as const,
@@ -179,6 +155,11 @@ export const queries = {
           genres: queryOptions({
             queryKey: [...detail.queryKey, "genres"],
             queryFn: () => getTrackGenres(trackId),
+          }),
+          // eslint-disable-next-line @tanstack/query/exhaustive-deps
+          lyrics: queryOptions({
+            queryKey: [...detail.queryKey, "lyrics"],
+            queryFn: () => getTrackLyrics(trackId),
           }),
           // eslint-disable-next-line @tanstack/query/exhaustive-deps
           playlists: queryOptions({
