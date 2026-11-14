@@ -1,30 +1,32 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { toast } from "@missingcore/ui/toast";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { Portal } from "@rn-primitives/portal";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import Animated, { SlideInUp, SlideOutUp } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useBackHandler } from "~/hooks/useBackHandler";
-import { TrackMultiSelect, useTrackMultiSelectStore } from "../core/store";
+import { TrackMultiSelect, useTrackMultiSelectStore } from "./core/store";
 import {
   favoriteSelected,
   hideSelected,
   removeSelectedFromPlaylist,
-} from "../core/actions";
+  updateTracksInPlaylist,
+} from "./core/actions";
 
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
 import { ConfirmableAction } from "~/components/Modal";
+import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
-import { AddToCreatedPlaylistSheet } from "./AddToCreatedPlaylistSheet";
-import { AddToPlaylistsSheet } from "./AddToPlaylistsSheet";
-import { FavoritesPlaylistKey } from "../../constants";
+import { AddToPlaylistsSheetBase } from "../components/AddToPlaylistsSheetBase";
+import { FavoritesPlaylistKey } from "../constants";
 
 export function TrackMultiSelectListeners() {
   const navigation = useNavigation();
@@ -43,7 +45,6 @@ const ESTIMATED_MENU_HEIGHT = 100;
 export function TrackMultiSelectMenu() {
   const insets = useSafeAreaInsets();
   const isMultiSelectEnabled = useTrackMultiSelectStore((s) => s.enabled);
-  const addToCreatedPlaylistSheetRef = useSheetRef();
   const addToPlaylistsSheetRef = useSheetRef();
 
   // Close multi-select menu when a "back" action is detected. If there
@@ -60,7 +61,6 @@ export function TrackMultiSelectMenu() {
 
   return isMultiSelectEnabled ? (
     <Portal name="track-multi-select-menu-portal">
-      <AddToCreatedPlaylistSheet ref={addToCreatedPlaylistSheetRef} />
       <AddToPlaylistsSheet ref={addToPlaylistsSheetRef} />
 
       <Animated.View
@@ -77,9 +77,6 @@ export function TrackMultiSelectMenu() {
         <View className="flex-row items-center justify-between gap-4 p-4">
           <SelectionCount />
           <MultiSelectActions
-            presentAddToCreatedPlaylistSheet={() =>
-              addToCreatedPlaylistSheetRef.current?.present()
-            }
             presentAddToPlaylistsSheet={() =>
               addToPlaylistsSheetRef.current?.present()
             }
@@ -89,6 +86,28 @@ export function TrackMultiSelectMenu() {
     </Portal>
   ) : null;
 }
+
+//#region AddToPlaylist Sheet
+function AddToPlaylistsSheet(props: { ref: TrueSheetRef }) {
+  const toggleInPlaylist = useCallback(
+    async (playlistName: string, remove = false) => {
+      const status = await updateTracksInPlaylist({ playlistName, remove });
+      if (status !== "success") {
+        if (status === "error") toast.tError("err.flow.generic.title");
+        throw new Error("Skip selection handling...");
+      }
+    },
+    [],
+  );
+  return (
+    <AddToPlaylistsSheetBase
+      ref={props.ref}
+      onToggleInPlaylist={toggleInPlaylist}
+      onResolve={() => TrackMultiSelect.reset()}
+    />
+  );
+}
+//#endregion
 
 //#region Selection Count
 function SelectionCount() {
@@ -114,7 +133,6 @@ function SelectionCount() {
 
 //#region Mutli-Select Actions
 function MultiSelectActions(props: {
-  presentAddToCreatedPlaylistSheet: VoidFunction;
   presentAddToPlaylistsSheet: VoidFunction;
 }) {
   const { t } = useTranslation();
@@ -163,13 +181,6 @@ function MultiSelectActions(props: {
           onPress={props.presentAddToPlaylistsSheet}
         />
       )}
-      {!isPlaylistRoute ? (
-        <FilledIconButton
-          icon="add"
-          accessibilityLabel={t("form.create")}
-          onPress={props.presentAddToCreatedPlaylistSheet}
-        />
-      ) : null}
       <ConfirmableAction
         Component={FilledIconButton}
         componentProps={{

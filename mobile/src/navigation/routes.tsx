@@ -58,7 +58,7 @@ import { useBackHandler } from "~/hooks/useBackHandler";
 
 import { capitalize } from "~/utils/string";
 import type { Tab } from "~/stores/Preference/types";
-import { TrackMultiSelectListeners } from "~/modules/media/multiSelect/components/TrackMultiSelectListeners";
+import { TrackMultiSelectListeners } from "~/modules/media/multiSelect/TrackMultiSelectListeners";
 import { BottomActions } from "./components/BottomActions";
 import { DeferredRender } from "./components/DeferredRender";
 import { TopAppBar } from "./components/TopAppBar";

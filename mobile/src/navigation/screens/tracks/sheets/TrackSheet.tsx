@@ -3,22 +3,24 @@
 
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import type { SupportedIconName } from "~/resources/icons";
 import { Icon } from "~/resources/icons";
+import { toggleTrackInPlaylist } from "~/data/track/api";
 import {
   useHideTrack,
   useToggleTrackInPlaylist,
   useTrackFavoriteStatus,
+  useTrackPlaylists,
 } from "~/data/track/queries";
 import type { Track } from "~/data/track/types";
 import { Queue } from "~/stores/Playback/actions";
 import { useSessionStore } from "~/stores/Session/store";
 
 import { TrackArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
-import { TrackToPlaylistsSheet } from "./TrackToPlaylistsSheet";
 
 import { shareFile } from "~/lib/file-system";
 import { mutateGuard } from "~/lib/react-query";
@@ -33,10 +35,12 @@ import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
+import { AddToPlaylistsSheetBase } from "~/modules/media/components/AddToPlaylistsSheetBase";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 
-const GLOBAL_SHEET_KEY = "TrackSheet";
+const TRACK_GLOBAL_SHEET_KEY = "TrackSheet";
+const TRACK_PLAYLIST_GLOBAL_SHEET_KEY = "TrackToPlaylistsSheet";
 
 /** Displays information about a track and enables adding it to playlists. */
 export function TrackSheet() {
@@ -45,7 +49,7 @@ export function TrackSheet() {
 
   return (
     <>
-      <DetachedSheet globalKey={GLOBAL_SHEET_KEY} gap={16}>
+      <DetachedSheet globalKey={TRACK_GLOBAL_SHEET_KEY} gap={16}>
         {data !== null ? (
           <>
             <TrackIntro data={data} />
@@ -65,6 +69,27 @@ export function TrackSheet() {
     </>
   );
 }
+
+//#region AddToPlaylist Sheet
+function TrackToPlaylistsSheet({ id }: { id: string }) {
+  const { data: inList } = useTrackPlaylists(id);
+
+  const onToggleInPlaylist = useCallback(
+    async (playlistName: string) => {
+      await toggleTrackInPlaylist({ trackId: id, playlistName });
+    },
+    [id],
+  );
+
+  return (
+    <AddToPlaylistsSheetBase
+      name={TRACK_PLAYLIST_GLOBAL_SHEET_KEY}
+      initiallyInLists={inList}
+      onToggleInPlaylist={onToggleInPlaylist}
+    />
+  );
+}
+//#endregion
 
 //#region Introduction
 function TrackIntro({ data }: { data: Track }) {
@@ -89,7 +114,7 @@ function TrackIntro({ data }: { data: Track }) {
         </Marquee>
         <ArtistsLink
           artists={data.artists}
-          beforeNavigation={() => TrueSheet.dismiss(GLOBAL_SHEET_KEY)}
+          beforeNavigation={() => TrueSheet.dismiss(TRACK_GLOBAL_SHEET_KEY)}
           popStrategy={onNowPlaying ? "popScreen" : undefined}
           marqueeShadowColor="surfaceBright"
         />
@@ -240,7 +265,7 @@ function Badge(props: { icon?: SupportedIconName; children: string }) {
 /** Calls action after dismissing sheet. */
 function sheetAction(onPress: VoidFunction) {
   return () => {
-    TrueSheet.dismiss(GLOBAL_SHEET_KEY);
+    TrueSheet.dismiss(TRACK_GLOBAL_SHEET_KEY);
     onPress();
   };
 }
