@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useNavigation } from "@react-navigation/native";
+import { useQuery } from "@tanstack/react-query";
 import {
   createContext,
   memo,
@@ -16,11 +17,14 @@ import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import { usePolledProgress } from "react-native-audio-browser";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useShallow } from "zustand/react/shallow";
 
+import { getTrack } from "~/data/track/api";
 import { useTrackLyrics } from "~/data/track/queries";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { useLyricStore } from "../core/store";
 import { selectLyricProvider, toggleLyricStoreKey } from "../core/actions";
+import { fetchLyricFromProvider } from "../core/data";
 
 import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
@@ -68,7 +72,7 @@ export function LyricsOverlay(props: { size: number; trackId: string }) {
             : undefined,
         )}
       >
-        <LyricsContent trackId={props.trackId} />
+        <LyricsContent key={props.trackId} trackId={props.trackId} />
 
         {!hideBackground ? (
           <>
@@ -89,22 +93,45 @@ export function LyricsOverlay(props: { size: number; trackId: string }) {
 }
 
 function LyricsContent({ trackId }: { trackId: string }) {
-  const { isPending, data, error } = useTrackLyrics(trackId);
   const { offset, extraTop } = use(LyricOffsetContext);
+  const selectedProvider = useLyricStore(
+    useShallow((s) =>
+      s.providers.find(({ id }) => id === s.selectedProviderId),
+    ),
+  );
+
+  const cachedLyricsQuery = useTrackLyrics(trackId);
+  const providerLyricsQuery = useQuery({
+    queryKey: ["tracks", trackId, "lyrics", "provider", selectedProvider],
+    queryFn: async ({ signal }) => {
+      if (!selectedProvider)
+        throw new Error("Selected lyric provider is unavailable.");
+      const track = await getTrack(trackId);
+      return fetchLyricFromProvider(track, selectedProvider, signal);
+    },
+    enabled: !!selectedProvider,
+    retry: false,
+  });
+
+  const providerLyrics = providerLyricsQuery.data?.trim();
+  const data = providerLyrics || cachedLyricsQuery.data?.lyricText || null;
+  const isPending =
+    !data &&
+    (selectedProvider
+      ? providerLyricsQuery.isPending || cachedLyricsQuery.isPending
+      : cachedLyricsQuery.isPending);
 
   const formattedLyrics = useMemo(() => {
-    if (!data?.lyricText) return;
-    return parseLyrics(data.lyricText);
-  }, [data?.lyricText]);
+    if (!data) return;
+    return parseLyrics(data);
+  }, [data]);
 
   if (isPending) return null;
-  else if (error || !data) {
-    return <LyricsNotFound key={trackId} trackId={trackId} />;
-  }
+  else if (!data) return <LyricsNotFound trackId={trackId} />;
   return (
     <>
       {Array.isArray(formattedLyrics) ? (
-        <SynchronizedLyrics key={trackId} parsedLines={formattedLyrics} />
+        <SynchronizedLyrics parsedLines={formattedLyrics} />
       ) : (
         <FlatList
           data={formattedLyrics?.split("\n")}
@@ -120,7 +147,7 @@ function LyricsContent({ trackId }: { trackId: string }) {
           contentContainerClassName="px-4"
         />
       )}
-      <ExtraActions trackId={data.trackId} />
+      <ExtraActions trackId={trackId} />
     </>
   );
 }
