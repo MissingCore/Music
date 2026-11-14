@@ -24,7 +24,6 @@ import { selectLyricProvider, toggleLyricStoreKey } from "../core/actions";
 
 import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
-import { isString } from "~/utils/validation";
 import type { FlatListProps, FlatListRef } from "~/components/Base/List";
 import { FlatList, useFlatListRef } from "~/components/Base/List";
 import { Pressable } from "~/components/Base/Pressable";
@@ -40,7 +39,6 @@ import { Em, StyledText, TEm } from "~/components/Typography/StyledText";
 import { useIsAtmosphereActive } from "~/modules/customization/atmosphere/store";
 import { useTheme } from "~/modules/customization/theme/hooks";
 import { autoDiscoverLyrics } from "../helpers/autoDiscoverLyrics";
-import { removeSynchronizedLyricsJunk } from "../helpers/cleanUpLyricsJunk";
 import { parseLyrics } from "../helpers/parser";
 import type { SynchronizedLine } from "../helpers/parser/utils";
 
@@ -98,22 +96,6 @@ function LyricsContent({ trackId }: { trackId: string }) {
     if (!data?.lyricText) return;
     return parseLyrics(data.lyricText);
   }, [data?.lyricText]);
-
-  //#region [Deprecated] Embedded Lyrics Cleanup
-  const cleanupInProgress = useRef<Set<string>>(new Set());
-
-  //! TODO: Remove in `v4.0.0`.
-  //! Temporary "hack" to clean up cached lyrics with "junk" in front, which
-  //! was fixed in `v3.3.0`.
-  useEffect(() => {
-    if (!isString(formattedLyrics) || !data?.trackId) return;
-    if (cleanupInProgress.current.has(data.trackId)) return;
-    cleanupInProgress.current.add(data.trackId);
-    removeSynchronizedLyricsJunk(data.trackId)
-      .catch((err) => console.log(`[LRC_CLEANUP_ERR]`, err))
-      .finally(() => cleanupInProgress.current.delete(data.trackId));
-  }, [trackId, data?.trackId, formattedLyrics]);
-  //#endregion
 
   if (isPending) return null;
   else if (error || !data) {
