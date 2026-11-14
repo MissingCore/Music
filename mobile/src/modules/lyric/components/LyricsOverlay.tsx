@@ -20,7 +20,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTrackLyrics } from "~/data/track/queries";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { useLyricStore } from "../core/store";
-import { toggleLyricStoreKey } from "../core/actions";
+import { selectLyricProvider, toggleLyricStoreKey } from "../core/actions";
 
 import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
@@ -30,8 +30,13 @@ import { FlatList, useFlatListRef } from "~/components/Base/List";
 import { Pressable } from "~/components/Base/Pressable";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
+import { RadioField } from "~/components/Form/Radio";
 import { TopDownGradient } from "~/components/Gradient";
-import { Em, TEm } from "~/components/Typography/StyledText";
+import { DetachedSheet } from "~/components/Sheet";
+import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
+import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
+import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import { Em, StyledText, TEm } from "~/components/Typography/StyledText";
 import { useIsAtmosphereActive } from "~/modules/customization/atmosphere/store";
 import { useTheme } from "~/modules/customization/theme/hooks";
 import { autoDiscoverLyrics } from "../helpers/autoDiscoverLyrics";
@@ -87,13 +92,15 @@ export function LyricsOverlay(props: { size: number; trackId: string }) {
 
 function LyricsContent({ trackId }: { trackId: string }) {
   const { isPending, data, error } = useTrackLyrics(trackId);
-  const cleanupInProgress = useRef<Set<string>>(new Set());
   const { offset, extraTop } = use(LyricOffsetContext);
 
   const formattedLyrics = useMemo(() => {
     if (!data?.lyricText) return;
     return parseLyrics(data.lyricText);
   }, [data?.lyricText]);
+
+  //#region [Deprecated] Embedded Lyrics Cleanup
+  const cleanupInProgress = useRef<Set<string>>(new Set());
 
   //! TODO: Remove in `v4.0.0`.
   //! Temporary "hack" to clean up cached lyrics with "junk" in front, which
@@ -106,6 +113,7 @@ function LyricsContent({ trackId }: { trackId: string }) {
       .catch((err) => console.log(`[LRC_CLEANUP_ERR]`, err))
       .finally(() => cleanupInProgress.current.delete(data.trackId));
   }, [trackId, data?.trackId, formattedLyrics]);
+  //#endregion
 
   if (isPending) return null;
   else if (error || !data) {
@@ -139,24 +147,74 @@ function ExtraActions({ trackId }: { trackId?: string }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const expandLyrics = useLyricStore((s) => s.fullscreen);
+  const showLyricsSourceSheet = useLyricStore((s) => s.providers.length > 0);
+  const sourceSheetRef = useSheetRef();
 
   return (
-    <View className="absolute right-4 bottom-0 z-100 flex-row gap-2">
-      <IconButton
-        icon={expandLyrics ? "fullscreen-exit" : "fullscreen"}
-        accessibilityLabel={t(`term.${expandLyrics ? "minimize" : "expand"}`)}
-        onPress={toggleLyricStoreKey("fullscreen")}
-        size="xs"
-      />
-      {trackId ? (
+    <>
+      <View className="absolute right-4 bottom-0 z-100 flex-row gap-2">
         <IconButton
-          icon="edit"
-          accessibilityLabel={t("form.edit")}
-          onPress={() => navigation.navigate("LyricForm", { trackId })}
+          icon={expandLyrics ? "fullscreen-exit" : "fullscreen"}
+          accessibilityLabel={t(`term.${expandLyrics ? "minimize" : "expand"}`)}
+          onPress={toggleLyricStoreKey("fullscreen")}
           size="xs"
         />
-      ) : null}
-    </View>
+        {trackId ? (
+          <IconButton
+            icon="edit"
+            accessibilityLabel={t("form.edit")}
+            onPress={() => navigation.navigate("LyricForm", { trackId })}
+            size="xs"
+          />
+        ) : null}
+        {showLyricsSourceSheet ? (
+          <IconButton
+            icon="conversion-path"
+            accessibilityLabel={t("feat.lyrics.extra.source")}
+            onPress={() => sourceSheetRef.current?.present()}
+            size="xs"
+          />
+        ) : null}
+      </View>
+      <LyricsSourceSheet ref={sourceSheetRef} />
+    </>
+  );
+}
+
+/** Needs to be rendered outside of the `View` due to press event issues. */
+function LyricsSourceSheet(props: { ref: TrueSheetRef }) {
+  const { t } = useTranslation();
+  const providers = useLyricStore((s) => s.providers);
+  const selectedProviderId = useLyricStore((s) => s.selectedProviderId);
+  const sheetListHandlers = useEnableSheetScroll();
+
+  const options: Array<{ id: string | null; name: string }> = [
+    { id: null, name: t("feat.lyrics.extra.cached") },
+    ...providers.map(({ id, name }) => ({ id, name })),
+  ];
+
+  if (providers.length === 0) return null;
+  return (
+    <DetachedSheet ref={props.ref} titleKey="feat.lyrics.extra.source">
+      <FlatList
+        accessibilityRole="radiogroup"
+        data={options}
+        keyExtractor={({ id }) => id ?? "cached"}
+        renderItem={({ item }) => (
+          <RadioField
+            selected={selectedProviderId === item.id}
+            onSelect={() => {
+              selectLyricProvider(item.id);
+              props.ref.current?.dismiss();
+            }}
+          >
+            <StyledText>{item.name}</StyledText>
+          </RadioField>
+        )}
+        {...sheetListHandlers}
+        contentContainerClassName="gap-2 pb-4"
+      />
+    </DetachedSheet>
   );
 }
 

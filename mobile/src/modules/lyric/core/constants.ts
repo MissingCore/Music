@@ -38,6 +38,8 @@ export interface LyricStore {
   checkEmbedded: boolean;
   /** List of online providers we can get lyrics from. */
   providers: LyricProvider[];
+  /** The online provider currently selected for displaying lyrics. */
+  selectedProviderId: string | null;
 
   /** If we should adjust the "Now Playing" screen layout to fit more lyrics. */
   fullscreen: boolean;
@@ -47,5 +49,6 @@ export const PersistedFields: string[] = [
   "visible",
   "checkEmbedded",
   "providers",
+  "selectedProviderId",
 ] satisfies Array<keyof LyricStore>;
 //#endregion

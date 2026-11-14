@@ -12,7 +12,9 @@ For the "automatic" flow, we go through the following methods:
     - `.txt` files do not work due to security reasons (would be bad if an app can arbitrarily read `.txt` files on your device).
 3.  Through **user-provided** lyrics providers.
 
-If you see on the "Now Playing" screen, that the "Manage Lyrics" button is pressable, then it means that no lyrics were found via the "automatic" flow.
+If you allows lyrics to be displayed and see a "Manage Lyrics" button, it means that no lyrics were found via the "automatic" flow.
+
+On the "Now Playing" screen, when you have defined lyric providers, you can select a specific provider to display lyrics from. If no lyrics are found, the cached lyrics are displayed instead.
 
 ## [🧪 Experimental] Lyrics Providers
 
