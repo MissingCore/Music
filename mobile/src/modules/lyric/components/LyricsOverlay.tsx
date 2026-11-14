@@ -115,19 +115,17 @@ function LyricsContent({ trackId }: { trackId: string }) {
 
   const providerLyrics = providerLyricsQuery.data?.trim();
   const data = providerLyrics || cachedLyricsQuery.data?.lyricText || null;
-  const isPending =
-    !data &&
-    (selectedProvider
-      ? providerLyricsQuery.isPending || cachedLyricsQuery.isPending
-      : cachedLyricsQuery.isPending);
 
   const formattedLyrics = useMemo(() => {
     if (!data) return;
     return parseLyrics(data);
   }, [data]);
 
-  if (isPending) return null;
-  else if (!data) return <LyricsNotFound trackId={trackId} />;
+  if (!data) {
+    if (cachedLyricsQuery.isPending) return null;
+    return <LyricsNotFound trackId={trackId} />;
+  }
+
   return (
     <>
       {Array.isArray(formattedLyrics) ? (
@@ -204,7 +202,11 @@ function LyricsSourceSheet(props: { ref: TrueSheetRef }) {
 
   if (providers.length === 0) return null;
   return (
-    <DetachedSheet ref={props.ref} titleKey="feat.lyrics.extra.source">
+    <DetachedSheet
+      ref={props.ref}
+      titleKey="feat.lyrics.extra.source"
+      contentContainerClassName="pb-0"
+    >
       <FlatList
         accessibilityRole="radiogroup"
         data={options}
