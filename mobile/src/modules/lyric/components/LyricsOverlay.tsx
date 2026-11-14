@@ -17,12 +17,10 @@ import { Text, View } from "react-native";
 import { usePolledProgress } from "react-native-audio-browser";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { getTrack } from "~/data/track/api";
 import { useTrackLyrics } from "~/data/track/queries";
 import { PlaybackControls } from "~/stores/Playback/actions";
-import { lyricStore, useLyricStore } from "../core/store";
+import { useLyricStore } from "../core/store";
 import { selectLyricProvider, toggleLyricStoreKey } from "../core/actions";
-import { fetchLyricFromProvider } from "../core/data";
 
 import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
@@ -93,15 +91,13 @@ export function LyricsOverlay(props: { size: number; trackId: string }) {
 }
 
 function LyricsContent({ trackId }: { trackId: string }) {
-  const { isPending, data } = useTrackLyrics(trackId);
-  const providerLyrics = useSpecifiedProviderLyrics(trackId);
+  const { isPending, data, error } = useTrackLyrics(trackId);
   const { offset, extraTop } = use(LyricOffsetContext);
 
-  const lyricText = providerLyrics || data?.lyricText;
   const formattedLyrics = useMemo(() => {
-    if (!lyricText) return;
-    return parseLyrics(lyricText);
-  }, [lyricText]);
+    if (!data?.lyricText) return;
+    return parseLyrics(data.lyricText);
+  }, [data?.lyricText]);
 
   //#region [Deprecated] Embedded Lyrics Cleanup
   const cleanupInProgress = useRef<Set<string>>(new Set());
@@ -120,7 +116,7 @@ function LyricsContent({ trackId }: { trackId: string }) {
   //#endregion
 
   if (isPending) return null;
-  else if (!lyricText) {
+  else if (error || !data) {
     return <LyricsNotFound key={trackId} trackId={trackId} />;
   }
   return (
@@ -142,7 +138,7 @@ function LyricsContent({ trackId }: { trackId: string }) {
           contentContainerClassName="px-4"
         />
       )}
-      <ExtraActions trackId={trackId} />
+      <ExtraActions trackId={data.trackId} />
     </>
   );
 }
@@ -185,54 +181,6 @@ function ExtraActions({ trackId }: { trackId?: string }) {
   );
 }
 
-//#region Specific Provider Lyrics
-function useSpecifiedProviderLyrics(trackId: string) {
-  const prevTrackId = useLyricStore((s) => s.lyricsCachedFor);
-  const cachedProviderLyrics = useLyricStore((s) => s.cachedProviderLyrics);
-  const selectedProviderId = useLyricStore((s) => s.selectedProviderId);
-
-  if (trackId !== prevTrackId) {
-    lyricStore.setState({ lyricsCachedFor: trackId, cachedProviderLyrics: {} });
-  }
-
-  useEffect(() => {
-    if (
-      !selectedProviderId ||
-      cachedProviderLyrics[selectedProviderId] !== undefined
-    )
-      return;
-
-    const controller = new AbortController();
-
-    (async function (signal: AbortSignal) {
-      const selectedProvider = lyricStore
-        .getState()
-        .providers.find(({ id }) => selectedProviderId === id);
-      if (!selectedProvider) return;
-
-      try {
-        const track = await getTrack(trackId);
-        const providerLyrics = await fetchLyricFromProvider(
-          track,
-          selectedProvider,
-          signal,
-        );
-        if (signal.aborted) return;
-        lyricStore.setState((prev) => ({
-          cachedProviderLyrics: {
-            ...prev.cachedProviderLyrics,
-            [selectedProviderId]: providerLyrics?.trim() ?? null,
-          },
-        }));
-      } catch {}
-    })(controller.signal);
-
-    return () => controller.abort();
-  }, [trackId, cachedProviderLyrics, selectedProviderId]);
-
-  return selectedProviderId ? cachedProviderLyrics[selectedProviderId] : null;
-}
-
 /** Needs to be rendered outside of the `View` due to press event issues. */
 function LyricsSourceSheet(props: { ref: TrueSheetRef }) {
   const { t } = useTranslation();
@@ -269,7 +217,6 @@ function LyricsSourceSheet(props: { ref: TrueSheetRef }) {
     </DetachedSheet>
   );
 }
-//#endregion
 
 //#region Not Found
 function LyricsNotFound({ trackId }: { trackId: string }) {

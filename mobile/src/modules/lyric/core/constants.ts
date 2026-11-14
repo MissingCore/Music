@@ -1,8 +1,6 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import type { Maybe } from "~/utils/types";
-
 //#region Lyric Provider Form
 export const LyricProviderEndpointPlaceholders = [
   "%name%",
@@ -42,11 +40,6 @@ export interface LyricStore {
   providers: LyricProvider[];
   /** The online provider currently selected for displaying lyrics. */
   selectedProviderId: string | null;
-
-  /** The id of the track `cachedProviderLyrics` is for. */
-  lyricsCachedFor: string | null;
-  /** Cached lyrics for provider for current track. */
-  cachedProviderLyrics: Record<string, Maybe<string>>;
 
   /** If we should adjust the "Now Playing" screen layout to fit more lyrics. */
   fullscreen: boolean;
