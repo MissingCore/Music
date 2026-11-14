@@ -18,6 +18,7 @@ export const lyricStore = createPersistedStore<LyricStore>(
     checkEmbedded: true,
     providers: [],
     selectedProviderId: null,
+    cachedProviderLyrics: {},
 
     fullscreen: false,
   }),

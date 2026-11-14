@@ -18,9 +18,11 @@ import { usePolledProgress } from "react-native-audio-browser";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useTrackLyrics } from "~/data/track/queries";
+import { playbackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
-import { useLyricStore } from "../core/store";
+import { lyricStore, useLyricStore } from "../core/store";
 import { selectLyricProvider, toggleLyricStoreKey } from "../core/actions";
+import { fetchLyricFromProvider } from "../core/data";
 
 import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
@@ -92,12 +94,14 @@ export function LyricsOverlay(props: { size: number; trackId: string }) {
 
 function LyricsContent({ trackId }: { trackId: string }) {
   const { isPending, data, error } = useTrackLyrics(trackId);
+  const providerLyrics = useSpecifiedProviderLyrics(trackId);
   const { offset, extraTop } = use(LyricOffsetContext);
 
+  const lyricText = providerLyrics || data?.lyricText;
   const formattedLyrics = useMemo(() => {
-    if (!data?.lyricText) return;
-    return parseLyrics(data.lyricText);
-  }, [data?.lyricText]);
+    if (!lyricText) return;
+    return parseLyrics(lyricText);
+  }, [lyricText]);
 
   //#region [Deprecated] Embedded Lyrics Cleanup
   const cleanupInProgress = useRef<Set<string>>(new Set());
@@ -116,7 +120,7 @@ function LyricsContent({ trackId }: { trackId: string }) {
   //#endregion
 
   if (isPending) return null;
-  else if (error || !data) {
+  else if (error || !lyricText) {
     return <LyricsNotFound key={trackId} trackId={trackId} />;
   }
   return (
@@ -138,7 +142,7 @@ function LyricsContent({ trackId }: { trackId: string }) {
           contentContainerClassName="px-4"
         />
       )}
-      <ExtraActions trackId={data.trackId} />
+      <ExtraActions trackId={trackId} />
     </>
   );
 }
@@ -181,6 +185,59 @@ function ExtraActions({ trackId }: { trackId?: string }) {
   );
 }
 
+//#region Specific Provider Lyrics
+function useSpecifiedProviderLyrics(trackId: string) {
+  const cachedProviderLyrics = useLyricStore((s) => s.cachedProviderLyrics);
+  const selectedProviderId = useLyricStore((s) => s.selectedProviderId);
+  const prevTrackId = useRef("");
+
+  //! FIXME: We can remove this once we can add a `key` prop to the rendered
+  //! `LyricsContent` component (in the next major).
+  if (trackId !== prevTrackId.current) {
+    prevTrackId.current = trackId;
+    lyricStore.setState({ cachedProviderLyrics: {} });
+  }
+
+  useEffect(() => {
+    const currentTrack = playbackStore.getState().activeTrack;
+    const selectedProvider = lyricStore
+      .getState()
+      .providers.find(({ id }) => selectedProviderId === id);
+
+    if (
+      !currentTrack ||
+      !selectedProvider ||
+      !selectedProviderId ||
+      cachedProviderLyrics[selectedProviderId] !== undefined
+    )
+      return;
+
+    const controller = new AbortController();
+
+    fetchLyricFromProvider(currentTrack, selectedProvider, controller.signal)
+      .then((result) =>
+        lyricStore.setState((prev) => ({
+          cachedProviderLyrics: {
+            ...prev.cachedProviderLyrics,
+            [selectedProviderId]: result?.trim() || null,
+          },
+        })),
+      )
+      .catch(() =>
+        lyricStore.setState((prev) => ({
+          cachedProviderLyrics: {
+            ...prev.cachedProviderLyrics,
+            [selectedProviderId]: null,
+          },
+        })),
+      );
+
+    return () => controller.abort();
+  }, [cachedProviderLyrics, selectedProviderId]);
+
+  return selectedProviderId ? cachedProviderLyrics[selectedProviderId] : null;
+}
+
 /** Needs to be rendered outside of the `View` due to press event issues. */
 function LyricsSourceSheet(props: { ref: TrueSheetRef }) {
   const { t } = useTranslation();
@@ -217,6 +274,7 @@ function LyricsSourceSheet(props: { ref: TrueSheetRef }) {
     </DetachedSheet>
   );
 }
+//#endregion
 
 //#region Not Found
 function LyricsNotFound({ trackId }: { trackId: string }) {
