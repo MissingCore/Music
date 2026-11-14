@@ -42,6 +42,9 @@ export interface LyricStore {
   providers: LyricProvider[];
   /** The online provider currently selected for displaying lyrics. */
   selectedProviderId: string | null;
+
+  /** The id of the track `cachedProviderLyrics` is for. */
+  lyricsCachedFor: string | null;
   /** Cached lyrics for provider for current track. */
   cachedProviderLyrics: Record<string, Maybe<string>>;
 
