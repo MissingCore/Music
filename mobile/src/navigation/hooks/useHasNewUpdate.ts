@@ -19,19 +19,22 @@ export function useHasNewUpdate(): UpdateResult {
 
   if (isPending || !!error) return { hasNewUpdate: false, release: null };
 
-  //? Determine if we should display the latest release.
-  const prefersLatestRelease = APP_VERSION.includes("-rc") || rcNotification;
-  //? Additional edge-case for Google Play users if the latest release isn't
-  //? available on the "Open Testing" channel. In that case, we should display
-  //? the latest stable release.
-  const latestReleaseIsHidden =
-    DISTRIBUTION === "google-play" &&
-    data.latestRelease.flags?.includes("hide-google-play");
-
-  const usedRelease =
-    prefersLatestRelease && !latestReleaseIsHidden
-      ? data.latestRelease
-      : data.latestStable;
+  let usedRelease = data.latestStable;
+  if (APP_VERSION.includes("-rc") || rcNotification) {
+    if (
+      DISTRIBUTION === "apk" ||
+      !data.latestRelease.flags?.includes("hide-google-play")
+    ) {
+      //? Display latest release if we've installed the app via GitHub or
+      //? the release is available on the "Open Testing" track on Google Play
+      //? (via the lack of the `hide-google-play`) flag.
+      usedRelease = data.latestRelease;
+    } else if (isInstalledAppVersionNewer(data.latestStable.version)) {
+      //? The installed version is newer than the latest stable, so don't
+      //? display any release notes.
+      return { hasNewUpdate: false, release: null };
+    }
+  }
 
   //? Introduced in `v3.6.0`, we may include a flag in the release notes
   //? to hide the release notification for Google Play releases as we wait
@@ -115,5 +118,25 @@ function formatGitHubRelease({
       )
       .filter((val) => val !== undefined),
   };
+}
+
+function getSemVerNumber(version: string) {
+  return version.replace(/^v/, "").split(/[.-]/).slice(0, 3).map(Number);
+}
+
+/**
+ * See if the installed app is newer than the specified version based on
+ * its major, minor, and patch versions.
+ */
+function isInstalledAppVersionNewer(version: string): boolean {
+  const appVersionParts = getSemVerNumber(APP_VERSION);
+  const versionParts = getSemVerNumber(version);
+
+  const firstDifference = appVersionParts.findIndex(
+    (part, index) => part !== versionParts[index],
+  );
+  if (firstDifference === -1) return false; //? Versions are the "same".
+
+  return appVersionParts[firstDifference]! > versionParts[firstDifference]!;
 }
 //#endregion
