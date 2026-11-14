@@ -17,9 +17,9 @@ import Animated, {
 } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 
+import { hexToHSV, hsvToHex, withAlpha } from "~/utils/color";
 import type { HexColor } from "../core/constants";
 import { normalizeHexColor } from "../core/utils";
-import { hexToHSV, hsvToHex } from "../helpers/colorConverter";
 
 const PANEL_HEIGHT = 200;
 const HANDLE_SIZE = 20;
@@ -45,12 +45,12 @@ export function ColorPicker({
   const hue = useSharedValue(0);
   const saturation = useSharedValue(0);
   const brightness = useSharedValue(0);
+  const normalizedHexColor = normalizeHexColor(value);
 
   const contentWidth = useSharedValue(0);
 
   // Synchronize external color with internal.
   useEffect(() => {
-    const normalizedHexColor = normalizeHexColor(value);
     if (
       !normalizedHexColor ||
       //? Prevent "jumping" due to Hex to HSV conversion potentially not resulting in the same value.
@@ -63,7 +63,7 @@ export function ColorPicker({
     hue.set(asHSV.h);
     saturation.set(asHSV.s);
     brightness.set(asHSV.v);
-  }, [hue, saturation, brightness, value]);
+  }, [hue, saturation, brightness, normalizedHexColor]);
 
   const emitCurrentColor = useCallback(() => {
     onComplete(
@@ -148,13 +148,13 @@ export function ColorPicker({
           className="relative overflow-hidden rounded-md"
         >
           <LinearGradient
-            colors={["#FFFFFFFF", "#FFFFFF00"]}
+            colors={["#FFF", withAlpha("#FFF", 0)]}
             start={[0, 0]}
             end={[1, 0]}
             className="absolute inset-0"
           />
           <LinearGradient
-            colors={["#000000FF", "#00000000"]}
+            colors={["#000", withAlpha("#000", 0)]}
             start={[0, 1]}
             end={[0, 0]}
             className="absolute inset-0"

@@ -18,6 +18,7 @@ import { useInForeground } from "~/stores/ListenerState";
 
 import { OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
+import { withAlpha } from "~/utils/color";
 import { useIsAtmosphereActive } from "~/modules/customization/atmosphere/store";
 import type { ColorRole } from "~/modules/customization/theme/core/constants";
 import { useColor } from "~/modules/customization/theme/hooks";
@@ -43,9 +44,8 @@ export function Marquee({
   const inForeground = useInForeground();
   const disableGradient = useIsAtmosphereActive();
   const shadowColor = useColor(color, "surface");
-  // This will enable support of hexadecimal colors with opacity.
-  const startColor = `${shadowColor}00`;
-  const endColor = `${shadowColor}E6`;
+  const startColor = withAlpha(shadowColor, 0);
+  const endColor = withAlpha(shadowColor, 0.9);
 
   const offset = useSharedValue(0);
   const [containerWidth, setContainerWidth] = useState(-1);

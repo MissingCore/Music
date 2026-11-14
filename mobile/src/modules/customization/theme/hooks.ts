@@ -7,9 +7,9 @@ import { useCSSVariable } from "uniwind";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
+import { isHexColor } from "~/utils/color";
 import type { AppColor, ColorRole, HexColor } from "./core/constants";
 import { Themes } from "./core/constants";
-import { isHexColor } from "./utils";
 
 /** Returns if we're using light or dark scheme. */
 export function useCurrentScheme() {

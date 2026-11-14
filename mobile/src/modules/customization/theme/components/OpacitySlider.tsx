@@ -9,6 +9,7 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 
+import { alphaToHex, hexToAlpha, withAlpha } from "~/utils/color";
 import { CachedSlider } from "~/components/Form/Slider";
 import type { HexColor } from "../core/constants";
 
@@ -43,7 +44,7 @@ export function OpacitySlider(props: {
       className="relative overflow-hidden rounded-full"
     >
       <LinearGradient
-        colors={[`${props.color}00`, props.color]}
+        colors={[withAlpha(props.color, 0), props.color]}
         start={[0, 0]}
         end={[1, 0]}
         className="insets-0 absolute size-full"
@@ -73,18 +74,4 @@ const SliderConfig = {
   transparent: true,
 };
 
-/** Returns a value between 0 (0x00) & 1 (0xFF), rounded to 2 decimal places. */
-export function hexToAlpha(hex: string) {
-  if (hex.length !== 2) return 1;
-  return +(parseInt(hex, 16) / 255).toFixed(2);
-}
-
-/** Returns a value between 0x00 (0) & 0xFF (1). */
-function alphaToHex(alpha: number) {
-  if (alpha < 0 || alpha > 1) return "FF";
-  return Math.round(alpha * 255) // Round to prevent hexadecimal fractions
-    .toString(16)
-    .padStart(2, "0")
-    .toUpperCase();
-}
 //#endregion

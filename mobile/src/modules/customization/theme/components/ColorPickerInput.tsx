@@ -6,13 +6,14 @@ import { View } from "react-native";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
+import { hexToAlpha } from "~/utils/color";
 import { Ripple } from "~/components/Base/Pressable";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import { Modal } from "~/components/Modal";
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import { ColorPicker } from "./ColorPicker";
-import { OpacitySlider, hexToAlpha } from "./OpacitySlider";
+import { OpacitySlider } from "./OpacitySlider";
 import type { HexColor } from "../core/constants";
 import { normalizeHexColor } from "../core/utils";
 

@@ -14,6 +14,7 @@ import { ListLayout } from "~/navigation/layouts/ListLayout";
 
 import { FontSize } from "~/constants/Styles";
 import { Links, openLink } from "~/lib/web-browser";
+import { withAlpha } from "~/utils/color";
 import { SegmentedList } from "~/components/List/Segmented";
 import { AccentText } from "~/components/Typography/AccentText";
 import { getFont } from "~/modules/customization/font/utils";
@@ -36,8 +37,7 @@ export default function AppUpdate() {
 
   if (!release) return null;
 
-  // Light: 5% Opacity; Dark: 15% Opacity
-  const codeBg = `${onSurface}${scheme === "dark" ? "26" : "0D"}`;
+  const codeBg = withAlpha(onSurface, scheme === "dark" ? 0.15 : 0.05);
 
   return (
     <ListLayout>
@@ -65,7 +65,7 @@ export default function AppUpdate() {
             heading2Container: { paddingBottom: 0, borderBottomWidth: 0 },
             link: { color: onSurfaceVariant, textDecorationLine: "underline" },
             codeBlock: {
-              backgroundColor: `${onSurface}0D`, // 5% Opacity
+              backgroundColor: withAlpha(onSurface, 0.05),
               borderRadius: 12,
             },
             hr: { backgroundColor: outlineVariant },
