@@ -5,12 +5,15 @@ import { createContext, use, useMemo } from "react";
 
 import type {
   AppColor,
+  BundledFont,
   ColorRole,
+  Font,
   HexColor,
   ThemeColors,
 } from "../constants/theme";
-import { THEMES } from "../constants/theme";
+import { FONT_FAMILY, THEMES } from "../constants/theme";
 import { isHexColor, withAlpha } from "../utils/color";
+import { getFileName, removeFileExtension, toLowerCase } from "../utils/string";
 
 const ThemeContext = createContext<ThemeColors>(THEMES.system.colors);
 
@@ -40,7 +43,35 @@ export function useTheme() {
  * Returns the specified hex color from either the provided hex color or
  * color role. Defaults to `text`.
  */
-export function useColor(color: AppColor = "text") {
+export function useColor(color: AppColor) {
   return isHexColor(color) ? color : use(ThemeContext)[color];
+}
+//#endregion
+
+//#region Helpers
+export function getFont(
+  font: Font,
+  options?: { bold?: boolean; headline?: boolean },
+) {
+  let usedFont = font as BundledFont;
+  if (typeof font === "object") {
+    const fileName = getFileName(font.uri);
+    if (fileName) return removeFileExtension(fileName);
+    usedFont = options?.headline ? "NType" : "Geist";
+  }
+
+  const fontCode =
+    usedFont === "Geist Mono" ? "geistMono" : toLowerCase(usedFont);
+
+  if ((options?.headline || options?.bold) && font === "NType") {
+    return FONT_FAMILY.ntype;
+  } else if (
+    options?.bold &&
+    (fontCode === "geist" || fontCode === "geistMono")
+  ) {
+    return FONT_FAMILY[`${fontCode}Medium`];
+  }
+
+  return FONT_FAMILY[fontCode];
 }
 //#endregion
