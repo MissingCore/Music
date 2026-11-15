@@ -4,7 +4,6 @@
 import { toast } from "@missingcore/ui/toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { queries as q } from "~/data/keyStore";
@@ -28,7 +27,7 @@ export default function ModifyPlaylist({
     params: { id },
   },
 }: Props) {
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const navigation = useNavigation("ModifyPlaylist");
   const queryClient = useQueryClient();
   const playlistQuery = usePlaylist(id);
   const preloadFormDataQuery = usePreloadReferenceData();
@@ -81,8 +80,7 @@ export default function ModifyPlaylist({
                   });
                   queryClient.invalidateQueries({ queryKey: ["search"] });
 
-                  navigation.goBack();
-                  navigation.goBack();
+                  navigation.pop(2);
                 } catch {
                   toast.tError("err.flow.generic.title");
                 }
@@ -120,11 +118,9 @@ export default function ModifyPlaylist({
           });
           queryClient.invalidateQueries({ queryKey: ["search"] });
 
-          navigation.goBack();
           // If playlist name changed, see the new playlist page.
-          if (newName !== undefined) {
-            navigation.replace("Playlist", { id: newName });
-          }
+          if (newName === undefined) navigation.goBack();
+          else navigation.popTo("Playlist", { id: newName });
         } catch {
           toast.tError("err.flow.generic.title");
         }

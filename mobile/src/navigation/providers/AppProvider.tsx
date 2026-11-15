@@ -15,6 +15,7 @@ import {
 } from "react-native-safe-area-context";
 import { Uniwind, withUniwind } from "uniwind";
 
+// @ts-expect-error - Can ignore `Cannot find module or type declarations for side-effect import`.
 import "../../global.css";
 import { ListenerStateStoreProvider } from "~/stores/ListenerState";
 import { usePreferenceStore } from "~/stores/Preference/store";

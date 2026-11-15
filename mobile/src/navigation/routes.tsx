@@ -213,7 +213,7 @@ function RootScreens(_: RootScreensProps) {
           // @ts-expect-error - Typing for screens should be compatible.
           component={RootScreenComponents[tabKey]}
           initialParams={tabKey === "folder" ? { path: undefined } : {}}
-          options={{ lazy: true }}
+          options={{ inactiveBehavior: "none", lazy: true }}
         />
       ))}
     </MaterialTopTab.Navigator>

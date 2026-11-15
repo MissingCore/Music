@@ -103,7 +103,7 @@ function VinylLegacy(props: ArtworkProps) {
   const vinylStyle = useAnimatedStyle(() => {
     if (alternativeLayout)
       return { transform: [{ translateX: -coverPosition.get() / 2 }] };
-    return {};
+    return { transform: [] };
   });
 
   return (

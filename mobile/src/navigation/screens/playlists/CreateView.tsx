@@ -3,7 +3,6 @@
 
 import { toast } from "@missingcore/ui/toast";
 import { useNavigation } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { queries as q } from "~/data/keyStore";
@@ -19,7 +18,7 @@ import {
 } from "./components/ModifyViewBase";
 
 export default function CreatePlaylist() {
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const navigation = useNavigation("CreatePlaylist");
   const queryClient = useQueryClient();
   const { isPending, error, data } = usePreloadReferenceData();
 

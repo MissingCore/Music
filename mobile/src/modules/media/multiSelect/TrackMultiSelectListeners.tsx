@@ -4,7 +4,7 @@
 import { toast } from "@missingcore/ui/toast";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { Portal } from "@rn-primitives/portal";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import Animated, { SlideInUp, SlideOutUp } from "react-native-reanimated";
@@ -136,19 +136,13 @@ function MultiSelectActions(props: {
   presentAddToPlaylistsSheet: VoidFunction;
 }) {
   const { t } = useTranslation();
-  const availableRoutes = useNavigationState((s) => s.routes);
+  const mostRecentRoute = useNavigationState((s) => s.routes[s.index]);
   const amountSelected = useTrackMultiSelectStore((s) => s.selected.size);
   const isAllFavorited = useTrackMultiSelectStore((s) => s.isAllFavorited);
 
-  const isPlaylistRoute = useMemo(
-    () => availableRoutes.at(-1)?.key.startsWith("Playlist-"),
-    [availableRoutes],
-  );
-  const playlistRouteId = useMemo(
-    // @ts-expect-error - Should be fine.
-    () => String(availableRoutes.at(-1)?.params?.id),
-    [availableRoutes],
-  );
+  const isPlaylistRoute = mostRecentRoute?.key.startsWith("Playlist-");
+  // @ts-expect-error - Should be fine.
+  const playlistRouteId = String(mostRecentRoute?.params?.id);
   const isFavoriteRoute =
     isPlaylistRoute && playlistRouteId === FavoritesPlaylistKey;
 

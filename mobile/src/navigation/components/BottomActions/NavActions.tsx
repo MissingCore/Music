@@ -88,14 +88,10 @@ export function Navbar() {
     [displayedTabs, homeTab],
   );
 
-  const homeScreensRoute = useNavigationState((s) =>
-    s.routes.find((r) => r.name === "HomeScreens"),
+  const homeScreensRouteIndex = useNavigationState(
+    (s) => s.routes.find((r) => r.name === "HomeScreens")?.state?.index,
   );
-  const activeIndex = useMemo(() => {
-    if (typeof homeScreensRoute?.state?.index !== "number")
-      return initialTabIndex;
-    return homeScreensRoute.state.index ?? initialTabIndex;
-  }, [initialTabIndex, homeScreensRoute]);
+  const activeIndex = homeScreensRouteIndex ?? initialTabIndex;
 
   useEffect(() => {
     if (!listRef.current || !mounted || activeIndex < 0) return;
