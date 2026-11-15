@@ -34,7 +34,7 @@ const LIGHT_THEME: Theme = {
     background: "#F2F2F2",
     surface: "#FFFFFF",
     text: "#000000",
-    textMuted: "#000000BF", // 80% opacity
+    textMuted: "#000000BF", // 75% opacity
     accent: "#D71921",
     secondary: "#FFC700",
   },

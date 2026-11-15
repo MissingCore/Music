@@ -13,7 +13,7 @@ const customTwMerge = extendTailwindMerge({
       color: ["transparent"],
     },
     classGroups: {
-      "font-family": Object.keys(FONT_FAMILY),
+      "font-family": [{ font: Object.keys(FONT_FAMILY) }],
       "font-size": [{ text: Object.keys(FONT_SIZE) }],
     },
   },

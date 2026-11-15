@@ -55,8 +55,8 @@ export function getFont(
 ) {
   let usedFont = font as BundledFont;
   if (typeof font === "object") {
-    const fileName = getFileName(font.uri);
-    if (fileName) return removeFileExtension(fileName);
+    const fontName = removeFileExtension(getFileName(font.uri) ?? "");
+    if (!!fontName) return fontName;
     usedFont = options?.headline ? "NType" : "Geist";
   }
 
@@ -64,7 +64,7 @@ export function getFont(
     usedFont === "Geist Mono" ? "geistMono" : toLowerCase(usedFont);
 
   if ((options?.headline || options?.bold) && font === "NType") {
-    return FONT_FAMILY.ntype;
+    return FONT_FAMILY.ntypeHeadline;
   } else if (
     options?.bold &&
     (fontCode === "geist" || fontCode === "geistMono")
