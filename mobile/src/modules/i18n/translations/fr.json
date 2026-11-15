@@ -268,6 +268,8 @@
       "extra": {
         "useEmbedded": "Utiliser les paroles intégrées",
         "providers": "Fournisseurs de paroles",
+        "source": null,
+        "cached": null,
         "providersInstructions": {
           "line1": "Pour des raisons juridiques, nous ne fournissons pas automatiquement de sources en ligne pour l'affichage des paroles, car nous ne disposons pas de licence à cet effet. En revanche, nous proposons une liste de fournisseurs que vous pouvez utiliser pour nous indiquer d'où nous pouvons extraire les paroles.",
           "line2": "Cliquez ici pour en savoir plus sur la manière de créer un prestataire."
