@@ -1,0 +1,38 @@
+// Copyright (C) 2024 - present, MissingCore
+// SPDX-License-Identifier: AGPL-3.0-only
+
+import { colord } from "colord";
+
+import { useColor } from "../context/theme-context";
+
+import type { AppColor } from "../constants/theme";
+import { adjustTone } from "../utils/color";
+import { cn } from "../utils/style";
+import type { PressableProps } from "./primitives/pressable";
+import { Pressable } from "./primitives/pressable";
+
+interface RippleProps extends Omit<PressableProps, "android_ripple"> {
+  /** The color of the "surface" the ripple will be on. */
+  color?: AppColor;
+  /** How transparent the ripple will be. */
+  alpha?: number;
+}
+
+export function Ripple({
+  color = "background",
+  alpha = 0.4,
+  className,
+  ...props
+}: RippleProps) {
+  const rippleColor = useColor(color);
+  return (
+    <Pressable
+      {...props}
+      android_ripple={{
+        color: adjustTone(colord(rippleColor), 0.25).alpha(alpha).toHex(),
+        foreground: true,
+      }}
+      className={cn("overflow-hidden", className)}
+    />
+  );
+}
