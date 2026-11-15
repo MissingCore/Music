@@ -18,7 +18,13 @@ export function createLyricProvider(newProvider: Omit<LyricProvider, "id">) {
 export function deleteLyricProvider(providerId: string) {
   lyricStore.setState((prev) => ({
     providers: prev.providers.filter((provider) => provider.id !== providerId),
+    selectedProviderId:
+      prev.selectedProviderId === providerId ? null : prev.selectedProviderId,
   }));
+}
+
+export function selectLyricProvider(providerId: string | null) {
+  lyricStore.setState({ selectedProviderId: providerId });
 }
 
 export function moveLyricProvider(fromIndex: number, toIndex: number) {

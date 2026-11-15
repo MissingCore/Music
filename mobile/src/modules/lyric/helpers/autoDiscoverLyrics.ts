@@ -50,7 +50,7 @@ export async function autoDiscoverLyrics(abortController: AbortController) {
         foundLyrics = await fetchLyricFromProvider(
           activeTrack,
           provider,
-          abortController,
+          abortController.signal,
         );
         if (foundLyrics) break;
       }

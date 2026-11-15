@@ -11,14 +11,14 @@ import type { LyricProvider } from "./constants";
 export async function fetchLyricFromProvider(
   track: Track,
   { endpoint, headers, isJSONResponse, traversedFields }: LyricProvider,
-  abortController: AbortController,
+  signal: AbortSignal,
 ): Promise<string | null> {
   const response = await fetch(populateEndpointString(track, endpoint), {
     headers: HTTPHeaders.merge(HTTPHeaders.parse(headers), {
       "Content-Type": isJSONResponse ? "application/json" : "text/plain",
       "User-Agent": `MissingCore Music ${APP_VERSION} (${Links.GitHub})`,
     }),
-    signal: abortController.signal,
+    signal,
   });
   if (!response.ok) return null;
   const data = await (isJSONResponse ? response.json() : response.text());
