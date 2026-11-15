@@ -32,11 +32,11 @@
     "playingFrom": "Odtwarzanie z",
     "instructions": "Instrukcje",
     "disc": "CD {{count}}",
-    "eps": null,
-    "singles": null,
-    "share": null,
-    "expand": null,
-    "minimize": null
+    "eps": "EPki",
+    "singles": "Single",
+    "share": "Udostępnij",
+    "expand": "Rozwiń",
+    "minimize": "Zwiń"
   },
   "template": {
     "entryAdd": "Dodaj {{- name}}",
@@ -48,11 +48,11 @@
     "notFound": "{{- name}} nie istnieje",
     "entryMove": "Przenieś {{- name}}",
     "entryShow": "Pokaż {{- name}}",
-    "entryShowAll": null,
+    "entryShowAll": "Pokaż wszystkie {{- name}}",
     "entryHide": "Ukryj {{- name}}",
     "entryEnable": "Włącz {{- name}}",
     "entryDisable": "Wyłącz {{- name}}",
-    "countSelected": null,
+    "countSelected": "{{count}} wybranych",
     "noContentFound": "Nie znaleziono {{- name}}"
   },
   "plural": {
@@ -137,8 +137,8 @@
         "light": "Jasny",
         "dark": "Ciemny",
         "system": "Systemowy",
-        "atmosphere": null,
-        "opaqueColors": null
+        "atmosphere": "Efekt przestrzeni",
+        "opaqueColors": "Jednolite kolory"
       }
     },
     "tabsOrder": {
@@ -157,18 +157,18 @@
         "plain": "Zwykły",
         "vinyl": "Winyl",
         "vinylOld": "Winyl (Poprzedni)",
-        "none": null,
-        "immersive": null,
-        "alternativeInfoLayout": null,
-        "standardVinylSpeed": null
+        "none": "Brak",
+        "immersive": "Pełny",
+        "alternativeInfoLayout": "Alternatywne wyświetlanie danych",
+        "standardVinylSpeed": "Standardowa prędkość winylu"
       }
     },
     "seekbar": {
-      "title": null,
+      "title": "Pasek przewijania",
       "extra": {
         "normal": "$t(feat.equalizer.extra.Normal)",
-        "waveform": null,
-        "waveformPurgeCache": "Wyczyść dane dla wizualizacji",
+        "waveform": "Fala dźwiękowa",
+        "waveformPurgeCache": "Wyczyść dane fal dźwiękowych",
         "waveformPurgeCacheBrief": "Zwalnia pamięć i wymusza ponowne obliczenia dla wizualizacji fal dźwiękowych.",
         "waveformPurgeCacheToast": "Dane wizualizacji fal dźwiękowych zostały wyczyszczone."
       }
@@ -203,30 +203,30 @@
       }
     },
     "dbOptimization": {
-      "title": null,
-      "brief": null,
+      "title": "Optymalizacja bazy danych",
+      "brief": "Można zoptymalizować {{count}} rekordów.",
       "extra": {
-        "start": null,
-        "success": null
+        "start": "Optymalizowanie...",
+        "success": "Optymalizacja ukończona."
       }
     },
     "recap": {
-      "title": null,
-      "brief": null,
+      "title": "Podsumowanie",
+      "brief": "Twoje ulubione utwory, artyści oraz historia odtwarzania.",
       "extra": {
-        "backup": null,
-        "recapTemplate": null,
+        "backup": "Transferuj dane podsumowania z tej aplikacji.",
+        "recapTemplate": "$t(feat.recap.title) {{- name}}",
         "playCount": "{{count}} razy",
-        "mostPlayed": "Najczęściej odtwarzane {{- name}}",
-        "top": null,
-        "timeRange": null,
-        "allTime": null,
-        "lastDays": null,
-        "listeningTime": null,
-        "totalListeningTime": null,
-        "totalPlays": null,
-        "uniqueTracks": null,
-        "uniqueArtists": null
+        "mostPlayed": "Najczęściej odtwarzany {{- name}}",
+        "top": "Najlepsze {{- name}}",
+        "timeRange": "Okres czasu",
+        "allTime": "Od początku",
+        "lastDays": "Ostatnie {{amount}} dni",
+        "listeningTime": "Czas słuchania",
+        "totalListeningTime": "Łączny czas słuchania",
+        "totalPlays": "Odtworzeń łącznie",
+        "uniqueTracks": "Różne utwory",
+        "uniqueArtists": "Różni artyści"
       }
     },
     "hiddenTracks": {
@@ -257,8 +257,8 @@
       "brief": "Nie zmieniaj trybu na `Zapętl` z `Zapętl jedną` po pominięciu."
     },
     "reshuffleOnLaunch": {
-      "title": null,
-      "brief": null
+      "title": "Losuj przy włączeniu aplikacji",
+      "brief": "Losowanie kolejki przy włączaniu aplikacji jest włączone."
     },
     "restoreLastPosition": {
       "title": "Przywróć ostatnio odtwarzaną pozycję"
@@ -277,8 +277,8 @@
     "scanning": {
       "title": "Skanowanie",
       "extra": {
-        "useMediaStore": null,
-        "useMediaStoreBrief": null
+        "useMediaStore": "🧪 Używaj skanera MediaStore",
+        "useMediaStoreBrief": "Bardzo szybki, ale może nie być dokładny. Wymaga Androida 11+."
       }
     },
     "rescan": {
@@ -400,7 +400,7 @@
       }
     },
     "artwork": {
-      "title": null,
+      "title": "Okładka",
       "extra": {
         "change": "Zmień okładkę",
         "remove": "Usuń okładkę",
@@ -432,7 +432,7 @@
         "name": "Tytuł",
         "trackNumber": "Numer ścieżki",
         "year": "Rok",
-        "overrideFields": null
+        "overrideFields": "Wprowadzenie wartości w poniższych polach nadpisze dane wszystkich utworów z tego albumu."
       }
     },
     "modalViewPreference": {
@@ -442,8 +442,8 @@
         "list": "Lista",
         "grid": "Siatka",
         "compactGrid": "Kompaktowa siatka",
-        "columnSize": null,
-        "columnCount": null,
+        "columnSize": "Rozmiar kolumny",
+        "columnCount": "Ilość kolumn: {{count}}",
         "sort": "Kolejność sortowania",
         "asc": "Rosnąco",
         "discover": "Data wydania",
@@ -463,16 +463,16 @@
       }
     },
     "miniplayer": {
-      "title": null,
+      "title": "Miniodtwarzacz",
       "extra": {
-        "dragToDismiss": null,
-        "swipeControls": null
+        "dragToDismiss": "Przesuń, aby ukryć",
+        "swipeControls": "Sterowanie gestami"
       }
     },
     "nowPlaying": {
-      "title": null,
+      "title": "Teraz odtwarzane",
       "extra": {
-        "artworkPlaybackToggle": null
+        "artworkPlaybackToggle": "Przełącznik pauzy na okładce"
       }
     },
     "queue": {
