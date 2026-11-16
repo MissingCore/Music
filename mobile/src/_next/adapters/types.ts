@@ -1,18 +1,18 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-export namespace MediaDetails {
-  interface MinItem {
+export namespace MediaItem {
+  interface Base {
     id: string;
     name: string;
     artwork: string | null;
   }
 
-  export interface DisplayAlbum extends MinItem {
+  export interface DisplayAlbum extends Base {
     year: string;
   }
 
-  export interface DisplayTrack extends MinItem {
+  export interface DisplayTrack extends Base {
     album: string | null;
   }
 }
@@ -26,10 +26,14 @@ export namespace Connector {
       numTracks: number;
       totalDuration: number;
 
-      topTracks: MediaDetails.DisplayTrack[];
-      albums: MediaDetails.DisplayAlbum[];
-      eps: MediaDetails.DisplayAlbum[];
-      singles: MediaDetails.DisplayTrack[];
+      topTracks: MediaItem.DisplayTrack[];
+      albums: MediaItem.DisplayAlbum[];
+      eps: MediaItem.DisplayAlbum[];
+      /** Includes tracks by this artist that appear in albums not by this artist. */
+      singles: MediaItem.DisplayTrack[];
+
+      albumApperances: MediaItem.DisplayAlbum[];
+      genres: string[];
     }>;
 
     /** Return a list of track ids (with no sort preference). */
