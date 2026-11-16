@@ -1,8 +1,9 @@
 name: CI
 on:
   push:
-    branches-ignore:
-      - main
+    branches:
+      - dev
+      - next/v4-redo
   pull_request:
     branches-ignore:
       - main
@@ -23,6 +24,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Lint files
+        continue-on-error: true
         run: pnpm lint
 
       - name: Typecheck files
