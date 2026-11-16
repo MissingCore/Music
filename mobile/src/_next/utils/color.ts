@@ -4,7 +4,7 @@
 import type { Colord } from "colord";
 import { colord } from "colord";
 
-import type { HexColor } from "../constants/theme";
+import type { HexColor } from "~/_next/constants/theme";
 
 /** Darkens color if it's "light" and brightens color if it's "dark". */
 export function adjustTone(color: Colord, amount = 0.1) {

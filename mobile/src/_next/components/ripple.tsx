@@ -3,11 +3,11 @@
 
 import { colord } from "colord";
 
-import { useColor } from "../context/theme-context";
+import { useColor } from "~/_next/context/theme-context";
 
-import type { AppColor } from "../constants/theme";
-import { adjustTone } from "../utils/color";
-import { cn } from "../utils/style";
+import type { AppColor } from "~/_next/constants/theme";
+import { adjustTone } from "~/_next/utils/color";
+import { cn } from "~/_next/utils/style";
 import type { PressableProps } from "./primitives/pressable";
 import { Pressable } from "./primitives/pressable";
 

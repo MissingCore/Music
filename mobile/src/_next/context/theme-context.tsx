@@ -10,10 +10,14 @@ import type {
   Font,
   HexColor,
   ThemeColors,
-} from "../constants/theme";
-import { FONT_FAMILY, THEMES } from "../constants/theme";
-import { isHexColor, withAlpha } from "../utils/color";
-import { getFileName, removeFileExtension, toLowerCase } from "../utils/string";
+} from "~/_next/constants/theme";
+import { FONT_FAMILY, THEMES } from "~/_next/constants/theme";
+import { isHexColor, withAlpha } from "~/_next/utils/color";
+import {
+  getFileName,
+  removeFileExtension,
+  toLowerCase,
+} from "~/_next/utils/string";
 
 const ThemeContext = createContext<ThemeColors>(THEMES.system.colors);
 
