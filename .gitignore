@@ -49,3 +49,4 @@ __pycache__
 *.jks
 *.aab
 sentry.properties
+mobile/coverage

@@ -20,3 +20,4 @@ Please check the appropriate items below if they apply to your diff.
 - [ ] Documentation is up to date to reflect these changes.
 - [ ] Ensure dependency licenses are up-to-date by running `pnpm sync:licenses`.
 - [ ] This diff will work correctly for `pnpm android:prod`.
+- [ ] Add tests if necessary.

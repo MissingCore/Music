@@ -4,6 +4,7 @@ minimumReleaseAge: 1440
 nodeLinker: "hoisted"
 
 allowBuilds:
+  "@parcel/watcher": true
   "@sentry/cli": true
   esbuild: false
   msgpackr-extract: false

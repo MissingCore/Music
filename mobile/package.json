@@ -17,6 +17,8 @@
     "atlas": "npx expo export --platform android && npx expo-atlas",
     "typecheck": "tsc --noEmit",
     "lint": "expo lint",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
     "circular-dep": "npx dpdm@4.0.1 ./src/* --circular --exit-code circular:1 --warning=false",
     "db:generate": "drizzle-kit generate",
     "sync:licenses": "license-checker-rseidelsohn --production --depth=0 --excludePrivatePackages --clarificationsFile ./scripts/licenses/licenseClarification.json --customPath ./scripts/licenses/customLicenseFormat.json --json | node ./scripts/licenses/updateLicenses.mjs",
@@ -38,7 +40,7 @@
     "@tanstack/react-query": "5.107.1",
     "@zoontek/react-native-navigation-bar": "2.0.2",
     "clsx": "2.1.1",
-    "colord": "2.12.0",
+    "colord": "2.13.0",
     "drizzle-orm": "0.45.4",
     "expo": "58.0.25",
     "expo-drizzle-studio-plugin": "0.2.1",
@@ -79,6 +81,8 @@
   "devDependencies": {
     "@babel/core": "7.29.7",
     "@tanstack/eslint-plugin-query": "5.107.1",
+    "@testing-library/react-native": "14.1.0",
+    "@types/jest": "30.0.0",
     "@types/react": "19.3.0",
     "babel-plugin-inline-import": "3.0.0",
     "babel-plugin-react-compiler": "1.0.0",
@@ -91,6 +95,8 @@
     "eslint-plugin-prettier": "5.5.7",
     "expo-atlas": "0.5.0",
     "expo-build-properties": "58.0.12",
+    "jest": "30.5.2",
+    "jest-expo": "58.0.14",
     "license-checker-rseidelsohn": "4.4.2",
     "neatjson": "0.10.6",
     "prettier": "3.10.1",
@@ -98,6 +104,9 @@
     "tailwindcss": "4.3.5",
     "typescript": "6.0.3",
     "typescript-eslint": "8.72.2"
+  },
+  "jest": {
+    "preset": "jest-expo"
   },
   "react-navigation": {
     "material-symbols": {

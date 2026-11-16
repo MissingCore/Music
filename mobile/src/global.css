@@ -6,6 +6,10 @@
 @import "tailwindcss";
 @import "uniwind";
 
+/** Define custom variants to prevent ESLint from throwing an error when these haven't been built. */
+@custom-variant custom (&:where(.custom, .custom *));
+@custom-variant atmosphere (&:where(.atmosphere, .atmosphere *));
+
 @theme {
   /** Font Family */
   --font-geist: "Geist-Regular";
