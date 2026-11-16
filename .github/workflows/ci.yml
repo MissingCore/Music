@@ -8,6 +8,10 @@ on:
       - main
   workflow_dispatch:
 
+defaults:
+  run:
+    working-directory: mobile
+
 jobs:
   lint:
     runs-on: ubuntu-latest
