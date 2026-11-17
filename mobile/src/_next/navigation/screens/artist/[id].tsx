@@ -4,7 +4,7 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
-import { use, useMemo } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useWindowDimensions, View } from "react-native";
 
@@ -12,7 +12,7 @@ import { LocalMediaAdapter } from "~/_next/adapters/local-media";
 import { q } from "~/_next/data/key-store";
 
 import { PlaybackControls } from "~/stores/Playback/actions";
-import { PlayFromContext } from "~/_next/context/play-from-context";
+import { usePlayFromSource } from "~/_next/context/play-from-context";
 import { ThemeProvider, useTheme } from "~/_next/context/theme-context";
 import { useDimmedImageColor } from "~/_next/hooks/use-dimmed-image-color";
 
@@ -54,7 +54,7 @@ export default function Artist({
   const dimensions = useWindowDimensions();
   const { isPending, error, data } = useArtist(id);
   const backgroundColor = useDimmedImageColor(data?.artwork);
-  const source = use(PlayFromContext);
+  const source = usePlayFromSource();
 
   const bottomOffset = useBottomActionsOffset();
 
@@ -85,7 +85,7 @@ export default function Artist({
         overrideItemLayout={(layout, item: React.JSX.Element) => {
           if (item?.type === ImageCard) layout.span = trackColCnt;
           else if (item?.type === ImageListItem) layout.span = albumColCnt;
-          else layout.span = totalColumns;
+          else if (item) layout.span = totalColumns;
         }}
         ListHeaderComponent={
           <ScreenHeader
@@ -152,14 +152,17 @@ function ScreenHeader(props: {
 }) {
   const dimensions = useWindowDimensions();
   const { text } = useTheme();
-  const source = use(PlayFromContext);
+  const source = usePlayFromSource();
 
   const headerHeight = Math.min(400, dimensions.height, dimensions.width);
 
   return (
     <View
       style={{ height: headerHeight }}
-      className="relative -mx-4 items-center justify-end overflow-hidden"
+      //? We should be conditionally switching between `-mx-4` & `-mx-5.5` based
+      //? on `numColumns`, but it realistically will be >1 (unless the user has
+      //? a really small/weird screen).
+      className="relative -mx-5.5 items-center justify-end overflow-hidden"
     >
       <Image
         source={props.artwork}
