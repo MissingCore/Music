@@ -11,7 +11,7 @@ import { cn } from "~/_next/utils/style";
 import type { PressableProps } from "./primitives/pressable";
 import { Pressable } from "./primitives/pressable";
 
-interface RippleProps extends Omit<PressableProps, "android_ripple"> {
+export interface RippleProps extends Omit<PressableProps, "android_ripple"> {
   /** The color of the "surface" the ripple will be on. */
   color?: AppColor;
   /** How transparent the ripple will be. */
