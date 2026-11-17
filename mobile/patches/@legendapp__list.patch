@@ -1,0 +1,30 @@
+diff --git a/react-native.js b/react-native.js
+index 4af685dfb961eb0c8a4bf1ae9132c9304cf4fa4d..de4b90d6b09d7f929f833fc0812942dc3d794d27 100644
+--- a/react-native.js
++++ b/react-native.js
+@@ -6383,8 +6383,8 @@ function getContainerPositionStyle({
+     } else {
+       paddingStyles = {
+         paddingBottom: rowGap || gap || void 0,
+-        paddingLeft: numColumns > 1 ? (columnGap || gap || 0) / 2 : void 0,
+-        paddingRight: numColumns > 1 ? (columnGap || gap || 0) / 2 : void 0
++        paddingLeft: numColumns > 1 ? (columnGap || gap || 0) : void 0,
++        paddingRight: numColumns > 1 ? (columnGap || gap || 0) : void 0
+       };
+     }
+   }
+diff --git a/react-native.mjs b/react-native.mjs
+index 9ebfddc183a9b202d35c990a387c9b628feeb185..070ff314cb32da230e1d7ddecb0c74c08cf16761 100644
+--- a/react-native.mjs
++++ b/react-native.mjs
+@@ -6362,8 +6362,8 @@ function getContainerPositionStyle({
+     } else {
+       paddingStyles = {
+         paddingBottom: rowGap || gap || void 0,
+-        paddingLeft: numColumns > 1 ? (columnGap || gap || 0) / 2 : void 0,
+-        paddingRight: numColumns > 1 ? (columnGap || gap || 0) / 2 : void 0
++        paddingLeft: numColumns > 1 ? (columnGap || gap || 0) : void 0,
++        paddingRight: numColumns > 1 ? (columnGap || gap || 0) : void 0
+       };
+     }
+   }
