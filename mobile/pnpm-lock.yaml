@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
-  '@legendapp/list': 87bfe7c80bfa03f28161084c98178449416c8de96242380396b7eaaecfaf4758
+  '@legendapp/list': 68c99345030348f317ff625190fae3a6fce3f1d8974a0d6a84a2a5d59e45ac0c
   '@lodev09/react-native-true-sheet': e629511ec9a360ce64c6f2cbcb19d75a7b9b47d7dd1d172d57695cb35845ebce
   react-native-android-widget: 1b539a54e370b751c42017802557a37b9c726edc3e0333b31f7350b48d2af4b6
   react-native-material-palette: cb6604a7852903e36cef6eda789a4886aad57bbedd78f525bb2ba98ee28b97b8
@@ -19,7 +19,7 @@ importers:
         version: 2.6.0(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))
       '@legendapp/list':
         specifier: 3.7.2
-        version: 3.7.2(patch_hash=87bfe7c80bfa03f28161084c98178449416c8de96242380396b7eaaecfaf4758)(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+        version: 3.7.2(patch_hash=68c99345030348f317ff625190fae3a6fce3f1d8974a0d6a84a2a5d59e45ac0c)(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@lodev09/react-native-true-sheet':
         specifier: 3.4.2
         version: 3.4.2(patch_hash=e629511ec9a360ce64c6f2cbcb19d75a7b9b47d7dd1d172d57695cb35845ebce)(61bda1a75ea501803a948faf9219f379)
@@ -8416,7 +8416,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.3
       '@jridgewell/sourcemap-codec': 1.6.0
 
-  '@legendapp/list@3.7.2(patch_hash=87bfe7c80bfa03f28161084c98178449416c8de96242380396b7eaaecfaf4758)(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)':
+  '@legendapp/list@3.7.2(patch_hash=68c99345030348f317ff625190fae3a6fce3f1d8974a0d6a84a2a5d59e45ac0c)(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)':
     dependencies:
       react: 19.3.0
       use-sync-external-store: 1.7.0(react@19.3.0)

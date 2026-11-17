@@ -1,30 +1,36 @@
 diff --git a/react-native.js b/react-native.js
-index 4af685dfb961eb0c8a4bf1ae9132c9304cf4fa4d..de4b90d6b09d7f929f833fc0812942dc3d794d27 100644
+index 4af685dfb961eb0c8a4bf1ae9132c9304cf4fa4d..575eaec3e8fb47d7e5d1fdc271f193b0707d6229 100644
 --- a/react-native.js
 +++ b/react-native.js
-@@ -6383,8 +6383,8 @@ function getContainerPositionStyle({
-     } else {
-       paddingStyles = {
-         paddingBottom: rowGap || gap || void 0,
--        paddingLeft: numColumns > 1 ? (columnGap || gap || 0) / 2 : void 0,
--        paddingRight: numColumns > 1 ? (columnGap || gap || 0) / 2 : void 0
-+        paddingLeft: numColumns > 1 ? (columnGap || gap || 0) : void 0,
-+        paddingRight: numColumns > 1 ? (columnGap || gap || 0) : void 0
-       };
-     }
-   }
+@@ -8430,6 +8430,13 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
+     } : {}
+   };
+   const style = { ...StyleSheet.flatten(styleProp) };
++  const horizontalGapSource = columnWrapperStyle || contentContainerStyleBase;
++  const horizontalGap = horizontalGapSource == null ? 0 : horizontalGapSource.columnGap || horizontalGapSource.gap || 0;
++  if (numColumnsProp > 1 && typeof horizontalGap === "number" && horizontalGap !== 0) {
++    const horizontalGapPadding = horizontalGap / 2;
++    style.paddingLeft = getPadding(style, "Left") + horizontalGapPadding;
++    style.paddingRight = getPadding(style, "Right") + horizontalGapPadding;
++  }
+   const stylePaddingTopState = extractPadding(style, contentContainerStyle, "Top");
+   const stylePaddingBottomState = extractPadding(style, contentContainerStyle, "Bottom");
+   const stylePaddingLeftState = extractPadding(style, contentContainerStyle, "Left");
 diff --git a/react-native.mjs b/react-native.mjs
-index 9ebfddc183a9b202d35c990a387c9b628feeb185..070ff314cb32da230e1d7ddecb0c74c08cf16761 100644
+index 9ebfddc183a9b202d35c990a387c9b628feeb185..c70059258db7335b7ec1889acadb3629bca4478f 100644
 --- a/react-native.mjs
 +++ b/react-native.mjs
-@@ -6362,8 +6362,8 @@ function getContainerPositionStyle({
-     } else {
-       paddingStyles = {
-         paddingBottom: rowGap || gap || void 0,
--        paddingLeft: numColumns > 1 ? (columnGap || gap || 0) / 2 : void 0,
--        paddingRight: numColumns > 1 ? (columnGap || gap || 0) / 2 : void 0
-+        paddingLeft: numColumns > 1 ? (columnGap || gap || 0) : void 0,
-+        paddingRight: numColumns > 1 ? (columnGap || gap || 0) : void 0
-       };
-     }
-   }
+@@ -8409,6 +8409,13 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
+     } : {}
+   };
+   const style = { ...StyleSheet.flatten(styleProp) };
++  const horizontalGapSource = columnWrapperStyle || contentContainerStyleBase;
++  const horizontalGap = horizontalGapSource == null ? 0 : horizontalGapSource.columnGap || horizontalGapSource.gap || 0;
++  if (numColumnsProp > 1 && typeof horizontalGap === "number" && horizontalGap !== 0) {
++    const horizontalGapPadding = horizontalGap / 2;
++    style.paddingLeft = getPadding(style, "Left") + horizontalGapPadding;
++    style.paddingRight = getPadding(style, "Right") + horizontalGapPadding;
++  }
+   const stylePaddingTopState = extractPadding(style, contentContainerStyle, "Top");
+   const stylePaddingBottomState = extractPadding(style, contentContainerStyle, "Bottom");
+   const stylePaddingLeftState = extractPadding(style, contentContainerStyle, "Left");
