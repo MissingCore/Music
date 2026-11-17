@@ -20,3 +20,10 @@ export function isHexColor(value?: string): value is HexColor {
 export function withAlpha(color: string, alpha: number): HexColor {
   return colord(color).alpha(alpha).toHex().toUpperCase() as HexColor;
 }
+
+/** Sets the max brightness of a color to a specific percentage. Defaults to `75%`. */
+export function clampBrightness(color: Colord, to = 0.75) {
+  return color.isLight()
+    ? color.darken(Math.max(0, color.brightness() - to))
+    : color;
+}
