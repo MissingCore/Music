@@ -5,7 +5,7 @@ import type { ViewStyle } from "react-native";
 import { View } from "react-native";
 import { createNanoIconSet } from "react-native-nano-icons";
 
-import glyphMap from "~/resources/icons/app-icons.glyphmap.json";
+import glyphMap from "~/_next/resources/icons/icons.glyphmap.json";
 
 import { useColor } from "~/_next/context/theme-context";
 
