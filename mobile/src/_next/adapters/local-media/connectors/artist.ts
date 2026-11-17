@@ -129,7 +129,11 @@ export const LocalMediaArtistConnector = {
       .from(tracksToArtists)
       .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id))
       .leftJoin(albums, eq(tracks.albumId, albums.id))
-      .orderBy(desc(tracks.year), asc(tracks.name))
+      .orderBy(
+        desc(tracks.year),
+        desc(tracks.modificationTime),
+        asc(tracks.name),
+      )
       .where(
         and(
           eq(tracksToArtists.artistName, id),
@@ -212,10 +216,14 @@ export const LocalMediaArtistConnector = {
       artwork: artist.artwork,
       ...agg!,
       topTracks: artistTopTracks,
-      ...categorizedAlbums,
-      singles: artistSingles,
-      albumApperances: albumAppearances,
-      genres: artistGenres.map(({ name }) => name),
+      discography: {
+        ...categorizedAlbums,
+        singles: artistSingles,
+      },
+      related: {
+        albums: albumAppearances,
+        genres: artistGenres.map(({ name }) => name),
+      },
     };
   },
 

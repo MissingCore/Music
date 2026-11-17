@@ -27,13 +27,18 @@ export namespace Connector {
       totalDuration: number;
 
       topTracks: MediaItem.DisplayTrack[];
-      albums: MediaItem.DisplayAlbum[];
-      eps: MediaItem.DisplayAlbum[];
-      /** Includes tracks by this artist that appear in albums not by this artist. */
-      singles: MediaItem.DisplayTrack[];
 
-      albumApperances: MediaItem.DisplayAlbum[];
-      genres: string[];
+      discography: {
+        albums: MediaItem.DisplayAlbum[];
+        eps: MediaItem.DisplayAlbum[];
+        /** Includes tracks by this artist that appear in albums not by this artist. */
+        singles: MediaItem.DisplayTrack[];
+      };
+
+      related: {
+        albums: MediaItem.DisplayAlbum[];
+        genres: string[];
+      };
     }>;
 
     /** Return a list of track ids (with no sort preference). */
