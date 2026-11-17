@@ -14,7 +14,6 @@ import { Image } from "./primitives/image";
 
 interface ImageCardProps {
   artwork: string | null;
-  size: number;
   label: string;
   supporting?: string;
   onPress: VoidFunction;
@@ -26,8 +25,11 @@ export function ImageCard(props: ImageCardProps) {
   return (
     <Ripple
       onPress={props.onPress}
-      style={{ height: props.size, width: props.size, backgroundColor }}
-      className={cn("overflow-hidden rounded-xl", props.className)}
+      style={{ backgroundColor }}
+      className={cn(
+        "aspect-square size-full overflow-hidden rounded-xl",
+        props.className,
+      )}
     >
       <Image source={getImageUri(props.artwork)} className="size-full" />
       <TransitionGradient color="#000" className="absolute inset-0" />

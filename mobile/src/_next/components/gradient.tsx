@@ -13,26 +13,35 @@ import type { AppColor } from "~/_next/constants/theme";
 import { withAlpha } from "~/_next/utils/color";
 
 interface TransitionGradientProps extends ViewProps {
-  toTransparent?: boolean;
   color?: AppColor;
+  easing?: boolean;
+  toTransparent?: boolean;
 }
 
 export function TransitionGradient({
-  toTransparent = false,
   color = "background",
+  easing = false,
+  toTransparent = false,
   ...props
 }: TransitionGradientProps) {
   const gradientColor = useColor(color);
 
   const gradientProps = useMemo(
     () =>
-      easeGradient({
-        colorStops: {
-          0: { color: withAlpha(gradientColor, toTransparent ? 1 : 0) },
-          1: { color: withAlpha(gradientColor, toTransparent ? 0 : 1) },
-        },
-      }) as unknown as Pick<LinearGradientProps, "colors" | "locations">,
-    [toTransparent, gradientColor],
+      easing
+        ? (easeGradient({
+            colorStops: {
+              0: { color: withAlpha(gradientColor, toTransparent ? 1 : 0) },
+              1: { color: withAlpha(gradientColor, toTransparent ? 0 : 1) },
+            },
+          }) as unknown as Pick<LinearGradientProps, "colors" | "locations">)
+        : {
+            colors: [
+              withAlpha(gradientColor, toTransparent ? 1 : 0),
+              withAlpha(gradientColor, toTransparent ? 0 : 1),
+            ] as LinearGradientProps["colors"],
+          },
+    [easing, toTransparent, gradientColor],
   );
 
   return <LinearGradient {...props} {...gradientProps} />;

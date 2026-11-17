@@ -9,7 +9,6 @@ import { useTranslation } from "react-i18next";
 import { useWindowDimensions, View } from "react-native";
 
 import { LocalMediaAdapter } from "~/_next/adapters/local-media";
-import type { MediaItem } from "~/_next/adapters/types";
 import { q } from "~/_next/data/key-store";
 
 import { PlaybackControls } from "~/stores/Playback/actions";
@@ -51,6 +50,7 @@ export default function Artist({
   },
 }: Props) {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const dimensions = useWindowDimensions();
   const { isPending, error, data } = useArtist(id);
   const backgroundColor = useDimmedImageColor(data?.artwork);
@@ -58,7 +58,9 @@ export default function Artist({
 
   const bottomOffset = useBottomActionsOffset();
 
-  const estimatedColumns = Math.floor(dimensions.width / 300);
+  const albumColCnt = Math.floor(dimensions.width / 144);
+  const trackColCnt = Math.floor(dimensions.width / 300);
+  const totalColumns = trackColCnt * albumColCnt;
 
   const ScreenTheme = useMemo(
     () =>
@@ -74,9 +76,16 @@ export default function Artist({
   return (
     <ThemeProvider colors={ScreenTheme}>
       <LegendList
-        numColumns={estimatedColumns}
+        numColumns={totalColumns}
+        getItemType={(item: React.JSX.Element) => {
+          if (item?.type === Label) return "label";
+          if (item?.type === ImageCard) return "album-item";
+          else if (item?.type === ImageListItem) return "track-item";
+        }}
         overrideItemLayout={(layout, item: React.JSX.Element) => {
-          if (item?.type !== ImageListItem) layout.span = estimatedColumns;
+          if (item?.type === ImageCard) layout.span = trackColCnt;
+          else if (item?.type === ImageListItem) layout.span = albumColCnt;
+          else layout.span = totalColumns;
         }}
         ListHeaderComponent={
           <ScreenHeader
@@ -90,11 +99,31 @@ export default function Artist({
         contentContainerClassName="gap-1.5 px-4"
         contentContainerStyle={{ paddingBottom: bottomOffset }}
       >
-        <RenderAlbumRow
-          label={t("term.albums")}
-          data={data.discography.albums}
-        />
-        <RenderAlbumRow label={t("term.eps")} data={data.discography.eps} />
+        {data.discography.albums.length > 0 ? (
+          <Label label={t("term.albums")} />
+        ) : null}
+        {data.discography.albums.map((item) => (
+          <ImageCard
+            key={item.id}
+            artwork={item.artwork}
+            label={item.name}
+            supporting={item.year}
+            onPress={() => navigation.navigate("Album", { id: item.id })}
+          />
+        ))}
+
+        {data.discography.eps.length > 0 ? (
+          <Label label={t("term.eps")} />
+        ) : null}
+        {data.discography.eps.map((item) => (
+          <ImageCard
+            key={item.id}
+            artwork={item.artwork}
+            label={item.name}
+            supporting={item.year}
+            onPress={() => navigation.navigate("Album", { id: item.id })}
+          />
+        ))}
 
         {data.discography.singles.length > 0 ? (
           <Label label={t("term.singles")} />
@@ -172,39 +201,10 @@ function ScreenHeader(props: {
 
 function Label({ label }: { label: string }) {
   return (
-    <Marquee>
-      <Text bold size="lg">
+    <Marquee wrapperClassName="pt-1.5">
+      <Text bold size="xl">
         {label}
       </Text>
     </Marquee>
-  );
-}
-
-function RenderAlbumRow(props: {
-  label: string;
-  data: MediaItem.DisplayAlbum[];
-}) {
-  const navigation = useNavigation();
-  if (props.data.length === 0) return undefined;
-  return (
-    <View className="gap-2">
-      <Label label={props.label} />
-      <LegendList
-        horizontal
-        data={props.data}
-        keyExtractor={({ id }) => id}
-        renderItem={({ item }) => (
-          <ImageCard
-            artwork={item.artwork}
-            size={144}
-            label={item.name}
-            supporting={item.year}
-            onPress={() => navigation.navigate("Album", { id: item.id })}
-          />
-        )}
-        className="-mx-4 h-36"
-        contentContainerClassName="gap-x-1.5 px-4"
-      />
-    </View>
   );
 }
