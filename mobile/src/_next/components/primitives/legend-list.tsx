@@ -8,7 +8,9 @@ import type { AnimatedRef } from "react-native-reanimated";
 import { useAnimatedRef } from "react-native-reanimated";
 import { withUniwind } from "uniwind";
 
-type LegendListSignature = <T>(props: LegendListProps<T>) => React.JSX.Element;
+export type LegendListSignature = <T>(
+  props: LegendListProps<T>,
+) => React.JSX.Element;
 
 export type LegendListRef = AnimatedRef<RawLegendListRef>;
 
@@ -26,6 +28,7 @@ export function LegendList<T>(props: LegendListProps<T>) {
     <WrappedAnimatedLegendList
       key={`list-with-${props.numColumns}-cols_${props.estimatedItemSize}-size`}
       maintainVisibleContentPosition={false}
+      overScrollMode="never"
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
       recycleItems
