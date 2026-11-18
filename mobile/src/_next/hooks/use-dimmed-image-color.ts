@@ -15,13 +15,13 @@ const ColorCache = new BoundedMap<string, HexColor>(100);
 
 /** Returns the dominant color of an image, clamped to a brightness of 75%. */
 export function useDimmedImageColor(src: unknown) {
-  const surface = useColor("surface");
+  const background = useColor("background");
   const [color, setColor] = useState(
-    () => clampBrightness(colord(surface)).toHex() as HexColor,
+    () => clampBrightness(colord(background)).toHex() as HexColor,
   );
 
   const resetColor = useEffectEvent(() =>
-    setColor(clampBrightness(colord(surface)).toHex() as HexColor),
+    setColor(clampBrightness(colord(background)).toHex() as HexColor),
   );
 
   useEffect(() => {
