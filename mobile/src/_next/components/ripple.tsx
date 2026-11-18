@@ -6,7 +6,7 @@ import { colord } from "colord";
 import { useColor } from "~/_next/context/theme-context";
 
 import type { AppColor } from "~/_next/constants/theme";
-import { adjustTone } from "~/_next/utils/color";
+import { adjustLightness } from "~/_next/utils/color";
 import { cn } from "~/_next/utils/style";
 import type { PressableProps } from "./primitives/pressable";
 import { Pressable } from "./primitives/pressable";
@@ -29,7 +29,7 @@ export function Ripple({
     <Pressable
       {...props}
       android_ripple={{
-        color: adjustTone(colord(rippleColor), 0.25).alpha(alpha).toHex(),
+        color: adjustLightness(colord(rippleColor)).alpha(alpha).toHex(),
         foreground: true,
       }}
       className={cn("overflow-hidden", className)}
