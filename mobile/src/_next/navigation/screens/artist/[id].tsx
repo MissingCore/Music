@@ -181,6 +181,7 @@ function ScreenHeader(props: {
   metadata: string;
   duration: number;
 }) {
+  const { t } = useTranslation();
   const dimensions = useWindowDimensions();
   const { text } = useTheme();
   const source = usePlayFromSource();
@@ -220,6 +221,7 @@ function ScreenHeader(props: {
 
         <View className="mt-4 flex-row items-center justify-center">
           <IconButton
+            accessibilityLabel={t("term.play")}
             icon="play-filled"
             onPress={() => PlaybackControls.playFromList({ source })}
             iconColor="background"

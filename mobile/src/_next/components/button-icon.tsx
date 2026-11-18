@@ -9,6 +9,7 @@ import type { RippleProps } from "./ripple";
 import { Ripple } from "./ripple";
 
 interface IconButtonProps extends RippleProps {
+  accessibilityLabel: string;
   icon: SupportedIconName;
   iconColor?: AppColor;
 }
