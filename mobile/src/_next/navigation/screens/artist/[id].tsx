@@ -22,8 +22,10 @@ import { GoBack } from "~/_next/navigation/components/go-back";
 
 import { getImageUri } from "~/lib/file-system";
 import { Seconds } from "~/_next/utils/date";
+import { OnRTL } from "~/_next/utils/i18n";
 import { Image } from "~/_next/components/primitives/image";
 import { LegendList } from "~/_next/components/primitives/legend-list";
+import { BlurContainer } from "~/_next/components/blur-container";
 import { ChipButton } from "~/_next/components/button-chip";
 import { IconButton } from "~/_next/components/button-icon";
 import { Divider } from "~/_next/components/divider";
@@ -77,6 +79,7 @@ export default function Artist({
   if (error) return <GoBack />;
   return (
     <ThemeProvider colors={ScreenTheme}>
+      <ScreenActions />
       <LegendList
         numColumns={totalColumns}
         getItemType={(item: React.JSX.Element) => {
@@ -175,6 +178,25 @@ export default function Artist({
   );
 }
 
+function ScreenActions() {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+  return (
+    <View className="absolute inset-x-0 z-100 pt-safe">
+      <View className="h-14 w-full flex-row items-center justify-between gap-4 px-2">
+        <BlurContainer color="text">
+          <IconButton
+            icon={OnRTL.decide("arrow-right", "arrow-left")}
+            accessibilityLabel={t("form.back")}
+            onPress={() => navigation.goBack()}
+            color="text"
+          />
+        </BlurContainer>
+      </View>
+    </View>
+  );
+}
+
 function ScreenHeader(props: {
   name: string;
   artwork: string | null;
@@ -202,6 +224,7 @@ function ScreenHeader(props: {
         className="absolute inset-0"
       />
       <TransitionGradient
+        easing
         style={{ height: headerHeight * 0.6 }}
         className="absolute inset-x-0 bottom-0"
       />

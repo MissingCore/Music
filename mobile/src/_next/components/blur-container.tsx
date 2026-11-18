@@ -6,15 +6,32 @@ import { View } from "react-native";
 
 import { useColor } from "~/_next/context/theme-context";
 
+import type { AppColor } from "~/_next/constants/theme";
+import { withAlpha } from "~/_next/utils/color";
 import { cn } from "~/_next/utils/style";
 
-export function BlurContainer({ className, style, ...props }: ViewProps) {
-  const color = useColor("surface");
+interface BlurContainerProps extends ViewProps {
+  color?: AppColor;
+}
+
+export function BlurContainer({
+  color: _color = "surface",
+  className,
+  style,
+  ...props
+}: BlurContainerProps) {
+  const color = useColor(_color);
   return (
     <View
       {...props}
-      style={[{ backgroundColor: color, borderColor: color }, style]}
-      className={cn("border", className)}
+      style={[
+        {
+          backgroundColor: withAlpha(color, 0.15),
+          borderColor: withAlpha(color, 0.15),
+        },
+        style,
+      ]}
+      className={cn("rounded-full border", className)}
     />
   );
 }

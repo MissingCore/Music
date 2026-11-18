@@ -18,11 +18,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { PortalHost } from "@rn-primitives/portal";
 import { useCallback, useMemo, useRef } from "react";
 
+import Artist from "~/_next/navigation/screens/artist/[id]";
 import Home from "./screens/HomeView";
 import Album from "./screens/albums/CurrentView";
 import ModifyAlbum from "./screens/albums/ModifyView";
 import Albums from "./screens/albums/View";
-import Artist from "./screens/artists/CurrentView";
+// import Artist from "./screens/artists/CurrentView";
 import Artists from "./screens/artists/View";
 import Folders from "./screens/folders/View";
 import Genre from "./screens/genres/CurrentView";
@@ -52,10 +53,12 @@ import InsightsScreenGroup from "~/modules/insights/screens";
 import LyricScreenGroup from "~/modules/lyric/screens";
 import Search from "~/modules/search/screens/View";
 
+import { PlayFromProvider } from "~/_next/context/play-from-context";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { useTabsByVisibility } from "~/stores/Preference/hooks";
 import { useBackHandler } from "~/hooks/useBackHandler";
 
+import type { MediaList } from "~/_next/constants/media";
 import { capitalize } from "~/utils/string";
 import type { Tab } from "~/stores/Preference/types";
 import { TrackMultiSelectListeners } from "~/modules/media/multiSelect/TrackMultiSelectListeners";
@@ -278,6 +281,14 @@ export const RootStack = createNativeStackNavigator({
   groups: {
     AudioEffect: AudioEffectScreenGroup,
     Current: {
+      screenLayout: ({ route, children }) => (
+        <PlayFromProvider
+          type={route.name.toLowerCase() as MediaList}
+          id={(route.params as { id: string }).id}
+        >
+          {children}
+        </PlayFromProvider>
+      ),
       screenOptions: { headerShown: false },
       screens: {
         Playlist,

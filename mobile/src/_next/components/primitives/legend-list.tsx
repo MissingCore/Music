@@ -5,6 +5,7 @@ import type { LegendListRef as RawLegendListRef } from "@legendapp/list/react-na
 import type { AnimatedLegendListProps } from "@legendapp/list/reanimated";
 import { AnimatedLegendList } from "@legendapp/list/reanimated";
 import type { AnimatedRef } from "react-native-reanimated";
+import { useAnimatedRef } from "react-native-reanimated";
 import { withUniwind } from "uniwind";
 
 type LegendListSignature = <T>(props: LegendListProps<T>) => React.JSX.Element;
@@ -31,4 +32,8 @@ export function LegendList<T>(props: LegendListProps<T>) {
       {...props}
     />
   );
+}
+
+export function useLegendListRef() {
+  return useAnimatedRef() as unknown as LegendListRef;
 }
