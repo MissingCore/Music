@@ -14,6 +14,7 @@ import { q } from "~/_next/data/key-store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePlayFromSource } from "~/_next/context/play-from-context";
 import { ThemeProvider, useTheme } from "~/_next/context/theme-context";
+import { useLayoutColumn } from "~/_next/hooks/use-column";
 import { useDimmedImageColor } from "~/_next/hooks/use-dimmed-image-color";
 
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
@@ -53,15 +54,14 @@ export default function Artist({
 }: Props) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const dimensions = useWindowDimensions();
   const { isPending, error, data } = useArtist(id);
   const backgroundColor = useDimmedImageColor(data?.artwork);
   const source = usePlayFromSource();
 
   const bottomOffset = useBottomActionsOffset();
 
-  const albumColCnt = Math.floor(dimensions.width / 144);
-  const trackColCnt = Math.floor(dimensions.width / 300);
+  const albumColCnt = useLayoutColumn("grid").count;
+  const trackColCnt = useLayoutColumn("list").count;
   const totalColumns = trackColCnt * albumColCnt;
 
   const ScreenTheme = useMemo(
