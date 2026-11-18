@@ -23,7 +23,9 @@ import { getImageUri } from "~/lib/file-system";
 import { Seconds } from "~/_next/utils/date";
 import { Image } from "~/_next/components/primitives/image";
 import { LegendList } from "~/_next/components/primitives/legend-list";
+import { ChipButton } from "~/_next/components/button-chip";
 import { IconButton } from "~/_next/components/button-icon";
+import { Divider } from "~/_next/components/divider";
 import { TransitionGradient } from "~/_next/components/gradient";
 import { Icon } from "~/_next/components/icon";
 import { ImageCard } from "~/_next/components/image-card";
@@ -139,6 +141,35 @@ export default function Artist({
             }
           />
         ))}
+
+        {data.related.albums.length > 0 || data.related.genres.length > 0 ? (
+          <Divider className="mt-4" />
+        ) : null}
+
+        {data.related.albums.length > 0 ? (
+          <Label label={t("term.appearsIn")} />
+        ) : null}
+        {data.related.albums.map((item) => (
+          <ImageCard
+            key={item.id}
+            artwork={item.artwork}
+            label={item.name}
+            supporting={item.year}
+            onPress={() => navigation.navigate("Album", { id: item.id })}
+          />
+        ))}
+
+        {data.related.genres.length > 0 ? (
+          <View className="mt-4 flex-row flex-wrap gap-1.5">
+            {data.related.genres.map((genre) => (
+              <ChipButton
+                key={genre}
+                label={genre}
+                onPress={() => navigation.navigate("Genre", { id: genre })}
+              />
+            ))}
+          </View>
+        ) : null}
       </LegendList>
     </ThemeProvider>
   );

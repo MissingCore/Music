@@ -33,6 +33,7 @@ export function ThemeProvider({ children, colors }: ThemeProviderProps) {
     return {
       ...mergedColors,
       textMuted: withAlpha(mergedColors.text, 0.75),
+      border: withAlpha(mergedColors.text, 0.25),
     };
   }, [parentTheme, colors]);
   return <ThemeContext value={mergedTheme}>{children}</ThemeContext>;
