@@ -8,9 +8,10 @@ import { createPalette } from "react-native-material-palette";
 import { useColor } from "~/_next/context/theme-context";
 
 import type { HexColor } from "~/_next/constants/theme";
-import { clampBrightness } from "../utils/color";
+import { BoundedMap } from "~/_next/utils/bounded-map";
+import { clampBrightness } from "~/_next/utils/color";
 
-const ColorCache: Record<string, HexColor> = {};
+const ColorCache = new BoundedMap<string, HexColor>(100);
 
 /** Returns the dominant color of an image, clamped to a brightness of 75%. */
 export function useDimmedImageColor(src: unknown) {
@@ -24,7 +25,7 @@ export function useDimmedImageColor(src: unknown) {
   );
 
   useEffect(() => {
-    if (typeof src !== "string" || ColorCache[src]) return;
+    if (typeof src !== "string" || ColorCache.has(src)) return;
     let cancelled = false;
 
     createPalette({ uri: src })
@@ -33,7 +34,7 @@ export function useDimmedImageColor(src: unknown) {
         const dimmedColor = clampBrightness(
           colord(dominant.color),
         ).toHex() as HexColor;
-        ColorCache[src] = dimmedColor;
+        ColorCache.set(src, dimmedColor);
         if (!cancelled) setColor(dimmedColor);
       })
       .catch(() => {
@@ -45,5 +46,5 @@ export function useDimmedImageColor(src: unknown) {
     };
   }, [src]);
 
-  return typeof src !== "string" ? color : (ColorCache[src] ?? color);
+  return typeof src !== "string" ? color : (ColorCache.get(src) ?? color);
 }
