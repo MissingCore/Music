@@ -38,5 +38,5 @@ export function LegendList<T>(props: LegendListProps<T>) {
 }
 
 export function useLegendListRef() {
-  return useAnimatedRef() as unknown as LegendListRef;
+  return useAnimatedRef<RawLegendListRef>();
 }

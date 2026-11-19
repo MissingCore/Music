@@ -12,7 +12,7 @@ import { Ripple } from "./ripple";
 import { Text } from "./typography";
 import { Image } from "./primitives/image";
 
-interface ImageCardProps {
+interface ImageItemProps {
   artwork: string | null;
   label: string;
   supporting?: string;
@@ -20,7 +20,8 @@ interface ImageCardProps {
   className?: string;
 }
 
-export function ImageCard(props: ImageCardProps) {
+//#region Card
+export function ImageCard(props: ImageItemProps) {
   const backgroundColor = useColor("surface");
   return (
     <Ripple
@@ -49,3 +50,28 @@ export function ImageCard(props: ImageCardProps) {
     </Ripple>
   );
 }
+//#endregion
+
+//#region List Item
+export function ImageListItem(props: ImageItemProps) {
+  return (
+    <Ripple
+      onPress={props.onPress}
+      className={cn("flex-row rounded-lg", props.className)}
+    >
+      <Image
+        source={getImageUri(props.artwork)}
+        className="size-14 rounded-lg"
+      />
+      <View className="shrink grow justify-center px-2">
+        <Text numberOfLines={1}>{props.label}</Text>
+        {props.supporting ? (
+          <Text numberOfLines={1} color="textMuted" size="sm">
+            {props.supporting}
+          </Text>
+        ) : null}
+      </View>
+    </Ripple>
+  );
+}
+//#endregion
