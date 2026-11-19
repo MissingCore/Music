@@ -24,6 +24,7 @@ import {
   tracksToArtists,
   tracksToGenres,
 } from "~/db/schema";
+import { getArtistsWithArtwork } from "~/db/queries/artist";
 
 import { throwIfNoResults } from "~/_next/utils/drizzle";
 import type { Connector, MediaItem } from "../../types";
@@ -31,8 +32,8 @@ import type { Connector, MediaItem } from "../../types";
 export const LocalMediaArtistConnector = {
   async get(id) {
     //? 1. Get basic stored artist details. Throws an error if the artist doesn't exist.
-    const artist = await throwIfNoResults(
-      db.query.artists.findFirst({ where: eq(artists.name, id) }),
+    const [artist] = await throwIfNoResults(
+      getArtistsWithArtwork().where(eq(artists.name, id)).limit(1),
       "err.msg.noArtists",
     );
 
