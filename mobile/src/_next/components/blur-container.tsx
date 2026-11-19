@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import type { ViewProps } from "react-native";
-import { View } from "react-native";
+import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { useColor } from "~/_next/context/theme-context";
 
@@ -22,16 +22,20 @@ export function BlurContainer({
 }: BlurContainerProps) {
   const color = useColor(_color);
   return (
-    <View
+    <Animated.View
       {...props}
+      layout={LinearTransition}
       style={[
         {
-          backgroundColor: withAlpha(color, 0.15),
-          borderColor: withAlpha(color, 0.15),
+          backgroundColor: withAlpha(color, 0.4),
+          borderColor: withAlpha(color, 0.4),
         },
         style,
       ]}
-      className={cn("rounded-full border", className)}
+      className={cn(
+        "flex-row items-center overflow-hidden rounded-full border",
+        className,
+      )}
     />
   );
 }

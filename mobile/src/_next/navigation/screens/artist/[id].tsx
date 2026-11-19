@@ -17,6 +17,7 @@ import {
   CollapsibleTabView,
   createTabList,
 } from "react-native-collapsible-tabs-native";
+import { useShallow } from "zustand/react/shallow";
 
 import { LocalMediaAdapter } from "~/_next/adapters/local-media";
 import type { MediaItem } from "~/_next/adapters/types";
@@ -24,6 +25,7 @@ import { q } from "~/_next/data/key-store";
 
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePlayFromSource } from "~/_next/context/play-from-context";
+import { useSearchStore } from "~/_next/context/search-context";
 import { ThemeProvider, useTheme } from "~/_next/context/theme-context";
 import { useLayoutColumn } from "~/_next/hooks/use-column";
 import { useDimmedImageColor } from "~/_next/hooks/use-dimmed-image-color";
@@ -36,6 +38,7 @@ import type { ExtractQueryData } from "~/lib/react-query";
 import type { PlayFromSource } from "~/_next/constants/media";
 import { Seconds } from "~/_next/utils/date";
 import { OnRTL } from "~/_next/utils/i18n";
+import { containSorter } from "~/_next/utils/search";
 import { cn } from "~/_next/utils/style";
 import {
   FlatList,
@@ -53,8 +56,9 @@ import { TransitionGradient } from "~/_next/components/gradient";
 import { Icon } from "~/_next/components/icon";
 import { ImageCard } from "~/_next/components/image-card";
 import { ImageListItem } from "~/_next/components/image-list-item";
+import { TextInput } from "~/_next/components/input";
 import { Marquee } from "~/_next/components/marquee";
-import { Text } from "~/_next/components/typography";
+import { Text, TText } from "~/_next/components/typography";
 
 type ScreenData = ExtractQueryData<typeof useArtist>;
 type ScreenTab = "discography" | "top-tracks";
@@ -143,12 +147,13 @@ export default function Artist({
   );
 }
 
+//#region Top App Bar
 function ScreenActions() {
   const { t } = useTranslation();
   const navigation = useNavigation();
   return (
     <View className="absolute inset-x-0 z-100 pt-safe">
-      <View className="h-14 w-full flex-row items-center justify-between gap-4 px-2">
+      <View className="h-14 w-full flex-row items-center gap-4 px-2">
         <BlurContainer color="text">
           <IconButton
             icon={OnRTL.decide("arrow-right", "arrow-left")}
@@ -157,10 +162,51 @@ function ScreenActions() {
             color="text"
           />
         </BlurContainer>
+        <SearchBar />
       </View>
     </View>
   );
 }
+
+function SearchBar() {
+  const { t } = useTranslation();
+  const [searchEnabled, setSearchEnabled] = useState(false);
+  const query = useSearchStore((s) => s.query);
+  const setQuery = useSearchStore((s) => s.setQuery);
+
+  return (
+    <View className="relative min-w-10.5 flex-1 items-end">
+      <BlurContainer
+        color="text"
+        className={cn(
+          "h-10.5 max-w-[min(512px,100%)] min-w-10.5",
+          searchEnabled && "w-full pr-10 pl-2",
+        )}
+      >
+        {searchEnabled ? (
+          <TextInput
+            autoFocus
+            value={query}
+            onChangeText={setQuery}
+            className="size-full border-b"
+          />
+        ) : null}
+      </BlurContainer>
+      <IconButton
+        icon={searchEnabled ? "close" : "search"}
+        accessibilityLabel={t(
+          searchEnabled ? "form.close" : "feat.search.title",
+        )}
+        onPress={() => {
+          setSearchEnabled((prev) => !prev);
+          if (searchEnabled) setQuery("");
+        }}
+        className="absolute top-px right-px"
+      />
+    </View>
+  );
+}
+//#endregion
 
 //#region Header
 function ScreenHeader(props: {
@@ -273,9 +319,14 @@ function ScreenTabBar(props: TabBarProps) {
 function TopTracksTab({ topTracks }: Pick<ScreenData, "topTracks">) {
   const source = usePlayFromSource();
   const renderTrack = useMemo(() => renderTrackFactory(source), [source]);
+
+  const filteredTracks = useSearchStore(
+    useShallow((s) => containSorter(topTracks, s.query, ["name", "album"])),
+  );
+
   return (
     <SceneTab contentContainerStyle={{ paddingTop: 12 }}>
-      {topTracks.map(renderTrack)}
+      {filteredTracks.map(renderTrack)}
     </SceneTab>
   );
 }
@@ -296,16 +347,34 @@ function DiscographyTab({
   );
   const renderTrack = useMemo(() => renderTrackFactory(source), [source]);
 
+  const filteredAlbums = useSearchStore(
+    useShallow((s) =>
+      containSorter(discography.albums, s.query, ["name", "year"]),
+    ),
+  );
+
+  const filteredEPs = useSearchStore(
+    useShallow((s) =>
+      containSorter(discography.eps, s.query, ["name", "year"]),
+    ),
+  );
+
+  const filteredSingles = useSearchStore(
+    useShallow((s) =>
+      containSorter(discography.singles, s.query, ["name", "album"]),
+    ),
+  );
+
   return (
     <SceneTab>
-      {renderLabel(t("term.albums"), discography.albums)}
-      {discography.albums.map(renderAlbum)}
+      {renderLabel(t("term.albums"), filteredAlbums)}
+      {filteredAlbums.map(renderAlbum)}
 
-      {renderLabel(t("term.eps"), discography.eps)}
-      {discography.eps.map(renderAlbum)}
+      {renderLabel(t("term.eps"), filteredEPs)}
+      {filteredEPs.map(renderAlbum)}
 
-      {renderLabel(t("term.singles"), discography.singles)}
-      {discography.singles.map(renderTrack)}
+      {renderLabel(t("term.singles"), filteredSingles)}
+      {filteredSingles.map(renderTrack)}
 
       {related.albums.length > 0 || related.genres.length > 0 ? (
         <Divider className="mt-4" />
@@ -357,6 +426,11 @@ function SceneTab(props: {
         else if (item?.type === ImageListItem) layout.span = albumColCnt;
         else if (item) layout.span = totalColumns;
       }}
+      ListEmptyComponent={
+        <View className="p-8">
+          <TText textKey="err.msg.noResults" center />
+        </View>
+      }
       contentContainerClassName="gap-1.5 px-4"
       contentContainerStyle={[
         { paddingBottom: bottomOffset },

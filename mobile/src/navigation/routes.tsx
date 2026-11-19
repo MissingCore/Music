@@ -54,6 +54,7 @@ import LyricScreenGroup from "~/modules/lyric/screens";
 import Search from "~/modules/search/screens/View";
 
 import { PlayFromProvider } from "~/_next/context/play-from-context";
+import { SearchProvider } from "~/_next/context/search-context";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { useTabsByVisibility } from "~/stores/Preference/hooks";
 import { useBackHandler } from "~/hooks/useBackHandler";
@@ -286,7 +287,7 @@ export const RootStack = createNativeStackNavigator({
           type={route.name.toLowerCase() as MediaList}
           id={(route.params as { id: string }).id}
         >
-          {children}
+          <SearchProvider>{children}</SearchProvider>
         </PlayFromProvider>
       ),
       screenOptions: { headerShown: false },
