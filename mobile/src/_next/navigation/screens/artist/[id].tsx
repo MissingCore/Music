@@ -10,7 +10,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { ViewStyle } from "react-native";
 import { useWindowDimensions, View } from "react-native";
 import type { TabBarProps } from "react-native-collapsible-tabs-native";
 import {
@@ -318,16 +317,36 @@ function ScreenTabBar(props: TabBarProps) {
 //#region Top Tracks Tab
 function TopTracksTab({ topTracks }: Pick<ScreenData, "topTracks">) {
   const source = usePlayFromSource();
-  const renderTrack = useMemo(() => renderTrackFactory(source), [source]);
+  const bottomOffset = useBottomActionsOffset();
+  const trackColCnt = useLayoutColumn("list").count;
 
   const filteredTracks = useSearchStore(
     useShallow((s) => containSorter(topTracks, s.query, ["name", "album"])),
   );
 
   return (
-    <SceneTab contentContainerStyle={{ paddingTop: 12 }}>
-      {filteredTracks.map(renderTrack)}
-    </SceneTab>
+    <TabLegendList
+      numColumns={trackColCnt}
+      data={filteredTracks}
+      keyExtractor={({ id }) => id}
+      renderItem={({ item }) => (
+        <ImageListItem
+          artwork={item.artwork}
+          label={item.name}
+          supporting={item.album ?? "—"}
+          onPress={() =>
+            PlaybackControls.playFromList({ source, trackId: item.id })
+          }
+        />
+      )}
+      ListEmptyComponent={
+        <View className="p-8">
+          <TText textKey="err.msg.noResults" center />
+        </View>
+      }
+      contentContainerClassName="gap-1.5 px-4"
+      contentContainerStyle={{ paddingBottom: bottomOffset, paddingTop: 12 }}
+    />
   );
 }
 //#endregion
@@ -403,10 +422,7 @@ function DiscographyTab({
 const TabLegendList = createTabList(LegendList) as LegendListSignature;
 
 /** Generic tab layout for rendering albums, tracks, and other content lazily. */
-function SceneTab(props: {
-  children: React.ReactNode;
-  contentContainerStyle?: ViewStyle;
-}) {
+function SceneTab(props: { children: React.ReactNode }) {
   const bottomOffset = useBottomActionsOffset();
 
   const albumColCnt = useLayoutColumn("grid").count;
@@ -432,10 +448,7 @@ function SceneTab(props: {
         </View>
       }
       contentContainerClassName="gap-1.5 px-4"
-      contentContainerStyle={[
-        { paddingBottom: bottomOffset },
-        props.contentContainerStyle,
-      ]}
+      contentContainerStyle={{ paddingBottom: bottomOffset }}
     >
       {props.children}
     </TabLegendList>
