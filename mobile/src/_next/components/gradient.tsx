@@ -26,23 +26,17 @@ export function TransitionGradient({
 }: TransitionGradientProps) {
   const gradientColor = useColor(color);
 
-  const gradientProps = useMemo(
-    () =>
-      easing
-        ? (easeGradient({
-            colorStops: {
-              0: { color: withAlpha(gradientColor, toTransparent ? 1 : 0) },
-              1: { color: withAlpha(gradientColor, toTransparent ? 0 : 1) },
-            },
-          }) as unknown as Pick<LinearGradientProps, "colors" | "locations">)
-        : {
-            colors: [
-              withAlpha(gradientColor, toTransparent ? 1 : 0),
-              withAlpha(gradientColor, toTransparent ? 0 : 1),
-            ] as LinearGradientProps["colors"],
-          },
-    [easing, toTransparent, gradientColor],
-  );
+  const gradientProps = useMemo(() => {
+    const fromColor = withAlpha(gradientColor, toTransparent ? 1 : 0);
+    const toColor = withAlpha(gradientColor, toTransparent ? 0 : 1);
+    return easing
+      ? (easeGradient({
+          colorStops: { 0: { color: fromColor }, 1: { color: toColor } },
+        }) as unknown as Pick<LinearGradientProps, "colors" | "locations">)
+      : {
+          colors: [fromColor, toColor] as LinearGradientProps["colors"],
+        };
+  }, [easing, toTransparent, gradientColor]);
 
   return <LinearGradient {...props} {...gradientProps} />;
 }

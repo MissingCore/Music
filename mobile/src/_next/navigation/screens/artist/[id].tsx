@@ -88,6 +88,7 @@ export default function Artist({
     () =>
       ({
         background: backgroundColor,
+        surface: "#FFFFFF",
         text: "#FFFFFF",
       }) as const,
     [backgroundColor],
@@ -152,7 +153,7 @@ function ScreenActions() {
   return (
     <View className="absolute inset-x-0 z-100 pt-safe">
       <View className="h-14 w-full flex-row items-center gap-4 px-2">
-        <BlurContainer color="text">
+        <BlurContainer>
           <IconButton
             icon={OnRTL.decide("arrow-right", "arrow-left")}
             accessibilityLabel={t("form.back")}
@@ -175,7 +176,6 @@ function SearchBar() {
   return (
     <View className="relative min-w-10.5 flex-1 items-end">
       <BlurContainer
-        color="text"
         className={cn(
           "h-10.5 max-w-[min(512px,100%)] min-w-10.5",
           searchEnabled && "w-full pr-10 pl-2",
@@ -232,6 +232,7 @@ function ScreenHeader(props: {
       <Image
         source={props.artwork}
         contentPosition="top"
+        style={{ filter: [{ brightness: "95%" }] }}
         className="absolute inset-0"
       />
       <TransitionGradient

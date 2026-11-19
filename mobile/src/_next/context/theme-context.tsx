@@ -49,7 +49,8 @@ export function useTheme() {
  * color role. Defaults to `text`.
  */
 export function useColor(color: AppColor) {
-  return isHexColor(color) ? color : use(ThemeContext)[color];
+  const theme = use(ThemeContext);
+  return isHexColor(color) ? color : theme[color];
 }
 //#endregion
 

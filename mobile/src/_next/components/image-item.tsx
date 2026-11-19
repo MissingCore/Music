@@ -7,10 +7,10 @@ import { useColor } from "~/_next/context/theme-context";
 
 import { getImageUri } from "~/lib/file-system";
 import { cn } from "~/_next/utils/style";
+import { Image } from "./primitives/image";
 import { TransitionGradient } from "./gradient";
 import { Ripple } from "./ripple";
 import { Text } from "./typography";
-import { Image } from "./primitives/image";
 
 interface ImageItemProps {
   artwork: string | null;
