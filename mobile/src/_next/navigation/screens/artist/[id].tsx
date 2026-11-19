@@ -125,6 +125,7 @@ export default function Artist({
               artwork={data.artwork}
               metadata={t("plural.track", { count: data.numTracks })}
               duration={data.totalDuration}
+              numTracks={data.numTracks}
             />
           )}
           renderTabBar={ScreenTabBar}
@@ -213,6 +214,7 @@ function ScreenHeader(props: {
   artwork: string | null;
   metadata: string;
   duration: number;
+  numTracks: number;
 }) {
   const { t } = useTranslation();
   const dimensions = useWindowDimensions();
@@ -259,9 +261,10 @@ function ScreenHeader(props: {
             accessibilityLabel={t("term.play")}
             icon="play-filled"
             onPress={() => PlaybackControls.playFromList({ source })}
+            disabled={props.numTracks === 0}
             iconColor="background"
             color="text"
-            className="h-14 w-full max-w-36"
+            className="h-14 w-full max-w-36 disabled:opacity-50"
             style={{ backgroundColor: text }}
           />
         </View>
