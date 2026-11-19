@@ -185,9 +185,10 @@ function SearchBar() {
         {searchEnabled ? (
           <TextInput
             autoFocus
+            placeholder={t("feat.search.extra.searchMedia")}
             value={query}
             onChangeText={setQuery}
-            className="size-full border-b"
+            className="size-full"
           />
         ) : null}
       </BlurContainer>

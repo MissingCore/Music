@@ -8,6 +8,7 @@ export function ScrollView(props: AnimatedScrollViewProps) {
   return (
     <Animated.ScrollView
       removeClippedSubviews
+      overScrollMode="never"
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
       {...props}
