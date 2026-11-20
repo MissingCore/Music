@@ -39,16 +39,18 @@ export const LocalMediaArtistConnector = {
 
     //? 2. Get aggregated data related to its tracks. It's faster to do this rather than
     //? deriving `totalDuration` from reducing `artistTopTracks`.
-    const [agg] = await db
-      .select({
-        numTracks: count(tracks.id),
-        totalDuration: sql`coalesce(sum(${tracks.duration}), 0)`.mapWith(
-          Number,
-        ),
-      })
-      .from(tracksToArtists)
-      .where(eq(tracksToArtists.artistName, id))
-      .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id));
+    const [agg] = await throwIfNoResults(
+      db
+        .select({
+          numTracks: count(tracks.id),
+          totalDuration: sql`coalesce(sum(${tracks.duration}), 0)`.mapWith(
+            Number,
+          ),
+        })
+        .from(tracksToArtists)
+        .where(eq(tracksToArtists.artistName, id))
+        .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id)),
+    );
 
     //? 3. Get tracks, sorted by how many times we played them.
     const artistTopTracks = await db
@@ -215,7 +217,7 @@ export const LocalMediaArtistConnector = {
     return {
       name: artist.name,
       artwork: artist.artwork,
-      ...agg!,
+      ...agg,
       topTracks: artistTopTracks,
       discography: {
         ...categorizedAlbums,
