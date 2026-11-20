@@ -137,24 +137,6 @@ function ScreenContents({
     [topTracks, trackColCnt],
   );
 
-  const filteredAlbums = useSearchStore(
-    useShallow((s) =>
-      containSorter(discography.albums, s.query, ["name", "year"]),
-    ),
-  );
-
-  const filteredEPs = useSearchStore(
-    useShallow((s) =>
-      containSorter(discography.eps, s.query, ["name", "year"]),
-    ),
-  );
-
-  const filteredSingles = useSearchStore(
-    useShallow((s) =>
-      containSorter(discography.singles, s.query, ["name", "album"]),
-    ),
-  );
-
   return (
     <LegendList
       numColumns={totalColumns}
@@ -189,14 +171,14 @@ function ScreenContents({
       ) : null}
       {limitedTopTracks.map(renderTrack)}
 
-      {renderLabel(t("term.albums"), filteredAlbums)}
-      {filteredAlbums.map(renderAlbum)}
+      {renderLabel(t("term.albums"), discography.albums)}
+      {discography.albums.map(renderAlbum)}
 
-      {renderLabel(t("term.eps"), filteredEPs)}
-      {filteredEPs.map(renderAlbum)}
+      {renderLabel(t("term.eps"), discography.eps)}
+      {discography.eps.map(renderAlbum)}
 
-      {renderLabel(t("term.singles"), filteredSingles)}
-      {filteredSingles.map(renderTrack)}
+      {renderLabel(t("term.singles"), discography.singles)}
+      {discography.singles.map(renderTrack)}
 
       {related.albums.length > 0 || related.genres.length > 0 ? (
         <Divider className="mt-4" />
@@ -245,7 +227,7 @@ export function ArtistTopTracks({
   return (
     <ThemeProvider colors={ScreenTheme}>
       <View style={{ backgroundColor }} className="grow">
-        <ScreenActions />
+        <ScreenActions searchEnabled />
         <TopTracksScreenContents topTracks={data.topTracks} />
       </View>
     </ThemeProvider>
@@ -289,7 +271,7 @@ function TopTracksScreenContents({ topTracks }: Pick<ScreenData, "topTracks">) {
 //#endregion
 
 //#region Top App Bar
-function ScreenActions() {
+function ScreenActions({ searchEnabled = false }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   return (
@@ -303,7 +285,7 @@ function ScreenActions() {
             color="text"
           />
         </BlurContainer>
-        <SearchBar />
+        {searchEnabled ? <SearchBar /> : null}
       </View>
     </View>
   );
