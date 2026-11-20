@@ -29,6 +29,11 @@ export function BlurContainer({
         {
           backgroundColor: withAlpha(color, 0.4),
           borderColor: withAlpha(color, 0.4),
+          //! FIXME: Elevation makes text colored by `color` more readable.
+          //! However, there might be the possibility of some weird geometric
+          //! rendering inside the view due using `elevation` with a transparent
+          //! background, so we might remove this.
+          elevation: 25,
         },
         style,
       ]}
