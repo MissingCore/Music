@@ -27,8 +27,8 @@ export function BlurContainer({
       layout={LinearTransition}
       style={[
         {
-          backgroundColor: withAlpha(color, 0.4),
-          borderColor: withAlpha(color, 0.4),
+          backgroundColor: withAlpha(color, 0.15),
+          borderColor: withAlpha(color, 0.15),
           //! FIXME: Elevation makes text colored by `color` more readable.
           //! However, there might be the possibility of some weird geometric
           //! rendering inside the view due using `elevation` with a transparent

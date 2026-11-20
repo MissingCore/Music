@@ -159,7 +159,7 @@ function ScreenContents({
           onPress={() =>
             navigation.navigate("ArtistTopTracks", { id: source.id })
           }
-          className="-mx-4 mt-1.5 flex-row items-center px-4"
+          className="-mx-4 flex-row items-center px-4 py-1.5"
         >
           <Marquee wrapperClassName="grow-0">
             <Text bold size="xl">
@@ -324,6 +324,7 @@ function SearchBar() {
           setSearchEnabled((prev) => !prev);
           if (searchEnabled) setQuery("");
         }}
+        color="text"
         className="absolute top-px right-px"
       />
     </View>
@@ -400,7 +401,7 @@ function ScreenHeader(props: {
 //#region Helpers
 function Label({ label }: { label: string }) {
   return (
-    <Marquee wrapperClassName="pt-1.5">
+    <Marquee wrapperClassName="py-1.5">
       <Text bold size="xl">
         {label}
       </Text>
