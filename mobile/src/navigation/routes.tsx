@@ -18,7 +18,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { PortalHost } from "@rn-primitives/portal";
 import { useCallback, useMemo, useRef } from "react";
 
-import Artist from "~/_next/navigation/screens/artist/[id]";
+import {
+  Artist,
+  ArtistTopTracks,
+} from "~/_next/navigation/screens/artist/[id]";
 import Home from "./screens/HomeView";
 import Album from "./screens/albums/CurrentView";
 import ModifyAlbum from "./screens/albums/ModifyView";
@@ -295,6 +298,10 @@ export const RootStack = createNativeStackNavigator({
         Playlist,
         Album,
         Artist,
+        ArtistTopTracks: {
+          screen: ArtistTopTracks,
+          options: { animation: "fade" },
+        },
         Genre,
       },
     },

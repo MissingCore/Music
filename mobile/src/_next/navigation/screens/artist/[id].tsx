@@ -8,14 +8,9 @@ import type {
 } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useWindowDimensions, View } from "react-native";
-import type { TabBarProps } from "react-native-collapsible-tabs-native";
-import {
-  CollapsibleTabView,
-  createTabList,
-} from "react-native-collapsible-tabs-native";
 import { useShallow } from "zustand/react/shallow";
 
 import { LocalMediaAdapter } from "~/_next/adapters/local-media";
@@ -39,14 +34,8 @@ import { Seconds } from "~/_next/utils/date";
 import { OnRTL } from "~/_next/utils/i18n";
 import { containSorter } from "~/_next/utils/search";
 import { cn } from "~/_next/utils/style";
-import {
-  FlatList,
-  useFlatListRef,
-} from "~/_next/components/primitives/flat-list";
 import { Image } from "~/_next/components/primitives/image";
-import type { LegendListSignature } from "~/_next/components/primitives/legend-list";
 import { LegendList } from "~/_next/components/primitives/legend-list";
-import { Pressable } from "~/_next/components/primitives/pressable";
 import { BlurContainer } from "~/_next/components/blur-container";
 import { ChipButton } from "~/_next/components/button-chip";
 import { IconButton } from "~/_next/components/button-icon";
@@ -56,10 +45,10 @@ import { Icon } from "~/_next/components/icon";
 import { ImageCard, ImageListItem } from "~/_next/components/image-item";
 import { TextInput } from "~/_next/components/input";
 import { Marquee } from "~/_next/components/marquee";
+import { Ripple } from "~/_next/components/ripple";
 import { Text, TText } from "~/_next/components/typography";
 
 type ScreenData = ExtractQueryData<typeof useArtist>;
-type ScreenTab = "discography" | "top-tracks";
 
 function useArtist(id: string) {
   return useQuery({
@@ -74,7 +63,8 @@ function useArtist(id: string) {
 
 type Props = StaticScreenProps<{ id: string }>;
 
-export default function Artist({
+//#region Artist Screen
+export function Artist({
   route: {
     params: { id },
   },
@@ -82,7 +72,6 @@ export default function Artist({
   const { t } = useTranslation();
   const { isPending, error, data } = useArtist(id);
 
-  //#region Theming
   const backgroundColor = useDimmedImageColor(data?.artwork);
   const ScreenTheme = useMemo(
     () =>
@@ -93,22 +82,6 @@ export default function Artist({
       }) as const,
     [backgroundColor],
   );
-  //#endregion
-
-  //#region Tabs
-  const [tabIndex, setTabIndex] = useState(0);
-  const routes = useMemo(() => {
-    const routes: Array<{ key: ScreenTab; title: string }> = [
-      { key: "discography", title: t("term.discography") },
-    ];
-    if ((data?.topTracks.length || 0) > 0)
-      routes.push({
-        key: "top-tracks",
-        title: t("feat.recap.extra.top", { name: t("term.tracks") }),
-      });
-    return routes;
-  }, [t, data?.topTracks.length]);
-  //#endregion
 
   if (isPending) return <Text>Loading...</Text>;
   if (error) return <GoBack />;
@@ -116,10 +89,11 @@ export default function Artist({
     <ThemeProvider colors={ScreenTheme}>
       <View style={{ backgroundColor }} className="grow">
         <ScreenActions />
-        <CollapsibleTabView
-          navigationState={{ index: tabIndex, routes }}
-          onIndexChange={setTabIndex}
-          renderHeader={() => (
+        <ScreenContents
+          discography={data.discography}
+          related={data.related}
+          topTracks={data.topTracks}
+          Header={
             <ScreenHeader
               name={data.name}
               artwork={data.artwork}
@@ -127,25 +101,192 @@ export default function Artist({
               duration={data.totalDuration}
               numTracks={data.numTracks}
             />
-          )}
-          renderTabBar={ScreenTabBar}
-          renderScene={({ route: { key } }) =>
-            key === "discography" ? (
-              <DiscographyTab
-                discography={data.discography}
-                related={data.related}
-              />
-            ) : (
-              <TopTracksTab topTracks={data.topTracks} />
-            )
           }
-          pinTabBar={false}
-          swipeEnabled={routes.length > 1}
         />
       </View>
     </ThemeProvider>
   );
 }
+
+function ScreenContents({
+  Header,
+  topTracks,
+  discography,
+  related,
+}: { Header: React.JSX.Element } & Pick<
+  ScreenData,
+  "topTracks" | "discography" | "related"
+>) {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+  const source = usePlayFromSource();
+
+  const bottomOffset = useBottomActionsOffset();
+  const albumColCnt = useLayoutColumn("grid").count;
+  const trackColCnt = useLayoutColumn("list").count;
+  const totalColumns = trackColCnt * albumColCnt;
+
+  const renderAlbum = useMemo(
+    () => renderAlbumFactory(navigation),
+    [navigation],
+  );
+  const renderTrack = useMemo(() => renderTrackFactory(source), [source]);
+
+  const limitedTopTracks = useMemo(
+    () => topTracks.slice(0, trackColCnt * 5),
+    [topTracks, trackColCnt],
+  );
+
+  const filteredAlbums = useSearchStore(
+    useShallow((s) =>
+      containSorter(discography.albums, s.query, ["name", "year"]),
+    ),
+  );
+
+  const filteredEPs = useSearchStore(
+    useShallow((s) =>
+      containSorter(discography.eps, s.query, ["name", "year"]),
+    ),
+  );
+
+  const filteredSingles = useSearchStore(
+    useShallow((s) =>
+      containSorter(discography.singles, s.query, ["name", "album"]),
+    ),
+  );
+
+  return (
+    <LegendList
+      numColumns={totalColumns}
+      getItemType={(item: React.JSX.Element) => {
+        if (item?.type === Label) return "label";
+        if (item?.type === ImageCard) return "album-item";
+        else if (item?.type === ImageListItem) return "track-item";
+      }}
+      overrideItemLayout={(layout, item: React.JSX.Element) => {
+        if (item?.type === ImageCard) layout.span = trackColCnt;
+        else if (item?.type === ImageListItem) layout.span = albumColCnt;
+        else if (item) layout.span = totalColumns;
+      }}
+      ListHeaderComponent={Header}
+      contentContainerClassName="gap-1.5 px-4"
+      contentContainerStyle={{ paddingBottom: bottomOffset }}
+    >
+      {limitedTopTracks.length > 0 ? (
+        <Ripple
+          onPress={() =>
+            navigation.navigate("ArtistTopTracks", { id: source.id })
+          }
+          className="-mx-4 mt-1.5 flex-row items-center px-4"
+        >
+          <Marquee wrapperClassName="grow-0">
+            <Text bold size="xl">
+              {t("feat.recap.extra.top", { name: t("term.tracks") })}
+            </Text>
+          </Marquee>
+          <Icon name={OnRTL.decide("left", "right")} size={32} />
+        </Ripple>
+      ) : null}
+      {limitedTopTracks.map(renderTrack)}
+
+      {renderLabel(t("term.albums"), filteredAlbums)}
+      {filteredAlbums.map(renderAlbum)}
+
+      {renderLabel(t("term.eps"), filteredEPs)}
+      {filteredEPs.map(renderAlbum)}
+
+      {renderLabel(t("term.singles"), filteredSingles)}
+      {filteredSingles.map(renderTrack)}
+
+      {related.albums.length > 0 || related.genres.length > 0 ? (
+        <Divider className="mt-4" />
+      ) : null}
+
+      {renderLabel(t("term.appearsIn"), related.albums)}
+      {related.albums.map(renderAlbum)}
+
+      {related.genres.length > 0 ? (
+        <View className="mt-4 flex-row flex-wrap gap-1.5">
+          {related.genres.map((genre) => (
+            <ChipButton
+              key={genre}
+              label={genre}
+              onPress={() => navigation.navigate("Genre", { id: genre })}
+            />
+          ))}
+        </View>
+      ) : null}
+    </LegendList>
+  );
+}
+//#endregion
+
+//#region Top Tracks Screen
+export function ArtistTopTracks({
+  route: {
+    params: { id },
+  },
+}: Props) {
+  const { isPending, error, data } = useArtist(id);
+
+  const backgroundColor = useDimmedImageColor(data?.artwork);
+  const ScreenTheme = useMemo(
+    () =>
+      ({
+        background: backgroundColor,
+        surface: "#FFFFFF",
+        text: "#FFFFFF",
+      }) as const,
+    [backgroundColor],
+  );
+
+  if (isPending) return <Text>Loading...</Text>;
+  if (error) return <GoBack />;
+  return (
+    <ThemeProvider colors={ScreenTheme}>
+      <View style={{ backgroundColor }} className="grow">
+        <ScreenActions />
+        <TopTracksScreenContents topTracks={data.topTracks} />
+      </View>
+    </ThemeProvider>
+  );
+}
+
+function TopTracksScreenContents({ topTracks }: Pick<ScreenData, "topTracks">) {
+  const source = usePlayFromSource();
+  const bottomOffset = useBottomActionsOffset();
+  const trackColCnt = useLayoutColumn("list").count;
+
+  const filteredTracks = useSearchStore(
+    useShallow((s) => containSorter(topTracks, s.query, ["name", "album"])),
+  );
+
+  return (
+    <LegendList
+      numColumns={trackColCnt}
+      data={filteredTracks}
+      keyExtractor={({ id }) => id}
+      renderItem={({ item }) => (
+        <ImageListItem
+          artwork={item.artwork}
+          label={item.name}
+          supporting={item.album ?? "—"}
+          onPress={() =>
+            PlaybackControls.playFromList({ source, trackId: item.id })
+          }
+        />
+      )}
+      ListEmptyComponent={
+        <View className="p-8">
+          <TText textKey="err.msg.noResults" center />
+        </View>
+      }
+      contentContainerClassName="gap-1.5 px-4 pt-safe-offset-18"
+      contentContainerStyle={{ paddingBottom: bottomOffset }}
+    />
+  );
+}
+//#endregion
 
 //#region Top App Bar
 function ScreenActions() {
@@ -274,191 +415,7 @@ function ScreenHeader(props: {
 }
 //#endregion
 
-//#region Tab Bar
-function ScreenTabBar(props: TabBarProps) {
-  const prevTabIndex = useRef(0);
-  const tabListRef = useFlatListRef();
-
-  //? Scrolls to active index when tab changes.
-  if (props.index !== prevTabIndex.current) {
-    prevTabIndex.current = props.index;
-    tabListRef.current?.scrollToIndex({
-      index: props.index,
-      viewPosition: 0.5,
-    });
-  }
-
-  return (
-    <FlatList
-      ref={tabListRef}
-      horizontal
-      data={props.routes}
-      keyExtractor={({ key }) => key}
-      renderItem={({ item: { title }, index }) => (
-        <Pressable
-          onPress={() => props.onIndexChange(index)}
-          className={cn(
-            "min-w-12",
-            index === props.routes.length - 1 && "pr-24",
-          )}
-        >
-          <Text
-            bold
-            center
-            size="xl"
-            color={props.index === index ? "text" : "textMuted"}
-          >
-            {title}
-          </Text>
-        </Pressable>
-      )}
-      contentContainerClassName="items-center gap-6 p-4"
-    />
-  );
-}
-//#endregion
-
-//#region Top Tracks Tab
-function TopTracksTab({ topTracks }: Pick<ScreenData, "topTracks">) {
-  const source = usePlayFromSource();
-  const bottomOffset = useBottomActionsOffset();
-  const trackColCnt = useLayoutColumn("list").count;
-
-  const filteredTracks = useSearchStore(
-    useShallow((s) => containSorter(topTracks, s.query, ["name", "album"])),
-  );
-
-  return (
-    <TabLegendList
-      numColumns={trackColCnt}
-      data={filteredTracks}
-      keyExtractor={({ id }) => id}
-      renderItem={({ item }) => (
-        <ImageListItem
-          artwork={item.artwork}
-          label={item.name}
-          supporting={item.album ?? "—"}
-          onPress={() =>
-            PlaybackControls.playFromList({ source, trackId: item.id })
-          }
-        />
-      )}
-      ListEmptyComponent={
-        <View className="p-8">
-          <TText textKey="err.msg.noResults" center />
-        </View>
-      }
-      contentContainerClassName="gap-1.5 px-4"
-      contentContainerStyle={{ paddingBottom: bottomOffset, paddingTop: 12 }}
-    />
-  );
-}
-//#endregion
-
-//#region Discography Tab
-function DiscographyTab({
-  discography,
-  related,
-}: Pick<ScreenData, "discography" | "related">) {
-  const { t } = useTranslation();
-  const navigation = useNavigation();
-  const source = usePlayFromSource();
-
-  const renderAlbum = useMemo(
-    () => renderAlbumFactory(navigation),
-    [navigation],
-  );
-  const renderTrack = useMemo(() => renderTrackFactory(source), [source]);
-
-  const filteredAlbums = useSearchStore(
-    useShallow((s) =>
-      containSorter(discography.albums, s.query, ["name", "year"]),
-    ),
-  );
-
-  const filteredEPs = useSearchStore(
-    useShallow((s) =>
-      containSorter(discography.eps, s.query, ["name", "year"]),
-    ),
-  );
-
-  const filteredSingles = useSearchStore(
-    useShallow((s) =>
-      containSorter(discography.singles, s.query, ["name", "album"]),
-    ),
-  );
-
-  return (
-    <SceneTab>
-      {renderLabel(t("term.albums"), filteredAlbums)}
-      {filteredAlbums.map(renderAlbum)}
-
-      {renderLabel(t("term.eps"), filteredEPs)}
-      {filteredEPs.map(renderAlbum)}
-
-      {renderLabel(t("term.singles"), filteredSingles)}
-      {filteredSingles.map(renderTrack)}
-
-      {related.albums.length > 0 || related.genres.length > 0 ? (
-        <Divider className="mt-4" />
-      ) : null}
-
-      {renderLabel(t("term.appearsIn"), related.albums)}
-      {related.albums.map(renderAlbum)}
-
-      {related.genres.length > 0 ? (
-        <View className="mt-4 flex-row flex-wrap gap-1.5">
-          {related.genres.map((genre) => (
-            <ChipButton
-              key={genre}
-              label={genre}
-              onPress={() => navigation.navigate("Genre", { id: genre })}
-            />
-          ))}
-        </View>
-      ) : null}
-    </SceneTab>
-  );
-}
-//#endregion
-
 //#region Helpers
-const TabLegendList = createTabList(LegendList) as LegendListSignature;
-
-/** Generic tab layout for rendering albums, tracks, and other content lazily. */
-function SceneTab(props: { children: React.ReactNode }) {
-  const bottomOffset = useBottomActionsOffset();
-
-  const albumColCnt = useLayoutColumn("grid").count;
-  const trackColCnt = useLayoutColumn("list").count;
-  const totalColumns = trackColCnt * albumColCnt;
-
-  return (
-    <TabLegendList
-      numColumns={totalColumns}
-      getItemType={(item: React.JSX.Element) => {
-        if (item?.type === Label) return "label";
-        if (item?.type === ImageCard) return "album-item";
-        else if (item?.type === ImageListItem) return "track-item";
-      }}
-      overrideItemLayout={(layout, item: React.JSX.Element) => {
-        if (item?.type === ImageCard) layout.span = trackColCnt;
-        else if (item?.type === ImageListItem) layout.span = albumColCnt;
-        else if (item) layout.span = totalColumns;
-      }}
-      ListEmptyComponent={
-        <View className="p-8">
-          <TText textKey="err.msg.noResults" center />
-        </View>
-      }
-      contentContainerClassName="gap-1.5 px-4"
-      contentContainerStyle={{ paddingBottom: bottomOffset }}
-    >
-      {props.children}
-    </TabLegendList>
-  );
-}
-
 function Label({ label }: { label: string }) {
   return (
     <Marquee wrapperClassName="pt-1.5">
