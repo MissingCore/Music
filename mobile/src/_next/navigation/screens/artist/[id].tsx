@@ -86,7 +86,10 @@ export function Artist({
 
   if (isPending)
     return <PagePlaceholder isPending wrapperClassName="pt-safe-offset-18" />;
-  if (error) return <GoBack />;
+  if (error)
+    return (
+      <GoBack message={t("template.notFound", { name: t("term.artist") })} />
+    );
   return (
     <ThemeProvider colors={ScreenTheme}>
       <View style={{ backgroundColor }} className="grow">
@@ -211,6 +214,7 @@ export function ArtistTopTracks({
     params: { id },
   },
 }: Props) {
+  const { t } = useTranslation();
   const { isPending, error, data } = useArtist(id);
 
   const backgroundColor = useDimmedImageColor(data?.artwork);
@@ -224,8 +228,12 @@ export function ArtistTopTracks({
     [backgroundColor],
   );
 
-  if (isPending) return <Text>Loading...</Text>;
-  if (error) return <GoBack />;
+  if (isPending)
+    return <PagePlaceholder isPending wrapperClassName="pt-safe-offset-18" />;
+  if (error)
+    return (
+      <GoBack message={t("template.notFound", { name: t("term.artist") })} />
+    );
   return (
     <ThemeProvider colors={ScreenTheme}>
       <View style={{ backgroundColor }} className="grow">
