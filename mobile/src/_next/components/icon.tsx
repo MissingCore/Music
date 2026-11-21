@@ -5,11 +5,11 @@ import type { ViewStyle } from "react-native";
 import { View } from "react-native";
 import { createNanoIconSet } from "react-native-nano-icons";
 
-import glyphMap from "~/resources/icons/app-icons.glyphmap.json";
+import glyphMap from "~/_next/resources/icons/icons.glyphmap.json";
 
-import { useColor } from "../context/theme-context";
+import { useColor } from "~/_next/context/theme-context";
 
-import type { AppColor } from "../constants/theme";
+import type { AppColor } from "~/_next/constants/theme";
 
 const AppIcons = createNanoIconSet(glyphMap);
 

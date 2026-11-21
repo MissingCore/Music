@@ -33,6 +33,7 @@
 | ionicons | MIT | https://github.com/ionic-team/ionicons |
 | jotai | MIT | https://github.com/pmndrs/jotai |
 | Material Symbols | Apache-2.0 | https://github.com/google/material-design-icons |
+| MingCute Icons | Apache-2.0 | https://github.com/mingcute-design/mingcute-icons |
 | NDot日本語 | OFL-1.1 | https://x.com/NdotJP_Font |
 | react | MIT | https://github.com/react/react |
 | react-i18next | MIT | https://github.com/i18next/react-i18next |
@@ -40,6 +41,7 @@
 | react-native-android-widget | MIT | https://github.com/sAleksovski/react-native-android-widget |
 | react-native-audio-browser | MIT | https://github.com/radio-garden/react-native-audio-browser |
 | react-native-bootsplash | MIT | https://github.com/zoontek/react-native-bootsplash |
+| react-native-easing-gradient | MIT | https://github.com/tienphaw/react-native-easing-gradient |
 | react-native-gesture-handler | MIT | https://github.com/software-mansion/react-native-gesture-handler |
 | react-native-keyboard-controller | MIT | https://github.com/kirillzyusko/react-native-keyboard-controller |
 | react-native-markdown-renderer | MIT | https://github.com/mientjan/react-native-markdown-renderer |

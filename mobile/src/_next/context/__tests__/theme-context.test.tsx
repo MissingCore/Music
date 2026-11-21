@@ -3,7 +3,7 @@
 
 import { renderHook } from "@testing-library/react-native";
 
-import { THEMES } from "../../constants/theme";
+import { THEMES } from "~/_next/constants/theme";
 import { ThemeProvider, useTheme, useColor } from "../theme-context";
 
 const BLUE = "#0000FF";

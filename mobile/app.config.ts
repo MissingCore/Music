@@ -118,6 +118,10 @@ export default (): ExpoConfig => {
               inputDir: "./assets/icons/app-icons",
               outputDir: "./src/resources/icons",
             },
+            {
+              inputDir: "./src/_next/resources/icons",
+              outputDir: "./src/_next/resources/icons",
+            },
           ],
         },
       ],

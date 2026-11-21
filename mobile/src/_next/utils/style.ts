@@ -5,7 +5,7 @@ import type { ClassValue } from "clsx";
 import { clsx } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 
-import { FONT_FAMILY, FONT_SIZE } from "../constants/theme";
+import { FONT_FAMILY, FONT_SIZE } from "~/_next/constants/theme";
 
 const customTwMerge = extendTailwindMerge({
   override: {

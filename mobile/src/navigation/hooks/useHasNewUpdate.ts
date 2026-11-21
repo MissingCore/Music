@@ -77,7 +77,6 @@ function useLatestRelease() {
     queryFn: getLatestRelease,
     enabled: checkForUpdates,
     gcTime: Infinity,
-    retry: false,
   });
 }
 //#endregion

@@ -6,10 +6,10 @@ import { useTranslation } from "react-i18next";
 import { useShallow } from "zustand/react/shallow";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { getFont, useColor } from "../context/theme-context";
+import { getFont, useColor } from "~/_next/context/theme-context";
 
-import type { AppColor, FontSize } from "../constants/theme";
-import { cn } from "../utils/style";
+import type { AppColor, FontSize } from "~/_next/constants/theme";
+import { cn } from "~/_next/utils/style";
 import type { TextProps as BaseTextProps } from "./primitives/text";
 import { Text as BaseText } from "./primitives/text";
 

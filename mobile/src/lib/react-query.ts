@@ -13,6 +13,8 @@ const queryConfig: DefaultOptions = {
     networkMode: "always",
     staleTime: Infinity,
     gcTime: 2.5 * 60 * 1000,
+    //? Don't retry query as currently, it looks through our SQLite store.
+    retry: false,
   },
   mutations: {
     networkMode: "always",
