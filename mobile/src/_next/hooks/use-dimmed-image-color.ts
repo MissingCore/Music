@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { colord } from "colord";
-import { useEffect, useEffectEvent, useState } from "react";
+import { useEffect, useEffectEvent, useMemo, useState } from "react";
 import { createPalette } from "react-native-material-palette";
 
 import { useColor } from "~/_next/context/theme-context";
@@ -16,9 +16,12 @@ const ColorCache = new BoundedMap<string, HexColor>(100);
 /** Returns the dominant color of an image, clamped to a brightness of 75%. */
 export function useDimmedImageColor(src: unknown) {
   const background = useColor("background");
-  const [color, setColor] = useState(
+
+  const fallbackColor = useMemo(
     () => clampBrightness(colord(background)).toHex() as HexColor,
+    [background],
   );
+  const [color, setColor] = useState<HexColor>();
 
   const resetColor = useEffectEvent(() =>
     setColor(clampBrightness(colord(background)).toHex() as HexColor),
@@ -46,5 +49,7 @@ export function useDimmedImageColor(src: unknown) {
     };
   }, [src]);
 
-  return typeof src !== "string" ? color : (ColorCache.get(src) ?? color);
+  return typeof src !== "string"
+    ? fallbackColor
+    : (ColorCache.get(src) ?? color ?? fallbackColor);
 }

@@ -6,6 +6,7 @@ import { createPalette } from "react-native-material-palette";
 
 import { useDimmedImageColor } from "../use-dimmed-image-color";
 
+const BLACK = "#000000";
 const BLUE = "#0000FF";
 
 jest.mock("@missingcore/native-utils", () => ({
@@ -39,6 +40,23 @@ describe("useDimmedImageColor", () => {
       useDimmedImageColor("image-without-dominant-color"),
     );
 
-    expect(result.current).toEqual("#000000");
+    expect(result.current).toEqual(BLACK);
+  });
+
+  test("get fallback color if no image is provided", async () => {
+    const { result } = await renderHook(() => useDimmedImageColor(undefined));
+
+    expect(result.current.toUpperCase()).toEqual(BLACK);
+  });
+
+  test("get fallback color after the image source is removed", async () => {
+    const { result, rerender } = await renderHook(
+      ({ src }: { src: unknown }) => useDimmedImageColor(src),
+      { initialProps: { src: "image-with-dominant-color" } },
+    );
+
+    expect(result.current.toUpperCase()).toEqual(BLUE);
+    await rerender({ src: undefined });
+    expect(result.current.toUpperCase()).toEqual(BLACK);
   });
 });
