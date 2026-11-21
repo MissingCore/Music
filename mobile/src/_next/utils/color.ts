@@ -23,7 +23,7 @@ export function adjustLightness(color: Colord, amount = 10) {
  */
 export function clampLightness(color: Colord, to = 75) {
   const { h, s, l } = color.toHsl();
-  return l > 75 ? colord({ h, s, l: to }) : color;
+  return l > to ? colord({ h, s, l: to }) : color;
 }
 
 export function isHexColor(value?: string): value is HexColor {
