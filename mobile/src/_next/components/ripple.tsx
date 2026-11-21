@@ -27,6 +27,7 @@ export function Ripple({
   const rippleColor = useColor(color);
   return (
     <Pressable
+      role="button"
       {...props}
       android_ripple={{
         color: adjustLightness(colord(rippleColor)).alpha(alpha).toHex(),
