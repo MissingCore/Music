@@ -287,7 +287,7 @@ export const RootStack = createNativeStackNavigator({
     Current: {
       screenLayout: ({ route, children }) => (
         <PlayFromProvider
-          type={route.name.toLowerCase() as MediaList}
+          type={route.name.replace("TopTracks", "").toLowerCase() as MediaList}
           id={(route.params as { id: string }).id}
         >
           <SearchProvider>{children}</SearchProvider>
