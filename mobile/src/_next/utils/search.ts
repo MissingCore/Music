@@ -31,13 +31,19 @@ export function matchSort<TData extends Record<string, any>>(
   return goodMatch.concat(partialMatch);
 }
 
-/** Returns if the lowercased string contains another string. */
+/**
+ * Returns if the lowercased string contains another string.
+ * - `containStr` is assumed to be lower-cased.
+ */
 export function lowerHas(str: unknown, containStr: string) {
   if (typeof str !== "string") return false;
   return str.toLocaleLowerCase().includes(containStr);
 }
 
-/** Returns if the lowercased string starts with another string. */
+/**
+ * Returns if the lowercased string starts with another string.
+ * - `startStr` is assumed to be lower-cased.
+ */
 export function lowerStart(str: unknown, startStr: string) {
   if (typeof str !== "string") return false;
   return str.toLocaleLowerCase().startsWith(startStr);

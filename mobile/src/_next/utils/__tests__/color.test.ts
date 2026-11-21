@@ -3,7 +3,7 @@
 
 import { colord } from "colord";
 
-import { adjustLightness } from "../color";
+import { adjustLightness, clampBrightness } from "../color";
 
 describe("adjustLightness", () => {
   test("reduces lightness of a light color", () => {
@@ -26,5 +26,17 @@ describe("adjustLightness", () => {
 
     expect(adjustLightness(color).toHsl().l).toBe(25);
     expect(adjustLightness(color2, 5).toHsl().l).toBe(25);
+  });
+});
+
+describe("clampBrightness", () => {
+  test("supports a custom maximum brightness", () => {
+    expect(clampBrightness(colord("#FFF"), 0.5).brightness()).toBe(0.5);
+  });
+
+  test("does not darken a color already below the threshold", () => {
+    const color = colord("#000");
+
+    expect(clampBrightness(color).brightness()).toBe(color.brightness());
   });
 });
