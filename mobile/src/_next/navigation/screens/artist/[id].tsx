@@ -362,7 +362,6 @@ function ScreenHeader(props: {
       <Image
         source={props.artwork}
         contentPosition="top"
-        style={{ filter: [{ brightness: "95%" }] }}
         className="absolute inset-0"
       />
       <TransitionGradient
