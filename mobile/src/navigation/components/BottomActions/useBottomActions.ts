@@ -12,6 +12,7 @@ const miniplayerRoutes = [
   "RecentlyPlayed-",
   "Album-",
   "Artist-",
+  "ArtistTopTracks-",
   "Genre-",
   "Playlist-",
 ];

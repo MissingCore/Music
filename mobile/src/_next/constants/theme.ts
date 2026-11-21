@@ -21,7 +21,7 @@ export const ColorRoleOptions = [
 ] as const;
 export type ColorRole = (typeof ColorRoleOptions)[number];
 
-export const DerivedColorRoleOptions = ["textMuted"] as const;
+export const DerivedColorRoleOptions = ["textMuted", "border"] as const;
 export type DerivedColorRole = (typeof DerivedColorRoleOptions)[number];
 
 export type AppColor = ColorRole | DerivedColorRole | HexColor;
@@ -37,6 +37,7 @@ const LIGHT_THEME: Theme = {
     textMuted: "#000000BF", // 75% opacity
     accent: "#D71921",
     secondary: "#FFC700",
+    border: "#00000040", // 25% opacity
   },
 };
 
@@ -49,6 +50,7 @@ const DARK_THEME: Theme = {
     textMuted: "#FFFFFFBF", // 75% opacity
     accent: "#D71921",
     secondary: "#FFC700",
+    border: "#FFFFFF40", // 25% opacity
   },
 };
 

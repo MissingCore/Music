@@ -4,6 +4,7 @@
 import { Toaster } from "@missingcore/ui/toast";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { NavigationBar } from "@zoontek/react-native-navigation-bar";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { StatusBar, View } from "react-native";
 import { KeyboardProvider } from "react-native-keyboard-controller";
@@ -19,6 +20,7 @@ import { Uniwind, withUniwind } from "uniwind";
 import "../../global.css";
 import { ListenerStateStoreProvider } from "~/stores/ListenerState";
 import { usePreferenceStore } from "~/stores/Preference/store";
+import { ThemeProvider } from "~/_next/context/theme-context";
 
 import { queryClient } from "~/lib/react-query";
 import { GestureHandlerRootView } from "~/components/Base/GestureHandlerRootView";
@@ -33,20 +35,14 @@ const SafeAreaProvider = withUniwind(RawSafeAreaProvider);
 /** All providers used by the app. */
 export function AppProvider(props: { children: React.ReactNode }) {
   return (
-    <SafeAreaProvider className="bg-surface">
-      <UniwindListeners>
-        <KeyboardProvider>
-          <GestureHandlerRootView>
-            <QueryClientProvider client={queryClient}>
-              <ListenerStateStoreProvider />
-              {props.children}
-              <ToastProvider />
-              <SystemBars />
-            </QueryClientProvider>
-          </GestureHandlerRootView>
-        </KeyboardProvider>
-      </UniwindListeners>
-    </SafeAreaProvider>
+    <MinimumAppProvider>
+      <QueryClientProvider client={queryClient}>
+        <ListenerStateStoreProvider />
+        {props.children}
+        <ToastProvider />
+        <SystemBars />
+      </QueryClientProvider>
+    </MinimumAppProvider>
   );
 }
 
@@ -54,9 +50,11 @@ export function MinimumAppProvider(props: { children: React.ReactNode }) {
   return (
     <SafeAreaProvider className="bg-surface">
       <UniwindListeners>
-        <KeyboardProvider>
-          <GestureHandlerRootView>{props.children}</GestureHandlerRootView>
-        </KeyboardProvider>
+        <RootThemeProvider>
+          <KeyboardProvider>
+            <GestureHandlerRootView>{props.children}</GestureHandlerRootView>
+          </KeyboardProvider>
+        </RootThemeProvider>
       </UniwindListeners>
     </SafeAreaProvider>
   );
@@ -89,6 +87,25 @@ function SystemBars() {
         className="absolute right-0 bottom-0 left-0 bg-androidNavbar"
       />
     </>
+  );
+}
+//#endregion
+
+//#region Root Theme Provider
+function RootThemeProvider(props: { children: React.ReactNode }) {
+  const currentTheme = useTheme();
+  const translatedTheme = useMemo(
+    () => ({
+      background: currentTheme.surface,
+      surface: currentTheme.surfaceContainerLowest,
+      text: currentTheme.onSurface,
+      accent: currentTheme.primary,
+      secondary: currentTheme.secondary,
+    }),
+    [currentTheme],
+  );
+  return (
+    <ThemeProvider colors={translatedTheme}>{props.children}</ThemeProvider>
   );
 }
 //#endregion

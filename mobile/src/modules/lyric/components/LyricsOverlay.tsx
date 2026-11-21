@@ -110,7 +110,6 @@ function LyricsContent({ trackId }: { trackId: string }) {
       return fetchLyricFromProvider(track, selectedProvider, signal);
     },
     enabled: !!selectedProvider,
-    retry: false,
   });
 
   const providerLyrics = providerLyricsQuery.data?.trim();

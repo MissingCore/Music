@@ -10,10 +10,14 @@ import type {
   Font,
   HexColor,
   ThemeColors,
-} from "../constants/theme";
-import { FONT_FAMILY, THEMES } from "../constants/theme";
-import { isHexColor, withAlpha } from "../utils/color";
-import { getFileName, removeFileExtension, toLowerCase } from "../utils/string";
+} from "~/_next/constants/theme";
+import { FONT_FAMILY, THEMES } from "~/_next/constants/theme";
+import { isHexColor, withAlpha } from "~/_next/utils/color";
+import {
+  getFileName,
+  removeFileExtension,
+  toLowerCase,
+} from "~/_next/utils/string";
 
 const ThemeContext = createContext<ThemeColors>(THEMES.system.colors);
 
@@ -29,6 +33,7 @@ export function ThemeProvider({ children, colors }: ThemeProviderProps) {
     return {
       ...mergedColors,
       textMuted: withAlpha(mergedColors.text, 0.75),
+      border: withAlpha(mergedColors.text, 0.25),
     };
   }, [parentTheme, colors]);
   return <ThemeContext value={mergedTheme}>{children}</ThemeContext>;
@@ -44,7 +49,8 @@ export function useTheme() {
  * color role. Defaults to `text`.
  */
 export function useColor(color: AppColor) {
-  return isHexColor(color) ? color : use(ThemeContext)[color];
+  const theme = use(ThemeContext);
+  return isHexColor(color) ? color : theme[color];
 }
 //#endregion
 
