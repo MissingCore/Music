@@ -9,7 +9,7 @@ import { useColor } from "~/_next/context/theme-context";
 
 import type { HexColor } from "~/_next/constants/theme";
 import { BoundedMap } from "~/_next/utils/bounded-map";
-import { clampBrightness } from "~/_next/utils/color";
+import { clampLightness } from "~/_next/utils/color";
 
 const ColorCache = new BoundedMap<string, HexColor>(100);
 
@@ -18,13 +18,13 @@ export function useDimmedImageColor(src: unknown) {
   const background = useColor("background");
 
   const fallbackColor = useMemo(
-    () => clampBrightness(colord(background)).toHex() as HexColor,
+    () => clampLightness(colord(background)).toHex() as HexColor,
     [background],
   );
   const [color, setColor] = useState<HexColor>();
 
   const resetColor = useEffectEvent(() =>
-    setColor(clampBrightness(colord(background)).toHex() as HexColor),
+    setColor(clampLightness(colord(background)).toHex() as HexColor),
   );
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export function useDimmedImageColor(src: unknown) {
     createPalette({ uri: src })
       .then(({ dominant }) => {
         if (!dominant?.color) throw new Error("No dominant color found.");
-        const dimmedColor = clampBrightness(
+        const dimmedColor = clampLightness(
           colord(dominant.color),
         ).toHex() as HexColor;
         ColorCache.set(src, dimmedColor);
