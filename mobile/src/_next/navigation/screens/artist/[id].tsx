@@ -25,6 +25,7 @@ import { useLayoutColumn } from "~/_next/hooks/use-column";
 import { useDimmedImageColor } from "~/_next/hooks/use-dimmed-image-color";
 
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
+import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { GoBack } from "~/_next/navigation/components/go-back";
 
 import { getImageUri } from "~/lib/file-system";
@@ -83,7 +84,8 @@ export function Artist({
     [backgroundColor],
   );
 
-  if (isPending) return <Text>Loading...</Text>;
+  if (isPending)
+    return <PagePlaceholder isPending wrapperClassName="pt-safe-offset-18" />;
   if (error) return <GoBack />;
   return (
     <ThemeProvider colors={ScreenTheme}>
