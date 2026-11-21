@@ -327,6 +327,8 @@ function SearchBar() {
           if (searchEnabled) setQuery("");
         }}
         color="text"
+        //? Absolute-positioned as layout animation would have it slide-in
+        //? with the text input.
         className="absolute top-px right-px"
       />
     </View>
