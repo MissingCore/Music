@@ -26,39 +26,6 @@ export type DerivedColorRole = (typeof DerivedColorRoleOptions)[number];
 
 export type AppColor = ColorRole | DerivedColorRole | HexColor;
 export type ThemeColors = Record<ColorRole | DerivedColorRole, HexColor>;
-export type Theme = { scheme: ColorScheme; colors: ThemeColors };
-
-const LIGHT_THEME: Theme = {
-  scheme: "light",
-  colors: {
-    background: "#F2F2F2",
-    surface: "#FFFFFF",
-    text: "#000000",
-    textMuted: "#000000BF", // 75% opacity
-    accent: "#D71921",
-    secondary: "#FFC700",
-    border: "#00000040", // 25% opacity
-  },
-};
-
-const DARK_THEME: Theme = {
-  scheme: "dark",
-  colors: {
-    background: "#000000",
-    surface: "#1C1C1C",
-    text: "#FFFFFF",
-    textMuted: "#FFFFFFBF", // 75% opacity
-    accent: "#D71921",
-    secondary: "#FFC700",
-    border: "#FFFFFF40", // 25% opacity
-  },
-};
-
-export const THEMES: Record<DefaultTheme, Theme> = {
-  light: LIGHT_THEME,
-  dark: DARK_THEME,
-  system: isSystemDarkMode ? DARK_THEME : LIGHT_THEME,
-};
 //#endregion
 
 //#region Fonts
@@ -97,4 +64,52 @@ export type BundledFont = (typeof BundledFontOptions)[number];
 export type CustomFont = { id: string; name: string; uri: string };
 
 export type Font = BundledFont | CustomFont;
+//#endregion
+
+//#region Theme
+export type Theme = {
+  scheme: ColorScheme;
+  colors: ThemeColors;
+  fonts: { accent: Font; primary: Font };
+};
+
+const LIGHT_THEME: Theme = {
+  scheme: "light",
+  colors: {
+    background: "#F2F2F2",
+    surface: "#FFFFFF",
+    text: "#000000",
+    textMuted: "#000000BF", // 75% opacity
+    accent: "#D71921",
+    secondary: "#FFC700",
+    border: "#00000040", // 25% opacity
+  },
+  fonts: {
+    accent: "NType",
+    primary: "Geist",
+  },
+};
+
+const DARK_THEME: Theme = {
+  scheme: "dark",
+  colors: {
+    background: "#000000",
+    surface: "#1C1C1C",
+    text: "#FFFFFF",
+    textMuted: "#FFFFFFBF", // 75% opacity
+    accent: "#D71921",
+    secondary: "#FFC700",
+    border: "#FFFFFF40", // 25% opacity
+  },
+  fonts: {
+    accent: "NType",
+    primary: "Geist",
+  },
+};
+
+export const THEMES: Record<DefaultTheme, Theme> = {
+  light: LIGHT_THEME,
+  dark: DARK_THEME,
+  system: isSystemDarkMode ? DARK_THEME : LIGHT_THEME,
+};
 //#endregion

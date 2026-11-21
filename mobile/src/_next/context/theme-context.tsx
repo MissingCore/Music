@@ -7,9 +7,10 @@ import type {
   AppColor,
   BundledFont,
   ColorRole,
+  ColorScheme,
   Font,
   HexColor,
-  ThemeColors,
+  Theme,
 } from "~/_next/constants/theme";
 import { FONT_FAMILY, THEMES } from "~/_next/constants/theme";
 import { isHexColor, withAlpha } from "~/_next/utils/color";
@@ -19,23 +20,37 @@ import {
   toLowerCase,
 } from "~/_next/utils/string";
 
-const ThemeContext = createContext<ThemeColors>(THEMES.system.colors);
+const ThemeContext = createContext<Theme>(THEMES.system);
 
 interface ThemeProviderProps {
   children: React.ReactNode;
+  scheme?: ColorScheme;
   colors?: Partial<Record<ColorRole, HexColor>>;
+  fonts?: Partial<Theme["fonts"]>;
 }
 
-export function ThemeProvider({ children, colors }: ThemeProviderProps) {
+export function ThemeProvider({
+  children,
+  scheme,
+  colors,
+  fonts,
+}: ThemeProviderProps) {
   const parentTheme = use(ThemeContext);
   const mergedTheme = useMemo(() => {
-    const mergedColors = { ...parentTheme, ...colors };
+    const mergedColors = { ...parentTheme.colors, ...colors };
     return {
-      ...mergedColors,
-      textMuted: withAlpha(mergedColors.text, 0.75),
-      border: withAlpha(mergedColors.text, 0.25),
+      scheme: scheme ?? parentTheme.scheme,
+      colors: {
+        ...mergedColors,
+        textMuted: withAlpha(mergedColors.text, 0.75),
+        border: withAlpha(mergedColors.text, 0.25),
+      },
+      fonts: {
+        ...parentTheme.fonts,
+        ...fonts,
+      },
     };
-  }, [parentTheme, colors]);
+  }, [parentTheme, scheme, colors, fonts]);
   return <ThemeContext value={mergedTheme}>{children}</ThemeContext>;
 }
 
@@ -49,8 +64,8 @@ export function useTheme() {
  * color role. Defaults to `text`.
  */
 export function useColor(color: AppColor) {
-  const theme = use(ThemeContext);
-  return isHexColor(color) ? color : theme[color];
+  const colors = use(ThemeContext).colors;
+  return isHexColor(color) ? color : colors[color];
 }
 //#endregion
 

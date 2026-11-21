@@ -91,7 +91,7 @@ export function Artist({
       <GoBack message={t("template.notFound", { name: t("term.artist") })} />
     );
   return (
-    <ThemeProvider colors={ScreenTheme}>
+    <ThemeProvider scheme="dark" colors={ScreenTheme}>
       <View style={{ backgroundColor }} className="grow">
         <ScreenActions />
         <ScreenContents
@@ -235,7 +235,7 @@ export function ArtistTopTracks({
       <GoBack message={t("template.notFound", { name: t("term.artist") })} />
     );
   return (
-    <ThemeProvider colors={ScreenTheme}>
+    <ThemeProvider scheme="dark" colors={ScreenTheme}>
       <View style={{ backgroundColor }} className="grow">
         <ScreenActions searchEnabled />
         <TopTracksScreenContents topTracks={data.topTracks} />
@@ -354,7 +354,7 @@ function ScreenHeader(props: {
 }) {
   const { t } = useTranslation();
   const dimensions = useWindowDimensions();
-  const { text } = useTheme();
+  const { text } = useTheme().colors;
   const source = usePlayFromSource();
 
   const headerHeight = Math.min(400, dimensions.height, dimensions.width);

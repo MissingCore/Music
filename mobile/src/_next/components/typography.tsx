@@ -2,11 +2,10 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import type { ParseKeys } from "i18next";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useShallow } from "zustand/react/shallow";
 
-import { usePreferenceStore } from "~/stores/Preference/store";
-import { getFont, useColor } from "~/_next/context/theme-context";
+import { getFont, useColor, useTheme } from "~/_next/context/theme-context";
 
 import type { AppColor, FontSize } from "~/_next/constants/theme";
 import { cn } from "~/_next/utils/style";
@@ -41,16 +40,17 @@ export function Text({
   ...props
 }: TextProps) {
   const textColor = useColor(color);
-  const fontStyles = usePreferenceStore(
-    useShallow((s) => {
-      const fontFamily = s[`${accent ? "accent" : "primary"}Font`];
-      return {
-        fontFamily: getFont(fontFamily, { headline: accent, bold }),
+  const font = useTheme().fonts[accent ? "accent" : "primary"];
+
+  const fontStyles = useMemo(
+    () =>
+      ({
+        fontFamily: getFont(font, { headline: accent, bold }),
         //? Setting a `fontWeight` on a custom font uses the bolded variant
         //? of the system font.
-        fontWeight: bold && fontFamily === "System" ? "bold" : undefined,
-      } as const;
-    }),
+        fontWeight: bold && font === "System" ? "bold" : undefined,
+      }) as const,
+    [accent, bold, font],
   );
 
   return (

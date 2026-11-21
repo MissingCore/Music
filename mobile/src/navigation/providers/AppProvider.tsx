@@ -15,6 +15,7 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import { Uniwind, withUniwind } from "uniwind";
+import { useShallow } from "zustand/react/shallow";
 
 // @ts-expect-error - Can ignore `Cannot find module or type declarations for side-effect import`.
 import "../../global.css";
@@ -104,8 +105,19 @@ function RootThemeProvider(props: { children: React.ReactNode }) {
     }),
     [currentTheme],
   );
+
+  const currentFonts = usePreferenceStore(
+    useShallow((s) => ({ accent: s.accentFont, primary: s.primaryFont })),
+  );
+
   return (
-    <ThemeProvider colors={translatedTheme}>{props.children}</ThemeProvider>
+    <ThemeProvider
+      scheme={currentTheme.scheme}
+      colors={translatedTheme}
+      fonts={currentFonts}
+    >
+      {props.children}
+    </ThemeProvider>
   );
 }
 //#endregion

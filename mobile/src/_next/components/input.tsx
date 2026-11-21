@@ -5,7 +5,6 @@ import { useRef } from "react";
 import type { TextInputInstance, TextInputProps } from "react-native";
 import { TextInput as RNTextInput } from "react-native";
 
-import { usePreferenceStore } from "~/stores/Preference/store";
 import { getFont, useTheme } from "~/_next/context/theme-context";
 
 import { OnRTL } from "~/_next/utils/i18n";
@@ -21,8 +20,10 @@ export interface InputProps extends TextInputProps {
 
 /** Styled text input meeting the recommended touch target size. */
 export function TextInput({ className, style, ...props }: InputProps) {
-  const { text, textMuted } = useTheme();
-  const primaryFont = usePreferenceStore((s) => s.primaryFont);
+  const {
+    colors: { text, textMuted },
+    fonts: { primary },
+  } = useTheme();
 
   return (
     <RNTextInput
@@ -39,7 +40,7 @@ export function TextInput({ className, style, ...props }: InputProps) {
       )}
       style={[
         {
-          fontFamily: getFont(primaryFont),
+          fontFamily: getFont(primary),
           borderColor: textMuted,
           color: text,
         },
