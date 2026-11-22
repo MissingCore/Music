@@ -20,12 +20,12 @@ import { q } from "~/_next/data/key-store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePlayFromSource } from "~/_next/context/play-from-context";
 import { useSearchStore } from "~/_next/context/search-context";
-import { ThemeProvider, useTheme } from "~/_next/context/theme-context";
+import { useTheme } from "~/_next/context/theme-context";
 import { useLayoutColumn } from "~/_next/hooks/use-column";
-import { useDimmedImageColor } from "~/_next/hooks/use-dimmed-image-color";
 
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
+import { AdaptiveLayout } from "~/_next/navigation/layout/adaptive-layout";
 import { GoBack } from "~/_next/navigation/components/go-back";
 
 import { getImageUri } from "~/lib/file-system";
@@ -73,17 +73,6 @@ export function Artist({
   const { t } = useTranslation();
   const { isPending, error, data } = useArtist(id);
 
-  const backgroundColor = useDimmedImageColor(data?.artwork);
-  const ScreenTheme = useMemo(
-    () =>
-      ({
-        background: backgroundColor,
-        surface: "#FFFFFF",
-        text: "#FFFFFF",
-      }) as const,
-    [backgroundColor],
-  );
-
   if (isPending)
     return <PagePlaceholder isPending wrapperClassName="pt-safe-offset-18" />;
   if (error)
@@ -91,25 +80,23 @@ export function Artist({
       <GoBack message={t("template.notFound", { name: t("term.artist") })} />
     );
   return (
-    <ThemeProvider scheme="dark" colors={ScreenTheme}>
-      <View style={{ backgroundColor }} className="grow">
-        <ScreenActions />
-        <ScreenContents
-          discography={data.discography}
-          related={data.related}
-          topTracks={data.topTracks}
-          Header={
-            <ScreenHeader
-              name={data.name}
-              artwork={data.artwork}
-              metadata={t("plural.track", { count: data.numTracks })}
-              duration={data.totalDuration}
-              numTracks={data.numTracks}
-            />
-          }
-        />
-      </View>
-    </ThemeProvider>
+    <AdaptiveLayout artwork={data.artwork}>
+      <ScreenActions />
+      <ScreenContents
+        discography={data.discography}
+        related={data.related}
+        topTracks={data.topTracks}
+        Header={
+          <ScreenHeader
+            name={data.name}
+            artwork={data.artwork}
+            metadata={t("plural.track", { count: data.numTracks })}
+            duration={data.totalDuration}
+            numTracks={data.numTracks}
+          />
+        }
+      />
+    </AdaptiveLayout>
   );
 }
 
@@ -217,17 +204,6 @@ export function ArtistTopTracks({
   const { t } = useTranslation();
   const { isPending, error, data } = useArtist(id);
 
-  const backgroundColor = useDimmedImageColor(data?.artwork);
-  const ScreenTheme = useMemo(
-    () =>
-      ({
-        background: backgroundColor,
-        surface: "#FFFFFF",
-        text: "#FFFFFF",
-      }) as const,
-    [backgroundColor],
-  );
-
   if (isPending)
     return <PagePlaceholder isPending wrapperClassName="pt-safe-offset-18" />;
   if (error)
@@ -235,12 +211,10 @@ export function ArtistTopTracks({
       <GoBack message={t("template.notFound", { name: t("term.artist") })} />
     );
   return (
-    <ThemeProvider scheme="dark" colors={ScreenTheme}>
-      <View style={{ backgroundColor }} className="grow">
-        <ScreenActions searchEnabled />
-        <TopTracksScreenContents topTracks={data.topTracks} />
-      </View>
-    </ThemeProvider>
+    <AdaptiveLayout artwork={data.artwork}>
+      <ScreenActions searchEnabled />
+      <TopTracksScreenContents topTracks={data.topTracks} />
+    </AdaptiveLayout>
   );
 }
 
