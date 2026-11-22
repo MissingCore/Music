@@ -34,9 +34,13 @@ function useGenre(id: string) {
   return useQuery({
     queryKey: q.genre.detail(id),
     queryFn: () => LocalMediaAdapter.genre.get(id),
-    select: ({ artwork, ...rest }) => ({
+    select: ({ artwork, topTracks, ...rest }) => ({
       ...rest,
       artwork: getImageUri(artwork),
+      topTracks: topTracks.map((track) => ({
+        ...track,
+        artistStr: track.artists !== null ? track.artists.join(", ") : null,
+      })),
     }),
   });
 }
@@ -92,7 +96,7 @@ function ScreenContents({
   const trackColCnt = useLayoutColumn("list").count;
 
   const filteredTracks = useSearchStore(
-    useShallow((s) => containSorter(topTracks, s.query, ["name"])),
+    useShallow((s) => containSorter(topTracks, s.query, ["name", "artistStr"])),
   );
 
   return (
@@ -104,7 +108,7 @@ function ScreenContents({
         <ImageListItem
           artwork={item.artwork}
           label={item.name}
-          supporting={item.artists.join(", ")}
+          supporting={item.artistStr}
           onPress={() =>
             PlaybackControls.playFromList({ source, trackId: item.id })
           }
