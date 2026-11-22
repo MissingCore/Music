@@ -60,7 +60,7 @@ export function Genre({
     return <PagePlaceholder isPending wrapperClassName="pt-safe-offset-18" />;
   if (error)
     return (
-      <GoBack message={t("template.notFound", { name: t("term.artist") })} />
+      <GoBack message={t("template.notFound", { name: t("term.genre") })} />
     );
   return (
     <AdaptiveLayout artwork={data.artwork}>
