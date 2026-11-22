@@ -142,27 +142,41 @@ export function Metadata(props: { stats: string; duration: number }) {
   );
 }
 
+//#region Actions
+type ActionSlot = [React.JSX.Element] | [React.JSX.Element, React.JSX.Element];
+
 /** Actions displayed in `MediaListLayout.Header`. */
-export function ActionBar({ playable = true }) {
+export function ActionBar(props: {
+  playable?: boolean;
+  LeftActions?: ActionSlot;
+  RightActions?: ActionSlot;
+}) {
   const { t } = useTranslation();
   const { text } = useTheme().colors;
   const source = usePlayFromSource();
 
   return (
-    <View className="mt-4 w-full flex-row items-center justify-center">
+    <View className="mt-4 w-full flex-row items-center justify-center gap-2">
+      <View className="size-full max-w-23 shrink-0 flex-row items-center justify-end gap-2">
+        {props.LeftActions}
+      </View>
       <IconButton
         accessibilityLabel={t("term.play")}
         icon="play-filled"
         onPress={() => PlaybackControls.playFromList({ source })}
-        disabled={!playable}
+        disabled={!(props.playable ?? true)}
         iconColor="background"
         color="text"
-        className="h-14 w-full max-w-36 disabled:opacity-50"
+        className="h-14 w-full max-w-36 shrink disabled:opacity-50"
         style={{ backgroundColor: text }}
       />
+      <View className="size-full max-w-23 shrink-0 flex-row items-center justify-start gap-2">
+        {props.RightActions}
+      </View>
     </View>
   );
 }
+//#endregion
 //#endregion
 
 //#region Lazy Renderer
