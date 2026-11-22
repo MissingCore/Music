@@ -77,9 +77,7 @@ export function Genre({
                 duration={data.totalDuration}
               />
             }
-            Actions={
-              <MediaListLayout.ActionBar playable={data.numTracks > 0} />
-            }
+            Actions={<MediaListLayout.ActionBar />}
           />
         }
       />

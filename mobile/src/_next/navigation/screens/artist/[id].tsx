@@ -117,7 +117,7 @@ function ScreenContents({
       MediaListLayout.renderCardFactory<MediaItem.DisplayAlbum>({
         getKey: ({ id }) => `album-${id}`,
         getProps: ({ id, name, artwork, year }) => ({
-          artwork: artwork,
+          artwork,
           label: name,
           supporting: year,
           onPress: () => navigation.navigate("Album", { id }),
@@ -130,7 +130,7 @@ function ScreenContents({
       MediaListLayout.renderItemFactory<MediaItem.DisplayTrack2>({
         getKey: ({ id }) => `track-${id}`,
         getProps: ({ id: trackId, name, artwork, album }) => ({
-          artwork: artwork,
+          artwork,
           label: name,
           supporting: album ?? "—",
           onPress: () => PlaybackControls.playFromList({ source, trackId }),

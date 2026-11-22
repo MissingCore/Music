@@ -15,8 +15,8 @@ import { Seconds } from "~/_next/utils/date";
 import { OnRTL } from "~/_next/utils/i18n";
 import { cn } from "~/_next/utils/style";
 import { Image } from "~/_next/components/primitives/image";
-import { IconButton } from "~/_next/components/button-icon";
 import { BlurContainer } from "~/_next/components/blur-container";
+import { IconButton } from "~/_next/components/button-icon";
 import { TransitionGradient } from "~/_next/components/gradient";
 import { Icon } from "~/_next/components/icon";
 import { ImageCard, ImageListItem } from "~/_next/components/image-item";
@@ -143,7 +143,7 @@ export function Metadata(props: { stats: string; duration: number }) {
 }
 
 /** Actions displayed in `MediaListLayout.Header`. */
-export function ActionBar(props: { playable: boolean }) {
+export function ActionBar({ playable = true }) {
   const { t } = useTranslation();
   const { text } = useTheme().colors;
   const source = usePlayFromSource();
@@ -154,7 +154,7 @@ export function ActionBar(props: { playable: boolean }) {
         accessibilityLabel={t("term.play")}
         icon="play-filled"
         onPress={() => PlaybackControls.playFromList({ source })}
-        disabled={!props.playable}
+        disabled={!playable}
         iconColor="background"
         color="text"
         className="h-14 w-full max-w-36 disabled:opacity-50"
