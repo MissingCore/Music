@@ -12,7 +12,7 @@ export namespace MediaItem {
     year: string;
   }
 
-  export interface DisplayTrack extends Base {
+  export interface DisplayTrack2 extends Base {
     album: string | null;
   }
 }
@@ -26,13 +26,13 @@ export namespace Connector {
       numTracks: number;
       totalDuration: number;
 
-      topTracks: MediaItem.DisplayTrack[];
+      topTracks: MediaItem.DisplayTrack2[];
 
       discography: {
         albums: MediaItem.DisplayAlbum[];
         eps: MediaItem.DisplayAlbum[];
         /** Includes tracks by this artist that appear in albums not by this artist. */
-        singles: MediaItem.DisplayTrack[];
+        singles: MediaItem.DisplayTrack2[];
       };
 
       related: {

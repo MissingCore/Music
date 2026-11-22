@@ -127,7 +127,7 @@ function ScreenContents({
   );
   const renderTrack = useMemo(
     () =>
-      MediaListLayout.renderItemFactory<MediaItem.DisplayTrack>({
+      MediaListLayout.renderItemFactory<MediaItem.DisplayTrack2>({
         getKey: ({ id }) => `track-${id}`,
         getProps: ({ id: trackId, name, artwork, album }) => ({
           artwork: artwork,
