@@ -1,8 +1,8 @@
 diff --git a/react-native.js b/react-native.js
-index 4af685dfb961eb0c8a4bf1ae9132c9304cf4fa4d..575eaec3e8fb47d7e5d1fdc271f193b0707d6229 100644
+index 440b0ad0d8af34e5dc4ae9b2a21a7addd2d71efb..a29dbbf4f1003781eec7fffca30a5a2256d01856 100644
 --- a/react-native.js
 +++ b/react-native.js
-@@ -8430,6 +8430,13 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
+@@ -8668,6 +8668,13 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
      } : {}
    };
    const style = { ...StyleSheet.flatten(styleProp) };
@@ -17,10 +17,10 @@ index 4af685dfb961eb0c8a4bf1ae9132c9304cf4fa4d..575eaec3e8fb47d7e5d1fdc271f193b0
    const stylePaddingBottomState = extractPadding(style, contentContainerStyle, "Bottom");
    const stylePaddingLeftState = extractPadding(style, contentContainerStyle, "Left");
 diff --git a/react-native.mjs b/react-native.mjs
-index 9ebfddc183a9b202d35c990a387c9b628feeb185..c70059258db7335b7ec1889acadb3629bca4478f 100644
+index b95e1f86d2cd76d5dbaf1340fdc37f3f1990e9ee..88c100b9857fd5a7aef9046230d388a4b1dd797c 100644
 --- a/react-native.mjs
 +++ b/react-native.mjs
-@@ -8409,6 +8409,13 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
+@@ -8647,6 +8647,13 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
      } : {}
    };
    const style = { ...StyleSheet.flatten(styleProp) };
