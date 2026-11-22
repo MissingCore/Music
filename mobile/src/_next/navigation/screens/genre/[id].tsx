@@ -106,7 +106,7 @@ function ScreenContents({
         <ImageListItem
           artwork={item.artwork}
           label={item.name}
-          supporting={item.artistStr}
+          supporting={item.artistStr ?? "—"}
           onPress={() =>
             PlaybackControls.playFromList({ source, trackId: item.id })
           }

@@ -45,14 +45,17 @@ export const LocalMediaGenreConnector = {
       .select({
         id: tracks.id,
         name: tracks.name,
-        artists: sql<string[] | null>`NULLIF(
-          json_group_array(
-            DISTINCT ${tracksToArtists.artistName} ORDER BY ${tracksToArtists.artistName} ASC
-          ),
-          '[null]'
-        )`
-          .mapWith((val) => (val !== null ? JSON.parse(val) : null))
-          .as("track_artists"),
+        //? Left-joining on `tracksToArtists` will cause the play count calculation to multiply.
+        artists: sql`(
+          SELECT NULLIF(
+            json_group_array(${tracksToArtists.artistName} ORDER BY ${tracksToArtists.artistName}),
+            '[]'
+          )
+          FROM ${tracksToArtists}
+          WHERE ${tracksToArtists.trackId} = ${tracks.id}
+        )`.mapWith((val): string[] | null =>
+          val !== null ? JSON.parse(val) : null,
+        ),
         artwork: sql<
           string | null
         >`coalesce(${tracks.artwork}, ${albums.artwork})`,
@@ -61,7 +64,6 @@ export const LocalMediaGenreConnector = {
       .where(eq(tracksToGenres.genreName, id))
       .innerJoin(tracks, eq(tracksToGenres.trackId, tracks.id))
       .leftJoin(albums, eq(tracks.albumId, albums.id))
-      .leftJoin(tracksToArtists, eq(tracks.id, tracksToArtists.trackId))
       .leftJoin(tracksPlayEvents, eq(tracks.id, tracksPlayEvents.trackId))
       .groupBy(tracksToGenres.trackId)
       .orderBy(
