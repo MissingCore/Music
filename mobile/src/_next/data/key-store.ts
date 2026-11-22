@@ -6,4 +6,8 @@ export const q = {
     all: ["artist"] as const,
     detail: (id: string) => [...q.artist.all, id] as const,
   },
+  genre: {
+    all: ["genre"] as const,
+    detail: (id: string) => [...q.genre.all, id] as const,
+  },
 };

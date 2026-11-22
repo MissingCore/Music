@@ -13,6 +13,10 @@ export namespace MediaItem {
   }
 
   export interface DisplayTrack extends Base {
+    artists: string[] | null;
+  }
+
+  export interface DisplayTrack2 extends Base {
     album: string | null;
   }
 }
@@ -26,13 +30,13 @@ export namespace Connector {
       numTracks: number;
       totalDuration: number;
 
-      topTracks: MediaItem.DisplayTrack[];
+      topTracks: MediaItem.DisplayTrack2[];
 
       discography: {
         albums: MediaItem.DisplayAlbum[];
         eps: MediaItem.DisplayAlbum[];
         /** Includes tracks by this artist that appear in albums not by this artist. */
-        singles: MediaItem.DisplayTrack[];
+        singles: MediaItem.DisplayTrack2[];
       };
 
       related: {
@@ -44,10 +48,27 @@ export namespace Connector {
     /** Return a list of track ids (with no sort preference). */
     getTrackIds(id: string): Promise<Array<{ id: string }>>;
   }
+
+  export interface Genre {
+    /** Get information about this genre. */
+    get(id: string): Promise<{
+      name: string;
+      artwork: string | null;
+      numTracks: number;
+      totalDuration: number;
+
+      topTracks: MediaItem.DisplayTrack[];
+    }>;
+
+    /** Return a list of track ids (with no sort preference). */
+    getTrackIds(id: string): Promise<Array<{ id: string }>>;
+  }
 }
 
 export interface Adapter<
   TArtistConnector extends Connector.Artist = Connector.Artist,
+  TGenreConnector extends Connector.Genre = Connector.Genre,
 > {
   artist: TArtistConnector;
+  genre: TGenreConnector;
 }
