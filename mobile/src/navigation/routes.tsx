@@ -22,6 +22,7 @@ import {
   Artist,
   ArtistTopTracks,
 } from "~/_next/navigation/screens/artist/[id]";
+import { Genre } from "~/_next/navigation/screens/genre/[id]";
 import Home from "./screens/HomeView";
 import Album from "./screens/albums/CurrentView";
 import ModifyAlbum from "./screens/albums/ModifyView";
@@ -29,7 +30,7 @@ import Albums from "./screens/albums/View";
 // import Artist from "./screens/artists/CurrentView";
 import Artists from "./screens/artists/View";
 import Folders from "./screens/folders/View";
-import Genre from "./screens/genres/CurrentView";
+// import Genre from "./screens/genres/CurrentView";
 import Genres from "./screens/genres/View";
 import Upcoming from "./screens/now-playing/UpcomingView";
 import NowPlaying from "./screens/now-playing/View";
