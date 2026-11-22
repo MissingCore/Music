@@ -8,7 +8,7 @@ import type {
 } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useWindowDimensions, View } from "react-native";
 import { useShallow } from "zustand/react/shallow";
@@ -26,6 +26,7 @@ import { useLayoutColumn } from "~/_next/hooks/use-column";
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { AdaptiveLayout } from "~/_next/navigation/layout/adaptive-layout";
+import * as MediaListLayout from "~/_next/navigation/layout/media-list-layout";
 import { GoBack } from "~/_next/navigation/components/go-back";
 
 import { getImageUri } from "~/lib/file-system";
@@ -34,17 +35,14 @@ import type { PlayFromSource } from "~/_next/constants/media";
 import { Seconds } from "~/_next/utils/date";
 import { OnRTL } from "~/_next/utils/i18n";
 import { containSorter } from "~/_next/utils/search";
-import { cn } from "~/_next/utils/style";
 import { Image } from "~/_next/components/primitives/image";
 import { LegendList } from "~/_next/components/primitives/legend-list";
-import { BlurContainer } from "~/_next/components/blur-container";
 import { ChipButton } from "~/_next/components/button-chip";
 import { IconButton } from "~/_next/components/button-icon";
 import { Divider } from "~/_next/components/divider";
 import { TransitionGradient } from "~/_next/components/gradient";
 import { Icon } from "~/_next/components/icon";
 import { ImageCard, ImageListItem } from "~/_next/components/image-item";
-import { TextInput } from "~/_next/components/input";
 import { Marquee } from "~/_next/components/marquee";
 import { Ripple } from "~/_next/components/ripple";
 import { Text, TText } from "~/_next/components/typography";
@@ -81,7 +79,7 @@ export function Artist({
     );
   return (
     <AdaptiveLayout artwork={data.artwork}>
-      <ScreenActions />
+      <MediaListLayout.AppBar />
       <ScreenContents
         discography={data.discography}
         related={data.related}
@@ -212,7 +210,7 @@ export function ArtistTopTracks({
     );
   return (
     <AdaptiveLayout artwork={data.artwork}>
-      <ScreenActions searchEnabled />
+      <MediaListLayout.AppBar searchEnabled />
       <TopTracksScreenContents topTracks={data.topTracks} />
     </AdaptiveLayout>
   );
@@ -250,70 +248,6 @@ function TopTracksScreenContents({ topTracks }: Pick<ScreenData, "topTracks">) {
       contentContainerClassName="gap-1.5 px-4 pt-safe-offset-18"
       contentContainerStyle={{ paddingBottom: bottomOffset }}
     />
-  );
-}
-//#endregion
-
-//#region Top App Bar
-function ScreenActions({ searchEnabled = false }) {
-  const { t } = useTranslation();
-  const navigation = useNavigation();
-  return (
-    <View className="absolute inset-x-0 z-100 pt-safe">
-      <View className="h-14 w-full flex-row items-center gap-4 px-2">
-        <BlurContainer>
-          <IconButton
-            icon={OnRTL.decide("arrow-right", "arrow-left")}
-            accessibilityLabel={t("form.back")}
-            onPress={() => navigation.goBack()}
-            color="text"
-          />
-        </BlurContainer>
-        {searchEnabled ? <SearchBar /> : null}
-      </View>
-    </View>
-  );
-}
-
-function SearchBar() {
-  const { t } = useTranslation();
-  const [searchEnabled, setSearchEnabled] = useState(false);
-  const query = useSearchStore((s) => s.query);
-  const setQuery = useSearchStore((s) => s.setQuery);
-
-  return (
-    <View className="relative min-w-10.5 flex-1 items-end">
-      <BlurContainer
-        className={cn(
-          "h-10.5 max-w-[min(512px,100%)] min-w-10.5",
-          searchEnabled && "w-full pr-10 pl-2",
-        )}
-      >
-        {searchEnabled ? (
-          <TextInput
-            autoFocus
-            placeholder={t("feat.search.extra.searchMedia")}
-            value={query}
-            onChangeText={setQuery}
-            className="size-full"
-          />
-        ) : null}
-      </BlurContainer>
-      <IconButton
-        icon={searchEnabled ? "close" : "search"}
-        accessibilityLabel={t(
-          searchEnabled ? "form.close" : "feat.search.title",
-        )}
-        onPress={() => {
-          setSearchEnabled((prev) => !prev);
-          if (searchEnabled) setQuery("");
-        }}
-        color="text"
-        //? Absolute-positioned as layout animation would have it slide-in
-        //? with the text input.
-        className="absolute top-px right-px"
-      />
-    </View>
   );
 }
 //#endregion
