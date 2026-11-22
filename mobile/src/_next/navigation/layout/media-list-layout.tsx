@@ -4,15 +4,24 @@
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 
+import { PlaybackControls } from "~/stores/Playback/actions";
+import { usePlayFromSource } from "~/_next/context/play-from-context";
 import { useSearchStore } from "~/_next/context/search-context";
+import { useTheme } from "~/_next/context/theme-context";
 
+import { Seconds } from "~/_next/utils/date";
 import { OnRTL } from "~/_next/utils/i18n";
 import { cn } from "~/_next/utils/style";
+import { Image } from "~/_next/components/primitives/image";
 import { IconButton } from "~/_next/components/button-icon";
 import { BlurContainer } from "~/_next/components/blur-container";
+import { TransitionGradient } from "~/_next/components/gradient";
+import { Icon } from "~/_next/components/icon";
 import { TextInput } from "~/_next/components/input";
+import { Marquee } from "~/_next/components/marquee";
+import { Text } from "~/_next/components/typography";
 
 //#region App Bar
 /**
@@ -77,6 +86,78 @@ function SearchBar() {
         //? Absolute-positioned as layout animation would have it slide-in
         //? with the text input.
         className="absolute top-px right-px"
+      />
+    </View>
+  );
+}
+//#endregion
+
+//#region Header
+/** Expressive header for content displayed on screen. */
+export function Header(props: {
+  title: string;
+  artwork: string | null;
+  Description: React.JSX.Element;
+  Actions: React.JSX.Element;
+}) {
+  const dimensions = useWindowDimensions();
+  return (
+    <View
+      style={{ height: Math.min(400, dimensions.height, dimensions.width) }}
+      className="relative -mx-5.5 items-center justify-end overflow-hidden"
+    >
+      <Image
+        source={props.artwork}
+        contentPosition="top"
+        className="absolute inset-0"
+      />
+      <TransitionGradient
+        easing
+        className="absolute inset-x-0 bottom-0 h-3/5"
+      />
+      <View className="w-full p-4">
+        <Marquee center>
+          <Text bold size="4xl">
+            {props.title}
+          </Text>
+        </Marquee>
+        {props.Description}
+        {props.Actions}
+      </View>
+    </View>
+  );
+}
+
+/** Some statistics about the media being displayed. */
+export function Metadata(props: { stats: string; duration: number }) {
+  return (
+    <Marquee center contentContainerClassName="flex-row items-center">
+      <Text color="textMuted">{props.stats}</Text>
+      {/* Work around for RTL languages. */}
+      <Text color="textMuted">{" • "}</Text>
+      <Icon name="time" color="textMuted" size={20} />
+      <Text color="textMuted">{` ${Seconds.toReadableTime(props.duration, true)} `}</Text>
+    </Marquee>
+  );
+}
+
+/** Actions displayed in `MediaListLayout.Header`. */
+export function ActionBar(props: { playable: boolean }) {
+  const { t } = useTranslation();
+  const { text } = useTheme().colors;
+  const source = usePlayFromSource();
+
+  return (
+    <View className="mt-4 w-full flex-row items-center justify-center">
+      <IconButton
+        accessibilityLabel={t("term.play")}
+        icon="play-filled"
+        onPress={() => PlaybackControls.playFromList({ source })}
+        disabled={!props.playable}
+        iconColor="background"
+        color="text"
+        className="h-14 w-full max-w-36 disabled:opacity-50"
+        style={{ backgroundColor: text }}
       />
     </View>
   );

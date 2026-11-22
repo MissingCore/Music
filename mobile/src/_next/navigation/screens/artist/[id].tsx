@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useWindowDimensions, View } from "react-native";
+import { View } from "react-native";
 import { useShallow } from "zustand/react/shallow";
 
 import { LocalMediaAdapter } from "~/_next/adapters/local-media";
@@ -20,7 +20,6 @@ import { q } from "~/_next/data/key-store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePlayFromSource } from "~/_next/context/play-from-context";
 import { useSearchStore } from "~/_next/context/search-context";
-import { useTheme } from "~/_next/context/theme-context";
 import { useLayoutColumn } from "~/_next/hooks/use-column";
 
 import { useBottomActionsOffset } from "~/navigation/components/BottomActions/useBottomActions";
@@ -32,15 +31,11 @@ import { GoBack } from "~/_next/navigation/components/go-back";
 import { getImageUri } from "~/lib/file-system";
 import type { ExtractQueryData } from "~/lib/react-query";
 import type { PlayFromSource } from "~/_next/constants/media";
-import { Seconds } from "~/_next/utils/date";
 import { OnRTL } from "~/_next/utils/i18n";
 import { containSorter } from "~/_next/utils/search";
-import { Image } from "~/_next/components/primitives/image";
 import { LegendList } from "~/_next/components/primitives/legend-list";
 import { ChipButton } from "~/_next/components/button-chip";
-import { IconButton } from "~/_next/components/button-icon";
 import { Divider } from "~/_next/components/divider";
-import { TransitionGradient } from "~/_next/components/gradient";
 import { Icon } from "~/_next/components/icon";
 import { ImageCard, ImageListItem } from "~/_next/components/image-item";
 import { Marquee } from "~/_next/components/marquee";
@@ -85,12 +80,18 @@ export function Artist({
         related={data.related}
         topTracks={data.topTracks}
         Header={
-          <ScreenHeader
-            name={data.name}
+          <MediaListLayout.Header
+            title={data.name}
             artwork={data.artwork}
-            metadata={t("plural.track", { count: data.numTracks })}
-            duration={data.totalDuration}
-            numTracks={data.numTracks}
+            Description={
+              <MediaListLayout.Metadata
+                stats={t("plural.track", { count: data.numTracks })}
+                duration={data.totalDuration}
+              />
+            }
+            Actions={
+              <MediaListLayout.ActionBar playable={data.numTracks > 0} />
+            }
           />
         }
       />
@@ -248,71 +249,6 @@ function TopTracksScreenContents({ topTracks }: Pick<ScreenData, "topTracks">) {
       contentContainerClassName="gap-1.5 px-4 pt-safe-offset-18"
       contentContainerStyle={{ paddingBottom: bottomOffset }}
     />
-  );
-}
-//#endregion
-
-//#region Header
-function ScreenHeader(props: {
-  name: string;
-  artwork: string | null;
-  metadata: string;
-  duration: number;
-  numTracks: number;
-}) {
-  const { t } = useTranslation();
-  const dimensions = useWindowDimensions();
-  const { text } = useTheme().colors;
-  const source = usePlayFromSource();
-
-  const headerHeight = Math.min(400, dimensions.height, dimensions.width);
-
-  return (
-    <View
-      style={{ height: headerHeight }}
-      //? We should be conditionally switching between `-mx-4` & `-mx-5.5` based
-      //? on `numColumns`, but it realistically will be >1 (unless the user has
-      //? a really small/weird screen).
-      className="relative -mx-5.5 items-center justify-end overflow-hidden"
-    >
-      <Image
-        source={props.artwork}
-        contentPosition="top"
-        className="absolute inset-0"
-      />
-      <TransitionGradient
-        easing
-        style={{ height: headerHeight * 0.6 }}
-        className="absolute inset-x-0 bottom-0"
-      />
-      <View className="w-full p-4">
-        <Marquee center>
-          <Text bold size="4xl">
-            {props.name}
-          </Text>
-        </Marquee>
-        <Marquee center contentContainerClassName="flex-row items-center">
-          <Text color="textMuted">{props.metadata}</Text>
-          {/* Work around for RTL languages. */}
-          <Text color="textMuted">{" • "}</Text>
-          <Icon name="time" color="textMuted" size={20} />
-          <Text color="textMuted">{` ${Seconds.toReadableTime(props.duration, true)}`}</Text>
-        </Marquee>
-
-        <View className="mt-4 flex-row items-center justify-center">
-          <IconButton
-            accessibilityLabel={t("term.play")}
-            icon="play-filled"
-            onPress={() => PlaybackControls.playFromList({ source })}
-            disabled={props.numTracks === 0}
-            iconColor="background"
-            color="text"
-            className="h-14 w-full max-w-36 disabled:opacity-50"
-            style={{ backgroundColor: text }}
-          />
-        </View>
-      </View>
-    </View>
   );
 }
 //#endregion
