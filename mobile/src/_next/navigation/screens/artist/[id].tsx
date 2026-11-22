@@ -1,11 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import type {
-  GenericNavigation,
-  RootParamList,
-  StaticScreenProps,
-} from "@react-navigation/native";
+import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
@@ -30,7 +26,6 @@ import { GoBack } from "~/_next/navigation/components/go-back";
 
 import { getImageUri } from "~/lib/file-system";
 import type { ExtractQueryData } from "~/lib/react-query";
-import type { PlayFromSource } from "~/_next/constants/media";
 import { OnRTL } from "~/_next/utils/i18n";
 import { containSorter } from "~/_next/utils/search";
 import { LegendList } from "~/_next/components/primitives/legend-list";
@@ -118,10 +113,31 @@ function ScreenContents({
   const totalColumns = trackColCnt * albumColCnt;
 
   const renderAlbum = useMemo(
-    () => renderAlbumFactory(navigation),
+    () =>
+      MediaListLayout.renderCardFactory<MediaItem.DisplayAlbum>({
+        getKey: ({ id }) => `album-${id}`,
+        getProps: ({ id, name, artwork, year }) => ({
+          artwork: artwork,
+          label: name,
+          supporting: year,
+          onPress: () => navigation.navigate("Album", { id }),
+        }),
+      }),
     [navigation],
   );
-  const renderTrack = useMemo(() => renderTrackFactory(source), [source]);
+  const renderTrack = useMemo(
+    () =>
+      MediaListLayout.renderItemFactory<MediaItem.DisplayTrack>({
+        getKey: ({ id }) => `track-${id}`,
+        getProps: ({ id: trackId, name, artwork, album }) => ({
+          artwork: artwork,
+          label: name,
+          supporting: album ?? "—",
+          onPress: () => PlaybackControls.playFromList({ source, trackId }),
+        }),
+      }),
+    [source],
+  );
 
   const limitedTopTracks = useMemo(
     () => topTracks.slice(0, trackColCnt * 5),
@@ -132,7 +148,7 @@ function ScreenContents({
     <LegendList
       numColumns={totalColumns}
       getItemType={(item: React.JSX.Element) => {
-        if (item?.type === Label) return "label";
+        if (item?.type === MediaListLayout.Label) return "label";
         if (item?.type === ImageCard) return "album-item";
         else if (item?.type === ImageListItem) return "track-item";
       }}
@@ -162,20 +178,20 @@ function ScreenContents({
       ) : null}
       {limitedTopTracks.map(renderTrack)}
 
-      {renderLabel(t("term.albums"), discography.albums)}
+      {MediaListLayout.renderLabel(t("term.albums"), discography.albums)}
       {discography.albums.map(renderAlbum)}
 
-      {renderLabel(t("term.eps"), discography.eps)}
+      {MediaListLayout.renderLabel(t("term.eps"), discography.eps)}
       {discography.eps.map(renderAlbum)}
 
-      {renderLabel(t("term.singles"), discography.singles)}
+      {MediaListLayout.renderLabel(t("term.singles"), discography.singles)}
       {discography.singles.map(renderTrack)}
 
       {related.albums.length > 0 || related.genres.length > 0 ? (
         <Divider className="mt-4" />
       ) : null}
 
-      {renderLabel(t("term.appearsIn"), related.albums)}
+      {MediaListLayout.renderLabel(t("term.appearsIn"), related.albums)}
       {related.albums.map(renderAlbum)}
 
       {related.genres.length > 0 ? (
@@ -250,52 +266,5 @@ function TopTracksScreenContents({ topTracks }: Pick<ScreenData, "topTracks">) {
       contentContainerStyle={{ paddingBottom: bottomOffset }}
     />
   );
-}
-//#endregion
-
-//#region Helpers
-function Label({ label }: { label: string }) {
-  return (
-    <Marquee wrapperClassName="py-1.5">
-      <Text bold size="xl">
-        {label}
-      </Text>
-    </Marquee>
-  );
-}
-
-function renderLabel(label: string, data: readonly unknown[]) {
-  if (data.length === 0) return null;
-  return <Label label={label} />;
-}
-
-function renderAlbumFactory(navigation: GenericNavigation<RootParamList>) {
-  return function RenderedAlbum(item: MediaItem.DisplayAlbum) {
-    return (
-      <ImageCard
-        key={`album-${item.id}`}
-        artwork={item.artwork}
-        label={item.name}
-        supporting={item.year}
-        onPress={() => navigation.navigate("Album", { id: item.id })}
-      />
-    );
-  };
-}
-
-function renderTrackFactory(source: PlayFromSource) {
-  return function RenderedTrack(item: MediaItem.DisplayTrack) {
-    return (
-      <ImageListItem
-        key={`track-${item.id}`}
-        artwork={item.artwork}
-        label={item.name}
-        supporting={item.album ?? "—"}
-        onPress={() =>
-          PlaybackControls.playFromList({ source, trackId: item.id })
-        }
-      />
-    );
-  };
 }
 //#endregion

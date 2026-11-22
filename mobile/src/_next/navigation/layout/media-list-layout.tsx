@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View, useWindowDimensions } from "react-native";
 
@@ -19,6 +19,7 @@ import { IconButton } from "~/_next/components/button-icon";
 import { BlurContainer } from "~/_next/components/blur-container";
 import { TransitionGradient } from "~/_next/components/gradient";
 import { Icon } from "~/_next/components/icon";
+import { ImageCard, ImageListItem } from "~/_next/components/image-item";
 import { TextInput } from "~/_next/components/input";
 import { Marquee } from "~/_next/components/marquee";
 import { Text } from "~/_next/components/typography";
@@ -161,5 +162,41 @@ export function ActionBar(props: { playable: boolean }) {
       />
     </View>
   );
+}
+//#endregion
+
+//#region Lazy Renderer
+export function Label({ label }: { label: string }) {
+  return (
+    <Marquee wrapperClassName="py-1.5">
+      <Text bold size="xl">
+        {label}
+      </Text>
+    </Marquee>
+  );
+}
+
+export function renderLabel(label: string, data: readonly unknown[]) {
+  return data.length > 0 ? <Label label={label} /> : null;
+}
+
+/** Helper to map data into render `<ImageCard />` in a lazy LegendList. */
+export function renderCardFactory<TData extends Record<string, any>>(args: {
+  getKey: (item: TData) => string;
+  getProps: (item: TData) => React.ComponentProps<typeof ImageCard>;
+}) {
+  return function RenderCard(item: TData) {
+    return <ImageCard key={args.getKey(item)} {...args.getProps(item)} />;
+  };
+}
+
+/** Helper to map data into render `<ImageListItem />` in a lazy LegendList. */
+export function renderItemFactory<TData extends Record<string, any>>(args: {
+  getKey: (item: TData) => string;
+  getProps: (item: TData) => React.ComponentProps<typeof ImageListItem>;
+}) {
+  return function RenderItem(item: TData) {
+    return <ImageListItem key={args.getKey(item)} {...args.getProps(item)} />;
+  };
 }
 //#endregion
