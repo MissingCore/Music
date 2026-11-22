@@ -4,36 +4,26 @@
 import type { ViewProps } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 
-import { useColor } from "~/_next/context/theme-context";
+import { useTheme } from "~/_next/context/theme-context";
 
-import type { AppColor } from "~/_next/constants/theme";
 import { withAlpha } from "~/_next/utils/color";
 import { cn } from "~/_next/utils/style";
 
-interface BlurContainerProps extends ViewProps {
-  color?: AppColor;
-}
-
-export function BlurContainer({
-  color: _color = "surface",
-  className,
-  style,
-  ...props
-}: BlurContainerProps) {
-  const color = useColor(_color);
+export function BlurContainer({ className, style, ...props }: ViewProps) {
+  const { background } = useTheme().colors;
   return (
     <Animated.View
       {...props}
       layout={LinearTransition}
       style={[
         {
-          backgroundColor: withAlpha(color, 0.15),
-          borderColor: withAlpha(color, 0.15),
-          //! FIXME: Elevation makes text colored by `color` more readable.
-          //! However, there might be the possibility of some weird geometric
-          //! rendering inside the view due using `elevation` with a transparent
-          //! background, so we might remove this.
-          elevation: 25,
+          backgroundImage: `
+            linear-gradient(${withAlpha(background, 0.25)}, ${withAlpha(background, 0.25)}),
+            linear-gradient(to bottom right, ${withAlpha("#FFF", 0.25)}, ${withAlpha("#FFF", 0.15)}),
+            linear-gradient(to bottom right, ${withAlpha("#000", 0.05)}, ${withAlpha("#000", 0.2)}),
+            linear-gradient(${withAlpha("#000", 0.1)}, ${withAlpha("#000", 0.05)})
+          `,
+          borderColor: withAlpha("#FFF", 0.2),
         },
         style,
       ]}
