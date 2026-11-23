@@ -16,8 +16,8 @@ import { OnRTL } from "~/_next/utils/i18n";
 import { cn } from "~/_next/utils/style";
 import { Image } from "~/_next/components/primitives/image";
 import { BlurContainer } from "~/_next/components/blur-container";
-import type { IconButtonProps } from "~/_next/components/button-icon";
-import { IconButton } from "~/_next/components/button-icon";
+import type { BlurIconButtonProps } from "~/_next/components/button-icon";
+import { BlurIconButton, IconButton } from "~/_next/components/button-icon";
 import { TransitionGradient } from "~/_next/components/gradient";
 import { Icon } from "~/_next/components/icon";
 import { ImageCard, ImageListItem } from "~/_next/components/image-item";
@@ -39,14 +39,11 @@ export function AppBar({ searchEnabled = false }) {
   return (
     <View className="absolute inset-x-0 z-100 pt-safe">
       <View className="h-14 w-full flex-row items-center gap-4 px-2">
-        <BlurContainer>
-          <IconButton
-            icon={OnRTL.decide("arrow-right", "arrow-left")}
-            accessibilityLabel={t("form.back")}
-            onPress={() => navigation.goBack()}
-            color="text"
-          />
-        </BlurContainer>
+        <BlurIconButton
+          icon={OnRTL.decide("arrow-right", "arrow-left")}
+          accessibilityLabel={t("form.back")}
+          onPress={() => navigation.goBack()}
+        />
         {searchEnabled ? <SearchBar /> : null}
       </View>
     </View>
@@ -59,10 +56,10 @@ function SearchBar() {
   const setQuery = useSearchStore((s) => s.setQuery);
 
   return (
-    <View className="relative min-w-10.5 flex-1 items-end">
+    <View className="relative min-w-10 flex-1 items-end">
       <BlurContainer
         className={cn(
-          "h-10.5 max-w-[min(512px,100%)] min-w-10.5",
+          "h-10 max-w-[min(512px,100%)] min-w-10",
           searchEnabled && "w-full pr-10 pl-2",
         )}
       >
@@ -89,7 +86,7 @@ function SearchBar() {
         color="text"
         //? Absolute-positioned as layout animation would have it slide-in
         //? with the text input.
-        className="absolute top-px right-px"
+        className="absolute top-0 right-0"
       />
     </View>
   );
@@ -160,7 +157,7 @@ export function ActionBar(props: {
 
   return (
     <View className="mt-4 w-full flex-row items-center justify-center gap-2">
-      <View className="size-full max-w-27 shrink-0 flex-row items-center justify-end gap-2">
+      <View className="size-full max-w-26 shrink-0 flex-row items-center justify-end gap-2">
         {props.LeftActions}
       </View>
       <IconButton
@@ -173,7 +170,7 @@ export function ActionBar(props: {
         className="h-14 max-w-36 shrink grow disabled:opacity-50"
         style={{ backgroundColor: text }}
       />
-      <View className="size-full max-w-27 shrink-0 flex-row items-center justify-start gap-2">
+      <View className="size-full max-w-26 shrink-0 flex-row items-center justify-start gap-2">
         {props.RightActions}
       </View>
     </View>
@@ -181,19 +178,8 @@ export function ActionBar(props: {
 }
 
 /** Pre-styled button for actions in `MediaListLayout.ActionBar`. */
-export function Action({
-  className,
-  ...props
-}: Omit<IconButtonProps, "color" | "iconColor">) {
-  return (
-    <BlurContainer>
-      <IconButton
-        {...props}
-        color="text"
-        className={cn(className, "size-12")}
-      />
-    </BlurContainer>
-  );
+export function Action({ className, ...props }: BlurIconButtonProps) {
+  return <BlurIconButton {...props} className={cn(className, "size-12")} />;
 }
 
 /** Opens menu to select whether list should be played next or at the end of the current queue. */

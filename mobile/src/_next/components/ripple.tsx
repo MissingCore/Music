@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { colord } from "colord";
+import type { ViewProps } from "react-native";
 
 import { useColor } from "~/_next/context/theme-context";
 
@@ -11,11 +12,15 @@ import { cn } from "~/_next/utils/style";
 import type { PressableProps } from "./primitives/pressable";
 import { Pressable } from "./primitives/pressable";
 
-export interface RippleProps extends Omit<PressableProps, "android_ripple"> {
+export interface RippleProps extends Omit<
+  PressableProps,
+  "android_ripple" | "style"
+> {
   /** The color of the "surface" the ripple will be on. */
   color?: AppColor;
   /** How transparent the ripple will be. */
   alpha?: number;
+  style?: ViewProps["style"];
 }
 
 export function Ripple({
