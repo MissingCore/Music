@@ -24,10 +24,7 @@ import { Dialog } from "~/_next/components/dialog";
 import { Ripple } from "~/_next/components/ripple";
 import { TText } from "~/_next/components/typography";
 
-type FormType = "create" | "edit";
-
 type InitialArguments<TSchema extends v.ObjectSchema<any, any>> = {
-  type: FormType;
   schema: TSchema;
   initData: v.InferOutput<TSchema>;
   /** Fields omitted during normal validation. Will be checked in `onSubmit`. */
@@ -37,12 +34,13 @@ type InitialArguments<TSchema extends v.ObjectSchema<any, any>> = {
   /** Additional validation to check whether we can submit. */
   onConstraints?: (data: v.InferOutput<TSchema>) => boolean;
 
+  /** Change method of leaving form. */
+  handleGoBack?: VoidFunction;
   /** Determine if the "Unsaved Changes" prompt can be disabled. Defaults `true`. */
   promptUnsavedChanges?: boolean;
 };
 
 type FormState<TData extends Record<string, any>> = {
-  type: FormType;
   data: TData;
   /** @deprecated For internal use. Use `setFields` instead. */
   setField: Dispatch<SetStateAction<TData>>;
@@ -65,6 +63,8 @@ const UnsavedChangesContext = createContext<{
   setShowConfirmation: Dispatch<SetStateAction<boolean>>;
 }>(null as never);
 
+const GoBackContext = createContext<VoidFunction>(null as never);
+
 //#region Hook
 /** Wrap this with another hook to type the return data. */
 export function useFormContext<TData extends Record<string, any>>() {
@@ -79,6 +79,7 @@ export function useFormContext<TData extends Record<string, any>>() {
 export function FormProvider<TSchema extends v.ObjectSchema<any, any>>(
   props: InitialArguments<TSchema> & { children: React.ReactNode },
 ) {
+  const navigation = useNavigation();
   const initData = useRef(props.initData);
   const schemaRef = useRef(props.schema);
   const partialSchemaRef = useRef(
@@ -90,6 +91,7 @@ export function FormProvider<TSchema extends v.ObjectSchema<any, any>>(
   const omittedFieldsRef = useRef(props.omittedFields ?? []);
   const onSubmitRef = useRef(props.onSubmit);
   const onConstraintsRef = useRef(props.onConstraints);
+  const handleGoBackRef = useRef(props.handleGoBack);
 
   const [data, setData] = useState(props.initData);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -163,10 +165,14 @@ export function FormProvider<TSchema extends v.ObjectSchema<any, any>>(
     setIsSubmitting(false);
   }, [canSubmit, data]);
 
+  const handleGoBack = useCallback(() => {
+    if (handleGoBackRef.current) handleGoBackRef.current();
+    else navigation.goBack();
+  }, [navigation]);
+
   return (
     <FormStateContext
       value={{
-        type: props.type,
         data,
         setField: setData,
         setFields,
@@ -179,8 +185,12 @@ export function FormProvider<TSchema extends v.ObjectSchema<any, any>>(
       }}
     >
       <UnsavedChangesContext value={{ showConfirmation, setShowConfirmation }}>
-        {props.children}
-        {(props.promptUnsavedChanges ?? true) ? <UnsavedChangesPrompt /> : null}
+        <GoBackContext value={handleGoBack}>
+          {props.children}
+          {(props.promptUnsavedChanges ?? true) ? (
+            <UnsavedChangesPrompt />
+          ) : null}
+        </GoBackContext>
       </UnsavedChangesContext>
     </FormStateContext>
   );
@@ -191,9 +201,9 @@ export function FormProvider<TSchema extends v.ObjectSchema<any, any>>(
 /** Returns partial props for an `IconButton` for the "back" action. */
 export function useBackAction() {
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const { hasChanged, isSubmitting } = useFormContext();
   const { setShowConfirmation } = use(UnsavedChangesContext);
+  const goBack = use(GoBackContext);
   return useMemo(
     () =>
       ({
@@ -201,11 +211,11 @@ export function useBackAction() {
         accessibilityLabel: t("form.back"),
         onPress: () => {
           if (hasChanged) return setShowConfirmation(true);
-          navigation.goBack();
+          goBack();
         },
         disabled: isSubmitting,
       }) satisfies IconButtonProps,
-    [t, navigation, hasChanged, isSubmitting, setShowConfirmation],
+    [t, hasChanged, isSubmitting, setShowConfirmation, goBack],
   );
 }
 
@@ -228,10 +238,10 @@ export function useSubmitAction() {
 
 //#region Internal
 function UnsavedChangesPrompt() {
-  const navigation = useNavigation();
   const { text } = useTheme().colors;
   const { hasChanged, isSubmitting } = useFormContext();
   const { showConfirmation, setShowConfirmation } = use(UnsavedChangesContext);
+  const goBack = use(GoBackContext);
 
   useBackHandler(() => {
     if (!hasChanged) return false;
@@ -250,7 +260,7 @@ function UnsavedChangesPrompt() {
           <TText
             textKey="form.leave"
             onPress={() => {
-              navigation.goBack();
+              goBack();
               setShowConfirmation(false);
             }}
           />
