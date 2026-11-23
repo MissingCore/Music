@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View, useWindowDimensions } from "react-native";
 
-import { PlaybackControls } from "~/stores/Playback/actions";
+import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { usePlayFromSource } from "~/_next/context/play-from-context";
 import { useSearchStore } from "~/_next/context/search-context";
 import { useTheme } from "~/_next/context/theme-context";
@@ -22,7 +22,9 @@ import { Icon } from "~/_next/components/icon";
 import { ImageCard, ImageListItem } from "~/_next/components/image-item";
 import { TextInput } from "~/_next/components/input";
 import { Marquee } from "~/_next/components/marquee";
-import { Text } from "~/_next/components/typography";
+import { Menu } from "~/_next/components/menu";
+import { Ripple } from "~/_next/components/ripple";
+import { Text, TText } from "~/_next/components/typography";
 
 //#region App Bar
 /**
@@ -157,7 +159,7 @@ export function ActionBar(props: {
 
   return (
     <View className="mt-4 w-full flex-row items-center justify-center gap-2">
-      <View className="size-full max-w-23 shrink-0 flex-row items-center justify-end gap-2">
+      <View className="size-full max-w-27 shrink-0 flex-row items-center justify-end gap-2">
         {props.LeftActions}
       </View>
       <IconButton
@@ -170,10 +172,50 @@ export function ActionBar(props: {
         className="h-14 w-full max-w-36 shrink disabled:opacity-50"
         style={{ backgroundColor: text }}
       />
-      <View className="size-full max-w-23 shrink-0 flex-row items-center justify-start gap-2">
+      <View className="size-full max-w-27 shrink-0 flex-row items-center justify-start gap-2">
         {props.RightActions}
       </View>
     </View>
+  );
+}
+
+/** Opens menu to select whether list should be played next or at the end of the current queue. */
+export function AddToQueueAction(props: { name: string; trackIds: string[] }) {
+  const { t } = useTranslation();
+  const [visible, setVisible] = useState(false);
+
+  return (
+    <Menu
+      visible={visible}
+      anchor={
+        <BlurContainer>
+          <IconButton
+            icon="list-check"
+            accessibilityLabel={t("feat.queue.extra.add")}
+            onPress={() => setVisible((prev) => !prev)}
+            color="text"
+            className="size-12"
+          />
+        </BlurContainer>
+      }
+      dismissHandling
+      onDismiss={() => setVisible(false)}
+    >
+      <Ripple
+        onPress={() => Queue.add({ id: props.trackIds, name: props.name })}
+        className="w-full flex-row items-center gap-3 px-3 py-2"
+      >
+        <Icon name="list-start" />
+        <TText textKey="feat.queue.extra.playNext" />
+      </Ripple>
+      <Ripple
+        onPress={() => Queue.addToEnd({ id: props.trackIds, name: props.name })}
+        className="w-full flex-row items-center gap-3 px-3 py-2"
+      >
+        <Icon name="list-end" />
+        <TText textKey="feat.queue.extra.playLast" />
+      </Ripple>
+    </Menu>
   );
 }
 //#endregion

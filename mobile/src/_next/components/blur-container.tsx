@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import type { ViewProps } from "react-native";
+import type { AnimatedProps } from "react-native-reanimated";
 import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { useTheme } from "~/_next/context/theme-context";
@@ -9,7 +10,11 @@ import { useTheme } from "~/_next/context/theme-context";
 import { withAlpha } from "~/_next/utils/color";
 import { cn } from "~/_next/utils/style";
 
-export function BlurContainer({ className, style, ...props }: ViewProps) {
+export function BlurContainer({
+  className,
+  style,
+  ...props
+}: AnimatedProps<ViewProps>) {
   const { background } = useTheme().colors;
   return (
     <Animated.View
