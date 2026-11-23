@@ -53,6 +53,7 @@
 | react-native-safe-area-context | MIT | https://github.com/appandflow/react-native-safe-area-context |
 | react-native-screens | MIT | https://github.com/software-mansion/react-native-screens |
 | react-native-svg | MIT | https://github.com/software-mansion/react-native-svg |
+| react-native-teleport | MIT | https://github.com/kirillzyusko/react-native-teleport |
 | react-native-worklets | MIT | https://github.com/software-mansion/react-native-reanimated/tree/main/packages/react-native-worklets |
 | tailwind-merge | MIT | https://github.com/dcastil/tailwind-merge |
 | uniwind | MIT | https://github.com/uni-stack/uniwind |

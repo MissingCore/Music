@@ -17,6 +17,8 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { PortalHost } from "@rn-primitives/portal";
 import { useCallback, useMemo, useRef } from "react";
+import { StyleSheet } from "react-native";
+import { PortalHost as TeleportHost } from "react-native-teleport";
 
 import {
   Artist,
@@ -240,6 +242,7 @@ export const RootStack = createNativeStackNavigator({
       <ArtistsSheet />
       <TrackMultiSelectListeners />
       <PortalHost />
+      <TeleportHost name="default" style={StyleSheet.absoluteFill} />
     </>
   ),
   screenLayout: ({ children }) => <DeferredRender>{children}</DeferredRender>,

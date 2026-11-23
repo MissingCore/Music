@@ -1,7 +1,6 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { Portal } from "@rn-primitives/portal";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ViewStyle } from "react-native";
 import { useWindowDimensions } from "react-native";
@@ -14,6 +13,7 @@ import Animated, {
   useAnimatedRef,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Portal } from "react-native-teleport";
 
 import { useBackHandler } from "~/hooks/useBackHandler";
 import { useSafeAreaHeight } from "~/hooks/useSafeAreaHeight";
@@ -128,7 +128,7 @@ export function Menu({
       </Animated.View>
 
       {rendered ? (
-        <Portal name="menu-portal">
+        <Portal name="menu-portal" hostName="default">
           {dismissHandling ? (
             <Pressable onPress={onDismiss} className="absolute inset-0" />
           ) : null}
