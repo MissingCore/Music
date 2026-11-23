@@ -180,7 +180,11 @@ export function ActionBar(props: {
 }
 
 /** Opens menu to select whether list should be played next or at the end of the current queue. */
-export function AddToQueueAction(props: { name: string; trackIds: string[] }) {
+export function AddToQueueAction(props: {
+  name: string;
+  trackIds: string[];
+  disabled?: boolean;
+}) {
   const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
 
@@ -193,6 +197,7 @@ export function AddToQueueAction(props: { name: string; trackIds: string[] }) {
             icon="list-check"
             accessibilityLabel={t("feat.queue.extra.add")}
             onPress={() => setVisible((prev) => !prev)}
+            disabled={props.disabled}
             color="text"
             className="size-12"
           />
