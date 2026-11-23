@@ -16,6 +16,7 @@ import { OnRTL } from "~/_next/utils/i18n";
 import { cn } from "~/_next/utils/style";
 import { Image } from "~/_next/components/primitives/image";
 import { BlurContainer } from "~/_next/components/blur-container";
+import type { IconButtonProps } from "~/_next/components/button-icon";
 import { IconButton } from "~/_next/components/button-icon";
 import { TransitionGradient } from "~/_next/components/gradient";
 import { Icon } from "~/_next/components/icon";
@@ -169,13 +170,29 @@ export function ActionBar(props: {
         disabled={!(props.playable ?? true)}
         iconColor="background"
         color="text"
-        className="h-14 w-full max-w-36 shrink disabled:opacity-50"
+        className="h-14 max-w-36 shrink grow disabled:opacity-50"
         style={{ backgroundColor: text }}
       />
       <View className="size-full max-w-27 shrink-0 flex-row items-center justify-start gap-2">
         {props.RightActions}
       </View>
     </View>
+  );
+}
+
+/** Pre-styled button for actions in `MediaListLayout.ActionBar`. */
+export function Action({
+  className,
+  ...props
+}: Omit<IconButtonProps, "color" | "iconColor">) {
+  return (
+    <BlurContainer>
+      <IconButton
+        {...props}
+        color="text"
+        className={cn(className, "size-12")}
+      />
+    </BlurContainer>
   );
 }
 
@@ -192,35 +209,51 @@ export function AddToQueueAction(props: {
     <Menu
       visible={visible}
       anchor={
-        <BlurContainer>
-          <IconButton
-            icon="list-check"
-            accessibilityLabel={t("feat.queue.extra.add")}
-            onPress={() => setVisible((prev) => !prev)}
-            disabled={props.disabled}
-            color="text"
-            className="size-12"
-          />
-        </BlurContainer>
+        <Action
+          icon="list-check"
+          accessibilityLabel={t("feat.queue.extra.add")}
+          onPress={() => setVisible((prev) => !prev)}
+          disabled={props.disabled}
+        />
       }
       dismissHandling
       onDismiss={() => setVisible(false)}
     >
       <Ripple
-        onPress={() => Queue.add({ id: props.trackIds, name: props.name })}
+        onPress={() => {
+          Queue.add({ id: props.trackIds, name: props.name });
+          setVisible(false);
+        }}
+        color="text"
         className="w-full flex-row items-center gap-3 px-3 py-2"
       >
-        <Icon name="list-start" />
+        <Icon name="list-start" size={20} />
         <TText textKey="feat.queue.extra.playNext" />
       </Ripple>
       <Ripple
-        onPress={() => Queue.addToEnd({ id: props.trackIds, name: props.name })}
+        onPress={() => {
+          Queue.addToEnd({ id: props.trackIds, name: props.name });
+          setVisible(false);
+        }}
+        color="text"
         className="w-full flex-row items-center gap-3 px-3 py-2"
       >
-        <Icon name="list-end" />
+        <Icon name="list-end" size={20} />
         <TText textKey="feat.queue.extra.playLast" />
       </Ripple>
     </Menu>
+  );
+}
+
+/** Pre-styled component for triggering an "edit" action. */
+export function EditAction(props: { onPress: VoidFunction }) {
+  const { t } = useTranslation();
+  return (
+    <Action
+      icon="pencil"
+      accessibilityLabel={t("form.edit")}
+      onPress={props.onPress}
+    />
   );
 }
 //#endregion
