@@ -244,10 +244,10 @@ function UnsavedChangesPrompt() {
   const goBack = use(GoBackContext);
 
   useBackHandler(() => {
-    if (!hasChanged) return false;
-    if (!isSubmitting) setShowConfirmation(true);
+    if (!hasChanged) goBack();
+    else if (!isSubmitting) setShowConfirmation(true);
     return true;
-  }, [hasChanged, isSubmitting]);
+  }, [hasChanged, isSubmitting, goBack]);
 
   return (
     <Dialog
