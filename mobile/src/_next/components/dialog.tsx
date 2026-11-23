@@ -25,7 +25,7 @@ export function Dialog(props: DialogProps) {
       <View className="flex-1 items-center justify-center bg-black/50 px-4">
         <View
           style={{ backgroundColor: background, borderColor: border }}
-          className="w-full max-w-xl gap-8 border pt-6"
+          className="w-full max-w-xl gap-8 rounded-xl border p-4 pt-6"
         >
           {props.children}
         </View>

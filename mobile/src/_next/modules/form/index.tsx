@@ -256,23 +256,25 @@ function UnsavedChangesPrompt() {
     >
       <TText textKey="form.unsaved" style={{ fontSize: 18 }} />
       <View className="flex-row items-center gap-2">
-        <Ripple className="flex-1 rounded-full p-4">
+        <Ripple className="flex-1 rounded-full p-3">
           <TText
             textKey="form.leave"
             onPress={() => {
               goBack();
               setShowConfirmation(false);
             }}
+            center
           />
         </Ripple>
         <Ripple
           color="text"
           style={{ backgroundColor: text }}
-          className="flex-1 rounded-full p-4"
+          className="flex-1 rounded-full p-3"
         >
           <TText
             textKey="form.stay"
             onPress={() => setShowConfirmation(false)}
+            center
             color="background"
           />
         </Ripple>
