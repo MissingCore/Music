@@ -11,6 +11,7 @@ import { usePlayFromSource } from "~/_next/context/play-from-context";
 import { useSearchStore } from "~/_next/context/search-context";
 import { useTheme } from "~/_next/context/theme-context";
 
+import { getImageUri } from "~/lib/file-system";
 import { Seconds } from "~/_next/utils/date";
 import { OnRTL } from "~/_next/utils/i18n";
 import { cn } from "~/_next/utils/style";
@@ -108,7 +109,7 @@ export function Header(props: {
       className="relative -mx-5.5 items-center justify-end overflow-hidden"
     >
       <Image
-        source={props.artwork}
+        source={getImageUri(props.artwork)}
         contentPosition="top"
         className="absolute inset-0"
       />

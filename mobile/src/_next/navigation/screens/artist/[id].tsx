@@ -24,7 +24,6 @@ import { AdaptiveLayout } from "~/_next/navigation/layout/adaptive-layout";
 import * as MediaListLayout from "~/_next/navigation/layout/media-list-layout";
 import { GoBack } from "~/_next/navigation/components/go-back";
 
-import { getImageUri } from "~/lib/file-system";
 import type { ExtractQueryData } from "~/lib/react-query";
 import { OnRTL } from "~/_next/utils/i18n";
 import { containSorter } from "~/_next/utils/search";
@@ -43,10 +42,6 @@ function useArtist(id: string) {
   return useQuery({
     queryKey: q.artist.detail(id),
     queryFn: () => LocalMediaAdapter.artist.get(id),
-    select: ({ artwork, ...rest }) => ({
-      ...rest,
-      artwork: getImageUri(artwork),
-    }),
   });
 }
 

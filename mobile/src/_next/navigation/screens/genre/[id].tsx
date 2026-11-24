@@ -21,7 +21,6 @@ import { AdaptiveLayout } from "~/_next/navigation/layout/adaptive-layout";
 import * as MediaListLayout from "~/_next/navigation/layout/media-list-layout";
 import { GoBack } from "~/_next/navigation/components/go-back";
 
-import { getImageUri } from "~/lib/file-system";
 import type { ExtractQueryData } from "~/lib/react-query";
 import { containSorter } from "~/_next/utils/search";
 import { LegendList } from "~/_next/components/primitives/legend-list";
@@ -34,9 +33,8 @@ function useGenre(id: string) {
   return useQuery({
     queryKey: q.genre.detail(id),
     queryFn: () => LocalMediaAdapter.genre.get(id),
-    select: ({ artwork, topTracks, ...rest }) => ({
+    select: ({ topTracks, ...rest }) => ({
       ...rest,
-      artwork: getImageUri(artwork),
       topTracks: topTracks.map((track) => ({
         ...track,
         artistStr: track.artists !== null ? track.artists.join(", ") : null,
