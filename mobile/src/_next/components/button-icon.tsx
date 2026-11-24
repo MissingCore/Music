@@ -9,27 +9,35 @@ import { Icon } from "./icon";
 import type { RippleProps } from "./ripple";
 import { Ripple } from "./ripple";
 
+const SIZE_CONFIG = {
+  sm: { className: "size-8", size: 24 },
+  base: { className: "size-10", size: 24 },
+} as const;
+
 export interface IconButtonProps extends RippleProps {
   accessibilityLabel: string;
   icon: SupportedIconName;
   iconColor?: AppColor;
+  size?: keyof typeof SIZE_CONFIG;
 }
 
 export function IconButton({
   icon,
   iconColor = "text",
   className,
+  size = "base",
   ...props
 }: IconButtonProps) {
   return (
     <Ripple
       {...props}
       className={cn(
-        "size-10 items-center justify-center rounded-full",
+        "items-center justify-center rounded-full",
+        SIZE_CONFIG[size].className,
         className,
       )}
     >
-      <Icon name={icon} color={iconColor} />
+      <Icon name={icon} color={iconColor} size={SIZE_CONFIG[size].size} />
     </Ripple>
   );
 }
