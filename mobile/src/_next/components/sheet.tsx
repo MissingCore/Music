@@ -48,8 +48,9 @@ export function Sheet(props: SheetProps) {
         ref={props.ref}
         name={props.name}
         detents={["auto"]}
-        scrollableRef={scrollableRef}
         dismissible={props.dismissible}
+        scrollableRef={scrollableRef}
+        scrollableOptions={{ keyboardScrollOffset: 16 }}
 
         onWillPresent={() => props.setVisibility?.(true)}
         onDidDismiss={() => props.setVisibility?.(false)}
