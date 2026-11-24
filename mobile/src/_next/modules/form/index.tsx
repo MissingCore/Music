@@ -21,14 +21,11 @@ import { useBackHandler } from "~/hooks/useBackHandler";
 
 import { wait } from "~/_next/utils/promise";
 import type { IconButtonProps } from "~/_next/components/button-icon";
-import { IconButton } from "~/_next/components/button-icon";
 import { Dialog } from "~/_next/components/dialog";
-import { Marquee } from "~/_next/components/marquee";
 import { Ripple } from "~/_next/components/ripple";
-import { SheetHeader } from "~/_next/components/sheet";
-import { Text, TText } from "~/_next/components/typography";
+import { TText } from "~/_next/components/typography";
 
-type InitialArguments<TSchema extends v.ObjectSchema<any, any>> = {
+export type FormProviderArguments<TSchema extends v.ObjectSchema<any, any>> = {
   schema: TSchema;
   initData: v.InferOutput<TSchema>;
   /** Fields omitted during normal validation. Will be checked in `onSubmit`. */
@@ -84,7 +81,7 @@ export function useFormContext<TData extends Record<string, any>>() {
 
 //#region Provider
 export function FormProvider<TSchema extends v.ObjectSchema<any, any>>(
-  props: InitialArguments<TSchema> & { children: React.ReactNode },
+  props: FormProviderArguments<TSchema> & { children: React.ReactNode },
 ) {
   const navigation = useNavigation();
   const initData = useRef(props.initData);
@@ -266,25 +263,6 @@ export function useSubmitAction() {
         disabled: !canSubmit || isSubmitting,
       }) satisfies IconButtonProps,
     [t, canSubmit, onSubmit, isSubmitting],
-  );
-}
-//#endregion
-
-//#region Pre-build
-/** Header component for sheet if using Form API with a sheet. */
-export function FormSheetHeader({ label }: { label: string }) {
-  const backAction = useBackAction();
-  const submitAction = useSubmitAction();
-  return (
-    <SheetHeader showHandle={false}>
-      <View className="flex-row items-center justify-between px-2">
-        <IconButton {...backAction} />
-        <Marquee center>
-          <Text bold>{label}</Text>
-        </Marquee>
-        <IconButton {...submitAction} className="disabled:opacity-25" />
-      </View>
-    </SheetHeader>
   );
 }
 //#endregion

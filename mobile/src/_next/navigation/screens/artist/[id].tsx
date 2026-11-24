@@ -5,7 +5,7 @@ import { toast } from "@missingcore/ui/toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import * as v from "valibot";
@@ -40,10 +40,10 @@ import { ImageCard, ImageListItem } from "~/_next/components/image-item";
 import { Marquee } from "~/_next/components/marquee";
 import { Ripple } from "~/_next/components/ripple";
 import type { SheetRef } from "~/_next/components/sheet";
-import { ScrollableSheet, useSheetRef } from "~/_next/components/sheet";
+import { useSheetRef } from "~/_next/components/sheet";
 import { Text, TText } from "~/_next/components/typography";
-import { FormProvider, FormSheetHeader } from "~/_next/modules/form";
 import { createTypedFormInputs } from "~/_next/modules/form/form-input";
+import { FormSheet } from "~/_next/modules/form/form-sheet";
 
 type ScreenData = ExtractQueryData<typeof useArtist>;
 
@@ -304,10 +304,10 @@ function EditFormSheet(props: {
 }) {
   const { t } = useTranslation();
   const navigation = useNavigation("Artist");
-  const [presented, setPresented] = useState(false);
-
   return (
-    <FormProvider
+    <FormSheet
+      ref={props.ref}
+      label={t("form.edit")}
       schema={ArtistFormSchema}
       initData={{
         initArtwork: props.artwork,
@@ -339,24 +339,16 @@ function EditFormSheet(props: {
           throw err;
         }
       }}
-      handleGoBack={presented ? () => props.ref.current?.dismiss() : undefined}
     >
-      <ScrollableSheet
-        ref={props.ref}
-        dismissible={false}
-        setVisibility={setPresented}
-        header={<FormSheetHeader label={t("form.edit")} />}
-      >
-        <View className="flex-row items-center gap-4">
-          <FormInput.Image />
-          <FormInput.Text
-            label={t("feat.trackMetadata.extra.name")}
-            field="name"
-          />
-        </View>
-        <Hint hint={t("feat.trackMetadata.extra.onlyTracks")} />
-      </ScrollableSheet>
-    </FormProvider>
+      <View className="flex-row items-center gap-4">
+        <FormInput.Image />
+        <FormInput.Text
+          label={t("feat.trackMetadata.extra.name")}
+          field="name"
+        />
+      </View>
+      <Hint hint={t("feat.trackMetadata.extra.onlyTracks")} />
+    </FormSheet>
   );
 }
 //#endregion
