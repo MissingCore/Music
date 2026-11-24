@@ -57,7 +57,7 @@ export function createTypedFormInputs<TData extends Record<string, any>>() {
 
   //#region Text
   function TextFormInput({ label, field }: FormInputProps<string>) {
-    const { border: borderColor } = useTheme().colors;
+    const { border } = useTheme().colors;
     const { value, setField, isSubmitting } = useFormProperties<string>(field);
     return (
       <View className="shrink grow">
@@ -67,7 +67,7 @@ export function createTypedFormInputs<TData extends Record<string, any>>() {
           value={value}
           onChangeText={(text) => setField(() => text)}
           className={baseInputStyles}
-          style={{ borderColor, textAlignVertical: "center" }}
+          style={{ borderColor: border, textAlignVertical: "center" }}
         />
       </View>
     );
@@ -77,7 +77,7 @@ export function createTypedFormInputs<TData extends Record<string, any>>() {
   //#region Image
   function ImageInput() {
     const { t } = useTranslation();
-    const { surface: backgroundColor } = useTheme().colors;
+    const { surface, border } = useTheme().colors;
     const [pending, setPending] = useState(false);
     const { data } = useFormContext<TData>();
     const { value, setField, isSubmitting } =
@@ -114,11 +114,12 @@ export function createTypedFormInputs<TData extends Record<string, any>>() {
       <Ripple
         onPress={changeImage}
         disabled={pending || isSubmitting}
-        className="relative size-28 rounded-xl"
+        style={{ borderColor: border }}
+        className="relative size-28 rounded-xl border"
       >
         <Image
           source={getImageUri(value)}
-          style={{ backgroundColor }}
+          style={{ backgroundColor: surface }}
           className="size-full"
         />
         <Icon
