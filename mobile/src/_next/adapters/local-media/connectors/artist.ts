@@ -236,6 +236,66 @@ export const LocalMediaArtistConnector = {
       .from(tracksToArtists)
       .where(eq(tracksToArtists.artistName, id));
   },
+
+  /**
+   * Update artists & related relations.
+   *
+   * **Does not update album relations if `name` is changes due to the complexity.**
+   */
+  async update(id: string, values: Partial<typeof artists.$inferSelect>) {
+    //? Skip if nothing gets updated.
+    if (values.name === undefined && values.artwork === undefined) return;
+    //? Throw an error if `id = values.name` (since this shouldn't be possible).
+    if (id === values.name)
+      throw new Error(`\`values.name\` should not equal ${id}.`);
+
+    return db.transaction(async (tx) => {
+      //? Simple artwork update.
+      if (values.name === undefined) {
+        await tx.update(artists).set(values).where(eq(artists.name, id));
+        return;
+      }
+
+      const priorValues = await tx.query.artists.findFirst({
+        where: (fields, { eq }) => eq(fields.name, id),
+      });
+      if (!priorValues) return;
+      const newArtist = { ...priorValues, ...values };
+      const artistName = newArtist.name;
+
+      //? Insert artist entry (to preserve referential integrity).
+      await tx.insert(artists).values(newArtist).onConflictDoNothing();
+      if (values.artwork !== undefined)
+        await tx
+          .update(artists)
+          .set({ artwork: values.artwork })
+          .where(eq(artists.name, artistName));
+
+      //? Update track relations.
+      const trackIds = await tx.query.tracksToArtists.findMany({
+        columns: { trackId: true },
+        where: (fields, { eq }) => eq(fields.artistName, id),
+      });
+      if (trackIds.length > 0) {
+        await tx
+          .delete(tracksToArtists)
+          .where(eq(tracksToArtists.artistName, id));
+        await tx
+          .insert(tracksToArtists)
+          .values(trackIds.map(({ trackId }) => ({ trackId, artistName })))
+          .onConflictDoNothing();
+        await tx
+          .update(tracks)
+          .set({ editedMetadata: Date.now() })
+          .where(
+            inArray(
+              tracks.id,
+              trackIds.map(({ trackId }) => trackId),
+            ),
+          );
+      }
+    });
+  },
 } as const satisfies Connector.Artist & Record<PropertyKey, unknown>;
 
 //#region Internal Utils
