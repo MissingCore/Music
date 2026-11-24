@@ -6,7 +6,6 @@ settings:
 
 patchedDependencies:
   '@legendapp/list': af103e084a5f761ff27514a2115063bf06c92729f00d868e826911355166c53e
-  '@lodev09/react-native-true-sheet': db2d3a355811465e6ed7b08cdfa36345d93ec83756db2573cf21609cc93df03e
   react-native-android-widget: 1b539a54e370b751c42017802557a37b9c726edc3e0333b31f7350b48d2af4b6
   react-native-material-palette: cb6604a7852903e36cef6eda789a4886aad57bbedd78f525bb2ba98ee28b97b8
 
@@ -21,8 +20,8 @@ importers:
         specifier: 3.7.3
         version: 3.7.3(patch_hash=af103e084a5f761ff27514a2115063bf06c92729f00d868e826911355166c53e)(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@lodev09/react-native-true-sheet':
-        specifier: 4.0.1
-        version: 4.0.1(patch_hash=db2d3a355811465e6ed7b08cdfa36345d93ec83756db2573cf21609cc93df03e)(ef5c239e7b27548a4536105c16ea5963)
+        specifier: 4.1.2
+        version: 4.1.2(ef5c239e7b27548a4536105c16ea5963)
       '@missingcore/react-native-actual-path':
         specifier: 0.1.0
         version: 0.1.0(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
@@ -1806,8 +1805,8 @@ packages:
       react-native:
         optional: true
 
-  '@lodev09/react-native-true-sheet@4.0.1':
-    resolution: {integrity: sha512-7FebcsouW7VGUB6F/Ah2gCAvhP0geZbSVbxfMG72zOjzpEbPzl5pwxHj8nQQ/0q8KnkQoKWiF4tuHhDqLGyVnw==}
+  '@lodev09/react-native-true-sheet@4.1.2':
+    resolution: {integrity: sha512-YaKgXCgeP+BkgOkYoaDRJLn5a3/i88oa+uND0BR2p00zXVDSifx30FxsCrNQrCyijmRwpyH9iaFg3+v5/YhJag==}
     peerDependencies:
       '@radix-ui/react-dialog': '>=1'
       '@radix-ui/react-presence': '>=1'
@@ -8448,7 +8447,7 @@ snapshots:
     optionalDependencies:
       react-native: 0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0)
 
-  '@lodev09/react-native-true-sheet@4.0.1(patch_hash=db2d3a355811465e6ed7b08cdfa36345d93ec83756db2573cf21609cc93df03e)(ef5c239e7b27548a4536105c16ea5963)':
+  '@lodev09/react-native-true-sheet@4.1.2(ef5c239e7b27548a4536105c16ea5963)':
     dependencies:
       react: 19.3.0
       react-native: 0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0)
