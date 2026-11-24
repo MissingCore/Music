@@ -7,6 +7,7 @@ import {
   createContext,
   use,
   useCallback,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -20,9 +21,12 @@ import { useBackHandler } from "~/hooks/useBackHandler";
 
 import { wait } from "~/_next/utils/promise";
 import type { IconButtonProps } from "~/_next/components/button-icon";
+import { IconButton } from "~/_next/components/button-icon";
 import { Dialog } from "~/_next/components/dialog";
+import { Marquee } from "~/_next/components/marquee";
 import { Ripple } from "~/_next/components/ripple";
-import { TText } from "~/_next/components/typography";
+import { SheetHeader } from "~/_next/components/sheet";
+import { Text, TText } from "~/_next/components/typography";
 
 type InitialArguments<TSchema extends v.ObjectSchema<any, any>> = {
   schema: TSchema;
@@ -91,7 +95,12 @@ export function FormProvider<TSchema extends v.ObjectSchema<any, any>>(
   const omittedFieldsRef = useRef(props.omittedFields ?? []);
   const onSubmitRef = useRef(props.onSubmit);
   const onConstraintsRef = useRef(props.onConstraints);
+
+  //? Stable Callbacks
   const handleGoBackRef = useRef(props.handleGoBack);
+  useLayoutEffect(() => {
+    handleGoBackRef.current = props.handleGoBack;
+  });
 
   const [data, setData] = useState(props.initData);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -168,6 +177,8 @@ export function FormProvider<TSchema extends v.ObjectSchema<any, any>>(
   const handleGoBack = useCallback(() => {
     if (handleGoBackRef.current) handleGoBackRef.current();
     else navigation.goBack();
+    // Reset form data when we dismiss. Necessary if we have the form in a sheet.
+    setData(initData.current);
   }, [navigation]);
 
   return (
@@ -232,6 +243,25 @@ export function useSubmitAction() {
         disabled: !canSubmit || isSubmitting,
       }) satisfies IconButtonProps,
     [t, canSubmit, onSubmit, isSubmitting],
+  );
+}
+//#endregion
+
+//#region Pre-build
+/** Header component for sheet if using Form API with a sheet. */
+export function FormSheetHeader({ label }: { label: string }) {
+  const backAction = useBackAction();
+  const submitAction = useSubmitAction();
+  return (
+    <SheetHeader>
+      <View className="flex-row items-center justify-between px-2">
+        <IconButton {...backAction} />
+        <Marquee center>
+          <Text bold>{label}</Text>
+        </Marquee>
+        <IconButton {...submitAction} className="disabled:opacity-25" />
+      </View>
+    </SheetHeader>
   );
 }
 //#endregion

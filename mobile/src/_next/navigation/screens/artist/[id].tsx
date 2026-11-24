@@ -4,9 +4,10 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
+import * as v from "valibot";
 import { useShallow } from "zustand/react/shallow";
 
 import { LocalMediaAdapter } from "~/_next/adapters/local-media";
@@ -34,7 +35,11 @@ import { Icon } from "~/_next/components/icon";
 import { ImageCard, ImageListItem } from "~/_next/components/image-item";
 import { Marquee } from "~/_next/components/marquee";
 import { Ripple } from "~/_next/components/ripple";
+import type { SheetRef } from "~/_next/components/sheet";
+import { ScrollableSheet, useSheetRef } from "~/_next/components/sheet";
 import { Text, TText } from "~/_next/components/typography";
+import { FormProvider, FormSheetHeader } from "~/_next/modules/form";
+import { createTypedFormInputs } from "~/_next/modules/form/form-input";
 
 type ScreenData = ExtractQueryData<typeof useArtist>;
 
@@ -55,6 +60,7 @@ export function Artist({
 }: Props) {
   const { t } = useTranslation();
   const { isPending, error, data } = useArtist(id);
+  const sheetRef = useSheetRef();
 
   if (isPending)
     return <PagePlaceholder isPending wrapperClassName="pt-safe-offset-18" />;
@@ -63,29 +69,40 @@ export function Artist({
       <GoBack message={t("template.notFound", { name: t("term.artist") })} />
     );
   return (
-    <AdaptiveLayout artwork={data.artwork}>
-      <MediaListLayout.AppBar />
-      <ScreenContents
-        discography={data.discography}
-        related={data.related}
-        topTracks={data.topTracks}
-        Header={
-          <MediaListLayout.Header
-            title={data.name}
-            artwork={data.artwork}
-            Description={
-              <MediaListLayout.Metadata
-                stats={t("plural.track", { count: data.numTracks })}
-                duration={data.totalDuration}
-              />
-            }
-            Actions={
-              <MediaListLayout.ActionBar playable={data.numTracks > 0} />
-            }
-          />
-        }
-      />
-    </AdaptiveLayout>
+    <>
+      <EditFormSheet ref={sheetRef} name={data.name} artwork={data.artwork} />
+      <AdaptiveLayout artwork={data.artwork}>
+        <MediaListLayout.AppBar />
+        <ScreenContents
+          discography={data.discography}
+          related={data.related}
+          topTracks={data.topTracks}
+          Header={
+            <MediaListLayout.Header
+              title={data.name}
+              artwork={data.artwork}
+              Description={
+                <MediaListLayout.Metadata
+                  stats={t("plural.track", { count: data.numTracks })}
+                  duration={data.totalDuration}
+                />
+              }
+              Actions={
+                <MediaListLayout.ActionBar
+                  playable={data.numTracks > 0}
+                  RightActions={[
+                    <MediaListLayout.EditAction
+                      key="edit"
+                      onPress={() => sheetRef.current?.present()}
+                    />,
+                  ]}
+                />
+              }
+            />
+          }
+        />
+      </AdaptiveLayout>
+    </>
   );
 }
 
@@ -262,4 +279,53 @@ function TopTracksScreenContents({ topTracks }: Pick<ScreenData, "topTracks">) {
     />
   );
 }
+//#endregion
+
+//#region Edit Form
+function EditFormSheet(props: {
+  ref: SheetRef;
+  name: string;
+  artwork: string | null;
+}) {
+  const { t } = useTranslation();
+  const [presented, setPresented] = useState(false);
+  return (
+    <FormProvider
+      schema={ArtistFormSchema}
+      initData={{
+        initArtwork: props.artwork,
+        name: props.name,
+        artwork: props.artwork,
+      }}
+      onSubmit={() => console.log("Updating artist...")}
+      handleGoBack={presented ? () => props.ref.current?.dismiss() : undefined}
+    >
+      <ScrollableSheet
+        ref={props.ref}
+        dismissible={false}
+        setVisibility={setPresented}
+        header={<FormSheetHeader label={t("form.edit")} />}
+      >
+        <View className="flex-row items-center gap-4">
+          <FormInput.Image />
+          <FormInput.Text
+            label={t("feat.trackMetadata.extra.name")}
+            field="name"
+          />
+        </View>
+      </ScrollableSheet>
+    </FormProvider>
+  );
+}
+
+const ArtistFormSchema = v.object({
+  // Context
+  initArtwork: v.nullable(v.string()),
+  // Actual Fields
+  name: v.pipe(v.string(), v.trim(), v.minLength(1)),
+  artwork: v.nullable(v.string()),
+});
+
+const FormInput =
+  createTypedFormInputs<v.InferOutput<typeof ArtistFormSchema>>();
 //#endregion

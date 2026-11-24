@@ -4,6 +4,8 @@
 import type { AnimatedScrollViewProps } from "react-native-reanimated";
 import Animated from "react-native-reanimated";
 
+export type ScrollViewProps = AnimatedScrollViewProps;
+
 export function ScrollView(props: AnimatedScrollViewProps) {
   return (
     <Animated.ScrollView
