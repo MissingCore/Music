@@ -1,7 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { asc, count, eq, sql } from "drizzle-orm";
+import { asc, count, eq, inArray, sql } from "drizzle-orm";
 
 import { db } from "~/db";
 import {
@@ -84,5 +84,59 @@ export const LocalMediaGenreConnector = {
       .select({ id: tracksToGenres.trackId })
       .from(tracksToGenres)
       .where(eq(tracksToGenres.genreName, id));
+  },
+
+  /** Update genres & related relations. */
+  async update(id: string, values: Partial<typeof genres.$inferSelect>) {
+    //? Skip if nothing gets updated.
+    if (values.name === undefined && values.artwork === undefined) return;
+    //? Throw an error if `id = values.name` (since this shouldn't be possible).
+    if (id === values.name)
+      throw new Error(`\`values.name\` should not equal ${id}.`);
+
+    return db.transaction(async (tx) => {
+      //? Simple artwork update.
+      if (values.name === undefined) {
+        await tx.update(genres).set(values).where(eq(genres.name, id));
+        return;
+      }
+
+      const priorValues = await tx.query.genres.findFirst({
+        where: (fields, { eq }) => eq(fields.name, id),
+      });
+      if (!priorValues) return;
+      const newGenre = { ...priorValues, ...values };
+      const genreName = newGenre.name;
+
+      //? Insert genre entry (to preserve referential integrity).
+      await tx.insert(genres).values(newGenre).onConflictDoNothing();
+      if (values.artwork !== undefined)
+        await tx
+          .update(genres)
+          .set({ artwork: values.artwork })
+          .where(eq(genres.name, genreName));
+
+      //? Update track relations.
+      const trackIds = await tx.query.tracksToGenres.findMany({
+        columns: { trackId: true },
+        where: (fields, { eq }) => eq(fields.genreName, id),
+      });
+      if (trackIds.length > 0) {
+        await tx.delete(tracksToGenres).where(eq(tracksToGenres.genreName, id));
+        await tx
+          .insert(tracksToGenres)
+          .values(trackIds.map(({ trackId }) => ({ trackId, genreName })))
+          .onConflictDoNothing();
+        await tx
+          .update(tracks)
+          .set({ editedMetadata: Date.now() })
+          .where(
+            inArray(
+              tracks.id,
+              trackIds.map(({ trackId }) => trackId),
+            ),
+          );
+      }
+    });
   },
 } as const satisfies Connector.Genre & Record<PropertyKey, unknown>;
