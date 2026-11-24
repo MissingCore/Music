@@ -1,7 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import type { Dispatch, SetStateAction } from "react";
 import {
   createContext,
@@ -281,16 +281,21 @@ export function FormSheetHeader({ label }: { label: string }) {
 
 //#region Internal
 function UnsavedChangesPrompt() {
+  const isFocused = useIsFocused();
   const { text } = useTheme().colors;
   const { hasChanged, isSubmitting } = useFormContext();
   const { showConfirmation, setShowConfirmation } = use(UnsavedChangesContext);
   const goBack = use(GoBackContext);
 
-  useBackHandler(() => {
-    if (!hasChanged) goBack();
-    else if (!isSubmitting) setShowConfirmation(true);
-    return true;
-  }, [hasChanged, isSubmitting, goBack]);
+  useBackHandler(
+    () => {
+      if (!hasChanged) goBack();
+      else if (!isSubmitting) setShowConfirmation(true);
+      return true;
+    },
+    [hasChanged, isSubmitting, goBack],
+    isFocused,
+  );
 
   return (
     <Dialog
