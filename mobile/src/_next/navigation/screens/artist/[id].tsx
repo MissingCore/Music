@@ -286,6 +286,17 @@ function TopTracksScreenContents({ topTracks }: Pick<ScreenData, "topTracks">) {
 //#endregion
 
 //#region Edit Form
+const ArtistFormSchema = v.object({
+  // Context
+  initArtwork: v.nullable(v.string()),
+  // Actual Fields
+  name: v.pipe(v.string(), v.trim(), v.minLength(1)),
+  artwork: v.nullable(v.string()),
+});
+
+const FormInput =
+  createTypedFormInputs<v.InferOutput<typeof ArtistFormSchema>>();
+
 function EditFormSheet(props: {
   ref: SheetRef;
   name: string;
@@ -348,15 +359,4 @@ function EditFormSheet(props: {
     </FormProvider>
   );
 }
-
-const ArtistFormSchema = v.object({
-  // Context
-  initArtwork: v.nullable(v.string()),
-  // Actual Fields
-  name: v.pipe(v.string(), v.trim(), v.minLength(1)),
-  artwork: v.nullable(v.string()),
-});
-
-const FormInput =
-  createTypedFormInputs<v.InferOutput<typeof ArtistFormSchema>>();
 //#endregion
