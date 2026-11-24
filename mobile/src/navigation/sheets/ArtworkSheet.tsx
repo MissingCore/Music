@@ -8,10 +8,6 @@ import { useWindowDimensions } from "react-native";
 import { queries as q } from "~/data/keyStore";
 import { updateAlbum } from "~/data/album/api";
 import { useAlbum } from "~/data/album/queries";
-import { updateArtist } from "~/data/artist/api";
-import { useArtistDetails } from "~/data/artist/queries";
-import { updateGenre } from "~/data/genre/api";
-import { useGenreDetails } from "~/data/genre/queries";
 import { updatePlaylist } from "~/data/playlist/api";
 import { usePlaylist } from "~/data/playlist/queries";
 import { updateTrack } from "~/data/track/api";
@@ -43,38 +39,6 @@ export function AlbumArtworkSheet({ id, ref }: ArtworkSheetProps) {
           await Resynchronize.onActiveTrack({ type: "album", id });
         }}
         disabled={data?.altArtwork === null}
-      />
-    </DetachedSheet>
-  );
-}
-
-/** Sheet allowing us to change the artwork of an artist. */
-export function ArtistArtworkSheet({ id, ref }: ArtworkSheetProps) {
-  const qc = useQueryClient();
-  const { data } = useArtistDetails(id);
-  return (
-    <DetachedSheet ref={ref} contentContainerClassName="items-center">
-      <BaseArtworkSheetContent
-        type="artist"
-        imageSource={data?.imageSource ?? null}
-        onUpdateArtwork={(artwork) => updateArtist(id, { artwork })}
-        onSuccess={() => qc.invalidateQueries({ queryKey: q.artists._def })}
-      />
-    </DetachedSheet>
-  );
-}
-
-/** Sheet allowing us to change the artwork of an genre. */
-export function GenreArtworkSheet({ id, ref }: ArtworkSheetProps) {
-  const qc = useQueryClient();
-  const { data } = useGenreDetails(id);
-  return (
-    <DetachedSheet ref={ref} contentContainerClassName="items-center">
-      <BaseArtworkSheetContent
-        type="genre"
-        imageSource={data?.imageSource ?? null}
-        onUpdateArtwork={(artwork) => updateGenre(id, { artwork })}
-        onSuccess={() => qc.invalidateQueries({ queryKey: q.genres._def })}
       />
     </DetachedSheet>
   );

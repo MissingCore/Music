@@ -7,9 +7,9 @@ import { ne } from "drizzle-orm";
 import { playlists } from "~/db/schema";
 
 import { getAlbum, getAlbumsSummary } from "./album/api";
-import { getArtist, getArtistsSummary, getArtistTracks } from "./artist/api";
+import { getArtistsSummary } from "./artist/api";
 import { getFavoriteLists } from "./favorite/api";
-import { getGenre, getGenresSummary, getGenreTracks } from "./genre/api";
+import { getGenresSummary } from "./genre/api";
 import { getPlaylist, getPlaylistsSummary } from "./playlist/api";
 import {
   getSortedTracks,
@@ -51,23 +51,6 @@ export const queries = {
         queryFn: getArtistsSummary,
       });
     },
-    detail(artistName: string) {
-      const detail = queryOptions({
-        queryKey: [...this._def, "detail", artistName],
-        queryFn: () => getArtist(artistName, true),
-      });
-      return {
-        ...detail,
-        _ctx: {
-          tracks: () =>
-            // eslint-disable-next-line @tanstack/query/exhaustive-deps
-            queryOptions({
-              queryKey: [...detail.queryKey, "tracks"],
-              queryFn: () => getArtistTracks(artistName, false),
-            }),
-        },
-      };
-    },
   },
 
   /** Query keys used in `useQuery` for favorite media. */
@@ -89,23 +72,6 @@ export const queries = {
         queryKey: [...this._def, "all"],
         queryFn: getGenresSummary,
       });
-    },
-    detail(genreName: string) {
-      const detail = queryOptions({
-        queryKey: [...this._def, "detail", genreName],
-        queryFn: () => getGenre(genreName, true),
-      });
-      return {
-        ...detail,
-        _ctx: {
-          tracks: () =>
-            // eslint-disable-next-line @tanstack/query/exhaustive-deps
-            queryOptions({
-              queryKey: [...detail.queryKey, "tracks"],
-              queryFn: () => getGenreTracks(genreName, false),
-            }),
-        },
-      };
     },
   },
 
