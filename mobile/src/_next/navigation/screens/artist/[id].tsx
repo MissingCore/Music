@@ -296,8 +296,6 @@ function EditFormSheet(props: {
 
   return (
     <FormProvider
-      //! FIXME: Temporary solution for resetting provider when fields change.
-      key={`${props.name}-${props.artwork}`}
       schema={ArtistFormSchema}
       initData={{
         initArtwork: props.artwork,

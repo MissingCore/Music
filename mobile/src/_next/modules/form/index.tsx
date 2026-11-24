@@ -97,17 +97,26 @@ export function FormProvider<TSchema extends v.ObjectSchema<any, any>>(
   );
   const omittedFieldsRef = useRef(props.omittedFields ?? []);
   const onSubmitRef = useRef(props.onSubmit);
-  const onConstraintsRef = useRef(props.onConstraints);
-
-  //? Stable Callbacks
   const handleGoBackRef = useRef(props.handleGoBack);
-  useLayoutEffect(() => {
-    handleGoBackRef.current = props.handleGoBack;
-  });
 
   const [data, setData] = useState(props.initData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+
+  //? Use stable callbacks (via refs) to minimize re-renders. The only props
+  //? that can be changed are: `initData`, `onSubmit`, and `handleGoBack`.
+  //?   - `initData` changing means we should reset the form.
+  useLayoutEffect(() => {
+    onSubmitRef.current = props.onSubmit;
+    handleGoBackRef.current = props.handleGoBack;
+
+    //? The following check should be fine since the order of the properties in
+    //? `initData` shouldn't change.
+    if (JSON.stringify(initData.current) === JSON.stringify(props.initData))
+      return;
+    initData.current = props.initData;
+    setData(props.initData);
+  }, [props.handleGoBack, props.initData, props.onSubmit]);
 
   const setFields: Dispatch<
     | Partial<v.InferOutput<TSchema>>
@@ -151,10 +160,11 @@ export function FormProvider<TSchema extends v.ObjectSchema<any, any>>(
     });
   }, [data]);
 
+  const onConstraints = props.onConstraints;
   const passedConstraints = useMemo(() => {
-    if (!onConstraintsRef.current) return true;
-    return onConstraintsRef.current(data);
-  }, [data]);
+    if (!onConstraints) return true;
+    return onConstraints(data);
+  }, [data, onConstraints]);
 
   const canSubmit = useMemo(() => {
     return (
