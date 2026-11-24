@@ -121,6 +121,12 @@ export function createTypedFormInputs<TData extends Record<string, any>>() {
           style={{ backgroundColor }}
           className="size-full"
         />
+        <Icon
+          name="pencil"
+          color="#FFF"
+          size={32}
+          className="absolute inset-0 items-center justify-center bg-black/15"
+        />
         {canResetField ? (
           <IconButton
             icon="minimize"
@@ -130,13 +136,7 @@ export function createTypedFormInputs<TData extends Record<string, any>>() {
             size="sm"
             className="absolute top-1 right-1 bg-black/25"
           />
-        ) : (
-          <Icon
-            name="pencil"
-            color="#FFF"
-            className="absolute top-1 right-1 size-8 rounded-full bg-black/25 p-1"
-          />
-        )}
+        ) : null}
       </Ripple>
     );
   }
