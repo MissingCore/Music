@@ -266,7 +266,7 @@ export function FormSheetHeader({ label }: { label: string }) {
   const backAction = useBackAction();
   const submitAction = useSubmitAction();
   return (
-    <SheetHeader>
+    <SheetHeader showHandle={false}>
       <View className="flex-row items-center justify-between px-2">
         <IconButton {...backAction} />
         <Marquee center>

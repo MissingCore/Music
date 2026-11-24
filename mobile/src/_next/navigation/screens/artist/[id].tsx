@@ -33,6 +33,7 @@ import { containSorter } from "~/_next/utils/search";
 import { LegendList } from "~/_next/components/primitives/legend-list";
 import { ChipButton } from "~/_next/components/button-chip";
 import { Divider } from "~/_next/components/divider";
+import { Hint } from "~/_next/components/hint";
 import { Icon } from "~/_next/components/icon";
 import { ImageCard, ImageListItem } from "~/_next/components/image-item";
 import { Marquee } from "~/_next/components/marquee";
@@ -330,6 +331,7 @@ function EditFormSheet(props: {
             field="name"
           />
         </View>
+        <Hint hint={t("feat.trackMetadata.extra.onlyTracks")} />
       </ScrollableSheet>
     </FormProvider>
   );

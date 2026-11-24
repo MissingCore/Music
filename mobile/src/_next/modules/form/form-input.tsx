@@ -13,6 +13,7 @@ import type { KeysOfValue } from "~/utils/types";
 import { cn } from "~/_next/utils/style";
 import { Image } from "~/_next/components/primitives/image";
 import { IconButton } from "~/_next/components/button-icon";
+import { Icon } from "~/_next/components/icon";
 import { TextInput } from "~/_next/components/input";
 import { Ripple } from "~/_next/components/ripple";
 import { Text } from "~/_next/components/typography";
@@ -129,7 +130,13 @@ export function createTypedFormInputs<TData extends Record<string, any>>() {
             size="sm"
             className="absolute top-1 right-1 bg-black/25"
           />
-        ) : null}
+        ) : (
+          <Icon
+            name="pencil"
+            color="#FFF"
+            className="absolute top-1 right-1 size-8 rounded-full bg-black/25 p-1"
+          />
+        )}
       </Ripple>
     );
   }

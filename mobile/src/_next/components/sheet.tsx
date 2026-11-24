@@ -74,14 +74,22 @@ export function Sheet(props: SheetProps) {
 //#endregion
 
 //#region Decoration
-export function SheetHeader({ children, ...props }: ViewProps) {
+export function SheetHeader({
+  children,
+  showHandle = true,
+  ...props
+}: ViewProps & { showHandle?: boolean }) {
   const { border } = useTheme().colors;
   return (
     <View {...props}>
-      <View
-        style={{ backgroundColor: border }}
-        className="mx-auto my-2.5 h-1 w-8 rounded-full"
-      />
+      {showHandle ? (
+        <View
+          style={{ backgroundColor: border }}
+          className="mx-auto my-2.5 h-1 w-8 rounded-full"
+        />
+      ) : (
+        <View className="h-2.5" />
+      )}
       {children}
     </View>
   );
