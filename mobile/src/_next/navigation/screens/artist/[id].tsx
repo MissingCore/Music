@@ -15,7 +15,8 @@ import { LocalMediaAdapter } from "~/_next/adapters/local-media";
 import type { MediaItem } from "~/_next/adapters/types";
 import { q } from "~/_next/data/key-store";
 
-import { PlaybackControls } from "~/stores/Playback/actions";
+import { playbackStore } from "~/stores/Playback/store";
+import { PlaybackControls, Resynchronize } from "~/stores/Playback/actions";
 import { usePlayFromSource } from "~/_next/context/play-from-context";
 import { useSearchStore } from "~/_next/context/search-context";
 import { useLayoutColumn } from "~/_next/hooks/use-column";
@@ -308,7 +309,20 @@ function EditFormSheet(props: {
 
           clearAllQueries();
           props.ref.current?.dismiss();
-          if (changes.name) navigation.setParams({ id: changes.name });
+          if (changes.name) {
+            await Resynchronize.onRename({
+              oldSource: { type: "artist", id: props.name },
+              newSource: { type: "artist", id: changes.name },
+            });
+            const { activeTrack } = playbackStore.getState();
+            if (activeTrack)
+              await Resynchronize.onActiveTrack({
+                type: "track",
+                id: activeTrack.id,
+              });
+
+            navigation.setParams({ id: changes.name });
+          }
         } catch (err) {
           toast.tError("err.flow.generic.title");
           throw err;
