@@ -297,7 +297,9 @@ function EditFormSheet(props: {
         name: props.name,
         artwork: props.artwork,
       }}
-      onSubmit={() => console.log("Updating artist...")}
+      onSubmit={(data, changes) => {
+        console.log("Updating artist...", data, changes);
+      }}
       handleGoBack={presented ? () => props.ref.current?.dismiss() : undefined}
     >
       <ScrollableSheet

@@ -33,7 +33,10 @@ type InitialArguments<TSchema extends v.ObjectSchema<any, any>> = {
   initData: v.InferOutput<TSchema>;
   /** Fields omitted during normal validation. Will be checked in `onSubmit`. */
   omittedFields?: Array<keyof v.InferOutput<TSchema>>;
-  onSubmit: (data: v.InferOutput<TSchema>) => void | Promise<void>;
+  onSubmit: (
+    data: v.InferOutput<TSchema>,
+    changes: Partial<v.InferOutput<TSchema>>,
+  ) => void | Promise<void>;
 
   /** Additional validation to check whether we can submit. */
   onConstraints?: (data: v.InferOutput<TSchema>) => boolean;
@@ -169,7 +172,17 @@ export function FormProvider<TSchema extends v.ObjectSchema<any, any>>(
     try {
       // Slight buffer before running heavy async task.
       await wait(1);
-      await onSubmitRef.current(parsedData.output);
+      await onSubmitRef.current(
+        parsedData.output,
+        Object.keys(parsedData.output).reduce(
+          (prev, key: keyof v.InferOutput<TSchema>) => {
+            if (initData.current[key] !== parsedData.output[key])
+              prev[key] = parsedData.output[key];
+            return prev;
+          },
+          {} as Partial<v.InferOutput<TSchema>>,
+        ),
+      );
     } catch {}
     setIsSubmitting(false);
   }, [canSubmit, data]);
