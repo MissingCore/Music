@@ -1,6 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { toast } from "@missingcore/ui/toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
@@ -26,6 +27,7 @@ import * as MediaListLayout from "~/_next/navigation/layout/media-list-layout";
 import { GoBack } from "~/_next/navigation/components/go-back";
 
 import type { ExtractQueryData } from "~/lib/react-query";
+import { clearAllQueries } from "~/lib/react-query";
 import { OnRTL } from "~/_next/utils/i18n";
 import { containSorter } from "~/_next/utils/search";
 import { LegendList } from "~/_next/components/primitives/legend-list";
@@ -288,17 +290,30 @@ function EditFormSheet(props: {
   artwork: string | null;
 }) {
   const { t } = useTranslation();
+  const navigation = useNavigation("Artist");
   const [presented, setPresented] = useState(false);
+
   return (
     <FormProvider
+      //! FIXME: Temporary solution for resetting provider when fields change.
+      key={`${props.name}-${props.artwork}`}
       schema={ArtistFormSchema}
       initData={{
         initArtwork: props.artwork,
         name: props.name,
         artwork: props.artwork,
       }}
-      onSubmit={(data, changes) => {
-        console.log("Updating artist...", data, changes);
+      onSubmit={async (_, changes) => {
+        try {
+          await LocalMediaAdapter.artist.update(props.name, changes);
+
+          clearAllQueries();
+          props.ref.current?.dismiss();
+          if (changes.name) navigation.setParams({ id: changes.name });
+        } catch (err) {
+          toast.tError("err.flow.generic.title");
+          throw err;
+        }
       }}
       handleGoBack={presented ? () => props.ref.current?.dismiss() : undefined}
     >
