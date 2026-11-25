@@ -15,6 +15,7 @@ import {
 import { getGenresWithArtwork } from "~/db/queries/genre";
 
 import { throwIfNoResults } from "~/_next/utils/drizzle";
+import { chunkArray } from "~/_next/utils/object";
 import type { Connector } from "../../types";
 
 export const LocalMediaGenreConnector = {
@@ -84,5 +85,58 @@ export const LocalMediaGenreConnector = {
       .select({ id: tracksToGenres.trackId })
       .from(tracksToGenres)
       .where(eq(tracksToGenres.genreName, id));
+  },
+
+  /** Update genres & related relations. */
+  async update(id: string, values: Partial<typeof genres.$inferSelect>) {
+    //? Skip if nothing gets updated.
+    if (values.name === undefined && values.artwork === undefined) return;
+    //? Throw an error if `id = values.name` (since this shouldn't be possible).
+    if (id === values.name)
+      throw new Error(`\`values.name\` should not equal ${id}.`);
+
+    return db.transaction((tx) => {
+      //? Simple artwork update.
+      if (values.name === undefined) {
+        tx.update(genres).set(values).where(eq(genres.name, id)).run();
+        return;
+      }
+
+      const priorValues = tx
+        .select()
+        .from(genres)
+        .where(eq(genres.name, id))
+        .get();
+      if (!priorValues) return;
+      const newGenre = { ...priorValues, ...values };
+
+      //? Insert genre entry (to preserve referential integrity).
+      tx.insert(genres).values(newGenre).onConflictDoNothing().run();
+      if (values.artwork !== undefined)
+        tx.update(genres)
+          .set({ artwork: values.artwork })
+          .where(eq(genres.name, newGenre.name))
+          .run();
+
+      //? Update track relations.
+      const trackIds = tx
+        .select({ trackId: tracksToGenres.trackId })
+        .from(tracksToGenres)
+        .where(eq(tracksToGenres.genreName, id))
+        .all();
+      if (trackIds.length > 0) {
+        tx.delete(tracksToGenres).where(eq(tracksToGenres.genreName, id)).run();
+        chunkArray(trackIds, 400).forEach((trackIdChunk) => {
+          tx.insert(tracksToGenres)
+            .values(
+              trackIdChunk.map(({ trackId }) => {
+                return { trackId, genreName: newGenre.name };
+              }),
+            )
+            .onConflictDoNothing()
+            .run();
+        });
+      }
+    });
   },
 } as const satisfies Connector.Genre & Record<PropertyKey, unknown>;

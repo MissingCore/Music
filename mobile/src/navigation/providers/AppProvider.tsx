@@ -14,6 +14,7 @@ import {
   SafeAreaListener,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
+import { PortalProvider } from "react-native-teleport";
 import { Uniwind, withUniwind } from "uniwind";
 import { useShallow } from "zustand/react/shallow";
 
@@ -38,10 +39,12 @@ export function AppProvider(props: { children: React.ReactNode }) {
   return (
     <MinimumAppProvider>
       <QueryClientProvider client={queryClient}>
-        <ListenerStateStoreProvider />
-        {props.children}
-        <ToastProvider />
-        <SystemBars />
+        <PortalProvider>
+          <ListenerStateStoreProvider />
+          {props.children}
+          <ToastProvider />
+          <SystemBars />
+        </PortalProvider>
       </QueryClientProvider>
     </MinimumAppProvider>
   );

@@ -1,19 +1,22 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { toast } from "@missingcore/ui/toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
+import * as v from "valibot";
 import { useShallow } from "zustand/react/shallow";
 
 import { LocalMediaAdapter } from "~/_next/adapters/local-media";
 import type { MediaItem } from "~/_next/adapters/types";
 import { q } from "~/_next/data/key-store";
 
-import { PlaybackControls } from "~/stores/Playback/actions";
+import { playbackStore } from "~/stores/Playback/store";
+import { PlaybackControls, Resynchronize } from "~/stores/Playback/actions";
 import { usePlayFromSource } from "~/_next/context/play-from-context";
 import { useSearchStore } from "~/_next/context/search-context";
 import { useLayoutColumn } from "~/_next/hooks/use-column";
@@ -24,18 +27,23 @@ import { AdaptiveLayout } from "~/_next/navigation/layout/adaptive-layout";
 import * as MediaListLayout from "~/_next/navigation/layout/media-list-layout";
 import { GoBack } from "~/_next/navigation/components/go-back";
 
-import { getImageUri } from "~/lib/file-system";
 import type { ExtractQueryData } from "~/lib/react-query";
+import { clearAllQueries } from "~/lib/react-query";
 import { OnRTL } from "~/_next/utils/i18n";
 import { containSorter } from "~/_next/utils/search";
 import { LegendList } from "~/_next/components/primitives/legend-list";
 import { ChipButton } from "~/_next/components/button-chip";
 import { Divider } from "~/_next/components/divider";
+import { Hint } from "~/_next/components/hint";
 import { Icon } from "~/_next/components/icon";
 import { ImageCard, ImageListItem } from "~/_next/components/image-item";
 import { Marquee } from "~/_next/components/marquee";
 import { Ripple } from "~/_next/components/ripple";
+import type { SheetRef } from "~/_next/components/sheet";
+import { useSheetRef } from "~/_next/components/sheet";
 import { Text, TText } from "~/_next/components/typography";
+import { createTypedFormInputs } from "~/_next/modules/form/form-input";
+import { FormSheet } from "~/_next/modules/form/form-sheet";
 
 type ScreenData = ExtractQueryData<typeof useArtist>;
 
@@ -43,10 +51,6 @@ function useArtist(id: string) {
   return useQuery({
     queryKey: q.artist.detail(id),
     queryFn: () => LocalMediaAdapter.artist.get(id),
-    select: ({ artwork, ...rest }) => ({
-      ...rest,
-      artwork: getImageUri(artwork),
-    }),
   });
 }
 
@@ -60,6 +64,7 @@ export function Artist({
 }: Props) {
   const { t } = useTranslation();
   const { isPending, error, data } = useArtist(id);
+  const sheetRef = useSheetRef();
 
   if (isPending)
     return <PagePlaceholder isPending wrapperClassName="pt-safe-offset-18" />;
@@ -68,29 +73,40 @@ export function Artist({
       <GoBack message={t("template.notFound", { name: t("term.artist") })} />
     );
   return (
-    <AdaptiveLayout artwork={data.artwork}>
-      <MediaListLayout.AppBar />
-      <ScreenContents
-        discography={data.discography}
-        related={data.related}
-        topTracks={data.topTracks}
-        Header={
-          <MediaListLayout.Header
-            title={data.name}
-            artwork={data.artwork}
-            Description={
-              <MediaListLayout.Metadata
-                stats={t("plural.track", { count: data.numTracks })}
-                duration={data.totalDuration}
-              />
-            }
-            Actions={
-              <MediaListLayout.ActionBar playable={data.numTracks > 0} />
-            }
-          />
-        }
-      />
-    </AdaptiveLayout>
+    <>
+      <EditFormSheet ref={sheetRef} name={data.name} artwork={data.artwork} />
+      <AdaptiveLayout artwork={data.artwork}>
+        <MediaListLayout.AppBar />
+        <ScreenContents
+          discography={data.discography}
+          related={data.related}
+          topTracks={data.topTracks}
+          Header={
+            <MediaListLayout.Header
+              title={data.name}
+              artwork={data.artwork}
+              Description={
+                <MediaListLayout.Metadata
+                  stats={t("plural.track", { count: data.numTracks })}
+                  duration={data.totalDuration}
+                />
+              }
+              Actions={
+                <MediaListLayout.ActionBar
+                  playable={data.numTracks > 0}
+                  RightActions={[
+                    <MediaListLayout.EditAction
+                      key="edit"
+                      onPress={() => sheetRef.current?.present()}
+                    />,
+                  ]}
+                />
+              }
+            />
+          }
+        />
+      </AdaptiveLayout>
+    </>
   );
 }
 
@@ -265,6 +281,74 @@ function TopTracksScreenContents({ topTracks }: Pick<ScreenData, "topTracks">) {
       contentContainerClassName="gap-1.5 px-4 pt-safe-offset-18"
       contentContainerStyle={{ paddingBottom: bottomOffset }}
     />
+  );
+}
+//#endregion
+
+//#region Edit Form
+const ArtistFormSchema = v.object({
+  // Context
+  initArtwork: v.nullable(v.string()),
+  // Actual Fields
+  name: v.pipe(v.string(), v.trim(), v.minLength(1)),
+  artwork: v.nullable(v.string()),
+});
+
+const FormInput =
+  createTypedFormInputs<v.InferOutput<typeof ArtistFormSchema>>();
+
+function EditFormSheet(props: {
+  ref: SheetRef;
+  name: string;
+  artwork: string | null;
+}) {
+  const { t } = useTranslation();
+  const navigation = useNavigation("Artist");
+  return (
+    <FormSheet
+      ref={props.ref}
+      label={t("form.edit")}
+      schema={ArtistFormSchema}
+      initData={{
+        initArtwork: props.artwork,
+        name: props.name,
+        artwork: props.artwork,
+      }}
+      onSubmit={async (_, changes) => {
+        try {
+          await LocalMediaAdapter.artist.update(props.name, changes);
+
+          clearAllQueries();
+          props.ref.current?.dismiss();
+          if (changes.name) {
+            await Resynchronize.onRename({
+              oldSource: { type: "artist", id: props.name },
+              newSource: { type: "artist", id: changes.name },
+            });
+            const { activeTrack } = playbackStore.getState();
+            if (activeTrack)
+              await Resynchronize.onActiveTrack({
+                type: "track",
+                id: activeTrack.id,
+              });
+
+            navigation.setParams({ id: changes.name });
+          }
+        } catch (err) {
+          toast.tError("err.flow.generic.title");
+          throw err;
+        }
+      }}
+    >
+      <View className="flex-row items-center gap-4">
+        <FormInput.Image />
+        <FormInput.Text
+          label={t("feat.trackMetadata.extra.name")}
+          field="name"
+        />
+      </View>
+      <Hint hint={t("feat.trackMetadata.extra.onlyTracks")} />
+    </FormSheet>
   );
 }
 //#endregion

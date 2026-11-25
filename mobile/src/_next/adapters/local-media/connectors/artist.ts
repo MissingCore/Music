@@ -27,6 +27,7 @@ import {
 import { getArtistsWithArtwork } from "~/db/queries/artist";
 
 import { throwIfNoResults } from "~/_next/utils/drizzle";
+import { chunkArray } from "~/_next/utils/object";
 import type { Connector, MediaItem } from "../../types";
 
 export const LocalMediaArtistConnector = {
@@ -235,6 +236,65 @@ export const LocalMediaArtistConnector = {
       .select({ id: tracksToArtists.trackId })
       .from(tracksToArtists)
       .where(eq(tracksToArtists.artistName, id));
+  },
+
+  /**
+   * Update artists & related relations.
+   *
+   * **Does not update album relations if `name` is changes due to the complexity.**
+   */
+  async update(id: string, values: Partial<typeof artists.$inferSelect>) {
+    //? Skip if nothing gets updated.
+    if (values.name === undefined && values.artwork === undefined) return;
+    //? Throw an error if `id = values.name` (since this shouldn't be possible).
+    if (id === values.name)
+      throw new Error(`\`values.name\` should not equal ${id}.`);
+
+    return db.transaction((tx) => {
+      //? Simple artwork update.
+      if (values.name === undefined) {
+        tx.update(artists).set(values).where(eq(artists.name, id)).run();
+        return;
+      }
+
+      const priorValues = tx
+        .select()
+        .from(artists)
+        .where(eq(artists.name, id))
+        .get();
+      if (!priorValues) return;
+      const newArtist = { ...priorValues, ...values };
+
+      //? Insert artist entry (to preserve referential integrity).
+      tx.insert(artists).values(newArtist).onConflictDoNothing().run();
+      if (values.artwork !== undefined)
+        tx.update(artists)
+          .set({ artwork: values.artwork })
+          .where(eq(artists.name, newArtist.name))
+          .run();
+
+      //? Update track relations.
+      const trackIds = tx
+        .select({ trackId: tracksToArtists.trackId })
+        .from(tracksToArtists)
+        .where(eq(tracksToArtists.artistName, id))
+        .all();
+      if (trackIds.length > 0) {
+        tx.delete(tracksToArtists)
+          .where(eq(tracksToArtists.artistName, id))
+          .run();
+        chunkArray(trackIds, 400).forEach((trackIdChunk) => {
+          tx.insert(tracksToArtists)
+            .values(
+              trackIdChunk.map(({ trackId }) => {
+                return { trackId, artistName: newArtist.name };
+              }),
+            )
+            .onConflictDoNothing()
+            .run();
+        });
+      }
+    });
   },
 } as const satisfies Connector.Artist & Record<PropertyKey, unknown>;
 

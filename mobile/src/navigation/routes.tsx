@@ -17,6 +17,8 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { PortalHost } from "@rn-primitives/portal";
 import { useCallback, useMemo, useRef } from "react";
+import { StyleSheet } from "react-native";
+import { PortalHost as TeleportHost } from "react-native-teleport";
 
 import {
   Artist,
@@ -27,10 +29,8 @@ import Home from "./screens/HomeView";
 import Album from "./screens/albums/CurrentView";
 import ModifyAlbum from "./screens/albums/ModifyView";
 import Albums from "./screens/albums/View";
-// import Artist from "./screens/artists/CurrentView";
 import Artists from "./screens/artists/View";
 import Folders from "./screens/folders/View";
-// import Genre from "./screens/genres/CurrentView";
 import Genres from "./screens/genres/View";
 import Upcoming from "./screens/now-playing/UpcomingView";
 import NowPlaying from "./screens/now-playing/View";
@@ -240,6 +240,7 @@ export const RootStack = createNativeStackNavigator({
       <ArtistsSheet />
       <TrackMultiSelectListeners />
       <PortalHost />
+      <TeleportHost name="default" style={StyleSheet.absoluteFill} />
     </>
   ),
   screenLayout: ({ children }) => <DeferredRender>{children}</DeferredRender>,

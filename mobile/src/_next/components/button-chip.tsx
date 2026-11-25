@@ -1,8 +1,6 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import type { ViewStyle } from "react-native";
-
 import { useColor } from "~/_next/context/theme-context";
 
 import { cn } from "~/_next/utils/style";
@@ -10,9 +8,8 @@ import type { RippleProps } from "./ripple";
 import { Ripple } from "./ripple";
 import { Text } from "./typography";
 
-interface ChipButtonProps extends Omit<RippleProps, "style"> {
+interface ChipButtonProps extends RippleProps {
   label: string;
-  style?: ViewStyle;
 }
 
 export function ChipButton({

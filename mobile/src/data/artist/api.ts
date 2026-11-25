@@ -130,12 +130,3 @@ export async function createArtists(entries: InsertedArtist[]) {
   return db.insert(artists).values(entries).onConflictDoNothing();
 }
 //#endregion
-
-//#region PATCH Methods
-export async function updateArtist(
-  id: string,
-  values: Partial<Omit<InsertedArtist, "name">>,
-) {
-  return db.update(artists).set(values).where(eq(artists.name, id));
-}
-//#endregion

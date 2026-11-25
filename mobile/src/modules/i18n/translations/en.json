@@ -470,7 +470,8 @@
         "trackNumber": "Track Number",
         "year": "Year",
 
-        "overrideFields": "Providing a value to the following fields will override the assigned values on all tracks in the album."
+        "overrideFields": "Providing a value to the following fields will override the assigned values on all tracks in the album.",
+        "onlyTracks": "Changes only applies to tracks."
       }
     },
 

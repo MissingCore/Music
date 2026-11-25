@@ -73,7 +73,8 @@ export function DetachedSheet(props: SheetProps) {
       detents={[props.snapTop ? 1 : "auto"]}
       backgroundColor="transparent"
       cornerRadius={0}
-      maxHeight={maxHeight}
+      elevation={0}
+      maxContentHeight={maxHeight}
       grabber={false}
       draggable={props.draggable}
       onDidDismiss={() => {

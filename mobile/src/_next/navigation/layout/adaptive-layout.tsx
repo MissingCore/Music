@@ -7,6 +7,8 @@ import { View } from "react-native";
 import { ThemeProvider } from "~/_next/context/theme-context";
 import { useDimmedImageColor } from "~/_next/hooks/use-dimmed-image-color";
 
+import { getImageUri } from "~/lib/file-system";
+
 interface AdaptiveLayoutProps {
   artwork: string | null | undefined;
   children: React.ReactNode;
@@ -14,7 +16,7 @@ interface AdaptiveLayoutProps {
 
 /** Generates custom theme based on "primary" artwork on screen. */
 export function AdaptiveLayout(props: AdaptiveLayoutProps) {
-  const backgroundColor = useDimmedImageColor(props.artwork);
+  const backgroundColor = useDimmedImageColor(getImageUri(props.artwork));
   const AdaptiveTheme = useMemo(
     () =>
       ({

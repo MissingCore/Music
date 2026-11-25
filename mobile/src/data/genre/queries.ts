@@ -2,41 +2,10 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useQuery } from "@tanstack/react-query";
-import { useTranslation } from "react-i18next";
 
 import { queries as q } from "../keyStore";
-import { getArtistsString } from "../artist/utils";
 
 //#region Queries
-export function useGenreDetails(genreName: string) {
-  const { t } = useTranslation();
-  return useQuery({
-    ...q.genres.detail(genreName),
-    select: ({ name, artwork, tracks, duration }) => ({
-      name,
-      imageSource: artwork,
-      metadata: [
-        t("term.genre"),
-        t("plural.track", { count: tracks.length }),
-        duration,
-      ],
-    }),
-  });
-}
-
-export function useGenreTracks(genreName: string) {
-  return useQuery({
-    ...q.genres.detail(genreName)._ctx.tracks(),
-    select: (tracks) =>
-      tracks.map((track) => ({
-        id: track.id,
-        title: track.name,
-        description: getArtistsString(track.artists),
-        imageSource: track.artwork,
-      })),
-  });
-}
-
 export function useGenres() {
   return useQuery({ ...q.genres.all });
 }
