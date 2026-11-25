@@ -27,6 +27,7 @@ import {
 import { getArtistsWithArtwork } from "~/db/queries/artist";
 
 import { throwIfNoResults } from "~/_next/utils/drizzle";
+import { chunkArray } from "~/_next/utils/object";
 import type { Connector, MediaItem } from "../../types";
 
 export const LocalMediaArtistConnector = {
@@ -282,14 +283,16 @@ export const LocalMediaArtistConnector = {
         tx.delete(tracksToArtists)
           .where(eq(tracksToArtists.artistName, id))
           .run();
-        tx.insert(tracksToArtists)
-          .values(
-            trackIds.map(({ trackId }) => {
-              return { trackId, artistName: newArtist.name };
-            }),
-          )
-          .onConflictDoNothing()
-          .run();
+        chunkArray(trackIds, 400).forEach((trackIdChunk) => {
+          tx.insert(tracksToArtists)
+            .values(
+              trackIdChunk.map(({ trackId }) => {
+                return { trackId, artistName: newArtist.name };
+              }),
+            )
+            .onConflictDoNothing()
+            .run();
+        });
         tx.update(tracks)
           .set({ editedMetadata: Date.now() })
           .where(

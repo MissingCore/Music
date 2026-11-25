@@ -15,6 +15,7 @@ import {
 import { getGenresWithArtwork } from "~/db/queries/genre";
 
 import { throwIfNoResults } from "~/_next/utils/drizzle";
+import { chunkArray } from "~/_next/utils/object";
 import type { Connector } from "../../types";
 
 export const LocalMediaGenreConnector = {
@@ -125,14 +126,16 @@ export const LocalMediaGenreConnector = {
         .all();
       if (trackIds.length > 0) {
         tx.delete(tracksToGenres).where(eq(tracksToGenres.genreName, id)).run();
-        tx.insert(tracksToGenres)
-          .values(
-            trackIds.map(({ trackId }) => {
-              return { trackId, genreName: newGenre.name };
-            }),
-          )
-          .onConflictDoNothing()
-          .run();
+        chunkArray(trackIds, 400).forEach((trackIdChunk) => {
+          tx.insert(tracksToGenres)
+            .values(
+              trackIdChunk.map(({ trackId }) => {
+                return { trackId, genreName: newGenre.name };
+              }),
+            )
+            .onConflictDoNothing()
+            .run();
+        });
         tx.update(tracks)
           .set({ editedMetadata: Date.now() })
           .where(
