@@ -12,7 +12,7 @@ interface DialogProps {
 }
 
 export function Dialog(props: DialogProps) {
-  const { background, border } = useTheme().colors;
+  const { background } = useTheme().colors;
   return (
     <Modal
       animationType="fade"
@@ -24,8 +24,8 @@ export function Dialog(props: DialogProps) {
     >
       <View className="flex-1 items-center justify-center bg-black/50 px-4">
         <View
-          style={{ backgroundColor: background, borderColor: border }}
-          className="w-full max-w-xl gap-8 rounded-xl border p-4 pt-6"
+          style={{ backgroundColor: background }}
+          className="w-full max-w-xl gap-8 rounded-xl p-4 pt-6"
         >
           {props.children}
         </View>
