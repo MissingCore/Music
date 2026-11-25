@@ -12,6 +12,7 @@ import { Ripple } from "./ripple";
 const SIZE_CONFIG = {
   sm: { className: "size-8", size: 24 },
   base: { className: "size-10", size: 24 },
+  lg: { className: "size-12", size: 24 },
 } as const;
 
 export interface IconButtonProps extends RippleProps {

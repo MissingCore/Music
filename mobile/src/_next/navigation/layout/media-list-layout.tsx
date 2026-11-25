@@ -17,7 +17,6 @@ import { OnRTL } from "~/_next/utils/i18n";
 import { cn } from "~/_next/utils/style";
 import { Image } from "~/_next/components/primitives/image";
 import { BlurContainer } from "~/_next/components/blur-container";
-import type { BlurIconButtonProps } from "~/_next/components/button-icon";
 import { BlurIconButton, IconButton } from "~/_next/components/button-icon";
 import { TransitionGradient } from "~/_next/components/gradient";
 import { Icon } from "~/_next/components/icon";
@@ -178,11 +177,6 @@ export function ActionBar(props: {
   );
 }
 
-/** Pre-styled button for actions in `MediaListLayout.ActionBar`. */
-export function Action({ className, ...props }: BlurIconButtonProps) {
-  return <BlurIconButton {...props} className={cn(className, "size-12")} />;
-}
-
 /** Opens menu to select whether list should be played next or at the end of the current queue. */
 export function AddToQueueAction(props: {
   name: string;
@@ -196,11 +190,12 @@ export function AddToQueueAction(props: {
     <Menu
       visible={visible}
       anchor={
-        <Action
+        <BlurIconButton
           icon="list-check"
           accessibilityLabel={t("feat.queue.extra.add")}
           onPress={() => setVisible((prev) => !prev)}
           disabled={props.disabled}
+          size="lg"
         />
       }
       dismissHandling
@@ -236,10 +231,11 @@ export function AddToQueueAction(props: {
 export function EditAction(props: { onPress: VoidFunction }) {
   const { t } = useTranslation();
   return (
-    <Action
+    <BlurIconButton
       icon="pencil"
       accessibilityLabel={t("form.edit")}
       onPress={props.onPress}
+      size="lg"
     />
   );
 }
