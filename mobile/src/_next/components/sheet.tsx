@@ -39,6 +39,8 @@ interface SheetProps extends Pick<
   setVisibility?: (visible: boolean) => void;
 }
 
+const MAX_SHEET_HEIGHT = 640;
+
 export function Sheet(props: SheetProps) {
   const { background: backgroundColor } = useTheme().colors;
   const scrollableRef = useAnimatedRef();
@@ -50,7 +52,6 @@ export function Sheet(props: SheetProps) {
         detents={["auto"]}
         dismissible={props.dismissible}
         scrollableRef={scrollableRef}
-        scrollableOptions={{ keyboardScrollOffset: 16 }}
 
         onWillPresent={() => props.setVisibility?.(true)}
         onDidDismiss={() => props.setVisibility?.(false)}
@@ -62,6 +63,7 @@ export function Sheet(props: SheetProps) {
         footer={<View className="h-px" />}
         footerOptions={{ position: "absolute" }}
 
+        maxContentHeight={MAX_SHEET_HEIGHT}
         grabber={false}
         cornerRadius={24}
         backgroundColor={backgroundColor}
