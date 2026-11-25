@@ -2,7 +2,7 @@
   "name": "music",
   "private": true,
   "main": "index.ts",
-  "version": "3.9.0-rc.3",
+  "version": "3.9.0",
   "description": "A Nothing inspired music player.",
   "license": "AGPL-3.0-only",
   "repository": {
@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@boterop/react-native-background-timer": "2.6.0",
-    "@legendapp/list": "3.7.3",
+    "@legendapp/list": "3.9.0",
     "@lodev09/react-native-true-sheet": "4.1.2",
     "@missingcore/react-native-actual-path": "0.1.0",
     "@missingcore/react-native-audio-analyzer": "3.2.0-beta.5",
@@ -37,7 +37,7 @@
     "@react-navigation/native-stack": "8.0.0-alpha.59",
     "@rn-primitives/portal": "1.5.3",
     "@sentry/react-native": "8.36.0",
-    "@tanstack/react-query": "5.108.2",
+    "@tanstack/react-query": "5.108.4",
     "@zoontek/react-native-navigation-bar": "2.0.2",
     "clsx": "2.1.1",
     "colord": "2.14.0",
@@ -59,11 +59,11 @@
     "react-i18next": "17.1.13",
     "react-native": "0.88.1",
     "react-native-android-widget": "0.26.0",
-    "react-native-audio-browser": "github:MissingCore/react-native-audio-browser#05f7af440edc29222d12a0acc58234f5cb51433d",
-    "react-native-bootsplash": "7.3.5",
+    "react-native-audio-browser": "github:MissingCore/react-native-audio-browser#ac538c60782b44151f21e7dc1195a0d449ae8666",
+    "react-native-bootsplash": "7.4.0",
     "react-native-easing-gradient": "1.1.1",
-    "react-native-gesture-handler": "3.5.0",
-    "react-native-keyboard-controller": "1.23.1",
+    "react-native-gesture-handler": "3.3.0",
+    "react-native-keyboard-controller": "1.24.0",
     "react-native-markdown-renderer": "4.1.1",
     "react-native-material-palette": "0.2.0",
     "react-native-nano-icons": "1.0.1",
@@ -82,7 +82,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.29.7",
-    "@tanstack/eslint-plugin-query": "5.108.2",
+    "@tanstack/eslint-plugin-query": "5.108.4",
     "@testing-library/react-native": "14.1.0",
     "@types/jest": "30.0.0",
     "@types/react": "19.3.0",
@@ -105,7 +105,7 @@
     "prettier-plugin-tailwindcss": "0.8.1",
     "tailwindcss": "4.3.5",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.73.0"
+    "typescript-eslint": "8.74.0"
   },
   "jest": {
     "preset": "jest-expo"

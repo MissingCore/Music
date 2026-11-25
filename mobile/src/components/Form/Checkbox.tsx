@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import type { ParseKeys } from "i18next";
-import React, { memo } from "react";
+import { memo } from "react";
 import { View } from "react-native";
 
 import { Icon } from "~/resources/icons";

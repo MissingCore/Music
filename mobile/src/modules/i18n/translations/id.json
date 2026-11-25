@@ -214,7 +214,7 @@
       "title": "Recap",
       "brief": "Riwayat trek, artis dan pemutaran teratasmu.",
       "extra": {
-        "backup": null,
+        "backup": "Transfer data recap dari instansi aplikasi ini.",
         "recapTemplate": "{{- name}} $t(feat.recap.title)",
         "playCount": "{{count}} pemutaran",
         "mostPlayed": "Sering Diputar {{- name}}",
@@ -268,11 +268,11 @@
       "extra": {
         "useEmbedded": "Gunakan Lirik Tersemat",
         "providers": "Penyedia Lirik",
-        "source": null,
-        "cached": null,
+        "source": "Sumber Lirik",
+        "cached": "Lirik Tercache",
         "providersInstructions": {
           "line1": "Untuk alasan legal, kami tidak secara otomatis menyediakan sumber daring untuk menampilkan lirik karena kami tidak memiliki lisensi untuk melakukannya. Sebagai gantinya kami mendukung penyedia layanan, yang dapat Anda gunakan untuk menentukan dari mana kami dapat mengambil lirik.",
-          "line2": "Klik untuk mempelajari selengkapnya bagaimana kamu bisa membuat layanan."
+          "line2": "Pelajari bagaimana cara membuat layanan lirik."
         }
       }
     },
