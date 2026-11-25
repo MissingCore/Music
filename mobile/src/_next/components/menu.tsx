@@ -113,12 +113,11 @@ export function Menu({
   //* Back gesture will close the menu.
   useBackHandler(
     () => {
-      if (!visible) return false;
       onDismiss?.();
       return true;
     },
     [visible, onDismiss],
-    dismissHandling && Boolean(onDismiss),
+    visible && dismissHandling && Boolean(onDismiss),
   );
 
   return (
