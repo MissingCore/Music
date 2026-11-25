@@ -1,7 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { asc, count, eq, inArray, sql } from "drizzle-orm";
+import { asc, count, eq, sql } from "drizzle-orm";
 
 import { db } from "~/db";
 import {
@@ -136,15 +136,6 @@ export const LocalMediaGenreConnector = {
             .onConflictDoNothing()
             .run();
         });
-        tx.update(tracks)
-          .set({ editedMetadata: Date.now() })
-          .where(
-            inArray(
-              tracks.id,
-              trackIds.map(({ trackId }) => trackId),
-            ),
-          )
-          .run();
       }
     });
   },

@@ -293,15 +293,6 @@ export const LocalMediaArtistConnector = {
             .onConflictDoNothing()
             .run();
         });
-        tx.update(tracks)
-          .set({ editedMetadata: Date.now() })
-          .where(
-            inArray(
-              tracks.id,
-              trackIds.map(({ trackId }) => trackId),
-            ),
-          )
-          .run();
       }
     });
   },
