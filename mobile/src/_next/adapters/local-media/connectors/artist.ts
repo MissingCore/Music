@@ -261,7 +261,6 @@ export const LocalMediaArtistConnector = {
       });
       if (!priorValues) return;
       const newArtist = { ...priorValues, ...values };
-      const artistName = newArtist.name;
 
       //? Insert artist entry (to preserve referential integrity).
       await tx.insert(artists).values(newArtist).onConflictDoNothing();
@@ -269,7 +268,7 @@ export const LocalMediaArtistConnector = {
         await tx
           .update(artists)
           .set({ artwork: values.artwork })
-          .where(eq(artists.name, artistName));
+          .where(eq(artists.name, newArtist.name));
 
       //? Update track relations.
       const trackIds = await tx.query.tracksToArtists.findMany({
@@ -282,7 +281,11 @@ export const LocalMediaArtistConnector = {
           .where(eq(tracksToArtists.artistName, id));
         await tx
           .insert(tracksToArtists)
-          .values(trackIds.map(({ trackId }) => ({ trackId, artistName })))
+          .values(
+            trackIds.map(({ trackId }) => {
+              return { trackId, artistName: newArtist.name };
+            }),
+          )
           .onConflictDoNothing();
         await tx
           .update(tracks)

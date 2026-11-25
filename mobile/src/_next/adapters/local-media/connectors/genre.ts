@@ -106,7 +106,6 @@ export const LocalMediaGenreConnector = {
       });
       if (!priorValues) return;
       const newGenre = { ...priorValues, ...values };
-      const genreName = newGenre.name;
 
       //? Insert genre entry (to preserve referential integrity).
       await tx.insert(genres).values(newGenre).onConflictDoNothing();
@@ -114,7 +113,7 @@ export const LocalMediaGenreConnector = {
         await tx
           .update(genres)
           .set({ artwork: values.artwork })
-          .where(eq(genres.name, genreName));
+          .where(eq(genres.name, newGenre.name));
 
       //? Update track relations.
       const trackIds = await tx.query.tracksToGenres.findMany({
@@ -125,7 +124,11 @@ export const LocalMediaGenreConnector = {
         await tx.delete(tracksToGenres).where(eq(tracksToGenres.genreName, id));
         await tx
           .insert(tracksToGenres)
-          .values(trackIds.map(({ trackId }) => ({ trackId, genreName })))
+          .values(
+            trackIds.map(({ trackId }) => {
+              return { trackId, genreName: newGenre.name };
+            }),
+          )
           .onConflictDoNothing();
         await tx
           .update(tracks)
