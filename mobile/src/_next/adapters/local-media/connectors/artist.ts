@@ -249,53 +249,56 @@ export const LocalMediaArtistConnector = {
     if (id === values.name)
       throw new Error(`\`values.name\` should not equal ${id}.`);
 
-    return db.transaction(async (tx) => {
+    return db.transaction((tx) => {
       //? Simple artwork update.
       if (values.name === undefined) {
-        await tx.update(artists).set(values).where(eq(artists.name, id));
+        tx.update(artists).set(values).where(eq(artists.name, id)).run();
         return;
       }
 
-      const priorValues = await tx.query.artists.findFirst({
-        where: (fields, { eq }) => eq(fields.name, id),
-      });
+      const priorValues = tx
+        .select()
+        .from(artists)
+        .where(eq(artists.name, id))
+        .get();
       if (!priorValues) return;
       const newArtist = { ...priorValues, ...values };
 
       //? Insert artist entry (to preserve referential integrity).
-      await tx.insert(artists).values(newArtist).onConflictDoNothing();
+      tx.insert(artists).values(newArtist).onConflictDoNothing().run();
       if (values.artwork !== undefined)
-        await tx
-          .update(artists)
+        tx.update(artists)
           .set({ artwork: values.artwork })
-          .where(eq(artists.name, newArtist.name));
+          .where(eq(artists.name, newArtist.name))
+          .run();
 
       //? Update track relations.
-      const trackIds = await tx.query.tracksToArtists.findMany({
-        columns: { trackId: true },
-        where: (fields, { eq }) => eq(fields.artistName, id),
-      });
+      const trackIds = tx
+        .select({ trackId: tracksToArtists.trackId })
+        .from(tracksToArtists)
+        .where(eq(tracksToArtists.artistName, id))
+        .all();
       if (trackIds.length > 0) {
-        await tx
-          .delete(tracksToArtists)
-          .where(eq(tracksToArtists.artistName, id));
-        await tx
-          .insert(tracksToArtists)
+        tx.delete(tracksToArtists)
+          .where(eq(tracksToArtists.artistName, id))
+          .run();
+        tx.insert(tracksToArtists)
           .values(
             trackIds.map(({ trackId }) => {
               return { trackId, artistName: newArtist.name };
             }),
           )
-          .onConflictDoNothing();
-        await tx
-          .update(tracks)
+          .onConflictDoNothing()
+          .run();
+        tx.update(tracks)
           .set({ editedMetadata: Date.now() })
           .where(
             inArray(
               tracks.id,
               trackIds.map(({ trackId }) => trackId),
             ),
-          );
+          )
+          .run();
       }
     });
   },

@@ -94,51 +94,54 @@ export const LocalMediaGenreConnector = {
     if (id === values.name)
       throw new Error(`\`values.name\` should not equal ${id}.`);
 
-    return db.transaction(async (tx) => {
+    return db.transaction((tx) => {
       //? Simple artwork update.
       if (values.name === undefined) {
-        await tx.update(genres).set(values).where(eq(genres.name, id));
+        tx.update(genres).set(values).where(eq(genres.name, id)).run();
         return;
       }
 
-      const priorValues = await tx.query.genres.findFirst({
-        where: (fields, { eq }) => eq(fields.name, id),
-      });
+      const priorValues = tx
+        .select()
+        .from(genres)
+        .where(eq(genres.name, id))
+        .get();
       if (!priorValues) return;
       const newGenre = { ...priorValues, ...values };
 
       //? Insert genre entry (to preserve referential integrity).
-      await tx.insert(genres).values(newGenre).onConflictDoNothing();
+      tx.insert(genres).values(newGenre).onConflictDoNothing().run();
       if (values.artwork !== undefined)
-        await tx
-          .update(genres)
+        tx.update(genres)
           .set({ artwork: values.artwork })
-          .where(eq(genres.name, newGenre.name));
+          .where(eq(genres.name, newGenre.name))
+          .run();
 
       //? Update track relations.
-      const trackIds = await tx.query.tracksToGenres.findMany({
-        columns: { trackId: true },
-        where: (fields, { eq }) => eq(fields.genreName, id),
-      });
+      const trackIds = tx
+        .select({ trackId: tracksToGenres.trackId })
+        .from(tracksToGenres)
+        .where(eq(tracksToGenres.genreName, id))
+        .all();
       if (trackIds.length > 0) {
-        await tx.delete(tracksToGenres).where(eq(tracksToGenres.genreName, id));
-        await tx
-          .insert(tracksToGenres)
+        tx.delete(tracksToGenres).where(eq(tracksToGenres.genreName, id)).run();
+        tx.insert(tracksToGenres)
           .values(
             trackIds.map(({ trackId }) => {
               return { trackId, genreName: newGenre.name };
             }),
           )
-          .onConflictDoNothing();
-        await tx
-          .update(tracks)
+          .onConflictDoNothing()
+          .run();
+        tx.update(tracks)
           .set({ editedMetadata: Date.now() })
           .where(
             inArray(
               tracks.id,
               trackIds.map(({ trackId }) => trackId),
             ),
-          );
+          )
+          .run();
       }
     });
   },
