@@ -7,7 +7,7 @@ allowBuilds:
   "@sentry/cli": true
   esbuild: false
   msgpackr-extract: false
-  react-native-audio-browser@https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/05f7af440edc29222d12a0acc58234f5cb51433d: true
+  react-native-audio-browser@https://codeload.github.com/MissingCore/react-native-audio-browser/tar.gz/ac538c60782b44151f21e7dc1195a0d449ae8666: true
   unrs-resolver: false
 
 patchedDependencies:
