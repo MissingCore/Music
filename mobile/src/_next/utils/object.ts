@@ -3,6 +3,9 @@
 
 /** Split an array into "chunks". */
 export function chunkArray<T>(arr: T[], chunkSize: number) {
+  if (!Number.isInteger(chunkSize) || chunkSize <= 0)
+    throw new Error("`chunkSize` must be a positive integer.");
+
   const chunkedArray: T[][] = [];
   for (let i = 0; i < arr.length; i += chunkSize) {
     chunkedArray.push(arr.slice(i, i + chunkSize));
