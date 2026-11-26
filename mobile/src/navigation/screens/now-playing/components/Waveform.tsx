@@ -1,7 +1,7 @@
 // Copyright (C) 2024 - present, MissingCore
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { computeAmplitude } from "@missingcore/react-native-audio-analyzer";
+import { analyzeAudio, normalize, resample } from "react-native-audio-analyzer";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { View, useWindowDimensions } from "react-native";
 import { Defs, LinearGradient, Path, Stop, Svg } from "react-native-svg";
@@ -128,28 +128,14 @@ export function useWaveformSamples(id: string, uri: string) {
     if (parsedUrl.startsWith("file://")) parsedUrl = parsedUrl.slice(8);
     let sampleData: number[] = [];
     try {
-      sampleData = computeAmplitude(parsedUrl, scaledBarCount);
-    } catch {}
-
-    if (sampleData.length > 0) {
-      const downSampledBars: number[] = [];
-      // Downsample the data.
+      const samples = resample(await analyzeAudio(parsedUrl), scaledBarCount);
       for (let i = 0; i < estimatedBarCount; i++) {
         const idx = Math.floor((i / estimatedBarCount) * scaledBarCount);
-        downSampledBars.push(sampleData[idx] || 0);
+        sampleData.push(samples[idx] || 0);
       }
-
-      // Normalize amplitude.
-      const maxAmplitude = Math.max(...downSampledBars);
-      if (maxAmplitude > 0 && Number.isFinite(maxAmplitude)) {
-        const multiplier = Math.pow(maxAmplitude, -1);
-        sampleData = downSampledBars.map((n) => n * multiplier);
-      } else {
-        sampleData = samplesFallback;
-      }
-    } else {
-      sampleData = samplesFallback;
-    }
+      sampleData = Array.from(normalize(sampleData));
+    } catch {}
+    if (sampleData.length === 0) sampleData = samplesFallback;
 
     //* Cache the data so we don't need to recompute this in the future.
     const entry = { trackId: id, samples: sampleData };
