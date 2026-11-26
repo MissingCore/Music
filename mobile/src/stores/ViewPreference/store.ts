@@ -26,18 +26,12 @@ export const viewPreferenceStore = createPersistedStore<ViewPreferenceStore>(
     artistIsAsc: true,
     artistOrder: "name",
 
-    artistTracksIsAsc: true,
-    artistTracksOrder: "name",
-
     folderIsAsc: true,
     folderOrder: "name",
 
     genreLayout: "list",
     genreIsAsc: true,
     genreOrder: "name",
-
-    genreTracksIsAsc: true,
-    genreTracksOrder: "name",
 
     playlistLayout: "grid",
     playlistIsAsc: true,

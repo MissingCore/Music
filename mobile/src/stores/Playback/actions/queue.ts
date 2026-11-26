@@ -8,7 +8,12 @@ import AudioBrowser from "react-native-audio-browser";
 import i18next from "~/modules/i18n";
 import type { Track } from "~/data/track/types";
 import { playbackStore } from "../store";
-import { extractTrackId, getTrackIdsList, getUpdatedLists } from "../utils";
+import {
+  extractTrackId,
+  getTrackIdsList,
+  getUpdatedLists,
+  shouldAlwaysShuffle,
+} from "../utils";
 import { preferenceStore } from "../../Preference/store";
 
 import { clamp } from "~/utils/number";
@@ -181,7 +186,7 @@ export async function synchronize() {
   if (updatedQueue.length === 0) return;
   const updatedListInfo = getUpdatedLists(
     updatedQueue,
-    shuffle,
+    shuffle || shouldAlwaysShuffle(playingFrom),
     activeTrack.id,
   );
 

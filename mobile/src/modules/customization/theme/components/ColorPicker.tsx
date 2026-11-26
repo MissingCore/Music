@@ -17,7 +17,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 
-import { hexToHSV, hsvToHex } from "~/utils/color";
+import { hexToHSV, hsvToHex, withAlpha } from "~/utils/color";
 import { useSlider } from "~/components/next/base/slider-context";
 import type { HexColor } from "../core/constants";
 import { normalizeHexColor } from "../core/utils";
@@ -140,13 +140,13 @@ export function ColorPicker({
           className="relative overflow-hidden rounded-lg"
         >
           <LinearGradient
-            colors={["#FFFFFFFF", "#FFFFFF00"]}
+            colors={["#FFF", withAlpha("#FFF", 0)]}
             start={[0, 0]}
             end={[1, 0]}
             className="absolute inset-0"
           />
           <LinearGradient
-            colors={["#000000FF", "#00000000"]}
+            colors={["#000", withAlpha("#000", 0)]}
             start={[0, 1]}
             end={[0, 0]}
             className="absolute inset-0"

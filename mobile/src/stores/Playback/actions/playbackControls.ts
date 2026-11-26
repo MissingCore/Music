@@ -13,6 +13,7 @@ import {
   getSourceName,
   getTrackIdsList,
   getUpdatedLists,
+  shouldAlwaysShuffle,
 } from "../utils";
 
 import { isAudioBrowserSetUp } from "~/lib/react-native-audio-browser";
@@ -225,7 +226,7 @@ export async function playFromList({
   if (newPlayingList.length === 0) return; // Don't do anything if list is empty.
   const newListInfo = getUpdatedLists(
     newPlayingList,
-    shuffle,
+    shuffle || shouldAlwaysShuffle(source),
     trackId ?? activeTrack?.id,
   );
 

@@ -8,7 +8,6 @@ import { useGenreDetails, useGenreTracks } from "~/data/genre/queries";
 
 import * as MediaListLayout from "~/navigation/layouts/MediaListLayout";
 import { GenreArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
-import { SortOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
 
 import { useSheetRef } from "~/components/next/base/sheet";
 import { TrackItem } from "~/components/next/composed/track-item";
@@ -23,7 +22,6 @@ export default function Genre({
   const genreDetailsQuery = useGenreDetails(id);
   const genreTracksQuery = useGenreTracks(id);
   const artworkSheetRef = useSheetRef();
-  const tracksSortOptionsSheetRef = useSheetRef();
 
   const trackSource = useMemo(() => ({ type: "genre", id }) as const, [id]);
 
@@ -34,15 +32,11 @@ export default function Genre({
   return (
     <>
       <GenreArtworkSheet ref={artworkSheetRef} id={id} />
-      <SortOptionsSheet ref={tracksSortOptionsSheetRef} screen="genreTracks" />
 
       <MediaListLayout.Toolbar
         name={genreDetailsQuery.data.name}
         trackIds={genreTracksQuery.data?.map(({ id }) => id) ?? []}
         presentArtworkSheet={() => artworkSheetRef.current?.present()}
-        presentSortOptionsSheet={() =>
-          tracksSortOptionsSheetRef.current?.present()
-        }
       />
       <MediaListLayout.Provider
         imageSource={genreDetailsQuery.data.imageSource}

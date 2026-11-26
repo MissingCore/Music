@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { useNavigation } from "@react-navigation/native";
+import { useQuery } from "@tanstack/react-query";
 import {
   createContext,
   memo,
@@ -17,12 +18,15 @@ import type { ViewStyle } from "react-native";
 import { Text as NativeText, View } from "react-native";
 import { usePolledProgress } from "react-native-audio-browser";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useShallow } from "zustand/react/shallow";
 
+import { getTrack } from "~/data/track/api";
 import { useTrackLyrics } from "~/data/track/queries";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { useAlternativeLayout } from "~/hooks/useAlternativeLayout";
 import { useLyricStore } from "../core/store";
-import { toggleLyricStoreKey } from "../core/actions";
+import { selectLyricProvider, toggleLyricStoreKey } from "../core/actions";
+import { fetchLyricFromProvider } from "../core/data";
 
 import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
@@ -30,8 +34,11 @@ import type { FlatListProps, FlatListRef } from "~/components/Base/List";
 import { FlatList, useFlatListRef } from "~/components/Base/List";
 import { TopDownGradient } from "~/components/Gradient";
 import { IconButton } from "~/components/next/base/button-icon";
+import type { SheetRef } from "~/components/next/base/sheet";
+import { useSheetRef } from "~/components/next/base/sheet";
 import { Text, TText } from "~/components/next/base/typography";
 import { ActionButton } from "~/components/next/blocks/button-action";
+import { RadioSheet } from "~/components/next/composed/sheet-radio";
 import { Pressable } from "~/components/next/primitive/pressable";
 import { useIsAtmosphereActive } from "~/modules/customization/atmosphere/store";
 import { useTheme } from "~/modules/customization/theme/hooks";
@@ -76,7 +83,7 @@ export function LyricsOverlay(props: { height: number; trackId: string }) {
             : undefined,
         )}
       >
-        <LyricsContent trackId={props.trackId} />
+        <LyricsContent key={props.trackId} trackId={props.trackId} />
 
         {!hideBackground ? (
           <>
@@ -97,22 +104,43 @@ export function LyricsOverlay(props: { height: number; trackId: string }) {
 }
 
 function LyricsContent({ trackId }: { trackId: string }) {
-  const { isPending, data, error } = useTrackLyrics(trackId);
   const { listStyles } = use(LyricStyleContext);
+  const selectedProvider = useLyricStore(
+    useShallow((s) =>
+      s.providers.find(({ id }) => id === s.selectedProviderId),
+    ),
+  );
+
+  const cachedLyricsQuery = useTrackLyrics(trackId);
+  const providerLyricsQuery = useQuery({
+    queryKey: ["tracks", trackId, "lyrics", "provider", selectedProvider],
+    queryFn: async ({ signal }) => {
+      if (!selectedProvider)
+        throw new Error("Selected lyric provider is unavailable.");
+      const track = await getTrack(trackId);
+      return fetchLyricFromProvider(track, selectedProvider, signal);
+    },
+    enabled: !!selectedProvider,
+    retry: false,
+  });
+
+  const providerLyrics = providerLyricsQuery.data?.trim();
+  const data = providerLyrics || cachedLyricsQuery.data?.lyricText || null;
 
   const formattedLyrics = useMemo(() => {
-    if (!data?.lyricText) return;
-    return parseLyrics(data.lyricText);
-  }, [data?.lyricText]);
+    if (!data) return;
+    return parseLyrics(data);
+  }, [data]);
 
-  if (isPending) return null;
-  else if (error || !data) {
-    return <LyricsNotFound key={trackId} trackId={trackId} />;
+  if (!data) {
+    if (cachedLyricsQuery.isPending) return null;
+    return <LyricsNotFound trackId={trackId} />;
   }
+
   return (
     <>
       {Array.isArray(formattedLyrics) ? (
-        <SynchronizedLyrics key={trackId} parsedLines={formattedLyrics} />
+        <SynchronizedLyrics parsedLines={formattedLyrics} />
       ) : (
         <FlatList
           data={formattedLyrics?.split("\n")}
@@ -128,7 +156,7 @@ function LyricsContent({ trackId }: { trackId: string }) {
           contentContainerClassName="px-4"
         />
       )}
-      <ExtraActions trackId={data.trackId} />
+      <ExtraActions trackId={trackId} />
     </>
   );
 }
@@ -137,24 +165,59 @@ function ExtraActions({ trackId }: { trackId?: string }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const expandLyrics = useLyricStore((s) => s.fullscreen);
+  const showLyricsSourceSheet = useLyricStore((s) => s.providers.length > 0);
+  const sourceSheetRef = useSheetRef();
 
   return (
-    <View className="absolute right-4 bottom-0 z-100 flex-row gap-2">
-      <IconButton
-        icon={expandLyrics ? "fullscreen-exit" : "fullscreen"}
-        accessibilityLabel={t(`term.${expandLyrics ? "minimize" : "expand"}`)}
-        onPress={toggleLyricStoreKey("fullscreen")}
-        size="xs"
-      />
-      {trackId ? (
+    <>
+      <View className="absolute right-4 bottom-0 z-100 flex-row gap-2">
         <IconButton
-          icon="edit"
-          accessibilityLabel={t("form.edit")}
-          onPress={() => navigation.navigate("LyricForm", { trackId })}
+          icon={expandLyrics ? "fullscreen-exit" : "fullscreen"}
+          accessibilityLabel={t(`term.${expandLyrics ? "minimize" : "expand"}`)}
+          onPress={toggleLyricStoreKey("fullscreen")}
           size="xs"
         />
-      ) : null}
-    </View>
+        {trackId ? (
+          <IconButton
+            icon="edit"
+            accessibilityLabel={t("form.edit")}
+            onPress={() => navigation.navigate("LyricForm", { trackId })}
+            size="xs"
+          />
+        ) : null}
+        {showLyricsSourceSheet ? (
+          <IconButton
+            icon="conversion-path"
+            accessibilityLabel={t("feat.lyrics.extra.source")}
+            onPress={() => sourceSheetRef.current?.present()}
+            size="xs"
+          />
+        ) : null}
+      </View>
+      <LyricsSourceSheet ref={sourceSheetRef} />
+    </>
+  );
+}
+
+/** Needs to be rendered outside of the `View` due to press event issues. */
+function LyricsSourceSheet(props: { ref: SheetRef }) {
+  const { t } = useTranslation();
+  const providers = useLyricStore((s) => s.providers);
+  const selectedProviderId = useLyricStore((s) => s.selectedProviderId);
+
+  const options: Array<{ id: string | null; label: string }> = [
+    { id: null, label: t("feat.lyrics.extra.cached") },
+    ...providers.map(({ id, name }) => ({ id, label: name })),
+  ];
+
+  if (providers.length === 0) return null;
+  return (
+    <RadioSheet
+      ref={props.ref}
+      data={options}
+      onSelect={(item) => selectLyricProvider(item.id)}
+      isSelected={(item) => selectedProviderId === item.id}
+    />
   );
 }
 

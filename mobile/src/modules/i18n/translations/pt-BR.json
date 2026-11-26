@@ -272,6 +272,8 @@
       "extra": {
         "useEmbedded": "Usar letras incorporadas",
         "providers": "Provedores de letras",
+        "source": null,
+        "cached": null,
         "providersInstructions": {
           "line1": "Por razões legais, não fornecemos automaticamente fontes on-line para exibir letras, pois não temos licença para isso. Em vez disso, oferecemos suporte a provedores que você pode configurar para indicar de onde obter as letras.",
           "line2": "Clique para saber mais sobre como criar um provedor."

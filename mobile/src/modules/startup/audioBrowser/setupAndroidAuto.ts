@@ -11,9 +11,7 @@ import { db } from "~/db";
 
 import i18next from "~/modules/i18n";
 import { getAlbum, getAlbumsSummary } from "~/data/album/api";
-import { getArtist, getArtistsSummary } from "~/data/artist/api";
 import { getArtistsString } from "~/data/artist/utils";
-import { getGenre, getGenresSummary } from "~/data/genre/api";
 import { getPlaylist, getPlaylistsSummary } from "~/data/playlist/api";
 import { getSortedTracks } from "~/data/track/api";
 import type { CommonTrack } from "~/data/types";
@@ -27,28 +25,15 @@ import type { MediaType, PlayFromSource } from "~/stores/Playback/types";
 
 /** Structure to represent Android Auto. */
 export const browserConfiguration: BrowserConfiguration = {
-  tabs: [{ title: "Your Library", url: "/library" }],
+  tabs: [
+    { title: "Albums", url: "/album" },
+    { title: "Playlists", url: "/playlist" },
+    { title: "Tracks", url: "/track" },
+  ],
 
   routes: {
-    "/library": {
-      url: "/library",
-      title: "Your Library",
-      children: ["Album", "Artist", "Genre", "Playlist", "Track"].map(
-        (category) => ({
-          url: `/${category.toLowerCase()}`,
-          title: `${category}s`,
-          groupTitle: "🧪 This is an Experimental Feature. 🧪",
-        }),
-      ),
-    },
-
-    //? Content Routes
     "/album": () => getMediaCategoryRoute("album", getAlbumsSummary),
     "/album/{id}": getMediaCategoryEntryRoute("album", getAlbum),
-    "/artist": () => getMediaCategoryRoute("artist", getArtistsSummary),
-    "/artist/{id}": getMediaCategoryEntryRoute("artist", getArtist),
-    "/genre": () => getMediaCategoryRoute("genre", getGenresSummary),
-    "/genre/{id}": getMediaCategoryEntryRoute("genre", getGenre),
     "/playlist": () => getMediaCategoryRoute("playlist", getPlaylistsSummary),
     "/playlist/{id}": getMediaCategoryEntryRoute("playlist", getPlaylist),
     "/track": getMediaCategoryEntryRoute("track", async () => {
@@ -96,7 +81,6 @@ export const browserConfiguration: BrowserConfiguration = {
 };
 
 //#region Internal Helpers
-
 /** Generate route containing all lists of a given category. */
 async function getMediaCategoryRoute(
   category: MediaType,
@@ -114,18 +98,23 @@ async function getMediaCategoryRoute(
   return {
     url: `/${category}`,
     title: `${capitalize(category)}s`,
-    children: data.map(({ artwork, ...item }) => {
-      const _imgSrc = Array.isArray(artwork) ? artwork[0] : artwork;
-      const imgSrc = getImageUri(typeof _imgSrc === "string" ? _imgSrc : null);
-      return {
-        url: `/${category}/${encodeURIComponent(item.id ?? item.name)}`,
-        title: item.name,
-        description:
-          item.artistName ||
-          i18next.t("plural.track", { count: item.trackCount }),
-        artwork: imgSrc || PlaceholderImageFile,
-      };
-    }),
+    children: data
+      .filter(({ trackCount }) => trackCount > 0)
+      .map(({ artwork, ...item }) => {
+        const _imgSrc = Array.isArray(artwork) ? artwork[0] : artwork;
+        const imgSrc = getImageUri(
+          typeof _imgSrc === "string" ? _imgSrc : null,
+        );
+        return {
+          url: `/${category}/${encodeURIComponent(item.id ?? item.name)}`,
+          title: item.name,
+          description:
+            item.artistName ||
+            i18next.t("plural.track", { count: item.trackCount }),
+          artwork: imgSrc || PlaceholderImageFile,
+          style: "grid",
+        };
+      }),
   };
 }
 

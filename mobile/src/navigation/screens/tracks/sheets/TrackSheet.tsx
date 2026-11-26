@@ -35,8 +35,8 @@ import { Marquee } from "~/components/next/blocks/marquee";
 import { MediaImage } from "~/components/next/blocks/media-image";
 import { Pressable } from "~/components/next/primitive/pressable";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
-import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
 import { AddToPlaylistsSheetBase } from "~/modules/media/components/AddToPlaylistsSheetBase";
+import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
 
 const TRACK_GLOBAL_SHEET_KEY = "TrackSheet";
 const TRACK_PLAYLIST_GLOBAL_SHEET_KEY = "TrackToPlaylistsSheet";

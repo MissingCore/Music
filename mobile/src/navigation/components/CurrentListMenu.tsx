@@ -25,7 +25,6 @@ export function CurrentListMenu(props: {
   trackIds: string[];
   actions?: MenuAction[];
   presentArtworkSheet?: VoidFunction;
-  presentSortOptionsSheet?: VoidFunction;
 }) {
   const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
@@ -57,21 +56,8 @@ export function CurrentListMenu(props: {
       });
     }
 
-    if (props.presentSortOptionsSheet) {
-      actions.push({
-        icon: "sort",
-        labelKey: "feat.modalViewPreference.extra.sort",
-        onPress: props.presentSortOptionsSheet,
-      });
-    }
-
     return actions.concat(props.actions ?? []).concat(queueActions);
-  }, [
-    props.actions,
-    props.presentArtworkSheet,
-    props.presentSortOptionsSheet,
-    queueActions,
-  ]);
+  }, [props.actions, props.presentArtworkSheet, queueActions]);
 
   return (
     <Menu

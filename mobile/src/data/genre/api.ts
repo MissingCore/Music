@@ -8,8 +8,8 @@ import { genres, tracks, tracksToGenres } from "~/db/schema";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { Seconds } from "~/utils/date";
-import type { CommonTrack, TracksSortOptions } from "../types";
-import { commonTracksOrIds, getTracksOrderedBy } from "../utils";
+import type { CommonTrack } from "../types";
+import { commonTracksOrIds } from "../utils";
 import { commonTrackColumns, structuredTracksView } from "../views";
 
 type InsertedGenre = typeof genres.$inferInsert;
@@ -19,11 +19,10 @@ type InsertedGenre = typeof genres.$inferInsert;
 export async function getGenre<TOnlyIds extends boolean | undefined = false>(
   id: string,
   onlyIds?: TOnlyIds,
-  sortOptions?: TracksSortOptions<"genreTracks">,
 ) {
   const [genreDetails, genreTracks] = await Promise.all([
     getGenreDetails(id),
-    getSortedGenreTracks(id, onlyIds, sortOptions),
+    getGenreTracks(id, onlyIds),
   ]);
 
   return { ...genreDetails, tracks: genreTracks };
@@ -49,16 +48,12 @@ export async function getGenreDetails(id: string) {
 }
 
 /**
- * Return the tracks associated with a genre in the specified sort order.
- * It's not guaranteed that the genre exists.
+ * Return the tracks associated with a genre. It's not guaranteed that
+ * the genre exists.
  */
-export async function getSortedGenreTracks<
+export async function getGenreTracks<
   TOnlyIds extends boolean | undefined = false,
->(
-  id: string,
-  onlyIds?: TOnlyIds,
-  sortOptions?: TracksSortOptions<"genreTracks">,
-) {
+>(id: string, onlyIds?: TOnlyIds) {
   const results = await db
     .select(onlyIds ? { id: structuredTracksView.id } : commonTrackColumns)
     .from(tracksToGenres)
@@ -67,7 +62,7 @@ export async function getSortedGenreTracks<
       structuredTracksView,
       eq(tracksToGenres.trackId, structuredTracksView.id),
     )
-    .orderBy(getTracksOrderedBy("genreTracks", sortOptions));
+    .orderBy(iAsc(structuredTracksView.name));
 
   return commonTracksOrIds<CommonTrack, TOnlyIds>(results, onlyIds);
 }

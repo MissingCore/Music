@@ -268,6 +268,8 @@
       "extra": {
         "useEmbedded": "Eingebettete verwenden",
         "providers": null,
+        "source": null,
+        "cached": null,
         "providersInstructions": {
           "line1": null,
           "line2": null
