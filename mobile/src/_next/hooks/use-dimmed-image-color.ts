@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { colord } from "colord";
-import { useEffect, useEffectEvent, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createPalette } from "react-native-material-palette";
 
 import { useColor } from "~/_next/context/theme-context";
@@ -23,10 +23,6 @@ export function useDimmedImageColor(src: unknown) {
   );
   const [color, setColor] = useState<HexColor>();
 
-  const resetColor = useEffectEvent(() =>
-    setColor(clampLightness(colord(background)).toHex() as HexColor),
-  );
-
   useEffect(() => {
     if (typeof src !== "string" || ColorCache.has(src)) return;
     let cancelled = false;
@@ -41,7 +37,7 @@ export function useDimmedImageColor(src: unknown) {
         if (!cancelled) setColor(dimmedColor);
       })
       .catch(() => {
-        if (!cancelled) resetColor();
+        if (!cancelled) setColor(undefined);
       });
 
     return () => {
