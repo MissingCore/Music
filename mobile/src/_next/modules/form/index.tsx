@@ -63,6 +63,7 @@ type FormState<TData extends Record<string, any>> = {
 const FormStateContext = createContext<FormState<any>>(null as never);
 
 const UnsavedChangesContext = createContext<{
+  enabled: boolean;
   showConfirmation: boolean;
   setShowConfirmation: Dispatch<SetStateAction<boolean>>;
 }>(null as never);
@@ -215,12 +216,16 @@ export function FormProvider<TSchema extends v.ObjectSchema<any, any>>(
         setIsSubmitting,
       }}
     >
-      <UnsavedChangesContext value={{ showConfirmation, setShowConfirmation }}>
+      <UnsavedChangesContext
+        value={{
+          enabled: props.promptUnsavedChanges ?? true,
+          showConfirmation,
+          setShowConfirmation,
+        }}
+      >
         <GoBackContext value={handleGoBack}>
           {props.children}
-          {(props.promptUnsavedChanges ?? true) ? (
-            <UnsavedChangesPrompt />
-          ) : null}
+          <UnsavedChangesPrompt />
         </GoBackContext>
       </UnsavedChangesContext>
     </FormStateContext>
@@ -233,7 +238,9 @@ export function FormProvider<TSchema extends v.ObjectSchema<any, any>>(
 export function useBackAction() {
   const { t } = useTranslation();
   const { hasChanged, isSubmitting } = useFormContext();
-  const { setShowConfirmation } = use(UnsavedChangesContext);
+  const { enabled: promptEnabled, setShowConfirmation } = use(
+    UnsavedChangesContext,
+  );
   const goBack = use(GoBackContext);
   return useMemo(
     () =>
@@ -241,12 +248,12 @@ export function useBackAction() {
         icon: "close",
         accessibilityLabel: t("form.back"),
         onPress: () => {
-          if (hasChanged) return setShowConfirmation(true);
+          if (hasChanged && promptEnabled) return setShowConfirmation(true);
           goBack();
         },
         disabled: isSubmitting,
       }) satisfies IconButtonProps,
-    [t, hasChanged, isSubmitting, setShowConfirmation, goBack],
+    [t, hasChanged, isSubmitting, promptEnabled, setShowConfirmation, goBack],
   );
 }
 
@@ -272,22 +279,26 @@ function UnsavedChangesPrompt() {
   const isFocused = useIsFocused();
   const { text } = useTheme().colors;
   const { hasChanged, isSubmitting } = useFormContext();
-  const { showConfirmation, setShowConfirmation } = use(UnsavedChangesContext);
+  const {
+    enabled: promptEnabled,
+    showConfirmation,
+    setShowConfirmation,
+  } = use(UnsavedChangesContext);
   const goBack = use(GoBackContext);
 
   useBackHandler(
     () => {
-      if (!hasChanged) goBack();
+      if (!hasChanged || !promptEnabled) goBack();
       else if (!isSubmitting) setShowConfirmation(true);
       return true;
     },
-    [hasChanged, isSubmitting, goBack],
+    [hasChanged, isSubmitting, promptEnabled, goBack],
     isFocused,
   );
 
   return (
     <Dialog
-      visible={showConfirmation}
+      visible={promptEnabled && showConfirmation}
       onClose={() => setShowConfirmation(false)}
     >
       <TText textKey="form.unsaved" style={{ fontSize: 18 }} />
