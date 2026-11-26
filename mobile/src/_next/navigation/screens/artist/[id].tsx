@@ -155,9 +155,11 @@ function ScreenContents({
     [source],
   );
 
+  const renderedTopTracksCnt = trackColCnt * 5;
+  const canLinkToTopTracks = topTracks.length > renderedTopTracksCnt;
   const limitedTopTracks = useMemo(
-    () => topTracks.slice(0, trackColCnt * 5),
-    [topTracks, trackColCnt],
+    () => topTracks.slice(0, renderedTopTracksCnt),
+    [topTracks, renderedTopTracksCnt],
   );
 
   return (
@@ -182,6 +184,7 @@ function ScreenContents({
           onPress={() =>
             navigation.navigate("ArtistTopTracks", { id: source.id })
           }
+          disabled={!canLinkToTopTracks}
           className="-mx-4 flex-row items-center px-4 py-1.5"
         >
           <Marquee wrapperClassName="grow-0">
@@ -189,7 +192,9 @@ function ScreenContents({
               {t("feat.recap.extra.top", { name: t("term.tracks") })}
             </Text>
           </Marquee>
-          <Icon name={OnRTL.decide("left", "right")} size={32} />
+          {canLinkToTopTracks ? (
+            <Icon name={OnRTL.decide("left", "right")} size={32} />
+          ) : null}
         </Ripple>
       ) : null}
       {limitedTopTracks.map(renderTrack)}
