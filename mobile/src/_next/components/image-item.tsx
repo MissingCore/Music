@@ -38,11 +38,11 @@ export function ImageCard(props: ImageItemProps) {
         pointerEvents="none"
         className="absolute inset-x-0 bottom-2 min-h-8 items-center justify-center px-4"
       >
-        <Text numberOfLines={props.supporting ? 1 : 2} size="sm">
+        <Text numberOfLines={props.supporting ? 1 : 2} center>
           {props.label}
         </Text>
         {props.supporting ? (
-          <Text numberOfLines={1} color="textMuted" size="xs">
+          <Text numberOfLines={1} center color="textMuted" size="sm">
             {props.supporting}
           </Text>
         ) : null}
