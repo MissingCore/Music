@@ -9,20 +9,14 @@ import { useDimmedImageColor } from "../use-dimmed-image-color";
 const BLACK = "#000000";
 const BLUE = "#0000FF";
 
-jest.mock("@missingcore/native-utils", () => ({
-  isSystemDarkMode: true,
-}));
-
-jest.mock("react-native-material-palette", () => ({
-  createPalette: jest.fn(),
-}));
+const setPaletteResult = (result: Record<string, any>) => {
+  (createPalette as jest.Mock).mockResolvedValue(Promise.resolve(result));
+};
 
 describe("useDimmedImageColor", () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    (createPalette as jest.Mock).mockResolvedValue({
-      dominant: { color: BLUE },
-    });
+    setPaletteResult({ dominant: { color: BLUE } });
   });
 
   test("get image dominant color", async () => {
@@ -34,7 +28,7 @@ describe("useDimmedImageColor", () => {
   });
 
   test("get fallback color if dominant color doesn't exist", async () => {
-    (createPalette as jest.Mock).mockResolvedValue({});
+    setPaletteResult({});
 
     const { result } = await renderHook(() =>
       useDimmedImageColor("image-without-dominant-color"),

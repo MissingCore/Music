@@ -108,7 +108,10 @@
     "typescript-eslint": "8.74.0"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "setupFilesAfterEnv": [
+      "./jest.setup.ts"
+    ]
   },
   "react-navigation": {
     "material-symbols": {

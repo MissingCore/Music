@@ -10,10 +10,6 @@ import { ThemeProvider, useTheme, useColor } from "../theme-context";
 const BLUE = "#0000FF";
 const PURPLE = "#9D00FF";
 
-jest.mock("@missingcore/native-utils", () => ({
-  isSystemDarkMode: true,
-}));
-
 describe("useTheme", () => {
   test("returns the default system theme", async () => {
     const { result } = await renderHook(() => useTheme());

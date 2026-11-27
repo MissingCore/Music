@@ -19,14 +19,6 @@ jest.mock("@react-navigation/native", () => ({
   useNavigation: () => ({ goBack: mockGoBack }),
 }));
 
-jest.mock("@missingcore/native-utils", () => ({
-  isSystemDarkMode: true,
-}));
-
-jest.mock("react-i18next", () => ({
-  useTranslation: () => ({ t: (key: string) => key }),
-}));
-
 const schema = v.object({
   name: v.pipe(v.string(), v.trim(), v.minLength(1)),
   count: v.number(),
