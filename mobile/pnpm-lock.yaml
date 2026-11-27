@@ -7,6 +7,7 @@ settings:
 patchedDependencies:
   '@legendapp/list': 15ac1760dbd05d3f24a0ac32902f3cf072caad5005b4509965dbe9d72adc19b2
   react-native-android-widget: 1b539a54e370b751c42017802557a37b9c726edc3e0333b31f7350b48d2af4b6
+  react-native-gesture-handler: e8c2331eb11fef5e270df3b69d1f829070a1e6b1345ed71e963bd1cbbdf2b34c
   react-native-material-palette: cb6604a7852903e36cef6eda789a4886aad57bbedd78f525bb2ba98ee28b97b8
 
 importers:
@@ -126,7 +127,7 @@ importers:
         version: 1.1.1(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       react-native-gesture-handler:
         specifier: 3.5.0
-        version: 3.5.0(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+        version: 3.5.0(patch_hash=e8c2331eb11fef5e270df3b69d1f829070a1e6b1345ed71e963bd1cbbdf2b34c)(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       react-native-keyboard-controller:
         specifier: 1.24.0
         version: 1.24.0(react-native-reanimated@4.8.0(react-native-worklets@0.14.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0))(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0))(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
@@ -12848,7 +12849,7 @@ snapshots:
       react: 19.3.0
       react-native: 0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0)
 
-  react-native-gesture-handler@3.5.0(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0):
+  react-native-gesture-handler@3.5.0(patch_hash=e8c2331eb11fef5e270df3b69d1f829070a1e6b1345ed71e963bd1cbbdf2b34c)(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0):
     dependencies:
       '@types/react-test-renderer': 19.3.1
       invariant: 2.2.4

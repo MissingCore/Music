@@ -4,12 +4,7 @@
 import { useCallback, useMemo, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { View } from "react-native";
-import {
-  GestureDetector,
-  usePanGesture,
-  useSimultaneousGestures,
-  useTapGesture,
-} from "react-native-gesture-handler";
+import { GestureDetector, usePanGesture } from "react-native-gesture-handler";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, {
   cancelAnimation,
@@ -31,9 +26,6 @@ const DRAG_TOSS = 0.02;
 
 interface SwipeableProps {
   children: React.ReactNode;
-
-  /** Callback when the row is tapped. */
-  onPress?: VoidFunction;
 
   /** If the swipe gesture should be disabled. */
   disabled?: boolean;
@@ -67,7 +59,6 @@ interface SwipeableProps {
 
 export function Swipeable({
   disabled = false,
-  onPress,
   fireCallbackBeforeCompletion = false,
   activationThreshold = 175,
   activationThresholdRatio = 0.5,
@@ -160,15 +151,6 @@ export function Swipeable({
     },
   });
 
-  const tapGesture = useTapGesture({
-    enabled: !disabled && onPress !== undefined,
-    maxDistance: 8,
-    onActivate: () => {
-      if (onPress) scheduleOnRN(onPress);
-    },
-  });
-  const gestures = useSimultaneousGestures(swipeGesture, tapGesture);
-
   const onRowLayout = useCallback(
     (e: LayoutChangeEvent) => rowWidth.set(e.nativeEvent.layout.width),
     [rowWidth],
@@ -222,7 +204,7 @@ export function Swipeable({
     <View className={cn("relative", props.wrapperClassName)}>
       {leftIndicator}
       {rightIndicator}
-      <GestureDetector gesture={gestures}>
+      <GestureDetector gesture={swipeGesture}>
         <Animated.View
           onLayout={onRowLayout}
           style={swipeContainerStyles}

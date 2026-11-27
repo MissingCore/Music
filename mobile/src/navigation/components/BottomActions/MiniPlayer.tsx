@@ -3,7 +3,7 @@
 
 import BackgroundTimer from "@boterop/react-native-background-timer";
 import { useNavigation } from "@react-navigation/native";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { GestureDetector, usePanGesture } from "react-native-gesture-handler";
@@ -50,6 +50,11 @@ export function MiniPlayer() {
   const gestureUI = usePreferenceStore((s) => s.miniplayerGestures);
   const dragClearPlayback = usePreferenceStore((s) => s.dragClearPlayback);
 
+  const TextWrapper = useMemo(
+    () => (gestureUI ? Swipeable : View),
+    [gestureUI],
+  );
+
   //#region Drag to Reset Playback Store
   const panAmount = useSharedValue(0);
 
@@ -86,20 +91,6 @@ export function MiniPlayer() {
   //#endregion
 
   if (!track) return null;
-  const openNowPlaying = () => navigation.navigate("NowPlaying");
-  const trackDetails = (
-    <>
-      <Marquee color="surfaceContainerLowest">
-        <StyledText className="text-sm">{track.name}</StyledText>
-      </Marquee>
-      <Marquee color="surfaceContainerLowest">
-        <StyledText dim className="text-xxs">
-          {getArtistsString(track.artists)}
-        </StyledText>
-      </Marquee>
-    </>
-  );
-
   return (
     <GestureDetector gesture={panGesture}>
       <Animated.View
@@ -109,39 +100,34 @@ export function MiniPlayer() {
         style={animatedStyles}
         className="z-10 w-full overflow-hidden rounded-full bg-surfaceContainerLowest"
       >
-        <View className="relative h-14 flex-row items-center gap-0 px-1">
-          <Ripple
-            onPress={openNowPlaying}
-            className="h-12 w-12 shrink-0 rounded-full p-0"
-          >
-            <MediaImage
-              type="track"
-              size={48}
-              source={track.artwork}
-              className="rounded-full"
-            />
-          </Ripple>
+        <Ripple
+          onPress={() => navigation.navigate("NowPlaying")}
+          className="relative h-14 flex-row gap-0 px-1"
+        >
+          <MediaImage
+            type="track"
+            size={48}
+            source={track.artwork}
+            className="rounded-full"
+          />
 
-          {gestureUI ? (
-            <Swipeable
-              onPress={openNowPlaying}
-              activationThreshold={32}
-              overshootSwipe={false}
-              onSwipeLeft={PlaybackControls.next}
-              onSwipeRight={PlaybackControls.prev}
-              wrapperClassName="shrink grow justify-center overflow-hidden"
-              className="w-full shrink bg-surfaceContainerLowest px-1.5"
-            >
-              {trackDetails}
-            </Swipeable>
-          ) : (
-            <Ripple
-              onPress={openNowPlaying}
-              className="w-full shrink grow items-stretch justify-center gap-0 overflow-hidden rounded-none bg-surfaceContainerLowest px-1.5"
-            >
-              {trackDetails}
-            </Ripple>
-          )}
+          <TextWrapper
+            activationThreshold={32}
+            overshootSwipe={false}
+            onSwipeLeft={PlaybackControls.next}
+            onSwipeRight={PlaybackControls.prev}
+            wrapperClassName="shrink grow justify-center overflow-hidden"
+            className="w-full shrink bg-surfaceContainerLowest px-1.5"
+          >
+            <Marquee color="surfaceContainerLowest">
+              <StyledText className="text-sm">{track.name}</StyledText>
+            </Marquee>
+            <Marquee color="surfaceContainerLowest">
+              <StyledText dim className="text-xxs">
+                {getArtistsString(track.artists)}
+              </StyledText>
+            </Marquee>
+          </TextWrapper>
 
           <Animated.View
             layout={LinearTransition}
@@ -159,7 +145,7 @@ export function MiniPlayer() {
           </Animated.View>
 
           <TrackProgress duration={track.duration} />
-        </View>
+        </Ripple>
       </Animated.View>
     </GestureDetector>
   );

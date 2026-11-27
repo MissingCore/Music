@@ -14,4 +14,5 @@ allowBuilds:
 patchedDependencies:
   "@legendapp/list": patches/@legendapp__list.patch
   react-native-android-widget: patches/react-native-android-widget.patch
+  react-native-gesture-handler: patches/react-native-gesture-handler.patch
   react-native-material-palette: patches/react-native-material-palette.patch
