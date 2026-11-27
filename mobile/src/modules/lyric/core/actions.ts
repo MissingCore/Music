@@ -53,3 +53,7 @@ export function toggleLyricStoreKey(key: ToggleableKey) {
     lyricStore.setState((prev) => ({ [key]: !prev[key] }));
   };
 }
+
+export function getAllLyricProvider() {
+  return lyricStore.getState().providers;
+}
