@@ -7,7 +7,9 @@ export function getFileName(uri: string) {
 }
 
 export function removeFileExtension(filename: string) {
-  return filename.split(".").slice(0, -1).join(".").trim();
+  const segments = filename.split(".");
+  if (segments.length === 1) return segments[0]!.trim();
+  return segments.slice(0, -1).join(".").trim();
 }
 
 /** Type-safe `String.prototype.toLowerCase()`. */
